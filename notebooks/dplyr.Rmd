@@ -1,0 +1,98 @@
+---
+title: "dplyr Exercises"
+output: 
+  html_notebook:
+    css: notebooks.css
+    highlight: pygments
+    toc: yes
+    toc_float: yes
+    code: hide
+---
+
+# Exercise 0
+
+Install and load the <span class="pack">dplyr</span> <span class="pack">ggplot2movies</span> packages. Look at the help file for the `movies` data set, which contains data from IMDB.
+
+
+```{r}
+install.packages('ggplot2movies')
+library(ggplot2movies)
+```
+
+
+# Exercise 1
+
+Using the movies data set, perform each of the following actions separately.
+
+## Exercise 1a
+
+Use <span class="func">mutate</span> to create a centered version of the rating variable.  A centered variable is one whose mean has been subtracted from it. The process will take the following form:
+
+```
+data %>% 
+  mutate(newvar = ?)
+```
+
+```{r}
+movies %>% 
+  mutate(ratingCen = rating - mean(rating)) 
+```
+
+## Exercise 1b
+
+Use <span class="func">filter</span> to create a new data frame that has only movies from the years 2000 and beyond. Use the greater than or equal operator `>=`.
+
+```{r}
+movies %>% 
+  filter(year >= 2000) 
+```
+
+## Exercise 1c
+
+Use <span class="func">select</span> to create a new data frame that only has the title, year, budget, length, rating and votes variables.  There are at least 3 ways to do this.
+
+```{r}
+movies %>% 
+  select(title, year, budget, length, rating, votes) 
+movies %>% 
+  select(1:6)
+movies %>% 
+  select(-num_range('r',1:10), -mpaa, -starts_with('A'), -Comedy, -starts_with('D'), -Romance, -Short)
+```
+
+
+
+# Exercise 2
+
+Use <span class="func">group_by</span> to group the data by year, and <span class="func">summarize</span> to create a new variable that is the average budget. The <span class="func">summarize</span> function works just like <span class="func">mutate</span> in this case.
+Use the <span class="func">mean</span> function to get the average, but you'll also need to use the argument `na.rm = TRUE` within it because the earliest years have no budget recorded.
+
+
+```{r}
+movies %>% 
+  group_by(year) %>% 
+  summarise(AvgBudget=mean(budget, na.rm=T)) %>% 
+  tail
+```
+
+
+
+
+# Exercise 3
+
+Now put it all together in one set of piped operations. 
+
+- Filter to post 1990 movies
+- select the same variables as before but also the mpaa, Action, and Drama variables
+- group by mpaa *and* Action *or* Drama
+- get the average rating
+
+
+```{r}
+movies %>%
+  filter(year>=1990) %>% 
+  select(title, year, budget, length, rating, votes, mpaa, Action, Drama) %>% 
+  group_by(mpaa, Drama) %>% 
+  summarise(AvgRating = mean(rating))
+```
+
