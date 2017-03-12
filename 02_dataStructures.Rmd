@@ -14,7 +14,7 @@ R has several core data structures:
 - Data frames
 
 
-## Vectors
+### Vectors
 
 <span class="objclass">Vectors</span> form the basis of R data structures.
 
@@ -34,14 +34,14 @@ All elements of an atomic vector are the same type.
 
 Examples include:
   
-- characters
+- character
 - numeric (double)
 - integer
 - logical
 
 
 
-## Factors
+### Factors
 
 A important type of vector is a <span class="objclass">factor</span>. 
 
@@ -66,7 +66,7 @@ sum(x)
 
 
 
-## Matrices
+### Matrices
 
 With multiple dimensions, we are dealing with <span class="objclass">arrays.</span>
 
@@ -78,7 +78,7 @@ The vectors making up a matrix *must all be of the same type*.
 
 
 
-## Creating a matrix
+### Creating a matrix
 
 Creating a matrix can be done in a variety of ways.
 
@@ -94,7 +94,7 @@ matrix(c(x, y, z), nrow=3, ncol=4, byrow=TRUE)
 ```
 
 
-## Lists
+### Lists
 
 <span class="objclass">Lists</span> in R are highly flexible objects.
 
@@ -102,16 +102,12 @@ They can contain anything as their elements, even other lists.
 
 - unlike vectors, whose elements must be of the same type. 
 
-Here is a list. We use the list function to create one. 
+Here is a list. We use the <span class="func">list</span> function to create one. 
 
 ```{r list, eval=TRUE}
 x = list(1, "apple", list(3, "cat"))
 x
 ```
-
-
-
-## Lists
 
 We often want to loop some function over a list.
 
@@ -128,7 +124,7 @@ x["b"]
 
 
 
-## Data Frames
+### Data Frames
 
 <span class="objclass">data.frames</span> are a very commonly used data structure. 
 
@@ -144,7 +140,7 @@ But they can also be indexed by row or column as well.
 
 
 
-## Creating a data frame
+### Creating a data frame
 
 ```{r createdf, eval=TRUE}
 mydf = data.frame(a = c(1,5,2),
