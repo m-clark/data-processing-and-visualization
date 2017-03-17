@@ -53,11 +53,9 @@ x
 ```
 
 
-The underlying representation is numeric.
+The underlying representation is numeric, but it is important to remember that factors are *categorical*.
 
-But, factors are *categorical*.
-
-They can't be used as numbers would be.
+They can't be used as numbers would be, as the following demonstrates.
 
 ```{r factors2, eval=TRUE, error=TRUE}
 as.numeric(x)
@@ -70,7 +68,7 @@ sum(x)
 
 With multiple dimensions, we are dealing with <span class="objclass">arrays.</span>
 
-<span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used.
+<span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing.
 
 The vectors making up a matrix *must all be of the same type*.
 
@@ -96,13 +94,13 @@ matrix(c(x, y, z), nrow=3, ncol=4, byrow=TRUE)
 
 ### Lists
 
-<span class="objclass">Lists</span> in R are highly flexible objects.
+<span class="objclass">Lists</span> in R are highly flexible objects, and probably the most commonly used for data science.
 
 They can contain anything as their elements, even other lists.
 
 - unlike vectors, whose elements must be of the same type. 
 
-Here is a list. We use the <span class="func">list</span> function to create one. 
+Here is a list. We use the <span class="func">list</span> function to create it. 
 
 ```{r list, eval=TRUE}
 x = list(1, "apple", list(3, "cat"))
@@ -112,7 +110,7 @@ x
 We often want to loop some function over a list.
 
 ```{r listloop, eval=TRUE}
-for(elem in x) class(elem)
+for(elem in x) print(class(elem))
 ```
 
 Lists can, and often do, have named elements.
@@ -126,11 +124,7 @@ x["b"]
 
 ### Data Frames
 
-<span class="objclass">data.frames</span> are a very commonly used data structure. 
-
-They do not have to have the same type of element.  
-
-This is because the data.frame class is actually just a list.  
+<span class="objclass">data.frames</span> are a very commonly used data structure. They do not have to have the same type of element, and this is because the data.frame class is actually just a list.
 
 - As such, everything about lists applies to them
 
@@ -138,6 +132,7 @@ But they can also be indexed by row or column as well.
 
 - like matrices
 
+There are other very common types of object classes associated with packages that are both a <span class="objclass">data.frame</span> and other type of structure.
 
 
 ### Creating a data frame
@@ -153,3 +148,15 @@ We can add row names also.
 rownames(mydf) = paste0('row', 1:3)
 mydf
 ```
+
+
+## Exercise
+
+Create two vectors of any kind and combine them into a matrix, list or data.frame class.  
+
+```{r dataStructureExercise}
+x = 
+y = 
+matrix_list_ordf = func(x, y)
+```
+

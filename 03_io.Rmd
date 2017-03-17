@@ -6,12 +6,7 @@ Standard methods of reading in data
 - <span class="func">read.csv</span>
 - <span class="func">readLines</span>
 
-Using the <span class="pack">foreign</span> package:
-
-- <span class="func">read.spss</span>
-- <span class="func">read.xport</span>
-
-Note: the foreign package is no longer useful for Stata files.
+Base R also comes with the <span class="pack">foreign</span> package for reading in other types of files, especially other statistical packages. However, while you may see it still use, it's not as useful as what's found in other packages.
 
 
 ### Newer approaches
@@ -35,9 +30,7 @@ Note: the foreign package is no longer useful for Stata files.
   - <span class="func">read_csv</span>
   - <span class="func">read_delim</span>
 
-These make assumptions after an initial scan of the data.
-
-If you don't have 'big' data, this won't help much.
+These make assumptions after an initial scan of the data, but if you don't have 'big' data, this won't help much.
 
 However, they actually can be used as a diagnostic.
 
@@ -74,6 +67,4 @@ And many, many others.
  
 <span class="pack">feather</span>: designed to make reading/writing data frames efficient
 
-Works in both Python and R.
-
-Still in early stages of development.
+Works in both Python and R. Still in early stages of development.
