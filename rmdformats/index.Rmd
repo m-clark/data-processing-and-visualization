@@ -1,0 +1,75 @@
+--- 
+title: 'DP & V'
+date: <span style="color:white">`r Sys.Date()`</span>
+font-family: Roboto
+font-import: http://fonts.googleapis.com/css?family=Risque|Roboto|Open+Sans
+output:
+  rmdformats::material:
+    theme: sandstone
+    # self_contained: yes
+    highlight: pygments
+    lightbox: true
+    gallery: true
+    thumbnails: false
+    # toc_depth: 2
+  html_document:
+    self_contained: yes
+    theme: sandstone
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+always_allow_html: yes
+css: [../standard_html.css, ../rmdformat.css]
+---
+
+
+```{r setup, include=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo = T, message=F, warning=F, comment=NA, autodep=T, eval=FALSE, cache.rebuild=F, cache=F,
+                      R.options=list(width=120), fig.width=8, fig.align = 'center')
+```
+
+```{r setup2, include=FALSE, eval=TRUE}
+knitr::opts_knit$set(root.dir=normalizePath(".."))
+```
+
+
+```{r load_common_packages, echo=FALSE, cache=FALSE, eval=TRUE}
+library(magrittr); library(dplyr); library(ggplot2);library(ggplot2movies); library(tibble)
+```
+
+#
+
+<div style='text-align:center'><span style="font-size:350%; font-variant:small-caps; font-style:italic; color:#B2001D">Data Processing <br>&<br><span style="font-size:50%; "></span>Visualization</span></div>
+
+
+
+```{r, fig.align='center', echo=FALSE, eval=T}
+knitr::include_graphics('../img/nineteeneightyR.png', dpi = NA) # , include=identical(knitr:::pandoc_to(), 'html'
+```
+
+
+
+```{r child='01_intro.Rmd', eval=TRUE}
+```
+
+```{r child='02_dataStructures.Rmd', eval=TRUE}
+```
+
+```{r child='03_io.Rmd', eval=TRUE}
+```
+
+```{r child='04_indexing.Rmd', eval=TRUE}
+```
+```{r child='05_vectorapp.Rmd', eval=TRUE}
+```
+
+```{r child='06_pipes.Rmd', eval=TRUE}
+```
+```{r child='07_tidyverse.Rmd', eval=TRUE}
+```
+```{r child='08_datatable.Rmd', eval=TRUE}
+```
+```{r child='09_ggplot2.Rmd', eval=TRUE}
+```
+```{r child='10_interactive.Rmd', eval=TRUE}
+```
