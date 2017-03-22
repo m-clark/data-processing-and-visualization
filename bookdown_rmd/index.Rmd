@@ -8,25 +8,21 @@ author:  |
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: 
-    bookdown::gitbook:
-      css: [standard_html.css]
-      highlight: pygments
-      number_sections: false
-      toc_depth: 1
-      config:
-        search: yes
-        # edit: false
-        fontsettings:
-          family: san-serif
-          size: 2
-#         sharing:
-#           facebook: false
-#           twitter: false
+  bookdown::gitbook:
+    css: [standard_html.css, rdformats.css]
+    highlight: pygments
+    number_sections: false
+    toc_depth: 1
+    config:
+      search: yes
+      # edit: false
+      fontsettings:
+        family: san-serif
+        size: 2
 always_allow_html: yes
 font-import: http://fonts.googleapis.com/css?family=Risque|Roboto|Open+Sans
 font-family: 'Roboto'
 documentclass: book
-# bibliography: []
 biblio-style: apalike
 link-citations: yes
 description: "doin' stuff in R"
@@ -39,8 +35,13 @@ github-repo:  m-clark/data-processing-and-visualization/
 knitr::opts_chunk$set(echo = T, message=F, warning=F, comment=NA, autodep=T, eval=FALSE, cache.rebuild=F, cache=T,
                       R.options=list(width=120), fig.width=8, fig.align = 'center')
 ```
+
 ```{r load_common_packages, echo=FALSE, cache=FALSE, eval=TRUE}
 library(magrittr); library(dplyr); library(ggplot2);library(ggplot2movies); library(tibble)
 ```
 
-# <img src="img/nineteeneightyR.png" style="display:block; margin: 0 auto; width:15%"><br>
+#
+```{r fig.align='center', echo=FALSE, eval=T, include=identical(knitr:::pandoc_to(), 'html')}
+knitr::include_graphics('img/nineteeneightyR.png', dpi = NA)
+```
+
