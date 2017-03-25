@@ -1,16 +1,17 @@
 # Interactive Visualization
 
-```{r title, echo=F, cache=F, eval=TRUE}
+```{r title, echo=F, cache=FALSE, eval=F}
+saveWidget(vn, file='vntitle.html')
+library(visNetwork)
 nodes = data.frame(id=1:2, label=c('Interactive', 'Visualization'), color='#1e90ff')
 edges = data.frame(from=1, to=2, color='transparent')
 library(visNetwork)
-visNetwork(nodes, edges, height=400, width='100%') %>% 
+vn = visNetwork(nodes, edges, height=400, width=600) %>% 
   visNodes(shape='text', font=list(color='#1e90ff', size=164)) %>% 
-  # visPhysics(solver='barnesHut', barnesHut=list(gravitationalConstant = -50000, springConstant=.11, springLength=50)) %>% 
   visOptions(highlightNearest=F) 
-# %>%
-  # visHierarchicalLayout(direction='LR')
 ```
+
+<iframe src='../img/vntitle.html', width=800, height=300, scrolling="no", frameBorder="0"></iframe>
 
 
 ### Packages

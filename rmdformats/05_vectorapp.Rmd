@@ -1,6 +1,6 @@
-# Vectorization
+# Vectorization & Apply
 
-```{r setupva, include=FALSE, eval=TRUE}
+```{r vasetup, include=FALSE, eval=TRUE, cache=FALSE}
 knitr::opts_chunk$set(echo = T, message=F, warning=F, comment=NA, autodep=T, eval=FALSE, cache.rebuild=F, cache=F,
                       R.options=list(width=120), fig.width=8, fig.align = 'center')
 ```
@@ -56,6 +56,9 @@ Compare:
 ```{r boolnoloop}
 mydf$y = 'No'
 mydf$y[mydf$x > 2] = 'Yes'
+
+# alternative approach that doesn't use indexing
+# mydf$y = ifelse(mydf$x > 2, 'Yes', 'No')
 ```
 
 This gets us the same thing, and would be much faster.
@@ -184,7 +187,7 @@ test = microbenchmark::microbenchmark(doubleloop=doubleloop(),
 stopCluster(cl)
 test
 ```
-```{r vectorization_timings, echo=FALSE, eval=TRUE}
+```{r vectorization_timings, echo=FALSE, eval=TRUE, cache=FALSE}
 load('data/vectorization.RData'); library(microbenchmark); test
 ```
 

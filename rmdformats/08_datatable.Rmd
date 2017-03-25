@@ -1,11 +1,6 @@
-# data.table
+# data table
 
-```{r setupdt, include=FALSE, eval=TRUE}
-knitr::opts_chunk$set(echo = T, message=F, warning=F, comment=NA, autodep=T, eval=FALSE, cache.rebuild=F, cache=F,
-                      R.options=list(width=120), fig.width=8, fig.align = 'center')
-```
-
-
+<!-- whatever you do, don't put a dot in the title or it will read nothing beyond the title; no, escapes, quotes nor spans won't work because that would make sense. -->
 <span class="pack">data.table</span> works in a notably different way than <span class="pack">dplyr</span>. However, you'd use it for the same reasons.
 
 Like <span class="pack">dplyr</span>, the data objects are both <span class="objclass">data.frames</span> and a package specific class.
@@ -18,7 +13,7 @@ However, the brackets work like a function call!
 
 - Several key arguments
 
-```{r dtgeneric}
+```{r dtgeneric, eval=FALSE}
 x[i, j, by, keyby, with = TRUE, ...]
 ```
 
@@ -45,7 +40,7 @@ In general, you use **j** to select (by name!) or create new columns.
 - Define a new variable with <span class="func">:=</span>
 
  
-```{r, results='hold', eval=T}
+```{r dtcols, results='hold', eval=T}
 dt[,x]
 dt[,z := x+y]  # dt now has a new column
 dt[,z]
@@ -58,7 +53,7 @@ Dropping columns is awkward.
 
 - because **j** is an argument
 
-```{r, eval=1:2, results='hold'}
+```{r dtdropcol, eval=1:2, results='hold'}
 dt[,-y]             # creates negative values of y
 dt[,-'y', with=F]   # drops y, but now needs quotes
 dt[,y:=NULL]        # drops y, but this is just a base R approach
@@ -74,7 +69,7 @@ group-by, with creation of a new variable.
 
 Note that these actually modify dt *in place*, a key distinction with dplyr.
 
-```{r eval=T}
+```{r dtgroup, eval=T}
 dt1 = dt2 = dt
 dt[,sum(x,y), by=g]                  # sum of all x and y values
 dt1[,newvar := sum(x), by=g]         # add new variable to the original data 
@@ -82,14 +77,11 @@ dt1
 ```
 
 
-
-### Grouped operations
-
 We can also create groupings on the fly.
 
 For a new summary data set, we'll take the following approach.
 
-```{r eval=T}
+```{r dtgroup2, eval=T}
 dt2[, list(meanx = mean(x), sumx = sum(x)), by=g==1]
 ```
 
@@ -99,7 +91,7 @@ dt2[, list(meanx = mean(x), sumx = sum(x)), by=g==1]
 
 - joins: and easy to do (note that i can be a data.table)
 
-```{r}
+```{r dtjoin, eval=FALSE}
 dt1[dt2]
 ```
 
@@ -119,7 +111,7 @@ The following demonstrates some timings from [here](http://stackoverflow.com/que
 
 By the way, never, ever use aggregate. For anything.
 
-```{r, eval=TRUE, echo=FALSE}
+```{r dttimings, eval=TRUE, echo=FALSE}
 load('data/timing.RData')
 as.data.table(sapply(timing, `[[`, "elapsed"), keep.rownames = TRUE)[,.(fun = V1, elapsed = V2)][order(-elapsed)]
 ```
@@ -132,7 +124,7 @@ Really.
 
 Can be done but awkward at best.
 
-```{r}
+```{r dtpipebad, eval=F}
 mydt[,newvar:=mean(x),][,newvar2:=sum(newvar), by=group][,-'y', with=FALSE]
 mydt[,newvar:=mean(x), 
   ][,newvar2:=sum(newvar), by=group
@@ -142,7 +134,7 @@ mydt[,newvar:=mean(x),
 
 Probably better to just use a pipe and dot approach.
 
-```{r}
+```{r dtpipebad2, eval=F}
 mydt[,newvar:=mean(x),] %>% 
   .[,newvar2:=sum(newvar), by=group] %>% 
   .[,-'y', with=FALSE]
@@ -182,7 +174,7 @@ Coming soon to an R near you.
 
 Or play with now. The following shows times for a grouped operation of a data frame of two variables, a random uniform draw of 5e7 values, and a grouping variable of 500k groups.
 
-```{r echo=FALSE, eval=TRUE, cache=F}
+```{r dtplyr, echo=FALSE, eval=TRUE, cache=F}
 # something weird with n() function in chunk; saved out
 # detach(package:data.table); library(dplyr); library(dtplyr)
 # set.seed(123)
@@ -204,4 +196,4 @@ data_frame(package=names(timingsdtplyr)) %>%
   pander::pander()
 ```
 
-Just for giggles I did the same in python with a pandas DataFrame and groupby operation and it took 7+ seconds.
+Just for giggles I did the same in python with a pandas DataFrame and groupby operation, and it took 7+ seconds.

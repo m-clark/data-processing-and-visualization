@@ -1,12 +1,18 @@
 # Input/Output
 
-Standard methods of reading in data
+```{r iosetup, include=FALSE, eval=TRUE, cache=FALSE}
+knitr::opts_chunk$set(echo = T, message=F, warning=F, comment=NA, autodep=T, eval=FALSE, cache.rebuild=F, cache=F,
+                      R.options=list(width=120), fig.width=8, fig.align = 'center')
+```
+
+
+Standard methods of reading in data include the following functions:
 
 - <span class="func">read.table</span>
 - <span class="func">read.csv</span>
 - <span class="func">readLines</span>
 
-Base R also comes with the <span class="pack">foreign</span> package for reading in other types of files, especially other statistical packages. However, while you may see it still use, it's not as useful as what's found in other packages.
+Base R also comes with the <span class="pack">foreign</span> package for reading in other types of files, especially other statistical packages. However, while you may see it still in use, it's not as useful as what's found in other packages.
 
 
 ### Newer approaches
