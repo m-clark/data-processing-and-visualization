@@ -84,3 +84,46 @@ my_list_or_df[['name']]
 ```{r dflistextract2}
 my_list_or_df$name
 ```
+
+
+### Exercises
+
+This following is a refresher of base R indexing only.
+
+Here is a matrix, a data.frame and a list.
+
+```{r}
+mymatrix = matrix(rnorm(100), 10, 10)
+mydf = cars
+mylist = list(mymatrix, thisdf = mydf)
+```
+
+#### Exercise 1
+
+For the matrix, in separate operations, take a slice of rows, a selection of columns, and a single element.
+
+```{r, echo=F}
+mymatrix[1:5, ]
+mymatrix[, 1:5]
+mymatrix[1,2]
+```
+
+#### Exercise 2
+
+For the data.frame, grab a column in 3 different ways.
+
+```{r, echo=F}
+mydf$dist
+mydf[,2]
+mydf['dist']
+```
+
+#### Exercise 3
+
+For the list grab an element by number and by name.
+
+```{r, echo=FALSE}
+mylist[2]
+mylist$thisdf
+```
+

@@ -185,9 +185,8 @@ Use the <span class="pack">DT</span> package for interactive dataframes.
 library(DT)
 ggplot2movies::movies %>% 
   select(1:6) %>% 
-  filter(rating>9) %>% 
-  slice(sample(1:nrow(.), 50)) %>% 
-  datatable(rownames=F)
+  filter(rating>8, !is.na(budget), votes > 1000) %>% 
+  datatable()
 ```
 
 
