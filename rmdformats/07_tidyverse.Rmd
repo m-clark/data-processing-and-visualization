@@ -17,7 +17,7 @@ See also: <span class="pack">lubridate</span>, <span class="pack">rvest</span>, 
 
 ### What is tidy?
 
-Tidy refers to data arranged in a way that makes analysis and visualization simpler.
+<span class="emph">Tidy data</span> refers to data arranged in a way that makes analysis and visualization simpler.
 
 In a tidy dataset: 
 
@@ -30,11 +30,11 @@ Think *long* before *wide*.
 
 ### dplyr
 
-Grammar of data manipulation.
+<span class="func">dplyr</span> provides a grammar of data manipulation (like ggplot2 does for visualization).
 
-Next iteration of <span class="func">plyr</span>.
+It is the next iteration of <span class="func">plyr</span>, but there is no longer any need for plyr really.
 
-Focused on tools for working with data frames.
+It's focused on tools for working with data frames.
 
 - Over 100 functions
 
@@ -167,7 +167,7 @@ stocks %>% head
 stocks %>% gather(stock, price, -time) %>% head
 ```
 
-Note that the latter is an example of tidy data while the former is not.
+Note that the latter is an example of <span class="emph">tidy</span> data while the former is not.
 
 
 ### Personal Opinion
@@ -182,9 +182,9 @@ Extremely useful for data exploration and visualization.
 
 Drawbacks:
 
-- not as fast as <span class="pack">data.table</span> or even some base R approaches for many things
-- the *mindset* can make for unnecessary complication
-    - e.g. no need to pipe etc. to create one new variable
+- Not as fast as <span class="pack">data.table</span> or even some base R approaches for many things
+- The *mindset* can make for unnecessary complication
+    - e.g. There is no need to pipe to create one new variable
     
     
 ### On the horizon
@@ -193,3 +193,94 @@ Drawbacks:
 
 - Partitions the data across a cluster.
 - Faster than data.table (after partitioning)
+
+
+
+### **dplyr Exercises**
+
+#### Exercise 0
+
+Install and load the <span class="pack">dplyr</span> <span class="pack">ggplot2movies</span> packages. Look at the help file for the `movies` data set, which contains data from IMDB.
+
+
+```{r}
+install.packages('ggplot2movies')
+library(ggplot2movies)
+```
+
+
+#### Exercise 1
+
+Using the movies data set, perform each of the following actions separately.
+
+##### Exercise 1a
+
+Use <span class="func">mutate</span> to create a centered version of the rating variable.  A centered variable is one whose mean has been subtracted from it. The process will take the following form:
+
+```{r, eval=FALSE}
+data %>% 
+  mutate(newvar = '?')
+```
+
+```{r, echo=FALSE}
+movies %>% 
+  mutate(ratingCen = rating - mean(rating)) 
+```
+
+##### Exercise 1b
+
+Use <span class="func">filter</span> to create a new data frame that has only movies from the years 2000 and beyond. Use the greater than or equal operator `>=`.
+
+```{r, echo=FALSE}
+movies %>% 
+  filter(year >= 2000) 
+```
+
+##### Exercise 1c
+
+Use <span class="func">select</span> to create a new data frame that only has the title, year, budget, length, rating and votes variables.  There are at least 3 ways to do this.
+
+```{r, echo=FALSE}
+movies %>% 
+  select(title, year, budget, length, rating, votes) 
+movies %>% 
+  select(1:6)
+movies %>% 
+  select(-num_range('r',1:10), -mpaa, -starts_with('A'), -Comedy, -starts_with('D'), -Romance, -Short)
+```
+
+
+
+#### Exercise 2
+
+Use <span class="func">group_by</span> to group the data by year, and <span class="func">summarize</span> to create a new variable that is the average budget. The <span class="func">summarize</span> function works just like <span class="func">mutate</span> in this case.
+Use the <span class="func">mean</span> function to get the average, but you'll also need to use the argument `na.rm = TRUE` within it because the earliest years have no budget recorded.
+
+
+```{r, echo=FALSE}
+movies %>% 
+  group_by(year) %>% 
+  summarise(AvgBudget=mean(budget, na.rm=T)) %>% 
+  tail
+```
+
+
+#### Exercise 3
+
+Now put it all together in one set of piped operations. 
+
+- Filter to post 1990 movies
+- select the same variables as before but also the mpaa, Action, and Drama variables
+- group by mpaa *and* Action *or* Drama
+- get the average rating
+
+
+```{r, echo=FALSE}
+movies %>%
+  filter(year>=1990) %>% 
+  select(title, year, budget, length, rating, votes, mpaa, Action, Drama) %>% 
+  group_by(mpaa, Drama) %>% 
+  summarise(AvgRating = mean(rating))
+```
+
+

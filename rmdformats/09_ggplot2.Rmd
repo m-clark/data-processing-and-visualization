@@ -261,3 +261,67 @@ Allows one to think in many dimensions for any graph:
 2d graphs are only useful for conveying the simplest of ideas.
 
 Use <span class="pack">ggplot2</span> to easily create more interesting visualizations.
+
+
+
+### ggplot2 Exercises
+
+#### Exercise 0
+
+Install and load the <span class="pack">ggplot2</span> package.
+
+#### Exercise 1
+
+Create two plots, one a scatterplot (e.g. with <span class="func">geom_point</span>) and one with lines (e.g. <span class="func">geom_line</span>) with a data set of your choosing (all of the following are base R or available after loading <span class="pack">ggplot2</span>.  Some suggestions:
+
+- <span class="objclass">faithful</span>: Waiting time between eruptions and the duration of the eruption for the Old Faithful geyser in Yellowstone National Park, Wyoming, USA.
+- <span class="objclass">msleep</span>:  mammals sleep dataset with sleep times and weights etc.
+- <span class="objclass">diamonds</span>: used in the slides
+- <span class="objclass">economics</span>: US economic time series.
+- <span class="objclass">txhousing</span>: Housing sales in TX.
+- <span class="objclass">midwest</span>: Midwest demographics.
+- <span class="objclass">mpg</span>: Fuel economy data from 1999 and 2008 for 38 popular models of car
+
+Recall the basic form for ggplot.
+
+```
+ggplot(aes(x=*, y=*, other), data=*) +
+  geom_*() +
+  otherLayers, theme etc.
+```
+
+Themes to play with:
+
+- <span class="func">theme_bw</span>
+- <span class="func">theme_classic</span>
+- <span class="func">theme_dark</span>
+- <span class="func">theme_gray</span>
+- <span class="func">theme_light</span>
+- <span class="func">theme_linedraw</span>
+- <span class="func">theme_minimal</span>
+
+```{r, echo=FALSE}
+library(ggplot2)
+ggplot(aes(x=waiting, y=eruptions), data=faithful) +
+  geom_point()
+```
+
+
+#### Exercise 2
+
+Play around and change the arguments to the following. You'll need to install the maps package. For example, do points for all county midpoints, with different colors.
+
+```{r}
+library(maps)
+mi = map_data("county", "michigan")
+seats = mi %>% 
+  group_by(subregion) %>% 
+  summarise_at(vars(lat, long), function(x) median(range(x)))
+
+ggplot(mi, aes(long, lat)) +
+  geom_polygon(aes(group = group), fill = NA, colour = "grey60") +
+  geom_text(aes(label = subregion), data = seats, size = 1, angle = 45) +
+  geom_point(y=42.281389, x=-83.748333, color='#1e90ff', size=3) +
+  theme_minimal() +
+  theme(panel.grid=element_blank())
+```

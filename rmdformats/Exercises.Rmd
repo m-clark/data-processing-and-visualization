@@ -56,7 +56,7 @@ mylist = list(c('a', 'b'), 1:3, mydf)
 
 #### Thinking Exercises
 
-Why might you use read_csv from the readr package rather than read.csv in base R?
+Why might you use <span class="func">read_csv</span> from the <span class="pack">readr</span> package rather than <span class="func">read.csv</span> in base R?
 
 What is your definition of 'big' data?
 
@@ -300,13 +300,15 @@ ggplot(aes(x=waiting, y=eruptions), data=faithful) +
 
 #### Exercise 2
 
-Unhide the code and play around with it.
+Play around and change the arguments to the following.
 
 ```{r}
 library(maps)
 mi <- map_data("county", "michigan")
-mid_range <- function(x) mean(range(x))
-seats <- plyr::ddply(mi, "subregion", plyr::colwise(mid_range, c("lat", "long")))
+seats = mi %>% 
+  group_by(subregion) %>% 
+  summarise_at(vars(lat, long), function(x) median(range(x)))
+
 ggplot(mi, aes(long, lat)) +
   geom_polygon(aes(group = group), fill = NA, colour = "grey60") +
   geom_text(aes(label = subregion), data = seats, size = 1, angle = 45) +
@@ -327,35 +329,37 @@ Install and load the <span class="pack">plotly</span> package. Load the <span cl
 
 #### Exercise 1
 
-Using <span class="pack">dplyr</span> group by year, and summarize to create a new variable that is the Average rating.  Then create a plot with <span class="pack">plotly</span> for a line or scatter plot (for the latter, use the argument `mode='markers'`). It will take the following form:
+
+Using <span class="pack">dplyr</span> group by year, and summarize to create a new variable that is the Average rating.  Then create a plot with <span class="pack">plotly</span> for a line or scatter plot (for the latter, use the <span class="func">add_markers</span> function). It will take the following form:
 
 ```
 data %>% 
   group_by() %>% 
   summarize() %>% 
-  plot_ly()
+  plot_ly() %>% 
+  add_markers()
 ```
 
-```{r}
-sapply(c('dplyr', 'ggplot2movies', 'plotly'), library, character.only=T)
-
+```{r, echo=FALSE}
 movies %>% 
   group_by(year) %>% 
   summarise(Avg_Rating=mean(rating)) %>% 
-  plot_ly(x=year, y=Avg_Rating)
+  plot_ly() %>% 
+  add_markers(x=~year, y=~Avg_Rating)
 ```
 
 
 #### Exercise 2
 
-This time group by year and Drama. In the <span class="func">summarize</span> create average rating again, but also a variable representing the average number of votes. In your plotly line, use the size and color arguments to represent whether the average number of votes and whether it was drama or not respectively. Use `mode = 'markers'`.
+This time group by year and Drama. In the <span class="func">summarize</span> create average rating again, but also a variable representing the average number of votes. In your plotly line, use the size and color arguments to represent whether the average number of votes and whether it was drama or not respectively. Use <span class="func">add_markers.</span>
 
 ```{r}
 movies %>% 
   group_by(year, Drama) %>% 
   summarise(Avg_Rating=mean(rating),
             Avg_Votes = mean(votes)) %>% 
-  plot_ly(x=~year, y=~Avg_Rating, size=~Avg_Votes, color=~Drama, mode='markers')
+  plot_ly() %>% 
+  add_markers(x=~year, y=~Avg_Rating, size=~Avg_Votes, color=~Drama, mode='markers')
 ```
 
 

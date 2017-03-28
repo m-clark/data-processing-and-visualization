@@ -61,11 +61,9 @@ mydf$y[mydf$x > 2] = 'Yes'
 # mydf$y = ifelse(mydf$x > 2, 'Yes', 'No')
 ```
 
-This gets us the same thing, and would be much faster.
+This gets us the same thing, and would be much faster. Boolean indexing is an example of a vectorized operation.
 
-Boolean indexing is an example of a vectorized operation.
-
-The whole vector is considered. 
+The whole vector is considered:
 
 - Rather than each element individually
 - Any preprocessing is done once rather than n times
