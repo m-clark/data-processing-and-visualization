@@ -74,16 +74,20 @@ The first layers added are typically <span class="emph">geoms</span>:
 - density
 - text
 
-<span class="pack">ggplot2</span> was using pipes before it was cool, and so it has a different pipe.
-
-Otherwise, the concept is the same as before.
+<span class="pack">ggplot2</span> was using pipes before it was cool, and so it has a different pipe (<span class="emph">+</span>). Otherwise, the concept is the same as before.
 
 ```{r pipeplus, eval=FALSE}
 ggplot(aes(x=myvar, y=myvar2), data=mydata) +
   geom_point()
 ```
 
-And now we would have a scatterplot.
+Our base is provided via the <span class="func">ggplot2</span> functions and specifies the data along with x and y aesthetics.
+
+The <span class="func">geom_point</span> function adds a layer of points, and now we would have a scatterplot.
+
+- Alternatively, you could have specified the x and y aesthetic at the geom_point layer
+- If you're going to have the same x, y, color, etc. aesthetics regardless of layer, put it in the base.
+    - Otherwise, doing it by layer gives you more flexibility
 
 
 
@@ -174,12 +178,19 @@ ggplot(mtcars, aes(wt, mpg)) +
 
 ### Fine control
 
-ggplot2 makes it easy to get good looking graphs quickly.
+<span class="pack">ggplot2</span> makes it easy to get good looking graphs quickly.
 
-However the amount of fine control is extensive.
+However the amount of fine control is extensive.  The following plot is hideous (aside from the background, which is totaly rad), but illustrates the point.
 
-```{r finecontrol, fig.height=6, fig.width=6, echo=TRUE, eval=TRUE}
+```{r finecontrol, fig.height=6, fig.width=6, echo=-c(1:5, 7), eval=TRUE, cache=TRUE}
+library(grid); library(caTools)
+img = caTools::read.gif('img/lamb.gif')
+lambosun = img$col[img$image+1]
+dim(lambosun) = dim(img$image)
+
 ggplot(aes(x=carat, y=price), data=diamonds) +
+  annotation_custom(rasterGrob(lambosun, width=unit(1,"npc"), height=unit(1,"npc"), interpolate = FALSE), 
+                    -Inf, Inf, -Inf, Inf) +
   geom_point(aes(color=clarity), alpha=.5) + 
   scale_y_log10(breaks=c(1000,5000,10000)) +
   xlim(0, 10) +
