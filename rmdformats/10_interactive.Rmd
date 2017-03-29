@@ -140,10 +140,10 @@ ggplotly()
 ```{r highcharts, cache=FALSE, eval=T}
 library(highcharter); library("quantmod")
 
-x <- getSymbols("GOOG", auto.assign = FALSE)
+x = getSymbols("GOOG", auto.assign = FALSE)
 
-highchart(type='stock', width=1000) %>% 
-   hc_add_series(data = x) 
+highchart(width=1000) %>%
+   hc_add_series_ohlc(x)
 ```
 
 ### visNetwork
