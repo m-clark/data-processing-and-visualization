@@ -297,7 +297,7 @@ div.tocify {
 <h3>I/O Exercises</h3>
 <div id="thinking-exercises-1" class="section level4">
 <h4>Thinking Exercises</h4>
-<p>Why might you use read_csv from the readr package rather than read.csv in base R?</p>
+<p>Why might you use <span class="func">read_csv</span> from the <span class="pack">readr</span> package rather than <span class="func">read.csv</span> in base R?</p>
 <p>What is your definition of ‘big’ data?</p>
 </div>
 </div>
@@ -344,7 +344,7 @@ mylist$thisdf</code></pre></div>
 </div>
 </div>
 <div id="dplyr-exercises" class="section level3">
-<h3><strong>dplyr Exercises</strong></h3>
+<h3>dplyr Exercises</h3>
 <div id="exercise-0" class="section level4">
 <h4>Exercise 0</h4>
 <p>Install and load the <span class="pack">dplyr</span> <span class="pack">ggplot2movies</span> packages. Look at the help file for the <code>movies</code> data set, which contains data from IMDB.</p>
@@ -356,7 +356,7 @@ mylist$thisdf</code></pre></div>
 <p>Using the movies data set, perform each of the following actions separately.</p>
 <div id="exercise-1a" class="section level5">
 <h5>Exercise 1a</h5>
-<p>Use <span class="func">mutate</span> to create a centered version of the rating variable. A centered variable is one whose mean has been subtracted from it. The process will take the following form:</p>
+<p>Use <span class="func">mutate</span> to create a centered version of the rating variable. A centered variable is one whose mean has been subtracted from it. The process will take the following form (show the code):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">newvar =</span> <span class="st">'?'</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">movies %&gt;%<span class="st"> </span>
@@ -461,11 +461,13 @@ mydt_grpsum =<span class="st"> </span>mydt[,<span class="kw">list</span>(<span c
 </div>
 <div id="exercise-2-5" class="section level4">
 <h4>Exercise 2</h4>
-<p>Unhide the code and play around with it.</p>
+<p>Play around and change the arguments to the following.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(maps)
 mi &lt;-<span class="st"> </span><span class="kw">map_data</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;michigan&quot;</span>)
-mid_range &lt;-<span class="st"> </span>function(x) <span class="kw">mean</span>(<span class="kw">range</span>(x))
-seats &lt;-<span class="st"> </span>plyr::<span class="kw">ddply</span>(mi, <span class="st">&quot;subregion&quot;</span>, plyr::<span class="kw">colwise</span>(mid_range, <span class="kw">c</span>(<span class="st">&quot;lat&quot;</span>, <span class="st">&quot;long&quot;</span>)))
+seats =<span class="st"> </span>mi %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(subregion) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(lat, long), function(x) <span class="kw">median</span>(<span class="kw">range</span>(x)))
+
 <span class="kw">ggplot</span>(mi, <span class="kw">aes</span>(long, lat)) +
 <span class="st">  </span><span class="kw">geom_polygon</span>(<span class="kw">aes</span>(<span class="dt">group =</span> group), <span class="dt">fill =</span> <span class="ot">NA</span>, <span class="dt">colour =</span> <span class="st">&quot;grey60&quot;</span>) +
 <span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> subregion), <span class="dt">data =</span> seats, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">angle =</span> <span class="dv">45</span>) +
@@ -482,26 +484,16 @@ seats &lt;-<span class="st"> </span>plyr::<span class="kw">ddply</span>(mi, <spa
 </div>
 <div id="exercise-1-5" class="section level4">
 <h4>Exercise 1</h4>
-<p>Using <span class="pack">dplyr</span> group by year, and summarize to create a new variable that is the Average rating. Then create a plot with <span class="pack">plotly</span> for a line or scatter plot (for the latter, use the argument <code>mode='markers'</code>). It will take the following form:</p>
+<p>Using <span class="pack">dplyr</span> group by year, and summarize to create a new variable that is the Average rating. Then create a plot with <span class="pack">plotly</span> for a line or scatter plot (for the latter, use the <span class="func">add_markers</span> function). It will take the following form:</p>
 <pre><code>data %&gt;% 
   group_by() %&gt;% 
   summarize() %&gt;% 
-  plot_ly()</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(<span class="kw">c</span>(<span class="st">'dplyr'</span>, <span class="st">'ggplot2movies'</span>, <span class="st">'plotly'</span>), library, <span class="dt">character.only=</span>T)
-
-movies %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">group_by</span>(year) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">Avg_Rating=</span><span class="kw">mean</span>(rating)) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">plot_ly</span>(<span class="dt">x=</span>year, <span class="dt">y=</span>Avg_Rating)</code></pre></div>
+  plot_ly() %&gt;% 
+  add_markers()</code></pre>
 </div>
 <div id="exercise-2-6" class="section level4">
 <h4>Exercise 2</h4>
-<p>This time group by year and Drama. In the <span class="func">summarize</span> create average rating again, but also a variable representing the average number of votes. In your plotly line, use the size and color arguments to represent whether the average number of votes and whether it was drama or not respectively. Use <code>mode = 'markers'</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">movies %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">group_by</span>(year, Drama) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">Avg_Rating=</span><span class="kw">mean</span>(rating),
-            <span class="dt">Avg_Votes =</span> <span class="kw">mean</span>(votes)) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">plot_ly</span>(<span class="dt">x=</span>year, <span class="dt">y=</span>Avg_Rating, <span class="dt">size=</span>Avg_Votes, <span class="dt">color=</span>Drama, <span class="dt">mode=</span><span class="st">'markers'</span>)</code></pre></div>
+<p>This time group by year and Drama. In the <span class="func">summarize</span> create average rating again, but also a variable representing the average number of votes. In your plotly line, use the size and color arguments to represent whether the average number of votes and whether it was drama or not respectively. Use <span class="func">add_markers.</span></p>
 </div>
 <div id="exercise-3-2" class="section level4">
 <h4>Exercise 3</h4>

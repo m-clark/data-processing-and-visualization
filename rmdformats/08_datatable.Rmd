@@ -1,5 +1,11 @@
 # data table
 
+
+```{r dtsetup, include=FALSE, eval=TRUE, cache=FALSE}
+knitr::opts_chunk$set(echo = T, message=F, warning=F, comment=NA, autodep=T, eval=FALSE, cache.rebuild=F, cache=F,
+                      R.options=list(width=120), fig.width=8, fig.align = 'center')
+```
+
 <!-- whatever you do, don't put a dot in the title or it will read nothing beyond the title; no, escapes, quotes nor spans won't work because that would make sense. -->
 <span class="pack">data.table</span> works in a notably different way than <span class="pack">dplyr</span>. However, you'd use it for the same reasons.
 
@@ -65,15 +71,14 @@ dt$y = NULL
 
 ### Grouped operations
 
-group-by, with creation of a new variable.
+We can now attempt a 'group-by' operation, along with creation of a new variable.
 
-Note that these actually modify dt *in place*, a key distinction with dplyr.
+Note that these operations actually modify <span class="objclass">dt</span> *in place*, a key distinction with <span class="pack">dplyr</span>.
 
 ```{r dtgroup, eval=T}
 dt1 = dt2 = dt
 dt[,sum(x,y), by=g]                  # sum of all x and y values
 dt1[,newvar := sum(x), by=g]         # add new variable to the original data 
-dt1
 ```
 
 
@@ -95,9 +100,9 @@ dt2[, list(meanx = mean(x), sumx = sum(x)), by=g==1]
 dt1[dt2]
 ```
 
-- group operations: via setkey
-- reading files: fread
-- character matches: e.g. via chmatch
+- group operations: via <span class="func">setkey</span>
+- reading files: <span class="func">fread</span>
+- character matches: e.g. via <span class="func">chmatch</span>
 
 
 ### Timings
@@ -109,7 +114,7 @@ The following demonstrates some timings from [here](http://stackoverflow.com/que
 - Grouped operations are just a sum and length on a vector. 
 
 
-By the way, never, ever use aggregate. For anything.
+By the way, never, ever use <span class="func">aggregate</span>. For anything.
 
 ```{r dttimings, eval=TRUE, echo=FALSE}
 load('data/timing.RData')
@@ -200,7 +205,7 @@ Just for giggles I did the same in python with a pandas DataFrame and groupby op
 
 
 
-### data.table Exercises
+### **data.table Exercises**
 
 
 #### Exercise 0

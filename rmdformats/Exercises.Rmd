@@ -131,7 +131,7 @@ x = list(1:3, 4:6, 7:9)
 
 
 
-### **dplyr Exercises**
+### dplyr Exercises
 
 #### Exercise 0
 
@@ -150,7 +150,7 @@ Using the movies data set, perform each of the following actions separately.
 
 ##### Exercise 1a
 
-Use <span class="func">mutate</span> to create a centered version of the rating variable.  A centered variable is one whose mean has been subtracted from it. The process will take the following form:
+Use <span class="func">mutate</span> to create a centered version of the rating variable.  A centered variable is one whose mean has been subtracted from it. The process will take the following form (show the code):
 
 ```{r}
 data %>% 
@@ -353,7 +353,7 @@ movies %>%
 
 This time group by year and Drama. In the <span class="func">summarize</span> create average rating again, but also a variable representing the average number of votes. In your plotly line, use the size and color arguments to represent whether the average number of votes and whether it was drama or not respectively. Use <span class="func">add_markers.</span>
 
-```{r}
+```{r, echo=FALSE}
 movies %>% 
   group_by(year, Drama) %>% 
   summarise(Avg_Rating=mean(rating),

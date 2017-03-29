@@ -26,7 +26,7 @@ General:
 
 - <span class="pack">plotly</span>
   - used also in Python, Matlab, Julia, can convert ggplot2 images to interactive ones.
-- <span class="pack">highchartr</span>
+- <span class="pack">highcharter</span>
   - also very general wrapper for highcharts.js and works with some R packages out of the box
 - <span class="pack">rbokeh</span>
   - like plotly, it also has cross program support
@@ -93,28 +93,28 @@ library(mgcv); library(modelr)
 
 mtcars %>% 
   mutate(amFactor = factor(am, labels=c('auto', 'manual')),
-         hovertext = paste(wt, mpg, amFactor)) %>% 
+         hovertext = paste('weight:',wt, '<br>', 'mgp:', mpg, '<br>', amFactor)) %>% 
   add_predictions(gam(mpg~s(wt, am, bs='fs'), data=mtcars)) %>% 
   arrange(wt) %>% 
-  plot_ly(x=~wt, y=~mpg, color=~amFactor, mode='markers') %>% 
-  add_trace(x=~wt, y=~pred, color=~amFactor, alpha=.5, hover=~hovertext, name='gam prediction')
+  plot_ly() %>%
+  add_markers(x=~wt, y=~mpg, color=~amFactor, text=~hovertext, hoverinfo='text') %>% 
+  add_lines(x=~wt, y=~pred, color=~amFactor, alpha=.5, name='gam prediction', showlegend=F)
 ```
 
 ### ggplotly
 
 The nice thing about <span class="pack">plotly</span> is that we can feed a <span class="objclass">ggplot</span> to it.
 
-It would have been easier to use <span class="func">geom_smooth</span>, so let's do so.
+It would have been easy to use <span class="func">geom_smooth</span> to get a similar result, so let's do so.
 
 
 ```{r ggplotly, cache=FALSE, eval=TRUE}
 gp = mtcars %>% 
   mutate(amFactor = factor(am, labels=c('auto', 'manual')),
-         hovertext = paste(wt, mpg, amFactor),
-         prediction = predict(gam(mpg~s(wt), data=mtcars))) %>% 
+         hovertext = paste(wt, mpg, amFactor)) %>% 
   arrange(wt) %>% 
-  ggplot(aes(x=wt, y=mpg)) +
-  geom_smooth() +
+  ggplot(aes(x=wt, y=mpg, color=amFactor)) +
+  geom_smooth(se=F) +
   geom_point(aes(color=amFactor))
 ggplotly()
 ```
@@ -179,7 +179,7 @@ visNetwork(nodes, edges) %>% #, height=600, width=800
 
 ### data table
 
-Use the <span class="pack">DT</span> package for interactive dataframes.
+Use the <span class="pack">DT</span> package for interactive data frames.
 
 ```{r datatable, cache=FALSE, eval=TRUE}
 library(DT)
@@ -211,7 +211,7 @@ Interactive graphics are more fun too!
 Just a couple visualization packages can go a very long way.
 
 
-### Interactive Visualization Exercises
+### **Interactive Visualization Exercises**
 
 
 #### Exercise 0
@@ -245,7 +245,7 @@ movies %>%
 
 This time group by year and Drama. In the <span class="func">summarize</span> create average rating again, but also a variable representing the average number of votes. In your plotly line, use the size and color arguments to represent whether the average number of votes and whether it was drama or not respectively. Use <span class="func">add_markers.</span>
 
-```{r}
+```{r, echo=FALSE}
 movies %>% 
   group_by(year, Drama) %>% 
   summarise(Avg_Rating=mean(rating),

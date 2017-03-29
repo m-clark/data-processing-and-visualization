@@ -56,9 +56,6 @@ Compare:
 ```{r boolnoloop}
 mydf$y = 'No'
 mydf$y[mydf$x > 2] = 'Yes'
-
-# alternative approach that doesn't use indexing
-# mydf$y = ifelse(mydf$x > 2, 'Yes', 'No')
 ```
 
 This gets us the same thing, and would be much faster. Boolean indexing is an example of a vectorized operation.
@@ -148,15 +145,15 @@ The following demonstrates various approaches to standardizing the columns of th
 The base R function requires very little code and beats the others.
 
 ```{r timings, echo=T}
-mydf = matrix(rnorm(100000), ncol=1000)
+mymat = matrix(rnorm(100000), ncol=1000)
 
 stdize <- function(x) {
   (x-mean(x)) / sd(x)
 }
 
 doubleloop = function() {
-  for (i in 1:ncol(mydf)) {
-    x = mydf[, i]
+  for (i in 1:ncol(mymat)) {
+    x = mymat[, i]
     for (j in 1:length(x)) {
       x[j] = (x[j] - mean(x)) / sd(x)
     }
@@ -165,8 +162,8 @@ doubleloop = function() {
 
 
 singleloop = function() {
-  for (i in 1:ncol(mydf)) {
-    x = mydf[, i]
+  for (i in 1:ncol(mymat)) {
+    x = mymat[, i]
     x = (x - mean(x)) / sd(x)
   }
 }
@@ -174,14 +171,14 @@ singleloop = function() {
 
 library(parallel)
 cl = makeCluster(8)
-clusterExport(cl, c('stdize', 'mydf'))
+clusterExport(cl, c('stdize', 'mymat'))
 doParallel::registerDoParallel(cl)
 
 test = microbenchmark::microbenchmark(doubleloop=doubleloop(),
                                       singleloop=singleloop(), 
-                                      apply=apply(mydf, 2, stdize), 
-                                      parApply=parApply(cl, mydf, 2, stdize),
-                                      vectorized=scale(mydf), times=25)
+                                      apply=apply(mymat, 2, stdize), 
+                                      parApply=parApply(cl, mymat, 2, stdize),
+                                      vectorized=scale(mymat), times=25)
 stopCluster(cl)
 test
 ```
@@ -234,7 +231,7 @@ Any you still may need parallel versions.
 
 
 
-### Exercises
+### **Vector/Apply Exercises**
 
 
 #### Exercise 1

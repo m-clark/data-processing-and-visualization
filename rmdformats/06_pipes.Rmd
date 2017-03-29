@@ -7,7 +7,7 @@ knitr::opts_chunk$set(echo = T, message=F, warning=F, comment=NA, autodep=T, eva
 
 
 
-Note: More detail on much of this part is given in [another workshop](https://m-clark.github.io/workshops/dplyr/mainSlides.html).
+Note: More detail on much of the following is given in [another workshop](https://m-clark.github.io/workshops/dplyr/mainSlides.html).
 
 
 
@@ -93,8 +93,8 @@ Piping is not just for data.frames.
 
 - The following starts with a character vector.
 - Sends it to a recursive function (named <span class="func">..</span>).
-    - <span class="func">..</span> is created on-the-fly. 
-- After the function is created, it's used on ., representing the string.
+    - <span class="func">..</span> is created on-the-fly, and has a single argument (`.`).
+- After the function is created, it's used on ., whcih represents the string before the pipe.
 - Result: pipes between the words.
 
 ```{r ridiculous, eval=T, echo=-1}
