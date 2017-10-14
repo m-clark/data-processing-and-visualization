@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Data Processing &amp; Visualization</title>
+  <meta name="description" content="Data Processing &amp; Visualization in R">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Data Processing &amp; Visualization" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://m-clark.github.io/" />
+  <meta property="og:image" content="https://m-clark.github.io/img/nineteeneightyR.png" />
+  <meta property="og:description" content="Data Processing &amp; Visualization in R" />
+  <meta name="github-repo" content="m-clark/" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Data Processing &amp; Visualization" />
+  
+  <meta name="twitter:description" content="Data Processing &amp; Visualization in R" />
+  <meta name="twitter:image" content="https://m-clark.github.io/img/nineteeneightyR.png" />
+
+
+
+<meta name="date" content="2017-10-14">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  <link rel="shortcut icon" href="img/R.ico" type="image/x-icon">
+<link rel="prev" href="intro.html">
+<link rel="next" href="part-ii-visualization.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+<script src="libs/proj4js-2.3.15/proj4.js"></script>
+<link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
+<script src="libs/highcharts-5.0.6/highstock.js"></script>
+<script src="libs/highcharts-5.0.6/highcharts-3d.js"></script>
+<script src="libs/highcharts-5.0.6/highcharts-more.js"></script>
+<script src="libs/highcharts-5.0.6/modules/annotations.js"></script>
+<script src="libs/highcharts-5.0.6/modules/broken-axis.js"></script>
+<script src="libs/highcharts-5.0.6/modules/data.js"></script>
+<script src="libs/highcharts-5.0.6/modules/drilldown.js"></script>
+<script src="libs/highcharts-5.0.6/modules/exporting.js"></script>
+<script src="libs/highcharts-5.0.6/modules/funnel.js"></script>
+<script src="libs/highcharts-5.0.6/modules/heatmap.js"></script>
+<script src="libs/highcharts-5.0.6/modules/map.js"></script>
+<script src="libs/highcharts-5.0.6/modules/no-data-to-display.js"></script>
+<script src="libs/highcharts-5.0.6/modules/offline-exporting.js"></script>
+<script src="libs/highcharts-5.0.6/modules/solid-gauge.js"></script>
+<script src="libs/highcharts-5.0.6/modules/treemap.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/annotations.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/draggable-legend.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/draggable-points.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/export-csv.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/grouped-categories.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/motion.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/pattern-fill-v2.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/tooltip-delay.js"></script>
+<script src="libs/highcharts-5.0.6/custom/reset.js"></script>
+<script src="libs/highcharts-5.0.6/custom/symbols-extra.js"></script>
+<script src="libs/highcharts-5.0.6/custom/text-symbols.js"></script>
+<link href="libs/fontawesome-4.5.0/font-awesome.min.css" rel="stylesheet" />
+<link href="libs/htmlwdgtgrid-1/htmlwdgtgrid.css" rel="stylesheet" />
+<script src="libs/highchart-binding-0.5.0/highchart.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css\book.css" type="text/css" />
+<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://m-clark.github.io/"><span style="font-size:125%; font-variant:small-caps; font-style:italic; color:#990024; font-family:Roboto">Data Processing & Visualization</span></a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i>Intro</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#outline"><i class="fa fa-check"></i>Outline</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-1-data-processing"><i class="fa fa-check"></i>Part 1: Data Processing</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-2-visualization"><i class="fa fa-check"></i>Part 2: Visualization</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="part-1-data-processing-1.html"><a href="part-1-data-processing-1.html"><i class="fa fa-check"></i>Part 1: Data Processing</a><ul>
+<li class="chapter" data-level="" data-path="part-1-data-processing-1.html"><a href="part-1-data-processing-1.html#data-structures"><i class="fa fa-check"></i>Data Structures</a></li>
+<li class="chapter" data-level="" data-path="part-1-data-processing-1.html"><a href="part-1-data-processing-1.html#inputoutput"><i class="fa fa-check"></i>Input/Output</a></li>
+<li class="chapter" data-level="" data-path="part-1-data-processing-1.html"><a href="part-1-data-processing-1.html#indexing"><i class="fa fa-check"></i>Indexing</a></li>
+<li class="chapter" data-level="" data-path="part-1-data-processing-1.html"><a href="part-1-data-processing-1.html#vectorization-apply"><i class="fa fa-check"></i>Vectorization &amp; Apply</a></li>
+<li class="chapter" data-level="" data-path="part-1-data-processing-1.html"><a href="part-1-data-processing-1.html#pipes"><i class="fa fa-check"></i>Pipes</a></li>
+<li class="chapter" data-level="" data-path="part-1-data-processing-1.html"><a href="part-1-data-processing-1.html#tidyverse"><i class="fa fa-check"></i>Tidyverse</a></li>
+<li class="chapter" data-level="" data-path="part-1-data-processing-1.html"><a href="part-1-data-processing-1.html#data-table"><i class="fa fa-check"></i>data table</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="part-ii-visualization.html"><a href="part-ii-visualization.html"><i class="fa fa-check"></i>Part II: Visualization</a><ul>
+<li class="chapter" data-level="" data-path="part-ii-visualization.html"><a href="part-ii-visualization.html#ggplot2-1"><i class="fa fa-check"></i>ggplot2</a></li>
+<li class="chapter" data-level="" data-path="part-ii-visualization.html"><a href="part-ii-visualization.html#interactive-visualization"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
+<li class="chapter" data-level="" data-path="part-ii-visualization.html"><a href="part-ii-visualization.html#visnetwork"><i class="fa fa-check"></i>visNetwork</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="summary-1.html"><a href="summary-1.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="divider"></li>
+<li><a href="https://m-clark.github.io/"><img src="img/mc.png" style="width:50%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo"></a></li>
+<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="width:50%; border-width:0; display:block; margin: 0 auto;" src="img/ccbysa_test.png" /></a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><span style="font-size:125%; font-family:Roboto; font-style:normal">Data Processing &amp; Visualization</span></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="part-1-data-processing-1" class="section level1">
+<h1>Part 1: Data Processing</h1>
+<div id="data-structures" class="section level2">
+<h2>Data Structures</h2>
+<p>R has several core data structures:</p>
+<ul>
+<li>Vectors</li>
+<li>Factors</li>
+<li>Lists</li>
+<li>Matrices/arrays</li>
+<li>Data frames</li>
+</ul>
+<div id="vectors" class="section level4">
+<h4>Vectors</h4>
+<p><span class="objclass">Vectors</span> form the basis of R data structures.</p>
+<p>Two main types- <span class="objclass">atomic</span> and <span class="objclass">lists</span>, but I will treat lists separately.</p>
+<p>Here is an R <span class="objclass">vector</span>. The <span class="emph">elements</span> of the vector are numeric values.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">4</span>)
+x</code></pre></div>
+<pre><code>[1] 1 3 2 5 4</code></pre>
+<p>All elements of an atomic vector are the same <span class="emph">type</span>. Examples include:</p>
+<ul>
+<li><span class="objclass">character</span></li>
+<li><span class="objclass">numeric</span> (double)</li>
+<li><span class="objclass">integer</span></li>
+<li><span class="objclass">logical</span></li>
+</ul>
+</div>
+<div id="factors" class="section level4">
+<h4>Factors</h4>
+<p>A important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">factor</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;q&#39;</span>, <span class="st">&#39;V&#39;</span>, <span class="st">&#39;what the heck?&#39;</span>))
+x</code></pre></div>
+<pre><code>[1] q              V              what the heck?
+Levels: q V what the heck?</code></pre>
+<p>The underlying representation is numeric, but it is important to remember that factors are <em>categorical</em>.</p>
+<p>They can’t be used as numbers would be, as the following demonstrates.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.numeric</span>(x)</code></pre></div>
+<pre><code>[1] 1 2 3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(x)</code></pre></div>
+<pre><code>Error in Summary.factor(structure(1:3, .Label = c(&quot;q&quot;, &quot;V&quot;, &quot;what the heck?&quot;: &#39;sum&#39; not meaningful for factors</code></pre>
+</div>
+<div id="matrices" class="section level4">
+<h4>Matrices</h4>
+<p>With multiple dimensions, we are dealing with <span class="objclass">arrays.</span></p>
+<p><span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing.</p>
+<p>The vectors making up a matrix <em>must all be of the same type</em>.</p>
+<ul>
+<li>e.g. all values in a matrix must be <span class="objclass">numeric</span>.</li>
+</ul>
+<div id="creating-a-matrix" class="section level5">
+<h5>Creating a matrix</h5>
+<p>Creating a matrix can be done in a variety of ways.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create vectors</span>
+x =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>
+y =<span class="st"> </span><span class="dv">5</span><span class="op">:</span><span class="dv">8</span>
+z =<span class="st"> </span><span class="dv">9</span><span class="op">:</span><span class="dv">12</span>
+
+<span class="kw">rbind</span>(x, y, z)   <span class="co"># row bind</span></code></pre></div>
+<pre><code>  [,1] [,2] [,3] [,4]
+x    1    2    3    4
+y    5    6    7    8
+z    9   10   11   12</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cbind</span>(x, y, z)   <span class="co"># column bind</span></code></pre></div>
+<pre><code>     x y  z
+[1,] 1 5  9
+[2,] 2 6 10
+[3,] 3 7 11
+[4,] 4 8 12</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">matrix</span>(<span class="kw">c</span>(x, y, z), <span class="dt">nrow=</span><span class="dv">3</span>, <span class="dt">ncol=</span><span class="dv">4</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    1    2    3    4
+[2,]    5    6    7    8
+[3,]    9   10   11   12</code></pre>
+</div>
+</div>
+<div id="lists" class="section level4">
+<h4>Lists</h4>
+<p><span class="objclass">Lists</span> in R are highly flexible objects, and probably the most commonly used for data science.</p>
+<p>They can contain anything as their elements, even other lists.</p>
+<ul>
+<li>unlike vectors, whose elements must be of the same type.</li>
+</ul>
+<p>Here is a list. We use the <span class="func">list</span> function to create it.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span>, <span class="st">&quot;apple&quot;</span>, <span class="kw">list</span>(<span class="dv">3</span>, <span class="st">&quot;cat&quot;</span>))
+x</code></pre></div>
+<pre><code>[[1]]
+[1] 1
+
+[[2]]
+[1] &quot;apple&quot;
+
+[[3]]
+[[3]][[1]]
+[1] 3
+
+[[3]][[2]]
+[1] &quot;cat&quot;</code></pre>
+<p>We often want to loop some function over a list.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span>(elem <span class="cf">in</span> x) <span class="kw">print</span>(<span class="kw">class</span>(elem))</code></pre></div>
+<pre><code>[1] &quot;numeric&quot;
+[1] &quot;character&quot;
+[1] &quot;list&quot;</code></pre>
+<p>Lists can, and often do, have named elements.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;a&quot;</span> =<span class="st"> </span><span class="dv">25</span>, <span class="st">&quot;b&quot;</span> =<span class="st"> </span><span class="op">-</span><span class="dv">1</span>, <span class="st">&quot;c&quot;</span> =<span class="st"> </span><span class="dv">0</span>)
+x[<span class="st">&quot;b&quot;</span>]</code></pre></div>
+<pre><code>$b
+[1] -1</code></pre>
+</div>
+<div id="data-frames" class="section level4">
+<h4>Data Frames</h4>
+<p><span class="objclass">data.frames</span> are a very commonly used data structure. They do not have to have the same type of element, and this is because the data.frame class is actually just a list.</p>
+<ul>
+<li>As such, everything about lists applies to them</li>
+</ul>
+<p>But they can also be indexed by row or column as well.</p>
+<ul>
+<li>like matrices</li>
+</ul>
+<p>There are other very common types of object classes associated with packages that are both a <span class="objclass">data.frame</span> and other type of structure.</p>
+<div id="creating-a-data-frame" class="section level5">
+<h5>Creating a data frame</h5>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">a =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">2</span>), 
+                  <span class="dt">b =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">1</span>))</code></pre></div>
+<p>We can add row names also.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(mydf) =<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&#39;row&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)
+mydf</code></pre></div>
+<pre><code>     a b
+row1 1 3
+row2 5 8
+row3 2 1</code></pre>
+</div>
+</div>
+<div id="data-structure-exercises" class="section level4">
+<h4><strong>Data Structure Exercises</strong></h4>
+<div id="excercise-1" class="section level5">
+<h5>Excercise #1</h5>
+<p>Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span> (use the <span class="class"></span> or <span class="str"></span> functions).</p>
+</div>
+<div id="exercise-2" class="section level5">
+<h5>Exercise #2</h5>
+<p>Create a <span class="objclass">list</span> of 3 elements, the first of which contains character strings, the second numbers, and the third, the <span class="objclass">data.frame</span> or <span class="objclass">matrix</span> you just created.</p>
+</div>
+<div id="thinking-exercises" class="section level5">
+<h5>Thinking Exercises</h5>
+<ul>
+<li><p>How is a <span class="objclass">factor</span> different from a character vector?</p></li>
+<li><p>How is a <span class="objclass">data.frame</span> the same as and different from a <span class="objclass">matrix</span>?</p></li>
+<li><p>How is a <span class="objclass">data.frame</span> the same as and different from a <span class="objclass">list</span>?</p></li>
+</ul>
+
+</div>
+</div>
+</div>
+<div id="inputoutput" class="section level2">
+<h2>Input/Output</h2>
+<p>Standard methods of reading in data include the following functions:</p>
+<ul>
+<li><span class="func">read.table</span></li>
+<li><span class="func">read.csv</span></li>
+<li><span class="func">readLines</span></li>
+</ul>
+<p>Base R also comes with the <span class="pack">foreign</span> package for reading in other types of files, especially other statistical packages. However, while you may see it still in use, it’s not as useful as what’s found in other packages.</p>
+<div id="newer-approaches" class="section level4">
+<h4>Newer approaches</h4>
+<p><span class="pack">haven</span>: Package to read in foreign statistical files</p>
+<ul>
+<li><span class="func">read_spss</span></li>
+<li><span class="func">read_dta</span></li>
+</ul>
+<p><span class="pack">readxl</span>: for excel files</p>
+<p><span class="pack">rio</span>: uses haven, readxl etc. but with just two functions for everything</p>
+<ul>
+<li><span class="func">import</span>, <span class="func">export</span> (also <span class="func">convert</span>)</li>
+</ul>
+</div>
+<div id="faster-approaches" class="section level4">
+<h4>Faster approaches</h4>
+<p><span class="pack">readr</span>: Faster versions of base R functions</p>
+<ul>
+<li><span class="func">read_csv</span></li>
+<li><span class="func">read_delim</span></li>
+</ul>
+<p>These make assumptions after an initial scan of the data, but if you don’t have ‘big’ data, this won’t help much.</p>
+<p>However, they actually can be used as a diagnostic.</p>
+<ul>
+<li>pick up potential data entry errors.</li>
+</ul>
+<p><span class="pack">data.table</span> provides a faster version <span class="func">read.table</span>, and is typically faster than <span class="pack">readr</span> approaches.</p>
+<ul>
+<li><span class="func">fread</span></li>
+</ul>
+</div>
+<div id="other-data" class="section level4">
+<h4>Other Data</h4>
+<p>Note that R can handle many types of data.</p>
+<p>Some examples:</p>
+<ul>
+<li>JSON</li>
+<li>SQL</li>
+<li>XML</li>
+<li>YAML</li>
+<li>MongoDB</li>
+<li>NETCDF</li>
+<li>text (e.g. a novel)</li>
+<li>shapefiles</li>
+<li>google spreadsheets</li>
+</ul>
+<p>And many, many others.</p>
+</div>
+<div id="on-the-horizon" class="section level4">
+<h4>On the horizon</h4>
+<p><span class="pack">feather</span>: designed to make reading/writing data frames efficient</p>
+<p>Works in both Python and R. Still in early stages of development.</p>
+</div>
+<div id="io-exercises" class="section level4">
+<h4><strong>I/O Exercises</strong></h4>
+<div id="thinking-exercises-1" class="section level5">
+<h5>Thinking Exercises</h5>
+<p>Why might you use <span class="func">read_csv</span> from the <span class="pack">readr</span> package rather than <span class="func">read.csv</span> in base R?</p>
+<p>What is your definition of ‘big’ data?</p>
+
+</div>
+</div>
+</div>
+<div id="indexing" class="section level2">
+<h2>Indexing</h2>
+<div id="base-r-indexing-refresher" class="section level4">
+<h4>Base R Indexing Refresher</h4>
+<div id="slicing-vectors" class="section level6">
+<h6>Slicing vectors</h6>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">letters[<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>]</code></pre></div>
+<pre><code>[1] &quot;d&quot; &quot;e&quot; &quot;f&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">letters[<span class="kw">c</span>(<span class="dv">13</span>,<span class="dv">10</span>,<span class="dv">3</span>)]</code></pre></div>
+<pre><code>[1] &quot;m&quot; &quot;j&quot; &quot;c&quot;</code></pre>
+</div>
+<div id="slicing-matricesdata.frames" class="section level6">
+<h6>Slicing matrices/data.frames</h6>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myMatrix[<span class="dv">1</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</code></pre></div>
+</div>
+<div id="label-based-indexing" class="section level6">
+<h6>Label-based indexing</h6>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="st">&#39;row1&#39;</span>, <span class="st">&#39;b&#39;</span>]</code></pre></div>
+</div>
+<div id="position-based-indexing" class="section level6">
+<h6>Position-based indexing</h6>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="dv">1</span>, <span class="dv">2</span>]</code></pre></div>
+</div>
+<div id="mixed-indexing" class="section level6">
+<h6>Mixed indexing</h6>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="st">&#39;row1&#39;</span>, <span class="dv">2</span>]</code></pre></div>
+<p>If the row/column value is empty, all rows/columns are retained.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="st">&#39;row1&#39;</span>,]
+mydf[,<span class="st">&#39;b&#39;</span>]</code></pre></div>
+</div>
+<div id="non-contiguous" class="section level6">
+<h6>Non-contiguous</h6>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>),]</code></pre></div>
+</div>
+<div id="boolean" class="section level6">
+<h6>Boolean</h6>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[mydf<span class="op">$</span>a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>,]</code></pre></div>
+</div>
+</div>
+<div id="listdata.frame-extraction" class="section level4">
+<h4>List/Data.frame extraction</h4>
+<p><span class="func">[</span> : grab a slice of elements/columns</p>
+<p><span class="func">[[</span> : grab specific elements/columns</p>
+<p><span class="func">$</span> : grab specific elements/columns</p>
+<p><span class="func">@</span>: extract slot for S4 objects</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_list_or_df[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_list_or_df[[<span class="st">&#39;name&#39;</span>]]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_list_or_df<span class="op">$</span>name</code></pre></div>
+</div>
+<div id="indexing-exercises" class="section level4">
+<h4><strong>Indexing Exercises</strong></h4>
+<p>This following is a refresher of base R indexing only.</p>
+<p>Here is a <span class="objclass">matrix</span>, a <span class="objclass">data.frame</span> and a <span class="objclass">list</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)
+mydf =<span class="st"> </span>cars
+mylist =<span class="st"> </span><span class="kw">list</span>(mymatrix, <span class="dt">thisdf =</span> mydf)</code></pre></div>
+<div id="exercise-1" class="section level5">
+<h5>Exercise 1</h5>
+<p>For the <span class="objclass">matrix</span>, in separate operations, take a slice of rows, a selection of columns, and a single element.</p>
+</div>
+<div id="exercise-2-1" class="section level5">
+<h5>Exercise 2</h5>
+<p>For the <span class="objclass">data.frame</span>, grab a column in 3 different ways.</p>
+</div>
+<div id="exercise-3" class="section level5">
+<h5>Exercise 3</h5>
+<p>For the <span class="objclass">list</span> grab an element by number and by name.</p>
+
+</div>
+</div>
+</div>
+<div id="vectorization-apply" class="section level2">
+<h2>Vectorization &amp; Apply</h2>
+<div id="boolean-indexing" class="section level4">
+<h4>Boolean Indexing</h4>
+<p><span class="objclass">Logicals</span> are objects with values of <code>TRUE</code> or <code>FALSE</code>.</p>
+<p>Assume x is a vector of numbers.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">10</span>, <span class="op">-</span><span class="dv">5</span>)
+idx =<span class="st"> </span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>
+idx</code></pre></div>
+<pre><code>[1] FALSE FALSE  TRUE FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[idx]</code></pre></div>
+<pre><code>[1] 10</code></pre>
+</div>
+<div id="flexiblity" class="section level4">
+<h4>Flexiblity</h4>
+<p>We don’t have to create an explicit index object first, as R indexing is ridiculously flexible.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>]
+x[x <span class="op">!=</span><span class="st"> </span><span class="dv">3</span>]
+x[<span class="kw">ifelse</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>  <span class="op">&amp;</span><span class="st"> </span>x <span class="op">!=</span><span class="dv">10</span>, T, F)]
+x[{y =<span class="st"> </span>idx; y}]
+x[<span class="kw">resid</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>]</code></pre></div>
+</div>
+<div id="vectorized-operations" class="section level4">
+<h4>Vectorized operations</h4>
+<p>Consider the following unfortunately coded loop:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mydf)) {
+  check =<span class="st"> </span>mydf<span class="op">$</span>x[i] <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>
+  <span class="cf">if</span> (check<span class="op">==</span><span class="ot">TRUE</span>) {
+    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;Yes&#39;</span>
+  } 
+  <span class="cf">else</span> {
+    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;No&#39;</span>
+  }
+}</code></pre></div>
+<p>Compare:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf<span class="op">$</span>y =<span class="st"> &#39;No&#39;</span>
+mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>] =<span class="st"> &#39;Yes&#39;</span></code></pre></div>
+<p>This gets us the same thing, and would be much faster. Boolean indexing is an example of a vectorized operation.</p>
+<p>The whole vector is considered:</p>
+<ul>
+<li>Rather than each element individually</li>
+<li>Any preprocessing is done once rather than n times</li>
+</ul>
+<p>This is always faster.</p>
+<p>Example: Log all values in a matrix.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mymatrix_log =<span class="st"> </span><span class="kw">log</span>(mymatrix)</code></pre></div>
+<p>Way faster than looping over elements, rows or columns. Here we’ll let the <span class="func">apply</span> function stand in for our loop, logging the elements of each column.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)
+<span class="kw">identical</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(microbenchmark)
+<span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log),
+               <span class="kw">log</span>(mymatrix))</code></pre></div>
+<pre><code>Unit: microseconds
+                    expr    min     lq     mean  median      uq     max neval
+ apply(mymatrix, 2, log) 46.229 49.231 56.43565 49.9815 56.1355 170.207   100
+           log(mymatrix)  3.002  3.302  3.71649  3.3030  3.6025  14.409   100</code></pre>
+<p>Many vectorized functions already exist in R.</p>
+<p>They are often written in C, Fortran etc., and so even faster.</p>
+</div>
+<div id="apply-functions" class="section level4">
+<h4>Apply functions</h4>
+<p>A family of functions allows for a succinct way of looping.</p>
+<p>Common ones include:</p>
+<ul>
+<li><span class="func">apply</span>
+<ul>
+<li>arrays, matrices, data.frames</li>
+</ul></li>
+<li><span class="func">lapply</span>, <span class="func">sapply</span>, <span class="func">vapply</span>
+<ul>
+<li>lists, data.frames, vectors</li>
+</ul></li>
+<li><span class="func">tapply</span>
+<ul>
+<li>grouped operations (table apply)</li>
+</ul></li>
+<li><span class="func">mapply</span>
+<ul>
+<li>multivariate version of sapply</li>
+</ul></li>
+<li><span class="func">replicate</span>
+<ul>
+<li>similar to sapply</li>
+</ul></li>
+</ul>
+</div>
+<div id="example" class="section level4">
+<h4>Example</h4>
+<p>Standardizing variables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mydf)){
+  x =<span class="st"> </span>mydf[,i]
+  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)){
+    x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x))<span class="op">/</span><span class="kw">sd</span>(x)
+  }
+}</code></pre></div>
+<p>The above would be a really bad way to use R. The following is much cleaner and now you’d have a function you can use elsewhere.</p>
+<p><span class="func">apply</span> will take a matrix, and apply a function over the margin, row or column, you want.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  (x<span class="op">-</span><span class="kw">mean</span>(x))<span class="op">/</span><span class="kw">sd</span>(x)
+}
+
+<span class="kw">apply</span>(mydf, <span class="dv">2</span>, stdize)   <span class="co"># 1 for rows, 2 for columnwise application</span></code></pre></div>
+</div>
+<div id="timings" class="section level4">
+<h4>Timings</h4>
+<p>The previous demonstrates how to use apply.</p>
+<p>However, there is a <span class="func">scale</span> function in base R that uses a more vectorized approach under the hood.</p>
+<p>The following demonstrates various approaches to standardizing the columns of the matrix, even using a parallelized approach.</p>
+<p>The base R function requires very little code and beats the others.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mymat =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100000</span>), <span class="dt">ncol=</span><span class="dv">1000</span>)
+
+stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  (x<span class="op">-</span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)
+}
+
+doubleloop =<span class="st"> </span><span class="cf">function</span>() {
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat)) {
+    x =<span class="st"> </span>mymat[, i]
+    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) {
+      x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)
+    }
+  }
+}
+
+
+singleloop =<span class="st"> </span><span class="cf">function</span>() {
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat)) {
+    x =<span class="st"> </span>mymat[, i]
+    x =<span class="st"> </span>(x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)
+  }
+}
+
+
+<span class="kw">library</span>(parallel)
+cl =<span class="st"> </span><span class="kw">makeCluster</span>(<span class="dv">8</span>)
+<span class="kw">clusterExport</span>(cl, <span class="kw">c</span>(<span class="st">&#39;stdize&#39;</span>, <span class="st">&#39;mymat&#39;</span>))
+doParallel<span class="op">::</span><span class="kw">registerDoParallel</span>(cl)
+
+test =<span class="st"> </span>microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(<span class="dt">doubleloop=</span><span class="kw">doubleloop</span>(),
+                                      <span class="dt">singleloop=</span><span class="kw">singleloop</span>(), 
+                                      <span class="dt">apply=</span><span class="kw">apply</span>(mymat, <span class="dv">2</span>, stdize), 
+                                      <span class="dt">parApply=</span><span class="kw">parApply</span>(cl, mymat, <span class="dv">2</span>, stdize),
+                                      <span class="dt">vectorized=</span><span class="kw">scale</span>(mymat), <span class="dt">times=</span><span class="dv">25</span>)
+<span class="kw">stopCluster</span>(cl)
+test</code></pre></div>
+<pre><code>Unit: milliseconds
+       expr         min          lq       mean     median         uq        max neval
+ doubleloop 2882.148089 2904.739076 2938.21281 2946.57065 2952.25532 3013.29805    25
+ singleloop   28.989806   29.512434   33.08177   31.17037   32.42606   84.79185    25
+      apply   32.167901   33.350945   33.96146   34.13204   34.64055   36.18983    25
+   parApply   17.691611   18.213638   21.91323   19.63893   21.12156   73.60683    25
+ vectorized    8.085578    8.491433   10.25583   10.66990   11.02532   12.62173    25</code></pre>
+</div>
+<div id="apply-functions-1" class="section level4">
+<h4>Apply functions</h4>
+<p>Benefits</p>
+<ul>
+<li>Cleaner/simpler code</li>
+<li>Environment kept clear of unnecessary objects</li>
+<li>Potentially more reproducible
+<ul>
+<li>more likely to use generalizable functions</li>
+</ul></li>
+<li>Might be faster</li>
+<li>Parallelizable</li>
+</ul>
+<p><span class="emph">NOT</span> necessarily faster than explicit loops.</p>
+<ul>
+<li>single loop over columns was as fast as apply</li>
+<li>Replicate and mapply are especially slow</li>
+</ul>
+<p>ALWAYS can <em>potentially</em> be faster than loops.</p>
+<ul>
+<li>Parallelization: parApply, parLapply etc.</li>
+</ul>
+</div>
+<div id="personal-experience" class="section level4">
+<h4>Personal experience</h4>
+<p>I use R every day, and rarely use explicit loops.</p>
+<ul>
+<li>Note: no speed difference for a <span class="func">for</span> loop vs. using <span class="func">while</span></li>
+<li>If you must use an explicit loop, create an empty object of the dimension/form you need, and then fill it in.
+<ul>
+<li>Notably faster</li>
+</ul></li>
+</ul>
+<p>I pretty much never use an explicit double loop, as a little more thinking about the problem will usually provide a more efficient path to solving the problem.</p>
+</div>
+<div id="apply-functions-2" class="section level4">
+<h4>Apply functions</h4>
+<p>Apply functions and similar approaches should be a part of your regular R experience.</p>
+<p>Other versions we’ll talk about have been optimized, but you need to know the basics in order to use those.</p>
+<p>Any you still may need parallel versions.</p>
+</div>
+<div id="vectorapply-exercises" class="section level4">
+<h4><strong>Vector/Apply Exercises</strong></h4>
+<div id="exercise-1-1" class="section level5">
+<h5>Exercise 1</h5>
+<p>With the following <span class="objclass">matrix</span>, use <span class="func">apply</span> and the <span class="func">sum</span> function to get row or column sums.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">3</span>)</code></pre></div>
+</div>
+<div id="exercise-2-2" class="section level5">
+<h5>Exercise 2</h5>
+<p>With the following <span class="objclass">list</span>, use <span class="func">lapply</span> and <span class="func">sapply</span> and the <span class="func">sum</span> function to get sums for the elements. There is no margin to specify with on a list, so just supply the list and the sum function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">7</span><span class="op">:</span><span class="dv">9</span>)</code></pre></div>
+<p><span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>. If you supply the argument <code>simplified=F</code>, it is identical. Otherwise, it attempts to return a vector or matrix.</p>
+
+</div>
+</div>
+</div>
+<div id="pipes" class="section level2">
+<h2>Pipes</h2>
+<p>Note: More detail on much of the following is given in <a href="https://m-clark.github.io/workshops/dplyr/mainSlides.html">another workshop</a>.</p>
+<p>Pipes are operators that send what comes before to what comes after.</p>
+<p>There are many different pipes, and some packages that use their own.</p>
+<p>However, the vast majority of packages use the same pipe:</p>
+<div style="text-align:center;font-variant:small-caps; font-size:500%; color:#ff5503">
+%&gt;%
+</div>
+<p>Here, we’ll focus on their use with the <span class="pack">dplyr</span> package. Later, we’ll use it for visualizations.</p>
+<p>Example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(var1, var2) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(var1 <span class="op">==</span><span class="st"> &#39;Yes&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>summary</code></pre></div>
+<blockquote>
+<p>Start with a data.frame <span style="font-family:Consolas">%&gt;%</span> <br>    select columns from it <span style="font-family:Consolas">%&gt;%</span> <br>    filter/subset it <span style="font-family:Consolas">%&gt;%</span> <br>    get a summary</p>
+</blockquote>
+<div id="using-variables-as-they-are-created" class="section level5">
+<h5>Using variables as they are created</h5>
+<p>One nice thing about pipelines is that we can use variables as soon as they are created, with out having to break out separate objects/steps.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">newvar1 =</span> var1 <span class="op">+</span><span class="st"> </span>var2,
+         <span class="dt">newvar2 =</span> newvar1<span class="op">/</span>var3) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">newvar2avg =</span> <span class="kw">mean</span>(newvar2))</code></pre></div>
+</div>
+<div id="pipes-for-visualization-more-later" class="section level4">
+<h4>Pipes for Visualization (more later)</h4>
+<p>The following provides a means to think about pipes for visualization. It’s just a generic example for now, but we’ll see more later.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">basegraph <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>points <span class="op">%&gt;%</span>
+<span class="st">  </span>lines <span class="op">%&gt;%</span>
+<span class="st">  </span>layout</code></pre></div>
+</div>
+<div id="the-dot" class="section level4">
+<h4>The dot</h4>
+<p>Most functions are not ‘pipe-aware’ by default.</p>
+<p>Example: pipe to a modeling function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)  <span class="co"># error</span></code></pre></div>
+<p>Other pipes could work in this situation.</p>
+<ul>
+<li>e.g. <span class="func">%$%</span> in <span class="pack">magrittr</span>.</li>
+</ul>
+<p>But generally, when you come upon this situation, you can use a dot.</p>
+<ul>
+<li>The dot refers to the object before the previous pipe.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>.)  <span class="co"># . == mydf</span></code></pre></div>
+</div>
+<div id="flexibility" class="section level4">
+<h4>Flexibility</h4>
+<p>Piping is not just for data.frames.</p>
+<ul>
+<li>The following starts with a character vector.</li>
+<li>Sends it to a recursive function (named <span class="func">..</span>).
+<ul>
+<li><span class="func">..</span> is created on-the-fly, and has a single argument (<code>.</code>).</li>
+</ul></li>
+<li>After the function is created, it’s used on ., whcih represents the string before the pipe.</li>
+<li>Result: pipes between the words.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="st">&#39;Ceci&#39;</span>, <span class="st">&quot;n&#39;est&quot;</span>, <span class="st">&#39;pas&#39;</span>, <span class="st">&#39;une&#39;</span>, <span class="st">&#39;pipe!&#39;</span>) <span class="op">%&gt;%</span>
+{
+  .. &lt;-<span class="st">  </span>. <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="cf">if</span> (<span class="kw">length</span>(.) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)  .
+    <span class="cf">else</span> <span class="kw">paste</span>(.[<span class="dv">1</span>], <span class="st">&#39;%&gt;%&#39;</span>, <span class="kw">..</span>(.[<span class="op">-</span><span class="dv">1</span>]))
+  <span class="kw">..</span>(.)
+} </code></pre></div>
+<pre><code>[1] &quot;Ceci %&gt;% n&#39;est %&gt;% pas %&gt;% une %&gt;% pipe!&quot;</code></pre>
+<blockquote>
+<p>Put that in your pipe and smoke it René Magritte!</p>
+</blockquote>
+</div>
+<div id="summary" class="section level4">
+<h4>Summary</h4>
+<p>Pipes are best used interactively.</p>
+<p>Extremely useful for data exploration.</p>
+<p>Common in many visualization packages.</p>
+<p>See the <span class="pack">magrittr</span> package for more pipes.</p>
+
+</div>
+</div>
+<div id="tidyverse" class="section level2">
+<h2>Tidyverse</h2>
+<div id="what-is-the-tidyverse" class="section level4">
+<h4>What is the tidyverse?</h4>
+<p>The tidyverse consists of a few key packages-</p>
+<ul>
+<li><span class="pack">ggplot2</span>: data visualization</li>
+<li><span class="pack">dplyr</span>: data manipulation</li>
+<li><span class="pack">tidyr</span>: data tidying</li>
+<li><span class="pack">readr</span>: data import</li>
+<li><span class="pack">purrr</span>: functional programming, e.g. alternate approaches to apply</li>
+<li><span class="pack">tibble</span>: tibbles, a modern re-imagining of data frames</li>
+</ul>
+<p>And of course the <span class="pack">tidyverse</span> package which will load all of the above.</p>
+<p>See also: <span class="pack">lubridate</span>, <span class="pack">rvest</span>, <span class="pack">stringr</span> and others in the ‘hadleyverse’.</p>
+</div>
+<div id="what-is-tidy" class="section level4">
+<h4>What is tidy?</h4>
+<p><span class="emph">Tidy data</span> refers to data arranged in a way that makes data processing, analysis, and visualization simpler.</p>
+<p>In a tidy data set:</p>
+<ul>
+<li>Each variable must have its own column.</li>
+<li>Each observation must have its own row.</li>
+<li>Each value must have its own cell.</li>
+</ul>
+<p>Think <em>long</em> before <em>wide</em>.</p>
+</div>
+<div id="dplyr" class="section level4">
+<h4>dplyr</h4>
+<p><span class="func">dplyr</span> provides a grammar of data manipulation (like <span class="pack">ggplot2</span> does for visualization).</p>
+<p>It is the next iteration of <span class="func">plyr</span>, but there is no longer any need for plyr really.</p>
+<p>It’s focused on tools for working with data frames.</p>
+<ul>
+<li>Over 100 functions</li>
+</ul>
+<p>It has three main goals:</p>
+<ul>
+<li>Make the most important data manipulation tasks easier.</li>
+<li>Do them faster.</li>
+<li>Use the same interface to work with data frames, data tables or database.</li>
+</ul>
+<p>Some key operations:</p>
+<ul>
+<li><span class="func">select</span>: grab columns
+<ul>
+<li>select helpers: <span class="func">one_of</span>, <span class="func">starts_with</span>, <span class="func">num_range</span> etc.</li>
+</ul></li>
+<li><span class="func">filter</span>/<span class="func">slice</span>: grab rows</li>
+<li><span class="func">group_by</span>: grouped operations</li>
+<li><span class="func">mutate</span>/<span class="func">transmute</span>: create new variables</li>
+<li><span class="func">summarize</span>: summarize/aggregate</li>
+<li><span class="func">do</span>: arbitrary operations</li>
+</ul>
+<p>Various join/merge functions:</p>
+<ul>
+<li><span class="func">inner_join</span>, <span class="func">left_join</span> etc.</li>
+</ul>
+<p>Little things like:</p>
+<ul>
+<li><span class="func">n</span>, <span class="func">n_distinct</span>, <span class="func">nth</span>, <span class="func">n_groups</span>, <span class="func">count</span>, <span class="func">recode</span>, <span class="func">between</span></li>
+</ul>
+<p>No need to quote variable names.</p>
+</div>
+<div id="an-example" class="section level4">
+<h4>An example</h4>
+<p>Let’s say we want to select from our data the following variables:</p>
+<ul>
+<li>Start with the <strong>ID</strong> variable</li>
+<li>The variables <strong>X1:X10</strong>, which are not all together, and there are many more <em>X</em> columns</li>
+<li>The variables <strong>var1</strong> and <strong>var2</strong>, which are the only <em>var</em> variables in the data</li>
+<li>Any variable that starts with <strong>XYZ</strong></li>
+</ul>
+<p>How might we go about this?</p>
+<div id="some-base-r-approaches" class="section level6">
+<h6>Some base R approaches</h6>
+<p>Tedious, or multiple objects just to get the columns you want.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># numeric indexes; not conducive to readibility or reproducibility</span>
+newData =<span class="st"> </span>oldData[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>, etc.)]
+
+<span class="co"># explicitly by name; fine if only a handful; not pretty</span>
+newData =<span class="st"> </span>oldData[,<span class="kw">c</span>(<span class="st">&#39;ID&#39;</span>,<span class="st">&#39;X1&#39;</span>, <span class="st">&#39;X2&#39;</span>, etc.)]
+
+<span class="co"># two step with grep; regex difficult to read/understand</span>
+cols =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;ID&#39;</span>, <span class="kw">paste0</span>(<span class="st">&#39;X&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>), <span class="st">&#39;var1&#39;</span>, <span class="st">&#39;var2&#39;</span>, <span class="kw">grep</span>(<span class="kw">colnames</span>(oldData), <span class="st">&#39;^XYZ&#39;</span>, <span class="dt">value=</span>T))
+newData =<span class="st"> </span>oldData[,cols]
+
+<span class="co"># or via subset</span>
+newData =<span class="st"> </span><span class="kw">subset</span>(oldData, <span class="dt">select =</span> cols)</code></pre></div>
+</div>
+<div id="more" class="section level6">
+<h6>More</h6>
+<p>What if you also want observations where <strong>Z</strong> is <strong>Yes</strong>, Q is <strong>No</strong>, and only the observations with the top 50 values of <strong>var2</strong>, ordered by <strong>var1</strong> (descending)?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># three operations and overwriting or creating new objects if we want clarity</span>
+newData =<span class="st"> </span>newData[oldData<span class="op">$</span>Z <span class="op">==</span><span class="st"> &#39;Yes&#39;</span> <span class="op">&amp;</span><span class="st"> </span>oldData<span class="op">$</span>Q <span class="op">==</span><span class="st"> &#39;No&#39;</span>,]
+newData =<span class="st"> </span>newData[<span class="kw">order</span>(newData<span class="op">$</span>var2, <span class="dt">decreasing=</span>T)[<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>],]
+newData =<span class="st"> </span>newData[<span class="kw">order</span>(newData<span class="op">$</span>var1, <span class="dt">decreasing=</span>T),]</code></pre></div>
+<p>And this is for fairly straightforward operations.</p>
+</div>
+<div id="the-dplyr-way" class="section level6">
+<h6>The dplyr way</h6>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">newData =<span class="st"> </span>oldData <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(Z <span class="op">==</span><span class="st"> &#39;Yes&#39;</span>, Q <span class="op">==</span><span class="st"> &#39;No&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(<span class="kw">num_range</span>(<span class="st">&#39;X&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>), <span class="kw">contains</span>(<span class="st">&#39;var&#39;</span>), <span class="kw">starts_with</span>(<span class="st">&#39;XYZ&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">top_n</span>(<span class="dt">n=</span><span class="dv">50</span>, var2) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(var1))</code></pre></div>
+</div>
+</div>
+<div id="an-alternative" class="section level4">
+<h4>An alternative</h4>
+<p><span class="pack">dplyr</span> and piping is an <em>alternative</em></p>
+<ul>
+<li>you can do all this sort of stuff with base R</li>
+<li><span class="func">with</span>, <span class="func">within</span>, <span class="func">subset</span>, <span class="func">transform</span>, etc.</li>
+</ul>
+<p>Even though the initial base R approach depicted is fairly concise, it still can potentially be:</p>
+<ul>
+<li>noisier</li>
+<li>less legible</li>
+<li>less amenable to additional data changes</li>
+<li>requires esoteric knowledge (e.g. regular expressions)</li>
+<li>often requires creation of new objects (even if we just want to explore)</li>
+<li>often slower, possibly greatly</li>
+</ul>
+</div>
+<div id="tidyr" class="section level4">
+<h4>tidyr</h4>
+<p>Two primary functions for manipulating data</p>
+<ul>
+<li><span class="func">gather</span>: wide to long</li>
+<li><span class="func">spread</span>: long to wide</li>
+</ul>
+<p>Other useful functions include:</p>
+<ul>
+<li><span class="func">unite</span>: paste together multiple columns into one</li>
+<li><span class="func">separate</span>: complement of unite</li>
+</ul>
+</div>
+<div id="example-1" class="section level4">
+<h4>Example</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
+stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">time =</span> <span class="kw">as.Date</span>(<span class="st">&#39;2009-01-01&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">9</span>,
+                      <span class="dt">X =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">1</span>),
+                      <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),
+                      <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>) )
+stocks <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre></div>
+<pre><code>        time            X         Y         Z
+1 2009-01-01  0.819690254  1.544767 -3.874437
+2 2009-01-02 -0.850650268 -2.704968 -2.366096
+3 2009-01-03 -1.723432206 -1.339723  3.605287
+4 2009-01-04  0.006984141 -1.787342 -5.497394
+5 2009-01-05 -0.813712996 -1.935453  7.160864
+6 2009-01-06 -0.553536861 -2.372514  3.147236</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stocks <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(stock, price, <span class="op">-</span>time) <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre></div>
+<pre><code>        time stock        price
+1 2009-01-01     X  0.819690254
+2 2009-01-02     X -0.850650268
+3 2009-01-03     X -1.723432206
+4 2009-01-04     X  0.006984141
+5 2009-01-05     X -0.813712996
+6 2009-01-06     X -0.553536861</code></pre>
+<p>Note that the latter is an example of <span class="emph">tidy</span> data while the former is not.</p>
+</div>
+<div id="personal-opinion" class="section level4">
+<h4>Personal Opinion</h4>
+<p>The <span class="pack">dplyr</span> grammar is clear for a lot of standard data processing tasks, and some not so common.</p>
+<p>Extremely useful for data exploration and visualization.</p>
+<ul>
+<li>No need to create/overwrite existing objects</li>
+<li>Can overwrite columns as they are created</li>
+<li>Makes it easy to look at anything, and do otherwise tedious data checks</li>
+</ul>
+<p>Drawbacks:</p>
+<ul>
+<li>Not as fast as <span class="pack">data.table</span> or even some base R approaches for many things</li>
+<li>The <em>mindset</em> can make for unnecessary complication
+<ul>
+<li>e.g. There is no need to pipe to create one new variable</li>
+</ul></li>
+</ul>
+</div>
+<div id="on-the-horizon-1" class="section level4">
+<h4>On the horizon</h4>
+<p><span class="pack">multidplyr</span></p>
+<ul>
+<li>Partitions the data across a cluster.</li>
+<li>Faster than data.table (after partitioning)</li>
+</ul>
+</div>
+<div id="dplyr-exercises" class="section level4">
+<h4><strong>dplyr Exercises</strong></h4>
+<div id="exercise-0" class="section level5">
+<h5>Exercise 0</h5>
+<p>Install and load the <span class="pack">dplyr</span> <span class="pack">ggplot2movies</span> packages. Look at the help file for the <code>movies</code> data set, which contains data from IMDB.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&#39;ggplot2movies&#39;</span>)
+<span class="kw">library</span>(ggplot2movies)</code></pre></div>
+</div>
+<div id="exercise-1-2" class="section level5">
+<h5>Exercise 1</h5>
+<p>Using the movies data set, perform each of the following actions separately.</p>
+<div id="exercise-1a" class="section level6">
+<h6>Exercise 1a</h6>
+<p>Use <span class="func">mutate</span> to create a centered version of the rating variable. A centered variable is one whose mean has been subtracted from it. The process will take the following form:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">newvar =</span> <span class="st">&#39;?&#39;</span>)</code></pre></div>
+</div>
+<div id="exercise-1b" class="section level6">
+<h6>Exercise 1b</h6>
+<p>Use <span class="func">filter</span> to create a new data frame that has only movies from the years 2000 and beyond. Use the greater than or equal operator <code>&gt;=</code>.</p>
+</div>
+<div id="exercise-1c" class="section level6">
+<h6>Exercise 1c</h6>
+<p>Use <span class="func">select</span> to create a new data frame that only has the title, year, budget, length, rating and votes variables. There are at least 3 ways to do this.</p>
+</div>
+</div>
+<div id="exercise-2-3" class="section level5">
+<h5>Exercise 2</h5>
+<p>Use <span class="func">group_by</span> to group the data by year, and <span class="func">summarize</span> to create a new variable that is the average budget. The <span class="func">summarize</span> function works just like <span class="func">mutate</span> in this case. Use the <span class="func">mean</span> function to get the average, but you’ll also need to use the argument <code>na.rm = TRUE</code> within it because the earliest years have no budget recorded.</p>
+</div>
+<div id="exercise-3-1" class="section level5">
+<h5>Exercise 3</h5>
+<p>Now put it all together in one set of piped operations.</p>
+<ul>
+<li>Filter movies released <em>after</em> 1990</li>
+<li>select the same variables as before but also the <code>mpaa</code>, <code>Action</code>, and <code>Drama</code> variables</li>
+<li>group by <code>mpaa</code> <em>and</em> <code>Action</code> <em>or</em> <code>Drama</code></li>
+<li>get the average rating</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div id="data-table" class="section level2">
+<h2>data table</h2>
+<!-- whatever you do, don't put a dot in the title or it will read nothing beyond the title; no, escapes, quotes nor spans won't work because that would make sense. -->
+<p><span class="pack">data.table</span> works in a notably different way than <span class="pack">dplyr</span>. However, you’d use it for the same reasons.</p>
+<p>Like <span class="pack">dplyr</span>, the data objects are both <span class="objclass">data.frames</span> and a package specific class.</p>
+<p>Faster subset, grouping, update, ordered joins etc.</p>
+<p>In general, <span class="pack">data.table</span> works with brackets as in base R.</p>
+<p>However, the brackets work like a function call!</p>
+<ul>
+<li>Several key arguments</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[i, j, by, keyby, with =<span class="st"> </span><span class="ot">TRUE</span>, ...]</code></pre></div>
+<p>Importantly: <em>you don’t use the brackets as you would with data.frames</em>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(data.table)
+dt =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">x=</span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">6</span>), <span class="dt">g=</span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">y=</span><span class="kw">runif</span>(<span class="dv">6</span>))
+<span class="kw">class</span>(dt)</code></pre></div>
+<pre><code>[1] &quot;data.table&quot; &quot;data.frame&quot;</code></pre>
+<p>What <strong>i</strong> and <strong>j</strong> can be are fairly complex.</p>
+<p>In general, you use <strong>i</strong> for filtering by rows.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[<span class="dv">2</span>]
+dt[<span class="dv">2</span>,]</code></pre></div>
+<pre><code>   x g         y
+1: 8 2 0.1682312
+   x g         y
+1: 8 2 0.1682312</code></pre>
+<p>In general, you use <strong>j</strong> to select (by name!) or create new columns.</p>
+<ul>
+<li>Define a new variable with <span class="func">:=</span></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[,x]
+dt[,z <span class="op">:</span><span class="er">=</span><span class="st"> </span>x<span class="op">+</span>y]  <span class="co"># dt now has a new column</span>
+dt[,z]
+dt[g<span class="op">&gt;</span><span class="dv">1</span>, <span class="kw">mean</span>(z), by=g]
+dt</code></pre></div>
+<pre><code>[1] 10  8  7  2  3  6
+[1] 10.235610  8.168231  7.403463  2.630214  3.180505  6.964572
+   g       V1
+1: 2 5.674368
+2: 3 7.184018
+    x g         y         z
+1: 10 1 0.2356098 10.235610
+2:  8 2 0.1682312  8.168231
+3:  7 3 0.4034633  7.403463
+4:  2 1 0.6302135  2.630214
+5:  3 2 0.1805050  3.180505
+6:  6 3 0.9645722  6.964572</code></pre>
+<p>Dropping columns is awkward.</p>
+<ul>
+<li>because <strong>j</strong> is an argument</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[,<span class="op">-</span>y]             <span class="co"># creates negative values of y</span>
+dt[,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=F]   <span class="co"># drops y, but now needs quotes</span>
+## dt[,y:=NULL]        # drops y, but this is just a base R approach
+## dt$y = NULL</code></pre></div>
+<pre><code>[1] -0.2356098 -0.1682312 -0.4034633 -0.6302135 -0.1805050 -0.9645722
+    x g         z
+1: 10 1 10.235610
+2:  8 2  8.168231
+3:  7 3  7.403463
+4:  2 1  2.630214
+5:  3 2  3.180505
+6:  6 3  6.964572</code></pre>
+<div id="grouped-operations" class="section level4">
+<h4>Grouped operations</h4>
+<p>We can now attempt a ‘group-by’ operation, along with creation of a new variable.</p>
+<p>Note that these operations actually modify <span class="objclass">dt</span> <em>in place</em>, a key distinction with <span class="pack">dplyr</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1 =<span class="st"> </span>dt2 =<span class="st"> </span>dt
+dt[,<span class="kw">sum</span>(x,y), by=g]                  <span class="co"># sum of all x and y values</span></code></pre></div>
+<pre><code>   g       V1
+1: 1 12.86582
+2: 2 11.34874
+3: 3 14.36804</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1[,newvar <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(x), by=g]         <span class="co"># add new variable to the original data </span></code></pre></div>
+<p>We can also create groupings on the fly.</p>
+<p>For a new summary data set, we’ll take the following approach.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt2[, <span class="kw">list</span>(<span class="dt">meanx =</span> <span class="kw">mean</span>(x), <span class="dt">sumx =</span> <span class="kw">sum</span>(x)), by=g<span class="op">==</span><span class="dv">1</span>]</code></pre></div>
+<pre><code>       g meanx sumx
+1:  TRUE     6   12
+2: FALSE     6   24</code></pre>
+</div>
+<div id="faster" class="section level4">
+<h4>Faster!</h4>
+<ul>
+<li>joins: and easy to do (note that i can be a data.table)</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1[dt2]</code></pre></div>
+<ul>
+<li>group operations: via <span class="func">setkey</span></li>
+<li>reading files: <span class="func">fread</span></li>
+<li>character matches: e.g. via <span class="func">chmatch</span></li>
+</ul>
+</div>
+<div id="timings-1" class="section level4">
+<h4>Timings</h4>
+<p>The following demonstrates some timings from <a href="http://stackoverflow.com/questions/3505701/r-grouping-functions-sapply-vs-lapply-vs-apply-vs-tapply-vs-by-vs-aggrega/34167477#34167477">here</a>.</p>
+<ul>
+<li>Reproduced on my own machine</li>
+<li>based on 50 million observations</li>
+<li>Grouped operations are just a sum and length on a vector.</li>
+</ul>
+<p>By the way, never, ever use <span class="func">aggregate</span>. For anything.</p>
+<pre><code>          fun elapsed
+1:  aggregate  114.35
+2:         by   24.51
+3:     sapply   11.62
+4:     tapply   11.33
+5:      dplyr   10.97
+6:     lapply   10.65
+7: data.table    2.71</code></pre>
+<p>Ever.</p>
+<p>Really.</p>
+</div>
+<div id="pipe-with-data.table" class="section level4">
+<h4>Pipe with data.table</h4>
+<p>Can be done but awkward at best.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydt[,newvar<span class="op">:</span><span class="er">=</span><span class="kw">mean</span>(x),][,newvar2<span class="op">:</span><span class="er">=</span><span class="kw">sum</span>(newvar), by=group][,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=<span class="ot">FALSE</span>]
+mydt[,newvar<span class="op">:</span><span class="er">=</span><span class="kw">mean</span>(x), 
+  ][,newvar2<span class="op">:</span><span class="er">=</span><span class="kw">sum</span>(newvar), by=group
+  ][,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=<span class="ot">FALSE</span>
+  ]</code></pre></div>
+<p>Probably better to just use a pipe and dot approach.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydt[,newvar<span class="op">:</span><span class="er">=</span><span class="kw">mean</span>(x),] <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>.[,newvar2<span class="op">:</span><span class="er">=</span><span class="kw">sum</span>(newvar), by=group] <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>.[,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=<span class="ot">FALSE</span>]</code></pre></div>
+</div>
+<div id="my-take" class="section level4">
+<h4>My take</h4>
+<p>Faster methods are great to have.</p>
+<ul>
+<li>Especially for group-by and joins.</li>
+</ul>
+<p>Drawbacks:</p>
+<ul>
+<li>Complex</li>
+<li>The syntax can be awkward</li>
+<li>It doesn’t work like a data.frame</li>
+<li>Piping with brackets</li>
+<li>Does not have its own ‘verse’</li>
+</ul>
+</div>
+<div id="compromise" class="section level4">
+<h4>Compromise</h4>
+<p>If speed and/or memory is (potentially) a concern, data.table</p>
+<p>For interactive exploration, dplyr</p>
+<p>Piping allows one to use both, so no need to choose.</p>
+<p>And on the horizon…</p>
+</div>
+<div id="dtplyr" class="section level4">
+<h4>dtplyr</h4>
+<p>Coming soon to an R near you.</p>
+<blockquote>
+<p>This implements the data table back-end for ‘dplyr’ so that you can seamlessly use data table and ‘dplyr’ together.</p>
+</blockquote>
+<p>Or play with now. The following shows times for a grouped operation of a data frame of two variables, a random uniform draw of 5e7 values, and a grouping variable of 500k groups.</p>
+<table style="width:29%;">
+<colgroup>
+<col width="18%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">package</th>
+<th align="center">timing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">dplyr</td>
+<td align="center">10.97</td>
+</tr>
+<tr class="even">
+<td align="center">data.table</td>
+<td align="center">2.71</td>
+</tr>
+<tr class="odd">
+<td align="center">dtplyr</td>
+<td align="center">2.7</td>
+</tr>
+</tbody>
+</table>
+<p>Just for giggles I did the same in python with a pandas DataFrame and groupby operation, and it took 7+ seconds.</p>
+</div>
+<div id="data.table-exercises" class="section level4">
+<h4><strong>data.table Exercises</strong></h4>
+<div id="exercise-0-1" class="section level5">
+<h5>Exercise 0</h5>
+<p>Install and load the <span class="pack">data.table</span> package.</p>
+<p>Create the following data table.</p>
+<pre><code>mydt = data.table(expand.grid(x=1:3, y=c(&#39;a&#39;,&#39;b&#39;,&#39;c&#39;)), z=sample(1:20, 9))</code></pre>
+</div>
+<div id="exercise-1-3" class="section level5">
+<h5>Exercise 1</h5>
+<p>Create a new object that contains only the ‘a’ group. Think back to how you use a logical to select rows.</p>
+</div>
+<div id="exercise-2-4" class="section level5">
+<h5>Exercise 2</h5>
+<p>Create a new object that is the sum of z grouped by x. You don’t need to name the sum variable.</p>
+
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="part-ii-visualization.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["twitter", "facebook", "google", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"download": null,
+"toc": {
+"collapse": "subsection",
+"depth": 3,
+"scroll_highlight": true
+},
+"highlight": "pygments",
+"search": true
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -1,7 +1,13 @@
-# Pipes
+## Pipes
+
+```{r pipessetup, include=FALSE, eval=TRUE, cache=FALSE}
+knitr::opts_chunk$set(echo = T, message=F, warning=F, comment=NA, autodep=T, eval=FALSE, cache.rebuild=F, cache=F,
+                      R.options=list(width=120), fig.width=8, fig.align = 'center')
+```
 
 
-Note: More detail on much of this part is given in [another workshop](https://m-clark.github.io/workshops/dplyr/mainSlides.html).
+
+Note: More detail on much of the following is given in [another workshop](https://m-clark.github.io/workshops/dplyr/mainSlides.html).
 
 
 
@@ -26,17 +32,15 @@ mydf %>%
   summary
 ```
 
-Start with a data.frame <span class="" style="font-family:Consolas">%>%</span> 
+> Start with a data.frame <span class="" style="font-family:Consolas">%>%</span> 
+<br>&nbsp;&nbsp;&nbsp;  select columns from it <span class="" style="font-family:Consolas">%>%</span> 
+<br>&nbsp;&nbsp;&nbsp;  filter/subset it <span class="" style="font-family:Consolas">%>%</span> 
+<br>&nbsp;&nbsp;&nbsp;  get a summary
 
-&nbsp;&nbsp;&nbsp;  select columns from it <span class="" style="font-family:Consolas">%>%</span> 
-
-&nbsp;&nbsp;&nbsp;  filter/subset it <span class="" style="font-family:Consolas">%>%</span> 
-
-&nbsp;&nbsp;&nbsp;  get a summary
 
 ##### Using variables as they are created
 
-We can use variables as soon as they are created.
+One nice thing about pipelines is that we can use variables as soon as they are created, with out having to break out separate objects/steps.
 
 ```{r varfly}
 mydf %>% 
@@ -46,9 +50,9 @@ mydf %>%
 ```
 
 
-### Pipes for Visualization (more later)
+#### Pipes for Visualization (more later)
 
-Generic example:
+The following provides a means to think about pipes for visualization. It's just a generic example for now, but we'll see more later.
 
 ```{r pipeviz}
 basegraph %>% 
@@ -57,7 +61,8 @@ basegraph %>%
   layout
 ```
 
-### The dot
+
+#### The dot
 
 Most functions are not 'pipe-aware' by default.
 
@@ -70,26 +75,26 @@ mydf %>%
 
 Other pipes could work in this situation.
 
-  - e.g. <span class="func">%$%</span> in magrittr
+  - e.g. <span class="func">%$%</span> in <span class="pack">magrittr</span>.
 
-But generally, one can use a dot.
+But generally, when you come upon this situation, you can use a dot.
 
-- The dot refers to the object before the pipe.
+- The dot refers to the object before the previous pipe.
 
 ```{r pipedot}
 mydf %>% 
-  lm(y ~ x, data=.)
+  lm(y ~ x, data=.)  # . == mydf
 ```
 
 
-### Flexibility
+#### Flexibility
 
 Piping is not just for data.frames.
 
 - The following starts with a character vector.
 - Sends it to a recursive function (named <span class="func">..</span>).
-    - <span class="func">..</span> is created on-the-fly. 
-- After the function is created, it's used on ., representing the string.
+    - <span class="func">..</span> is created on-the-fly, and has a single argument (`.`).
+- After the function is created, it's used on ., whcih represents the string before the pipe.
 - Result: pipes between the words.
 
 ```{r ridiculous, eval=T, echo=-1}
@@ -103,9 +108,10 @@ c('Ceci', "n'est", 'pas', 'une', 'pipe!') %>%
 } 
 ```
 
->- Put that in your pipe and smoke it René Magritte!
+> Put that in your pipe and smoke it René Magritte!
 
-### Summary
+
+#### Summary
 
 Pipes are best used interactively.
 

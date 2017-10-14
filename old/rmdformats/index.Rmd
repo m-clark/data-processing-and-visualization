@@ -1,0 +1,85 @@
+--- 
+title: <span style="font-size:125%; font-family:Roboto; font-style:normal">Data Processing & Visualization</span>
+subtitle: <span style="font-size:125%; font-style:normal; font-variant:small-caps; font-family:'Open Sans'">A Workshop in Two Parts</span>
+author:  |
+  <span style="font-size:125%; font-style:normal; font-variant:small-caps; font-family:'Open Sans'">Michael Clark</span> <br>
+  <span class="" style="font-size:75%">https://m-clark.github.io</span><br><br>
+  <img src="img/CSCAR_logos/signature-acronym.png" style="width:30%; padding:10px 0;" alt="University of Michigan: CSCAR"> <br>
+  <img src="img/ARC_logos/ARC-acronym-signature.png" style="width:21%; padding:10px 0;" alt="University of Michigan: Advanced Research Computing"> 
+
+date: <span style="font-style:normal;font-family:'Open Sans'">`r Sys.Date()`</span>
+site: bookdown::bookdown_site
+output:
+  bookdown::gitbook:
+    css: [css/book.css, css/standard_html.css]
+    highlight: pygments
+    number_sections: false
+    config:
+      toc:
+        depth: 2
+        collapse: section
+        scroll_highlight: yes
+      edit : null
+      download: null
+      search: yes
+      sharing:
+        facebook: no
+        twitter: no
+        google: no
+        weibo: no
+        instapper: no
+        vk: no
+        all: ['twitter', 'facebook', 'google', 'weibo', 'instapaper']
+always_allow_html: yes
+documentclass: book
+# bibliography: refs.bib
+biblio-style: apalike
+link-citations: yes
+description: "Data Processing & Visualization in R"    # leaving this blank will actually screw things up in the same way as the url issue; even commenting will
+cover-image: img/nineteeneightyR.png
+url: 'https\://m-clark.github.io/'  # evidently the \: is required or you'll get text in the title/toc area
+favicon: 'img/R.ico'
+github-repo:  m-clark/
+---
+
+<!-- in general, this format is a cluster* of problems for anything beyond the simplest document. It literally will randomly drop things with no code change, from whole sections suddenly becoming blank with no change having been applied to them, to interactives disappearing also with not code change. I have actually inserted section code into index at point of child and it STILL was ignored. note: child files will not recognize chunk or knit setup so must be given their own; -->
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, message=F, warning=F, error=F, comment=NA, R.options=list(width=220),   # code 
+                      dev.args=list(bg = 'transparent'), dev='svg', fig.align='center',                 # viz
+                      cache.rebuild=F, cache=T)                                                         # cache
+```
+
+<!-- # ```{r setup2, include=FALSE, eval=TRUE, cache=FALSE} -->
+<!-- # knitr::opts_knit$set(root.dir=normalizePath("..")) -->
+<!-- # ``` -->
+<!-- #  -->
+
+```{r load_common_packages, echo=FALSE, cache=FALSE, eval=TRUE, cache=FALSE}
+library(tidyverse); library(ggplot2);library(ggplot2movies); library(tibble)
+```
+
+#
+
+<!-- <div style='text-align:center'><span style="font-size:350%; font-variant:small-caps; font-style:italic; color:#B2001D">Data Processing <br>&<br><span style="font-size:50%; "></span>Visualization</span></div> -->
+
+
+
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+
+<!-- <div style='text-align:center'><span style="font-size:200%; font-variant:small-caps"> -->
+<!-- [m-clark.github.io/workshops/DataProcViz](http://m-clark.github.io/workshops/DataProcViz)</div> -->
+
+<!-- <div style='text-align:center'><span style="font-size:200%; font-variant:small-caps"> -->
+<!-- [m-clark.github.io/workshops/DataProcViz/Exercises.html](http://m-clark.github.io/workshops/DataProcViz/Exercises.html)</div> -->
+
+
+```{r rimg, fig.align='center',  out.width=300, echo=FALSE, include=identical(knitr:::pandoc_to(), 'html')}
+knitr::include_graphics('img/198R.png', dpi = NA)
+```
+
+```{r ccimg, fig.align='center',  out.width=0, fig.show='hide', echo=FALSE, include=identical(knitr:::pandoc_to(), 'html')}
+knitr::include_graphics('img/ccbysa.png', dpi = NA)
+knitr::include_graphics('img/mc.png', dpi = NA)
+```

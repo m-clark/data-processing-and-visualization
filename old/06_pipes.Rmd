@@ -1,0 +1,118 @@
+# Pipes
+
+
+Note: More detail on much of this part is given in [another workshop](https://m-clark.github.io/workshops/dplyr/mainSlides.html).
+
+
+
+Pipes are operators that send what comes before to what comes after.
+
+There are many different pipes, and some packages that use their own.
+
+However, the vast majority of packages use the same pipe:
+
+
+<div style="text-align:center;font-variant:small-caps; font-size:500%; color:#ff5503">%>%</div>
+
+
+Here, we'll focus on their use with the <span class="pack">dplyr</span> package. Later, we'll use it for visualizations.
+
+Example:
+
+```{r pipes}
+mydf %>% 
+  select(var1, var2) %>% 
+  filter(var1 == 'Yes') %>% 
+  summary
+```
+
+Start with a data.frame <span class="" style="font-family:Consolas">%>%</span> 
+
+&nbsp;&nbsp;&nbsp;  select columns from it <span class="" style="font-family:Consolas">%>%</span> 
+
+&nbsp;&nbsp;&nbsp;  filter/subset it <span class="" style="font-family:Consolas">%>%</span> 
+
+&nbsp;&nbsp;&nbsp;  get a summary
+
+##### Using variables as they are created
+
+We can use variables as soon as they are created.
+
+```{r varfly}
+mydf %>% 
+  mutate(newvar1 = var1 + var2,
+         newvar2 = newvar1/var3) %>% 
+  summarise(newvar2avg = mean(newvar2))
+```
+
+
+### Pipes for Visualization (more later)
+
+Generic example:
+
+```{r pipeviz}
+basegraph %>% 
+  points %>%
+  lines %>%
+  layout
+```
+
+### The dot
+
+Most functions are not 'pipe-aware' by default.
+
+Example: pipe to a modeling function.
+
+```{r pipeerror}
+mydf %>% 
+  lm(y ~ x)  # error
+```
+
+Other pipes could work in this situation.
+
+  - e.g. <span class="func">%$%</span> in magrittr
+
+But generally, one can use a dot.
+
+- The dot refers to the object before the pipe.
+
+```{r pipedot}
+mydf %>% 
+  lm(y ~ x, data=.)
+```
+
+
+### Flexibility
+
+Piping is not just for data.frames.
+
+- The following starts with a character vector.
+- Sends it to a recursive function (named <span class="func">..</span>).
+    - <span class="func">..</span> is created on-the-fly. 
+- After the function is created, it's used on ., representing the string.
+- Result: pipes between the words.
+
+```{r ridiculous, eval=T, echo=-1}
+library(magrittr)
+c('Ceci', "n'est", 'pas', 'une', 'pipe!') %>%
+{
+  .. <-  . %>%
+    if (length(.) == 1)  .
+    else paste(.[1], '%>%', ..(.[-1]))
+  ..(.)
+} 
+```
+
+>- Put that in your pipe and smoke it René Magritte!
+
+### Summary
+
+Pipes are best used interactively.
+
+Extremely useful for data exploration.
+
+Common in many visualization packages.
+
+See the <span class="pack">magrittr</span> package for more pipes.
+
+

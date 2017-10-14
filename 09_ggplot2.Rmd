@@ -1,4 +1,14 @@
-# ggplot2
+# Part II: Visualization
+
+## ggplot2
+
+
+```{r ggplot2setup, include=FALSE, eval=TRUE, cache=FALSE}
+knitr::opts_chunk$set(echo = T, message=F, warning=F, comment=NA, autodep=T, eval=FALSE, cache.rebuild=F, cache=F,
+                      R.options=list(width=120), fig.width=8, fig.align = 'center')
+```
+
+
 
 <span class="pack">ggplot2</span> is an extremely popular package for visualization in R.
 
@@ -27,7 +37,7 @@ Strengths:
 - Equally spaced colors as a default
 
 
-### Aesthetics
+#### Aesthetics
 
 <span class="emph">Aesthetics</span> map data to aesthetic aspects of the plot.
 
@@ -42,7 +52,7 @@ aes(x=myvar, y=myvar2, color=myvar3, group=g)
 ```
 
 
-### Layers
+#### Layers
 
 In general, we start with a base layer and add to it.
 
@@ -55,7 +65,7 @@ ggplot(aes(x=myvar, y=myvar2), data=mydata)
 This would just produce a plot background.
 
 
-### Piping
+#### Piping
 
 <span class="emph">Layers</span> are added via piping.
 
@@ -66,20 +76,24 @@ The first layers added are typically <span class="emph">geoms</span>:
 - density
 - text
 
-<span class="pack">ggplot2</span> was using pipes before it was cool, and so it has a different pipe.
-
-Otherwise, the concept is the same as before.
+<span class="pack">ggplot2</span> was using pipes before it was cool, and so it has a different pipe (<span class="emph">+</span>). Otherwise, the concept is the same as before.
 
 ```{r pipeplus, eval=FALSE}
 ggplot(aes(x=myvar, y=myvar2), data=mydata) +
   geom_point()
 ```
 
-And now we would have a scatterplot.
+Our base is provided via the <span class="func">ggplot2</span> functions and specifies the data along with x and y aesthetics.
+
+The <span class="func">geom_point</span> function adds a layer of points, and now we would have a scatterplot.
+
+- Alternatively, you could have specified the x and y aesthetic at the geom_point layer
+- If you're going to have the same x, y, color, etc. aesthetics regardless of layer, put it in the base.
+    - Otherwise, doing it by layer gives you more flexibility
 
 
 
-### Examples
+#### Examples
 
 ```{r ggscatter, eval=TRUE}
 library(ggplot2)
@@ -100,7 +114,7 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
   geom_point(aes(size=carat, color=clarity), alpha=.25) 
 ```
 
-### Stats
+#### Stats
 
 There are many statistical functions built in.
 
@@ -131,7 +145,7 @@ ggplot(mtcars, aes(cyl, mpg)) +
 ```
 
 
-### Facets
+#### Facets
 
 <span class="emph">Facets</span> allow for paneled display, a very common operation.
 
@@ -145,7 +159,7 @@ In general, we often want comparison plots.
 
 Both use a formula approach to specify the grouping.
 
-##### facet_grid
+###### facet_grid
 
 ```{r facetgrid, eval=TRUE}
 ggplot(mtcars, aes(wt, mpg)) + 
@@ -154,7 +168,7 @@ ggplot(mtcars, aes(wt, mpg)) +
 ```
 
 
-##### facet_wrap
+###### facet_wrap
 
 
 ```{r facetwrap, eval=TRUE}
@@ -164,14 +178,21 @@ ggplot(mtcars, aes(wt, mpg)) +
 ```
 
 
-### Fine control
+#### Fine control
 
-ggplot2 makes it easy to get good looking graphs quickly.
+<span class="pack">ggplot2</span> makes it easy to get good looking graphs quickly.
 
-However the amount of fine control is extensive.
+However the amount of fine control is extensive.  The following plot is hideous (aside from the background, which is totaly rad), but illustrates the point.
 
-```{r finecontrol, fig.height=6, fig.width=6, echo=TRUE, eval=TRUE}
+```{r finecontrol, fig.height=6, fig.width=6, echo=-c(1:5, 7), eval=TRUE, cache=TRUE}
+library(grid); library(caTools)
+img = caTools::read.gif('img/lamb.gif')
+lambosun = img$col[img$image+1]
+dim(lambosun) = dim(img$image)
+
 ggplot(aes(x=carat, y=price), data=diamonds) +
+  annotation_custom(rasterGrob(lambosun, width=unit(1,"npc"), height=unit(1,"npc"), interpolate = FALSE), 
+                    -Inf, Inf, -Inf, Inf) +
   geom_point(aes(color=clarity), alpha=.5) + 
   scale_y_log10(breaks=c(1000,5000,10000)) +
   xlim(0, 10) +
@@ -190,7 +211,7 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
 
 
 
-### Themes
+#### Themes
 
 In the last example you saw two uses of a <span class="emph">theme</span>.
 
@@ -205,7 +226,7 @@ Each argument takes on a specific value or an element function:
 - <span class="func">element_blank</span>
 
 
-### Themes
+#### Themes
 
 The base theme is not too good.
 
@@ -215,7 +236,7 @@ The base theme is not too good.
 You will almost invariably need to tweak it.
 
 
-### Extensions
+#### Extensions
 
 <span class="pack">ggplot2</span> now has its own extension system, and there is even a website to track the extensions.
 
@@ -245,7 +266,7 @@ Muller_plot(Muller_df, palette=rep(RColorBrewer::brewer.pal(12, 'Set3'), 4)) +
 
 
 
-### Summary ggplot2
+#### Summary ggplot2
 
 <span class="pack">ggplot2</span> is an easy to use, but powerful visualization tool.
 
@@ -261,3 +282,67 @@ Allows one to think in many dimensions for any graph:
 2d graphs are only useful for conveying the simplest of ideas.
 
 Use <span class="pack">ggplot2</span> to easily create more interesting visualizations.
+
+
+
+#### **ggplot2 Exercises**
+
+##### Exercise 0
+
+Install and load the <span class="pack">ggplot2</span> package.
+
+##### Exercise 1
+
+Create two plots, one a scatterplot (e.g. with <span class="func">geom_point</span>) and one with lines (e.g. <span class="func">geom_line</span>) with a data set of your choosing (all of the following are base R or available after loading <span class="pack">ggplot2</span>.  Some suggestions:
+
+- <span class="objclass">faithful</span>: Waiting time between eruptions and the duration of the eruption for the Old Faithful geyser in Yellowstone National Park, Wyoming, USA.
+- <span class="objclass">msleep</span>:  mammals sleep dataset with sleep times and weights etc.
+- <span class="objclass">diamonds</span>: used in the slides
+- <span class="objclass">economics</span>: US economic time series.
+- <span class="objclass">txhousing</span>: Housing sales in TX.
+- <span class="objclass">midwest</span>: Midwest demographics.
+- <span class="objclass">mpg</span>: Fuel economy data from 1999 and 2008 for 38 popular models of car
+
+Recall the basic form for ggplot.
+
+```
+ggplot(aes(x=*, y=*, other), data=*) +
+  geom_*() +
+  otherLayers, theme etc.
+```
+
+Themes to play with:
+
+- <span class="func">theme_bw</span>
+- <span class="func">theme_classic</span>
+- <span class="func">theme_dark</span>
+- <span class="func">theme_gray</span>
+- <span class="func">theme_light</span>
+- <span class="func">theme_linedraw</span>
+- <span class="func">theme_minimal</span>
+
+```{r, echo=FALSE}
+library(ggplot2)
+ggplot(aes(x=waiting, y=eruptions), data=faithful) +
+  geom_point()
+```
+
+
+##### Exercise 2
+
+Play around and change the arguments to the following. You'll need to install the maps package. For example, do points for all county midpoints, with different colors.
+
+```{r}
+library(maps)
+mi = map_data("county", "michigan")
+seats = mi %>% 
+  group_by(subregion) %>% 
+  summarise_at(vars(lat, long), function(x) median(range(x)))
+
+ggplot(mi, aes(long, lat)) +
+  geom_polygon(aes(group = group), fill = NA, colour = "grey60") +
+  geom_text(aes(label = subregion), data = seats, size = 1, angle = 45) +
+  geom_point(y=42.281389, x=-83.748333, color='#1e90ff', size=3) +
+  theme_minimal() +
+  theme(panel.grid=element_blank())
+```

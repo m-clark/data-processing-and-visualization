@@ -1,15 +1,16 @@
-# Input/Output
+## Input/Output
 
-Standard methods of reading in data
+
+Standard methods of reading in data include the following functions:
 
 - <span class="func">read.table</span>
 - <span class="func">read.csv</span>
 - <span class="func">readLines</span>
 
-Base R also comes with the <span class="pack">foreign</span> package for reading in other types of files, especially other statistical packages. However, while you may see it still use, it's not as useful as what's found in other packages.
+Base R also comes with the <span class="pack">foreign</span> package for reading in other types of files, especially other statistical packages. However, while you may see it still in use, it's not as useful as what's found in other packages.
 
 
-### Newer approaches
+#### Newer approaches
 
 <span class="pack">haven</span>: Package to read in foreign statistical files
 
@@ -23,7 +24,7 @@ Base R also comes with the <span class="pack">foreign</span> package for reading
 - <span class="func">import</span>, <span class="func">export</span> (also <span class="func">convert</span>)
 
 
-### Faster approaches
+#### Faster approaches
 
 <span class="pack">readr</span>: Faster versions of base R functions
 
@@ -37,14 +38,14 @@ However, they actually can be used as a diagnostic.
   - pick up potential data entry errors.
 
 
-<span class="pack">data.table</span>: faster read.table
+<span class="pack">data.table</span> provides a faster version <span class="func">read.table</span>, and is typically faster than <span class="pack">readr</span> approaches.
 
   - <span class="func">fread</span>
 
-Typically faster than <span class="pack">readr</span> approaches.
 
 
-### Other Data
+
+#### Other Data
 
 Note that R can handle many types of data.
 
@@ -63,8 +64,17 @@ Some examples:
 And many, many others.
 
 
-### On the horizon
+#### On the horizon
  
 <span class="pack">feather</span>: designed to make reading/writing data frames efficient
 
 Works in both Python and R. Still in early stages of development.
+
+
+#### **I/O Exercises**
+
+##### Thinking Exercises
+
+Why might you use <span class="func">read_csv</span> from the <span class="pack">readr</span> package rather than <span class="func">read.csv</span> in base R?
+
+What is your definition of 'big' data?
