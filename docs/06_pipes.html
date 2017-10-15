@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Data Processing &amp; Visualization</title>
+  <meta name="description" content="Data Processing &amp; Visualization in R">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Data Processing &amp; Visualization" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://m-clark.github.io/" />
+  <meta property="og:image" content="https://m-clark.github.io/img/nineteeneightyR.png" />
+  <meta property="og:description" content="Data Processing &amp; Visualization in R" />
+  <meta name="github-repo" content="m-clark/" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Data Processing &amp; Visualization" />
+  
+  <meta name="twitter:description" content="Data Processing &amp; Visualization in R" />
+  <meta name="twitter:image" content="https://m-clark.github.io/img/nineteeneightyR.png" />
+
+
+
+<meta name="date" content="2017-10-15">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  <link rel="shortcut icon" href="img/R.ico" type="image/x-icon">
+<link rel="prev" href="05_vectorapp.html">
+<link rel="next" href="07_tidyverse.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+<script src="libs/proj4js-2.3.15/proj4.js"></script>
+<link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
+<script src="libs/highcharts-5.0.6/highstock.js"></script>
+<script src="libs/highcharts-5.0.6/highcharts-3d.js"></script>
+<script src="libs/highcharts-5.0.6/highcharts-more.js"></script>
+<script src="libs/highcharts-5.0.6/modules/annotations.js"></script>
+<script src="libs/highcharts-5.0.6/modules/broken-axis.js"></script>
+<script src="libs/highcharts-5.0.6/modules/data.js"></script>
+<script src="libs/highcharts-5.0.6/modules/drilldown.js"></script>
+<script src="libs/highcharts-5.0.6/modules/exporting.js"></script>
+<script src="libs/highcharts-5.0.6/modules/funnel.js"></script>
+<script src="libs/highcharts-5.0.6/modules/heatmap.js"></script>
+<script src="libs/highcharts-5.0.6/modules/map.js"></script>
+<script src="libs/highcharts-5.0.6/modules/no-data-to-display.js"></script>
+<script src="libs/highcharts-5.0.6/modules/offline-exporting.js"></script>
+<script src="libs/highcharts-5.0.6/modules/solid-gauge.js"></script>
+<script src="libs/highcharts-5.0.6/modules/treemap.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/annotations.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/draggable-legend.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/draggable-points.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/export-csv.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/grouped-categories.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/motion.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/pattern-fill-v2.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/tooltip-delay.js"></script>
+<script src="libs/highcharts-5.0.6/custom/reset.js"></script>
+<script src="libs/highcharts-5.0.6/custom/symbols-extra.js"></script>
+<script src="libs/highcharts-5.0.6/custom/text-symbols.js"></script>
+<link href="libs/fontawesome-4.5.0/font-awesome.min.css" rel="stylesheet" />
+<link href="libs/htmlwdgtgrid-1/htmlwdgtgrid.css" rel="stylesheet" />
+<script src="libs/highchart-binding-0.5.0/highchart.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css\book.css" type="text/css" />
+<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://m-clark.github.io/"><span style="font-size:125%; font-variant:small-caps; font-style:italic; color:#990024; font-family:Roboto">Data Processing & Visualization</span></a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html"><i class="fa fa-check"></i>Intro</a><ul>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#outline"><i class="fa fa-check"></i>Outline</a><ul>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#part-1-data-processing"><i class="fa fa-check"></i>Part 1: Data Processing</a></li>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#part-2-visualization"><i class="fa fa-check"></i>Part 2: Visualization</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html"><i class="fa fa-check"></i>Part 1: Data Processing</a><ul>
+<li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#data-structures"><i class="fa fa-check"></i>Data Structures</a></li>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html"><i class="fa fa-check"></i>Input/Output</a></li>
+<li class="chapter" data-level="" data-path="04_indexing.html"><a href="04_indexing.html"><i class="fa fa-check"></i>Indexing</a></li>
+<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html"><i class="fa fa-check"></i>Vectorization &amp; Apply</a></li>
+<li class="chapter" data-level="" data-path="06_pipes.html"><a href="06_pipes.html"><i class="fa fa-check"></i>Pipes</a></li>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html"><i class="fa fa-check"></i>Tidyverse</a></li>
+<li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html"><i class="fa fa-check"></i>data table</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html"><i class="fa fa-check"></i>Part II: Visualization</a><ul>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#thinking-visually"><i class="fa fa-check"></i>Thinking Visually</a><ul>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#information"><i class="fa fa-check"></i>Information</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#color"><i class="fa fa-check"></i>Color</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#webaxe"><i class="fa fa-check"></i>WebAxe</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#examples"><i class="fa fa-check"></i>Examples</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#stats"><i class="fa fa-check"></i>Stats</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#facets"><i class="fa fa-check"></i>Facets</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
+<li><a href="10_ggplot2.html#ggplot2-exercises"><strong>ggplot2 Exercises</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#packages"><i class="fa fa-check"></i>Packages</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#piping-for-visualization"><i class="fa fa-check"></i>Piping for Visualization</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#htmlwidgets"><i class="fa fa-check"></i>htmlwidgets</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#plotly-example"><i class="fa fa-check"></i>plotly example</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#ggplotly"><i class="fa fa-check"></i>ggplotly</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#highcharter"><i class="fa fa-check"></i>Highcharter</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#visnetwork"><i class="fa fa-check"></i>visNetwork</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#data-table-1"><i class="fa fa-check"></i>data table</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#shiny"><i class="fa fa-check"></i>Shiny</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
+<li><a href="11_interactive.html#interactive-visualization-exercises"><strong>Interactive Visualization Exercises</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="999_summary.html"><a href="999_summary.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="divider"></li>
+<li><a href="https://m-clark.github.io/"><img src="img/mc.png" style="width:50%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo"></a></li>
+<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="width:50%; border-width:0; display:block; margin: 0 auto;" src="img/ccbysa_test.png" /></a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><span style="font-size:125%; font-family:Roboto; font-style:normal">Data Processing &amp; Visualization</span></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="pipes" class="section level2">
+<h2>Pipes</h2>
+<p>Note: More detail on much of the following is given in <a href="https://m-clark.github.io/workshops/dplyr/mainSlides.html">another workshop</a>.</p>
+<p>Pipes are operators that send what comes before to what comes after.</p>
+<p>There are many different pipes, and some packages that use their own.</p>
+<p>However, the vast majority of packages use the same pipe:</p>
+<div style="text-align:center;font-variant:small-caps; font-size:500%; color:#ff5503">
+%&gt;%
+</div>
+<p>Here, we’ll focus on their use with the <span class="pack">dplyr</span> package. Later, we’ll use it for visualizations.</p>
+<p>Example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(var1, var2) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(var1 <span class="op">==</span><span class="st"> &#39;Yes&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>summary</code></pre></div>
+<blockquote>
+<p>Start with a data.frame <span style="font-family:Consolas">%&gt;%</span> <br>    select columns from it <span style="font-family:Consolas">%&gt;%</span> <br>    filter/subset it <span style="font-family:Consolas">%&gt;%</span> <br>    get a summary</p>
+</blockquote>
+<div id="using-variables-as-they-are-created" class="section level5">
+<h5>Using variables as they are created</h5>
+<p>One nice thing about pipelines is that we can use variables as soon as they are created, with out having to break out separate objects/steps.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">newvar1 =</span> var1 <span class="op">+</span><span class="st"> </span>var2,
+         <span class="dt">newvar2 =</span> newvar1<span class="op">/</span>var3) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">newvar2avg =</span> <span class="kw">mean</span>(newvar2))</code></pre></div>
+</div>
+<div id="pipes-for-visualization-more-later" class="section level4">
+<h4>Pipes for Visualization (more later)</h4>
+<p>The following provides a means to think about pipes for visualization. It’s just a generic example for now, but we’ll see more later.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">basegraph <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>points <span class="op">%&gt;%</span>
+<span class="st">  </span>lines <span class="op">%&gt;%</span>
+<span class="st">  </span>layout</code></pre></div>
+</div>
+<div id="the-dot" class="section level4">
+<h4>The dot</h4>
+<p>Most functions are not ‘pipe-aware’ by default.</p>
+<p>Example: pipe to a modeling function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)  <span class="co"># error</span></code></pre></div>
+<p>Other pipes could work in this situation.</p>
+<ul>
+<li>e.g. <span class="func">%$%</span> in <span class="pack">magrittr</span>.</li>
+</ul>
+<p>But generally, when you come upon this situation, you can use a dot.</p>
+<ul>
+<li>The dot refers to the object before the previous pipe.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>.)  <span class="co"># . == mydf</span></code></pre></div>
+</div>
+<div id="flexibility" class="section level4">
+<h4>Flexibility</h4>
+<p>Piping is not just for data.frames.</p>
+<ul>
+<li>The following starts with a character vector.</li>
+<li>Sends it to a recursive function (named <span class="func">..</span>).
+<ul>
+<li><span class="func">..</span> is created on-the-fly, and has a single argument (<code>.</code>).</li>
+</ul></li>
+<li>After the function is created, it’s used on ., whcih represents the string before the pipe.</li>
+<li>Result: pipes between the words.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="st">&#39;Ceci&#39;</span>, <span class="st">&quot;n&#39;est&quot;</span>, <span class="st">&#39;pas&#39;</span>, <span class="st">&#39;une&#39;</span>, <span class="st">&#39;pipe!&#39;</span>) <span class="op">%&gt;%</span>
+{
+  .. &lt;-<span class="st">  </span>. <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="cf">if</span> (<span class="kw">length</span>(.) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)  .
+    <span class="cf">else</span> <span class="kw">paste</span>(.[<span class="dv">1</span>], <span class="st">&#39;%&gt;%&#39;</span>, <span class="kw">..</span>(.[<span class="op">-</span><span class="dv">1</span>]))
+  <span class="kw">..</span>(.)
+} </code></pre></div>
+<pre><code>[1] &quot;Ceci %&gt;% n&#39;est %&gt;% pas %&gt;% une %&gt;% pipe!&quot;</code></pre>
+<blockquote>
+<p>Put that in your pipe and smoke it René Magritte!</p>
+</blockquote>
+</div>
+<div id="summary" class="section level4">
+<h4>Summary</h4>
+<p>Pipes are best used interactively.</p>
+<p>Extremely useful for data exploration.</p>
+<p>Common in many visualization packages.</p>
+<p>See the <span class="pack">magrittr</span> package for more pipes.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="05_vectorapp.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="07_tidyverse.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["twitter", "facebook", "google", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"download": null,
+"toc": {
+"collapse": "subsection",
+"depth": 3,
+"scroll_highlight": true
+},
+"highlight": "pygments",
+"search": true
+});
+});
+</script>
+
+</body>
+
+</html>

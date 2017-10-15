@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Data Processing &amp; Visualization</title>
+  <meta name="description" content="Data Processing &amp; Visualization in R">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Data Processing &amp; Visualization" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://m-clark.github.io/" />
+  <meta property="og:image" content="https://m-clark.github.io/img/nineteeneightyR.png" />
+  <meta property="og:description" content="Data Processing &amp; Visualization in R" />
+  <meta name="github-repo" content="m-clark/" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Data Processing &amp; Visualization" />
+  
+  <meta name="twitter:description" content="Data Processing &amp; Visualization in R" />
+  <meta name="twitter:image" content="https://m-clark.github.io/img/nineteeneightyR.png" />
+
+
+
+<meta name="date" content="2017-10-15">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  <link rel="shortcut icon" href="img/R.ico" type="image/x-icon">
+<link rel="prev" href="04_indexing.html">
+<link rel="next" href="06_pipes.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+<script src="libs/proj4js-2.3.15/proj4.js"></script>
+<link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
+<script src="libs/highcharts-5.0.6/highstock.js"></script>
+<script src="libs/highcharts-5.0.6/highcharts-3d.js"></script>
+<script src="libs/highcharts-5.0.6/highcharts-more.js"></script>
+<script src="libs/highcharts-5.0.6/modules/annotations.js"></script>
+<script src="libs/highcharts-5.0.6/modules/broken-axis.js"></script>
+<script src="libs/highcharts-5.0.6/modules/data.js"></script>
+<script src="libs/highcharts-5.0.6/modules/drilldown.js"></script>
+<script src="libs/highcharts-5.0.6/modules/exporting.js"></script>
+<script src="libs/highcharts-5.0.6/modules/funnel.js"></script>
+<script src="libs/highcharts-5.0.6/modules/heatmap.js"></script>
+<script src="libs/highcharts-5.0.6/modules/map.js"></script>
+<script src="libs/highcharts-5.0.6/modules/no-data-to-display.js"></script>
+<script src="libs/highcharts-5.0.6/modules/offline-exporting.js"></script>
+<script src="libs/highcharts-5.0.6/modules/solid-gauge.js"></script>
+<script src="libs/highcharts-5.0.6/modules/treemap.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/annotations.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/draggable-legend.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/draggable-points.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/export-csv.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/grouped-categories.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/motion.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/pattern-fill-v2.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/tooltip-delay.js"></script>
+<script src="libs/highcharts-5.0.6/custom/reset.js"></script>
+<script src="libs/highcharts-5.0.6/custom/symbols-extra.js"></script>
+<script src="libs/highcharts-5.0.6/custom/text-symbols.js"></script>
+<link href="libs/fontawesome-4.5.0/font-awesome.min.css" rel="stylesheet" />
+<link href="libs/htmlwdgtgrid-1/htmlwdgtgrid.css" rel="stylesheet" />
+<script src="libs/highchart-binding-0.5.0/highchart.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css\book.css" type="text/css" />
+<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://m-clark.github.io/"><span style="font-size:125%; font-variant:small-caps; font-style:italic; color:#990024; font-family:Roboto">Data Processing & Visualization</span></a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html"><i class="fa fa-check"></i>Intro</a><ul>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#outline"><i class="fa fa-check"></i>Outline</a><ul>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#part-1-data-processing"><i class="fa fa-check"></i>Part 1: Data Processing</a></li>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#part-2-visualization"><i class="fa fa-check"></i>Part 2: Visualization</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html"><i class="fa fa-check"></i>Part 1: Data Processing</a><ul>
+<li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#data-structures"><i class="fa fa-check"></i>Data Structures</a></li>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html"><i class="fa fa-check"></i>Input/Output</a></li>
+<li class="chapter" data-level="" data-path="04_indexing.html"><a href="04_indexing.html"><i class="fa fa-check"></i>Indexing</a></li>
+<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html"><i class="fa fa-check"></i>Vectorization &amp; Apply</a></li>
+<li class="chapter" data-level="" data-path="06_pipes.html"><a href="06_pipes.html"><i class="fa fa-check"></i>Pipes</a></li>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html"><i class="fa fa-check"></i>Tidyverse</a></li>
+<li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html"><i class="fa fa-check"></i>data table</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html"><i class="fa fa-check"></i>Part II: Visualization</a><ul>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#thinking-visually"><i class="fa fa-check"></i>Thinking Visually</a><ul>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#information"><i class="fa fa-check"></i>Information</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#color"><i class="fa fa-check"></i>Color</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#webaxe"><i class="fa fa-check"></i>WebAxe</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#examples"><i class="fa fa-check"></i>Examples</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#stats"><i class="fa fa-check"></i>Stats</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#facets"><i class="fa fa-check"></i>Facets</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
+<li><a href="10_ggplot2.html#ggplot2-exercises"><strong>ggplot2 Exercises</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#packages"><i class="fa fa-check"></i>Packages</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#piping-for-visualization"><i class="fa fa-check"></i>Piping for Visualization</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#htmlwidgets"><i class="fa fa-check"></i>htmlwidgets</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#plotly-example"><i class="fa fa-check"></i>plotly example</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#ggplotly"><i class="fa fa-check"></i>ggplotly</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#highcharter"><i class="fa fa-check"></i>Highcharter</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#visnetwork"><i class="fa fa-check"></i>visNetwork</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#data-table-1"><i class="fa fa-check"></i>data table</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#shiny"><i class="fa fa-check"></i>Shiny</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
+<li><a href="11_interactive.html#interactive-visualization-exercises"><strong>Interactive Visualization Exercises</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="999_summary.html"><a href="999_summary.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="divider"></li>
+<li><a href="https://m-clark.github.io/"><img src="img/mc.png" style="width:50%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo"></a></li>
+<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="width:50%; border-width:0; display:block; margin: 0 auto;" src="img/ccbysa_test.png" /></a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><span style="font-size:125%; font-family:Roboto; font-style:normal">Data Processing &amp; Visualization</span></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="vectorization-apply" class="section level2">
+<h2>Vectorization &amp; Apply</h2>
+<div id="boolean-indexing" class="section level4">
+<h4>Boolean Indexing</h4>
+<p><span class="objclass">Logicals</span> are objects with values of <code>TRUE</code> or <code>FALSE</code>.</p>
+<p>Assume x is a vector of numbers.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">10</span>, <span class="op">-</span><span class="dv">5</span>)
+idx =<span class="st"> </span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>
+idx</code></pre></div>
+<pre><code>[1] FALSE FALSE  TRUE FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[idx]</code></pre></div>
+<pre><code>[1] 10</code></pre>
+</div>
+<div id="flexiblity" class="section level4">
+<h4>Flexiblity</h4>
+<p>We don’t have to create an explicit index object first, as R indexing is ridiculously flexible.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>]
+x[x <span class="op">!=</span><span class="st"> </span><span class="dv">3</span>]
+x[<span class="kw">ifelse</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>  <span class="op">&amp;</span><span class="st"> </span>x <span class="op">!=</span><span class="dv">10</span>, T, F)]
+x[{y =<span class="st"> </span>idx; y}]
+x[<span class="kw">resid</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>]</code></pre></div>
+</div>
+<div id="vectorized-operations" class="section level4">
+<h4>Vectorized operations</h4>
+<p>Consider the following unfortunately coded loop:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mydf)) {
+  check =<span class="st"> </span>mydf<span class="op">$</span>x[i] <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>
+  <span class="cf">if</span> (check<span class="op">==</span><span class="ot">TRUE</span>) {
+    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;Yes&#39;</span>
+  } 
+  <span class="cf">else</span> {
+    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;No&#39;</span>
+  }
+}</code></pre></div>
+<p>Compare:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf<span class="op">$</span>y =<span class="st"> &#39;No&#39;</span>
+mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>] =<span class="st"> &#39;Yes&#39;</span></code></pre></div>
+<p>This gets us the same thing, and would be much faster. Boolean indexing is an example of a vectorized operation.</p>
+<p>The whole vector is considered:</p>
+<ul>
+<li>Rather than each element individually</li>
+<li>Any preprocessing is done once rather than n times</li>
+</ul>
+<p>This is always faster.</p>
+<p>Example: Log all values in a matrix.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mymatrix_log =<span class="st"> </span><span class="kw">log</span>(mymatrix)</code></pre></div>
+<p>Way faster than looping over elements, rows or columns. Here we’ll let the <span class="func">apply</span> function stand in for our loop, logging the elements of each column.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)
+<span class="kw">identical</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(microbenchmark)
+<span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log),
+               <span class="kw">log</span>(mymatrix))</code></pre></div>
+<pre><code>Unit: microseconds
+                    expr    min     lq     mean median      uq     max neval
+ apply(mymatrix, 2, log) 45.928 47.430 48.98774 47.880 48.3300 150.694   100
+           log(mymatrix)  3.002  3.002  3.31125  3.302  3.4525   4.503   100</code></pre>
+<p>Many vectorized functions already exist in R.</p>
+<p>They are often written in C, Fortran etc., and so even faster.</p>
+</div>
+<div id="apply-functions" class="section level4">
+<h4>Apply functions</h4>
+<p>A family of functions allows for a succinct way of looping.</p>
+<p>Common ones include:</p>
+<ul>
+<li><span class="func">apply</span>
+<ul>
+<li>arrays, matrices, data.frames</li>
+</ul></li>
+<li><span class="func">lapply</span>, <span class="func">sapply</span>, <span class="func">vapply</span>
+<ul>
+<li>lists, data.frames, vectors</li>
+</ul></li>
+<li><span class="func">tapply</span>
+<ul>
+<li>grouped operations (table apply)</li>
+</ul></li>
+<li><span class="func">mapply</span>
+<ul>
+<li>multivariate version of sapply</li>
+</ul></li>
+<li><span class="func">replicate</span>
+<ul>
+<li>similar to sapply</li>
+</ul></li>
+</ul>
+</div>
+<div id="example" class="section level4">
+<h4>Example</h4>
+<p>Standardizing variables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mydf)){
+  x =<span class="st"> </span>mydf[,i]
+  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)){
+    x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x))<span class="op">/</span><span class="kw">sd</span>(x)
+  }
+}</code></pre></div>
+<p>The above would be a really bad way to use R. The following is much cleaner and now you’d have a function you can use elsewhere.</p>
+<p><span class="func">apply</span> will take a matrix, and apply a function over the margin, row or column, you want.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  (x<span class="op">-</span><span class="kw">mean</span>(x))<span class="op">/</span><span class="kw">sd</span>(x)
+}
+
+<span class="kw">apply</span>(mydf, <span class="dv">2</span>, stdize)   <span class="co"># 1 for rows, 2 for columnwise application</span></code></pre></div>
+</div>
+<div id="timings" class="section level4">
+<h4>Timings</h4>
+<p>The previous demonstrates how to use apply.</p>
+<p>However, there is a <span class="func">scale</span> function in base R that uses a more vectorized approach under the hood.</p>
+<p>The following demonstrates various approaches to standardizing the columns of the matrix, even using a parallelized approach.</p>
+<p>The base R function requires very little code and beats the others.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mymat =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100000</span>), <span class="dt">ncol=</span><span class="dv">1000</span>)
+
+stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+  (x<span class="op">-</span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)
+}
+
+doubleloop =<span class="st"> </span><span class="cf">function</span>() {
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat)) {
+    x =<span class="st"> </span>mymat[, i]
+    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) {
+      x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)
+    }
+  }
+}
+
+
+singleloop =<span class="st"> </span><span class="cf">function</span>() {
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat)) {
+    x =<span class="st"> </span>mymat[, i]
+    x =<span class="st"> </span>(x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)
+  }
+}
+
+
+<span class="kw">library</span>(parallel)
+cl =<span class="st"> </span><span class="kw">makeCluster</span>(<span class="dv">8</span>)
+<span class="kw">clusterExport</span>(cl, <span class="kw">c</span>(<span class="st">&#39;stdize&#39;</span>, <span class="st">&#39;mymat&#39;</span>))
+doParallel<span class="op">::</span><span class="kw">registerDoParallel</span>(cl)
+
+test =<span class="st"> </span>microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(<span class="dt">doubleloop=</span><span class="kw">doubleloop</span>(),
+                                      <span class="dt">singleloop=</span><span class="kw">singleloop</span>(), 
+                                      <span class="dt">apply=</span><span class="kw">apply</span>(mymat, <span class="dv">2</span>, stdize), 
+                                      <span class="dt">parApply=</span><span class="kw">parApply</span>(cl, mymat, <span class="dv">2</span>, stdize),
+                                      <span class="dt">vectorized=</span><span class="kw">scale</span>(mymat), <span class="dt">times=</span><span class="dv">25</span>)
+<span class="kw">stopCluster</span>(cl)
+test</code></pre></div>
+<pre><code>Unit: milliseconds
+       expr         min          lq       mean     median         uq        max neval
+ doubleloop 2882.148089 2904.739076 2938.21281 2946.57065 2952.25532 3013.29805    25
+ singleloop   28.989806   29.512434   33.08177   31.17037   32.42606   84.79185    25
+      apply   32.167901   33.350945   33.96146   34.13204   34.64055   36.18983    25
+   parApply   17.691611   18.213638   21.91323   19.63893   21.12156   73.60683    25
+ vectorized    8.085578    8.491433   10.25583   10.66990   11.02532   12.62173    25</code></pre>
+</div>
+<div id="apply-functions-1" class="section level4">
+<h4>Apply functions</h4>
+<p>Benefits</p>
+<ul>
+<li>Cleaner/simpler code</li>
+<li>Environment kept clear of unnecessary objects</li>
+<li>Potentially more reproducible
+<ul>
+<li>more likely to use generalizable functions</li>
+</ul></li>
+<li>Might be faster</li>
+<li>Parallelizable</li>
+</ul>
+<p><span class="emph">NOT</span> necessarily faster than explicit loops.</p>
+<ul>
+<li>single loop over columns was as fast as apply</li>
+<li>Replicate and mapply are especially slow</li>
+</ul>
+<p>ALWAYS can <em>potentially</em> be faster than loops.</p>
+<ul>
+<li>Parallelization: parApply, parLapply etc.</li>
+</ul>
+</div>
+<div id="personal-experience" class="section level4">
+<h4>Personal experience</h4>
+<p>I use R every day, and rarely use explicit loops.</p>
+<ul>
+<li>Note: no speed difference for a <span class="func">for</span> loop vs. using <span class="func">while</span></li>
+<li>If you must use an explicit loop, create an empty object of the dimension/form you need, and then fill it in.
+<ul>
+<li>Notably faster</li>
+</ul></li>
+</ul>
+<p>I pretty much never use an explicit double loop, as a little more thinking about the problem will usually provide a more efficient path to solving the problem.</p>
+</div>
+<div id="apply-functions-2" class="section level4">
+<h4>Apply functions</h4>
+<p>Apply functions and similar approaches should be a part of your regular R experience.</p>
+<p>Other versions we’ll talk about have been optimized, but you need to know the basics in order to use those.</p>
+<p>Any you still may need parallel versions.</p>
+</div>
+<div id="vectorapply-exercises" class="section level4">
+<h4><strong>Vector/Apply Exercises</strong></h4>
+<div id="exercise-1-1" class="section level5">
+<h5>Exercise 1</h5>
+<p>With the following <span class="objclass">matrix</span>, use <span class="func">apply</span> and the <span class="func">sum</span> function to get row or column sums.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">3</span>)</code></pre></div>
+</div>
+<div id="exercise-2-2" class="section level5">
+<h5>Exercise 2</h5>
+<p>With the following <span class="objclass">list</span>, use <span class="func">lapply</span> and <span class="func">sapply</span> and the <span class="func">sum</span> function to get sums for the elements. There is no margin to specify with on a list, so just supply the list and the sum function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">7</span><span class="op">:</span><span class="dv">9</span>)</code></pre></div>
+<p><span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>. If you supply the argument <code>simplified=F</code>, it is identical. Otherwise, it attempts to return a vector or matrix.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="04_indexing.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="06_pipes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["twitter", "facebook", "google", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"download": null,
+"toc": {
+"collapse": "subsection",
+"depth": 3,
+"scroll_highlight": true
+},
+"highlight": "pygments",
+"search": true
+});
+});
+</script>
+
+</body>
+
+</html>

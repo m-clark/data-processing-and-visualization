@@ -1,0 +1,188 @@
+# Part II: Visualization
+
+```{r vissetup, include=FALSE, eval=TRUE, cache=FALSE}
+knitr::opts_chunk$set(eval=T, echo=F)
+```
+
+## Thinking Visually
+
+
+### Information
+
+A starting point regarding data visualization regards the information you want to display and then how you want to display it.  As in statistical modeling, parsimony is the goal, but not at the cost of the more compelling story.  We don't want to waste the time of the audience or be redundant, but we also want to avoid unnecessary clutter, chart junk, and the like. 
+
+We'll start with a couple examples. Consider the following.
+
+```{r problems}
+library(plotly)
+sw_height = starwars %>% 
+  filter(gender %in% c('male', 'female')) %>% 
+  group_by(gender) %>% 
+  summarise(Height=mean(height, na.rm=T),
+            N= n(),
+            se = sd(height, na.rm=T)/sqrt(N))
+sw_height %>% 
+  ggplot(aes(x=gender, y=Height)) +
+  geom_bar(aes(), color='black', stat='identity', width=.5) +
+  scale_fill_manual(values=c('red1', 'green')) +
+  labs(title='Height of Some Star Wars Characters') +
+  theme_bw()
+```
+
+
+So what's wrong with this? Plenty. Aside from being boring, the entire story can be said with a couple words- males are taller than females (even in the Star Wars universe).  There is no reason to have a visualization. And if a simple group difference is the most exciting thing you have to say, not many are going to be interested.
+
+Minor issues include unnecessary border around the bars, unnecessary vertical gridlines, and an unnecessary X axis label.
+
+Even worse.
+
+```{r problems2}
+sw_height %>% 
+  ggplot(aes(x=gender, y=Height)) +
+  geom_errorbar(aes(ymin=Height-2*se, ymax=Height+2*se),
+                width=.2,                    # Width of the error bars
+                position=position_dodge(.9)) +
+  geom_bar(aes(fill=gender), color='black', stat='identity', width=.5) +
+  scale_fill_manual(values=c('red1', 'green')) +
+  coord_cartesian(ylim=c(125,200)) +
+  labs(title='Height of Some Star Wars Characters') +
+  theme_bw()
+```
+
+Now the axis has been changed to distort the difference.  Furthermore, color is used but the colors are chosen poorly, add zero information.  And finally, the above doesn't even convey the information people think it does, assuming they are even standard error bars[^barerror], which one typically has to guess about in many journal visualizations of this kind.
+
+
+Now we add more information, but more problems!
+
+```{r ugly}
+starwars %>% 
+  filter(gender %in% c('male', 'female')) %>% 
+  ggplot(aes(x=mass, y=height)) +
+  geom_point(aes(color=gender), size=6) + 
+  geom_text(aes(label=name), size=2) + 
+  geom_smooth(method='lm', se=F, color='red', lwd=2) + 
+  scale_color_manual(values=c('red1', 'green')) +
+  theme_linedraw() +
+  theme(plot.background=element_rect(color='black'),
+        panel.background=element_rect(fill='gray92'),
+        panel.grid.major.x=element_line(size=2)
+        )
+```
+
+The above has unnecessary border, gridlines, and emphasis. The labels, while possibly interesting, do not relate anything useful to the graph, and many are illegible. It imposes a straight (and too wide of a) line on a nonlinear relationship.  And finally, color choice is both terrible and tends to draw one's eye to the female data points.  Here is what it looks like to someone with the most common form of colorblindness. If the points were less clumpy on gender, it would be very difficult to distinguish the groups.
+
+<img src="img/deuteranopia.png" style="display:block; margin: 0 auto;" width='50%'>
+
+
+And here is what it might look like when printed.
+
+```{r badbw}
+starwars %>% 
+  filter(gender %in% c('male', 'female')) %>% 
+  ggplot(aes(x=mass, y=height)) +
+  geom_point(aes(color=gender), size=6) + 
+  geom_text(aes(label=name), size=2) + 
+  geom_smooth(method='lm', se=F, color='black', lwd=2) + 
+  scale_color_grey(start=.6, end=.4) +
+  theme_linedraw() +
+  theme(plot.background=element_rect(color='black'),
+        panel.background=element_rect(fill='gray92'),
+        panel.grid.major.x=element_line(size=2)
+        )
+```
+
+
+Now consider the following.  We have six pieces of information in one graph- name (on hover), homeworld (shape), age (size), gender (color), mass (x), and height (y).  The colors are evenly spaced from one another, and so do not draw one's attention to one group over another. Opacity allows the line to be added and points overlap without loss of information.  We technically don't need a caption, legend or gridlines, because hovering over the data tells us everything we'd want to know about a given data point.  
+
+```{r better}
+sw2 = starwars %>% 
+  filter(gender %in% c('male', 'female')) %>% 
+  mutate(homeworld2 = ifelse(homeworld=='Tatooine', 'Tatooine', 'Naboo'),
+         homeworld2 = ifelse(homeworld!='Tatooine'& homeworld!='Naboo', 'Other', homeworld2),
+         homeworld2 = ifelse(is.na(homeworld2), 'Other', homeworld2)) %>% 
+  select(name, mass, height, birth_year, gender, homeworld, homeworld2) %>% ungroup
+
+
+# adding label=name will add name to plotly tooltip; ggplot will ignore
+g = sw2 %>% 
+  select(-homeworld) %>% 
+  rename(homeworld=homeworld2) %>% 
+  ggplot(aes(x=mass, y=height)) +
+  geom_smooth(color=lazerhawk::palettes$orange$tetradic[4], se=F, size=.5, alpha=.15) +
+  geom_point(aes(label=name, color=gender, shape=homeworld, size=birth_year), alpha=.5, show.legend=F) +
+  scale_color_manual(values=lazerhawk::palettes$orange$complementary) +
+  # geom_text(aes(label=name)) +
+  scale_size_continuous(range=c(2,10)) +
+  lazerhawk::theme_trueMinimal()+ 
+  theme(legend.position="none")  # only way to keep plotly from putting a legend
+
+ggplotly()%>% 
+  # add_lines(x=~mass, y=~height)
+  config(displayModeBar = F) %>% 
+  layout(title='Star Wars Characters',
+         font=list(family='Roboto'),
+         xaxis=list(title='Mass'),
+         yaxis=list(title='Height'))
+
+# 
+# sw2 %>% #drop_na() %>% 
+#   # group_by(gender) %>% 
+#   plot_ly(split=~gender) %>% 
+#   add_markers(x=~mass, y=~height, color=~homeworld2,# colors=c("#1f77b4", "#ff7f0e"),
+#               text=~name, size=~birth_year, opacity=.85,# symbol=~gender,
+#               sizes=c(50,100)) %>% 
+#   lazerhawk::theme_plotly()
+```
+
+<br>
+
+Whether this is something you'd prefer or not, the point is that we get quite a bit of information without being overwhelming, and the data is allowed to express itself cleanly.
+
+Here are some things to keep in mind when creating visualizations for scientific communication.
+
+
+#### Your audience isn't dumb
+
+Assume your audience, which in academia is full of people with advanced degrees or those aspiring to obtain one, can handle more than a bar graph.  If the visualization is good and well-explained[^captions], they'll be fine. 
+
+See the data visualization and maps sections of [2016: The Year in Visual Stories and Graphics](https://www.nytimes.com/interactive/2016/12/28/us/year-in-interactive-graphics.html) at the New York Times.  Good data visualization can be appreciated by more than an academic audience.  Assume you can at least provide visualizations on that level of complexity and be fine with your audience.
+
+<img src="img/nytimes.png" style="display:block; margin: 0 auto;">
+
+#### Clarity is key
+
+Sometimes the clearest message *is* a complicated one.  That's okay.  Make sure your visualization tells the story you think is important, but don't dumb it down via visualization.  People will likely remember the graphic before they'll remember the table of numbers.
+
+By the same token, don't needlessly complicate something that is straightforward.  Perhaps a scatter plot with some groupwise coloring is enough.  That's fine.
+
+All of this is easier said than done, and there is no right way to do data visualizations.  Prepare to experiment.
+
+
+#### Color isn't optional
+
+No modern journal should be a print-first outfit, and if they are, you shouldn't care to send your work there.  The only thing you should be concerned with is how it will look online, because that's how people will interact with your work.  That means that color is essentially a requirement for any visualization, so use it well in yours.
+
+#### Think interactive
+
+I would suggest you start by making the visualization you want to make, with interactivity and anything else you like.  You can then reduce as necessary for publication, and keep the fancy one as supplemental, or accessible on your own website.
+
+
+### Color
+
+Until recently, the default color schemes of most visualization packages were poor at best.  Thankfully, ggplot2, its imitators and extenders in both the R world and beyond
+
+> Finally, the grey background creates a continuous field of colour which ensures that the plot is perceived as a single visual entity.
+
+'Finally, the grey background creates a continuous field of colour which ensures that the plot is perceived as a single visual entity.'
+
+#### Viridis
+#### RColorBrewer
+
+### Contrast
+
+### WebAxe
+
+
+[^barerror]: Error bars for group means can overlap and still be statistically different (the test regards the *difference* in means).  Furthermore most visuals of this sort don't bother to say whether it is standard deviation, standard error, or 2*standard error, or even something else.
+
+[^captions]: People seem to think there are text limits for captions.  There are none.

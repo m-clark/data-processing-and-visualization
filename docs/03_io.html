@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Data Processing &amp; Visualization</title>
+  <meta name="description" content="Data Processing &amp; Visualization in R">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Data Processing &amp; Visualization" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://m-clark.github.io/" />
+  <meta property="og:image" content="https://m-clark.github.io/img/nineteeneightyR.png" />
+  <meta property="og:description" content="Data Processing &amp; Visualization in R" />
+  <meta name="github-repo" content="m-clark/" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Data Processing &amp; Visualization" />
+  
+  <meta name="twitter:description" content="Data Processing &amp; Visualization in R" />
+  <meta name="twitter:image" content="https://m-clark.github.io/img/nineteeneightyR.png" />
+
+
+
+<meta name="date" content="2017-10-15">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  <link rel="shortcut icon" href="img/R.ico" type="image/x-icon">
+<link rel="prev" href="02_dataStructures.html">
+<link rel="next" href="04_indexing.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+<script src="libs/proj4js-2.3.15/proj4.js"></script>
+<link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
+<script src="libs/highcharts-5.0.6/highstock.js"></script>
+<script src="libs/highcharts-5.0.6/highcharts-3d.js"></script>
+<script src="libs/highcharts-5.0.6/highcharts-more.js"></script>
+<script src="libs/highcharts-5.0.6/modules/annotations.js"></script>
+<script src="libs/highcharts-5.0.6/modules/broken-axis.js"></script>
+<script src="libs/highcharts-5.0.6/modules/data.js"></script>
+<script src="libs/highcharts-5.0.6/modules/drilldown.js"></script>
+<script src="libs/highcharts-5.0.6/modules/exporting.js"></script>
+<script src="libs/highcharts-5.0.6/modules/funnel.js"></script>
+<script src="libs/highcharts-5.0.6/modules/heatmap.js"></script>
+<script src="libs/highcharts-5.0.6/modules/map.js"></script>
+<script src="libs/highcharts-5.0.6/modules/no-data-to-display.js"></script>
+<script src="libs/highcharts-5.0.6/modules/offline-exporting.js"></script>
+<script src="libs/highcharts-5.0.6/modules/solid-gauge.js"></script>
+<script src="libs/highcharts-5.0.6/modules/treemap.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/annotations.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/draggable-legend.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/draggable-points.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/export-csv.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/grouped-categories.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/motion.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/pattern-fill-v2.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/tooltip-delay.js"></script>
+<script src="libs/highcharts-5.0.6/custom/reset.js"></script>
+<script src="libs/highcharts-5.0.6/custom/symbols-extra.js"></script>
+<script src="libs/highcharts-5.0.6/custom/text-symbols.js"></script>
+<link href="libs/fontawesome-4.5.0/font-awesome.min.css" rel="stylesheet" />
+<link href="libs/htmlwdgtgrid-1/htmlwdgtgrid.css" rel="stylesheet" />
+<script src="libs/highchart-binding-0.5.0/highchart.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css\book.css" type="text/css" />
+<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://m-clark.github.io/"><span style="font-size:125%; font-variant:small-caps; font-style:italic; color:#990024; font-family:Roboto">Data Processing & Visualization</span></a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html"><i class="fa fa-check"></i>Intro</a><ul>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#outline"><i class="fa fa-check"></i>Outline</a><ul>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#part-1-data-processing"><i class="fa fa-check"></i>Part 1: Data Processing</a></li>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#part-2-visualization"><i class="fa fa-check"></i>Part 2: Visualization</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html"><i class="fa fa-check"></i>Part 1: Data Processing</a><ul>
+<li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#data-structures"><i class="fa fa-check"></i>Data Structures</a></li>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html"><i class="fa fa-check"></i>Input/Output</a></li>
+<li class="chapter" data-level="" data-path="04_indexing.html"><a href="04_indexing.html"><i class="fa fa-check"></i>Indexing</a></li>
+<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html"><i class="fa fa-check"></i>Vectorization &amp; Apply</a></li>
+<li class="chapter" data-level="" data-path="06_pipes.html"><a href="06_pipes.html"><i class="fa fa-check"></i>Pipes</a></li>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html"><i class="fa fa-check"></i>Tidyverse</a></li>
+<li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html"><i class="fa fa-check"></i>data table</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html"><i class="fa fa-check"></i>Part II: Visualization</a><ul>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#thinking-visually"><i class="fa fa-check"></i>Thinking Visually</a><ul>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#information"><i class="fa fa-check"></i>Information</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#color"><i class="fa fa-check"></i>Color</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#webaxe"><i class="fa fa-check"></i>WebAxe</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#examples"><i class="fa fa-check"></i>Examples</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#stats"><i class="fa fa-check"></i>Stats</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#facets"><i class="fa fa-check"></i>Facets</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
+<li><a href="10_ggplot2.html#ggplot2-exercises"><strong>ggplot2 Exercises</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#packages"><i class="fa fa-check"></i>Packages</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#piping-for-visualization"><i class="fa fa-check"></i>Piping for Visualization</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#htmlwidgets"><i class="fa fa-check"></i>htmlwidgets</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#plotly-example"><i class="fa fa-check"></i>plotly example</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#ggplotly"><i class="fa fa-check"></i>ggplotly</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#highcharter"><i class="fa fa-check"></i>Highcharter</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#visnetwork"><i class="fa fa-check"></i>visNetwork</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#data-table-1"><i class="fa fa-check"></i>data table</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#shiny"><i class="fa fa-check"></i>Shiny</a></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
+<li><a href="11_interactive.html#interactive-visualization-exercises"><strong>Interactive Visualization Exercises</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="999_summary.html"><a href="999_summary.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="divider"></li>
+<li><a href="https://m-clark.github.io/"><img src="img/mc.png" style="width:50%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo"></a></li>
+<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="width:50%; border-width:0; display:block; margin: 0 auto;" src="img/ccbysa_test.png" /></a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><span style="font-size:125%; font-family:Roboto; font-style:normal">Data Processing &amp; Visualization</span></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="inputoutput" class="section level2">
+<h2>Input/Output</h2>
+<p>Standard methods of reading in data include the following functions:</p>
+<ul>
+<li><span class="func">read.table</span></li>
+<li><span class="func">read.csv</span></li>
+<li><span class="func">readLines</span></li>
+</ul>
+<p>Base R also comes with the <span class="pack">foreign</span> package for reading in other types of files, especially other statistical packages. However, while you may see it still in use, it’s not as useful as what’s found in other packages.</p>
+<div id="newer-approaches" class="section level4">
+<h4>Newer approaches</h4>
+<p><span class="pack">haven</span>: Package to read in foreign statistical files</p>
+<ul>
+<li><span class="func">read_spss</span></li>
+<li><span class="func">read_dta</span></li>
+</ul>
+<p><span class="pack">readxl</span>: for excel files</p>
+<p><span class="pack">rio</span>: uses haven, readxl etc. but with just two functions for everything</p>
+<ul>
+<li><span class="func">import</span>, <span class="func">export</span> (also <span class="func">convert</span>)</li>
+</ul>
+</div>
+<div id="faster-approaches" class="section level4">
+<h4>Faster approaches</h4>
+<p><span class="pack">readr</span>: Faster versions of base R functions</p>
+<ul>
+<li><span class="func">read_csv</span></li>
+<li><span class="func">read_delim</span></li>
+</ul>
+<p>These make assumptions after an initial scan of the data, but if you don’t have ‘big’ data, this won’t help much.</p>
+<p>However, they actually can be used as a diagnostic.</p>
+<ul>
+<li>pick up potential data entry errors.</li>
+</ul>
+<p><span class="pack">data.table</span> provides a faster version <span class="func">read.table</span>, and is typically faster than <span class="pack">readr</span> approaches.</p>
+<ul>
+<li><span class="func">fread</span></li>
+</ul>
+</div>
+<div id="other-data" class="section level4">
+<h4>Other Data</h4>
+<p>Note that R can handle many types of data.</p>
+<p>Some examples:</p>
+<ul>
+<li>JSON</li>
+<li>SQL</li>
+<li>XML</li>
+<li>YAML</li>
+<li>MongoDB</li>
+<li>NETCDF</li>
+<li>text (e.g. a novel)</li>
+<li>shapefiles</li>
+<li>google spreadsheets</li>
+</ul>
+<p>And many, many others.</p>
+</div>
+<div id="on-the-horizon" class="section level4">
+<h4>On the horizon</h4>
+<p><span class="pack">feather</span>: designed to make reading/writing data frames efficient</p>
+<p>Works in both Python and R. Still in early stages of development.</p>
+</div>
+<div id="io-exercises" class="section level4">
+<h4><strong>I/O Exercises</strong></h4>
+<div id="thinking-exercises-1" class="section level5">
+<h5>Thinking Exercises</h5>
+<p>Why might you use <span class="func">read_csv</span> from the <span class="pack">readr</span> package rather than <span class="func">read.csv</span> in base R?</p>
+<p>What is your definition of ‘big’ data?</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="02_dataStructures.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="04_indexing.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["twitter", "facebook", "google", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"download": null,
+"toc": {
+"collapse": "subsection",
+"depth": 3,
+"scroll_highlight": true
+},
+"highlight": "pygments",
+"search": true
+});
+});
+</script>
+
+</body>
+
+</html>
