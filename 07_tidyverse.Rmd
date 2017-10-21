@@ -5,7 +5,7 @@
 knitr::opts_chunk$set(echo = T)
 ```
 
-#### What is the tidyverse?
+### What is the tidyverse?
 
 The tidyverse consists of a few key packages-
 
@@ -20,7 +20,7 @@ And of course the <span class="pack">tidyverse</span> package which will load al
 
 See also: <span class="pack">lubridate</span>, <span class="pack">rvest</span>, <span class="pack">stringr</span> and others in the 'hadleyverse'.
 
-#### What is tidy?
+### What is tidy?
 
 <span class="emph">Tidy data</span> refers to data arranged in a way that makes data processing, analysis, and visualization simpler.
 
@@ -33,7 +33,7 @@ In a tidy data set:
 Think *long* before *wide*.
 
 
-#### dplyr
+### dplyr
 
 <span class="func">dplyr</span> provides a grammar of data manipulation (like <span class="pack">ggplot2</span> does for visualization).
 
@@ -72,7 +72,7 @@ Little things like:
 No need to quote variable names.
 
 
-#### An example
+### An example
 
 Let's say we want to select from our data the following variables:
 
@@ -83,7 +83,7 @@ Let's say we want to select from our data the following variables:
     
 How might we go about this?
 
-###### Some base R approaches
+##### Some base R approaches
 
 Tedious, or multiple objects just to get the columns you want.
 
@@ -103,7 +103,7 @@ newData = subset(oldData, select = cols)
 ```
 
 
-###### More
+##### More
 What if you also want observations where **Z** is **Yes**, Q is **No**, and only the observations with the top 50 values of **var2**, ordered by **var1** (descending)?
 
 ```{r baseRexample2, eval=FALSE}
@@ -116,7 +116,7 @@ newData = newData[order(newData$var1, decreasing=T),]
 And this is for fairly straightforward operations.
 
 
-###### The dplyr way
+##### The dplyr way
 
 ```{r pipeExample, eval=FALSE}
 newData = oldData %>% 
@@ -128,7 +128,7 @@ newData = oldData %>%
 
 
 
-#### An alternative
+### An alternative
 
 
 <span class="pack">dplyr</span> and piping is an *alternative*
@@ -146,7 +146,7 @@ Even though the initial base R approach depicted is fairly concise, it still can
 - often slower, possibly greatly
 
 
-#### tidyr
+### tidyr
 
 Two primary functions for manipulating data
 
@@ -160,7 +160,7 @@ Other useful functions include:
 
 
 
-#### Example
+### Example
 
 ```{r gather_spread, eval=T}
 library(tidyr)
@@ -175,7 +175,7 @@ stocks %>% gather(stock, price, -time) %>% head
 Note that the latter is an example of <span class="emph">tidy</span> data while the former is not.
 
 
-#### Personal Opinion
+### Personal Opinion
 
 The <span class="pack">dplyr</span> grammar is clear for a lot of standard data processing tasks, and some not so common.
 
@@ -192,7 +192,7 @@ Drawbacks:
     - e.g. There is no need to pipe to create one new variable
     
     
-#### On the horizon
+### On the horizon
 
 <span class="pack">multidplyr</span>
 
@@ -201,9 +201,9 @@ Drawbacks:
 
 
 
-#### **dplyr Exercises**
+### **dplyr Exercises**
 
-##### Exercise 0
+#### Exercise 0
 
 Install and load the <span class="pack">dplyr</span> <span class="pack">ggplot2movies</span> packages. Look at the help file for the `movies` data set, which contains data from IMDB.
 
@@ -214,11 +214,11 @@ library(ggplot2movies)
 ```
 
 
-##### Exercise 1
+#### Exercise 1
 
 Using the movies data set, perform each of the following actions separately.
 
-###### Exercise 1a
+##### Exercise 1a
 
 Use <span class="func">mutate</span> to create a centered version of the rating variable.  A centered variable is one whose mean has been subtracted from it. The process will take the following form:
 
@@ -232,7 +232,7 @@ movies %>%
   mutate(ratingCen = rating - mean(rating)) 
 ```
 
-###### Exercise 1b
+##### Exercise 1b
 
 Use <span class="func">filter</span> to create a new data frame that has only movies from the years 2000 and beyond. Use the greater than or equal operator `>=`.
 
@@ -241,7 +241,7 @@ movies %>%
   filter(year >= 2000) 
 ```
 
-###### Exercise 1c
+##### Exercise 1c
 
 Use <span class="func">select</span> to create a new data frame that only has the title, year, budget, length, rating and votes variables.  There are at least 3 ways to do this.
 
@@ -256,7 +256,7 @@ movies %>%
 
 
 
-##### Exercise 2
+#### Exercise 2
 
 Use <span class="func">group_by</span> to group the data by year, and <span class="func">summarize</span> to create a new variable that is the average budget. The <span class="func">summarize</span> function works just like <span class="func">mutate</span> in this case.
 Use the <span class="func">mean</span> function to get the average, but you'll also need to use the argument `na.rm = TRUE` within it because the earliest years have no budget recorded.
@@ -270,7 +270,7 @@ movies %>%
 ```
 
 
-##### Exercise 3
+#### Exercise 3
 
 Now put it all together in one set of piped operations. 
 
