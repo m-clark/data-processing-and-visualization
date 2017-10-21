@@ -5,36 +5,36 @@ knitr::opts_chunk$set(eval=FALSE)
 ```
 
 
-#### Base R Indexing Refresher
+### Base R Indexing Refresher
 
-###### Slicing vectors
+##### Slicing vectors
 
 ```{r vectorSlice, eval=TRUE}
 letters[4:6]
 letters[c(13,10,3)]
 ```
 
-###### Slicing matrices/data.frames
+##### Slicing matrices/data.frames
 
 ```{r matrixSlice}
 myMatrix[1, 2:3]
 ```
 
 
-###### Label-based indexing
+##### Label-based indexing
 
 ```{r dfindexlabel}
 mydf['row1', 'b']
 ```
 
-###### Position-based indexing
+##### Position-based indexing
 
 ```{r dfindexpos}
 mydf[1, 2]
 ```
 
 
-###### Mixed indexing
+##### Mixed indexing
 
 ```{r dfindexmix}
 mydf['row1', 2]
@@ -48,20 +48,20 @@ mydf[,'b']
 ```
 
 
-###### Non-contiguous
+##### Non-contiguous
 
 ```{r dfindexnoncont}
 mydf[c(1,3),]
 ```
 
-###### Boolean
+##### Boolean
 
 ```{r dfindexbool}
 mydf[mydf$a >= 2,]
 ```
 
 
-#### List/Data.frame extraction
+### List/Data.frame extraction
 
 <span class="func">[</span> : grab a slice of elements/columns
 
@@ -85,7 +85,7 @@ my_list_or_df$name
 ```
 
 
-#### **Indexing Exercises**
+### **Indexing Exercises**
 
 This following is a refresher of base R indexing only.
 
@@ -97,7 +97,7 @@ mydf = cars
 mylist = list(mymatrix, thisdf = mydf)
 ```
 
-##### Exercise 1
+#### Exercise 1
 
 For the <span class="objclass">matrix</span>, in separate operations, take a slice of rows, a selection of columns, and a single element.
 
@@ -107,7 +107,7 @@ mymatrix[, 1:5]
 mymatrix[1,2]
 ```
 
-##### Exercise 2
+#### Exercise 2
 
 For the <span class="objclass">data.frame</span>, grab a column in 3 different ways.
 
@@ -117,7 +117,7 @@ mydf[,2]
 mydf['dist']
 ```
 
-##### Exercise 3
+#### Exercise 3
 
 For the <span class="objclass">list</span> grab an element by number and by name.
 

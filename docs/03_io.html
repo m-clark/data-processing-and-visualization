@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-20">
+<meta name="date" content="2017-10-21">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -154,8 +154,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html"><i class="fa fa-check"></i>Part 1: Data Processing</a><ul>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#data-structures"><i class="fa fa-check"></i>Data Structures</a></li>
-<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html"><i class="fa fa-check"></i>Input/Output</a></li>
-<li class="chapter" data-level="" data-path="04_indexing.html"><a href="04_indexing.html"><i class="fa fa-check"></i>Indexing</a></li>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html"><i class="fa fa-check"></i>Input/Output</a><ul>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#newer-approaches"><i class="fa fa-check"></i>Newer approaches</a></li>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#faster-approaches"><i class="fa fa-check"></i>Faster approaches</a></li>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#other-data"><i class="fa fa-check"></i>Other Data</a></li>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#on-the-horizon"><i class="fa fa-check"></i>On the horizon</a></li>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#big-data"><i class="fa fa-check"></i>Big Data</a></li>
+<li><a href="03_io.html#io-exercises"><strong>I/O Exercises</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="04_indexing.html"><a href="04_indexing.html"><i class="fa fa-check"></i>Indexing</a><ul>
+<li class="chapter" data-level="" data-path="04_indexing.html"><a href="04_indexing.html#base-r-indexing-refresher"><i class="fa fa-check"></i>Base R Indexing Refresher</a></li>
+<li class="chapter" data-level="" data-path="04_indexing.html"><a href="04_indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/Data.frame extraction</a></li>
+<li><a href="04_indexing.html#indexing-exercises"><strong>Indexing Exercises</strong></a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html"><i class="fa fa-check"></i>Vectorization &amp; Apply</a></li>
 <li class="chapter" data-level="" data-path="06_pipes.html"><a href="06_pipes.html"><i class="fa fa-check"></i>Pipes</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html"><i class="fa fa-check"></i>Tidyverse</a></li>
@@ -218,15 +229,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="inputoutput" class="section level2">
 <h2>Input/Output</h2>
-<p>Standard methods of reading in data include the following functions:</p>
+<p>Standard methods of reading in tabular data include the following functions:</p>
 <ul>
 <li><span class="func">read.table</span></li>
 <li><span class="func">read.csv</span></li>
 <li><span class="func">readLines</span></li>
 </ul>
 <p>Base R also comes with the <span class="pack">foreign</span> package for reading in other types of files, especially other statistical packages. However, while you may see it still in use, it’s not as useful as what’s found in other packages.</p>
-<div id="newer-approaches" class="section level4">
-<h4>Newer approaches</h4>
+<div id="newer-approaches" class="section level3">
+<h3>Newer approaches</h3>
 <p><span class="pack">haven</span>: Package to read in foreign statistical files</p>
 <ul>
 <li><span class="func">read_spss</span></li>
@@ -238,8 +249,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><span class="func">import</span>, <span class="func">export</span> (also <span class="func">convert</span>)</li>
 </ul>
 </div>
-<div id="faster-approaches" class="section level4">
-<h4>Faster approaches</h4>
+<div id="faster-approaches" class="section level3">
+<h3>Faster approaches</h3>
 <p><span class="pack">readr</span>: Faster versions of base R functions</p>
 <ul>
 <li><span class="func">read_csv</span></li>
@@ -255,8 +266,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><span class="func">fread</span></li>
 </ul>
 </div>
-<div id="other-data" class="section level4">
-<h4>Other Data</h4>
+<div id="other-data" class="section level3">
+<h3>Other Data</h3>
 <p>Note that R can handle many types of data.</p>
 <p>Some examples:</p>
 <ul>
@@ -267,20 +278,44 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>MongoDB</li>
 <li>NETCDF</li>
 <li>text (e.g. a novel)</li>
-<li>shapefiles</li>
+<li>shapefiles (e.g. for geographic data)</li>
 <li>google spreadsheets</li>
 </ul>
 <p>And many, many others.</p>
 </div>
-<div id="on-the-horizon" class="section level4">
-<h4>On the horizon</h4>
+<div id="on-the-horizon" class="section level3">
+<h3>On the horizon</h3>
 <p><span class="pack">feather</span>: designed to make reading/writing data frames efficient</p>
 <p>Works in both Python and R. Still in early stages of development.</p>
 </div>
-<div id="io-exercises" class="section level4">
-<h4><strong>I/O Exercises</strong></h4>
-<div id="thinking-exercises-1" class="section level5">
-<h5>Thinking Exercises</h5>
+<div id="big-data" class="section level3">
+<h3>Big Data</h3>
+<p>You may come across the situation where your data cannot be held in memory. One of the first things to be aware of for data processing is that you may not need to have the data all in memory at once. Before shifting to a hardward solution, consider if the following is possible.</p>
+<ul>
+<li>Chunking: reading and processing the data in chunks</li>
+<li>Line at a time: dealing with individual lines of data</li>
+<li>Other data formats: for example SQL databases (<span class="pack">sqldf</span> package, <span class="func">src_dbi</span> in <span class="pack">dplyr</span>)</li>
+</ul>
+<p>However, it may be that the end result is still to large. In that case you’ll have to consider a cluster-based or distributed data situation. Of course R will have tools for that.</p>
+<ul>
+<li><span class="pack">DBI</span></li>
+<li><span class="pack">sparklyr</span></li>
+<li><span class="pack">RHadoop</span></li>
+</ul>
+<p>And more.</p>
+</div>
+<div id="io-exercises" class="section level3">
+<h3><strong>I/O Exercises</strong></h3>
+<div id="exercise-1" class="section level4">
+<h4>Exercise 1</h4>
+<p>Use <span></span>readr and <span></span>haven to read the following files. Use the url just like you would any filename. The latter is a Stata file. You can use the RStudio’s menu approach to import the file if you want.</p>
+<ul>
+<li>‘<a href="https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/data/cars.csv" class="uri">https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/data/cars.csv</a>’</li>
+<li>‘<a href="https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/data/presvote.dta" class="uri">https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/data/presvote.dta</a>’</li>
+</ul>
+</div>
+<div id="thinking-exercises-1" class="section level4">
+<h4>Thinking Exercises</h4>
 <p>Why might you use <span class="func">read_csv</span> from the <span class="pack">readr</span> package rather than <span class="func">read.csv</span> in base R?</p>
 <p>What is your definition of ‘big’ data?</p>
 
@@ -325,7 +360,7 @@ gitbook.start({
 "download": null,
 "toc": {
 "collapse": "subsection",
-"depth": 3,
+"depth": 2,
 "scroll_highlight": true
 },
 "highlight": "pygments",

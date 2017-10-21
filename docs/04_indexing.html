@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-20">
+<meta name="date" content="2017-10-21">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -154,8 +154,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html"><i class="fa fa-check"></i>Part 1: Data Processing</a><ul>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#data-structures"><i class="fa fa-check"></i>Data Structures</a></li>
-<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html"><i class="fa fa-check"></i>Input/Output</a></li>
-<li class="chapter" data-level="" data-path="04_indexing.html"><a href="04_indexing.html"><i class="fa fa-check"></i>Indexing</a></li>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html"><i class="fa fa-check"></i>Input/Output</a><ul>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#newer-approaches"><i class="fa fa-check"></i>Newer approaches</a></li>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#faster-approaches"><i class="fa fa-check"></i>Faster approaches</a></li>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#other-data"><i class="fa fa-check"></i>Other Data</a></li>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#on-the-horizon"><i class="fa fa-check"></i>On the horizon</a></li>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#big-data"><i class="fa fa-check"></i>Big Data</a></li>
+<li><a href="03_io.html#io-exercises"><strong>I/O Exercises</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="04_indexing.html"><a href="04_indexing.html"><i class="fa fa-check"></i>Indexing</a><ul>
+<li class="chapter" data-level="" data-path="04_indexing.html"><a href="04_indexing.html#base-r-indexing-refresher"><i class="fa fa-check"></i>Base R Indexing Refresher</a></li>
+<li class="chapter" data-level="" data-path="04_indexing.html"><a href="04_indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/Data.frame extraction</a></li>
+<li><a href="04_indexing.html#indexing-exercises"><strong>Indexing Exercises</strong></a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html"><i class="fa fa-check"></i>Vectorization &amp; Apply</a></li>
 <li class="chapter" data-level="" data-path="06_pipes.html"><a href="06_pipes.html"><i class="fa fa-check"></i>Pipes</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html"><i class="fa fa-check"></i>Tidyverse</a></li>
@@ -218,45 +229,45 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="indexing" class="section level2">
 <h2>Indexing</h2>
-<div id="base-r-indexing-refresher" class="section level4">
-<h4>Base R Indexing Refresher</h4>
-<div id="slicing-vectors" class="section level6">
-<h6>Slicing vectors</h6>
+<div id="base-r-indexing-refresher" class="section level3">
+<h3>Base R Indexing Refresher</h3>
+<div id="slicing-vectors" class="section level5">
+<h5>Slicing vectors</h5>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">letters[<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>]</code></pre></div>
 <pre><code>[1] &quot;d&quot; &quot;e&quot; &quot;f&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">letters[<span class="kw">c</span>(<span class="dv">13</span>,<span class="dv">10</span>,<span class="dv">3</span>)]</code></pre></div>
 <pre><code>[1] &quot;m&quot; &quot;j&quot; &quot;c&quot;</code></pre>
 </div>
-<div id="slicing-matricesdata.frames" class="section level6">
-<h6>Slicing matrices/data.frames</h6>
+<div id="slicing-matricesdata.frames" class="section level5">
+<h5>Slicing matrices/data.frames</h5>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myMatrix[<span class="dv">1</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</code></pre></div>
 </div>
-<div id="label-based-indexing" class="section level6">
-<h6>Label-based indexing</h6>
+<div id="label-based-indexing" class="section level5">
+<h5>Label-based indexing</h5>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="st">&#39;row1&#39;</span>, <span class="st">&#39;b&#39;</span>]</code></pre></div>
 </div>
-<div id="position-based-indexing" class="section level6">
-<h6>Position-based indexing</h6>
+<div id="position-based-indexing" class="section level5">
+<h5>Position-based indexing</h5>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="dv">1</span>, <span class="dv">2</span>]</code></pre></div>
 </div>
-<div id="mixed-indexing" class="section level6">
-<h6>Mixed indexing</h6>
+<div id="mixed-indexing" class="section level5">
+<h5>Mixed indexing</h5>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="st">&#39;row1&#39;</span>, <span class="dv">2</span>]</code></pre></div>
 <p>If the row/column value is empty, all rows/columns are retained.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="st">&#39;row1&#39;</span>,]
 mydf[,<span class="st">&#39;b&#39;</span>]</code></pre></div>
 </div>
-<div id="non-contiguous" class="section level6">
-<h6>Non-contiguous</h6>
+<div id="non-contiguous" class="section level5">
+<h5>Non-contiguous</h5>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>),]</code></pre></div>
 </div>
-<div id="boolean" class="section level6">
-<h6>Boolean</h6>
+<div id="boolean" class="section level5">
+<h5>Boolean</h5>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[mydf<span class="op">$</span>a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>,]</code></pre></div>
 </div>
 </div>
-<div id="listdata.frame-extraction" class="section level4">
-<h4>List/Data.frame extraction</h4>
+<div id="listdata.frame-extraction" class="section level3">
+<h3>List/Data.frame extraction</h3>
 <p><span class="func">[</span> : grab a slice of elements/columns</p>
 <p><span class="func">[[</span> : grab specific elements/columns</p>
 <p><span class="func">$</span> : grab specific elements/columns</p>
@@ -265,23 +276,23 @@ mydf[,<span class="st">&#39;b&#39;</span>]</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_list_or_df[[<span class="st">&#39;name&#39;</span>]]</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_list_or_df<span class="op">$</span>name</code></pre></div>
 </div>
-<div id="indexing-exercises" class="section level4">
-<h4><strong>Indexing Exercises</strong></h4>
+<div id="indexing-exercises" class="section level3">
+<h3><strong>Indexing Exercises</strong></h3>
 <p>This following is a refresher of base R indexing only.</p>
 <p>Here is a <span class="objclass">matrix</span>, a <span class="objclass">data.frame</span> and a <span class="objclass">list</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)
 mydf =<span class="st"> </span>cars
 mylist =<span class="st"> </span><span class="kw">list</span>(mymatrix, <span class="dt">thisdf =</span> mydf)</code></pre></div>
-<div id="exercise-1" class="section level5">
-<h5>Exercise 1</h5>
+<div id="exercise-1-1" class="section level4">
+<h4>Exercise 1</h4>
 <p>For the <span class="objclass">matrix</span>, in separate operations, take a slice of rows, a selection of columns, and a single element.</p>
 </div>
-<div id="exercise-2-1" class="section level5">
-<h5>Exercise 2</h5>
+<div id="exercise-2-1" class="section level4">
+<h4>Exercise 2</h4>
 <p>For the <span class="objclass">data.frame</span>, grab a column in 3 different ways.</p>
 </div>
-<div id="exercise-3" class="section level5">
-<h5>Exercise 3</h5>
+<div id="exercise-3" class="section level4">
+<h4>Exercise 3</h4>
 <p>For the <span class="objclass">list</span> grab an element by number and by name.</p>
 
 </div>
@@ -325,7 +336,7 @@ gitbook.start({
 "download": null,
 "toc": {
 "collapse": "subsection",
-"depth": 3,
+"depth": 2,
 "scroll_highlight": true
 },
 "highlight": "pygments",

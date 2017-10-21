@@ -1,7 +1,7 @@
 ## Input/Output
 
 
-Standard methods of reading in data include the following functions:
+Standard methods of reading in tabular data include the following functions:
 
 - <span class="func">read.table</span>
 - <span class="func">read.csv</span>
@@ -10,7 +10,7 @@ Standard methods of reading in data include the following functions:
 Base R also comes with the <span class="pack">foreign</span> package for reading in other types of files, especially other statistical packages. However, while you may see it still in use, it's not as useful as what's found in other packages.
 
 
-#### Newer approaches
+### Newer approaches
 
 <span class="pack">haven</span>: Package to read in foreign statistical files
 
@@ -24,7 +24,7 @@ Base R also comes with the <span class="pack">foreign</span> package for reading
 - <span class="func">import</span>, <span class="func">export</span> (also <span class="func">convert</span>)
 
 
-#### Faster approaches
+### Faster approaches
 
 <span class="pack">readr</span>: Faster versions of base R functions
 
@@ -45,7 +45,7 @@ However, they actually can be used as a diagnostic.
 
 
 
-#### Other Data
+### Other Data
 
 Note that R can handle many types of data.
 
@@ -58,22 +58,46 @@ Some examples:
 - MongoDB
 - NETCDF
 - text (e.g. a novel)
-- shapefiles
+- shapefiles (e.g. for geographic data)
 - google spreadsheets
 
 And many, many others.
 
 
-#### On the horizon
+### On the horizon
  
 <span class="pack">feather</span>: designed to make reading/writing data frames efficient
 
 Works in both Python and R. Still in early stages of development.
 
 
-#### **I/O Exercises**
+### Big Data
 
-##### Thinking Exercises
+You may come across the situation where your data cannot be held in memory.  One of the first things to be aware of for data processing is that you may not need to have the data all in memory at once.  Before shifting to a hardward solution, consider if the following is possible.
+
+- Chunking: reading and processing the data in chunks
+- Line at a time: dealing with individual lines of data
+- Other data formats: for example SQL databases (<span class="pack">sqldf</span> package, <span class="func">src_dbi</span> in <span class="pack">dplyr</span>)
+
+However, it may be that the end result is still to large.  In that case you'll have to consider a cluster-based or distributed data situation.  Of course R will have tools for that.
+
+
+- <span class="pack">DBI</span>
+- <span class="pack">sparklyr</span>
+- <span class="pack">RHadoop</span>
+
+And more.
+
+### **I/O Exercises**
+
+#### Exercise 1
+
+Use <span class=""></span>readr and <span class=""></span>haven to read the following files. Use the url just like you would any filename.  The latter is a Stata file.  You can use the RStudio's menu approach to import the file if you want.
+
+- 'https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/data/cars.csv'
+- 'https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/data/presvote.dta'
+
+#### Thinking Exercises
 
 Why might you use <span class="func">read_csv</span> from the <span class="pack">readr</span> package rather than <span class="func">read.csv</span> in base R?
 
