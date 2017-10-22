@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-21">
+<meta name="date" content="2017-10-22">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -213,7 +213,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#information"><i class="fa fa-check"></i>Information</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#color"><i class="fa fa-check"></i>Color</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#scaling-by-size"><i class="fa fa-check"></i>Scaling by Size</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#things-to-avoid"><i class="fa fa-check"></i>Things to avoid</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#webaxe"><i class="fa fa-check"></i>WebAxe</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
@@ -292,8 +296,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="dplyr" class="section level3">
 <h3>dplyr</h3>
-<p><span class="func">dplyr</span> provides a grammar of data manipulation (like <span class="pack">ggplot2</span> does for visualization).</p>
-<p>It is the next iteration of <span class="func">plyr</span>, but there is no longer any need for plyr really.</p>
+<p><span class="pack">dplyr</span> provides a grammar of data manipulation (like <span class="pack">ggplot2</span> does for visualization).</p>
+<p>It is the next iteration of <span class="pack">plyr</span>, but there is no longer any need for plyr really.</p>
 <p>It’s focused on tools for working with data frames.</p>
 <ul>
 <li>Over 100 functions</li>
@@ -408,21 +412,21 @@ stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span c
                       <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),
                       <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>) )
 stocks <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre></div>
-<pre><code>        time           X          Y          Z
-1 2009-01-01 -1.00003515  1.6001824 5.06918845
-2 2009-01-02  1.71214620  1.5388574 0.07021022
-3 2009-01-03 -0.57923533  3.3789660 7.89330904
-4 2009-01-04  1.13448631  0.1137021 2.68071180
-5 2009-01-05 -1.22065077  1.2024585 3.56703167
-6 2009-01-06 -0.07526508 -0.5296092 0.59128843</code></pre>
+<pre><code>        time           X         Y          Z
+1 2009-01-01  0.33237419  1.327568  2.9889998
+2 2009-01-02 -0.30115602  1.728503 -3.6007311
+3 2009-01-03  0.35532554 -1.635462  4.5834034
+4 2009-01-04  0.66069040  2.280985  2.9214258
+5 2009-01-05  0.01678096  3.227028  1.2458755
+6 2009-01-06 -0.67555120  1.945687 -0.7348952</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stocks <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(stock, price, <span class="op">-</span>time) <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre></div>
 <pre><code>        time stock       price
-1 2009-01-01     X -1.00003515
-2 2009-01-02     X  1.71214620
-3 2009-01-03     X -0.57923533
-4 2009-01-04     X  1.13448631
-5 2009-01-05     X -1.22065077
-6 2009-01-06     X -0.07526508</code></pre>
+1 2009-01-01     X  0.33237419
+2 2009-01-02     X -0.30115602
+3 2009-01-03     X  0.35532554
+4 2009-01-04     X  0.66069040
+5 2009-01-05     X  0.01678096
+6 2009-01-06     X -0.67555120</code></pre>
 <p>Note that the latter is an example of <span class="emph">tidy</span> data while the former is not.</p>
 </div>
 <div id="personal-opinion" class="section level3">

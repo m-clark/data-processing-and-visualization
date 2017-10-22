@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-21">
+<meta name="date" content="2017-10-22">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -213,7 +213,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#information"><i class="fa fa-check"></i>Information</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#color"><i class="fa fa-check"></i>Color</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#scaling-by-size"><i class="fa fa-check"></i>Scaling by Size</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#things-to-avoid"><i class="fa fa-check"></i>Things to avoid</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#webaxe"><i class="fa fa-check"></i>WebAxe</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
@@ -300,7 +304,7 @@ x[<span class="kw">resid</span>(<span class="kw">lm</span>(y <span class="op">~<
 <p>Compare:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf<span class="op">$</span>y =<span class="st"> &#39;No&#39;</span>
 mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>] =<span class="st"> &#39;Yes&#39;</span></code></pre></div>
-<p>This gets us the same thing, and would be much faster. Boolean indexing is an example of a vectorized operation.</p>
+<p>This gets us the same thing, and would be much faster than the looped approach. Boolean indexing is an example of a vectorized operation.</p>
 <p>The whole vector is considered:</p>
 <ul>
 <li>Rather than each element individually</li>
@@ -318,8 +322,8 @@ mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&
                <span class="kw">log</span>(mymatrix))</code></pre></div>
 <pre><code>Unit: microseconds
                     expr    min     lq     mean median      uq     max neval
- apply(mymatrix, 2, log) 45.928 47.430 48.98774 47.880 48.3300 150.694   100
-           log(mymatrix)  3.002  3.002  3.31125  3.302  3.4525   4.503   100</code></pre>
+ apply(mymatrix, 2, log) 48.330 49.531 56.57055 50.432 51.4825 179.512   100
+           log(mymatrix)  2.702  3.002  3.29324  3.302  3.6020   3.903   100</code></pre>
 <p>Many vectorized functions already exist in R.</p>
 <p>They are often written in C, Fortran etc., and so even faster.</p>
 </div>

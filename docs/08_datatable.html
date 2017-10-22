@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-21">
+<meta name="date" content="2017-10-22">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -213,7 +213,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#information"><i class="fa fa-check"></i>Information</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#color"><i class="fa fa-check"></i>Color</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#scaling-by-size"><i class="fa fa-check"></i>Scaling by Size</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#things-to-avoid"><i class="fa fa-check"></i>Things to avoid</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#webaxe"><i class="fa fa-check"></i>WebAxe</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
@@ -284,10 +288,10 @@ dt =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt"
 <p>In general, you use <strong>i</strong> for filtering by rows.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[<span class="dv">2</span>]
 dt[<span class="dv">2</span>,]</code></pre></div>
-<pre><code>   x g         y
-1: 4 2 0.1195698
-   x g         y
-1: 4 2 0.1195698</code></pre>
+<pre><code>   x g          y
+1: 6 2 0.01458418
+   x g          y
+1: 6 2 0.01458418</code></pre>
 <p>In general, you use <strong>j</strong> to select (by name!) or create new columns.</p>
 <ul>
 <li>Define a new variable with <span class="func">:=</span></li>
@@ -297,18 +301,18 @@ dt[,z <span class="op">:</span><span class="er">=</span><span class="st"> </span
 dt[,z]
 dt[g<span class="op">&gt;</span><span class="dv">1</span>, <span class="kw">mean</span>(z), by=g]
 dt</code></pre></div>
-<pre><code>[1] 10  4  6  9  2  3
-[1] 10.372553  4.119570  6.332344  9.751102  2.109955  3.948890
+<pre><code>[1]  8  6  4 10  9  1
+[1]  8.334150  6.014584  4.214958 10.098933  9.736416  1.064079
    g       V1
-1: 2 3.114762
-2: 3 5.140617
-    x g         y         z
-1: 10 1 0.3725530 10.372553
-2:  4 2 0.1195698  4.119570
-3:  6 3 0.3323439  6.332344
-4:  9 1 0.7511015  9.751102
-5:  2 2 0.1099548  2.109955
-6:  3 3 0.9488896  3.948890</code></pre>
+1: 2 7.875500
+2: 3 2.639519
+    x g          y         z
+1:  8 1 0.33414995  8.334150
+2:  6 2 0.01458418  6.014584
+3:  4 3 0.21495827  4.214958
+4: 10 1 0.09893335 10.098933
+5:  9 2 0.73641550  9.736416
+6:  1 3 0.06407881  1.064079</code></pre>
 <p>Dropping columns is awkward.</p>
 <ul>
 <li>because <strong>j</strong> is an argument</li>
@@ -317,14 +321,14 @@ dt</code></pre></div>
 dt[,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=F]   <span class="co"># drops y, but now needs quotes</span>
 ## dt[,y:=NULL]        # drops y, but this is just a base R approach
 ## dt$y = NULL</code></pre></div>
-<pre><code>[1] -0.3725530 -0.1195698 -0.3323439 -0.7511015 -0.1099548 -0.9488896
+<pre><code>[1] -0.33414995 -0.01458418 -0.21495827 -0.09893335 -0.73641550 -0.06407881
     x g         z
-1: 10 1 10.372553
-2:  4 2  4.119570
-3:  6 3  6.332344
-4:  9 1  9.751102
-5:  2 2  2.109955
-6:  3 3  3.948890</code></pre>
+1:  8 1  8.334150
+2:  6 2  6.014584
+3:  4 3  4.214958
+4: 10 1 10.098933
+5:  9 2  9.736416
+6:  1 3  1.064079</code></pre>
 <div id="grouped-operations" class="section level3">
 <h3>Grouped operations</h3>
 <p>We can now attempt a ‘group-by’ operation, along with creation of a new variable.</p>
@@ -332,16 +336,16 @@ dt[,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=F]   <spa
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1 =<span class="st"> </span>dt2 =<span class="st"> </span>dt
 dt[,<span class="kw">sum</span>(x,y), by=g]                  <span class="co"># sum of all x and y values</span></code></pre></div>
 <pre><code>   g        V1
-1: 1 20.123655
-2: 2  6.229525
-3: 3 10.281233</code></pre>
+1: 1 18.433083
+2: 2 15.751000
+3: 3  5.279037</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1[,newvar <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(x), by=g]         <span class="co"># add new variable to the original data </span></code></pre></div>
 <p>We can also create groupings on the fly.</p>
 <p>For a new summary data set, we’ll take the following approach.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt2[, <span class="kw">list</span>(<span class="dt">meanx =</span> <span class="kw">mean</span>(x), <span class="dt">sumx =</span> <span class="kw">sum</span>(x)), by=g<span class="op">==</span><span class="dv">1</span>]</code></pre></div>
 <pre><code>       g meanx sumx
-1:  TRUE  9.50   19
-2: FALSE  3.75   15</code></pre>
+1:  TRUE     9   18
+2: FALSE     5   20</code></pre>
 </div>
 <div id="faster" class="section level3">
 <h3>Faster!</h3>
