@@ -304,13 +304,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>etc.</li>
 </ul>
 <p>The function used in ggplot to do this is <span class="func">aes</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aes</span>(<span class="dt">x=</span>myvar, <span class="dt">y=</span>myvar2, <span class="dt">color=</span>myvar3, <span class="dt">group=</span>g)</code></pre></div>
 </div>
 <div id="layers" class="section level3">
 <h3>Layers</h3>
 <p>In general, we start with a base layer and add to it.</p>
 <p>In most cases you’ll start as follows.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>myvar, <span class="dt">y=</span>myvar2), <span class="dt">data=</span>mydata)</code></pre></div>
 <p>This would just produce a plot background.</p>
 </div>
 <div id="piping" class="section level3">
@@ -324,8 +322,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>text</li>
 </ul>
 <p><span class="pack">ggplot2</span> was using pipes before it was cool, and so it has a different pipe (<span class="emph">+</span>). Otherwise, the concept is the same as before.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>myvar, <span class="dt">y=</span>myvar2), <span class="dt">data=</span>mydata) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
 <p>Our base is provided via the <span class="func">ggplot2</span> functions and specifies the data along with x and y aesthetics.</p>
 <p>The <span class="func">geom_point</span> function adds a layer of points, and now we would have a scatterplot.</p>
 <ul>
@@ -338,17 +334,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="examples" class="section level3">
 <h3>Examples</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
-<span class="kw">data</span>(<span class="st">&quot;diamonds&quot;</span>); <span class="kw">data</span>(<span class="st">&#39;economics&#39;</span>)
-<span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>carat, <span class="dt">y=</span>price), <span class="dt">data=</span>diamonds) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggscatter-1.svg" width="768" style="display: block; margin: auto;" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>date, <span class="dt">y=</span>unemploy), <span class="dt">data=</span>economics) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_line</span>()</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggline-1.svg" width="768" style="display: block; margin: auto;" /></p>
 <p>In the following, one setting is not mapped to the data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>carat, <span class="dt">y=</span>price), <span class="dt">data=</span>diamonds) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>carat, <span class="dt">color=</span>clarity), <span class="dt">alpha=</span>.<span class="dv">25</span>) </code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggalpha-1.svg" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="stats" class="section level3">
@@ -356,19 +344,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>There are many statistical functions built in.</p>
 <p>Key strength: you don’t have to do much preprocessing.</p>
 <p>Quantile regression lines:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, hwy)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_quantile</span>()</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggquant-1.svg" width="768" style="display: block; margin: auto;" /></p>
 <p>Loess (or additive model) smooth:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, hwy)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_smooth</span>()</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggsmooth-1.svg" width="768" style="display: block; margin: auto;" /></p>
 <p>Bootstrapped confidence intervals:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(cyl, mpg)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun.data =</span> <span class="st">&quot;mean_cl_boot&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;orange&quot;</span>, <span class="dt">alpha=</span>.<span class="dv">75</span>, <span class="dt">size =</span> <span class="dv">1</span>)</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggstatsum-1.svg" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="facets" class="section level3">
@@ -383,16 +362,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Both use a formula approach to specify the grouping.</p>
 <div id="facet_grid" class="section level5">
 <h5>facet_grid</h5>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(wt, mpg)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_grid</span>(vs <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">labeller =</span> label_both)</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/facetgrid-1.svg" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="facet_wrap" class="section level5">
 <h5>facet_wrap</h5>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(wt, mpg)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_wrap</span>(vs <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">labeller =</span> label_both, <span class="dt">ncol=</span><span class="dv">2</span>)</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/facetwrap-1.svg" width="768" style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -503,22 +476,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><span class="func">theme_linedraw</span></li>
 <li><span class="func">theme_minimal</span></li>
 </ul>
+<p><img src="data-processing-and-visualization_files/figure-html/unnamed-chunk-14-1.svg" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="exercise-2-6" class="section level4">
 <h4>Exercise 2</h4>
 <p>Play around and change the arguments to the following. You’ll need to install the maps package. For example, do points for all county midpoints, with different colors.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(maps)
-mi =<span class="st"> </span><span class="kw">map_data</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;michigan&quot;</span>)
-seats =<span class="st"> </span>mi <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">group_by</span>(subregion) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(lat, long), <span class="cf">function</span>(x) <span class="kw">median</span>(<span class="kw">range</span>(x)))
-
-<span class="kw">ggplot</span>(mi, <span class="kw">aes</span>(long, lat)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_polygon</span>(<span class="kw">aes</span>(<span class="dt">group =</span> group), <span class="dt">fill =</span> <span class="ot">NA</span>, <span class="dt">colour =</span> <span class="st">&quot;grey60&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> subregion), <span class="dt">data =</span> seats, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">angle =</span> <span class="dv">45</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">y=</span><span class="fl">42.281389</span>, <span class="dt">x=</span><span class="op">-</span><span class="fl">83.748333</span>, <span class="dt">color=</span><span class="st">&#39;#1e90ff&#39;</span>, <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid=</span><span class="kw">element_blank</span>())</code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/unnamed-chunk-15-1.svg" width="768" style="display: block; margin: auto;" /></p>
 
 </div>
 </div>
