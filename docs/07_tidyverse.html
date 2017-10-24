@@ -32,7 +32,7 @@
   
   <link rel="shortcut icon" href="img/R.ico" type="image/x-icon">
 <link rel="prev" href="06_pipes.html">
-<link rel="next" href="08_datatable.html">
+<link rel="next" href="08.5_Misc.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -190,14 +190,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is tidy?</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#dplyr"><i class="fa fa-check"></i>dplyr</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#running-example"><i class="fa fa-check"></i>Running example</a></li>
-<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#selecting-variables"><i class="fa fa-check"></i>Selecting Variables</a></li>
-<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#filtering"><i class="fa fa-check"></i>Filtering</a></li>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#selecting-columns"><i class="fa fa-check"></i>Selecting Columns</a></li>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#filtering-rows"><i class="fa fa-check"></i>Filtering Rows</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#generating-new-data"><i class="fa fa-check"></i>Generating New Data</a></li>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#grouping-and-summarizing-data"><i class="fa fa-check"></i>Grouping and Summarizing Data</a></li>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#merging-data"><i class="fa fa-check"></i>Merging Data</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#tidyr"><i class="fa fa-check"></i>tidyr</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#purrr"><i class="fa fa-check"></i>Purrr</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
-<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#on-the-horizon-1"><i class="fa fa-check"></i>On the horizon</a></li>
 <li><a href="07_tidyverse.html#dplyr-exercises"><strong>dplyr Exercises</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="08.5_Misc.html"><a href="08.5_Misc.html"><i class="fa fa-check"></i>Miscellaneous</a><ul>
+<li class="chapter" data-level="" data-path="08.5_Misc.html"><a href="08.5_Misc.html#moar-tidy"><i class="fa fa-check"></i>MOAR TIDY</a></li>
+<li class="chapter" data-level="" data-path="08.5_Misc.html"><a href="08.5_Misc.html#documents"><i class="fa fa-check"></i>Documents</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html"><i class="fa fa-check"></i>data table</a><ul>
 <li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html#grouped-operations"><i class="fa fa-check"></i>Grouped operations</a></li>
@@ -402,17 +407,38 @@ bball =<span class="st"> </span><span class="kw">read_html</span>(url) <span cla
 <p>When initially downloaded, the data is all character strings. We’ll fix this later.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">load</span>(<span class="st">&#39;data/bball.RData&#39;</span>)
 <span class="kw">glimpse</span>(bball[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])</code></pre></div>
+<pre><code>Observations: 619
+Variables: 5
+$ Rk     &lt;chr&gt; &quot;1&quot;, &quot;2&quot;, &quot;2&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;10&quot;, &quot;11&quot;, &quot;12&quot;, &quot;13&quot;, &quot;13&quot;, &quot;13&quot;, &quot;14&quot;, &quot;15&quot;, &quot;16&quot;, &quot;17&quot;, &quot;18&quot;, &quot;19&quot;, &quot;20&quot;, &quot;Rk&quot;, &quot;21&quot;, &quot;22&quot;, &quot;23&quot;, &quot;24&quot;, &quot;25&quot;, &quot;26&quot;, &quot;27&quot;, &quot;28&quot;, &quot;29&quot;, &quot;29&quot;, &quot;...
+$ Player &lt;chr&gt; &quot;Alex Abrines&quot;, &quot;Quincy Acy&quot;, &quot;Quincy Acy&quot;, &quot;Quincy Acy&quot;, &quot;Steven Adams&quot;, &quot;Arron Afflalo&quot;, &quot;Alexis Ajinca&quot;, &quot;Cole Aldrich&quot;, &quot;LaMarcus Aldridge&quot;, &quot;Lavoy Allen&quot;, &quot;Tony Allen&quot;, &quot;Al-Farouq Aminu&quot;, &quot;Chris ...
+$ Pos    &lt;chr&gt; &quot;SG&quot;, &quot;PF&quot;, &quot;PF&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;SG&quot;, &quot;C&quot;, &quot;C&quot;, &quot;PF&quot;, &quot;PF&quot;, &quot;SG&quot;, &quot;SF&quot;, &quot;C&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SG&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;C&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;Pos&quot;, &quot;C&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;SG&quot;, &quot;PG&quot;, &quot;SG&quot;, &quot;PG&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;...
+$ Age    &lt;chr&gt; &quot;23&quot;, &quot;26&quot;, &quot;26&quot;, &quot;26&quot;, &quot;23&quot;, &quot;31&quot;, &quot;28&quot;, &quot;28&quot;, &quot;31&quot;, &quot;27&quot;, &quot;35&quot;, &quot;26&quot;, &quot;38&quot;, &quot;34&quot;, &quot;23&quot;, &quot;23&quot;, &quot;23&quot;, &quot;23&quot;, &quot;28&quot;, &quot;22&quot;, &quot;32&quot;, &quot;34&quot;, &quot;31&quot;, &quot;28&quot;, &quot;Age&quot;, &quot;30&quot;, &quot;29&quot;, &quot;27&quot;, &quot;23&quot;, &quot;20&quot;, &quot;34&quot;, &quot;32&quot;, &quot;24&quot;, &quot;...
+$ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;TOT&quot;, &quot;DAL&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;SAC&quot;, &quot;NOP&quot;, &quot;MIN&quot;, &quot;SAS&quot;, &quot;IND&quot;, &quot;MEM&quot;, &quot;POR&quot;, &quot;CLE&quot;, &quot;LAC&quot;, &quot;TOT&quot;, &quot;DAL&quot;, &quot;PHI&quot;, &quot;SAS&quot;, &quot;HOU&quot;, &quot;MIL&quot;, &quot;NYK&quot;, &quot;SAS&quot;, &quot;HOU&quot;, &quot;DEN&quot;, &quot;Tm&quot;, &quot;NOP&quot;, &quot;ORL&quot;, &quot;MIA&quot;, &quot;NYK&quot;...</code></pre>
 </div>
-<div id="selecting-variables" class="section level3">
-<h3>Selecting Variables</h3>
+<div id="selecting-columns" class="section level3">
+<h3>Selecting Columns</h3>
 <p>Often you do not need the entire data set. While this is easily handled in base R (as shown earlier), it can be more clear to use <span class="func">select</span> in <span class="pack">dplyr</span>. Now we won’t have to create separate objects, use quotes or $, etc.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">select</span>(Player, Tm, Pos) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>head</code></pre></div>
+<pre><code>         Player  Tm Pos
+1  Alex Abrines OKC  SG
+2    Quincy Acy TOT  PF
+3    Quincy Acy DAL  PF
+4    Quincy Acy BRK  PF
+5  Steven Adams OKC   C
+6 Arron Afflalo SAC  SG</code></pre>
 <p>What if we want to drop some variables?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st">     </span>
 <span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Player, <span class="op">-</span>Tm, <span class="op">-</span>Pos)  <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>head</code></pre></div>
+<pre><code>  Rk Age  G GS   MP  FG FGA  FG. X3P X3PA X3P. X2P X2PA X2P. eFG.  FT FTA  FT. ORB DRB TRB AST STL BLK TOV  PF PTS
+1  1  23 68  6 1055 134 341 .393  94  247 .381  40   94 .426 .531  44  49 .898  18  68  86  40  37   8  33 114 406
+2  2  26 38  1  558  70 170 .412  37   90 .411  33   80 .413 .521  45  60 .750  20  95 115  18  14  15  21  67 222
+3  2  26  6  0   48   5  17 .294   1    7 .143   4   10 .400 .324   2   3 .667   2   6   8   0   0   0   2   9  13
+4  2  26 32  1  510  65 153 .425  36   83 .434  29   70 .414 .542  43  57 .754  18  89 107  18  14  15  19  58 209
+5  3  23 80 80 2389 374 655 .571   0    1 .000 374  654 .572 .571 157 257 .611 281 332 613  86  89  78 146 195 905
+6  4  31 61 45 1580 185 420 .440  62  151 .411 123  269 .457 .514  83  93 .892   9 116 125  78  21   6  42 104 515</code></pre>
 <div id="helper-functions" class="section level4">
 <h4>Helper functions</h4>
 <p>Sometimes, we have a lot of variables to select, and if they have a common naming scheme, this can be very easy.</p>
@@ -420,55 +446,169 @@ bball =<span class="st"> </span><span class="kw">read_html</span>(url) <span cla
 <span class="st">  </span><span class="kw">select</span>(Player, <span class="kw">contains</span>(<span class="st">&quot;3P&quot;</span>), <span class="kw">ends_with</span>(<span class="st">&quot;RB&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(TRB)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>head</code></pre></div>
-<p>I probably don’t even need to explain was being done above, and this is the power of the tidyverse way. Here are the list of <span class="emph">helper functions</span> to be aware of:</p>
-<p>♥ starts_with(): starts with a prefix ♥ ends_with(): ends with a prefix ♥ contains(): contains a literal string ♥ matches(): matches a regular expression ♥ num_range(): a numerical range like x01, x02, x03. ♥ one_of(): variables in character vector. ♥ everything(): all variables.</p>
+<pre><code>  Player X3P X3PA X3P. ORB DRB TRB
+1 Player  3P  3PA  3P% ORB DRB TRB
+2 Player  3P  3PA  3P% ORB DRB TRB
+3 Player  3P  3PA  3P% ORB DRB TRB
+4 Player  3P  3PA  3P% ORB DRB TRB
+5 Player  3P  3PA  3P% ORB DRB TRB
+6 Player  3P  3PA  3P% ORB DRB TRB</code></pre>
+<p>I probably don’t even need to explain what’s being done above, and this is the power of the tidyverse way. Here are the list of <span class="emph">helper functions</span> to be aware of:</p>
+<ul>
+<li><span class="func">starts_with</span>: starts with a prefix</li>
+<li><span class="func">ends_with</span>: ends with a prefix</li>
+<li><span class="func">contains</span>: contains a literal string</li>
+<li><span class="func">matches</span>: matches a regular expression</li>
+<li><span class="func">num_range</span>: a numerical range like x01, x02, x03.</li>
+<li><span class="func">one_of</span>: variables in character vector.</li>
+<li><span class="func">everything</span>: all variables.</li>
+</ul>
 </div>
 </div>
-<div id="filtering" class="section level3">
-<h3>Filtering</h3>
+<div id="filtering-rows" class="section level3">
+<h3>Filtering Rows</h3>
 <p>There are repeated header rows in this data<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, so we need to drop them. This is also why everything was character string when we first read it in, because having any character strings makes everything a character string. Filtering by rows requires the basic indexing knowledge we talked about before, especially boolean indexing. In the following, <code>Rk</code>, or rank, is really just a row id, but if it equals ‘Rk’, we know it’s a header row, so we’ll drop it.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball =<span class="st"> </span>bball <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(Rk <span class="op">!=</span><span class="st"> &quot;Rk&quot;</span>)</code></pre></div>
-<blockquote>
 <ul>
 <li><span class="func">filter</span> returns rows with matching conditions.</li>
 <li><span class="func">slice</span> allows for a numeric indexing approach.</li>
 </ul>
-</blockquote>
-<blockquote>
-<ul>
-<li>Say we want too look at forwards (SF or PF) over the age of 35…</li>
-</ul>
-</blockquote>
+<p>Say we want too look at forwards (SF or PF) over the age of 35. The following will do this, and since some players play on multiple teams, we’ll want only the unique information on the variables of interest. The function <span class="func">distinct</span> allows us to do this.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(Age <span class="op">&gt;</span><span class="st"> </span><span class="dv">35</span>, Pos <span class="op">==</span><span class="st"> &quot;SF&quot;</span> <span class="op">|</span><span class="st"> </span>Pos <span class="op">==</span><span class="st"> &quot;PF&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">distinct</span>(Player, Pos, Age)              </code></pre></div>
+<pre><code>              Player Pos Age
+1        Matt Barnes  SF  36
+2       Vince Carter  SF  40
+3      Nick Collison  PF  36
+4      Mike Dunleavy  SF  36
+5  Richard Jefferson  SF  36
+6      Dahntay Jones  SF  36
+7        James Jones  SF  36
+8        Mike Miller  SF  36
+9      Dirk Nowitzki  PF  38
+10       Paul Pierce  SF  39
+11        Luis Scola  PF  36
+12 Metta World Peace  SF  37</code></pre>
+<p>or the first 10 rows…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">slice</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</code></pre></div>
+<pre><code># A tibble: 10 x 30
+      Rk            Player   Pos   Age    Tm     G    GS    MP    FG   FGA   FG.   X3P  X3PA  X3P.   X2P  X2PA  X2P.  eFG.    FT   FTA   FT.   ORB   DRB   TRB   AST   STL   BLK   TOV    PF   PTS
+   &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+ 1     1      Alex Abrines    SG    23   OKC    68     6  1055   134   341  .393    94   247  .381    40    94  .426  .531    44    49  .898    18    68    86    40    37     8    33   114   406
+ 2     2        Quincy Acy    PF    26   TOT    38     1   558    70   170  .412    37    90  .411    33    80  .413  .521    45    60  .750    20    95   115    18    14    15    21    67   222
+ 3     2        Quincy Acy    PF    26   DAL     6     0    48     5    17  .294     1     7  .143     4    10  .400  .324     2     3  .667     2     6     8     0     0     0     2     9    13
+ 4     2        Quincy Acy    PF    26   BRK    32     1   510    65   153  .425    36    83  .434    29    70  .414  .542    43    57  .754    18    89   107    18    14    15    19    58   209
+ 5     3      Steven Adams     C    23   OKC    80    80  2389   374   655  .571     0     1  .000   374   654  .572  .571   157   257  .611   281   332   613    86    89    78   146   195   905
+ 6     4     Arron Afflalo    SG    31   SAC    61    45  1580   185   420  .440    62   151  .411   123   269  .457  .514    83    93  .892     9   116   125    78    21     6    42   104   515
+ 7     5     Alexis Ajinca     C    28   NOP    39    15   584    89   178  .500     0     4  .000    89   174  .511  .500    29    40  .725    46   131   177    12    20    22    31    77   207
+ 8     6      Cole Aldrich     C    28   MIN    62     0   531    45    86  .523     0     0          45    86  .523  .523    15    22  .682    51   107   158    25    25    23    17    85   105
+ 9     7 LaMarcus Aldridge    PF    31   SAS    72    72  2335   500  1049  .477    23    56  .411   477   993  .480  .488   220   271  .812   172   351   523   139    46    88    98   158  1243
+10     8       Lavoy Allen    PF    27   IND    61     5   871    77   168  .458     0     1  .000    77   167  .461  .458    23    33  .697   105   114   219    57    18    24    29    78   177</code></pre>
+<p>This can be done with things that are created on the fly…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">unite</span>(<span class="st">&quot;posTeam&quot;</span>, Pos, Tm) <span class="op">%&gt;%</span><span class="st">         </span><span class="co"># create a new variable</span>
+<span class="st">  </span><span class="kw">filter</span>(posTeam <span class="op">==</span><span class="st"> &quot;PF_SAS&quot;</span>) <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># use it for filtering</span>
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(Age))                    <span class="co"># order </span></code></pre></div>
+<pre><code>   Rk            Player posTeam Age  G GS   MP  FG  FGA  FG. X3P X3PA X3P. X2P X2PA X2P. eFG.  FT FTA  FT. ORB DRB TRB AST STL BLK TOV  PF  PTS
+1 259         David Lee  PF_SAS  33 79 10 1477 248  420 .590   0    0      248  420 .590 .590  80 113 .708 149 292 441 124  31  40  82 125  576
+2   7 LaMarcus Aldridge  PF_SAS  31 72 72 2335 500 1049 .477  23   56 .411 477  993 .480 .488 220 271 .812 172 351 523 139  46  88  98 158 1243
+3  44     Davis Bertans  PF_SAS  24 67  6  808 103  234 .440  69  173 .399  34   61 .557 .588  28  34 .824  22  76  98  46  20  28  32  75  303</code></pre>
 </div>
 <div id="generating-new-data" class="section level3">
 <h3>Generating New Data</h3>
-<p>One of the most common data processing tasks is generating new variables. To do so, we’ll use <span class="func">mutate_at</span> to make appropriate columns numeric.</p>
-<ul>
-<li>But <em>not</em> Player, Pos, and Tm.</li>
-</ul>
+<p>One of the most common data processing tasks is generating new variables. The function <span class="func">mutate</span> takes a vector and returns one of the same dimension. In addition, there is <span class="func">mutate_at</span>, <span class="func">mutate_if</span>, and <span class="func">mutate_all</span> to help with specific scenarios.</p>
+<p>To demonstrate, we’ll use <span class="func">mutate_at</span> to make appropriate columns numeric, i.e. everything except <code>Player</code>, <code>Pos</code>, and <code>Tm</code>. It takes two inputs, variables and functions to apply.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball =<span class="st"> </span>bball <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="op">-</span>Player, <span class="op">-</span>Pos, <span class="op">-</span>Tm), <span class="kw">funs</span>(as.numeric))   
 
 <span class="kw">glimpse</span>(bball[,<span class="dv">1</span><span class="op">:</span><span class="dv">7</span>])</code></pre></div>
-<div id="mutate" class="section level4">
-<h4>Mutate</h4>
-<p><span class="func">mutate</span> takes a vector and returns one of the same dimension</p>
-<ul>
-<li>‘window’ function</li>
-</ul>
-<p>A common task- creating composites of existing variables</p>
+<pre><code>Observations: 595
+Variables: 7
+$ Rk     &lt;dbl&gt; 1, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 29, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,...
+$ Player &lt;chr&gt; &quot;Alex Abrines&quot;, &quot;Quincy Acy&quot;, &quot;Quincy Acy&quot;, &quot;Quincy Acy&quot;, &quot;Steven Adams&quot;, &quot;Arron Afflalo&quot;, &quot;Alexis Ajinca&quot;, &quot;Cole Aldrich&quot;, &quot;LaMarcus Aldridge&quot;, &quot;Lavoy Allen&quot;, &quot;Tony Allen&quot;, &quot;Al-Farouq Aminu&quot;, &quot;Chris ...
+$ Pos    &lt;chr&gt; &quot;SG&quot;, &quot;PF&quot;, &quot;PF&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;SG&quot;, &quot;C&quot;, &quot;C&quot;, &quot;PF&quot;, &quot;PF&quot;, &quot;SG&quot;, &quot;SF&quot;, &quot;C&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SG&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;C&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;SG&quot;, &quot;PG&quot;, &quot;SG&quot;, &quot;PG&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;S...
+$ Age    &lt;dbl&gt; 23, 26, 26, 26, 23, 31, 28, 28, 31, 27, 35, 26, 38, 34, 23, 23, 23, 23, 28, 22, 32, 34, 31, 28, 30, 29, 27, 23, 20, 34, 32, 24, 36, 36, 36, 26, 31, 28, 28, 30, 27, 23, 20, 28, 30, 22, 19, 23, 21, 24, ...
+$ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;TOT&quot;, &quot;DAL&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;SAC&quot;, &quot;NOP&quot;, &quot;MIN&quot;, &quot;SAS&quot;, &quot;IND&quot;, &quot;MEM&quot;, &quot;POR&quot;, &quot;CLE&quot;, &quot;LAC&quot;, &quot;TOT&quot;, &quot;DAL&quot;, &quot;PHI&quot;, &quot;SAS&quot;, &quot;HOU&quot;, &quot;MIL&quot;, &quot;NYK&quot;, &quot;SAS&quot;, &quot;HOU&quot;, &quot;DEN&quot;, &quot;NOP&quot;, &quot;ORL&quot;, &quot;MIA&quot;, &quot;NYK&quot;, &quot;MEM...
+$ G      &lt;dbl&gt; 68, 38, 6, 32, 80, 61, 39, 62, 72, 61, 71, 61, 12, 30, 75, 51, 24, 72, 72, 80, 74, 19, 80, 41, 31, 78, 68, 52, 33, 67, 35, 79, 74, 54, 20, 60, 52, 77, 3, 75, 73, 77, 22, 56, 74, 38, 43, 23, 3, 67, 67,...
+$ GS     &lt;dbl&gt; 6, 1, 0, 1, 80, 45, 15, 0, 72, 5, 66, 25, 0, 0, 10, 2, 8, 14, 72, 80, 74, 0, 80, 7, 19, 20, 55, 13, 1, 0, 6, 79, 18, 13, 5, 19, 0, 77, 1, 2, 64, 77, 1, 6, 0, 1, 0, 1, 0, 6, 67, 27, 1, 16, 66, 54, 54, ...</code></pre>
+<p>The following demonstrates how we can create composites of existing variables.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball =<span class="st"> </span>bball <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">trueShooting =</span> PTS <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(FGA <span class="op">+</span><span class="st"> </span>(.<span class="dv">44</span> <span class="op">*</span><span class="st"> </span>FTA))),
          <span class="dt">effectiveFG =</span> (FG <span class="op">+</span><span class="st"> </span>(.<span class="dv">5</span> <span class="op">*</span><span class="st"> </span>X3P)) <span class="op">/</span><span class="st"> </span>FGA, 
          <span class="dt">shootingDif =</span> trueShooting <span class="op">-</span><span class="st"> </span>FG.)
 
 <span class="kw">summary</span>(<span class="kw">select</span>(bball, shootingDif))  <span class="co"># select and others don&#39;t have to be piped to use</span></code></pre></div>
+<pre><code>  shootingDif      
+ Min.   :-0.46809  
+ 1st Qu.: 0.05202  
+ Median : 0.09072  
+ Mean   : 0.08555  
+ 3rd Qu.: 0.11760  
+ Max.   : 0.39787  
+ NA&#39;s   :2         </code></pre>
 </div>
+<div id="grouping-and-summarizing-data" class="section level3">
+<h3>Grouping and Summarizing Data</h3>
+<p>A very common task is to look at group-based statistics, and we can use <span class="func">group_by</span> and <span class="func">summarize</span> to help us in this regard<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>. Base R has things like <span class="func">aggregate</span> and <span class="func">tapply</span>, but they should <em>never</em> be used, and this approach is much more straightforward.</p>
+<p>For this, I’m going to start putting together several things we’ve demonstrated thus far</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st">   </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">trueShooting =</span> PTS <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(FGA <span class="op">+</span><span class="st"> </span>(.<span class="dv">44</span> <span class="op">*</span><span class="st"> </span>FTA))),
+         <span class="dt">effectiveFG =</span> (FG <span class="op">+</span><span class="st"> </span>(.<span class="dv">5</span> <span class="op">*</span><span class="st"> </span>X3P)) <span class="op">/</span><span class="st"> </span>FGA, 
+         <span class="dt">shootingDif =</span> trueShooting <span class="op">-</span><span class="st"> </span>FG.) <span class="op">%&gt;%</span><span class="st">  </span>
+<span class="st">  </span><span class="kw">select</span>(Player, Tm, Pos, MP, trueShooting, effectiveFG, PTS) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(Pos) <span class="op">%&gt;%</span><span class="st">                                                 </span><span class="co"># can group by more than one variable</span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">meanTrueShooting =</span> <span class="kw">mean</span>(trueShooting, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))    <span class="co"># potentially any function can work</span></code></pre></div>
+<pre><code># A tibble: 6 x 2
+    Pos meanTrueShooting
+  &lt;chr&gt;            &lt;dbl&gt;
+1     C        0.5646389
+2    PF        0.5164029
+3  PF-C        0.5093448
+4    PG        0.5105353
+5    SF        0.5295641
+6    SG        0.5154494</code></pre>
+<p>Use <span class="func">do</span> on grouped data to go further. The following will group data by position, then get the correlation between field-goal percentage and free-throw shooting percentage. For some reason, one individual was labeled as ‘PF-C’.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Pos =</span> <span class="kw">if_else</span>(Pos<span class="op">==</span><span class="st">&#39;PF-C&#39;</span>, <span class="st">&#39;C&#39;</span>, Pos)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(Pos) <span class="op">%&gt;%</span><span class="st">     </span>
+<span class="st">  </span><span class="kw">do</span>(<span class="dt">FgFt_Corr=</span><span class="kw">cor</span>(.<span class="op">$</span>FG., .<span class="op">$</span>FT., <span class="dt">use=</span><span class="st">&#39;complete&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(FgFt_Corr)</code></pre></div>
+<pre><code># A tibble: 5 x 2
+    Pos   FgFt_Corr
+  &lt;chr&gt;       &lt;dbl&gt;
+1     C -0.43286280
+2    PF -0.08935286
+3    PG  0.12087949
+4    SF  0.02330231
+5    SG -0.01293017</code></pre>
+<p>As a reminder, data frames are lists. As such, anything can go into the ‘columns’, even the results of analyses.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(nycflights13)
+carriers =<span class="st"> </span><span class="kw">group_by</span>(flights, carrier)
+<span class="kw">group_size</span>(carriers)</code></pre></div>
+<pre><code> [1] 18460 32729   714 54635 48110 54173   685  3260   342 26397    32 58665 20536  5162 12275   601</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mods =<span class="st"> </span><span class="kw">do</span>(carriers, <span class="dt">model =</span> <span class="kw">lm</span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_time, <span class="dt">data =</span> .)) <span class="co"># reminder that data frames are lists</span>
+mods <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">rsq =</span> <span class="kw">summary</span>(model)<span class="op">$</span>r.squared) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>head</code></pre></div>
+<pre><code># A tibble: 6 x 1
+         rsq
+       &lt;dbl&gt;
+1 0.05135040
+2 0.05041396
+3 0.08277597
+4 0.02407390
+5 0.03472122
+6 0.08360260</code></pre>
+</div>
+<div id="merging-data" class="section level3">
+<h3>Merging Data</h3>
 </div>
 <div id="tidyr" class="section level3">
 <h3>tidyr</h3>
-<p>Two primary functions for manipulating data</p>
+<p>Tidyr can be thought of as a more special subset of dplyr functionality. Two primary functions for manipulating data you’ll want ot be familiar with are:</p>
 <ul>
 <li><span class="func">gather</span>: wide to long</li>
 <li><span class="func">spread</span>: long to wide</li>
@@ -477,6 +617,7 @@ bball =<span class="st"> </span><span class="kw">read_html</span>(url) <span cla
 <ul>
 <li><span class="func">unite</span>: paste together multiple columns into one</li>
 <li><span class="func">separate</span>: complement of unite</li>
+<li><span class="func">unnest</span>: unnest ‘list columns’</li>
 </ul>
 <div id="example-1" class="section level4">
 <h4>Example</h4>
@@ -486,38 +627,53 @@ stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span c
                       <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),
                       <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>) )
 stocks <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre></div>
-<pre><code>        time           X         Y          Z
-1 2009-01-01  0.33237419  1.327568  2.9889998
-2 2009-01-02 -0.30115602  1.728503 -3.6007311
-3 2009-01-03  0.35532554 -1.635462  4.5834034
-4 2009-01-04  0.66069040  2.280985  2.9214258
-5 2009-01-05  0.01678096  3.227028  1.2458755
-6 2009-01-06 -0.67555120  1.945687 -0.7348952</code></pre>
+<pre><code>        time          X          Y         Z
+1 2009-01-01  1.7573283 -1.2974905 -5.987739
+2 2009-01-02  0.6129562  2.0674955 -1.699401
+3 2009-01-03 -0.3037085  0.5406812  1.278685
+4 2009-01-04  0.6739817  0.7641690  1.967867
+5 2009-01-05 -1.1760121 -0.5740989 -3.423910
+6 2009-01-06 -0.1963246  0.7183890 -4.197356</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stocks <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">gather</span>(stock, price, <span class="op">-</span>time) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>head</code></pre></div>
-<pre><code>        time stock       price
-1 2009-01-01     X  0.33237419
-2 2009-01-02     X -0.30115602
-3 2009-01-03     X  0.35532554
-4 2009-01-04     X  0.66069040
-5 2009-01-05     X  0.01678096
-6 2009-01-06     X -0.67555120</code></pre>
+<pre><code>        time stock      price
+1 2009-01-01     X  1.7573283
+2 2009-01-02     X  0.6129562
+3 2009-01-03     X -0.3037085
+4 2009-01-04     X  0.6739817
+5 2009-01-05     X -1.1760121
+6 2009-01-06     X -0.1963246</code></pre>
 <p>Note that the latter is an example of <span class="emph">tidy data</span> while the former is not.</p>
 <p>Separate player into first and last names based on the space</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">separate</span>(Player, <span class="dt">into=</span><span class="kw">c</span>(<span class="st">&#39;firstName&#39;</span>, <span class="st">&#39;lastName&#39;</span>), <span class="dt">sep=</span><span class="st">&#39; &#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">select</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>head</code></pre></div>
+<pre><code>  Rk firstName lastName Pos Age
+1  1      Alex  Abrines  SG  23
+2  2    Quincy      Acy  PF  26
+3  2    Quincy      Acy  PF  26
+4  2    Quincy      Acy  PF  26
+5  3    Steven    Adams   C  23
+6  4     Arron  Afflalo  SG  31</code></pre>
 </div>
 </div>
 <div id="purrr" class="section level3">
 <h3>Purrr</h3>
 <p>Purr allows you to take the <span class="func">apply</span> family approach to the tidyverse.</p>
-<p>Consider Exercise 2 from the Vectorization</p>
+<p>Consider Exercise 2 from the Vectorization/Apply section. We’ll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the the same way we would with <span class="func">lapply</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">7</span><span class="op">:</span><span class="dv">9</span>)
 x <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">map</span>(sum)</code></pre></div>
+<pre><code>[[1]]
+[1] 6
+
+[[2]]
+[1] 15
+
+[[3]]
+[1] 24</code></pre>
 </div>
 <div id="personal-opinion" class="section level3">
 <h3>Personal Opinion</h3>
@@ -530,19 +686,12 @@ x <span class="op">%&gt;%</span><span class="st"> </span>
 </ul>
 <p>Drawbacks:</p>
 <ul>
-<li>Not as fast as <span class="pack">data.table</span> or even some base R approaches for many things</li>
+<li>Not as fast as <span class="pack">data.table</span> or even some base R approaches for many things<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></li>
 <li>The <em>mindset</em> can make for unnecessary complication
 <ul>
 <li>e.g. There is no need to pipe to create one new variable</li>
 </ul></li>
-</ul>
-</div>
-<div id="on-the-horizon-1" class="section level3">
-<h3>On the horizon</h3>
-<p><span class="pack">multidplyr</span></p>
-<ul>
-<li>Partitions the data across a cluster.</li>
-<li>Faster than data.table (after partitioning)</li>
+<li>Some approaches are not very intuitive</li>
 </ul>
 </div>
 <div id="dplyr-exercises" class="section level3">
@@ -561,19 +710,98 @@ x <span class="op">%&gt;%</span><span class="st"> </span>
 <p>Use <span class="func">mutate</span> to create a centered version of the rating variable. A centered variable is one whose mean has been subtracted from it. The process will take the following form:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">newvar =</span> <span class="st">&#39;?&#39;</span>)</code></pre></div>
+<pre><code># A tibble: 58,788 x 25
+                      title  year length budget rating votes    r1    r2    r3    r4    r5    r6    r7    r8    r9   r10  mpaa Action Animation Comedy Drama Documentary Romance Short   ratingCen
+                      &lt;chr&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt;     &lt;int&gt;  &lt;int&gt; &lt;int&gt;       &lt;int&gt;   &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;
+ 1                        $  1971    121     NA    6.4   348   4.5   4.5   4.5   4.5  14.5  24.5  24.5  14.5   4.5   4.5            0         0      1     1           0       0     0  0.46714976
+ 2        $1000 a Touchdown  1939     71     NA    6.0    20   0.0  14.5   4.5  24.5  14.5  14.5  14.5   4.5   4.5  14.5            0         0      1     0           0       0     0  0.06714976
+ 3   $21 a Day Once a Month  1941      7     NA    8.2     5   0.0   0.0   0.0   0.0   0.0  24.5   0.0  44.5  24.5  24.5            0         1      0     0           0       0     1  2.26714976
+ 4                  $40,000  1996     70     NA    8.2     6  14.5   0.0   0.0   0.0   0.0   0.0   0.0   0.0  34.5  45.5            0         0      1     0           0       0     0  2.26714976
+ 5 $50,000 Climax Show, The  1975     71     NA    3.4    17  24.5   4.5   0.0  14.5  14.5   4.5   0.0   0.0   0.0  24.5            0         0      0     0           0       0     0 -2.53285024
+ 6                    $pent  2000     91     NA    4.3    45   4.5   4.5   4.5  14.5  14.5  14.5   4.5   4.5  14.5  14.5            0         0      0     1           0       0     0 -1.63285024
+ 7                  $windle  2002     93     NA    5.3   200   4.5   0.0   4.5   4.5  24.5  24.5  14.5   4.5   4.5  14.5     R      1         0      0     1           0       0     0 -0.63285024
+ 8                     &#39;15&#39;  2002     25     NA    6.7    24   4.5   4.5   4.5   4.5   4.5  14.5  14.5  14.5   4.5  14.5            0         0      0     0           1       0     1  0.76714976
+ 9                      &#39;38  1987     97     NA    6.6    18   4.5   4.5   4.5   0.0   0.0   0.0  34.5  14.5   4.5  24.5            0         0      0     1           0       0     0  0.66714976
+10                  &#39;49-&#39;17  1917     61     NA    6.0    51   4.5   0.0   4.5   4.5   4.5  44.5  14.5   4.5   4.5   4.5            0         0      0     0           0       0     0  0.06714976
+# ... with 58,778 more rows</code></pre>
 </div>
 <div id="exercise-1b" class="section level5">
 <h5>Exercise 1b</h5>
 <p>Use <span class="func">filter</span> to create a new data frame that has only movies from the years 2000 and beyond. Use the greater than or equal operator <code>&gt;=</code>.</p>
+<pre><code># A tibble: 10,789 x 24
+                                title  year length budget rating votes    r1    r2    r3    r4    r5    r6    r7    r8    r9   r10  mpaa Action Animation Comedy Drama Documentary Romance Short
+                                &lt;chr&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt;     &lt;int&gt;  &lt;int&gt; &lt;int&gt;       &lt;int&gt;   &lt;int&gt; &lt;int&gt;
+ 1                              $pent  2000     91     NA    4.3    45   4.5   4.5   4.5  14.5  14.5  14.5   4.5   4.5  14.5  14.5            0         0      0     1           0       0     0
+ 2                            $windle  2002     93     NA    5.3   200   4.5   0.0   4.5   4.5  24.5  24.5  14.5   4.5   4.5  14.5     R      1         0      0     1           0       0     0
+ 3                               &#39;15&#39;  2002     25     NA    6.7    24   4.5   4.5   4.5   4.5   4.5  14.5  14.5  14.5   4.5  14.5            0         0      0     0           1       0     1
+ 4                            &#39;R Xmas  2001     83     NA    4.9   288  14.5   4.5   4.5   4.5  14.5  24.5  14.5   4.5   4.5   4.5     R      0         0      0     1           0       0     0
+ 5                         (A)Torzija  2002     13     NA    7.2    71   4.5   0.0   4.5   4.5   4.5   4.5  14.5  24.5  14.5  24.5            0         0      0     1           0       0     1
+ 6                       (Entre nous)  2002     82     NA    4.8    22  14.5   4.5   4.5  14.5  24.5  14.5   4.5   4.5   0.0   0.0            0         0      0     1           0       0     0
+ 7                        (Paris: XY)  2001     80     NA    1.4     6  14.5   0.0  14.5   0.0  14.5  14.5  14.5  14.5   0.0   0.0            0         0      0     1           0       0     0
+ 8 (T)Raumschiff Surprise - Periode 1  2004     87     NA    5.6  1275  14.5   4.5   4.5   4.5  14.5  14.5  14.5  14.5   4.5  14.5            0         0      1     0           0       0     0
+ 9                   *Corpus Callosum  2002     92     NA    4.9    36  24.5  14.5   4.5   4.5   0.0   4.5  14.5   4.5   4.5  14.5            0         0      0     1           0       0     0
+10                            ...Lost  2000      5     NA    6.2    13   4.5   0.0   0.0   4.5  24.5  34.5  24.5   4.5   0.0   0.0            0         0      0     0           0       0     1
+# ... with 10,779 more rows</code></pre>
 </div>
 <div id="exercise-1c" class="section level5">
 <h5>Exercise 1c</h5>
 <p>Use <span class="func">select</span> to create a new data frame that only has the title, year, budget, length, rating and votes variables. There are at least 3 ways to do this.</p>
+<pre><code># A tibble: 58,788 x 6
+                      title  year budget length rating votes
+                      &lt;chr&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;
+ 1                        $  1971     NA    121    6.4   348
+ 2        $1000 a Touchdown  1939     NA     71    6.0    20
+ 3   $21 a Day Once a Month  1941     NA      7    8.2     5
+ 4                  $40,000  1996     NA     70    8.2     6
+ 5 $50,000 Climax Show, The  1975     NA     71    3.4    17
+ 6                    $pent  2000     NA     91    4.3    45
+ 7                  $windle  2002     NA     93    5.3   200
+ 8                     &#39;15&#39;  2002     NA     25    6.7    24
+ 9                      &#39;38  1987     NA     97    6.6    18
+10                  &#39;49-&#39;17  1917     NA     61    6.0    51
+# ... with 58,778 more rows</code></pre>
+<pre><code># A tibble: 58,788 x 6
+                      title  year length budget rating votes
+                      &lt;chr&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;
+ 1                        $  1971    121     NA    6.4   348
+ 2        $1000 a Touchdown  1939     71     NA    6.0    20
+ 3   $21 a Day Once a Month  1941      7     NA    8.2     5
+ 4                  $40,000  1996     70     NA    8.2     6
+ 5 $50,000 Climax Show, The  1975     71     NA    3.4    17
+ 6                    $pent  2000     91     NA    4.3    45
+ 7                  $windle  2002     93     NA    5.3   200
+ 8                     &#39;15&#39;  2002     25     NA    6.7    24
+ 9                      &#39;38  1987     97     NA    6.6    18
+10                  &#39;49-&#39;17  1917     61     NA    6.0    51
+# ... with 58,778 more rows</code></pre>
+<pre><code># A tibble: 58,788 x 6
+                      title  year length budget rating votes
+                      &lt;chr&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;
+ 1                        $  1971    121     NA    6.4   348
+ 2        $1000 a Touchdown  1939     71     NA    6.0    20
+ 3   $21 a Day Once a Month  1941      7     NA    8.2     5
+ 4                  $40,000  1996     70     NA    8.2     6
+ 5 $50,000 Climax Show, The  1975     71     NA    3.4    17
+ 6                    $pent  2000     91     NA    4.3    45
+ 7                  $windle  2002     93     NA    5.3   200
+ 8                     &#39;15&#39;  2002     25     NA    6.7    24
+ 9                      &#39;38  1987     97     NA    6.6    18
+10                  &#39;49-&#39;17  1917     61     NA    6.0    51
+# ... with 58,778 more rows</code></pre>
 </div>
 </div>
 <div id="exercise-2-3" class="section level4">
 <h4>Exercise 2</h4>
 <p>Use <span class="func">group_by</span> to group the data by year, and <span class="func">summarize</span> to create a new variable that is the average budget. The <span class="func">summarize</span> function works just like <span class="func">mutate</span> in this case. Use the <span class="func">mean</span> function to get the average, but you’ll also need to use the argument <code>na.rm = TRUE</code> within it because the earliest years have no budget recorded.</p>
+<pre><code># A tibble: 6 x 2
+   year AvgBudget
+  &lt;int&gt;     &lt;dbl&gt;
+1  2000  23947684
+2  2001  19235574
+3  2002  19397139
+4  2003  15868271
+5  2004  13905717
+6  2005  16468165</code></pre>
 </div>
 <div id="exercise-3-1" class="section level4">
 <h4>Exercise 3</h4>
@@ -584,6 +812,20 @@ x <span class="op">%&gt;%</span><span class="st"> </span>
 <li>group by <code>mpaa</code> <em>and</em> <code>Action</code> <em>or</em> <code>Drama</code></li>
 <li>get the average rating</li>
 </ul>
+<pre><code># A tibble: 10 x 3
+# Groups:   mpaa [?]
+    mpaa Drama AvgRating
+   &lt;chr&gt; &lt;int&gt;     &lt;dbl&gt;
+ 1           0  5.940811
+ 2           1  6.204495
+ 3 NC-17     0  4.275000
+ 4 NC-17     1  4.620000
+ 5    PG     0  5.193590
+ 6    PG     1  6.154913
+ 7 PG-13     0  5.435729
+ 8 PG-13     1  6.135092
+ 9     R     0  4.855603
+10     R     1  5.942602</code></pre>
 
 </div>
 </div>
@@ -592,6 +834,8 @@ x <span class="op">%&gt;%</span><span class="st"> </span>
 <hr />
 <ol start="1">
 <li id="fn1"><p>You may be thinking- ‘its 2017 and why on earth would anyone do that?!’. Peruse most sports websites and you’ll see that fundamental web design basics escape them. See also, financial sites.<a href="07_tidyverse.html#fnref1">↩</a></p></li>
+<li id="fn2"><p>As Hadley Wickham is from New Zealand, and his examples use <span class="func">summarise</span>, you’ll probably see it about as much as you do the other spelling.<a href="07_tidyverse.html#fnref2">↩</a></p></li>
+<li id="fn3"><p>There is <span class="pack">multidplyr</span>, but it doesn’t appear to have been updated since well before <span class="pack">dplyr</span> itself underwent major changes.<a href="07_tidyverse.html#fnref3">↩</a></p></li>
 </ol>
 </div>
             </section>
@@ -600,7 +844,7 @@ x <span class="op">%&gt;%</span><span class="st"> </span>
         </div>
       </div>
 <a href="06_pipes.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="08_datatable.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="08.5_Misc.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

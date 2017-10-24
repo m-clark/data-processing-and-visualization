@@ -1,6 +1,5 @@
 --- 
 title: <span style="font-size:125%; font-family:Roboto; font-style:normal">Data Processing & Visualization</span>
-subtitle: <span style="font-size:125%; font-style:normal; font-variant:small-caps; font-family:'Open Sans'">A Workshop in Two Parts</span>
 author:  |
   <span style="font-size:125%; font-style:normal; font-variant:small-caps; font-family:'Open Sans'">Michael Clark</span> <br>
   <span class="" style="font-size:75%">https://m-clark.github.io</span><br><br>
@@ -43,7 +42,6 @@ favicon: 'img/R.ico'
 github-repo:  m-clark/
 ---
 
-<!-- in general, this format is a cluster* of problems for anything beyond the simplest document. It literally will randomly drop things with no code change, from whole sections suddenly becoming blank with no change having been applied to them, to interactives disappearing also with not code change. I have actually inserted section code into index at point of child and it STILL was ignored. note: child files will not recognize chunk or knit setup so must be given their own; -->
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = T, message=F, warning=F, error=F, comment=NA, R.options=list(width=220),   # code 
                       dev.args=list(bg = 'transparent'), dev='svg', fig.align='center',                 # viz
@@ -52,7 +50,7 @@ knitr::opts_chunk$set(echo = T, message=F, warning=F, error=F, comment=NA, R.opt
 
 
 ```{r load_common_packages, echo=FALSE, cache=FALSE, eval=TRUE, cache=FALSE}
-library(tidyverse); library(ggplot2); library(ggplot2movies); library(tibble); library(lazerhawk)
+library(tidyverse); library(ggplot2movies); library(tibble); library(lazerhawk)
 ```
 
 #

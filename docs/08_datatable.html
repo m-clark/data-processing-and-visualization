@@ -31,7 +31,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   <link rel="shortcut icon" href="img/R.ico" type="image/x-icon">
-<link rel="prev" href="07_tidyverse.html">
+<link rel="prev" href="08.5_Misc.html">
 <link rel="next" href="09_thinkingvis.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -190,14 +190,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is tidy?</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#dplyr"><i class="fa fa-check"></i>dplyr</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#running-example"><i class="fa fa-check"></i>Running example</a></li>
-<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#selecting-variables"><i class="fa fa-check"></i>Selecting Variables</a></li>
-<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#filtering"><i class="fa fa-check"></i>Filtering</a></li>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#selecting-columns"><i class="fa fa-check"></i>Selecting Columns</a></li>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#filtering-rows"><i class="fa fa-check"></i>Filtering Rows</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#generating-new-data"><i class="fa fa-check"></i>Generating New Data</a></li>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#grouping-and-summarizing-data"><i class="fa fa-check"></i>Grouping and Summarizing Data</a></li>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#merging-data"><i class="fa fa-check"></i>Merging Data</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#tidyr"><i class="fa fa-check"></i>tidyr</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#purrr"><i class="fa fa-check"></i>Purrr</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
-<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#on-the-horizon-1"><i class="fa fa-check"></i>On the horizon</a></li>
 <li><a href="07_tidyverse.html#dplyr-exercises"><strong>dplyr Exercises</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="08.5_Misc.html"><a href="08.5_Misc.html"><i class="fa fa-check"></i>Miscellaneous</a><ul>
+<li class="chapter" data-level="" data-path="08.5_Misc.html"><a href="08.5_Misc.html#moar-tidy"><i class="fa fa-check"></i>MOAR TIDY</a></li>
+<li class="chapter" data-level="" data-path="08.5_Misc.html"><a href="08.5_Misc.html#documents"><i class="fa fa-check"></i>Documents</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html"><i class="fa fa-check"></i>data table</a><ul>
 <li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html#grouped-operations"><i class="fa fa-check"></i>Grouped operations</a></li>
@@ -290,10 +295,10 @@ dt =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt"
 <p>In general, you use <strong>i</strong> for filtering by rows.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[<span class="dv">2</span>]
 dt[<span class="dv">2</span>,]</code></pre></div>
-<pre><code>   x g          y
-1: 6 2 0.01458418
-   x g          y
-1: 6 2 0.01458418</code></pre>
+<pre><code>   x g         y
+1: 4 2 0.0586233
+   x g         y
+1: 4 2 0.0586233</code></pre>
 <p>In general, you use <strong>j</strong> to select (by name!) or create new columns.</p>
 <ul>
 <li>Define a new variable with <span class="func">:=</span></li>
@@ -303,18 +308,18 @@ dt[,z <span class="op">:</span><span class="er">=</span><span class="st"> </span
 dt[,z]
 dt[g<span class="op">&gt;</span><span class="dv">1</span>, <span class="kw">mean</span>(z), by=g]
 dt</code></pre></div>
-<pre><code>[1]  8  6  4 10  9  1
-[1]  8.334150  6.014584  4.214958 10.098933  9.736416  1.064079
+<pre><code>[1]  2  4  3 10  6  8
+[1]  2.814280  4.058623  3.387284 10.160015  6.821022  8.266908
    g       V1
-1: 2 7.875500
-2: 3 2.639519
-    x g          y         z
-1:  8 1 0.33414995  8.334150
-2:  6 2 0.01458418  6.014584
-3:  4 3 0.21495827  4.214958
-4: 10 1 0.09893335 10.098933
-5:  9 2 0.73641550  9.736416
-6:  1 3 0.06407881  1.064079</code></pre>
+1: 2 5.439822
+2: 3 5.827096
+    x g         y         z
+1:  2 1 0.8142801  2.814280
+2:  4 2 0.0586233  4.058623
+3:  3 3 0.3872842  3.387284
+4: 10 1 0.1600149 10.160015
+5:  6 2 0.8210217  6.821022
+6:  8 3 0.2669085  8.266908</code></pre>
 <p>Dropping columns is awkward.</p>
 <ul>
 <li>because <strong>j</strong> is an argument</li>
@@ -323,31 +328,31 @@ dt</code></pre></div>
 dt[,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=F]   <span class="co"># drops y, but now needs quotes</span>
 ## dt[,y:=NULL]        # drops y, but this is just a base R approach
 ## dt$y = NULL</code></pre></div>
-<pre><code>[1] -0.33414995 -0.01458418 -0.21495827 -0.09893335 -0.73641550 -0.06407881
+<pre><code>[1] -0.8142801 -0.0586233 -0.3872842 -0.1600149 -0.8210217 -0.2669085
     x g         z
-1:  8 1  8.334150
-2:  6 2  6.014584
-3:  4 3  4.214958
-4: 10 1 10.098933
-5:  9 2  9.736416
-6:  1 3  1.064079</code></pre>
+1:  2 1  2.814280
+2:  4 2  4.058623
+3:  3 3  3.387284
+4: 10 1 10.160015
+5:  6 2  6.821022
+6:  8 3  8.266908</code></pre>
 <div id="grouped-operations" class="section level3">
 <h3>Grouped operations</h3>
 <p>We can now attempt a ‘group-by’ operation, along with creation of a new variable.</p>
 <p>Note that these operations actually modify <span class="objclass">dt</span> <em>in place</em>, a key distinction with <span class="pack">dplyr</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1 =<span class="st"> </span>dt2 =<span class="st"> </span>dt
 dt[,<span class="kw">sum</span>(x,y), by=g]                  <span class="co"># sum of all x and y values</span></code></pre></div>
-<pre><code>   g        V1
-1: 1 18.433083
-2: 2 15.751000
-3: 3  5.279037</code></pre>
+<pre><code>   g       V1
+1: 1 12.97430
+2: 2 10.87964
+3: 3 11.65419</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1[,newvar <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(x), by=g]         <span class="co"># add new variable to the original data </span></code></pre></div>
 <p>We can also create groupings on the fly.</p>
 <p>For a new summary data set, we’ll take the following approach.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt2[, <span class="kw">list</span>(<span class="dt">meanx =</span> <span class="kw">mean</span>(x), <span class="dt">sumx =</span> <span class="kw">sum</span>(x)), by=g<span class="op">==</span><span class="dv">1</span>]</code></pre></div>
 <pre><code>       g meanx sumx
-1:  TRUE     9   18
-2: FALSE     5   20</code></pre>
+1:  TRUE  6.00   12
+2: FALSE  5.25   21</code></pre>
 </div>
 <div id="faster" class="section level3">
 <h3>Faster!</h3>
@@ -476,7 +481,7 @@ mydt[,newvar<span class="op">:</span><span class="er">=</span><span class="kw">m
           </div>
         </div>
       </div>
-<a href="07_tidyverse.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="08.5_Misc.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="09_thinkingvis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

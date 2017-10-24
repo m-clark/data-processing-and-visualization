@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   <link rel="shortcut icon" href="img/R.ico" type="image/x-icon">
-<link rel="prev" href="03_io.html">
-<link rel="next" href="05_vectorapp.html">
+<link rel="prev" href="07_tidyverse.html">
+<link rel="next" href="08_datatable.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -274,75 +274,32 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="indexing" class="section level2">
-<h2>Indexing</h2>
-<div id="base-r-indexing-refresher" class="section level3">
-<h3>Base R Indexing Refresher</h3>
-<div id="slicing-vectors" class="section level5">
-<h5>Slicing vectors</h5>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">letters[<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>]</code></pre></div>
-<pre><code>[1] &quot;d&quot; &quot;e&quot; &quot;f&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">letters[<span class="kw">c</span>(<span class="dv">13</span>,<span class="dv">10</span>,<span class="dv">3</span>)]</code></pre></div>
-<pre><code>[1] &quot;m&quot; &quot;j&quot; &quot;c&quot;</code></pre>
+<div id="miscellaneous" class="section level2">
+<h2>Miscellaneous</h2>
+<p>(DEVELOPMENT IN PROGRESS)</p>
+<p>Brief descriptions of other packages and tools that might be useful in data processing.</p>
+<div id="moar-tidy" class="section level3">
+<h3>MOAR TIDY</h3>
+<ul>
+<li>dplyr functions: There are over a hundred functions that perform very common tasks. You really need to be aware of them as their use will come up often.</li>
+<li>broom: Convert statistical analysis objects from R into tidy data frames, so that they can more easily be combined, reshaped and otherwise processed with tools like dplyr, tidyr and ggplot2.</li>
+<li>tidy*: a lot of packages out there that are now ‘tidy’, though not a part of the official tidyverse. Some examples of the ones I’ve used:
+<ul>
+<li>tidycensus</li>
+<li>tidybayes</li>
+<li>tidytext</li>
+<li>modelr</li>
+</ul></li>
+</ul>
+<p>Seriously, there’s <a href="https://www.r-pkg.org/search.html?q=tidy">a lot</a>.</p>
 </div>
-<div id="slicing-matricesdata.frames" class="section level5">
-<h5>Slicing matrices/data.frames</h5>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myMatrix[<span class="dv">1</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</code></pre></div>
-</div>
-<div id="label-based-indexing" class="section level5">
-<h5>Label-based indexing</h5>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="st">&#39;row1&#39;</span>, <span class="st">&#39;b&#39;</span>]</code></pre></div>
-</div>
-<div id="position-based-indexing" class="section level5">
-<h5>Position-based indexing</h5>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="dv">1</span>, <span class="dv">2</span>]</code></pre></div>
-</div>
-<div id="mixed-indexing" class="section level5">
-<h5>Mixed indexing</h5>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="st">&#39;row1&#39;</span>, <span class="dv">2</span>]</code></pre></div>
-<p>If the row/column value is empty, all rows/columns are retained.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="st">&#39;row1&#39;</span>,]
-mydf[,<span class="st">&#39;b&#39;</span>]</code></pre></div>
-</div>
-<div id="non-contiguous" class="section level5">
-<h5>Non-contiguous</h5>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>),]</code></pre></div>
-</div>
-<div id="boolean" class="section level5">
-<h5>Boolean</h5>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf[mydf<span class="op">$</span>a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>,]</code></pre></div>
-</div>
-</div>
-<div id="listdata.frame-extraction" class="section level3">
-<h3>List/Data.frame extraction</h3>
-<p><span class="func">[</span> : grab a slice of elements/columns</p>
-<p><span class="func">[[</span> : grab specific elements/columns</p>
-<p><span class="func">$</span> : grab specific elements/columns</p>
-<p><span class="func">@</span>: extract slot for S4 objects</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_list_or_df[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>]</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_list_or_df[[<span class="st">&#39;name&#39;</span>]]</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_list_or_df<span class="op">$</span>name</code></pre></div>
-</div>
-<div id="indexing-exercises" class="section level3">
-<h3><strong>Indexing Exercises</strong></h3>
-<p>This following is a refresher of base R indexing only.</p>
-<p>Here is a <span class="objclass">matrix</span>, a <span class="objclass">data.frame</span> and a <span class="objclass">list</span>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)
-mydf =<span class="st"> </span>cars
-mylist =<span class="st"> </span><span class="kw">list</span>(mymatrix, <span class="dt">thisdf =</span> mydf)</code></pre></div>
-<div id="exercise-1-1" class="section level4">
-<h4>Exercise 1</h4>
-<p>For the <span class="objclass">matrix</span>, in separate operations, take a slice of rows, a selection of columns, and a single element.</p>
-</div>
-<div id="exercise-2-1" class="section level4">
-<h4>Exercise 2</h4>
-<p>For the <span class="objclass">data.frame</span>, grab a column in 3 different ways.</p>
-</div>
-<div id="exercise-3" class="section level4">
-<h4>Exercise 3</h4>
-<p>For the <span class="objclass">list</span> grab an element by number and by name.</p>
+<div id="documents" class="section level3">
+<h3>Documents</h3>
+<ul>
+<li>pander</li>
+<li>DT</li>
+</ul>
 
-</div>
 </div>
 </div>
             </section>
@@ -350,8 +307,8 @@ mylist =<span class="st"> </span><span class="kw">list</span>(mymatrix, <span cl
           </div>
         </div>
       </div>
-<a href="03_io.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="05_vectorapp.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="07_tidyverse.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="08_datatable.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
