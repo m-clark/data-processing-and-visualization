@@ -72,7 +72,7 @@ Little things like:
 No need to quote variable names.
 
 
-### An example
+#### An example
 
 Let's say we want to select from our data the following variables:
 
@@ -104,6 +104,7 @@ newData = subset(oldData, select = cols)
 
 
 ##### More
+
 What if you also want observations where **Z** is **Yes**, Q is **No**, and only the observations with the top 50 values of **var2**, ordered by **var1** (descending)?
 
 ```{r baseRexample2, eval=FALSE}
@@ -128,13 +129,10 @@ newData = oldData %>%
 
 
 
-### An alternative
+#### An alternative
 
 
-<span class="pack">dplyr</span> and piping is an *alternative*
-
-- you can do all this sort of stuff with base R
-- <span class="func">with</span>, <span class="func">within</span>, <span class="func">subset</span>, <span class="func">transform</span>, etc.
+<span class="pack">dplyr</span> and piping is an *alternative*. You can do all this sort of stuff with base R, for example, with <span class="func">with</span>, <span class="func">within</span>, <span class="func">subset</span>, <span class="func">transform</span>, etc.
 
 Even though the initial base R approach depicted is fairly concise, it still can potentially be: 
 
@@ -144,6 +142,114 @@ Even though the initial base R approach depicted is fairly concise, it still can
 - requires esoteric knowledge (e.g. regular expressions)
 - often requires creation of new objects (even if we just want to explore)
 - often slower, possibly greatly
+
+
+### Running example
+
+The following data was scraped initially scraped from the web as follows.  However you can just load it into your workspace.
+
+```{r basketballDataScrape, eval=FALSE}
+library(rvest); 
+url = "http://www.basketball-reference.com/leagues/NBA_2017_totals.html"
+bball = read_html(url) %>% 
+  html_nodes("#totals_stats") %>% 
+  html_table %>% 
+  data.frame 
+save(bball, file='data/bball.RData')
+```
+
+When initially downloaded, the data is all character strings.  We'll fix this later.
+
+```{r mutateAt0}
+load('data/bball.RData')
+glimpse(bball[,1:5])
+```
+
+
+### Selecting Variables
+
+Often you do not need the entire data set. While this is easily handled in base R (as shown earlier), it can be more clear to use <span class="func">select</span> in <span class='pack'>dplyr</span>.  Now we won't have to create separate objects, use quotes or $, etc.
+
+```{r select1, cache=TRUE}
+bball %>% 
+  select(Player, Tm, Pos) %>% 
+  head
+```
+
+
+What if we want to drop some variables?
+
+```{r select2, cache=TRUE}
+bball %>%     
+  select(-Player, -Tm, -Pos)  %>% 
+  head
+```
+
+#### Helper functions
+
+Sometimes, we have a lot of variables to select, and if they have a common naming scheme, this can be very easy.
+
+```{r select3, cache=TRUE}
+bball %>% 
+  select(Player, contains("3P"), ends_with("RB")) %>% 
+  arrange(desc(TRB)) %>% 
+  head
+```
+
+I probably don't even need to explain was being done above, and this is the power of the tidyverse way.  Here are the list of <span class="emph">helper functions</span> to be aware of:
+
+♥ starts_with(): starts with a prefix
+♥ ends_with(): ends with a prefix
+♥ contains(): contains a literal string
+♥ matches(): matches a regular expression
+♥ num_range(): a numerical range like x01, x02, x03.
+♥ one_of(): variables in character vector.
+♥ everything(): all variables.
+
+### Filtering
+
+There are repeated header rows in this data[^headers], so we need to drop them.  This is also why everything was character string when we first read it in, because having any character strings makes everything a character string.  Filtering by rows requires the basic indexing knowledge we talked about before, especially boolean indexing. In the following, `Rk`, or rank, is really just a row id, but if it equals 'Rk', we know it's a header row, so we'll drop it.
+
+```{r bballRecall, eval=FALSE}
+bball = bball %>% 
+  filter(Rk != "Rk")
+```
+
+>- <span class='func'>filter</span> returns rows with matching conditions.
+>- <span class='func'>slice</span> allows for a numeric indexing approach.
+
+>- Say we want too look at forwards (SF or PF) over the age of 35...
+
+### Generating New Data
+
+One of the most common data processing tasks is generating new variables. To do so, we'll use <span class='func'>mutate_at</span> to make appropriate columns numeric.
+
+- But *not* Player, Pos, and Tm.
+
+```{r mutateAt, cache=TRUE}
+bball = bball %>% 
+  mutate_at(vars(-Player, -Pos, -Tm), funs(as.numeric))   
+
+glimpse(bball[,1:7])
+```
+
+#### Mutate
+
+<span class='func'>mutate</span> takes a vector and returns one of the same dimension
+
+- 'window' function
+
+A common task- creating composites of existing variables
+
+```{r mutate, cache=TRUE}
+bball = bball %>% 
+  mutate(trueShooting = PTS / (2 * (FGA + (.44 * FTA))),
+         effectiveFG = (FG + (.5 * X3P)) / FGA, 
+         shootingDif = trueShooting - FG.)
+
+summary(select(bball, shootingDif))  # select and others don't have to be piped to use
+```
+
 
 
 ### tidyr
@@ -160,7 +266,7 @@ Other useful functions include:
 
 
 
-### Example
+#### Example
 
 ```{r gather_spread, eval=T}
 library(tidyr)
@@ -169,10 +275,35 @@ stocks <- data.frame( time = as.Date('2009-01-01') + 0:9,
                       Y = rnorm(10, 0, 2),
                       Z = rnorm(10, 0, 4) )
 stocks %>% head
-stocks %>% gather(stock, price, -time) %>% head
+stocks %>% 
+  gather(stock, price, -time) %>% 
+  head
 ```
 
-Note that the latter is an example of <span class="emph">tidy</span> data while the former is not.
+Note that the latter is an example of <span class="emph">tidy data</span> while the former is not.
+
+Separate player into first and last names based on the space
+
+```{r tidyrSpread, cache=TRUE}
+bball %>% 
+  separate(Player, into=c('firstName', 'lastName'), sep=' ') %>% 
+  select(1:5) %>% 
+  head
+```
+
+
+### Purrr
+
+Purr allows you to take the <span class="func">apply</span> family approach to the tidyverse.
+
+Consider Exercise 2 from the Vectorization
+
+```{r purr example}
+x = list(1:3, 4:6, 7:9)
+x %>% 
+  map(sum)
+```
+
 
 
 ### Personal Opinion
@@ -289,3 +420,4 @@ movies %>%
 ```
 
 
+[^headers]: You may be thinking- 'its 2017 and why on earth would anyone do that?!'.  Peruse most sports websites and you'll see that fundamental web design basics escape them.  See also, financial sites.
