@@ -1,7 +1,7 @@
 # Part II: Visualization
 
 ```{r vissetup, include=FALSE, eval=TRUE}
-knitr::opts_chunk$set(eval=T, echo=F)
+knitr::opts_chunk$set(eval=T, echo=F, cache=T)
 ```
 
 ## Thinking Visually
@@ -366,7 +366,7 @@ using too many colors
 
 The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>.  
 
-```{r thinkingvis_ex1, echo=T, eval=FALSE}
+```{r thinkingvis_ex1, echo=T, eval=FALSE, cache=FALSE}
 library(ggplot2); library(viridis)
 ggplot(aes(x=carat, y=price), data=diamonds) +
   geom_point(aes(color=price)) +
@@ -392,7 +392,7 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
 
 #### Thinking exercises
 
-For your upcoming Who is your audience?
+For your upcoming presentation, *who* is your audience?
 
 
 [^barerror]: Error bars for group means can overlap and still be statistically different (the test regards the *difference* in means).  Furthermore most visuals of this sort don't bother to say whether it is standard deviation, standard error, or 2*standard error, or even something else.

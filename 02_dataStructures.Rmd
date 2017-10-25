@@ -2,7 +2,7 @@
 
 ## Data Structures
 
-R has several core data structures:
+R has several core data structures, and we'll take a look at each.
   
 - Vectors
 - Factors
@@ -10,12 +10,11 @@ R has several core data structures:
 - Matrices/arrays
 - Data frames
 
+The more you know about R data structures, the more you'll know how to use them, the more you'll know *why* things go wrong if they do, and the further you'll be able to go with your data.
 
-#### Vectors
+### Vectors
 
-<span class="objclass">Vectors</span> form the basis of R data structures.
-
-Two main types- <span class="objclass">atomic</span> and <span class="objclass">lists</span>, but we'll talk about lists separately.
+<span class="objclass">Vectors</span> form the basis of R data structures. Two main types are <span class="objclass">atomic</span> and <span class="objclass">lists</span>, but we'll talk about lists separately.
 
 Here is an R <span class="objclass">vector</span>. The <span class="emph">elements</span> of the vector are numeric values.
 
@@ -25,49 +24,71 @@ x
 ```
 
 
-All elements of an atomic vector are the same <span class="emph">type</span>. Examples include:
+All elements of an atomic vector are the same <span class="emph">type</span>. Example types include:
   
 - <span class="objclass">character</span>
 - <span class="objclass">numeric</span> (double)
 - <span class="objclass">integer</span>
 - <span class="objclass">logical</span>
 
+### Character strings
+
+When dealing with text, objects of class character are what you'd typically be dealing with.  
+
+```{r create_a_char, eval=F}
+x = c('... Of Your Fake Dimension', 'Ephemeron', 'Dryswch', 'Isotasy', 'Memory')
+x
+```
+
+Not much to it, but be aware there is no real limit to what is represented as a character vector. For example, in a data frame, you could have a column where each entry is one of the works of Shakespeare.
 
 
-#### Factors
+### Factors
 
-A important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures.
+A important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures.  Although not exactly precise, one can think of factors as integers with labels.  So the underlying representation of a variable for <span class="objclass">sex</span> is 1:2 with labels 'Male' and 'Female'.  They are a special class with attributes, or metadata, that contains the information about the <span class="objclass">levels</span>.
 
-```{r factors, eval=TRUE}
+```{r factor_atts}
+x = factor(rep(letters[1:3], e=10))
+x
+attributes(x)
+```
+
+
+```{r factors, eval=F, echo=FALSE}
 x = factor(1:3, labels=c('q', 'V', 'what the heck?'))
 x
 ```
 
 
-The underlying representation is numeric, but it is important to remember that factors are *categorical*.
-
-They can't be used as numbers would be, as the following demonstrates.
+The underlying representation is numeric, but it is important to remember that factors are *categorical*.  Thus, they can't be used as numbers would be, as the following demonstrates.
 
 ```{r factors2, eval=TRUE, error=TRUE}
-as.numeric(x)
+x_num = as.numeric(x)  # convert to a numeric object
+sum(x_num)
 sum(x)
 ```
 
+#### Strings vs. Factors
+
+The main thing to note is that factors are generally a statistical phenomenon, and are required to do statistical things with data that would otherwise be a simple character string.  If you know the relatively few levels the data can take, you'll generally want to use factors, or at least know that statistical packages and methods may require them.  In addition, factors allow you to easily overcome the silly default alphabetical ordering of category levels in some very popular visualization packages.
+
+For other things, such as text analysis, you'll almost certainly want character strings instead, and in many cases it will be required.  It's also worth noting that a lot of base R and other behavior will coerce strings to factors.  This made a lot more sense in the early days of R, but is not really necessary these days.
 
 
-#### Matrices
+<div class='note'>
+<p><img class='img-note' src="img/R.ico" style=""> Some packages to note to help you with processing strings and factors:</p>
 
-With multiple dimensions, we are dealing with <span class="objclass">arrays.</span>
+- <span class="pack">forcats</span>
+- <span class="pack">stringr</span>
+</div>
 
-<span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing.
+### Matrices
 
-The vectors making up a matrix *must all be of the same type*.
-
-- e.g. all values in a matrix must be <span class="objclass">numeric</span>.
+With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing[^tidynomatrix]. The vectors making up a matrix *must all be of the same type*.  For example, all values in a matrix might be <span class="objclass">numeric</span>.
 
 
 
-##### Creating a matrix
+#### Creating a matrix
 
 Creating a matrix can be done in a variety of ways.
 
@@ -83,7 +104,7 @@ matrix(c(x, y, z), nrow=3, ncol=4, byrow=TRUE)
 ```
 
 
-#### Lists
+### Lists
 
 <span class="objclass">Lists</span> in R are highly flexible objects, and probably the most commonly used for data science.
 
@@ -113,7 +134,7 @@ x["b"]
 
 
 
-#### Data Frames
+### Data Frames
 
 <span class="objclass">data.frames</span> are a very commonly used data structure. They do not have to have the same type of element, and this is because the data.frame class is actually just a list.
 
@@ -126,7 +147,7 @@ But they can also be indexed by row or column as well.
 There are other very common types of object classes associated with packages that are both a <span class="objclass">data.frame</span> and other type of structure.
 
 
-##### Creating a data frame
+#### Creating a data frame
 
 ```{r createdf, eval=TRUE}
 mydf = data.frame(a = c(1,5,2), 
@@ -141,9 +162,9 @@ mydf
 ```
 
 
-#### **Data Structure Exercises**
+### **Data Structure Exercises**
 
-##### Excercise #1
+#### Excercise #1
 
 Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span> (use the <span class="func">class</span> or <span class="func">str</span> functions).
 
@@ -152,7 +173,7 @@ mydf = data.frame(A=1:3, B=letters[1:3])
 ```
 
 
-##### Exercise #2
+#### Exercise #2
 
 Create a <span class="objclass">list</span> of 3 elements, the first of which contains character strings, the second numbers, and the third, the <span class="objclass">data.frame</span> or <span class="objclass">matrix</span> you just created.
 
@@ -162,10 +183,13 @@ mylist = list(c('a', 'b'), 1:3, mydf)
 
 
 
-##### Thinking Exercises
+#### Thinking Exercises
 
 - How is a <span class="objclass">factor</span> different from a character vector?
 
 - How is a <span class="objclass">data.frame</span> the same as and different from a <span class="objclass">matrix</span>?
 
 - How is a <span class="objclass">data.frame</span> the same as and different from a <span class="objclass">list</span>?
+
+
+[^tidynomatrix]: Despite what the tidyverse would have you believe.

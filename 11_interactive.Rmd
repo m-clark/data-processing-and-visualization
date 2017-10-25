@@ -1,6 +1,6 @@
 ## Interactive Visualization
 
-```{r title, echo=F, cache=FALSE, eval=F}
+```{r title, echo=F, eval=F}
 saveWidget(vn, file='vntitle.html')
 library(visNetwork)
 nodes = data.frame(id=1:2, label=c('Interactive', 'Visualization'), color='#1e90ff')
@@ -68,7 +68,7 @@ The packages using it typically are pipe-oriented and produce interactive plots.
 
 
 
-### plotly example
+### Plotly
 
 A couple demonstrations with <span class="pack">plotly</span>.
 
@@ -137,7 +137,7 @@ ggplotly()
 #   dyRangeSelector(height = 20)
 ```
 
-```{r highcharts, cache=FALSE, eval=T}
+```{r highcharts, eval=T}
 library(highcharter); library(quantmod)
 
 x = getSymbols("GOOG", auto.assign = FALSE)
@@ -163,7 +163,7 @@ edges = data.frame(from = c(0,0,0,1,1,2,2,3,3,3,4,5,5),
   filter(from!=to)
 ```
 
-```{r visNetwork, cache=FALSE, eval=F, echo=-1}
+```{r visNetwork, eval=F, echo=-1}
 saveWidget(vn, file='visnetwork.html')
 library(visNetwork)
 visNetwork(nodes, edges) %>% #, height=600, width=800
@@ -180,7 +180,7 @@ visNetwork(nodes, edges) %>% #, height=600, width=800
 
 Use the <span class="pack">DT</span> package for interactive data frames.
 
-```{r datatable, cache=FALSE, eval=TRUE}
+```{r datatable, eval=TRUE}
 library(DT)
 ggplot2movies::movies %>% 
   select(1:6) %>% 
