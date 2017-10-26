@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-24">
+<meta name="date" content="2017-10-25">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -344,19 +344,17 @@ $class
 <p>The main thing to note is that factors are generally a statistical phenomenon, and are required to do statistical things with data that would otherwise be a simple character string. If you know the relatively few levels the data can take, you’ll generally want to use factors, or at least know that statistical packages and methods may require them. In addition, factors allow you to easily overcome the silly default alphabetical ordering of category levels in some very popular visualization packages.</p>
 <p>For other things, such as text analysis, you’ll almost certainly want character strings instead, and in many cases it will be required. It’s also worth noting that a lot of base R and other behavior will coerce strings to factors. This made a lot more sense in the early days of R, but is not really necessary these days.</p>
 <div class="note">
-<p>
-<img class='img-note' src="img/R.ico" style=""> Some packages to note to help you with processing strings and factors:
-</p>
+<p>Some packages to note to help you with processing strings and factors:</p>
 <ul>
 <li><span class="pack">forcats</span></li>
-<li><span class="pack">stringr</span></li>
+<li><span class="pack">stringr</span> <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></li>
 </ul>
 </div>
 </div>
 </div>
 <div id="matrices" class="section level3">
 <h3>Matrices</h3>
-<p>With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. The vectors making up a matrix <em>must all be of the same type</em>. For example, all values in a matrix might be <span class="objclass">numeric</span>.</p>
+<p>With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. The vectors making up a matrix <em>must all be of the same type</em>. For example, all values in a matrix might be <span class="objclass">numeric</span>, or all <span class="objclass">character strings</span>.</p>
 <div id="creating-a-matrix" class="section level4">
 <h4>Creating a matrix</h4>
 <p>Creating a matrix can be done in a variety of ways.</p>
@@ -385,11 +383,7 @@ z    9   10   11   12</code></pre>
 </div>
 <div id="lists" class="section level3">
 <h3>Lists</h3>
-<p><span class="objclass">Lists</span> in R are highly flexible objects, and probably the most commonly used for data science.</p>
-<p>They can contain anything as their elements, even other lists.</p>
-<ul>
-<li>unlike vectors, whose elements must be of the same type.</li>
-</ul>
+<p><span class="objclass">Lists</span> in R are highly flexible objects, and probably the most commonly used for data science. Unlike vectors, whose elements must be of the same type, lists can contain anything as their elements, even other lists.</p>
 <p>Here is a list. We use the <span class="func">list</span> function to create it.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span>, <span class="st">&quot;apple&quot;</span>, <span class="kw">list</span>(<span class="dv">3</span>, <span class="st">&quot;cat&quot;</span>))
 x</code></pre></div>
@@ -406,7 +400,7 @@ x</code></pre></div>
 [[3]][[2]]
 [1] &quot;cat&quot;</code></pre>
 <p>We often want to loop some function over a list.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span>(elem <span class="cf">in</span> x) <span class="kw">print</span>(<span class="kw">class</span>(elem))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span> (elem <span class="cf">in</span> x) <span class="kw">print</span>(<span class="kw">class</span>(elem))</code></pre></div>
 <pre><code>[1] &quot;numeric&quot;
 [1] &quot;character&quot;
 [1] &quot;list&quot;</code></pre>
@@ -415,29 +409,27 @@ x</code></pre></div>
 x[<span class="st">&quot;b&quot;</span>]</code></pre></div>
 <pre><code>$b
 [1] -1</code></pre>
+<div class="note">
+<p>Python has similar structures, <span class="objclass">lists</span> and <span class="objclass">dictionaries</span>, where the latter works similarly to R’s named list. <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></p>
+</div>
 </div>
 <div id="data-frames" class="section level3">
 <h3>Data Frames</h3>
-<p><span class="objclass">data.frames</span> are a very commonly used data structure. They do not have to have the same type of element, and this is because the data.frame class is actually just a list.</p>
-<ul>
-<li>As such, everything about lists applies to them</li>
-</ul>
-<p>But they can also be indexed by row or column as well.</p>
-<ul>
-<li>like matrices</li>
-</ul>
-<p>There are other very common types of object classes associated with packages that are both a <span class="objclass">data.frame</span> and other type of structure.</p>
+<p>Data frames are a very commonly used data structure. Elements of a data frame can be different types, and this is because the <span class="objclass">data.frame</span> class is actually just a list. As such, everything about lists applies to them. But they can also be indexed by row or column as well, just like matrices. There are other very common types of object classes associated with packages that are both a <span class="objclass">data.frame</span> and some other type of structure (e.g. <span class="objclass">tibbles</span> in the tidyverse).</p>
+<p>Usually you’re data frame will come directly from import or manipulation of other R objects (e.g. matrices). However, you should know how to create one from scratch.</p>
 <div id="creating-a-data-frame" class="section level4">
 <h4>Creating a data frame</h4>
+<p>The following will create a data frame with two columns, <code>a</code> and <code>b</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydf =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">a =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">2</span>), 
                   <span class="dt">b =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">1</span>))</code></pre></div>
-<p>We can add row names also.</p>
+<p>Much to the disdain of the tidyverse, we can add row names also.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(mydf) =<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&#39;row&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)
 mydf</code></pre></div>
 <pre><code>     a b
 row1 1 3
 row2 5 8
 row3 2 1</code></pre>
+<p>Everything about lists applies to data.frames, so we can add, select, and remove elements of a data frame just like lists. However, we’ll visit this later, because we’ll have much more flexibility with data frames than we would lists.</p>
 </div>
 </div>
 <div id="data-structure-exercises" class="section level3">

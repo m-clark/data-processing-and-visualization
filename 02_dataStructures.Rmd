@@ -18,7 +18,7 @@ The more you know about R data structures, the more you'll know how to use them,
 
 Here is an R <span class="objclass">vector</span>. The <span class="emph">elements</span> of the vector are numeric values.
 
-```{r vec, eval=TRUE}
+```{r vec}
 x = c(1, 3, 2, 5, 4)
 x
 ```
@@ -62,7 +62,7 @@ x
 
 The underlying representation is numeric, but it is important to remember that factors are *categorical*.  Thus, they can't be used as numbers would be, as the following demonstrates.
 
-```{r factors2, eval=TRUE, error=TRUE}
+```{r factors2, error=TRUE}
 x_num = as.numeric(x)  # convert to a numeric object
 sum(x_num)
 sum(x)
@@ -76,15 +76,16 @@ For other things, such as text analysis, you'll almost certainly want character 
 
 
 <div class='note'>
-<p><img class='img-note' src="img/R.ico" style=""> Some packages to note to help you with processing strings and factors:</p>
+Some packages to note to help you with processing strings and factors:
 
 - <span class="pack">forcats</span>
 - <span class="pack">stringr</span>
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
 </div>
 
 ### Matrices
 
-With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing[^tidynomatrix]. The vectors making up a matrix *must all be of the same type*.  For example, all values in a matrix might be <span class="objclass">numeric</span>.
+With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing[^tidynomatrix]. The vectors making up a matrix *must all be of the same type*.  For example, all values in a matrix might be <span class="objclass">numeric</span>, or all <span class="objclass">character strings</span>.
 
 
 
@@ -106,60 +107,57 @@ matrix(c(x, y, z), nrow=3, ncol=4, byrow=TRUE)
 
 ### Lists
 
-<span class="objclass">Lists</span> in R are highly flexible objects, and probably the most commonly used for data science.
-
-They can contain anything as their elements, even other lists.
-
-- unlike vectors, whose elements must be of the same type. 
+<span class="objclass">Lists</span> in R are highly flexible objects, and probably the most commonly used for data science. Unlike vectors, whose elements must be of the same type, lists can contain anything as their elements, even other lists.
 
 Here is a list. We use the <span class="func">list</span> function to create it. 
 
-```{r list, eval=TRUE}
+```{r list}
 x = list(1, "apple", list(3, "cat"))
 x
 ```
 
 We often want to loop some function over a list.
 
-```{r listloop, eval=TRUE}
-for(elem in x) print(class(elem))
+```{r listloop}
+for (elem in x) print(class(elem))
 ```
 
 Lists can, and often do, have named elements.
 
-```{r namedlist, eval=TRUE}
+```{r namedlist}
 x = list("a" = 25, "b" = -1, "c" = 0)
 x["b"]
 ```
 
-
+<div class='note'>
+Python has similar structures, <span class="objclass">lists</span> and <span class="objclass">dictionaries</span>, where the latter works similarly to R's named list.
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
 
 ### Data Frames
 
-<span class="objclass">data.frames</span> are a very commonly used data structure. They do not have to have the same type of element, and this is because the data.frame class is actually just a list.
+Data frames are a very commonly used data structure. Elements of a data frame can be different types, and this is because the <span class="objclass">data.frame</span> class is actually just a list.  As such, everything about lists applies to them. But they can also be indexed by row or column as well, just like matrices.  There are other very common types of object classes associated with packages that are both a <span class="objclass">data.frame</span> and some other type of structure (e.g. <span class="objclass">tibbles</span> in the tidyverse).
 
-- As such, everything about lists applies to them
-
-But they can also be indexed by row or column as well.
-
-- like matrices
-
-There are other very common types of object classes associated with packages that are both a <span class="objclass">data.frame</span> and other type of structure.
+Usually you're data frame will come directly from import or manipulation of other R objects (e.g. matrices).  However, you should know how to create one from scratch.
 
 
 #### Creating a data frame
+
+The following will create a data frame with two columns, `a` and `b`.
 
 ```{r createdf, eval=TRUE}
 mydf = data.frame(a = c(1,5,2), 
                   b = c(3,8,1))
 ```
 
-We can add row names also.
+Much to the disdain of the tidyverse, we can add row names also.
 
 ```{r dfrownames, eval=TRUE}
 rownames(mydf) = paste0('row', 1:3)
 mydf
 ```
+
+Everything about lists applies to data.frames, so we can add, select, and remove elements of a data frame just like lists. However, we'll visit this later, because we'll have much more flexibility with data frames than we would lists.
 
 
 ### **Data Structure Exercises**
