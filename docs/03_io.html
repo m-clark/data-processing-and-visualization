@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-25">
+<meta name="date" content="2017-10-26">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -166,7 +166,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="02_dataStructures.html#data-structure-exercises"><strong>Data Structure Exercises</strong></a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html"><i class="fa fa-check"></i>Input/Output</a><ul>
-<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#newer-approaches"><i class="fa fa-check"></i>Newer approaches</a></li>
+<li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#other-approaches"><i class="fa fa-check"></i>Other approaches</a></li>
 <li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#faster-approaches"><i class="fa fa-check"></i>Faster approaches</a></li>
 <li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#other-data"><i class="fa fa-check"></i>Other Data</a></li>
 <li class="chapter" data-level="" data-path="03_io.html"><a href="03_io.html#on-the-horizon"><i class="fa fa-check"></i>On the horizon</a></li>
@@ -287,47 +287,31 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="inputoutput" class="section level2">
 <h2>Input/Output</h2>
-<p>Standard methods of reading in tabular data include the following functions:</p>
+<p>Until you get comfortable getting data into R, you’re not going to use it as much as you would. You should at least be able to read in common data formats like comma/tab-separated, Excel, etc. Standard methods of reading in tabular data include the following functions:</p>
 <ul>
 <li><span class="func">read.table</span></li>
 <li><span class="func">read.csv</span></li>
 <li><span class="func">readLines</span></li>
 </ul>
 <p>Base R also comes with the <span class="pack">foreign</span> package for reading in other types of files, especially other statistical packages. However, while you may see it still in use, it’s not as useful as what’s found in other packages.</p>
-<div id="newer-approaches" class="section level3">
-<h3>Newer approaches</h3>
-<p><span class="pack">haven</span>: Package to read in foreign statistical files</p>
-<ul>
-<li><span class="func">read_spss</span></li>
-<li><span class="func">read_dta</span></li>
-</ul>
-<p><span class="pack">readxl</span>: for excel files</p>
-<p><span class="pack">rio</span>: uses haven, readxl etc. but with just two functions for everything</p>
-<ul>
-<li><span class="func">import</span>, <span class="func">export</span> (also <span class="func">convert</span>)</li>
-</ul>
+<div class="note">
+<p>Reading in data is usually a one-off event, such that you’ll never need to use the package again after the data is loaded. In that case, you might use the following approach, so that you don’t need to attach the whole package.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&#39;fileloc/filename.csv&#39;</span>)</code></pre></div>
+<p>You can use that for any package, which can help avoid naming conflicts by not loading a bunch of different packages. Furthermore, if you need packages that do have a naming conflict, using this approach will ensure the function from the package you want will be used.</p>
+<p><img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></p>
+</div>
+<div id="other-approaches" class="section level3">
+<h3>Other approaches</h3>
+<p>There are some better and faster ways to read in data than the base R approach. A package for reading in foreign statistical files is <span class="pack">haven</span>, which has functions like <span class="func">read_spss</span> and <span class="func">read_dta</span> for SPSS and Stata files respectively. The package <span class="pack">readxl</span> is a clean way to read Excel files that doesn’t require any outside packages or languages. The package <span class="pack">rio</span>: uses <span class="pack">haven</span>, <span class="pack">readxl</span> etc., but with just two functions for everything: <span class="func">import</span>, <span class="func">export</span> (also <span class="func">convert</span>).</p>
 </div>
 <div id="faster-approaches" class="section level3">
 <h3>Faster approaches</h3>
-<p><span class="pack">readr</span>: Faster versions of base R functions</p>
-<ul>
-<li><span class="func">read_csv</span></li>
-<li><span class="func">read_delim</span></li>
-</ul>
-<p>These make assumptions after an initial scan of the data, but if you don’t have ‘big’ data, this won’t help much.</p>
-<p>However, they actually can be used as a diagnostic.</p>
-<ul>
-<li>pick up potential data entry errors.</li>
-</ul>
-<p><span class="pack">data.table</span> provides a faster version <span class="func">read.table</span>, and is typically faster than <span class="pack">readr</span> approaches.</p>
-<ul>
-<li><span class="func">fread</span></li>
-</ul>
+<p>For faster versions of base R functions, <span class="pack">readr</span> has <span class="func">read_csv</span>, <span class="func">read_delim</span>, and others. These make assumptions after an initial scan of the data, but if you don’t have ‘big’ data, this won’t help much. However, they actually can be used as a diagnostic to pick up potential data entry errors.</p>
+<p>The <span class="pack">data.table</span> package provides a faster version <span class="func">read.table</span>, and is typically faster than <span class="pack">readr</span> approaches (<span class="func">fread</span>).</p>
 </div>
 <div id="other-data" class="section level3">
 <h3>Other Data</h3>
-<p>Note that R can handle many types of data.</p>
-<p>Some examples:</p>
+<p>Be aware that R can handle practically any type of data you want to throw at it. Some examples include:</p>
 <ul>
 <li>JSON</li>
 <li>SQL</li>
@@ -343,14 +327,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="on-the-horizon" class="section level3">
 <h3>On the horizon</h3>
-<p><span class="pack">feather</span>: designed to make reading/writing data frames efficient</p>
-<p>Works in both Python and R. Still in early stages of development.</p>
+<p><span class="pack">feather</span> is designed to make reading/writing data frames efficient, and the really nice thing about it is that it works in both Python and R. It’s still in early stages of development on the R side though.</p>
 </div>
 <div id="big-data" class="section level3">
 <h3>Big Data</h3>
 <p>You may come across the situation where your data cannot be held in memory. One of the first things to be aware of for data processing is that you may not need to have the data all in memory at once. Before shifting to a hardward solution, consider if the following is possible.</p>
 <ul>
-<li>Chunking: reading and processing the data in chunks</li>
+<li><span class="emph">Chunking</span>: reading and processing the data in chunks</li>
 <li>Line at a time: dealing with individual lines of data</li>
 <li>Other data formats: for example SQL databases (<span class="pack">sqldf</span> package, <span class="func">src_dbi</span> in <span class="pack">dplyr</span>)</li>
 </ul>
