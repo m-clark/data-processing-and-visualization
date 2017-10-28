@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-26">
+<meta name="date" content="2017-10-28">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -158,8 +158,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html"><i class="fa fa-check"></i>Part 1: Data Processing</a><ul>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#data-structures"><i class="fa fa-check"></i>Data Structures</a><ul>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#vectors"><i class="fa fa-check"></i>Vectors</a></li>
-<li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#character-strings"><i class="fa fa-check"></i>Character strings</a></li>
-<li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#factors"><i class="fa fa-check"></i>Factors</a></li>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#matrices"><i class="fa fa-check"></i>Matrices</a></li>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#lists"><i class="fa fa-check"></i>Lists</a></li>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#data-frames"><i class="fa fa-check"></i>Data Frames</a></li>
@@ -180,14 +178,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html"><i class="fa fa-check"></i>Vectorization &amp; Apply</a><ul>
 <li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#boolean-indexing"><i class="fa fa-check"></i>Boolean Indexing</a></li>
-<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#flexiblity"><i class="fa fa-check"></i>Flexiblity</a></li>
 <li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#vectorized-operations"><i class="fa fa-check"></i>Vectorized operations</a></li>
 <li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
-<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#example"><i class="fa fa-check"></i>Example</a></li>
-<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#timings"><i class="fa fa-check"></i>Timings</a></li>
-<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#apply-functions-1"><i class="fa fa-check"></i>Apply functions</a></li>
-<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#personal-experience"><i class="fa fa-check"></i>Personal experience</a></li>
-<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#apply-functions-2"><i class="fa fa-check"></i>Apply functions</a></li>
 <li><a href="05_vectorapp.html#vectorapply-exercises"><strong>Vector/Apply Exercises</strong></a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="06_pipes.html"><a href="06_pipes.html"><i class="fa fa-check"></i>Pipes</a><ul>
@@ -207,7 +199,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#grouping-and-summarizing-data"><i class="fa fa-check"></i>Grouping and Summarizing Data</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#merging-data"><i class="fa fa-check"></i>Merging Data</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#tidyr"><i class="fa fa-check"></i>tidyr</a></li>
-<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#purrr"><i class="fa fa-check"></i>Purrr</a></li>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
 <li><a href="07_tidyverse.html#dplyr-exercises"><strong>dplyr Exercises</strong></a></li>
 </ul></li>
@@ -312,16 +304,20 @@ x</code></pre></div>
 <li><span class="objclass">integer</span></li>
 <li><span class="objclass">logical</span></li>
 </ul>
+<p>In addition, there are special kinds of values like <span class="objclass">NA</span> (‘not available’ i.e. missing), <span class="objclass">NULL</span>, <span class="objclass">NaN</span> (not a number), <span class="objclass">Inf</span> (infinite) and so forth.</p>
+<div class="note">
+<p>You can use <span class="func">typeof</span> to examine an object’s type, or use an <code>is</code> function, e.g. <span class="func">is.logical</span>, to check if an object is a specific type.</p>
+<p><img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></p>
 </div>
-<div id="character-strings" class="section level3">
-<h3>Character strings</h3>
+<div id="character-strings" class="section level4">
+<h4>Character strings</h4>
 <p>When dealing with text, objects of class character are what you’d typically be dealing with.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;... Of Your Fake Dimension&#39;</span>, <span class="st">&#39;Ephemeron&#39;</span>, <span class="st">&#39;Dryswch&#39;</span>, <span class="st">&#39;Isotasy&#39;</span>, <span class="st">&#39;Memory&#39;</span>)
 x</code></pre></div>
 <p>Not much to it, but be aware there is no real limit to what is represented as a character vector. For example, in a data frame, you could have a column where each entry is one of the works of Shakespeare.</p>
 </div>
-<div id="factors" class="section level3">
-<h3>Factors</h3>
+<div id="factors" class="section level4">
+<h4>Factors</h4>
 <p>A important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures. Although not exactly precise, one can think of factors as integers with labels. So the underlying representation of a variable for <span class="objclass">sex</span> is 1:2 with labels ‘Male’ and ‘Female’. They are a special class with attributes, or metadata, that contains the information about the <span class="objclass">levels</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">factor</span>(<span class="kw">rep</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">e=</span><span class="dv">10</span>))
 x</code></pre></div>
@@ -339,8 +335,8 @@ $class
 <pre><code>[1] 60</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(x)</code></pre></div>
 <pre><code>Error in Summary.factor(structure(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, : &#39;sum&#39; not meaningful for factors</code></pre>
-<div id="strings-vs.factors" class="section level4">
-<h4>Strings vs. Factors</h4>
+<div id="strings-vs.factors" class="section level5">
+<h5>Strings vs. Factors</h5>
 <p>The main thing to note is that factors are generally a statistical phenomenon, and are required to do statistical things with data that would otherwise be a simple character string. If you know the relatively few levels the data can take, you’ll generally want to use factors, or at least know that statistical packages and methods may require them. In addition, factors allow you to easily overcome the silly default alphabetical ordering of category levels in some very popular visualization packages.</p>
 <p>For other things, such as text analysis, you’ll almost certainly want character strings instead, and in many cases it will be required. It’s also worth noting that a lot of base R and other behavior will coerce strings to factors. This made a lot more sense in the early days of R, but is not really necessary these days.</p>
 <div class="note">
@@ -349,6 +345,7 @@ $class
 <li><span class="pack">forcats</span></li>
 <li><span class="pack">stringr</span> <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></li>
 </ul>
+</div>
 </div>
 </div>
 </div>

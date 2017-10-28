@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-26">
+<meta name="date" content="2017-10-28">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -158,8 +158,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html"><i class="fa fa-check"></i>Part 1: Data Processing</a><ul>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#data-structures"><i class="fa fa-check"></i>Data Structures</a><ul>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#vectors"><i class="fa fa-check"></i>Vectors</a></li>
-<li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#character-strings"><i class="fa fa-check"></i>Character strings</a></li>
-<li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#factors"><i class="fa fa-check"></i>Factors</a></li>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#matrices"><i class="fa fa-check"></i>Matrices</a></li>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#lists"><i class="fa fa-check"></i>Lists</a></li>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#data-frames"><i class="fa fa-check"></i>Data Frames</a></li>
@@ -180,14 +178,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html"><i class="fa fa-check"></i>Vectorization &amp; Apply</a><ul>
 <li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#boolean-indexing"><i class="fa fa-check"></i>Boolean Indexing</a></li>
-<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#flexiblity"><i class="fa fa-check"></i>Flexiblity</a></li>
 <li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#vectorized-operations"><i class="fa fa-check"></i>Vectorized operations</a></li>
 <li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
-<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#example"><i class="fa fa-check"></i>Example</a></li>
-<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#timings"><i class="fa fa-check"></i>Timings</a></li>
-<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#apply-functions-1"><i class="fa fa-check"></i>Apply functions</a></li>
-<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#personal-experience"><i class="fa fa-check"></i>Personal experience</a></li>
-<li class="chapter" data-level="" data-path="05_vectorapp.html"><a href="05_vectorapp.html#apply-functions-2"><i class="fa fa-check"></i>Apply functions</a></li>
 <li><a href="05_vectorapp.html#vectorapply-exercises"><strong>Vector/Apply Exercises</strong></a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="06_pipes.html"><a href="06_pipes.html"><i class="fa fa-check"></i>Pipes</a><ul>
@@ -207,7 +199,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#grouping-and-summarizing-data"><i class="fa fa-check"></i>Grouping and Summarizing Data</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#merging-data"><i class="fa fa-check"></i>Merging Data</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#tidyr"><i class="fa fa-check"></i>tidyr</a></li>
-<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#purrr"><i class="fa fa-check"></i>Purrr</a></li>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
 <li><a href="07_tidyverse.html#dplyr-exercises"><strong>dplyr Exercises</strong></a></li>
 </ul></li>
@@ -478,7 +470,7 @@ $ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;TOT&quot;, &quot;DAL&quot;, &quot;BR
 </div>
 <div id="filtering-rows" class="section level3">
 <h3>Filtering Rows</h3>
-<p>There are repeated header rows in this data<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>, so we need to drop them. This is also why everything was character string when we first read it in, because having any character strings makes everything a character string. Filtering by rows requires the basic indexing knowledge we talked about before, especially boolean indexing. In the following, <code>Rk</code>, or rank, is really just a row id, but if it equals ‘Rk’, we know it’s a header row, so we’ll drop it.</p>
+<p>There are repeated header rows in this data<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>, so we need to drop them. This is also why everything was character string when we first read it in, because having any character strings makes everything a character string. Filtering by rows requires the basic indexing knowledge we talked about before, especially boolean indexing. In the following, <code>Rk</code>, or rank, is really just a row id, but if it equals ‘Rk’, we know it’s a header row, so we’ll drop it.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball =<span class="st"> </span>bball <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(Rk <span class="op">!=</span><span class="st"> &quot;Rk&quot;</span>)</code></pre></div>
 <ul>
@@ -563,7 +555,7 @@ $ GS     &lt;dbl&gt; 6, 1, 0, 1, 80, 45, 15, 0, 72, 5, 66, 25, 0, 0, 10, 2, 8, 1
 </div>
 <div id="grouping-and-summarizing-data" class="section level3">
 <h3>Grouping and Summarizing Data</h3>
-<p>A very common task is to look at group-based statistics, and we can use <span class="func">group_by</span> and <span class="func">summarize</span> to help us in this regard<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>. Base R has things like <span class="func">aggregate</span> and <span class="func">tapply</span>, but they should <em>never</em> be used, and this approach is much more straightforward.</p>
+<p>A very common task is to look at group-based statistics, and we can use <span class="func">group_by</span> and <span class="func">summarize</span> to help us in this regard<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>. Base R has things like <span class="func">aggregate</span> and <span class="func">tapply</span>, but they should <em>never</em> be used, and this approach is much more straightforward.</p>
 <p>For this, I’m going to start putting together several things we’ve demonstrated thus far</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st">   </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">trueShooting =</span> PTS <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(FGA <span class="op">+</span><span class="st"> </span>(.<span class="dv">44</span> <span class="op">*</span><span class="st"> </span>FTA))),
@@ -630,7 +622,7 @@ mods <span class="op">%&gt;%</span><span class="st"> </span>
 <li><span class="func">separate</span>: complement of unite</li>
 <li><span class="func">unnest</span>: unnest ‘list columns’</li>
 </ul>
-<div id="example-1" class="section level4">
+<div id="example" class="section level4">
 <h4>Example</h4>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
 stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">time =</span> <span class="kw">as.Date</span>(<span class="st">&#39;2009-01-01&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">9</span>,
@@ -671,7 +663,7 @@ stocks <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre><
 </div>
 </div>
 <div id="purrr" class="section level3">
-<h3>Purrr</h3>
+<h3>purrr</h3>
 <p>Purr allows you to take the <span class="func">apply</span> family approach to the tidyverse.</p>
 <p>Consider Exercise 2 from the Vectorization/Apply section. We’ll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the the same way we would with <span class="func">lapply</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">7</span><span class="op">:</span><span class="dv">9</span>)
@@ -697,7 +689,7 @@ x <span class="op">%&gt;%</span><span class="st"> </span>
 </ul>
 <p>Drawbacks:</p>
 <ul>
-<li>Not as fast as <span class="pack">data.table</span> or even some base R approaches for many things<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></li>
+<li>Not as fast as <span class="pack">data.table</span> or even some base R approaches for many things<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a></li>
 <li>The <em>mindset</em> can make for unnecessary complication
 <ul>
 <li>e.g. There is no need to pipe to create one new variable</li>
@@ -844,10 +836,10 @@ x <span class="op">%&gt;%</span><span class="st"> </span>
 </div>
 <div class="footnotes">
 <hr />
-<ol start="2">
-<li id="fn2"><p>You may be thinking- ‘its 2017 and why on earth would anyone do that?!’. Peruse most sports websites and you’ll see that fundamental web design basics escape them. See also, financial sites.<a href="07_tidyverse.html#fnref2">↩</a></p></li>
-<li id="fn3"><p>As Hadley Wickham is from New Zealand, and his examples use <span class="func">summarise</span>, you’ll probably see it about as much as you do the other spelling.<a href="07_tidyverse.html#fnref3">↩</a></p></li>
-<li id="fn4"><p>There is <span class="pack">multidplyr</span>, but it doesn’t appear to have been updated since well before <span class="pack">dplyr</span> itself underwent major changes.<a href="07_tidyverse.html#fnref4">↩</a></p></li>
+<ol start="3">
+<li id="fn3"><p>You may be thinking- ‘its 2017 and why on earth would anyone do that?!’. Peruse most sports websites and you’ll see that fundamental web design basics escape them. See also, financial sites.<a href="07_tidyverse.html#fnref3">↩</a></p></li>
+<li id="fn4"><p>As Hadley Wickham is from New Zealand, and his examples use <span class="func">summarise</span>, you’ll probably see it about as much as you do the other spelling.<a href="07_tidyverse.html#fnref4">↩</a></p></li>
+<li id="fn5"><p>There is <span class="pack">multidplyr</span>, but it doesn’t appear to have been updated since well before <span class="pack">dplyr</span> itself underwent major changes.<a href="07_tidyverse.html#fnref5">↩</a></p></li>
 </ol>
 </div>
             </section>

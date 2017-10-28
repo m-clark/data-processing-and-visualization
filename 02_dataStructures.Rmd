@@ -31,7 +31,15 @@ All elements of an atomic vector are the same <span class="emph">type</span>. Ex
 - <span class="objclass">integer</span>
 - <span class="objclass">logical</span>
 
-### Character strings
+In addition, there are special kinds of values like <span class="objclass">NA</span> ('not available' i.e. missing), <span class="objclass">NULL</span>, <span class="objclass">NaN</span> (not a number), <span class="objclass">Inf</span> (infinite) and so forth.
+
+<div class='note'>
+You can use <span class="func">typeof</span> to examine an object's type, or use an `is` function, e.g. <span class="func">is.logical</span>, to check if an object is a specific type.
+
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
+
+#### Character strings
 
 When dealing with text, objects of class character are what you'd typically be dealing with.  
 
@@ -43,7 +51,7 @@ x
 Not much to it, but be aware there is no real limit to what is represented as a character vector. For example, in a data frame, you could have a column where each entry is one of the works of Shakespeare.
 
 
-### Factors
+#### Factors
 
 A important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures.  Although not exactly precise, one can think of factors as integers with labels.  So the underlying representation of a variable for <span class="objclass">sex</span> is 1:2 with labels 'Male' and 'Female'.  They are a special class with attributes, or metadata, that contains the information about the <span class="objclass">levels</span>.
 
@@ -68,7 +76,7 @@ sum(x_num)
 sum(x)
 ```
 
-#### Strings vs. Factors
+##### Strings vs. Factors
 
 The main thing to note is that factors are generally a statistical phenomenon, and are required to do statistical things with data that would otherwise be a simple character string.  If you know the relatively few levels the data can take, you'll generally want to use factors, or at least know that statistical packages and methods may require them.  In addition, factors allow you to easily overcome the silly default alphabetical ordering of category levels in some very popular visualization packages.
 

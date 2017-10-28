@@ -7,9 +7,7 @@ knitr::opts_chunk$set(eval=FALSE)
 
 ### Boolean Indexing
 
-<span class="objclass">Logicals</span> are objects with values of `TRUE` or `FALSE`.
-
-Assume x is a vector of numbers.
+Assume <span class="objclass">x</span> is a vector of numbers. How would we create an index representing any value greater than 2?
 
 ```{r boolindex, eval=T}
 x = c(-1, 2, 10, -5)
@@ -18,25 +16,19 @@ idx
 x[idx]
 ```
 
-
-
-### Flexiblity
-
-We don't have to create an explicit index object first, as R indexing is ridiculously flexible.
+<span class="objclass">Logicals</span> are objects with values of `TRUE` or `FALSE`, like the <span class="objclass">idx</span> variable above.  While sometimes we want to deal with the logical object as an end, it is extremely commonly used as an index in data processing. Note that how we don't have to create an explicit index object first (though often you should), as R indexing is ridiculously flexible.  Here are more examples, not necessarily recommended, but just to demonstrate the flexibility of Boolean indexing.
 
 ```{r flexindex}
 x[x > 2]
 x[x != 3]
-x[ifelse(x > 2  & x !=10, T, F)]
+x[ifelse(x > 2 & x !=10, TRUE, FALSE)]
 x[{y = idx; y}]
 x[resid(lm(y ~ x)) > 0]
 ```
 
-
-
 ### Vectorized operations
 
-Consider the following unfortunately coded loop:
+Boolean indexing allows us to take <span class="emph">vectorized</span> approaches to dealing with data. Consider the following unfortunately coded loop:
 
 ```{r loop}
 for (i in 1:nrow(mydf)) {
@@ -50,21 +42,14 @@ for (i in 1:nrow(mydf)) {
 }
 ```
 
-Compare:
+Compare[^ifelse]:
 
 ```{r boolnoloop}
 mydf$y = 'No'
 mydf$y[mydf$x > 2] = 'Yes'
 ```
 
-This gets us the same thing, and would be much faster than the looped approach. Boolean indexing is an example of a vectorized operation.
-
-The whole vector is considered:
-
-- Rather than each element individually
-- Any preprocessing is done once rather than n times
-
-This is always faster.
+This gets us the same thing, and would be much faster than the looped approach. Boolean indexing is an example of a vectorized operation.  The whole vector is considered, rather than each element individually.  The result is that any preprocessing is done once rather than the `n` iterations of the loop.  In R, this will  always faster.
 
 Example: Log all values in a matrix.
 
@@ -72,7 +57,7 @@ Example: Log all values in a matrix.
 mymatrix_log = log(mymatrix)
 ```
 
-Way faster than looping over elements, rows or columns. Here we'll let the <span class="func">apply</span> function stand in for our loop, logging the elements of each column.
+This is way faster than looping over elements, rows or columns. Here we'll let the <span class="func">apply</span> function stand in for our loop, logging the elements of each column.
 
 ```{r loopvsvec, eval=T}
 mymatrix = matrix(runif(100), 10, 10)
@@ -84,16 +69,12 @@ microbenchmark(apply(mymatrix, 2, log),
 ```
 
 
-Many vectorized functions already exist in R.
-
-They are often written in C, Fortran etc., and so even faster.
+Many vectorized functions already exist in R.  They are often written in C, Fortran etc., and so even faster.  Not all programming languages lean toward vectorized operations, and may not see much speed gain from it.  In R however, you'll want to prefer it.  Even without, it's cleaner/clearer code, another reason to use the approach.
   
 
 ### Apply functions
 
-A family of functions allows for a succinct way of looping.
-
-Common ones include:
+A family of functions comes with R that allows for a succinct way of looping. Common functions in this family include:
 
 - <span class="func">apply</span>
     - arrays, matrices, data.frames
@@ -106,9 +87,7 @@ Common ones include:
 - <span class="func">replicate</span>
     - similar to sapply
     
-### Example
-
-Standardizing variables.
+As an example we'll consider standardizing variables, i.e. taking a set of numbers, subtracting the mean, and dividing by the standard deviation.  This results in a variable with mean of 0 and standard deviation of 1.  Let's start with a loop approach.
 
 ```{r loopvsapply1, eval=FALSE}
 for (i in 1:ncol(mydf)){
@@ -119,29 +98,23 @@ for (i in 1:ncol(mydf)){
 }
 ```
 
-The above would be a really bad way to use R. The following is much cleaner and now you'd have a function you can use elsewhere.  
+The above would be a really bad way to use R. It goes over each column individually, then over each value of the column. 
 
-<span class="func">apply</span> will take a matrix, and apply a function over the margin, row or column, you want.
+Conversely, <span class="func">apply</span> will take a matrix or data frame, and apply a function over the margin, row or column, you want to loop over.  The first argument is the data you're considering, the margin is the second argument (1 for rows, 2 for columns), and the function you want to apply to those rows is the third argument.  The following example is much cleaner compared to the loop, and now you'd have a function you can use elsewhere if needed.
 
 ```{r loopvsapply2, eval=F}
 stdize <- function(x) {
-  (x-mean(x))/sd(x)
+  (x-mean(x)) / sd(x)
 }
 
 apply(mydf, 2, stdize)   # 1 for rows, 2 for columnwise application
 ```
 
+Many of the other apply functions work similarly, taking an object and a function to do the work on the object (possibly implicit), possibly with other arguments if necessary.
 
+#### Timings
 
-### Timings
-
-The previous demonstrates how to use apply.
-
-However, there is a <span class="func">scale</span> function in base R that uses a more vectorized approach under the hood.
-
-The following demonstrates various approaches to standardizing the columns of the matrix, even using a parallelized approach. 
-
-The base R function requires very little code and beats the others.
+The previous demonstrates how to use apply. However, there is a <span class="func">scale</span> function in base R that uses a more vectorized approach under the hood. The following demonstrates various approaches to standardizing the columns of the matrix, even using a parallelized approach. As you'll see, the base R function requires very little code and beats the others.
 
 ```{r timings, echo=T}
 mymat = matrix(rnorm(100000), ncol=1000)
@@ -186,9 +159,9 @@ load('data/vectorization.RData'); library(microbenchmark); test
 ```
 
     
-### Apply functions
+#### Apply functions
 
-Benefits
+It is important to be familiar with and regularly use the apply family for efficient data processing. A summary of benefits includes:
   
 - Cleaner/simpler code
 - Environment kept clear of unnecessary objects
@@ -197,36 +170,25 @@ Benefits
 - Might be faster
 - Parallelizable
     
-<span class="emph">NOT</span> necessarily faster than explicit loops.
+Note that apply functions are <span class="emph">NOT</span> necessarily faster than explicit loops.
 
 - single loop over columns was as fast as apply
-- Replicate and mapply are especially slow
+- <span class="func">replicate</span> and <span class="func">mapply</span> are especially slow
 
-ALWAYS can *potentially* be faster than loops.
+However, the apply family can ALWAYS can *potentially* be faster than standard R loops do to para parallelization.  With base R's <span class="pack">parallel</span> package, there are parallel versions of the apply family, e.g.<span class="func">parApply</span>, <span class="func">parLapply</span> etc.
 
-  - Parallelization: parApply, parLapply etc.
+Apply functions and similar approaches should be a part of your regular R experience.  We'll talk about other options that may have even more benefits, but you need to know the basics in order to use those.  
 
 
 
-### Personal experience
-
-I use R every day, and rarely use explicit loops.
-
-- Note: no speed difference for a <span class="func">for</span> loop vs. using <span class="func">while</span>
-- If you must use an explicit loop, create an empty object of the dimension/form you need, and then fill it in.
-    - Notably faster
+<div class='note'>
+I use R every day, and very rarely use explicit loops.  Note that there is no speed difference for a <span class="func">for</span> loop vs. using <span class="func">while</span>.  And if you must use an explicit loop, create an empty object of the dimension/form you need, and then fill it in via the loop.  This will be notably faster.
 
 I pretty much never use an explicit double loop, as a little more thinking about the problem will usually provide a more efficient path to solving the problem.
 
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
 
-
-### Apply functions
-
-Apply functions and similar approaches should be a part of your regular R experience.
-
-Other versions we'll talk about have been optimized, but you need to know the basics in order to use those.
-
-Any you still may need parallel versions.
 
 
 
@@ -253,3 +215,6 @@ sapply()
 ```
 
 <span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>.  If you supply the argument `simplified=F`, it is identical. Otherwise, it attempts to return a vector or matrix.
+
+
+[^ifelse]: For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.
