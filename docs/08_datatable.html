@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-28">
+<meta name="date" content="2017-10-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -299,9 +299,9 @@ dt =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt"
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[<span class="dv">2</span>]
 dt[<span class="dv">2</span>,]</code></pre></div>
 <pre><code>   x g         y
-1: 4 2 0.0586233
+1: 1 2 0.3675184
    x g         y
-1: 4 2 0.0586233</code></pre>
+1: 1 2 0.3675184</code></pre>
 <p>In general, you use <strong>j</strong> to select (by name!) or create new columns.</p>
 <ul>
 <li>Define a new variable with <span class="func">:=</span></li>
@@ -311,18 +311,18 @@ dt[,z <span class="op">:</span><span class="er">=</span><span class="st"> </span
 dt[,z]
 dt[g<span class="op">&gt;</span><span class="dv">1</span>, <span class="kw">mean</span>(z), by=g]
 dt</code></pre></div>
-<pre><code>[1]  2  4  3 10  6  8
-[1]  2.814280  4.058623  3.387284 10.160015  6.821022  8.266908
+<pre><code>[1] 3 1 2 6 4 8
+[1] 3.854265 1.367518 2.663513 6.125565 4.733215 8.233114
    g       V1
-1: 2 5.439822
-2: 3 5.827096
-    x g         y         z
-1:  2 1 0.8142801  2.814280
-2:  4 2 0.0586233  4.058623
-3:  3 3 0.3872842  3.387284
-4: 10 1 0.1600149 10.160015
-5:  6 2 0.8210217  6.821022
-6:  8 3 0.2669085  8.266908</code></pre>
+1: 2 3.050367
+2: 3 5.448314
+   x g         y        z
+1: 3 1 0.8542648 3.854265
+2: 1 2 0.3675184 1.367518
+3: 2 3 0.6635132 2.663513
+4: 6 1 0.1255648 6.125565
+5: 4 2 0.7332151 4.733215
+6: 8 3 0.2331141 8.233114</code></pre>
 <p>Dropping columns is awkward.</p>
 <ul>
 <li>because <strong>j</strong> is an argument</li>
@@ -331,31 +331,31 @@ dt</code></pre></div>
 dt[,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=F]   <span class="co"># drops y, but now needs quotes</span>
 ## dt[,y:=NULL]        # drops y, but this is just a base R approach
 ## dt$y = NULL</code></pre></div>
-<pre><code>[1] -0.8142801 -0.0586233 -0.3872842 -0.1600149 -0.8210217 -0.2669085
-    x g         z
-1:  2 1  2.814280
-2:  4 2  4.058623
-3:  3 3  3.387284
-4: 10 1 10.160015
-5:  6 2  6.821022
-6:  8 3  8.266908</code></pre>
+<pre><code>[1] -0.8542648 -0.3675184 -0.6635132 -0.1255648 -0.7332151 -0.2331141
+   x g        z
+1: 3 1 3.854265
+2: 1 2 1.367518
+3: 2 3 2.663513
+4: 6 1 6.125565
+5: 4 2 4.733215
+6: 8 3 8.233114</code></pre>
 <div id="grouped-operations" class="section level3">
 <h3>Grouped operations</h3>
 <p>We can now attempt a ‘group-by’ operation, along with creation of a new variable.</p>
 <p>Note that these operations actually modify <span class="objclass">dt</span> <em>in place</em>, a key distinction with <span class="pack">dplyr</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1 =<span class="st"> </span>dt2 =<span class="st"> </span>dt
 dt[,<span class="kw">sum</span>(x,y), by=g]                  <span class="co"># sum of all x and y values</span></code></pre></div>
-<pre><code>   g       V1
-1: 1 12.97430
-2: 2 10.87964
-3: 3 11.65419</code></pre>
+<pre><code>   g        V1
+1: 1  9.979830
+2: 2  6.100733
+3: 3 10.896627</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1[,newvar <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(x), by=g]         <span class="co"># add new variable to the original data </span></code></pre></div>
 <p>We can also create groupings on the fly.</p>
 <p>For a new summary data set, we’ll take the following approach.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt2[, <span class="kw">list</span>(<span class="dt">meanx =</span> <span class="kw">mean</span>(x), <span class="dt">sumx =</span> <span class="kw">sum</span>(x)), by=g<span class="op">==</span><span class="dv">1</span>]</code></pre></div>
 <pre><code>       g meanx sumx
-1:  TRUE  6.00   12
-2: FALSE  5.25   21</code></pre>
+1:  TRUE  4.50    9
+2: FALSE  3.75   15</code></pre>
 </div>
 <div id="faster" class="section level3">
 <h3>Faster!</h3>

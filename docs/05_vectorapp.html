@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-28">
+<meta name="date" content="2017-10-29">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -322,8 +322,8 @@ mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&
                <span class="kw">log</span>(mymatrix))</code></pre></div>
 <pre><code>Unit: microseconds
                     expr    min     lq     mean median     uq     max neval
- apply(mymatrix, 2, log) 44.428 45.329 47.24382 45.929 46.529 121.876   100
-           log(mymatrix)  2.701  3.002  3.22721  3.002  3.302   9.306   100</code></pre>
+ apply(mymatrix, 2, log) 46.530 47.730 49.45928 48.330 48.931 149.794   100
+           log(mymatrix)  3.002  3.302  3.42233  3.303  3.602   4.203   100</code></pre>
 <p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
 </div>
 <div id="apply-functions" class="section level3">

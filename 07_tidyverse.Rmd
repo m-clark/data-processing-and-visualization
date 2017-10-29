@@ -7,7 +7,7 @@ knitr::opts_chunk$set(echo = T, eval=T)
 
 ### What is the tidyverse?
 
-The tidyverse consists of a few key packages-
+The tidyverse consists of a few key packages:
 
 - <span class="pack">ggplot2</span>: data visualization
 - <span class="pack">dplyr</span>: data manipulation
@@ -16,7 +16,7 @@ The tidyverse consists of a few key packages-
 - <span class="pack">purrr</span>: functional programming, e.g. alternate approaches to apply
 - <span class="pack">tibble</span>: tibbles, a modern re-imagining of data frames
 
-And of course the <span class="pack">tidyverse</span> package which will load all of the above.
+And of course the <span class="pack">tidyverse</span> package itself, which will load all of the above.
 
 See also: <span class="pack">lubridate</span>, <span class="pack">rvest</span>, <span class="pack">stringr</span> and others in the 'hadleyverse'.
 
@@ -35,22 +35,16 @@ Think *long* before *wide*.
 
 ### dplyr
 
-<span class="pack">dplyr</span> provides a grammar of data manipulation (like <span class="pack">ggplot2</span> does for visualization).
-
-It is the next iteration of <span class="pack">plyr</span>, but there is no longer any need for plyr really.
-
-It's focused on tools for working with data frames.
-
-- Over 100 functions
+<span class="pack">dplyr</span> provides a grammar of data manipulation (like <span class="pack">ggplot2</span> does for visualization).  It is the next iteration of <span class="pack">plyr</span>, but there is no longer any need for <span class="pack">plyr</span> really.  It's focused on tools for working with data frames, with over over 100 functions that might be of specific use to you.
 
 It has three main goals:
 
 - Make the most important data manipulation tasks easier.
 - Do them faster.
-- Use the same interface to work with data frames, data tables or database.
+- Use the same interface to work with data frames, data tables or a database.
 
 
-Some key operations:
+Some key operations include:
 
 
 - <span class="func">select</span>: grab columns
@@ -61,15 +55,15 @@ Some key operations:
 - <span class="func">summarize</span>: summarize/aggregate
 - <span class="func">do</span>: arbitrary operations
 
-Various join/merge functions:
+There are various (SQL-like) join/merge functions:
 
 - <span class="func">inner_join</span>, <span class="func">left_join</span> etc.
 
-Little things like:
+And there are a lot of little things like:
 
 - <span class="func">n</span>, <span class="func">n\_distinct</span>, <span class="func">nth</span>, <span class="func">n\_groups</span>, <span class="func">count</span>, <span class="func">recode</span>, <span class="func">between</span>
 
-No need to quote variable names.
+In addition, there is no need to quote variable names.
 
 
 #### An example
@@ -78,24 +72,30 @@ Let's say we want to select from our data the following variables:
 
   - Start with the **ID** variable
   - The variables **X1:X10**, which are not all together, and there are many more *X* columns
-  - The variables **var1** and **var2**, which are the only *var* variables in the data
+  - The variables **var1** and **var2**, which are the only variables with *var* in their name
   - Any variable that starts with **XYZ**
     
-How might we go about this?
+How might we go about this? There several base R approaches that we could go with, but often they will be tedious, or require multiple objects to be created just to get the columns you want.  Let's start with the worst choice.
 
-##### Some base R approaches
-
-Tedious, or multiple objects just to get the columns you want.
-
-```{r baseRexample1, eval=FALSE}
-# numeric indexes; not conducive to readibility or reproducibility
+```{r baseRexample1a, eval=FALSE}
 newData = oldData[,c(1,2,3,4, etc.)]
+```
 
-# explicitly by name; fine if only a handful; not pretty
+Using numeric indexes, or rather <span class="emph">magic numbers</span>, is not conducive to readability or reproducibility.  If anything changes about the data columns, the numbers may no longer be applicable, and you'd have to redo the line again.
+
+We could name the variables explicitly.
+
+```{r baseRexample1b, eval=FALSE}
 newData = oldData[,c('ID','X1', 'X2', etc.)]
+```
 
-# two step with grep; regex difficult to read/understand
+This would be fine if there are only a handful.  But if you're trying to reduce a 1000 column data set to several dozen it's tedious, and generally not pretty regardless.
+
+A more advanced alternative regards a two-step approach with <span class="emph">regular expressions</span>. This requires that you know something about regex (and you should), but it is difficult to read/understand by those who don't, and often by even yourself if it's more complicated.  In any case, you first will need to create an object that represents the column names first, otherwise it looks unwieldy if used within brackets or a function like <span class="func">subset</span>.
+
+```{r baseRexample1c, eval=FALSE}
 cols = c('ID', paste0('X', 1:10), 'var1', 'var2', grep(colnames(oldData), '^XYZ', value=T))
+
 newData = oldData[,cols]
 
 # or via subset
@@ -103,9 +103,7 @@ newData = subset(oldData, select = cols)
 ```
 
 
-##### More
-
-What if you also want observations where **Z** is **Yes**, Q is **No**, and only the observations with the top 50 values of **var2**, ordered by **var1** (descending)?
+Now consider there is even more to do. What if you also want observations where **Z** is **Yes**, Q is **No**, and only the observations with the top 50 values of **var2**, ordered by **var1** (descending)?  Probably the more straightforward way in R to do so would be something like the following, where each part is broken out and we continuously write over the object as we modify it.
 
 ```{r baseRexample2, eval=FALSE}
 # three operations and overwriting or creating new objects if we want clarity
@@ -117,7 +115,7 @@ newData = newData[order(newData$var1, decreasing=T),]
 And this is for fairly straightforward operations.
 
 
-##### The dplyr way
+Now consider doing all of the previous in one piped operation.  The <span class="pack">dplyr</span> package will allow us to do something like the following.
 
 ```{r pipeExample, eval=FALSE}
 newData = oldData %>% 
@@ -127,16 +125,11 @@ newData = oldData %>%
   arrange(desc(var1))
 ```
 
+Even if it hadn't been explained before, you might have been able to guess a little as to what was was going on.  The code is fairly succinct, we don't have to keep referencing objects repeatedly, and no intermediary objects are created.
 
+<span class="pack">dplyr</span> and piping is an *alternative*. You can do all this sort of stuff with base R, for example, with functions like <span class="func">with</span>, <span class="func">within</span>, <span class="func">subset</span>, <span class="func">transform</span>, etc.  Though the initial base R approach depicted is fairly concise, in general, it still can potentially be: 
 
-#### An alternative
-
-
-<span class="pack">dplyr</span> and piping is an *alternative*. You can do all this sort of stuff with base R, for example, with <span class="func">with</span>, <span class="func">within</span>, <span class="func">subset</span>, <span class="func">transform</span>, etc.
-
-Even though the initial base R approach depicted is fairly concise, it still can potentially be: 
-
-- noisier
+- more verbose
 - less legible
 - less amenable to additional data changes
 - requires esoteric knowledge (e.g. regular expressions)
@@ -146,10 +139,10 @@ Even though the initial base R approach depicted is fairly concise, it still can
 
 ### Running example
 
-The following data was scraped initially scraped from the web as follows.  However you can just load it into your workspace.
+The following data was scraped initially scraped from the web as follows.  It is data from the NBA basketball league for the 2016-2017 season with things like player names, points per game, field goal percentage etc.  We'll use it as an example to demonstrate various functionality found within <span class="pack">dplyr</span>.
 
 ```{r basketballDataScrape, eval=FALSE}
-library(rvest); 
+library(rvest)
 url = "http://www.basketball-reference.com/leagues/NBA_2017_totals.html"
 bball = read_html(url) %>% 
   html_nodes("#totals_stats") %>% 
@@ -158,9 +151,9 @@ bball = read_html(url) %>%
 save(bball, file='data/bball.RData')
 ```
 
-When initially downloaded, the data is all character strings.  We'll fix this later.
+However you can just load it into your workspace. Note that when initially downloaded, the data is all character strings.  We'll fix this later.
 
-```{r mutateAt0}
+```{r load_bball}
 load('data/bball.RData')
 glimpse(bball[,1:5])
 ```
@@ -170,7 +163,7 @@ glimpse(bball[,1:5])
 
 Often you do not need the entire data set. While this is easily handled in base R (as shown earlier), it can be more clear to use <span class="func">select</span> in <span class='pack'>dplyr</span>.  Now we won't have to create separate objects, use quotes or $, etc.
 
-```{r select1, cache=TRUE}
+```{r select1}
 bball %>% 
   select(Player, Tm, Pos) %>% 
   head
@@ -178,7 +171,7 @@ bball %>%
 
 What if we want to drop some variables?
 
-```{r select2, cache=TRUE}
+```{r select2}
 bball %>%     
   select(-Player, -Tm, -Pos)  %>% 
   head
@@ -188,14 +181,14 @@ bball %>%
 
 Sometimes, we have a lot of variables to select, and if they have a common naming scheme, this can be very easy.
 
-```{r select3, cache=TRUE}
+```{r select3}
 bball %>% 
   select(Player, contains("3P"), ends_with("RB")) %>% 
   arrange(desc(TRB)) %>% 
   head
 ```
 
-I probably don't even need to explain what's being done above, and this is the power of the tidyverse way.  Here are the list of <span class="emph">helper functions</span> to be aware of:
+The <span class="func">select</span> also has helper functions to make selecting columns even easier.  I probably don't even need to explain what's being done above, and this is the power of the tidyverse way.  Here is the list of <span class="emph">helper functions</span> to be aware of:
 
 - <span class="func">starts_with</span>: starts with a prefix
 - <span class="func">ends_with</span>: ends with a prefix
@@ -207,7 +200,9 @@ I probably don't even need to explain what's being done above, and this is the p
 
 ### Filtering Rows
 
-There are repeated header rows in this data[^headers], so we need to drop them.  This is also why everything was character string when we first read it in, because having any character strings makes everything a character string.  Filtering by rows requires the basic indexing knowledge we talked about before, especially boolean indexing. In the following, `Rk`, or rank, is really just a row id, but if it equals 'Rk', we know it's a header row, so we'll drop it.
+There are repeated header rows in this data[^headers], so we need to drop them.  This is also why everything was character string when we first imported it, because having any character strings in a column coerces the entire column to be character,  since all elements need to be of the same type.  Character string is chosen over others because anything can be converted to a string, but not everything can be a number.  
+
+Filtering by rows requires the basic indexing knowledge we talked about before, especially Boolean indexing. In the following, `Rk`, or rank, is really just a row id, but if it equals 'Rk' instead of a number, we know it's a header row, so we'll drop it.
 
 ```{r filter0}
 bball = bball %>% 
@@ -215,7 +210,7 @@ bball = bball %>%
 ```
 
 - <span class='func'>filter</span> returns rows with matching conditions.
-- <span class='func'>slice</span> allows for a numeric indexing approach.
+- <span class='func'>slice</span> allows for a numeric indexing approach[^noslice].
 
 Say we want too look at forwards (SF or PF) over the age of 35.  The following will do this, and since some players play on multiple teams, we'll want only the unique information on the variables of interest. The function <span class="func">distinct</span> allows us to do this.
 
@@ -226,39 +221,42 @@ bball %>%
   distinct(Player, Pos, Age)              
 ```
 
-or the first 10 rows...
+Maybe we want just the first 10 rows...
 
 ```{r filter2}
 bball %>% 
   slice(1:10)
 ```
 
-This can be done with things that are created on the fly...
+We can use filtering even with variables just created. 
 
 ```{r uniteFilterArrange}
 bball %>% 
   unite("posTeam", Pos, Tm) %>%         # create a new variable
   filter(posTeam == "PF_SAS") %>%       # use it for filtering
+  select(Player, posTeam, Age) %>%      # use it for selection
   arrange(desc(Age))                    # order 
 ```
 
+
+
 ### Generating New Data
 
-One of the most common data processing tasks is generating new variables. The function <span class='func'>mutate</span> takes a vector and returns one of the same dimension.  In addition, there is <span class="func">mutate_at</span>, <span class="func">mutate_if</span>, and <span class="func">mutate_all</span> to help with specific scenarios.
+One of the most common data processing tasks beyond subsetting the data is generating new variables. The function <span class='func'>mutate</span> takes a vector and returns one of the same dimension.  In addition, there is <span class="func">mutate_at</span>, <span class="func">mutate_if</span>, and <span class="func">mutate_all</span> to help with specific scenarios.
 
 
-To demonstrate, we'll use <span class='func'>mutate_at</span> to make appropriate columns numeric, i.e. everything except `Player`, `Pos`, and ` Tm`.  It takes two inputs, variables and functions to apply.
+To demonstrate, we'll use <span class='func'>mutate_at</span> to make appropriate columns numeric, i.e. everything except `Player`, `Pos`, and ` Tm`.  It takes two inputs, variables and functions to apply.  As there are multiple variables and (potentially) multiple functions, we use the <span class="func">vars</span> and <span class="func">funs</span> functions to denote them.
 
-```{r mutateAt, cache=TRUE}
+```{r mutateAt}
 bball = bball %>% 
   mutate_at(vars(-Player, -Pos, -Tm), funs(as.numeric))   
 
 glimpse(bball[,1:7])
 ```
 
-The following demonstrates how we can create composites of existing variables.
+Now that the data is correctly specified, the following demonstrates how we can use the standard <span class="func">mutate</span> function to create composites of existing variables.
 
-```{r mutate, cache=TRUE}
+```{r mutate}
 bball = bball %>% 
   mutate(trueShooting = PTS / (2 * (FGA + (.44 * FTA))),
          effectiveFG = (FG + (.5 * X3P)) / FGA, 
@@ -270,23 +268,25 @@ summary(select(bball, shootingDif))  # select and others don't have to be piped 
 
 ### Grouping and Summarizing Data
 
-A very common task is to look at group-based statistics, and we can use <span class='func'>group_by</span> and <span class="func">summarize</span> to help us in this regard[^summarise].  Base R has things like <span class="func">aggregate</span> and <span class="func">tapply</span>, but they should *never* be used, and this approach is much more straightforward.
+A very common task is to look at group-based statistics, and we can use <span class='func'>group_by</span> and <span class="func">summarize</span> to help us in this regard[^summarise].  Base R has things like <span class="func">aggregate</span> and <span class="func">tapply</span> for this, but they should *never* be used, and this approach is much more straightforward.
 
-For this, I'm going to start putting together several things we've demonstrated thus far
+For this, I'm going to start putting together several things we've demonstrated thus far. Ultimately we'll create a variable called <span class="objclass">trueShooting</span>, which represents 'true shooting percentage', and get an average for each position.
 
-```{r groupby, eval=TRUE, cache=TRUE}
+```{r groupby}
 bball %>%   
   mutate(trueShooting = PTS / (2 * (FGA + (.44 * FTA))),
          effectiveFG = (FG + (.5 * X3P)) / FGA, 
          shootingDif = trueShooting - FG.) %>%  
   select(Player, Tm, Pos, MP, trueShooting, effectiveFG, PTS) %>% 
-  group_by(Pos) %>%                                                 # can group by more than one variable
-  summarize(meanTrueShooting = mean(trueShooting, na.rm = TRUE))    # potentially any function can work
+  group_by(Pos) %>%                                                 
+  summarize(meanTrueShooting = mean(trueShooting, na.rm = TRUE))    
 ```
 
-Use <span class="func">do</span> on grouped data to go further.  The following will group data by position, then get the correlation between field-goal percentage and free-throw shooting percentage.  For some reason, one individual was labeled as 'PF-C'.
+We can use <span class="func">do</span> on grouped data to go further.  This function can be used to create a new <span class="emph">list-column</span> in the data, the elements of which can be *anything*, even the results of an analysis for each group.  As such, we can use <span class="pack">tidyr's</span> <span class="func">unnest</span> to get back to a standard data frame.
 
-```{r do, cache=T}
+To demonstrate, the following will group data by position, then get the correlation between field-goal percentage and free-throw shooting percentage.  For some reason, one individual was labeled as 'PF-C', so we change them to just 'C'.  On your own, I recommend just looking at it to the do line first, and compare to this result.
+
+```{r do}
 bball %>% 
   mutate(Pos = if_else(Pos=='PF-C', 'C', Pos)) %>% 
   group_by(Pos) %>%     
@@ -294,8 +294,7 @@ bball %>%
   unnest(FgFt_Corr)
 ```
 
-As a reminder, data frames are lists. As such, anything can go into the 'columns', even the results of analyses.
-
+As a reminder, data frames are lists. As such, anything can go into the 'columns'. 
 
 ```{r do2}
 library(nycflights13)
@@ -308,25 +307,62 @@ mods %>%
   head
 ```
 
+<div class='note'>
+You can use <span class="func">group_by</span> on more than one variable, e.g. `group_by(var1, var2)`
+
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
+ 
+
+
 ### Merging Data
+
+Merging data is yet another very common data task, as data often comes from multiple sources. In order to do this, we need some common identifier among the sources by which to join them. The following is a list of <span class="pack">dplyr</span> join functions.
+
+<span class="func">inner_join</span>: return all rows from x where there are matching values in y, and all columns from x and y. If there are multiple matches between x and y, all combination of the matches are returned.
+
+<span class="func">left_join</span>: return all rows from x, and all columns from x and y. Rows in x with no match in y will have NA values in the new columns. If there are multiple matches between x and y, all combinations of the matches are returned.
+
+<span class="func">right_join</span>: return all rows from y, and all columns from x and y. Rows in y with no match in x will have NA values in the new columns. If there are multiple matches between x and y, all combinations of the matches are returned.
+
+<span class="func">semi_join</span>: return all rows from x where there are matching values in y, keeping just columns from x. It differs from an inner join because an inner join will return one row of x for each matching row of y, where a semi join will never duplicate rows of x.
+
+<span class="func">anti_join</span>: return all rows from x where there are not matching values in y, keeping just columns from x.
+
+<span class="func">full_join</span>: return all rows and all columns from both x and y. Where there are not matching values, returns NA for the one missing.
+
+
+Probably the most common is a left join, where we kind of have one primary data set, and are adding data from another source to it. The following is a simple demonstration.
+
+
+```{r merge_demo, echo=-(1:2), message=TRUE}
+band_members = data_frame(Name = c('Seth', 'Francis', 'Bubba'),
+                          Band = c('Com Truise', 'Pixies', 'The New Year'))
+band_instruments = data_frame(Name = c('Seth', 'Francis', 'Bubba'),
+                              Instrument = c('Synthesizer', 'Guitar', 'Guitar'))
+
+band_members
+band_instruments
+
+left_join(band_members, band_instruments)
+```
+
+Merges can get quite complex, and involve multiple data sources. In many cases you may have to do a lot of processing before getting to the merge, but <span class="pack">dplyr's</span> joins will help quite a bit.
 
 
 ### tidyr
 
-Tidyr can be thought of as a more special subset of dplyr functionality.  Two primary functions for manipulating data you'll want ot be familiar with are:
+The <span class="pack">tidyr</span> can be thought of as a more special subset of <span class="pack">dplyr's</span> functionality. Some of its functions for manipulating data you'll want to be familiar with are:
 
 - <span class="func">gather</span>: wide to long
 - <span class="func">spread</span>: long to wide
-
-Other useful functions include:
-
 - <span class="func">unite</span>: paste together multiple columns into one
 - <span class="func">separate</span>: complement of unite
 - <span class="func">unnest</span>: unnest 'list columns'
 
-#### Example
+The following example shows how we take a 'wide-form' data set, where multiple columns represent different stock prices, and turn it into two columns, one representing stock name, and one for the price.
 
-```{r gather_spread, eval=T}
+```{r gather_spread}
 library(tidyr)
 stocks <- data.frame( time = as.Date('2009-01-01') + 0:9,
                       X = rnorm(10, 0, 1),
@@ -338,16 +374,18 @@ stocks %>%
   head
 ```
 
-Note that the latter is an example of <span class="emph">tidy data</span> while the former is not.
+Note that the latter is an example of <span class="emph">tidy data</span> while the former is not.  Why do we generally prefer such data?  Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data.  *This is especially the case for visualization*.
 
-Separate player into first and last names based on the space
+The following demonstrates the separate function utilized for a very common data processing task- dealing with names. Here' we'll separate <span class="objclass">player</span> into first and last names based on the space.
 
-```{r tidyrSpread, cache=TRUE}
+```{r tidyrSpread}
 bball %>% 
   separate(Player, into=c('firstName', 'lastName'), sep=' ') %>% 
   select(1:5) %>% 
   head
 ```
+
+Note that this won't necessarily apply to every name.  So further processing may be required.
 
 
 ### purrr
@@ -362,7 +400,7 @@ x %>%
   map(sum)
 ```
 
-
+The map functions take some getting used to, and in my experience they are typically slower than the apply functions.  However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output[^purrr].
 
 ### Personal Opinion
 
@@ -378,11 +416,12 @@ Drawbacks:
 
 - Not as fast as <span class="pack">data.table</span> or even some base R approaches for many things[^multidplyr]
 - The *mindset* can make for unnecessary complication
-    - e.g. There is no need to pipe to create one new variable
+    - e.g. There is no need to pipe to create a single new variable
 - Some approaches are not very intuitive
-- Poor ability to work with some common data structures (e.g. matrices)
+- Notably less ability to work with some very common data structures (e.g. matrices)
     
-    
+
+All in all, if you've only been using base R approaches, the tidyverse will change your R life!  It makes all the sorts of things you do all the time easier and clearer.  Highly recommended!
 
 
 
@@ -396,6 +435,7 @@ Install and load the <span class="pack">dplyr</span> <span class="pack">ggplot2m
 ```{r, eval=FALSE}
 install.packages('ggplot2movies')
 library(ggplot2movies)
+data('movies')
 ```
 
 
@@ -409,10 +449,10 @@ Use <span class="func">mutate</span> to create a centered version of the rating 
 
 ```{r ex1a_1, eval=FALSE}
 data %>% 
-  mutate(newvar = '?')
+  mutate(new_var_name = '?')
 ```
 
-```{r ex1a_2, echo=FALSE}
+```{r ex1a_2, echo=FALSE, eval=FALSE}
 movies %>% 
   mutate(ratingCen = rating - mean(rating)) 
 ```
@@ -421,16 +461,16 @@ movies %>%
 
 Use <span class="func">filter</span> to create a new data frame that has only movies from the years 2000 and beyond. Use the greater than or equal operator `>=`.
 
-```{r ex1b, echo=FALSE}
+```{r ex1b, echo=FALSE, eval=FALSE}
 movies %>% 
   filter(year >= 2000) 
 ```
 
 ##### Exercise 1c
 
-Use <span class="func">select</span> to create a new data frame that only has the title, year, budget, length, rating and votes variables.  There are at least 3 ways to do this.
+Use <span class="func">select</span> to create a new data frame that only has the `title`, `year`, `budget`, `length`, `rating` and `votes` variables.  There are at least 3 ways to do this.
 
-```{r ex1c, echo=FALSE}
+```{r ex1c, echo=FALSE, eval=FALSE}
 movies %>% 
   select(title, year, budget, length, rating, votes) 
 movies %>% 
@@ -444,10 +484,11 @@ movies %>%
 #### Exercise 2
 
 Use <span class="func">group_by</span> to group the data by year, and <span class="func">summarize</span> to create a new variable that is the average budget. The <span class="func">summarize</span> function works just like <span class="func">mutate</span> in this case.
+
 Use the <span class="func">mean</span> function to get the average, but you'll also need to use the argument `na.rm = TRUE` within it because the earliest years have no budget recorded.
 
 
-```{r ex2, echo=FALSE}
+```{r ex2, echo=FALSE, eval=FALSE}
 movies %>% 
   group_by(year) %>% 
   summarise(AvgBudget=mean(budget, na.rm=T)) %>% 
@@ -461,9 +502,10 @@ Now put it all together in one set of piped operations.
 
 - Filter movies released *after* 1990
 - select the same variables as before but also the `mpaa`, `Action`, and `Drama` variables
-- group by `mpaa` *and* `Action` *or* `Drama`
+- group by `mpaa` *and* (your choice) `Action` *or* `Drama`
 - get the average rating
 
+It should spit out something like the following:
 
 ```{r ex3, echo=FALSE}
 movies %>%
@@ -474,8 +516,12 @@ movies %>%
 ```
 
 
-[^headers]: You may be thinking- 'its 2017 and why on earth would anyone do that?!'.  Peruse most sports websites and you'll see that fundamental web design basics escape them.  See also, financial sites.
+[^headers]: You may be thinking- 'it's 2017 and why on earth would anyone do that?!'.  Peruse most sports websites and you'll see that fundamental web design basics escape them.  See also, financial sites.
 
 [^summarise]: As Hadley Wickham is from New Zealand, and his examples use <span class="func">summarise</span>, you'll probably see it about as much as you do the other spelling.
 
 [^multidplyr]: There is <span class="pack">multidplyr</span>, but it doesn't appear to have been updated since well before <span class="pack">dplyr</span> itself underwent major changes.
+
+[^noslice]: If you're following good programming practices, you'll likely never use <span class="func">slice</span>.
+
+[^purrr]: Personally I find the help file description nebulous and examples unrealistic, and oftentimes can come up with a group_by-summarise approach before I can sort out why the map approach didn't work.
