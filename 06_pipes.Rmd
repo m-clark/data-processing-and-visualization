@@ -5,20 +5,19 @@ knitr::opts_chunk$set(echo = T)
 ```
 
 
+<div class='note'>
+More detail on much of the following is provided [here](https://m-clark.github.io/workshops/dplyr/mainSlides.html).
 
-Note: More detail on much of the following is given in [another workshop](https://m-clark.github.io/workshops/dplyr/mainSlides.html).
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
 
-
-
-Pipes are operators that send what comes before the pipe to what comes after. There are many different pipes, and some packages that use their own.
-
-However, the vast majority of packages use the same pipe:
-
-
-<div style="text-align:center;font-variant:small-caps; font-size:500%; color:#ff5503">%>%</div>
+Pipes are operators that send what comes before the pipe to what comes after. There are many different pipes, and some packages that use their own. However, the vast majority of packages use the same pipe:
 
 
-Here, we'll focus on their use with the <span class="pack">dplyr</span> package. Later, we'll use it for visualizations.
+<div style="text-align:center;font-variant:small-caps; font-size:500%; color:#ff5500">%>%</div>
+
+
+Here, we'll focus on their use with the <span class="pack">dplyr</span> package, and the tidyverse more generally. Pipes are also utilized heavily in visualization.
 
 Example:
 
@@ -29,10 +28,12 @@ mydf %>%
   summary
 ```
 
-> Start with a data.frame <span class="" style="font-family:Consolas">%>%</span> 
-<br>&nbsp;&nbsp;&nbsp;  select columns from it <span class="" style="font-family:Consolas">%>%</span> 
-<br>&nbsp;&nbsp;&nbsp;  filter/subset it <span class="" style="font-family:Consolas">%>%</span> 
-<br>&nbsp;&nbsp;&nbsp;  get a summary
+```
+Start with a data.frame %>% 
+    select columns from it %>% 
+    filter/subset it %>% 
+    get a summary
+```
 
 
 #### Using variables as they are created
@@ -61,22 +62,14 @@ basegraph %>%
 
 ### The dot
 
-Most functions are not 'pipe-aware' by default.
-
-Example: pipe to a modeling function.
+Most functions are not 'pipe-aware' by default. In the following we try to send our data frame to <span class="func">lm</span> for a regression.
 
 ```{r pipeerror}
 mydf %>% 
   lm(y ~ x)  # error
 ```
 
-Other pipes could work in this situation.
-
-  - e.g. <span class="func">%$%</span> in <span class="pack">magrittr</span>.
-
-But generally, when you come upon this situation, you can use a dot.
-
-- The dot refers to the object before the previous pipe.
+Other pipes could work in this situation, e.g. <span class="func">%$%</span> in <span class="pack">magrittr</span>. But generally, when you come upon this situation, you can use a dot to represent the object before the pipe.
 
 ```{r pipedot}
 mydf %>% 
@@ -86,13 +79,13 @@ mydf %>%
 
 ### Flexibility
 
-Piping is not just for data.frames.
+Piping is not just for data.frames, lists and vectors can be used as well, and would be the primary object for the purrr family of functions we'll discuss later.
 
 - The following starts with a character vector.
 - Sends it to a recursive function (named <span class="func">..</span>).
     - <span class="func">..</span> is created on-the-fly, and has a single argument (`.`).
-- After the function is created, it's used on ., whcih represents the string before the pipe.
-- Result: pipes between the words.
+- After the function is created, it's used on ., which represents the string before the pipe.
+- Result: pipes between the words[^collapse].
 
 ```{r ridiculous, eval=T, echo=-1}
 library(magrittr)
@@ -112,8 +105,16 @@ c('Ceci', "n'est", 'pas', 'une', 'pipe!') %>%
 
 ### Summary
 
-Pipes are best used interactively, and they are extremely useful for data exploration.  Nowadays, more and more packages are being made that are 'pipe-aware', especially many visualization packages.
+Pipes are best used interactively, though you can use them within functions as well, and they are extremely useful for data exploration.  Nowadays, more and more packages are being made that are 'pipe-aware', especially many visualization packages.
 
+
+
+<div class='note'>
 See the <span class="pack">magrittr</span> package for more pipes.
 
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
 
+
+
+[^collapse]: That was a very complicated way to do this `paste(c('Ceci', "n'est", 'pas', 'une', 'pipe!'), collapse=' %>% ')`.
