@@ -1,7 +1,7 @@
 ## data.table
 
 
-Another package for data processing that has been useful to many is <span class="pack">data.table</span>. It works in a notably different way than <span class="pack">dplyr</span>. However, you'd use it for the same reasons, e.g. subset, grouping, update, ordered joins etc., but with a key differences in speed and memory efficiency. Like <span class="pack">dplyr</span>, the data objects are both <span class="objclass">data.frames</span> and a package specific class.
+Another package for data processing that has been useful to many is <span class="pack">data.table</span>. It works in a notably different way than <span class="pack">dplyr</span>. However, you'd use it for the same reasons, e.g. subset, grouping, update, ordered joins etc., but with key advantages in speed and memory efficiency. Like <span class="pack">dplyr</span>, the data objects are both <span class="objclass">data.frames</span> and a package specific class.
 
 
 ```{r dterror, eval=TRUE}
@@ -79,7 +79,6 @@ We can also create groupings on the fly. For a new summary data set, we'll take 
 
 ```{r dtgroup2, eval=1}
 dt2[, list(mean_x = mean(x), sum_x = sum(x)), by = g==1]
-
 dt2 %>% group_by(g==1) %>% summarise(mean_x=mean(x), sum_x=sum(x))
 ```
 
@@ -94,14 +93,14 @@ As mentioned, the reason to use <span class="pack">data.table</span> is speed.  
 
 #### Joins
 
-Joins can not only be faster but and easy to do. Note that the `i` argument can be a <span class="objclass">data.table</span> object itself.  I compare it's speed to the comparable <span class="pack">dplyr's</span> <span class="func">left_join</span> function.
+Joins can not only be faster but and easy to do. Note that the `i` argument can be a <span class="objclass">data.table</span> object itself.  I compare its speed to the comparable <span class="pack">dplyr's</span> <span class="func">left_join</span> function.
 
 ```{r dtjoin, eval=FALSE}
 dt1 = setkey(dt1, x)
 dt1[dt2]
 ```
 
-```{r dtjoin_timing, cache=FALSE}
+```{r dtjoin_timing, cache=FALSE, echo=FALSE}
 load('data/timing.RData')
 timing_join %>% pander::pander(justify='lr')
 # timing_join =
@@ -111,15 +110,13 @@ timing_join %>% pander::pander(justify='lr')
 #   select(expr, mean) %>%
 #   mutate(mean=round(mean, 2)) %>%
 #   rename(func=expr, `mean (microseconds)`=mean)
-
-
 ```
 
 #### Group by
 
 We can use use the <span class="func">setkey</span> function to order a data set by a certain column(s).  This ordering is done by reference; again, no copy is made.  Doing this will allow for faster grouped operations, though you likely will only see the speed gain with very large data. 
 
-```{r dtsetkey, echo=1:6,eval=1:7}
+```{r dtsetkey, echo=1:6,eval=1:8}
 test_dt0 = data.table(x=rnorm(10000000), g = sample(letters, 10000000, replace=T))
 test_dt1 = copy(test_dt0)
 test_dt2 = setkey(test_dt1, g)
@@ -146,10 +143,10 @@ timing_group_by_1 %>% pander::pander(justify='lr')
 
 The <span class="func">chin</span> function returns a vector of the *positions* of (first) matches of its first argument in its second, where both arguments are character vectors.  Essentially it's just like the <span class="func">%in%</span> function for character vectors. 
 
-Consider the following. We sample the first 14 letters 1000 times with replacement and see which ones match in a subset of another subset of letters.  I compare the same operation to stringr and the stringi package whose functionality it's using.
+Consider the following. We sample the first 14 letters 1000 times with replacement and see which ones match in a subset of another subset of letters.  I compare the same operation to <span class="pack">stringr</span> and the <span class="pack">stringi</span> package whose functionality it's using.
 
 ```{r dtcharacters, echo=2:3, eval=2:4}
-set.seed(123)
+set.seed(1234)
 lets_1 = sample(letters[1:14], 1000, replace=T)
 lets_1 %chin% letters[13:26] %>% head(10)
 timing_chmatch %>% pander::pander(justify='lr')
@@ -283,14 +280,14 @@ data_frame(package=names(timingsdtplyr)) %>%
   pander::pander()
 ```
 
-Just for giggles I did the same in Python with a <span class="pack">pandas</span> <span class="objclass">DataFrame</span> and groupby operation, and it took over seven seconds.  But remember, R is slow!
+Just for giggles I did the same in Python with a <span class="pack">pandas</span> <span class="objclass">DataFrame</span> and group-by operation, and it took over seven seconds.  But remember, R is slow!
 
 
 
-###**data.table Exercises**
+### **data.table Exercises**
 
 
-####Exercise 0
+#### Exercise 0
 
 Install and load the <span class="pack">data.table</span> package.
 
@@ -300,7 +297,7 @@ Create the following data table.
 mydt = data.table(expand.grid(x=1:3, y=c('a','b','c')), z=sample(1:20, 9))
 ```
 
-####Exercise 1
+#### Exercise 1
 
 Create a new object that contains only the 'a' group. Think back to how you use a logical to select rows.
 
@@ -309,7 +306,7 @@ mydt_a = mydt[y=='a',]
 ```
 
 
-####Exercise 2
+#### Exercise 2
 
 Create a new object that is the sum of z grouped by x. You don't need to name the sum variable.
 

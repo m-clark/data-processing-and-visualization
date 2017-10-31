@@ -646,23 +646,23 @@ stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span c
                       <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),
                       <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>) )
 stocks <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre></div>
-<pre><code>        time          X          Y          Z
-1 2009-01-01 -0.3648379  1.5411886 -0.9699897
-2 2009-01-02 -1.2437672 -0.2219058 -2.6942603
-3 2009-01-03  0.5867329 -0.0239204  0.2557464
-4 2009-01-04  1.3739270  0.2156431 -6.7552267
-5 2009-01-05  1.2607485  0.1697504 -2.2412816
-6 2009-01-06 -1.1351046 -1.4586826  5.1489629</code></pre>
+<pre><code>        time           X          Y         Z
+1 2009-01-01  0.23436081 -2.1729509 10.710417
+2 2009-01-02  0.25489831  0.6365966  4.279712
+3 2009-01-03  0.04705061 -1.2912207 -1.974121
+4 2009-01-04 -0.33116740 -0.9421223  1.540028
+5 2009-01-05 -0.44959222 -1.8053951 -0.231165
+6 2009-01-06 -1.48002223  0.5707084  2.193844</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stocks <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">gather</span>(stock, price, <span class="op">-</span>time) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>head</code></pre></div>
-<pre><code>        time stock      price
-1 2009-01-01     X -0.3648379
-2 2009-01-02     X -1.2437672
-3 2009-01-03     X  0.5867329
-4 2009-01-04     X  1.3739270
-5 2009-01-05     X  1.2607485
-6 2009-01-06     X -1.1351046</code></pre>
+<pre><code>        time stock       price
+1 2009-01-01     X  0.23436081
+2 2009-01-02     X  0.25489831
+3 2009-01-03     X  0.04705061
+4 2009-01-04     X -0.33116740
+5 2009-01-05     X -0.44959222
+6 2009-01-06     X -1.48002223</code></pre>
 <p>Note that the latter is an example of <span class="emph">tidy data</span> while the former is not. Why do we generally prefer such data? Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. <em>This is especially the case for visualization</em>.</p>
 <p>The following demonstrates the separate function utilized for a very common data processing task- dealing with names. Here’ we’ll separate <span class="objclass">player</span> into first and last names based on the space.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>

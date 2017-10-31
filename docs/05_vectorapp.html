@@ -320,9 +320,9 @@ mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&
 <span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log),
                <span class="kw">log</span>(mymatrix))</code></pre></div>
 <pre><code>Unit: microseconds
-                    expr    min     lq     mean median     uq     max neval
- apply(mymatrix, 2, log) 46.530 47.730 49.45928 48.330 48.931 149.794   100
-           log(mymatrix)  3.002  3.302  3.42233  3.303  3.602   4.203   100</code></pre>
+                    expr    min     lq     mean median      uq     max neval
+ apply(mymatrix, 2, log) 43.227 44.128 47.01273 44.429 45.0290 108.068   100
+           log(mymatrix)  2.701  3.002  3.19718  3.002  3.0025  14.709   100</code></pre>
 <p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
 </div>
 <div id="apply-functions" class="section level3">
