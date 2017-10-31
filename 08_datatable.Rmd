@@ -1,30 +1,8 @@
-## data table
+## data.table
 
 
-```{r dtsetup, include=FALSE, eval=TRUE, cache=FALSE}
-knitr::opts_chunk$set(echo = T, message=F, warning=F, comment=NA, autodep=T, eval=FALSE, cache.rebuild=F, cache=F,
-                      R.options=list(width=120), fig.width=8, fig.align = 'center')
-```
+Another package for data processing that has been useful to many is <span class="pack">data.table</span>. It works in a notably different way than <span class="pack">dplyr</span>. However, you'd use it for the same reasons, e.g. subset, grouping, update, ordered joins etc., but with a key differences in speed and memory efficiency. Like <span class="pack">dplyr</span>, the data objects are both <span class="objclass">data.frames</span> and a package specific class.
 
-<!-- whatever you do, don't put a dot in the title or it will read nothing beyond the title; no, escapes, quotes nor spans won't work because that would make sense. -->
-<span class="pack">data.table</span> works in a notably different way than <span class="pack">dplyr</span>. However, you'd use it for the same reasons.
-
-Like <span class="pack">dplyr</span>, the data objects are both <span class="objclass">data.frames</span> and a package specific class.
-
-Faster subset, grouping, update, ordered joins etc.
-
-In general, <span class="pack">data.table</span> works with brackets as in base R.
-
-However, the brackets work like a function call!
-
-- Several key arguments
-
-```{r dtgeneric, eval=FALSE}
-x[i, j, by, keyby, with = TRUE, ...]
-```
-
-
-Importantly: *you don't use the brackets as you would with data.frames*.
 
 ```{r dterror, eval=TRUE}
 library(data.table)
@@ -32,21 +10,27 @@ dt = data.table(x=sample(1:10, 6), g=1:3, y=runif(6))
 class(dt)
 ```
 
-What **i** and **j** can be are fairly complex. 
+
+In general, <span class="pack">data.table</span> works with brackets as in base R data frames.  However, in order to use <span class="pack">data.table</span> effectively you'll need to forget the data frame similarity. The brackets actually work like a function call, with several key arguments.  Consider the following notation to start.
+
+```{r dtgeneric, eval=FALSE}
+x[i, j, by, keyby, with = TRUE, ...]
+```
+
+
+Importantly: *you don't use the brackets as you would with data.frames*. What **i** and **j** can be are fairly complex. 
 
 In general, you use **i** for filtering by rows.
  
-```{r dtrows, results='hold', eval=TRUE}
+```{r dtrows, results='hold'}
 dt[2]
 dt[2,]
 ```
 
-In general, you use **j** to select (by name!) or create new columns.
-
-- Define a new variable with <span class="func">:=</span>
+You use **j** to select (by name!) or create new columns.  We can define a new column with the <span class="func">:=</span> operator.
 
  
-```{r dtcols, results='hold', eval=T}
+```{r dtcols, results='hold'}
 dt[,x]
 dt[,z := x+y]  # dt now has a new column
 dt[,z]
@@ -54,10 +38,7 @@ dt[g>1, mean(z), by=g]
 dt
 ```
 
-
-Dropping columns is awkward.
-
-- because **j** is an argument
+Because **j** is an argument, dropping columns is awkward.
 
 ```{r dtdropcol, eval=1:2, results='hold'}
 dt[,-y]             # creates negative values of y
@@ -67,67 +48,173 @@ dt$y = NULL
 ```
 
 
+Data table does not make unnecessary copies.  For example if we do the following...
+
+```{r dtmemory}
+DT = data.table(A=5:1,B=letters[5:1])
+DT2 = DT
+```
+
+DT2 and DT are just names for the same table.  You'd actually need to use the copy function to make an explicit copy.
+
+```{r dtcopy}
+DT2 = copy(DT)     
+```
 
 
-###Grouped operations
+### Grouped operations
 
-We can now attempt a 'group-by' operation, along with creation of a new variable.
+We can now attempt a 'group-by' operation, along with creation of a new variable. Note that these operations actually modify the <span class="objclass">dt</span> object *in place*, a key distinction with <span class="pack">dplyr</span>.  Fewer copies means less of a memory hit.
 
-Note that these operations actually modify <span class="objclass">dt</span> *in place*, a key distinction with <span class="pack">dplyr</span>.
-
-```{r dtgroup, eval=T}
+```{r dtgroup}
 dt1 = dt2 = dt
 dt[,sum(x,y), by=g]                  # sum of all x and y values
 dt1[,newvar := sum(x), by=g]         # add new variable to the original data 
-```
-
-
-We can also create groupings on the fly.
-
-For a new summary data set, we'll take the following approach.
-
-```{r dtgroup2, eval=T}
-dt2[, list(meanx = mean(x), sumx = sum(x)), by=g==1]
+dt1
 ```
 
 
 
-###Faster!
+We can also create groupings on the fly. For a new summary data set, we'll take the following approach- we create a a grouping based on whether g is a value of one or not, then get the mean and sum of x for those two categories.  The corresponding dplyr approach is also shown (but not evaluated) for comparison.
 
-- joins: and easy to do (note that i can be a data.table)
+```{r dtgroup2, eval=1}
+dt2[, list(mean_x = mean(x), sum_x = sum(x)), by = g==1]
+
+dt2 %>% group_by(g==1) %>% summarise(mean_x=mean(x), sum_x=sum(x))
+```
+
+
+
+### Faster!
+
+
+
+As mentioned, the reason to use <span class="pack">data.table</span> is speed.  If you have large data or large operations it'll be useful.
+
+
+#### Joins
+
+Joins can not only be faster but and easy to do. Note that the `i` argument can be a <span class="objclass">data.table</span> object itself.  I compare it's speed to the comparable <span class="pack">dplyr's</span> <span class="func">left_join</span> function.
 
 ```{r dtjoin, eval=FALSE}
+dt1 = setkey(dt1, x)
 dt1[dt2]
 ```
 
-- group operations: via <span class="func">setkey</span>
-- reading files: <span class="func">fread</span>
-- character matches: e.g. via <span class="func">chmatch</span>
+```{r dtjoin_timing, cache=FALSE}
+load('data/timing.RData')
+timing_join %>% pander::pander(justify='lr')
+# timing_join =
+#   microbenchmark::microbenchmark(dt_join = dt1[dt2],
+#                                  dplyr_join = left_join(dt1, dt2, by='x')) %>%
+#   summary() %>%
+#   select(expr, mean) %>%
+#   mutate(mean=round(mean, 2)) %>%
+#   rename(func=expr, `mean (microseconds)`=mean)
 
 
-###Timings
+```
 
-The following demonstrates some timings from [here](http://stackoverflow.com/questions/3505701/r-grouping-functions-sapply-vs-lapply-vs-apply-vs-tapply-vs-by-vs-aggrega/34167477#34167477).
+#### Group by
 
-- Reproduced on my own machine
-- based on 50 million observations
-- Grouped operations are just a sum and length on a vector. 
+We can use use the <span class="func">setkey</span> function to order a data set by a certain column(s).  This ordering is done by reference; again, no copy is made.  Doing this will allow for faster grouped operations, though you likely will only see the speed gain with very large data. 
+
+```{r dtsetkey, echo=1:6,eval=1:7}
+test_dt0 = data.table(x=rnorm(10000000), g = sample(letters, 10000000, replace=T))
+test_dt1 = copy(test_dt0)
+test_dt2 = setkey(test_dt1, g)
+
+identical(test_dt0, test_dt1)
+identical(test_dt1, test_dt2)
+
+timing_group_by_1 %>% pander::pander(justify='lr')
+
+
+# timing_group_by_1 = 
+#   microbenchmark::microbenchmark(test_dt0 = test_dt0[,mean:=mean(x),by=g],
+#                                  test_dt1 = test_dt1[,mean:=mean(x),by=g],
+#                                  test_dt2 = test_dt2[,mean:=mean(x),by=g]) %>% 
+#   summary() %>% 
+#   select(expr, mean) %>% 
+#   mutate(mean=round(mean, 2)) %>% 
+#   rename(func=expr, `mean (milliseconds)`=mean)
+
+
+```
+
+#### String matching
+
+The <span class="func">chin</span> function returns a vector of the *positions* of (first) matches of its first argument in its second, where both arguments are character vectors.  Essentially it's just like the <span class="func">%in%</span> function for character vectors. 
+
+Consider the following. We sample the first 14 letters 1000 times with replacement and see which ones match in a subset of another subset of letters.  I compare the same operation to stringr and the stringi package whose functionality it's using.
+
+```{r dtcharacters, echo=2:3, eval=2:4}
+set.seed(123)
+lets_1 = sample(letters[1:14], 1000, replace=T)
+lets_1 %chin% letters[13:26] %>% head(10)
+timing_chmatch %>% pander::pander(justify='lr')
+
+# library(stringr); library(stringi)
+# timing_chmatch =
+#   microbenchmark::microbenchmark(
+#   dt = lets_1 %chin% letters[13:26],
+#   stringi= stri_detect_regex(lets_1, paste(letters[13:26], collapse='|')),
+#   stringr= str_detect(lets_1, paste(letters[13:26], collapse='|'))
+# ) %>%
+#   summary() %>%
+#   select(expr, mean) %>%
+#   mutate(mean=round(mean, 2)) %>%
+#   rename(func=expr, `mean (microseconds)`=mean)
+
+
+```
+
+
+
+
+#### Reading files
+
+If you use <span class="pack">data.table</span> for nothing else, you'd still want to consider it strongly for reading in large text files.  The function <span class="func">fread</span> may be quite useful in being memory efficient too.  I compare it to <span class="pack">readr</span>.
+
+```{r dtfread, eval=FALSE}
+fread('data/cars.csv')
+```
+
+```{r dtfread_timing, echo=FALSE}
+# library(readr)
+# timing_read =
+#   microbenchmark::microbenchmark(
+#   dt = fread('data/cars.csv'),
+#   readr = read_csv('data/cars.csv')
+# ) %>%
+#   summary() %>%
+#   select(expr, mean) %>%
+#   mutate(mean=round(mean, 2)) %>%
+#   rename(func=expr, `mean (microseconds)`=mean)
+
+timing_read %>% pander::pander(justify='lr')
+```
+
+
+
+#### More speed
+
+The following demonstrates some timings from [here](http://stackoverflow.com/questions/3505701/r-grouping-functions-sapply-vs-lapply-vs-apply-vs-tapply-vs-by-vs-aggrega/34167477#34167477).  I reproduced it on my own machine based on 50 million observations. The grouped operations that are applied are just a sum and length on a vector. 
 
 
 By the way, never, ever use <span class="func">aggregate</span>. For anything.
 
 ```{r dttimings, eval=TRUE, echo=FALSE}
-load('data/timing.RData')
-as.data.table(sapply(timing, `[[`, "elapsed"), keep.rownames = TRUE)[,.(fun = V1, elapsed = V2)][order(-elapsed)]
+as.data.table(sapply(timing_group_by_big, `[[`, "elapsed"), keep.rownames = TRUE)[,.(fun = V1, elapsed = V2)][order(-elapsed)]
 ```
 
 Ever.
 
 Really.
 
-###Pipe with data.table
+### Pipe with data.table
 
-Can be done but awkward at best.
+Piping can be done with data.table objects too, using the brackets, but it's awkward at best.
 
 ```{r dtpipebad, eval=F}
 mydt[,newvar:=mean(x),][,newvar2:=sum(newvar), by=group][,-'y', with=FALSE]
@@ -137,7 +224,7 @@ mydt[,newvar:=mean(x),
   ]
 ```
 
-Probably better to just use a pipe and dot approach.
+Probably better to just use a standard pipe and dot approach.
 
 ```{r dtpipebad2, eval=F}
 mydt[,newvar:=mean(x),] %>% 
@@ -145,7 +232,7 @@ mydt[,newvar:=mean(x),] %>%
   .[,-'y', with=FALSE]
 ```
 
-###My take
+### My take
 
 Faster methods are great to have. 
 
@@ -156,28 +243,23 @@ Drawbacks:
 - Complex
 - The syntax can be awkward
 - It doesn't work like a data.frame
-- Piping with brackets
+- Piping with brackets isn't really feasible
 - Does not have its own 'verse'
 
 
-###Compromise
+### Compromise
 
-If speed and/or memory is (potentially) a concern, data.table
+If speed and/or memory is (potentially) a concern, <span class="pack">data.table</span>
 
-For interactive exploration, dplyr
+For interactive exploration, <span class="pack">dplyr</span>
 
 Piping allows one to use both, so no need to choose.
 
 And on the horizon...
 
-###dtplyr
+### dtplyr
 
-Coming soon to an R near you.
-
-> This implements the data table back-end for 'dplyr' so that you can seamlessly use data table and 'dplyr' together.
-
-
-Or play with now. The following shows times for a grouped operation of a data frame of two variables, a random uniform draw of 5e7 values, and a grouping variable of 500k groups.
+Coming soon to an R near you.  Or possibly abandonware, only time will tell.  However, what the <span class="pack">dtplyr</span> package purports to do is implement the <span class="pack">data.table</span> back-end for <span class="pack">dplyr</span> so that you can seamlessly use them together.  The following shows times for a grouped operation of a data frame of two variables, a random uniform draw of 5e7 values, and a grouping variable of 500k groups.
 
 ```{r dtplyr, echo=FALSE, eval=TRUE, cache=F}
 # something weird with n() function in chunk; saved out
@@ -201,7 +283,7 @@ data_frame(package=names(timingsdtplyr)) %>%
   pander::pander()
 ```
 
-Just for giggles I did the same in python with a pandas DataFrame and groupby operation, and it took 7+ seconds.
+Just for giggles I did the same in Python with a <span class="pack">pandas</span> <span class="objclass">DataFrame</span> and groupby operation, and it took over seven seconds.  But remember, R is slow!
 
 
 
