@@ -10,6 +10,7 @@ dt = data.table(x=sample(1:10, 6), g=1:3, y=runif(6))
 class(dt)
 ```
 
+### Basics
 
 In general, <span class="pack">data.table</span> works with brackets as in base R data frames.  However, in order to use <span class="pack">data.table</span> effectively you'll need to forget the data frame similarity. The brackets actually work like a function call, with several key arguments.  Consider the following notation to start.
 
@@ -221,7 +222,7 @@ mydt[,newvar:=mean(x),
   ]
 ```
 
-Probably better to just use a standard pipe and dot approach.
+Probably better to just use a standard pipe and dot approach if you really need it.
 
 ```{r dtpipebad2, eval=F}
 mydt[,newvar:=mean(x),] %>% 
@@ -229,9 +230,9 @@ mydt[,newvar:=mean(x),] %>%
   .[,-'y', with=FALSE]
 ```
 
-### My take
+### Summary
 
-Faster methods are great to have. 
+Faster methods are great to have. If you have large data this is one package that can help.
 
   - Especially for group-by and joins.
 
@@ -239,16 +240,14 @@ Drawbacks:
 
 - Complex
 - The syntax can be awkward
-- It doesn't work like a data.frame
+- It doesn't work like a data.frame, which can be confusing
 - Piping with brackets isn't really feasible
 - Does not have its own 'verse'
 
 
-### Compromise
+If speed and/or memory is (potentially) a concern, <span class="pack">data.table</span>.
 
-If speed and/or memory is (potentially) a concern, <span class="pack">data.table</span>
-
-For interactive exploration, <span class="pack">dplyr</span>
+For interactive exploration, <span class="pack">dplyr</span>.
 
 Piping allows one to use both, so no need to choose.
 
@@ -256,7 +255,7 @@ And on the horizon...
 
 ### dtplyr
 
-Coming soon to an R near you.  Or possibly abandonware, only time will tell.  However, what the <span class="pack">dtplyr</span> package purports to do is implement the <span class="pack">data.table</span> back-end for <span class="pack">dplyr</span> so that you can seamlessly use them together.  The following shows times for a grouped operation of a data frame of two variables, a random uniform draw of 5e7 values, and a grouping variable of 500k groups.
+Coming soon to an R near you, or possibly abandonware, only time will tell.  However, what the <span class="pack">dtplyr</span> package purports to do is implement the <span class="pack">data.table</span> back-end for <span class="pack">dplyr</span> so that you can seamlessly use them together.  The following shows times for a grouped operation of a data frame of two variables, a random uniform draw of 5e7 values, and a grouping variable of 500k groups.
 
 ```{r dtplyr, echo=FALSE, eval=TRUE, cache=F}
 # something weird with n() function in chunk; saved out
@@ -282,7 +281,11 @@ data_frame(package=names(timingsdtplyr)) %>%
 
 Just for giggles I did the same in Python with a <span class="pack">pandas</span> <span class="objclass">DataFrame</span> and group-by operation, and it took over seven seconds.  But remember, R is slow!
 
+<div class='note'>
+As of this writing, <span class="pack">dplyr</span> went through a notable update that changed some core functionality. Unfortunately, <span class="pack">dtplyr</span> has not been updated since then, so it will likely only work for the most standard of operations at present.
 
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
 
 ### **data.table Exercises**
 

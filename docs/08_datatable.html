@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-30">
+<meta name="date" content="2017-10-31">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -204,11 +204,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="07_tidyverse.html#dplyr-exercises"><strong>dplyr Exercises</strong></a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html"><i class="fa fa-check"></i>data.table</a><ul>
+<li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html#basics"><i class="fa fa-check"></i>Basics</a></li>
 <li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html#grouped-operations"><i class="fa fa-check"></i>Grouped operations</a></li>
 <li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html#faster"><i class="fa fa-check"></i>Faster!</a></li>
 <li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
-<li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html#my-take"><i class="fa fa-check"></i>My take</a></li>
-<li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html#compromise"><i class="fa fa-check"></i>Compromise</a></li>
+<li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html#summary-1"><i class="fa fa-check"></i>Summary</a></li>
 <li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html#dtplyr"><i class="fa fa-check"></i>dtplyr</a></li>
 <li><a href="08_datatable.html#data.table-exercises"><strong>data.table Exercises</strong></a></li>
 </ul></li>
@@ -283,6 +283,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 dt =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">x=</span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">6</span>), <span class="dt">g=</span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">y=</span><span class="kw">runif</span>(<span class="dv">6</span>))
 <span class="kw">class</span>(dt)</code></pre></div>
 <pre><code>[1] &quot;data.table&quot; &quot;data.frame&quot;</code></pre>
+<div id="basics" class="section level3">
+<h3>Basics</h3>
 <p>In general, <span class="pack">data.table</span> works with brackets as in base R data frames. However, in order to use <span class="pack">data.table</span> effectively you’ll need to forget the data frame similarity. The brackets actually work like a function call, with several key arguments. Consider the following notation to start.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[i, j, by, keyby, with =<span class="st"> </span><span class="ot">TRUE</span>, ...]</code></pre></div>
 <p>Importantly: <em>you don’t use the brackets as you would with data.frames</em>. What <strong>i</strong> and <strong>j</strong> can be are fairly complex.</p>
@@ -329,6 +331,7 @@ dt[,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=F]   <spa
 DT2 =<span class="st"> </span>DT</code></pre></div>
 <p>DT2 and DT are just names for the same table. You’d actually need to use the copy function to make an explicit copy.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DT2 =<span class="st"> </span><span class="kw">copy</span>(DT)     </code></pre></div>
+</div>
 <div id="grouped-operations" class="section level3">
 <h3>Grouped operations</h3>
 <p>We can now attempt a ‘group-by’ operation, along with creation of a new variable. Note that these operations actually modify the <span class="objclass">dt</span> object <em>in place</em>, a key distinction with <span class="pack">dplyr</span>. Fewer copies means less of a memory hit.</p>
@@ -508,14 +511,14 @@ mydt[,newvar<span class="op">:</span><span class="er">=</span><span class="kw">m
   ][,newvar2<span class="op">:</span><span class="er">=</span><span class="kw">sum</span>(newvar), by=group
   ][,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=<span class="ot">FALSE</span>
   ]</code></pre></div>
-<p>Probably better to just use a standard pipe and dot approach.</p>
+<p>Probably better to just use a standard pipe and dot approach if you really need it.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydt[,newvar<span class="op">:</span><span class="er">=</span><span class="kw">mean</span>(x),] <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>.[,newvar2<span class="op">:</span><span class="er">=</span><span class="kw">sum</span>(newvar), by=group] <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>.[,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=<span class="ot">FALSE</span>]</code></pre></div>
 </div>
-<div id="my-take" class="section level3">
-<h3>My take</h3>
-<p>Faster methods are great to have.</p>
+<div id="summary-1" class="section level3">
+<h3>Summary</h3>
+<p>Faster methods are great to have. If you have large data this is one package that can help.</p>
 <ul>
 <li>Especially for group-by and joins.</li>
 </ul>
@@ -523,21 +526,18 @@ mydt[,newvar<span class="op">:</span><span class="er">=</span><span class="kw">m
 <ul>
 <li>Complex</li>
 <li>The syntax can be awkward</li>
-<li>It doesn’t work like a data.frame</li>
+<li>It doesn’t work like a data.frame, which can be confusing</li>
 <li>Piping with brackets isn’t really feasible</li>
 <li>Does not have its own ‘verse’</li>
 </ul>
-</div>
-<div id="compromise" class="section level3">
-<h3>Compromise</h3>
-<p>If speed and/or memory is (potentially) a concern, <span class="pack">data.table</span></p>
-<p>For interactive exploration, <span class="pack">dplyr</span></p>
+<p>If speed and/or memory is (potentially) a concern, <span class="pack">data.table</span>.</p>
+<p>For interactive exploration, <span class="pack">dplyr</span>.</p>
 <p>Piping allows one to use both, so no need to choose.</p>
 <p>And on the horizon…</p>
 </div>
 <div id="dtplyr" class="section level3">
 <h3>dtplyr</h3>
-<p>Coming soon to an R near you. Or possibly abandonware, only time will tell. However, what the <span class="pack">dtplyr</span> package purports to do is implement the <span class="pack">data.table</span> back-end for <span class="pack">dplyr</span> so that you can seamlessly use them together. The following shows times for a grouped operation of a data frame of two variables, a random uniform draw of 5e7 values, and a grouping variable of 500k groups.</p>
+<p>Coming soon to an R near you, or possibly abandonware, only time will tell. However, what the <span class="pack">dtplyr</span> package purports to do is implement the <span class="pack">data.table</span> back-end for <span class="pack">dplyr</span> so that you can seamlessly use them together. The following shows times for a grouped operation of a data frame of two variables, a random uniform draw of 5e7 values, and a grouping variable of 500k groups.</p>
 <table style="width:29%;">
 <colgroup>
 <col width="18%" />
@@ -565,6 +565,10 @@ mydt[,newvar<span class="op">:</span><span class="er">=</span><span class="kw">m
 </tbody>
 </table>
 <p>Just for giggles I did the same in Python with a <span class="pack">pandas</span> <span class="objclass">DataFrame</span> and group-by operation, and it took over seven seconds. But remember, R is slow!</p>
+<div class="note">
+<p>As of this writing, <span class="pack">dplyr</span> went through a notable update that changed some core functionality. Unfortunately, <span class="pack">dtplyr</span> has not been updated since then, so it will likely only work for the most standard of operations at present.</p>
+<p><img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></p>
+</div>
 </div>
 <div id="data.table-exercises" class="section level3">
 <h3><strong>data.table Exercises</strong></h3>
