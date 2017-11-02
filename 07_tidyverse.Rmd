@@ -394,10 +394,15 @@ Purr allows you to take the <span class="func">apply</span> family approach to t
 
 Consider Exercise 2 from the Vectorization/Apply section.  We'll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the the same way we would with <span class="func">lapply</span>.
 
-```{r purr example}
+```{r purr_example, eval=FALSE}
 x = list(1:3, 4:6, 7:9)
 x %>% 
   map(sum)
+```
+```{r purr_example2, echo=FALSE}
+x = list(1:3, 4:6, 7:9)
+x %>% 
+  purrr::map(sum)
 ```
 
 The map functions take some getting used to, and in my experience they are typically slower than the apply functions.  However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output[^purrr].

@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-31">
+<meta name="date" content="2017-11-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -154,6 +154,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#part-4-presentation"><i class="fa fa-check"></i>Part 4: Presentation</a></li>
 <li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#part-5-modeling"><i class="fa fa-check"></i>Part 5: Modeling</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#preparation"><i class="fa fa-check"></i>Preparation</a></li>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#other"><i class="fa fa-check"></i>Other</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html"><i class="fa fa-check"></i>Part 1: Data Processing</a><ul>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#data-structures"><i class="fa fa-check"></i>Data Structures</a><ul>
@@ -291,41 +293,41 @@ dt =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt"
 <p>In general, you use <strong>i</strong> for filtering by rows.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[<span class="dv">2</span>]
 dt[<span class="dv">2</span>,]</code></pre></div>
-<pre><code>   x g         y
-1: 1 2 0.1171071
-   x g         y
-1: 1 2 0.1171071</code></pre>
+<pre><code>    x g         y
+1: 10 2 0.4108337
+    x g         y
+1: 10 2 0.4108337</code></pre>
 <p>You use <strong>j</strong> to select (by name!) or create new columns. We can define a new column with the <span class="func">:=</span> operator.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[,x]
 dt[,z <span class="op">:</span><span class="er">=</span><span class="st"> </span>x<span class="op">+</span>y]  <span class="co"># dt now has a new column</span>
 dt[,z]
 dt[g<span class="op">&gt;</span><span class="dv">1</span>, <span class="kw">mean</span>(z), by=g]
 dt</code></pre></div>
-<pre><code>[1]  5  1 10  2  8  3
-[1]  5.328439  1.117107 10.740258  2.008052  8.478007  3.129908
+<pre><code>[1]  5 10  6  9  8  1
+[1]  5.067544 10.410834  6.633678  9.543581  8.297972  1.173009
    g       V1
-1: 2 4.797557
-2: 3 6.935083
-    x g           y         z
-1:  5 1 0.328438613  5.328439
-2:  1 2 0.117107122  1.117107
-3: 10 3 0.740257933 10.740258
-4:  2 1 0.008051729  2.008052
-5:  8 2 0.478006508  8.478007
-6:  3 3 0.129908005  3.129908</code></pre>
+1: 2 9.354403
+2: 3 3.903343
+    x g          y         z
+1:  5 1 0.06754381  5.067544
+2: 10 2 0.41083368 10.410834
+3:  6 3 0.63367764  6.633678
+4:  9 1 0.54358095  9.543581
+5:  8 2 0.29797239  8.297972
+6:  1 3 0.17300933  1.173009</code></pre>
 <p>Because <strong>j</strong> is an argument, dropping columns is awkward.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[,<span class="op">-</span>y]             <span class="co"># creates negative values of y</span>
 dt[,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=F]   <span class="co"># drops y, but now needs quotes</span>
 ## dt[,y:=NULL]        # drops y, but this is just a base R approach
 ## dt$y = NULL</code></pre></div>
-<pre><code>[1] -0.328438613 -0.117107122 -0.740257933 -0.008051729 -0.478006508 -0.129908005
+<pre><code>[1] -0.06754381 -0.41083368 -0.63367764 -0.54358095 -0.29797239 -0.17300933
     x g         z
-1:  5 1  5.328439
-2:  1 2  1.117107
-3: 10 3 10.740258
-4:  2 1  2.008052
-5:  8 2  8.478007
-6:  3 3  3.129908</code></pre>
+1:  5 1  5.067544
+2: 10 2 10.410834
+3:  6 3  6.633678
+4:  9 1  9.543581
+5:  8 2  8.297972
+6:  1 3  1.173009</code></pre>
 <p>Data table does not make unnecessary copies. For example if we do the following…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DT =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">A=</span><span class="dv">5</span><span class="op">:</span><span class="dv">1</span>,<span class="dt">B=</span>letters[<span class="dv">5</span><span class="op">:</span><span class="dv">1</span>])
 DT2 =<span class="st"> </span>DT</code></pre></div>
@@ -338,23 +340,23 @@ DT2 =<span class="st"> </span>DT</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1 =<span class="st"> </span>dt2 =<span class="st"> </span>dt
 dt[,<span class="kw">sum</span>(x,y), by=g]                  <span class="co"># sum of all x and y values</span></code></pre></div>
 <pre><code>   g        V1
-1: 1  7.336490
-2: 2  9.595114
-3: 3 13.870166</code></pre>
+1: 1 14.611125
+2: 2 18.708806
+3: 3  7.806687</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1[,newvar <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(x), by=g]         <span class="co"># add new variable to the original data </span>
 dt1</code></pre></div>
-<pre><code>    x g           y         z newvar
-1:  5 1 0.328438613  5.328439      7
-2:  1 2 0.117107122  1.117107      9
-3: 10 3 0.740257933 10.740258     13
-4:  2 1 0.008051729  2.008052      7
-5:  8 2 0.478006508  8.478007      9
-6:  3 3 0.129908005  3.129908     13</code></pre>
+<pre><code>    x g          y         z newvar
+1:  5 1 0.06754381  5.067544     14
+2: 10 2 0.41083368 10.410834     18
+3:  6 3 0.63367764  6.633678      7
+4:  9 1 0.54358095  9.543581     14
+5:  8 2 0.29797239  8.297972     18
+6:  1 3 0.17300933  1.173009      7</code></pre>
 <p>We can also create groupings on the fly. For a new summary data set, we’ll take the following approach- we create a a grouping based on whether g is a value of one or not, then get the mean and sum of x for those two categories. The corresponding dplyr approach is also shown (but not evaluated) for comparison.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt2[, <span class="kw">list</span>(<span class="dt">mean_x =</span> <span class="kw">mean</span>(x), <span class="dt">sum_x =</span> <span class="kw">sum</span>(x)), by =<span class="st"> </span>g<span class="op">==</span><span class="dv">1</span>]</code></pre></div>
 <pre><code>       g mean_x sum_x
-1:  TRUE    3.5     7
-2: FALSE    5.5    22</code></pre>
+1:  TRUE   7.00    14
+2: FALSE   6.25    25</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## dt2 %&gt;% group_by(g==1) %&gt;% summarise(mean_x=mean(x), sum_x=sum(x))</code></pre></div>
 </div>
 <div id="faster" class="section level3">
@@ -432,7 +434,7 @@ test_dt2 =<span class="st"> </span><span class="kw">setkey</span>(test_dt1, g)
 <p>Consider the following. We sample the first 14 letters 1000 times with replacement and see which ones match in a subset of another subset of letters. I compare the same operation to <span class="pack">stringr</span> and the <span class="pack">stringi</span> package whose functionality it’s using.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lets_<span class="dv">1</span> =<span class="st"> </span><span class="kw">sample</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">14</span>], <span class="dv">1000</span>, <span class="dt">replace=</span>T)
 lets_<span class="dv">1</span> <span class="op">%chin%</span><span class="st"> </span>letters[<span class="dv">13</span><span class="op">:</span><span class="dv">26</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>)</code></pre></div>
-<pre><code> [1] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<pre><code> [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE</code></pre>
 <table style="width:43%;">
 <colgroup>
 <col width="13%" />

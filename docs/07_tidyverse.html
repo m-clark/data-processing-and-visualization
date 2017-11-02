@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-31">
+<meta name="date" content="2017-11-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -154,6 +154,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#part-4-presentation"><i class="fa fa-check"></i>Part 4: Presentation</a></li>
 <li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#part-5-modeling"><i class="fa fa-check"></i>Part 5: Modeling</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#preparation"><i class="fa fa-check"></i>Preparation</a></li>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#other"><i class="fa fa-check"></i>Other</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html"><i class="fa fa-check"></i>Part 1: Data Processing</a><ul>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#data-structures"><i class="fa fa-check"></i>Data Structures</a><ul>
@@ -646,23 +648,23 @@ stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span c
                       <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),
                       <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>) )
 stocks <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre></div>
-<pre><code>        time           X          Y         Z
-1 2009-01-01  0.23436081 -2.1729509 10.710417
-2 2009-01-02  0.25489831  0.6365966  4.279712
-3 2009-01-03  0.04705061 -1.2912207 -1.974121
-4 2009-01-04 -0.33116740 -0.9421223  1.540028
-5 2009-01-05 -0.44959222 -1.8053951 -0.231165
-6 2009-01-06 -1.48002223  0.5707084  2.193844</code></pre>
+<pre><code>        time           X          Y          Z
+1 2009-01-01  1.19550929  1.1827807  3.8220525
+2 2009-01-02 -1.15020517 -1.0516447 -2.1628708
+3 2009-01-03  0.86470988 -2.0905675  4.6640225
+4 2009-01-04  0.44367023 -0.9150227 -0.7297241
+5 2009-01-05 -2.05093833  1.0948163 -0.8499968
+6 2009-01-06  0.08665469  0.6849846  1.5957786</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stocks <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">gather</span>(stock, price, <span class="op">-</span>time) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>head</code></pre></div>
 <pre><code>        time stock       price
-1 2009-01-01     X  0.23436081
-2 2009-01-02     X  0.25489831
-3 2009-01-03     X  0.04705061
-4 2009-01-04     X -0.33116740
-5 2009-01-05     X -0.44959222
-6 2009-01-06     X -1.48002223</code></pre>
+1 2009-01-01     X  1.19550929
+2 2009-01-02     X -1.15020517
+3 2009-01-03     X  0.86470988
+4 2009-01-04     X  0.44367023
+5 2009-01-05     X -2.05093833
+6 2009-01-06     X  0.08665469</code></pre>
 <p>Note that the latter is an example of <span class="emph">tidy data</span> while the former is not. Why do we generally prefer such data? Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. <em>This is especially the case for visualization</em>.</p>
 <p>The following demonstrates the separate function utilized for a very common data processing task- dealing with names. Here’ we’ll separate <span class="objclass">player</span> into first and last names based on the space.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>

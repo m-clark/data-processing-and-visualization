@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-10-31">
+<meta name="date" content="2017-11-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -154,6 +154,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#part-4-presentation"><i class="fa fa-check"></i>Part 4: Presentation</a></li>
 <li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#part-5-modeling"><i class="fa fa-check"></i>Part 5: Modeling</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#preparation"><i class="fa fa-check"></i>Preparation</a></li>
+<li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#other"><i class="fa fa-check"></i>Other</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html"><i class="fa fa-check"></i>Part 1: Data Processing</a><ul>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#data-structures"><i class="fa fa-check"></i>Data Structures</a><ul>
@@ -317,7 +319,7 @@ x</code></pre></div>
 </div>
 <div id="factors" class="section level4">
 <h4>Factors</h4>
-<p>A important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures. Although not exactly precise, one can think of factors as integers with labels. So the underlying representation of a variable for <span class="objclass">sex</span> is 1:2 with labels ‘Male’ and ‘Female’. They are a special class with attributes, or metadata, that contains the information about the <span class="objclass">levels</span>.</p>
+<p>An important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures. Although not exactly precise, one can think of factors as integers with labels. So the underlying representation of a variable for <span class="objclass">sex</span> is 1:2 with labels ‘Male’ and ‘Female’. They are a special class with attributes, or metadata, that contains the information about the <span class="objclass">levels</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">factor</span>(<span class="kw">rep</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">e=</span><span class="dv">10</span>))
 x</code></pre></div>
 <pre><code> [1] a a a a a a a a a a b b b b b b b b b b c c c c c c c c c c
@@ -413,7 +415,7 @@ x[<span class="st">&quot;b&quot;</span>]</code></pre></div>
 <div id="data-frames" class="section level3">
 <h3>Data Frames</h3>
 <p>Data frames are a very commonly used data structure. Elements of a data frame can be different types, and this is because the <span class="objclass">data.frame</span> class is actually just a list. As such, everything about lists applies to them. But they can also be indexed by row or column as well, just like matrices. There are other very common types of object classes associated with packages that are both a <span class="objclass">data.frame</span> and some other type of structure (e.g. <span class="objclass">tibbles</span> in the tidyverse).</p>
-<p>Usually you’re data frame will come directly from import or manipulation of other R objects (e.g. matrices). However, you should know how to create one from scratch.</p>
+<p>Usually your data frame will come directly from import or manipulation of other R objects (e.g. matrices). However, you should know how to create one from scratch.</p>
 <div id="creating-a-data-frame" class="section level4">
 <h4>Creating a data frame</h4>
 <p>The following will create a data frame with two columns, <code>a</code> and <code>b</code>.</p>
@@ -433,7 +435,7 @@ row3 2 1</code></pre>
 <h3><strong>Data Structure Exercises</strong></h3>
 <div id="excercise-1" class="section level4">
 <h4>Excercise #1</h4>
-<p>Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span> (use the <span class="func">class</span> or <span class="func">str</span> functions).</p>
+<p>Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span> (use the <span class="func">class</span> or <span class="func">str</span> functions) on the object you just created.</p>
 </div>
 <div id="exercise-2" class="section level4">
 <h4>Exercise #2</h4>

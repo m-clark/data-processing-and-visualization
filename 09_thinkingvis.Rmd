@@ -1,7 +1,9 @@
 # Part II: Visualization
 
-```{r vissetup, include=FALSE, eval=TRUE}
-knitr::opts_chunk$set(eval=T, echo=F, cache=T)
+(SECTION DEVELOPMENT IN PROGRESS)
+
+```{r vissetup, include=FALSE, eval=TRUE, cache=FALSE}
+knitr::opts_chunk$set(eval=T, echo=F)
 ```
 
 ## Thinking Visually
@@ -267,10 +269,13 @@ obs = 10
 g = rep(1:N, e=obs)
 x = rep(1:obs, N)
 f = rep(c(-.5, .5), e=N/2)[g]
-sig = createCorr(c(-.75,-.25,.25))
-re = mvtnorm::rmvnorm(N, sigma=sig)
-re = mvtnorm::rmvnorm(N, sigma=diag(c(1,.25,.05)))
-y = (5+re[,1][g]) + (1+re[,2][g])*x + (re[,3][g]+f)*(x^2) + rnorm(N*obs)
+# sig = createCorr(c(-.75,-.25,.25))
+# re = mvtnorm::rmvnorm(N, sigma=sig)
+re = mvtnorm::rmvnorm(N, sigma=diag(c(.5,.05,.025)))
+y = re[,1][g] + (.25+re[,2][g])*x + (re[,3][g]*f)*(x^2) + rnorm(N*obs, sd=.2)
+library(lme4)
+xsq = x^2
+lmer(y ~ x + xsq + (1+x+xsq |g))
 # y = scale(y)[,1]
 
 # lm(y~poly(x,2)) %>% summary()
@@ -287,9 +292,11 @@ data_frame(g, f=factor(f, labels=c('g1','g2')), x, y) %>%
   mutate(updown = if_else(last(y) > first(y), 'up', 'down')) %>% 
   # ungroup() %>%
   plot_ly() %>% 
-  add_lines(x=~x, y=~y,  color=~f, opacity=.25) %>% 
+  add_lines(x=~x, y=~y,  color=~f, opacity=.25, showlegend=F) %>%
+  add_markers(x=~x, y=~y, color=~f, opacity=.75) %>% 
   theme_plotly()
 ```
+
 
 
 Without transparency, it just looks ugly and notably busier if nothing else.
@@ -300,7 +307,8 @@ data_frame(g, x, y) %>%
   mutate(updown = if_else(last(y) > first(y), 'up', 'down')) %>% 
   # ungroup() %>%
   plot_ly() %>% 
-  add_lines(x=~x, y=~y,  color=~updown) %>% 
+  add_lines(x=~x, y=~y,  color=~updown, showlegend=F) %>%
+  add_markers(x=~x, y=~y, color=~updown) %>% 
   theme_plotly()
 ```
 
@@ -308,7 +316,7 @@ In addition, transparency can be used to add additional information, e.g. data d
 
 <img src="img/tornados.png" style="display:block; margin: 0 auto;">
 
-```{r transp_tornado, eval=FALSE}
+```{r transp_tornado, eval=F}
 # data(flights, package='threejs') 
 # flights %>% 
 #   plot_ly(x=~origin_long, y=~origin_lat) %>% 
@@ -328,9 +336,9 @@ g <- list(
 )
 
 tornados %>% 
-  filter(Year>=1990) %>% 
+  filter(Year>=2010) %>% 
   plot_geo(lat = ~StartLat, lon = ~StartLon) %>%
-  add_markers(size = I(2), color=I('#ff5500'), opacity=.35) %>%
+  add_markers(size = I(3.5), color=I('#ff5500'), opacity=.25) %>%
   layout(title = 'U.S. Tornados 1990-2015', geo = g) %>% 
   theme_plotly()
 
