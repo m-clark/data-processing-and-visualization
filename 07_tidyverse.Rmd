@@ -16,9 +16,27 @@ The tidyverse consists of a few key packages:
 - <span class="pack">purrr</span>: functional programming, e.g. alternate approaches to apply
 - <span class="pack">tibble</span>: tibbles, a modern re-imagining of data frames
 
-And of course the <span class="pack">tidyverse</span> package itself, which will load all of the above.
+And of course the <span class="pack">tidyverse</span> package itself, which will load all of the above in a way that will avoid naming conflicts
 
-See also: <span class="pack">lubridate</span>, <span class="pack">rvest</span>, <span class="pack">stringr</span> and others in the 'hadleyverse'.
+```{r tv_load, eval=FALSE}
+library(tidyverse)
+```
+```{r tv_startup_message, echo=FALSE, message=TRUE}
+"Loading tidyverse: ggplot2
+Loading tidyverse: tibble
+Loading tidyverse: tidyr
+Loading tidyverse: readr
+Loading tidyverse: purrr
+Loading tidyverse: dplyr
+Conflicts with tidy packages -------------------------
+filter(): dplyr, stats
+lag():    dplyr, stats" %>% 
+  message()
+```
+
+
+
+In addition, there are other packages like <span class="pack">lubridate</span>, <span class="pack">rvest</span>, <span class="pack">stringr</span> and others in the **hadleyverse** that are also greatly useful.
 
 ### What is tidy?
 
@@ -35,7 +53,7 @@ Think *long* before *wide*.
 
 ### dplyr
 
-<span class="pack">dplyr</span> provides a grammar of data manipulation (like <span class="pack">ggplot2</span> does for visualization).  It is the next iteration of <span class="pack">plyr</span>, but there is no longer any need for <span class="pack">plyr</span> really.  It's focused on tools for working with data frames, with over over 100 functions that might be of specific use to you.
+<span class="pack">dplyr</span> provides a grammar of data manipulation (like <span class="pack">ggplot2</span> does for visualization).  It is the next iteration of <span class="pack">plyr</span>, but there is no longer any need for <span class="pack">plyr</span> really.  It's focused on tools for working with data frames, with over 100 functions that might be of specific use to you.
 
 It has three main goals:
 
@@ -125,7 +143,7 @@ newData = oldData %>%
   arrange(desc(var1))
 ```
 
-Even if it hadn't been explained before, you might have been able to guess a little as to what was was going on.  The code is fairly succinct, we don't have to keep referencing objects repeatedly, and no intermediary objects are created.
+Even if it hadn't been explained before, you might have been able to guess a little as to what was going on.  The code is fairly succinct, we don't have to keep referencing objects repeatedly, and no intermediary objects are created.
 
 <span class="pack">dplyr</span> and piping is an *alternative*. You can do all this sort of stuff with base R, for example, with functions like <span class="func">with</span>, <span class="func">within</span>, <span class="func">subset</span>, <span class="func">transform</span>, etc.  Though the initial base R approach depicted is fairly concise, in general, it still can potentially be: 
 
@@ -202,7 +220,7 @@ The <span class="func">select</span> also has helper functions to make selecting
 
 There are repeated header rows in this data[^headers], so we need to drop them.  This is also why everything was character string when we first imported it, because having any character strings in a column coerces the entire column to be character,  since all elements need to be of the same type.  Character string is chosen over others because anything can be converted to a string, but not everything can be a number.  
 
-Filtering by rows requires the basic indexing knowledge we talked about before, especially Boolean indexing. In the following, `Rk`, or rank, is really just a row id, but if it equals 'Rk' instead of a number, we know it's a header row, so we'll drop it.
+Filtering by rows requires the basic indexing knowledge we talked about before, especially Boolean indexing. In the following, `Rk`, or rank, is really just a row id, but if it equals 'Rk' instead of a number, we know we're dealing with a header row, so we'll drop it.
 
 ```{r filter0}
 bball = bball %>% 
@@ -268,7 +286,7 @@ summary(select(bball, shootingDif))  # select and others don't have to be piped 
 
 ### Grouping and Summarizing Data
 
-A very common task is to look at group-based statistics, and we can use <span class='func'>group_by</span> and <span class="func">summarize</span> to help us in this regard[^summarise].  Base R has things like <span class="func">aggregate</span> and <span class="func">tapply</span> for this, but they should *never* be used, and this approach is much more straightforward.
+A very common task is to look at group-based statistics, and we can use <span class='func'>group_by</span> and <span class="func">summarize</span> to help us in this regard[^summarise].  Base R has things like <span class="func">aggregate</span>,<span class="func">by</span>, and <span class="func">tapply</span> for this, but they should not be used, as this approach is much more straightforward, flexible, and faster.
 
 For this, I'm going to start putting together several things we've demonstrated thus far. Ultimately we'll create a variable called <span class="objclass">trueShooting</span>, which represents 'true shooting percentage', and get an average for each position.
 
@@ -352,7 +370,7 @@ Merges can get quite complex, and involve multiple data sources. In many cases y
 
 ### tidyr
 
-The <span class="pack">tidyr</span> can be thought of as a more special subset of <span class="pack">dplyr's</span> functionality. Some of its functions for manipulating data you'll want to be familiar with are:
+The <span class="pack">tidyr</span> can be thought of as a specialized subset of <span class="pack">dplyr's</span> functionality. Some of its functions for manipulating data you'll want to be familiar with are:
 
 - <span class="func">gather</span>: wide to long
 - <span class="func">spread</span>: long to wide
@@ -392,7 +410,7 @@ Note that this won't necessarily apply to every name.  So further processing may
 
 Purr allows you to take the <span class="func">apply</span> family approach to the tidyverse.
 
-Consider Exercise 2 from the Vectorization/Apply section.  We'll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the the same way we would with <span class="func">lapply</span>.
+Consider Exercise 2 from the Vectorization/Apply section.  We'll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the same way we would with <span class="func">lapply</span>.
 
 ```{r purr_example, eval=FALSE}
 x = list(1:3, 4:6, 7:9)

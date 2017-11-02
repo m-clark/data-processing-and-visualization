@@ -76,7 +76,7 @@ dt1
 
 
 
-We can also create groupings on the fly. For a new summary data set, we'll take the following approach- we create a a grouping based on whether g is a value of one or not, then get the mean and sum of x for those two categories.  The corresponding dplyr approach is also shown (but not evaluated) for comparison.
+We can also create groupings on the fly. For a new summary data set, we'll take the following approach- we create a grouping based on whether g is a value of one or not, then get the mean and sum of x for those two categories.  The corresponding dplyr approach is also shown (but not evaluated) for comparison.
 
 ```{r dtgroup2, eval=1}
 dt2[, list(mean_x = mean(x), sum_x = sum(x)), by = g==1]
@@ -115,7 +115,7 @@ timing_join %>% pander::pander(justify='lr')
 
 #### Group by
 
-We can use use the <span class="func">setkey</span> function to order a data set by a certain column(s).  This ordering is done by reference; again, no copy is made.  Doing this will allow for faster grouped operations, though you likely will only see the speed gain with very large data. 
+We can use the <span class="func">setkey</span> function to order a data set by a certain column(s).  This ordering is done by reference; again, no copy is made.  Doing this will allow for faster grouped operations, though you likely will only see the speed gain with very large data. 
 
 ```{r dtsetkey, echo=1:6,eval=1:8}
 test_dt0 = data.table(x=rnorm(10000000), g = sample(letters, 10000000, replace=T))

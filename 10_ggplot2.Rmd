@@ -246,9 +246,9 @@ Examples include:
 - marginal plots
 - network graphs
 
-```{r mullerplot, echo=FALSE, eval=TRUE, fig.align='center'}
+```{r mullerplot, echo=FALSE, eval=TRUE}
 library(ggmuller)
-Muller_df <- get_Muller_df(example_edges, example_pop_df, threshold = 0.005)
+Muller_df <- get_Muller_df(example_edges, example_pop_df, cutoff = 0.005)
 
 # generate pretty plot
 Muller_plot(Muller_df, palette=rep(RColorBrewer::brewer.pal(12, 'Set3'), 4)) +

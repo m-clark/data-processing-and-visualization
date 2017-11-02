@@ -291,8 +291,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><span class="pack">purrr</span>: functional programming, e.g. alternate approaches to apply</li>
 <li><span class="pack">tibble</span>: tibbles, a modern re-imagining of data frames</li>
 </ul>
-<p>And of course the <span class="pack">tidyverse</span> package itself, which will load all of the above.</p>
-<p>See also: <span class="pack">lubridate</span>, <span class="pack">rvest</span>, <span class="pack">stringr</span> and others in the ‘hadleyverse’.</p>
+<p>And of course the <span class="pack">tidyverse</span> package itself, which will load all of the above in a way that will avoid naming conflicts</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)</code></pre></div>
+<pre><code>Loading tidyverse: ggplot2
+Loading tidyverse: tibble
+Loading tidyverse: tidyr
+Loading tidyverse: readr
+Loading tidyverse: purrr
+Loading tidyverse: dplyr
+Conflicts with tidy packages -------------------------
+filter(): dplyr, stats
+lag():    dplyr, stats</code></pre>
+<p>In addition, there are other packages like <span class="pack">lubridate</span>, <span class="pack">rvest</span>, <span class="pack">stringr</span> and others in the <strong>hadleyverse</strong> that are also greatly useful.</p>
 </div>
 <div id="what-is-tidy" class="section level3">
 <h3>What is tidy?</h3>
@@ -307,7 +317,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="dplyr" class="section level3">
 <h3>dplyr</h3>
-<p><span class="pack">dplyr</span> provides a grammar of data manipulation (like <span class="pack">ggplot2</span> does for visualization). It is the next iteration of <span class="pack">plyr</span>, but there is no longer any need for <span class="pack">plyr</span> really. It’s focused on tools for working with data frames, with over over 100 functions that might be of specific use to you.</p>
+<p><span class="pack">dplyr</span> provides a grammar of data manipulation (like <span class="pack">ggplot2</span> does for visualization). It is the next iteration of <span class="pack">plyr</span>, but there is no longer any need for <span class="pack">plyr</span> really. It’s focused on tools for working with data frames, with over 100 functions that might be of specific use to you.</p>
 <p>It has three main goals:</p>
 <ul>
 <li>Make the most important data manipulation tasks easier.</li>
@@ -369,7 +379,7 @@ newData =<span class="st"> </span>newData[<span class="kw">order</span>(newData<
 <span class="st">  </span><span class="kw">select</span>(<span class="kw">num_range</span>(<span class="st">&#39;X&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>), <span class="kw">contains</span>(<span class="st">&#39;var&#39;</span>), <span class="kw">starts_with</span>(<span class="st">&#39;XYZ&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">top_n</span>(<span class="dt">n=</span><span class="dv">50</span>, var2) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(var1))</code></pre></div>
-<p>Even if it hadn’t been explained before, you might have been able to guess a little as to what was was going on. The code is fairly succinct, we don’t have to keep referencing objects repeatedly, and no intermediary objects are created.</p>
+<p>Even if it hadn’t been explained before, you might have been able to guess a little as to what was going on. The code is fairly succinct, we don’t have to keep referencing objects repeatedly, and no intermediary objects are created.</p>
 <p><span class="pack">dplyr</span> and piping is an <em>alternative</em>. You can do all this sort of stuff with base R, for example, with functions like <span class="func">with</span>, <span class="func">within</span>, <span class="func">subset</span>, <span class="func">transform</span>, etc. Though the initial base R approach depicted is fairly concise, in general, it still can potentially be:</p>
 <ul>
 <li>more verbose</li>
@@ -455,7 +465,7 @@ $ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;TOT&quot;, &quot;DAL&quot;, &quot;BR
 <div id="filtering-rows" class="section level3">
 <h3>Filtering Rows</h3>
 <p>There are repeated header rows in this data<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>, so we need to drop them. This is also why everything was character string when we first imported it, because having any character strings in a column coerces the entire column to be character, since all elements need to be of the same type. Character string is chosen over others because anything can be converted to a string, but not everything can be a number.</p>
-<p>Filtering by rows requires the basic indexing knowledge we talked about before, especially Boolean indexing. In the following, <code>Rk</code>, or rank, is really just a row id, but if it equals ‘Rk’ instead of a number, we know it’s a header row, so we’ll drop it.</p>
+<p>Filtering by rows requires the basic indexing knowledge we talked about before, especially Boolean indexing. In the following, <code>Rk</code>, or rank, is really just a row id, but if it equals ‘Rk’ instead of a number, we know we’re dealing with a header row, so we’ll drop it.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball =<span class="st"> </span>bball <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(Rk <span class="op">!=</span><span class="st"> &quot;Rk&quot;</span>)</code></pre></div>
 <ul>
@@ -541,7 +551,7 @@ $ GS     &lt;dbl&gt; 6, 1, 0, 1, 80, 45, 15, 0, 72, 5, 66, 25, 0, 0, 10, 2, 8, 1
 </div>
 <div id="grouping-and-summarizing-data" class="section level3">
 <h3>Grouping and Summarizing Data</h3>
-<p>A very common task is to look at group-based statistics, and we can use <span class="func">group_by</span> and <span class="func">summarize</span> to help us in this regard<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a>. Base R has things like <span class="func">aggregate</span> and <span class="func">tapply</span> for this, but they should <em>never</em> be used, and this approach is much more straightforward.</p>
+<p>A very common task is to look at group-based statistics, and we can use <span class="func">group_by</span> and <span class="func">summarize</span> to help us in this regard<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a>. Base R has things like <span class="func">aggregate</span>,<span class="func">by</span>, and <span class="func">tapply</span> for this, but they should not be used, as this approach is much more straightforward, flexible, and faster.</p>
 <p>For this, I’m going to start putting together several things we’ve demonstrated thus far. Ultimately we’ll create a variable called <span class="objclass">trueShooting</span>, which represents ‘true shooting percentage’, and get an average for each position.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st">   </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">trueShooting =</span> PTS <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(FGA <span class="op">+</span><span class="st"> </span>(.<span class="dv">44</span> <span class="op">*</span><span class="st"> </span>FTA))),
@@ -633,7 +643,7 @@ mods <span class="op">%&gt;%</span><span class="st"> </span>
 </div>
 <div id="tidyr" class="section level3">
 <h3>tidyr</h3>
-<p>The <span class="pack">tidyr</span> can be thought of as a more special subset of <span class="pack">dplyr’s</span> functionality. Some of its functions for manipulating data you’ll want to be familiar with are:</p>
+<p>The <span class="pack">tidyr</span> can be thought of as a specialized subset of <span class="pack">dplyr’s</span> functionality. Some of its functions for manipulating data you’ll want to be familiar with are:</p>
 <ul>
 <li><span class="func">gather</span>: wide to long</li>
 <li><span class="func">spread</span>: long to wide</li>
@@ -648,23 +658,23 @@ stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span c
                       <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),
                       <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>) )
 stocks <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre></div>
-<pre><code>        time           X          Y          Z
-1 2009-01-01  1.19550929  1.1827807  3.8220525
-2 2009-01-02 -1.15020517 -1.0516447 -2.1628708
-3 2009-01-03  0.86470988 -2.0905675  4.6640225
-4 2009-01-04  0.44367023 -0.9150227 -0.7297241
-5 2009-01-05 -2.05093833  1.0948163 -0.8499968
-6 2009-01-06  0.08665469  0.6849846  1.5957786</code></pre>
+<pre><code>        time          X          Y          Z
+1 2009-01-01 -1.0281950  0.9055727 -1.7670596
+2 2009-01-02 -1.1992308  0.4306163  0.7081897
+3 2009-01-03  0.9425287 -0.8209476  0.4288929
+4 2009-01-04 -0.5085571 -1.7461489 -0.2375174
+5 2009-01-05  0.2330094 -2.3291588  3.6397354
+6 2009-01-06  0.3559680  0.7478093  3.6883738</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stocks <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">gather</span>(stock, price, <span class="op">-</span>time) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>head</code></pre></div>
-<pre><code>        time stock       price
-1 2009-01-01     X  1.19550929
-2 2009-01-02     X -1.15020517
-3 2009-01-03     X  0.86470988
-4 2009-01-04     X  0.44367023
-5 2009-01-05     X -2.05093833
-6 2009-01-06     X  0.08665469</code></pre>
+<pre><code>        time stock      price
+1 2009-01-01     X -1.0281950
+2 2009-01-02     X -1.1992308
+3 2009-01-03     X  0.9425287
+4 2009-01-04     X -0.5085571
+5 2009-01-05     X  0.2330094
+6 2009-01-06     X  0.3559680</code></pre>
 <p>Note that the latter is an example of <span class="emph">tidy data</span> while the former is not. Why do we generally prefer such data? Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. <em>This is especially the case for visualization</em>.</p>
 <p>The following demonstrates the separate function utilized for a very common data processing task- dealing with names. Here’ we’ll separate <span class="objclass">player</span> into first and last names based on the space.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>
@@ -683,7 +693,7 @@ stocks <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre><
 <div id="purrr" class="section level3">
 <h3>purrr</h3>
 <p>Purr allows you to take the <span class="func">apply</span> family approach to the tidyverse.</p>
-<p>Consider Exercise 2 from the Vectorization/Apply section. We’ll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the the same way we would with <span class="func">lapply</span>.</p>
+<p>Consider Exercise 2 from the Vectorization/Apply section. We’ll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the same way we would with <span class="func">lapply</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">7</span><span class="op">:</span><span class="dv">9</span>)
 x <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">map</span>(sum)</code></pre></div>

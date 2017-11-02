@@ -322,9 +322,9 @@ mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&
 <span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log),
                <span class="kw">log</span>(mymatrix))</code></pre></div>
 <pre><code>Unit: microseconds
-                    expr    min     lq     mean median      uq     max neval
- apply(mymatrix, 2, log) 47.730 49.531 60.34112 50.432 61.2390 232.946   100
-           log(mymatrix)  3.001  3.302  3.84556  3.602  3.9025  15.310   100</code></pre>
+                    expr    min     lq     mean median     uq    max neval cld
+ apply(mymatrix, 2, log) 33.137 34.017 35.28360 34.603 35.189 97.065   100   b
+           log(mymatrix)  2.639  2.640  2.95033  2.933  2.933  7.625   100  a </code></pre>
 <p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
 </div>
 <div id="apply-functions" class="section level3">
@@ -407,12 +407,12 @@ test =<span class="st"> </span>microbenchmark<span class="op">::</span><span cla
 <span class="kw">stopCluster</span>(cl)
 test</code></pre></div>
 <pre><code>Unit: milliseconds
-       expr         min          lq       mean     median         uq        max neval
- doubleloop 2882.148089 2904.739076 2938.21281 2946.57065 2952.25532 3013.29805    25
- singleloop   28.989806   29.512434   33.08177   31.17037   32.42606   84.79185    25
-      apply   32.167901   33.350945   33.96146   34.13204   34.64055   36.18983    25
-   parApply   17.691611   18.213638   21.91323   19.63893   21.12156   73.60683    25
- vectorized    8.085578    8.491433   10.25583   10.66990   11.02532   12.62173    25</code></pre>
+       expr         min          lq       mean     median         uq        max neval cld
+ doubleloop 2882.148089 2904.739076 2938.21281 2946.57065 2952.25532 3013.29805    25   c
+ singleloop   28.989806   29.512434   33.08177   31.17037   32.42606   84.79185    25  b 
+      apply   32.167901   33.350945   33.96146   34.13204   34.64055   36.18983    25  b 
+   parApply   17.691611   18.213638   21.91323   19.63893   21.12156   73.60683    25 ab 
+ vectorized    8.085578    8.491433   10.25583   10.66990   11.02532   12.62173    25 a  </code></pre>
 </div>
 <div id="apply-functions-1" class="section level4">
 <h4>Apply functions</h4>
