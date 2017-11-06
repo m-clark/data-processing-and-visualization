@@ -1,3 +1,5 @@
 # data-processing-and-visualization
 
-This document forms the basis of potentially several workshops/talks that get into everyday programming with R. [link to current presentation](http://m-clark.github.io/workshops/DataProcViz/DataProcViz.html)
+This document forms the basis of potentially several workshops/talks that get into everyday programming with R.
+
+[link](https://m-clark.github.io/data-processing-and-visualization)
