@@ -11,7 +11,7 @@ knitr::opts_chunk$set(eval=T, echo=F)
 
 ### Information
 
-A starting point regarding data visualization regards the information you want to display and then how you want to display it.  As in statistical modeling, parsimony is the goal, but not at the cost of the more compelling story.  We don't want to waste the time of the audience or be redundant, but we also want to avoid unnecessary clutter, chart junk, and the like. 
+A starting point for data visualization regards the information you want to display, and then how you want to display it.  As in statistical modeling, parsimony is the goal, but not at the cost of the more compelling story.  We don't want to waste the time of the audience or be redundant, but we also want to avoid unnecessary clutter, chart junk, and the like. 
 
 We'll start with a couple examples. Consider the following.
 
@@ -32,11 +32,11 @@ sw_height %>%
 ```
 
 
-So what's wrong with this? Plenty. Aside from being boring, the entire story can be said with a couple words- males are taller than females (even in the Star Wars universe).  There is no reason to have a visualization. And if a simple group difference is the most exciting thing you have to say, not many are going to be interested.
+So what's wrong with this? Plenty. Aside from being boring, the entire story can be said with a couple words- males are taller than females (even in the Star Wars universe).  There is no reason to have a visualization. And if a simple group difference is the most exciting thing you have to talk about, not many are going to be interested.
 
-Minor issues include unnecessary border around the bars, unnecessary vertical gridlines, and an unnecessary X axis label.
+Minor issues can also be noted, including unnecessary border around the bars, unnecessary vertical gridlines, and an unnecessary X axis label.
 
-Even worse.
+You might think the following is an improvement, but I would say it's even worse.
 
 ```{r problems2}
 sw_height %>% 
@@ -51,7 +51,7 @@ sw_height %>%
   theme_bw()
 ```
 
-Now the axis has been changed to distort the difference.  Furthermore, color is used but the colors are chosen poorly, and add zero information, thus making the legend superfluous.  And finally, the above doesn't even convey the information people think it does, assuming they are even standard error bars[^barerror], which one typically has to guess about in many journal visualizations of this kind.
+Now the y axis has been changed to distort the difference.  Furthermore, color is used but the colors are chosen poorly, and add zero information, thus making the legend superfluous.  And finally, the above doesn't even convey the information people think it does, assuming they are even standard error bars[^barerror], which one typically has to guess about in many journal visualizations of this kind.
 
 
 Now we add more information, but more problems!
@@ -71,7 +71,7 @@ starwars %>%
         )
 ```
 
-The above has unnecessary border, gridlines, and emphasis. The labels, while possibly interesting, do not relate anything useful to the graph, and many are illegible. It imposes a straight (and too wide of a) line on a nonlinear relationship.  And finally, color choice is both terrible and tends to draw one's eye to the female data points.  Here is what it looks like to someone with the most common form of colorblindness. If the points were less clumpy on gender, it would be very difficult to distinguish the groups.
+The above has unnecessary border, gridlines, and emphasis. The labels, while possibly interesting, do not relate anything useful to the graph, and many are illegible. It imposes a straight (and too wide of a) straight line on a nonlinear relationship.  And finally, color choice is both terrible and tends to draw one's eye to the female data points.  Here is what it looks like to someone with the most common form of colorblindness. If the points were less clumpy on gender, it would be very difficult to distinguish the groups.
 
 <img src="img/deuteranopia.png" style="display:block; margin: 0 auto;" width='75%'>
 
@@ -154,7 +154,7 @@ See the data visualization and maps sections of [2016: The Year in Visual Storie
 
 #### Clarity is key
 
-Sometimes the clearest message *is* a complicated one.  That's okay.  Make sure your visualization tells the story you think is important, but don't dumb it down via visualization.  People will likely remember the graphic before they'll remember the table of numbers.
+Sometimes the clearest message *is* a complicated one.  That's okay, science is an inherently fuzzy process.  Make sure your visualization tells the story you think is important, and don't dumb the story down in the visualization.  People will likely remember the graphic before they'll remember the table of numbers.
 
 By the same token, don't needlessly complicate something that is straightforward.  Perhaps a scatter plot with some groupwise coloring is enough.  That's fine.
 
@@ -163,7 +163,7 @@ All of this is easier said than done, and there is no right way to do data visua
 
 #### Avoid clutter
 
-Gridlines, 3d, unnecessary patterning, and <span class="emph">chartjunk</span> in general will only detract from the message.  As an example, gridlines might even seem necessary, but even faint ones can hinder the pattern recognition you hope will take place, potentially imposing clumps of data that do not exist.   In addition, they practically insist on a level of data precision that you simply don't have.  What's more, with interactivity they literally convey nothing additional, as a simple hover over or click on a data point will reveal the precise values.  Use sparingly, if at all.
+Gridlines, 3d, unnecessary patterning, and <span class="emph">chartjunk</span> in general will only detract from the message.  As an example, gridlines might even seem necessary, but even faint ones can potentially hinder the pattern recognition you hope will take place, perceptually imposing clumps of data that do not exist.   In addition, they practically insist on a level of data precision that you simply don't have.  What's more, with interactivity they literally convey nothing additional, as a simple hover-over or click on a data point will reveal the precise values.  Use sparingly, if at all.
 
 
 
@@ -178,7 +178,7 @@ I would suggest you start by making the visualization you want to make, with int
 
 ### Color
 
-Until recently, the default color schemes of most visualization packages were poor at best.  Thankfully, <span class="pack">ggplot2</span>, its imitators and extenders, in both the R world and beyond, have made it much easier to have a decent color scheme by default[^jet].
+There is a lot to consider regarding color.  Until recently, the default color schemes of most visualization packages were poor at best.  Thankfully, <span class="pack">ggplot2</span>, its imitators and extenders, in both the R world and beyond, have made it much easier to have a decent color scheme by default[^jet].
 
 However, the defaults are still potentially problematic, so you should be prepared to go with something else.  In other cases, you may just simply prefer something else.  For example, for me, the gray background of <span class="pack">ggplot2</span> defaults is something I have to remove for every plot[^hadleygray].
 
