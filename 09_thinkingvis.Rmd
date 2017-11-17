@@ -51,7 +51,7 @@ sw_height %>%
   theme_bw()
 ```
 
-Now the y axis has been changed to distort the difference.  Furthermore, color is used but the colors are chosen poorly, and add zero information, thus making the legend superfluous.  And finally, the above doesn't even convey the information people think it does, assuming they are even standard error bars[^barerror], which one typically has to guess about in many journal visualizations of this kind.
+Now the y axis has been changed to distort the difference, perceptually suggesting a height increase of over `r round(((sw_height$Height - 140)[2]/(sw_height$Height - 140)[1] -1)*100)`%.  Furthermore, color is used but the colors are chosen poorly, and add no information, thus making the legend superfluous.  And finally, the above doesn't even convey the information people think it does, assuming they are even standard error bars[^barerror], which one typically has to guess about in many journal visualizations of this kind.
 
 
 Now we add more information, but more problems!
@@ -95,7 +95,7 @@ starwars %>%
 
 <br>
 
-Now consider the following.  We have six pieces of information in one graph- name (on hover), homeworld (shape), age (size), gender (color), mass (x), and height (y).  The colors are evenly spaced from one another, and so do not draw one's attention to one group over another, or even to the line over groups. Opacity allows the line to be added and points overlap without loss of information.  We technically don't need a caption, legend or gridlines, because hovering over the data tells us everything we'd want to know about a given data point.  
+Now consider the following.  We have six pieces of information in one graph- name (on hover), homeworld (shape), age (size), gender (color), mass (x), and height (y).  The colors are evenly spaced from one another, and so do not draw one's attention to one group over another, or even to the line over groups. Opacity allows the line to be added and the points to overlap without loss of information.  We technically don't need a caption, legend or gridlines, because hovering over the data tells us everything we'd want to know about a given data point.  
 
 ```{r better}
 sw2 = starwars %>% 
@@ -163,13 +163,13 @@ All of this is easier said than done, and there is no right way to do data visua
 
 #### Avoid clutter
 
-Gridlines, 3d, unnecessary patterning, and <span class="emph">chartjunk</span> in general will only detract from the message.  As an example, gridlines might even seem necessary, but even faint ones can potentially hinder the pattern recognition you hope will take place, perceptually imposing clumps of data that do not exist.   In addition, they practically insist on a level of data precision that you simply don't have.  What's more, with interactivity they literally convey nothing additional, as a simple hover-over or click on a data point will reveal the precise values.  Use sparingly, if at all.
+Gridlines, 3d, unnecessary patterning, and <span class="emph">chartjunk</span> in general will only detract from the message.  As an example, gridlines might even seem necessary, but even faint ones can potentially hinder the pattern recognition you hope will take place, perceptually imposing clumps of data that do not exist.  In addition, they practically insist on a level of data precision that you simply don't have.  What's more, with interactivity they literally convey nothing additional, as a simple hover-over or click on a data point will reveal the precise values.  Use sparingly, if at all.
 
 
 
 #### Color isn't optional
 
-No modern outlet should be a print-first outfit, and if they are, you shouldn't care to send your work there.  The only thing you should be concerned with is how it will look online, because that's how people will interact with your work first and foremost.  That means that color is essentially a requirement for any visualization, so use it well in yours.
+It's odd for me to have to say this, as it's been the case for many years, but no modern scientific outlet should be a print-first outfit, and if they are, you shouldn't care to send your work there.  The only thing you should be concerned with is how it will look online, because that's how people will interact with your work first and foremost.  That means that color is essentially a requirement for any visualization, so use it well in yours.
 
 #### Think interactively
 
