@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-11-02">
+<meta name="date" content="2017-11-19">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -226,8 +226,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#scaling-by-size"><i class="fa fa-check"></i>Scaling by Size</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
-<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#things-to-avoid"><i class="fa fa-check"></i>Things to avoid</a></li>
-<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#webaxe"><i class="fa fa-check"></i>WebAxe</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#accessibility"><i class="fa fa-check"></i>Accessibility</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#a-casual-list-of-things-to-avoid"><i class="fa fa-check"></i>A casual list of things to avoid</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
@@ -658,23 +658,23 @@ stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span c
                       <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),
                       <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>) )
 stocks <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre></div>
-<pre><code>        time          X          Y          Z
-1 2009-01-01 -1.0281950  0.9055727 -1.7670596
-2 2009-01-02 -1.1992308  0.4306163  0.7081897
-3 2009-01-03  0.9425287 -0.8209476  0.4288929
-4 2009-01-04 -0.5085571 -1.7461489 -0.2375174
-5 2009-01-05  0.2330094 -2.3291588  3.6397354
-6 2009-01-06  0.3559680  0.7478093  3.6883738</code></pre>
+<pre><code>        time            X          Y           Z
+1 2009-01-01 -0.111891912 -3.3578661 -3.84786749
+2 2009-01-02  1.747900184 -3.3780200 -5.84662116
+3 2009-01-03  1.288796137 -1.5949740 -2.59391113
+4 2009-01-04  1.495187255 -1.3316997 -3.09674203
+5 2009-01-05  0.001754473  0.7253726 -0.07377812
+6 2009-01-06  1.492266813 -1.8230104  2.02802847</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stocks <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">gather</span>(stock, price, <span class="op">-</span>time) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>head</code></pre></div>
-<pre><code>        time stock      price
-1 2009-01-01     X -1.0281950
-2 2009-01-02     X -1.1992308
-3 2009-01-03     X  0.9425287
-4 2009-01-04     X -0.5085571
-5 2009-01-05     X  0.2330094
-6 2009-01-06     X  0.3559680</code></pre>
+<pre><code>        time stock        price
+1 2009-01-01     X -0.111891912
+2 2009-01-02     X  1.747900184
+3 2009-01-03     X  1.288796137
+4 2009-01-04     X  1.495187255
+5 2009-01-05     X  0.001754473
+6 2009-01-06     X  1.492266813</code></pre>
 <p>Note that the latter is an example of <span class="emph">tidy data</span> while the former is not. Why do we generally prefer such data? Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. <em>This is especially the case for visualization</em>.</p>
 <p>The following demonstrates the separate function utilized for a very common data processing task- dealing with names. Here’ we’ll separate <span class="objclass">player</span> into first and last names based on the space.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>

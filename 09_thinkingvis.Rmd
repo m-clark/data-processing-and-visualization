@@ -11,7 +11,7 @@ knitr::opts_chunk$set(eval=T, echo=F)
 
 ### Information
 
-A starting point for data visualization regards the information you want to display, and then how you want to display it.  As in statistical modeling, parsimony is the goal, but not at the cost of the more compelling story.  We don't want to waste the time of the audience or be redundant, but we also want to avoid unnecessary clutter, chart junk, and the like. 
+A starting point for data visualization regards the information you want to display, and then how you want to display it in order to tell the data's story.  As in statistical modeling, parsimony is the goal, but not at the cost of the more compelling story.  We don't want to waste the time of the audience or be redundant, but we also want to avoid unnecessary clutter, chart junk, and the like. 
 
 We'll start with a couple examples. Consider the following.
 
@@ -173,7 +173,7 @@ It's odd for me to have to say this, as it's been the case for many years, but n
 
 #### Think interactively
 
-I would suggest you start by making the visualization you want to make, with interactivity and anything else you like.  You can then reduce as necessary for publication, and keep the fancy one as supplemental, or accessible on your own website.
+It might be best to tart by making the visualization *you want to make*, with interactivity and anything else you like.  You can then reduce as necessary for publication or other outlets, and keep the fancy one as supplemental, or accessible on your own website to show off.
 
 
 ### Color
@@ -181,11 +181,6 @@ I would suggest you start by making the visualization you want to make, with int
 There is a lot to consider regarding color.  Until recently, the default color schemes of most visualization packages were poor at best.  Thankfully, <span class="pack">ggplot2</span>, its imitators and extenders, in both the R world and beyond, have made it much easier to have a decent color scheme by default[^jet].
 
 However, the defaults are still potentially problematic, so you should be prepared to go with something else.  In other cases, you may just simply prefer something else.  For example, for me, the gray background of <span class="pack">ggplot2</span> defaults is something I have to remove for every plot[^hadleygray].
-
-
-
-
-
 
 #### Viridis
 
@@ -198,7 +193,7 @@ So basically you have something that will take care of your audience without hav
 <img src="img/viridis_scales.png" style="display:block; margin: 0 auto;" width=50%>
 
 
-These color schemes might seem a bit odd from what you're used to.  But recall that the point is scientific communication, and these will allow you to convey information accurately, without implicit bias, and be acceptable in different formats. In addition, there is <span class="pack">ggplot2</span> functionality to boot, e.g. <span class="func">scale_color_viridis</span>, and it will work for discrete or continuous valued data.
+These color schemes might seem a bit odd from what you're used to.  But recall that the goal is good communication, and these will allow you to convey information accurately, without implicit bias, and be acceptable in different formats. In addition, there is <span class="pack">ggplot2</span> functionality to boot, e.g. <span class="func">scale_color_viridis</span>, and it will work for discrete or continuous valued data.
 
 For more, see the [vignette](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html). I also invite you to watch the [introduction of the original module in Python](https://www.youtube.com/watch?v=xAoljeRJ3lU), where you can learn more about the issues in color selection, and why viridis works.
 
@@ -260,9 +255,9 @@ The first plot scales the dots by their area, while the second scales the radius
 
 ### Transparency
 
-Using transparency is a great way to keep detailed information available to the audience without being overwhelming. Consider the following.  One-hundred individual trajectories are shown, but it doesn't cause any issue graphically.
+Using transparency is a great way to keep detailed information available to the audience without being overwhelming. Consider the following.  Fifty individual trajectories are shown on the left, but it doesn't cause any issue graphically.
 
-```{r transp}
+```{r transp_old, eval=FALSE}
 N = 100
 obs = 10
 
@@ -297,11 +292,174 @@ data_frame(g, f=factor(f, labels=c('g1','g2')), x, y) %>%
   theme_plotly()
 ```
 
+```{r transp, out.width='1000px', out.height='326.25px'}
+########################################################################################
+### 'Noisy' gaussian process demo.  The matrix labeling is in keeping with Murphy    ###
+### 2012 and Rasmussen and Williams 2006.  See those sources for more detail.        ###
+### Murphy's matlab code can be found here: https://code.google.com/p/pmtk3/, though ###
+### the relevant files are housed alongside this code.                               ###
+###                                                                                  ###
+### The goal of this code is to plot samples from the prior and posterior predictive ###
+### of a gaussian process in which y = sin(x) + noise. It will reproduce an example  ###
+### akin to figure 15.3 in Murphy 2012.                                              ###
+########################################################################################
 
 
-Without transparency, it just looks ugly and notably busier if nothing else.
+#################
+### Functions ###
+#################
 
-```{r transp2}
+# the mean function; in this case mean=0
+muFn = function(x){
+  x = sapply(x, function(x) x=0)
+  x
+}
+
+# The covariance function; here it is the squared exponential kernel.
+# l is the horizontal scale, sigmaf is the vertical scale, sigman the noise.
+# See ?covSEiso in the gpr package for example, which is also based on Rasmussen and
+# Williams Matlab code (gpml Matlab library)
+
+Kfn = function(x, y=NULL, l=1, sigmaf=1, sigman=.5){
+  if(!is.null(y)){
+    sigmaf * exp( -(1/(2*l^2)) * as.matrix(dist(x, upper=T, diag=T)^2) ) + sigman*diag(length(x))    
+  }
+  else{
+    sigmaf * exp( -(1/(2*l^2)) * as.matrix(dist(x, upper=T, diag=T)^2) )
+  }  
+}
+
+#####################
+### Preliminaries ###
+#####################
+
+l = 1           # for l, sigmaf, sigman, see note at covariance function
+sigmaf = 1      
+sigman = .25 
+keps = 1e-8     # see note at Kstarstar
+nprior = 50      # number of prior draws
+npostpred = 10   # number of posterior predictive draws
+
+##################
+### Prior plot ###
+##################
+
+### data setup
+xg1 = seq(-5, 5, .2)
+yg1 = mvtnorm::rmvnorm(nprior, 
+                       mean=muFn(xg1), 
+                       sigma=Kfn(xg1, l=l, sigmaf=sigmaf, sigman=sigman)) 
+
+### plot
+# reshape data for plotting
+palviridis = viridis::plasma(4)
+gdat1 = gather(data.frame(x=xg1, 
+                          y=t(yg1), 
+                          sd=apply(yg1, 2, sd)),
+               key=variable,
+               value=value,
+               -x, -sd)
+
+
+g1 = ggplot(aes(x=x, y=value), data=gdat1) + 
+  geom_line(aes(group=variable), color='#FF5500', alpha=.15) +
+  labs(title='Prior') +
+  theme_trueMinimal() +
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank())
+
+# g1 # show plot
+
+####################################
+### generate noisy training data ###
+####################################
+
+Xtrain = 15*(runif(20)-.5)  
+nTrain = length(Xtrain)
+ytrain = sin(Xtrain) + rnorm(n=nTrain, sd=.1)  # kept sine function for comparison to noise free result
+
+Xtest = seq(-7.5, 7.5, length=200)
+nTest = length(Xtest)
+
+#####################################
+### generate posterior predictive ###
+#####################################
+
+### Create Ky, K*, and K** matrices as defined in the texts
+Ky = Kfn(x=Xtrain, y=ytrain, l=l, sigmaf=sigmaf, sigman=sigman)
+K_ = Kfn(c(Xtrain, Xtest), l=l, sigmaf=sigmaf, sigman=sigman)                    # initial matrix
+Kstar = K_[1:nTrain, (nTrain+1):ncol(K_)]                                        # dim = N x N*
+tKstar = t(Kstar)                                                                # dim = N* x N
+Kstarstar = K_[(nTrain+1):nrow(K_), (nTrain+1):ncol(K_)] + keps*diag(nTest)      # dim = N* x N*; the keps part is for positive definiteness
+Kyinv = solve(Ky)
+
+# calculate posterior mean and covariance
+postMu = muFn(Xtest) + tKstar %*% Kyinv %*% (ytrain-muFn(Xtrain))
+postCov = Kstarstar - tKstar %*% Kyinv %*% Kstar
+s2 = diag(postCov)
+# R = chol(postCov)  
+# L = t(R)      # L is used in alternative formulation below based on gaussSample.m
+
+# generate draws from posterior predictive
+y2 = data.frame(t(mvtnorm::rmvnorm(npostpred, mean=postMu, sigma=postCov)))
+# y2 = data.frame(replicate(npostpred, postMu + L %*% rnorm(postMu))) # alternative
+
+#################################
+### Posterior predictive plot ###
+#################################
+
+# reshape data for plotting
+gdat2 = gather(data.frame(x=Xtest, 
+                         y=y2, 
+                         fmean=postMu, 
+                         selower=postMu-2*sqrt(s2), 
+                         seupper=postMu+2*sqrt(s2)),
+              key=variable,
+              value=value, 
+              -x, -fmean, -selower, -seupper)
+
+
+# g2 = ggplot(aes(x=x, y=value), data=gdat) + 
+#   geom_ribbon(aes(ymin=selower, ymax=seupper,group=variable), fill='#00aaff', alpha=.01) +
+#   geom_line(aes(group=variable), color='#FF5500', alpha=.5) +
+#   geom_line(aes(group=variable, y=fmean), color='#5500ff', size=1, alpha=.5) +
+#   geom_point(aes(x=Xtrain, y=ytrain), color='#aaff00', alpha=.5, data=data.frame(Xtrain, ytrain)) +
+#   labs(title='Posterior Predictive') +
+#   theme_trueMinimal()
+
+g2 = ggplot(aes(x=x, y=value), data=gdat2) + 
+  geom_ribbon(aes(ymin=selower, ymax=seupper,group=variable), fill=palviridis[1], alpha=.01) +
+  geom_line(aes(group=variable), color=palviridis[2], alpha=.25) +
+  geom_line(aes(group=variable, y=fmean), color=palviridis[3], size=1, alpha=.5) +
+  geom_point(aes(x=Xtrain, y=ytrain), color=palviridis[4], alpha=1, size=2, data=data.frame(Xtrain, ytrain)) +
+  labs(title='Posterior Predictive') +
+  theme_trueMinimal() +
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank())
+
+# g2
+
+####################################################
+### Plot prior and posterior predictive together ###
+####################################################
+
+library(gridExtra)
+grid.arrange(g1, g2, ncol=2)
+```
+
+
+
+Without transparency, it just looks ugly, and notably busier if nothing else.
+
+```{r transp2_old, eval=FALSE}
 data_frame(g, x, y) %>% 
   group_by(g) %>% 
   mutate(updown = if_else(last(y) > first(y), 'up', 'down')) %>% 
@@ -312,67 +470,163 @@ data_frame(g, x, y) %>%
   theme_plotly()
 ```
 
-In addition, transparency can be used to add additional information, e.g. data density in scatter plots.
+```{r transp2, out.width='1000px', out.height='326.25px'}
+g1 = ggplot(aes(x=x, y=value), data=gdat1) + 
+  geom_line(aes(group=variable), color='#FF5500', alpha=1) +
+  labs(title='Prior') +
+  theme_trueMinimal() +
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank())
+g2 = ggplot(aes(x=x, y=value), data=gdat2) + 
+  geom_ribbon(aes(ymin=selower, ymax=seupper,group=variable), fill=palviridis[1], alpha=1) +
+  geom_line(aes(group=variable), color=palviridis[2], alpha=1) +
+  geom_line(aes(group=variable, y=fmean), color=palviridis[3], size=1, alpha=1) +
+  geom_point(aes(x=Xtrain, y=ytrain), color=palviridis[4], alpha=1, size=2, data=data.frame(Xtrain, ytrain)) +
+  labs(title='Posterior Predictive') +
+  theme_trueMinimal() +
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank())
+grid.arrange(g1, g2, ncol=2)
+```
 
-<img src="img/tornados.png" style="display:block; margin: 0 auto;">
 
-```{r transp_tornado, eval=F}
+In addition, transparency can be used to add additional information to a plot. In the following scatter plot, we can get a better sense of data density from the fact that the plot is darker where points overlap more.
+
+<!-- <img src="img/tornados.png" style="display:block; margin: 0 auto;"> -->
+
+```{r transp_tornado, eval=T}
+# depending on the plot, plotly may confuse opacity with some other quality of the color
 # data(flights, package='threejs') 
 # flights %>% 
 #   plot_ly(x=~origin_long, y=~origin_lat) %>% 
 #   add_markers(opacity=.20, size=I(3), color=I('#ff5500')) %>% 
 #   theme_plotly()
+# 
+# load('../../Other/Tornado/data/tornados.RData')
+# g <- list(
+#   scope = 'usa',
+#   projection = list(type = 'albers usa'),
+#   showland = TRUE,
+#   landcolor = toRGB("gray95"),
+#   subunitcolor = toRGB("gray85"),
+#   countrycolor = toRGB("gray85"),
+#   countrywidth = 0.5,
+#   subunitwidth = 0.5
+# )
+# 
+# tornados %>% 
+#   filter(Year>=2010) %>% 
+#   plot_geo(lat = ~StartLat, lon = ~StartLon) %>%
+#   add_markers(marker=list(size = 5), color=I('#ff5500'), opacity=.25) %>%
+#   layout(title = 'U.S. Tornados 1990-2015', geo = g) %>% 
+#   theme_plotly()
 
-load('../../Other/Tornado/data/tornados.RData')
-g <- list(
-  scope = 'usa',
-  projection = list(type = 'albers usa'),
-  showland = TRUE,
-  landcolor = toRGB("gray95"),
-  subunitcolor = toRGB("gray85"),
-  countrycolor = toRGB("gray85"),
-  countrywidth = 0.5,
-  subunitwidth = 0.5
-)
+library(mclust)
+sim_faithful = Mclust(faithful, G=2) %>% summary()
 
-tornados %>% 
-  filter(Year>=2010) %>% 
-  plot_geo(lat = ~StartLat, lon = ~StartLon) %>%
-  add_markers(size = I(3.5), color=I('#ff5500'), opacity=.25) %>%
-  layout(title = 'U.S. Tornados 1990-2015', geo = g) %>% 
-  theme_plotly()
+nsim = 500
+g1 = mvtnorm::rmvnorm(nsim, sim_faithful$mean[,1], sigma=sim_faithful$variance[,,1])
+g2 = mvtnorm::rmvnorm(nsim, sim_faithful$mean[,2], sigma=sim_faithful$variance[,,2])
+gdat = data.frame(rbind(g1, g2), group=rep(0:1, e=nsim)) 
 
+gdat %>%
+  ggplot(aes(x=waiting, y=eruptions)) +
+  geom_point(size = 3, alpha=.25, color='#ff5500') +
+  theme_trueMinimal()
+```
+
+Here we apply it to a density plot to convey a group difference in distributions, while still being able to visualize the whole distribution of each group.
+
+```{r transp_density}
+detach(package:mclust)
+set.seed(123)
+gdat = 1:4 %>% 
+  map(~rnorm(20, mean=.x, sd=.x/2)) %>% 
+  data.frame() %>% 
+  rename_all(function(x) paste0('x', 1:4)) %>% 
+  gather(key=g) %>% 
+  mutate(g = fct_relevel(g, 'x1', after=2))
+
+gdat %>% 
+  ggplot(aes(x=value, group=g)) +
+  geom_density(aes(color=g, fill=g), alpha=.2, show.legend=F) +
+  xlim(-3,10) +
+  theme_trueMinimal() +
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank())
+```
+
+Had we not done so, we might not be able to tell what's going on with some of the groups at all.
+
+```{r transp_density2}
+gdat %>% 
+  ggplot(aes(x=value, group=g)) +
+  geom_density(aes(color=g, fill=g), show.legend=F) +
+  xlim(-3,10) +
+  theme_trueMinimal() +
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank())
 ```
 
 
+In general, a good use of transparency can potentially help any visualization, but consider it especially when trying to display many points, or otherwise have overlapping data.
 
-### Things to avoid
+### Accessibility
 
-pie charts and their cousins
+Among many things (apparently) rarely considered in typical academic or other visualization is <span class="emph">accessibility</span>.  The following definition comes from the <span class="emph">World Wide Web Consortium</span>.
 
-- bar chart (and stacked versions)
-- wind rose
+> Web accessibility means that people with disabilities can use the Web. More specifically, Web accessibility means that people with disabilities can perceive, understand, navigate, and interact with the Web, and that they can contribute to the Web. Web accessibility also benefits others, including older people with changing abilities due to aging.
 
-histograms
+The gist is that not everyone is able to use the web in the same manner.  While you won't be able to satisfy everyone who might come across, putting a little thought into your offering can go along way, and potentially widen your audience.
 
-- use density
+We talked about this previously, but when communicating visually, one can do simple things like choosing a colorblind-friendly palette, or using a font contrast that will make it easier on the eyes of those reading your work.  There are even browser plugins to test your web content for accessibility. In addition, there are little things like adding a title to inserted images, making links more noticeable etc., all of which can help consumers of your information.
 
-using 3d without adding any communicative value
+### A casual list of things to avoid
 
-- which is almost always
-- prefer interactivity
-- Where is it useful: showing structure (e.g. molecular, geographical), continuous multi-way interactions
+I'm just putting things that come to mind here. Mostly it is personal opinion, though often based on various sources in the data visualization realm or simply my own experience.  
 
-using too many colors
+#### Pie
 
-### WebAxe
+Pie charts and their cousins, e.g. bar charts (and stacked versions), wind rose plots etc., either convey too little information or make otherwise simple information more difficult to process perceptually.
+
+#### Histograms
+
+Anyone that's used R's <span class="func">hist</span> function knows the frustration here.  Use density plots instead.  They convey the same information but better, and typical defaults are usually fine.
+
+#### Using 3D without adding any communicative value
+
+You will often come across use of 3D in scientific communication which is fairly poor and makes the data harder to interpret.  In general, when going beyond two dimensions, your first thought should be to use color, size, etc. and finally prefer interactivity to 3D.  Where it is useful is in things like showing structure (e.g. molecular, geographical), or continuous multi-way interactions.
+
+#### Using too many colors 
+
+Some put a completely non-scientifically based number on this, but the idea holds. For example, if you're trying to show U.S. state grouping by using a different color for all 50 states, no one's going to be able to tell the yellow for Alabama vs. the slightly different yellow for Idaho.  Alternatives would be to show the information via a map or use a hover over display.
+
+#### Showing maps that just display population
+
+Most of the maps I see on the web cover a wide range of data and can be very visually appealing, but pretty much just tell me where the most populated areas are, which is completely uninteresting.  Make sure that your geographical depiction is more informative than this.
 
 
 ### Thinking Visually Exercises
 
 #### Exercise 1
 
-The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>.  
+The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>.  Use the <span class="func">scale_color_viridis</span> function to add a more accessible palette.
 
 ```{r thinkingvis_ex1, echo=T, eval=FALSE, cache=FALSE}
 library(ggplot2); library(viridis)
@@ -381,22 +635,26 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
   ????
 ```
 
-```{r thinkingvis_ex1b, echo=F, out.width='50%'}
+```{r thinkingvis_ex1b, eval=F, out.width='50%'}
 library(ggplot2); library(viridis)
 ggplot(aes(x=carat, y=price), data=diamonds) +
   geom_point(aes(color=price)) +
   scale_color_viridis()
 ```
 
+<img src="img/visex_diamonds.png" style="display:block; margin: 0 auto;" width=75% title='scatterplot of diamond data'>
+
 #### Exercise 2
 
-Now color it by the `cut`.  To use the scale_color_viridis approach, you'll have to change one of the arguments to the function.  Reproduce this but using one of the other viridis palettes.
+Now color it by the `cut`.  To use the scale_color_viridis approach, you'll have to change one of the arguments to the function (set `discrete=T`).  Reproduce this but using one of the other viridis palettes.  See the helpfile via `?scale_color_viridis` to see how to change the palette.
 
-```{r thinkingvis_ex2, out.width='50%'}
+```{r thinkingvis_ex2, eval=FALSE, out.width='50%'}
 ggplot(aes(x=carat, y=price), data=diamonds) +
   geom_point(aes(color=cut)) +
   scale_color_viridis(discrete=T)
 ```
+
+<img src="img/visex_diamonds2.png" style="display:block; margin: 0 auto;" width=75% title='scatterplot of diamond data with options'>
 
 #### Thinking exercises
 

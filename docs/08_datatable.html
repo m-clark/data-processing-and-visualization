@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-11-02">
+<meta name="date" content="2017-11-19">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -226,8 +226,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#scaling-by-size"><i class="fa fa-check"></i>Scaling by Size</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
-<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#things-to-avoid"><i class="fa fa-check"></i>Things to avoid</a></li>
-<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#webaxe"><i class="fa fa-check"></i>WebAxe</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#accessibility"><i class="fa fa-check"></i>Accessibility</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#a-casual-list-of-things-to-avoid"><i class="fa fa-check"></i>A casual list of things to avoid</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
@@ -294,40 +294,40 @@ dt =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt"
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[<span class="dv">2</span>]
 dt[<span class="dv">2</span>,]</code></pre></div>
 <pre><code>   x g         y
-1: 1 2 0.2994528
+1: 8 2 0.2918808
    x g         y
-1: 1 2 0.2994528</code></pre>
+1: 8 2 0.2918808</code></pre>
 <p>You use <strong>j</strong> to select (by name!) or create new columns. We can define a new column with the <span class="func">:=</span> operator.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[,x]
 dt[,z <span class="op">:</span><span class="er">=</span><span class="st"> </span>x<span class="op">+</span>y]  <span class="co"># dt now has a new column</span>
 dt[,z]
 dt[g<span class="op">&gt;</span><span class="dv">1</span>, <span class="kw">mean</span>(z), by=g]
 dt</code></pre></div>
-<pre><code>[1]  8  1 10  7  2  4
-[1]  8.117265  1.299453 10.963073  7.781543  2.027008  4.843403
-   g       V1
-1: 2 1.663231
-2: 3 7.903238
-    x g          y         z
-1:  8 1 0.11726451  8.117265
-2:  1 2 0.29945285  1.299453
-3: 10 3 0.96307272 10.963073
-4:  7 1 0.78154268  7.781543
-5:  2 2 0.02700837  2.027008
-6:  4 3 0.84340253  4.843403</code></pre>
+<pre><code>[1]  6  8  9  2  4 10
+[1]  6.821541  8.291881  9.517162  2.890418  4.258555 10.547438
+   g        V1
+1: 2  6.275218
+2: 3 10.032300
+    x g         y         z
+1:  6 1 0.8215409  6.821541
+2:  8 2 0.2918808  8.291881
+3:  9 3 0.5171625  9.517162
+4:  2 1 0.8904179  2.890418
+5:  4 2 0.2585553  4.258555
+6: 10 3 0.5474379 10.547438</code></pre>
 <p>Because <strong>j</strong> is an argument, dropping columns is awkward.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[,<span class="op">-</span>y]             <span class="co"># creates negative values of y</span>
 dt[,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=F]   <span class="co"># drops y, but now needs quotes</span>
 ## dt[,y:=NULL]        # drops y, but this is just a base R approach
 ## dt$y = NULL</code></pre></div>
-<pre><code>[1] -0.11726451 -0.29945285 -0.96307272 -0.78154268 -0.02700837 -0.84340253
+<pre><code>[1] -0.8215409 -0.2918808 -0.5171625 -0.8904179 -0.2585553 -0.5474379
     x g         z
-1:  8 1  8.117265
-2:  1 2  1.299453
-3: 10 3 10.963073
-4:  7 1  7.781543
-5:  2 2  2.027008
-6:  4 3  4.843403</code></pre>
+1:  6 1  6.821541
+2:  8 2  8.291881
+3:  9 3  9.517162
+4:  2 1  2.890418
+5:  4 2  4.258555
+6: 10 3 10.547438</code></pre>
 <p>Data table does not make unnecessary copies. For example if we do the following…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DT =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">A=</span><span class="dv">5</span><span class="op">:</span><span class="dv">1</span>,<span class="dt">B=</span>letters[<span class="dv">5</span><span class="op">:</span><span class="dv">1</span>])
 DT2 =<span class="st"> </span>DT</code></pre></div>
@@ -340,23 +340,23 @@ DT2 =<span class="st"> </span>DT</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1 =<span class="st"> </span>dt2 =<span class="st"> </span>dt
 dt[,<span class="kw">sum</span>(x,y), by=g]                  <span class="co"># sum of all x and y values</span></code></pre></div>
 <pre><code>   g        V1
-1: 1 15.898807
-2: 2  3.326461
-3: 3 15.806475</code></pre>
+1: 1  9.711959
+2: 2 12.550436
+3: 3 20.064600</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1[,newvar <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(x), by=g]         <span class="co"># add new variable to the original data </span>
 dt1</code></pre></div>
-<pre><code>    x g          y         z newvar
-1:  8 1 0.11726451  8.117265     15
-2:  1 2 0.29945285  1.299453      3
-3: 10 3 0.96307272 10.963073     14
-4:  7 1 0.78154268  7.781543     15
-5:  2 2 0.02700837  2.027008      3
-6:  4 3 0.84340253  4.843403     14</code></pre>
+<pre><code>    x g         y         z newvar
+1:  6 1 0.8215409  6.821541      8
+2:  8 2 0.2918808  8.291881     12
+3:  9 3 0.5171625  9.517162     19
+4:  2 1 0.8904179  2.890418      8
+5:  4 2 0.2585553  4.258555     12
+6: 10 3 0.5474379 10.547438     19</code></pre>
 <p>We can also create groupings on the fly. For a new summary data set, we’ll take the following approach- we create a grouping based on whether g is a value of one or not, then get the mean and sum of x for those two categories. The corresponding dplyr approach is also shown (but not evaluated) for comparison.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt2[, <span class="kw">list</span>(<span class="dt">mean_x =</span> <span class="kw">mean</span>(x), <span class="dt">sum_x =</span> <span class="kw">sum</span>(x)), by =<span class="st"> </span>g<span class="op">==</span><span class="dv">1</span>]</code></pre></div>
 <pre><code>       g mean_x sum_x
-1:  TRUE   7.50    15
-2: FALSE   4.25    17</code></pre>
+1:  TRUE   4.00     8
+2: FALSE   7.75    31</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## dt2 %&gt;% group_by(g==1) %&gt;% summarise(mean_x=mean(x), sum_x=sum(x))</code></pre></div>
 </div>
 <div id="faster" class="section level3">
@@ -434,7 +434,7 @@ test_dt2 =<span class="st"> </span><span class="kw">setkey</span>(test_dt1, g)
 <p>Consider the following. We sample the first 14 letters 1000 times with replacement and see which ones match in a subset of another subset of letters. I compare the same operation to <span class="pack">stringr</span> and the <span class="pack">stringi</span> package whose functionality it’s using.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lets_<span class="dv">1</span> =<span class="st"> </span><span class="kw">sample</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">14</span>], <span class="dv">1000</span>, <span class="dt">replace=</span>T)
 lets_<span class="dv">1</span> <span class="op">%chin%</span><span class="st"> </span>letters[<span class="dv">13</span><span class="op">:</span><span class="dv">26</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>)</code></pre></div>
-<pre><code> [1] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<pre><code> [1] FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE</code></pre>
 <table style="width:43%;">
 <colgroup>
 <col width="13%" />
