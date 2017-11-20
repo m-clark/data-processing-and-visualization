@@ -2,125 +2,137 @@
 
 (SECTION DEVELOPMENT IN PROGRESS)
 
-```{r ggplot2setup, include=FALSE, eval=TRUE}
-
+```{r ggplot2setup, include=FALSE, eval=TRUE, cache=FALSE}
+knitr::opts_chunk$set(eval=T, echo=T)
 ```
 
+The most [popular](https://www.rdocumentation.org/trends?page1=1&sort1=total&page2=1&sort2=total&page3=1&page4=1) visualization package in R is <span class="pack">ggplot2</span>.  It's so popular, it or its aesthetic is copied in other languages/programs as well.  It entails a <span class="emph">grammar of graphics</span> (hence the **gg**), and learning that grammar is key to using it effectively. Some of the strengths of <span class="pack">ggplot2</span> include:
 
+- The ease of getting a good looking plot
+- Easy customization
+- A lot of necessary data processing is done for you
+- Clear syntax
+- Easy multidimensional approach
+- Decent default color scheme as a default
+- Lots of extensions
 
-<span class="pack">ggplot2</span> is an extremely popular package for visualization in R.
+Every graph is built from the same few parts, and it's important to be aware of a few key ideas, which we will cover in turn.
 
-- and copied in other languages/programs
-
-It entails a <span class="emph">grammar of graphics</span>.
-
-- Every graph is built from the same few parts
-
-Key ideas:
-
-- Aesthetics
 - Layers (and geoms)
+- Aesthetics
 - Piping
 - Facets
+- Scales
 - Themes
 - Extensions
 
-Strengths: 
+Note that while you can obviously use base R for visualization, it's never going to be easier, nor as flexible as <span class="pack">ggplot2</span>.  If you're used to using base R visuals, you should be prepared to leave them behind.
 
-- Ease of getting a good looking plot
-- Easy customization
-- A lot of data processing is done for you
-- Clear syntax
-- Easy multidimensional approach
-- Equally spaced colors as a default
-
-
-### Aesthetics
-
-<span class="emph">Aesthetics</span> map data to aesthetic aspects of the plot.
-
-- Size
-- Color
-- etc.
-
-The function used in ggplot to do this is <span class="func">aes</span>
-
-```{r aes, eval=F}
-aes(x=myvar, y=myvar2, color=myvar3, group=g)
-```
 
 
 ### Layers
 
-In general, we start with a base layer and add to it.
-
-In most cases you'll start as follows.
+In general, we start with a base layer and add to it. In most cases you'll start as follows.
 
 ```{r layer, eval=FALSE}
-ggplot(aes(x=myvar, y=myvar2), data=mydata)
+ggplot(aes(x=height, y=mass), data=starwars)
 ```
 
-This would just produce a plot background.
+This would just produce a plot background, but nothing else.  However, with the foundation in place, we're now ready to add something to it. Let's add some points (the outlier is Jabba the Hut).
+
+```{r layer2}
+ggplot(aes(x=height, y=mass), data=starwars) +
+  geom_point()
+```
+
+Perhaps we want to change labels or theme. These would be additional layers to the plot.
+
+```{r layer3}
+ggplot(aes(x=height, y=mass), data=starwars) +
+  geom_point() +
+  labs(x='Height in cm', y='Weight in kg') +
+  theme_dark()
+```
+
+Each layer is consecutively added by means of a pipe operator, and layers may regard geoms, scales, labels, facets etc.  You may have many different layers to produce one plot, and there really is no limit.  However some efficiencies may be possible for a given situation.  For example, it's more straightforward to use <span class="func">geom_smooth</span> than calculate fits, standard errors etc. and then add multiple geoms to produce the same thing.  This is the sort of thing you'll get used to as you use ggplot more.
 
 
 ### Piping
 
-<span class="emph">Layers</span> are added via piping.
-
-The first layers added are typically <span class="emph">geoms</span>:
+<span class="emph">Layers</span> are added via piping. The first layers added are typically <span class="emph">geoms</span>, or geometric objects that represent the data, and include things like:
 
 - points
 - lines
 - density
 - text
 
-<span class="pack">ggplot2</span> was using pipes before it was cool, and so it has a different pipe (<span class="emph">+</span>). Otherwise, the concept is the same as before.
+In case you're wondering why ggplot doesn't use `%>%` as in the tidyverse, it's because <span class="pack">ggplot2</span> was using pipes before it was cool, well before those came along (<span class="emph">+</span>). Otherwise, the concept is the same as before.
 
 ```{r pipeplus, eval=FALSE}
 ggplot(aes(x=myvar, y=myvar2), data=mydata) +
   geom_point()
 ```
 
-Our base is provided via the <span class="func">ggplot2</span> functions and specifies the data along with x and y aesthetics.
+Our base is provided via the <span class="func">ggplot</span> function, and specifies the data at the very least, but commonly also the x and y aesthetics.
 
-The <span class="func">geom_point</span> function adds a layer of points, and now we would have a scatterplot.
+The <span class="func">geom_point</span> function adds a layer of points, and now we would have a scatterplot. Alternatively, you could have specified the x and y aesthetic at the geom_point layer, but if you're going to have the same x, y, color, etc. aesthetics regardless of layer, put it in the base. Otherwise, doing it by layer gives you more flexibility if needed.  Geoms even have their own data argument, allowing you to combine information from several sources for a single visualization.
 
-- Alternatively, you could have specified the x and y aesthetic at the geom_point layer
-- If you're going to have the same x, y, color, etc. aesthetics regardless of layer, put it in the base.
-    - Otherwise, doing it by layer gives you more flexibility
+
+### Aesthetics
+
+<span class="emph">Aesthetics</span> map data to various aspects of the plot, including size, color etc. The function used in ggplot to do this is <span class="func">aes</span>.
+
+```{r aes, eval=F}
+aes(x=myvar, y=myvar2, color=myvar3, group=g)
+```
+
+The best way to understand what goes into the aes function is if the value is varying.  For example, if I want the size of points to be a certain value, I would code the following.
+
+```{r aes_vs_not1, eval=FALSE}
+... +
+  geom_point(..., size=4)
+```
+
+However, if I want the size to be associated with the data in some way, I use it as an aesthetic.
+
+```{r aes_vs_not2, eval=FALSE}
+... +
+  geom_point(aes(size=var_x))
+```
+
+The same goes for practically any aspect of a geom- size, color, fill, etc. If it is a fixed value, set it outside the aesthetic. If it varies based on the data, put it within an aesthetic.
+
 
 
 
 ### Examples
 
-```{r ggscatter, eval=TRUE}
+```{r ggscatter, dev='png'}
 library(ggplot2)
 data("diamonds"); data('economics')
 ggplot(aes(x=carat, y=price), data=diamonds) +
   geom_point()
 ```
 
-```{r ggline, eval=TRUE}
+```{r ggline}
 ggplot(aes(x=date, y=unemploy), data=economics) +
   geom_line()
 ```
 
-In the following, one setting is not mapped to the data.
+In the following, one setting, alpha (transparency), is not mapped to the data.
 
-```{r ggalpha, fig.width=6, fig.height=4, eval=TRUE}
+```{r ggalpha, fig.width=6, fig.height=4, dev='png'}
 ggplot(aes(x=carat, y=price), data=diamonds) +
-  geom_point(aes(size=carat, color=clarity), alpha=.25) 
+  geom_point(aes(size=carat, color=clarity), alpha=.05) 
 ```
 
 ### Stats
 
-There are many statistical functions built in.
-
-Key strength: you don't have to do much preprocessing.
+There are many statistical functions built in, and it is a key strength of ggplot that you don't have to do a lot of processing for very common plots.
 
 Quantile regression lines:
 
-```{r ggquant, eval=TRUE}
+```{r ggquant}
 ggplot(mpg, aes(displ, hwy)) + 
   geom_point() +
   geom_quantile()
@@ -128,7 +140,7 @@ ggplot(mpg, aes(displ, hwy)) +
 
 Loess (or additive model) smooth:
 
-```{r ggsmooth, eval=TRUE}
+```{r ggsmooth}
 ggplot(mpg, aes(displ, hwy)) + 
   geom_point() +
   geom_smooth()
@@ -136,12 +148,15 @@ ggplot(mpg, aes(displ, hwy)) +
 
 Bootstrapped confidence intervals:
 
-```{r ggstatsum, eval=TRUE}
+```{r ggstatsum}
 ggplot(mtcars, aes(cyl, mpg)) + 
   geom_point() +
   stat_summary(fun.data = "mean_cl_boot", colour = "orange", alpha=.75, size = 1)
 ```
 
+The take-home message here is to always let ggplot do the work for you if at all possible.
+
+### Scales
 
 ### Facets
 
@@ -159,7 +174,7 @@ Both use a formula approach to specify the grouping.
 
 ##### facet_grid
 
-```{r facetgrid, eval=TRUE}
+```{r facetgrid}
 ggplot(mtcars, aes(wt, mpg)) + 
   geom_point() +
   facet_grid(vs ~ cyl, labeller = label_both)
@@ -169,7 +184,7 @@ ggplot(mtcars, aes(wt, mpg)) +
 ##### facet_wrap
 
 
-```{r facetwrap, eval=TRUE}
+```{r facetwrap}
 ggplot(mtcars, aes(wt, mpg)) + 
   geom_point() +
   facet_wrap(vs ~ cyl, labeller = label_both, ncol=2)
@@ -180,16 +195,19 @@ ggplot(mtcars, aes(wt, mpg)) +
 
 <span class="pack">ggplot2</span> makes it easy to get good looking graphs quickly.
 
-However the amount of fine control is extensive.  The following plot is hideous (aside from the background, which is totaly rad), but illustrates the point.
+However the amount of fine control is extensive.  The following plot is hideous (aside from the background, which is totally rad), but illustrates the point.
 
-```{r finecontrol, fig.height=6, fig.width=6, echo=-c(1:5, 7), eval=TRUE, cache=TRUE, dev='png'}
+```{r finecontrol, fig.height=6, fig.width=6, echo=-c(1:5, 7), dev='png'}
 library(grid); library(caTools)
 img = caTools::read.gif('img/lamb.gif')
 lambosun = img$col[img$image+1]
 dim(lambosun) = dim(img$image)
 
 ggplot(aes(x=carat, y=price), data=diamonds) +
-  annotation_custom(rasterGrob(lambosun, width=unit(1,"npc"), height=unit(1,"npc"), interpolate = FALSE), 
+  annotation_custom(rasterGrob(lambosun, 
+                               width=unit(1,"npc"), 
+                               height=unit(1,"npc"), 
+                               interpolate = FALSE), 
                     -Inf, Inf, -Inf, Inf) +
   geom_point(aes(color=clarity), alpha=.5) + 
   scale_y_log10(breaks=c(1000,5000,10000)) +
@@ -211,48 +229,35 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
 
 #### Themes
 
-In the last example you saw two uses of a <span class="emph">theme</span>.
-
-- built-in
-- specific customization
-
-Each argument takes on a specific value or an element function:
+In the last example you saw two uses of a <span class="emph">theme</span>- a built-in version that comes with ggplot (<span class="func">theme_minimal</span>), and specific customization (<span class="func">theme(...)</span>).  The built-in themes provide ready-made approaches that might be enough for a finished product.  For the theme function, each argument, and there are many, takes on a specific value or an element function:
 
 - <span class="func">element_rect</span>
 - <span class="func">element_line</span>
 - <span class="func">element_text</span>
 - <span class="func">element_blank</span>
 
+Each of those element functions has arguments specific to it. For example, for <span class="func">element_text</span> you can specify the font size, while for element line you could specify the line type.
 
-The base theme is not too good.
-
-- not for web
-- doesn't look good for print either
-
-You will almost invariably need to tweak it.
+Note that the base theme of ggplot is not too good.  Doesn't work well for web presentation, and is even worse for print.  You will almost invariably need to tweak it.
 
 
 ### Extensions
 
-<span class="pack">ggplot2</span> now has its own extension system, and there is even a website to track the extensions.
-
-- http://www.ggplot2-exts.org/
-
-Examples include:
+<span class="pack">ggplot2</span> now has its own extension system, and there is even a [website](http://www.ggplot2-exts.org/) to track the extensions. Examples include:
 
 - additional themes
+- maps
 - interactivity
 - animations
 - marginal plots
 - network graphs
 
-```{r mullerplot, echo=FALSE, eval=TRUE}
+```{r mullerplot, echo=FALSE}
 library(ggmuller)
 Muller_df <- get_Muller_df(example_edges, example_pop_df, cutoff = 0.005)
 
 # generate pretty plot
-Muller_plot(Muller_df, palette=rep(RColorBrewer::brewer.pal(12, 'Set3'), 4)) +
-  labs(x='', y='') +
+Muller_plot(Muller_df, palette=rep(RColorBrewer::brewer.pal(12, 'Set3'), 4), xlab='', ylab='') +
   lazerhawk::theme_trueMinimal() +
   theme(axis.ticks.x=element_blank(),
         axis.ticks.y=element_blank(),
@@ -260,7 +265,7 @@ Muller_plot(Muller_df, palette=rep(RColorBrewer::brewer.pal(12, 'Set3'), 4)) +
         axis.text.y=element_blank())
 ```
 
-
+In short, <span class="pack">ggplot2</span> is only the beginning. You'll have a lot of tools at your disposal. Furthermore, many modeling and other packages will produce ggplot graphics to which you can add your own layers and tweak like you would any other ggplot.
 
 ### Summary ggplot2
 
@@ -275,7 +280,7 @@ Allows one to think in many dimensions for any graph:
 - opacity
 - facet
 
-2d graphs are only useful for conveying the simplest of ideas.
+2D graphs are only useful for conveying the simplest of ideas.
 
 Use <span class="pack">ggplot2</span> to easily create more interesting visualizations.
 
@@ -316,6 +321,7 @@ Themes to play with:
 - <span class="func">theme_light</span>
 - <span class="func">theme_linedraw</span>
 - <span class="func">theme_minimal</span>
+- <span class="func">theme_trueMinimal</span> (requires the lazerhawk package and an appreciation of the lamborghini background from the previous visualization)
 
 ```{r, echo=FALSE}
 library(ggplot2)

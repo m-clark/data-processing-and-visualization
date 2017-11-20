@@ -231,11 +231,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
-<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#examples"><i class="fa fa-check"></i>Examples</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#stats"><i class="fa fa-check"></i>Stats</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#scales"><i class="fa fa-check"></i>Scales</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#facets"><i class="fa fa-check"></i>Facets</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
@@ -281,86 +282,107 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="ggplot2-1" class="section level2">
 <h2>ggplot2</h2>
 <p>(SECTION DEVELOPMENT IN PROGRESS)</p>
-<p><span class="pack">ggplot2</span> is an extremely popular package for visualization in R.</p>
+<p>The most <a href="https://www.rdocumentation.org/trends?page1=1&amp;sort1=total&amp;page2=1&amp;sort2=total&amp;page3=1&amp;page4=1">popular</a> visualization package in R is <span class="pack">ggplot2</span>. It’s so popular, it or its aesthetic is copied in other languages/programs as well. It entails a <span class="emph">grammar of graphics</span> (hence the <strong>gg</strong>), and learning that grammar is key to using it effectively. Some of the strengths of <span class="pack">ggplot2</span> include:</p>
 <ul>
-<li>and copied in other languages/programs</li>
+<li>The ease of getting a good looking plot</li>
+<li>Easy customization</li>
+<li>A lot of necessary data processing is done for you</li>
+<li>Clear syntax</li>
+<li>Easy multidimensional approach</li>
+<li>Decent default color scheme as a default</li>
+<li>Lots of extensions</li>
 </ul>
-<p>It entails a <span class="emph">grammar of graphics</span>.</p>
+<p>Every graph is built from the same few parts, and it’s important to be aware of a few key ideas, which we will cover in turn.</p>
 <ul>
-<li>Every graph is built from the same few parts</li>
-</ul>
-<p>Key ideas:</p>
-<ul>
-<li>Aesthetics</li>
 <li>Layers (and geoms)</li>
+<li>Aesthetics</li>
 <li>Piping</li>
 <li>Facets</li>
+<li>Scales</li>
 <li>Themes</li>
 <li>Extensions</li>
 </ul>
-<p>Strengths:</p>
-<ul>
-<li>Ease of getting a good looking plot</li>
-<li>Easy customization</li>
-<li>A lot of data processing is done for you</li>
-<li>Clear syntax</li>
-<li>Easy multidimensional approach</li>
-<li>Equally spaced colors as a default</li>
-</ul>
-<div id="aesthetics" class="section level3">
-<h3>Aesthetics</h3>
-<p><span class="emph">Aesthetics</span> map data to aesthetic aspects of the plot.</p>
-<ul>
-<li>Size</li>
-<li>Color</li>
-<li>etc.</li>
-</ul>
-<p>The function used in ggplot to do this is <span class="func">aes</span></p>
-</div>
+<p>Note that while you can obviously use base R for visualization, it’s never going to be easier, nor as flexible as <span class="pack">ggplot2</span>. If you’re used to using base R visuals, you should be prepared to leave them behind.</p>
 <div id="layers" class="section level3">
 <h3>Layers</h3>
-<p>In general, we start with a base layer and add to it.</p>
-<p>In most cases you’ll start as follows.</p>
-<p>This would just produce a plot background.</p>
+<p>In general, we start with a base layer and add to it. In most cases you’ll start as follows.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>height, <span class="dt">y=</span>mass), <span class="dt">data=</span>starwars)</code></pre></div>
+<p>This would just produce a plot background, but nothing else. However, with the foundation in place, we’re now ready to add something to it. Let’s add some points (the outlier is Jabba the Hut).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>height, <span class="dt">y=</span>mass), <span class="dt">data=</span>starwars) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/layer2-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>Perhaps we want to change labels or theme. These would be additional layers to the plot.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>height, <span class="dt">y=</span>mass), <span class="dt">data=</span>starwars) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&#39;Height in cm&#39;</span>, <span class="dt">y=</span><span class="st">&#39;Weight in kg&#39;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_dark</span>()</code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/layer3-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>Each layer is consecutively added by means of a pipe operator, and layers may regard geoms, scales, labels, facets etc. You may have many different layers to produce one plot, and there really is no limit. However some efficiencies may be possible for a given situation. For example, it’s more straightforward to use <span class="func">geom_smooth</span> than calculate fits, standard errors etc. and then add multiple geoms to produce the same thing. This is the sort of thing you’ll get used to as you use ggplot more.</p>
 </div>
 <div id="piping" class="section level3">
 <h3>Piping</h3>
-<p><span class="emph">Layers</span> are added via piping.</p>
-<p>The first layers added are typically <span class="emph">geoms</span>:</p>
+<p><span class="emph">Layers</span> are added via piping. The first layers added are typically <span class="emph">geoms</span>, or geometric objects that represent the data, and include things like:</p>
 <ul>
 <li>points</li>
 <li>lines</li>
 <li>density</li>
 <li>text</li>
 </ul>
-<p><span class="pack">ggplot2</span> was using pipes before it was cool, and so it has a different pipe (<span class="emph">+</span>). Otherwise, the concept is the same as before.</p>
-<p>Our base is provided via the <span class="func">ggplot2</span> functions and specifies the data along with x and y aesthetics.</p>
-<p>The <span class="func">geom_point</span> function adds a layer of points, and now we would have a scatterplot.</p>
-<ul>
-<li>Alternatively, you could have specified the x and y aesthetic at the geom_point layer</li>
-<li>If you’re going to have the same x, y, color, etc. aesthetics regardless of layer, put it in the base.
-<ul>
-<li>Otherwise, doing it by layer gives you more flexibility</li>
-</ul></li>
-</ul>
+<p>In case you’re wondering why ggplot doesn’t use <code>%&gt;%</code> as in the tidyverse, it’s because <span class="pack">ggplot2</span> was using pipes before it was cool, well before those came along (<span class="emph">+</span>). Otherwise, the concept is the same as before.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>myvar, <span class="dt">y=</span>myvar2), <span class="dt">data=</span>mydata) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
+<p>Our base is provided via the <span class="func">ggplot</span> function, and specifies the data at the very least, but commonly also the x and y aesthetics.</p>
+<p>The <span class="func">geom_point</span> function adds a layer of points, and now we would have a scatterplot. Alternatively, you could have specified the x and y aesthetic at the geom_point layer, but if you’re going to have the same x, y, color, etc. aesthetics regardless of layer, put it in the base. Otherwise, doing it by layer gives you more flexibility if needed. Geoms even have their own data argument, allowing you to combine information from several sources for a single visualization.</p>
+</div>
+<div id="aesthetics" class="section level3">
+<h3>Aesthetics</h3>
+<p><span class="emph">Aesthetics</span> map data to various aspects of the plot, including size, color etc. The function used in ggplot to do this is <span class="func">aes</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aes</span>(<span class="dt">x=</span>myvar, <span class="dt">y=</span>myvar2, <span class="dt">color=</span>myvar3, <span class="dt">group=</span>g)</code></pre></div>
+<p>The best way to understand what goes into the aes function is if the value is varying. For example, if I want the size of points to be a certain value, I would code the following.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">... <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(..., <span class="dt">size=</span><span class="dv">4</span>)</code></pre></div>
+<p>However, if I want the size to be associated with the data in some way, I use it as an aesthetic.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">... <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>var_x))</code></pre></div>
+<p>The same goes for practically any aspect of a geom- size, color, fill, etc. If it is a fixed value, set it outside the aesthetic. If it varies based on the data, put it within an aesthetic.</p>
 </div>
 <div id="examples" class="section level3">
 <h3>Examples</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">data</span>(<span class="st">&quot;diamonds&quot;</span>); <span class="kw">data</span>(<span class="st">&#39;economics&#39;</span>)
+<span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>carat, <span class="dt">y=</span>price), <span class="dt">data=</span>diamonds) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggscatter-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>date, <span class="dt">y=</span>unemploy), <span class="dt">data=</span>economics) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>()</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggline-1.svg" width="672" style="display: block; margin: auto;" /></p>
-<p>In the following, one setting is not mapped to the data.</p>
+<p>In the following, one setting, alpha (transparency), is not mapped to the data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>carat, <span class="dt">y=</span>price), <span class="dt">data=</span>diamonds) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>carat, <span class="dt">color=</span>clarity), <span class="dt">alpha=</span>.<span class="dv">05</span>) </code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggalpha-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="stats" class="section level3">
 <h3>Stats</h3>
-<p>There are many statistical functions built in.</p>
-<p>Key strength: you don’t have to do much preprocessing.</p>
+<p>There are many statistical functions built in, and it is a key strength of ggplot that you don’t have to do a lot of processing for very common plots.</p>
 <p>Quantile regression lines:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, hwy)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_quantile</span>()</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggquant-1.svg" width="672" style="display: block; margin: auto;" /></p>
 <p>Loess (or additive model) smooth:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, hwy)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_smooth</span>()</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggsmooth-1.svg" width="672" style="display: block; margin: auto;" /></p>
 <p>Bootstrapped confidence intervals:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(cyl, mpg)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun.data =</span> <span class="st">&quot;mean_cl_boot&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;orange&quot;</span>, <span class="dt">alpha=</span>.<span class="dv">75</span>, <span class="dt">size =</span> <span class="dv">1</span>)</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggstatsum-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>The take-home message here is to always let ggplot do the work for you if at all possible.</p>
+</div>
+<div id="scales" class="section level3">
+<h3>Scales</h3>
 </div>
 <div id="facets" class="section level3">
 <h3>Facets</h3>
@@ -374,19 +396,28 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Both use a formula approach to specify the grouping.</p>
 <div id="facet_grid" class="section level5">
 <h5>facet_grid</h5>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(wt, mpg)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(vs <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">labeller =</span> label_both)</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/facetgrid-1.svg" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="facet_wrap" class="section level5">
 <h5>facet_wrap</h5>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(wt, mpg)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(vs <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">labeller =</span> label_both, <span class="dt">ncol=</span><span class="dv">2</span>)</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/facetwrap-1.svg" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="fine-control" class="section level3">
 <h3>Fine control</h3>
 <p><span class="pack">ggplot2</span> makes it easy to get good looking graphs quickly.</p>
-<p>However the amount of fine control is extensive. The following plot is hideous (aside from the background, which is totaly rad), but illustrates the point.</p>
+<p>However the amount of fine control is extensive. The following plot is hideous (aside from the background, which is totally rad), but illustrates the point.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>carat, <span class="dt">y=</span>price), <span class="dt">data=</span>diamonds) <span class="op">+</span>
-<span class="st">  </span><span class="kw">annotation_custom</span>(<span class="kw">rasterGrob</span>(lambosun, <span class="dt">width=</span><span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;npc&quot;</span>), <span class="dt">height=</span><span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;npc&quot;</span>), <span class="dt">interpolate =</span> <span class="ot">FALSE</span>), 
+<span class="st">  </span><span class="kw">annotation_custom</span>(<span class="kw">rasterGrob</span>(lambosun, 
+                               <span class="dt">width=</span><span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;npc&quot;</span>), 
+                               <span class="dt">height=</span><span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;npc&quot;</span>), 
+                               <span class="dt">interpolate =</span> <span class="ot">FALSE</span>), 
                     <span class="op">-</span><span class="ot">Inf</span>, <span class="ot">Inf</span>, <span class="op">-</span><span class="ot">Inf</span>, <span class="ot">Inf</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>clarity), <span class="dt">alpha=</span>.<span class="dv">5</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">scale_y_log10</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1000</span>,<span class="dv">5000</span>,<span class="dv">10000</span>)) <span class="op">+</span>
@@ -405,41 +436,30 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p><img src="data-processing-and-visualization_files/figure-html/finecontrol-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div id="themes" class="section level4">
 <h4>Themes</h4>
-<p>In the last example you saw two uses of a <span class="emph">theme</span>.</p>
-<ul>
-<li>built-in</li>
-<li>specific customization</li>
-</ul>
-<p>Each argument takes on a specific value or an element function:</p>
+<p>In the last example you saw two uses of a <span class="emph">theme</span>- a built-in version that comes with ggplot (<span class="func">theme_minimal</span>), and specific customization (<span class="func">theme(…)</span>). The built-in themes provide ready-made approaches that might be enough for a finished product. For the theme function, each argument, and there are many, takes on a specific value or an element function:</p>
 <ul>
 <li><span class="func">element_rect</span></li>
 <li><span class="func">element_line</span></li>
 <li><span class="func">element_text</span></li>
 <li><span class="func">element_blank</span></li>
 </ul>
-<p>The base theme is not too good.</p>
-<ul>
-<li>not for web</li>
-<li>doesn’t look good for print either</li>
-</ul>
-<p>You will almost invariably need to tweak it.</p>
+<p>Each of those element functions has arguments specific to it. For example, for <span class="func">element_text</span> you can specify the font size, while for element line you could specify the line type.</p>
+<p>Note that the base theme of ggplot is not too good. Doesn’t work well for web presentation, and is even worse for print. You will almost invariably need to tweak it.</p>
 </div>
 </div>
 <div id="extensions" class="section level3">
 <h3>Extensions</h3>
-<p><span class="pack">ggplot2</span> now has its own extension system, and there is even a website to track the extensions.</p>
-<ul>
-<li><a href="http://www.ggplot2-exts.org/" class="uri">http://www.ggplot2-exts.org/</a></li>
-</ul>
-<p>Examples include:</p>
+<p><span class="pack">ggplot2</span> now has its own extension system, and there is even a <a href="http://www.ggplot2-exts.org/">website</a> to track the extensions. Examples include:</p>
 <ul>
 <li>additional themes</li>
+<li>maps</li>
 <li>interactivity</li>
 <li>animations</li>
 <li>marginal plots</li>
 <li>network graphs</li>
 </ul>
 <p><img src="data-processing-and-visualization_files/figure-html/mullerplot-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>In short, <span class="pack">ggplot2</span> is only the beginning. You’ll have a lot of tools at your disposal. Furthermore, many modeling and other packages will produce ggplot graphics to which you can add your own layers and tweak like you would any other ggplot.</p>
 </div>
 <div id="summary-ggplot2" class="section level3">
 <h3>Summary ggplot2</h3>
@@ -453,7 +473,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>opacity</li>
 <li>facet</li>
 </ul>
-<p>2d graphs are only useful for conveying the simplest of ideas.</p>
+<p>2D graphs are only useful for conveying the simplest of ideas.</p>
 <p>Use <span class="pack">ggplot2</span> to easily create more interesting visualizations.</p>
 </div>
 <div id="ggplot2-exercises" class="section level3">
@@ -487,12 +507,25 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><span class="func">theme_light</span></li>
 <li><span class="func">theme_linedraw</span></li>
 <li><span class="func">theme_minimal</span></li>
+<li><span class="func">theme_trueMinimal</span> (requires the lazerhawk package and an appreciation of the lamborghini background from the previous visualization)</li>
 </ul>
 <p><img src="data-processing-and-visualization_files/figure-html/unnamed-chunk-8-1.svg" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="exercise-2-6" class="section level4">
 <h4>Exercise 2</h4>
 <p>Play around and change the arguments to the following. You’ll need to install the maps package. For example, do points for all county midpoints, with different colors.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(maps)
+mi =<span class="st"> </span><span class="kw">map_data</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;michigan&quot;</span>)
+seats =<span class="st"> </span>mi <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(subregion) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(lat, long), <span class="cf">function</span>(x) <span class="kw">median</span>(<span class="kw">range</span>(x)))
+
+<span class="kw">ggplot</span>(mi, <span class="kw">aes</span>(long, lat)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_polygon</span>(<span class="kw">aes</span>(<span class="dt">group =</span> group), <span class="dt">fill =</span> <span class="ot">NA</span>, <span class="dt">colour =</span> <span class="st">&quot;grey60&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> subregion), <span class="dt">data =</span> seats, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">angle =</span> <span class="dv">45</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">y=</span><span class="fl">42.281389</span>, <span class="dt">x=</span><span class="op">-</span><span class="fl">83.748333</span>, <span class="dt">color=</span><span class="st">&#39;#1e90ff&#39;</span>, <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid=</span><span class="kw">element_blank</span>())</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/unnamed-chunk-9-1.svg" width="672" style="display: block; margin: auto;" /></p>
 
 </div>
