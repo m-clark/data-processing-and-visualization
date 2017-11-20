@@ -323,7 +323,7 @@ Themes to play with:
 - <span class="func">theme_minimal</span>
 - <span class="func">theme_trueMinimal</span> (requires the lazerhawk package and an appreciation of the lamborghini background from the previous visualization)
 
-```{r, echo=FALSE}
+```{r ggplot_ex1, echo=FALSE}
 library(ggplot2)
 ggplot(aes(x=waiting, y=eruptions), data=faithful) +
   geom_point()
@@ -332,9 +332,9 @@ ggplot(aes(x=waiting, y=eruptions), data=faithful) +
 
 #### Exercise 2
 
-Play around and change the arguments to the following. You'll need to install the maps package. For example, do points for all county midpoints, with different colors.
+Play around and change the arguments to the following. You'll need to install the <span class="pack">maps</span> package. For example, do points for all county midpoints, with different colors. For that you'd need to change the x and y for the point geom to an aesthetic based on the longitude and latitude, as well as change its data argument to use the <span class="objclass">seats</span> data frame.
 
-```{r}
+```{r ggplot_ex2}
 library(maps)
 mi = map_data("county", "michigan")
 seats = mi %>% 
@@ -344,7 +344,7 @@ seats = mi %>%
 ggplot(mi, aes(long, lat)) +
   geom_polygon(aes(group = group), fill = NA, colour = "grey60") +
   geom_text(aes(label = subregion), data = seats, size = 1, angle = 45) +
-  geom_point(y=42.281389, x=-83.748333, color='#1e90ff', size=3) +
+  geom_point(x=-83.748333, y=42.281389, color='#1e90ff', size=3) +
   theme_minimal() +
   theme(panel.grid=element_blank())
 ```

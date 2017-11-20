@@ -509,11 +509,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><span class="func">theme_minimal</span></li>
 <li><span class="func">theme_trueMinimal</span> (requires the lazerhawk package and an appreciation of the lamborghini background from the previous visualization)</li>
 </ul>
-<p><img src="data-processing-and-visualization_files/figure-html/unnamed-chunk-8-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="data-processing-and-visualization_files/figure-html/ggplot_ex1-1.svg" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="exercise-2-6" class="section level4">
 <h4>Exercise 2</h4>
-<p>Play around and change the arguments to the following. You’ll need to install the maps package. For example, do points for all county midpoints, with different colors.</p>
+<p>Play around and change the arguments to the following. You’ll need to install the <span class="pack">maps</span> package. For example, do points for all county midpoints, with different colors. For that you’d need to change the x and y for the point geom to an aesthetic based on the longitude and latitude, as well as change its data argument to use the <span class="objclass">seats</span> data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(maps)
 mi =<span class="st"> </span><span class="kw">map_data</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;michigan&quot;</span>)
 seats =<span class="st"> </span>mi <span class="op">%&gt;%</span><span class="st"> </span>
@@ -523,10 +523,10 @@ seats =<span class="st"> </span>mi <span class="op">%&gt;%</span><span class="st
 <span class="kw">ggplot</span>(mi, <span class="kw">aes</span>(long, lat)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_polygon</span>(<span class="kw">aes</span>(<span class="dt">group =</span> group), <span class="dt">fill =</span> <span class="ot">NA</span>, <span class="dt">colour =</span> <span class="st">&quot;grey60&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> subregion), <span class="dt">data =</span> seats, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">angle =</span> <span class="dv">45</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">y=</span><span class="fl">42.281389</span>, <span class="dt">x=</span><span class="op">-</span><span class="fl">83.748333</span>, <span class="dt">color=</span><span class="st">&#39;#1e90ff&#39;</span>, <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">x=</span><span class="op">-</span><span class="fl">83.748333</span>, <span class="dt">y=</span><span class="fl">42.281389</span>, <span class="dt">color=</span><span class="st">&#39;#1e90ff&#39;</span>, <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid=</span><span class="kw">element_blank</span>())</code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/unnamed-chunk-9-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="data-processing-and-visualization_files/figure-html/ggplot_ex2-1.svg" width="672" style="display: block; margin: auto;" /></p>
 
 </div>
 </div>
