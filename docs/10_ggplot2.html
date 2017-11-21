@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-11-19">
+<meta name="date" content="2017-11-20">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -386,23 +386,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="facets" class="section level3">
 <h3>Facets</h3>
-<p><span class="emph">Facets</span> allow for paneled display, a very common operation.</p>
-<p>In general, we often want comparison plots.</p>
-<p><span class="func">facet_grid</span> will produce a grid.</p>
-<ul>
-<li>Often this is all that’s needed</li>
-</ul>
-<p><span class="func">facet_wrap</span> is more flexible.</p>
-<p>Both use a formula approach to specify the grouping.</p>
+<p><span class="emph">Facets</span> allow for paneled display, a very common operation. In general, we often want comparison plots. The <span class="func">facet_grid</span> function will produce a grid, and often this is all that’s needed. However, <span class="func">facet_wrap</span> is more flexible, while possibly taking a bit extra to get things just the way you want. Both use a formula approach to specify the grouping.</p>
 <div id="facet_grid" class="section level5">
 <h5>facet_grid</h5>
+<p>Facet by cycle.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(wt, mpg)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(<span class="op">~</span><span class="st"> </span>cyl, <span class="dt">labeller =</span> label_both)</code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/facetgrid-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>Facet by vs and cycle.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(wt, mpg)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>(vs <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">labeller =</span> label_both)</code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/facetgrid-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="data-processing-and-visualization_files/figure-html/facetgrid2-1.svg" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="facet_wrap" class="section level5">
 <h5>facet_wrap</h5>
+<p>Specify the number of columns or rows with <span class="func">facet_wrap</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(wt, mpg)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_wrap</span>(vs <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">labeller =</span> label_both, <span class="dt">ncol=</span><span class="dv">2</span>)</code></pre></div>
@@ -411,8 +411,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="fine-control" class="section level3">
 <h3>Fine control</h3>
-<p><span class="pack">ggplot2</span> makes it easy to get good looking graphs quickly.</p>
-<p>However the amount of fine control is extensive. The following plot is hideous (aside from the background, which is totally rad), but illustrates the point.</p>
+<p><span class="pack">ggplot2</span> makes it easy to get good looking graphs quickly. However the amount of fine control is extensive. The following plot is hideous (aside from the background, which is totally rad), but illustrates the point.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>carat, <span class="dt">y=</span>price), <span class="dt">data=</span>diamonds) <span class="op">+</span>
 <span class="st">  </span><span class="kw">annotation_custom</span>(<span class="kw">rasterGrob</span>(lambosun, 
                                <span class="dt">width=</span><span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;npc&quot;</span>), 
@@ -433,7 +432,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
         <span class="dt">panel.grid.minor=</span><span class="kw">element_line</span>(<span class="dt">color=</span><span class="st">&#39;lightblue&#39;</span>),
         <span class="dt">legend.key=</span><span class="kw">element_rect</span>(<span class="dt">linetype=</span><span class="dv">4</span>),
         <span class="dt">legend.position=</span><span class="st">&#39;bottom&#39;</span>)</code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/finecontrol-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="data-processing-and-visualization_files/figure-html/finecontrol-1.png" width="768" style="display: block; margin: auto;" /></p>
 <div id="themes" class="section level4">
 <h4>Themes</h4>
 <p>In the last example you saw two uses of a <span class="emph">theme</span>- a built-in version that comes with ggplot (<span class="func">theme_minimal</span>), and specific customization (<span class="func">theme(…)</span>). The built-in themes provide ready-made approaches that might be enough for a finished product. For the theme function, each argument, and there are many, takes on a specific value or an element function:</p>
@@ -457,6 +456,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>animations</li>
 <li>marginal plots</li>
 <li>network graphs</li>
+<li>aligning multiple ggplot visualizations</li>
 </ul>
 <p><img src="data-processing-and-visualization_files/figure-html/mullerplot-1.svg" width="672" style="display: block; margin: auto;" /></p>
 <p>In short, <span class="pack">ggplot2</span> is only the beginning. You’ll have a lot of tools at your disposal. Furthermore, many modeling and other packages will produce ggplot graphics to which you can add your own layers and tweak like you would any other ggplot.</p>

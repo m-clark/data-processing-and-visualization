@@ -160,21 +160,21 @@ The take-home message here is to always let ggplot do the work for you if at all
 
 ### Facets
 
-<span class="emph">Facets</span> allow for paneled display, a very common operation.
-
-In general, we often want comparison plots.
-
-<span class="func">facet_grid</span> will produce a grid.
-
-- Often this is all that's needed
-
-<span class="func">facet_wrap</span> is more flexible.
-
-Both use a formula approach to specify the grouping.
+<span class="emph">Facets</span> allow for paneled display, a very common operation. In general, we often want comparison plots. The <span class="func">facet_grid</span> function will produce a grid, and often this is all that's needed.  However, <span class="func">facet_wrap</span> is more flexible, while possibly taking a bit extra to get things just the way you want. Both use a formula approach to specify the grouping.
 
 ##### facet_grid
 
+Facet by cycle.
+
 ```{r facetgrid}
+ggplot(mtcars, aes(wt, mpg)) + 
+  geom_point() +
+  facet_grid(~ cyl, labeller = label_both)
+```
+
+Facet by vs and cycle.
+
+```{r facetgrid2}
 ggplot(mtcars, aes(wt, mpg)) + 
   geom_point() +
   facet_grid(vs ~ cyl, labeller = label_both)
@@ -183,6 +183,7 @@ ggplot(mtcars, aes(wt, mpg)) +
 
 ##### facet_wrap
 
+Specify the number of columns or rows with <span class="func">facet_wrap</span>.
 
 ```{r facetwrap}
 ggplot(mtcars, aes(wt, mpg)) + 
@@ -193,11 +194,9 @@ ggplot(mtcars, aes(wt, mpg)) +
 
 ### Fine control
 
-<span class="pack">ggplot2</span> makes it easy to get good looking graphs quickly.
+<span class="pack">ggplot2</span> makes it easy to get good looking graphs quickly. However the amount of fine control is extensive.  The following plot is hideous (aside from the background, which is totally rad), but illustrates the point.
 
-However the amount of fine control is extensive.  The following plot is hideous (aside from the background, which is totally rad), but illustrates the point.
-
-```{r finecontrol, fig.height=6, fig.width=6, echo=-c(1:5, 7), dev='png'}
+```{r finecontrol, fig.height=6, fig.width=8, echo=-c(1:5, 7), dev='png'}
 library(grid); library(caTools)
 img = caTools::read.gif('img/lamb.gif')
 lambosun = img$col[img$image+1]
@@ -226,7 +225,6 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
 ```
 
 
-
 #### Themes
 
 In the last example you saw two uses of a <span class="emph">theme</span>- a built-in version that comes with ggplot (<span class="func">theme_minimal</span>), and specific customization (<span class="func">theme(...)</span>).  The built-in themes provide ready-made approaches that might be enough for a finished product.  For the theme function, each argument, and there are many, takes on a specific value or an element function:
@@ -251,6 +249,7 @@ Note that the base theme of ggplot is not too good.  Doesn't work well for web p
 - animations
 - marginal plots
 - network graphs
+- aligning multiple ggplot visualizations
 
 ```{r mullerplot, echo=FALSE}
 library(ggmuller)
