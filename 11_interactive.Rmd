@@ -2,7 +2,11 @@
 
 (SECTION DEVELOPMENT IN PROGRESS)
 
-```{r title, echo=F, eval=T}
+```{r interactivesetup, include=FALSE, eval=TRUE, cache=FALSE}
+knitr::opts_chunk$set(cache.rebuild=F)
+```
+
+```{r title, echo=F}
 # saveWidget(vn, file='vntitle.html')
 library(visNetwork)
 nodes = data.frame(id=1:2, label=c('Interactive', 'Visualization'), color='#1e90ff')
@@ -17,97 +21,86 @@ visNetwork(nodes, edges, height=400, width='100%') %>%
 
 ### Packages
 
-<span class="pack">ggplot2</span> is the most widely used package for visualization in R. However, it is not interactive by default. Many packages use <span class="pack">htmlwidgets</span>, **d3** (JavaScript library), etc. to provide interactive graphics.  What's great is that while you may have to learn new packages, you don't necessarily have to change your approach or thinking about a plot, or learn some other language.  
+As mentioned, <span class="pack">ggplot2</span> is the most widely used package for visualization in R. However, it is not interactive by default. Many packages use <span class="pack">htmlwidgets</span>, <span class="pack">d3</span> (JavaScript library), and other tools to provide interactive graphics.  What's great is that while you may have to learn new packages, you don't necessarily have to change your approach or thinking about a plot, or learn some other language.
 
-Many of these packages can be lumped into more general packages that try to provide a plotting system (similar to ggplot2), versus those that just aim to do a specific type of plot well.  Here are some to give a sense of this.
+Many of these packages can be lumped into more general packages that try to provide a plotting system (similar to <span class="pack">ggplot2</span>), versus those that just aim to do a specific type of plot well.  Here are some to give a sense of this.
 
 General:
 
-- <span class="pack">plotly</span>
-  - used also in Python, Matlab, Julia, can convert ggplot2 images to interactive ones.
-- <span class="pack">highcharter</span>
-  - also very general wrapper for highcharts.js and works with some R packages out of the box
-- <span class="pack">rbokeh</span>
-  - like plotly, it also has cross language support
+- [plotly](https://plot.ly/r/)
+      - used also in Python, Matlab, Julia
+      - can convert <span class="pack">ggplot2</span> images to interactive ones (with varying degrees of success)
+- [highcharter](http://jkunst.com/highcharter/)
+    - also very general wrapper for highcharts.js and works with some R packages out of the box
+- [rbokeh](http://hafen.github.io/rbokeh/)
+    - like plotly, it also has cross language support
 
 Specific functionality:
 
-  - <span class="pack">DT</span>
+  - [DT](https://rstudio.github.io/DT/)
     - interactive data tables
-  - <span class='pack'>leaflet</span>
+  - [leaflet](https://rstudio.github.io/leaflet/)
       - maps with OpenStreetMap
-  - <span class='pack'>visNetwork</span>
+  - [visNetwork](http://datastorm-open.github.io/visNetwork/)
       - Network visualization
   
+In what follows we'll see some of these in action.  Note that unlike the previous chapter, the goal here is not to dive deeply, but to get an idea of what's available.
 
 ### Piping for Visualization
 
-One of the advantages to piping is that it's not limited to <span class="pack">dplyr</span> style data management functions.
-
-<span class='emph'>*Any*</span> R function can be potentially piped to.
-
-- several examples have already been shown.
-
-This facilitates data exploration, especially visually.
-
-- don't have to create objects
-- new variables are easily created and subsequently manipulated just for vis
-- data manipulation not separated from visualization
+One of the advantages to piping is that it's not limited to <span class="pack">dplyr</span> style data management functions. <span class='emph'>*Any*</span> R function can be potentially piped to, and several examples have already been shown. Many newer visualization packages take advantage of piping, and this facilitates data exploration. We don't have to create objects just to do a visualization.  New variables can be easily created and subsequently manipulated just for visualization. Furthermore, data manipulation not separated from visualization.
 
 
 ### htmlwidgets
 
-Many newer visualization packages take advantage of piping.
-
-<span class='pack'>htmlwidgets</span> is a package that makes it easy to create javascript visualizations.
-
-- i.e. what you see everywhere on the web.
-
-The packages using it typically are pipe-oriented and produce interactive plots.
+The <span class='pack'>htmlwidgets</span> package is a package that makes it easy to create javascript visualizations.  If you're not familiar with javascript, you actually are, as it's basically the language of the web, visual or otherwise.  The packages using it typically are pipe-oriented and produce interactive plots.  In addition, you can use the htmlwidgets package to create your own functions that use a particular javascript library (but someone probably already has).
 
 
 
 ### Plotly
 
-A couple demonstrations with <span class="pack">plotly</span>.
+We'll begin our foray into the interactive world with a couple demonstrations of <span class="pack">plotly</span>.  To give some background, you can think of plotly similar to RStudio, in that it has both enterprise (i.e. pay for) aspects and open source aspects.  Just like RStudio, you have full access to what it has to offer via the open source R package.  You may see old help suggestions referring to needing an account, but this is no longer necessary.  
 
-Note the layering as with <span class="pack">ggplot2</span>.
 
-Piping used before plotting.
+When using <span class="pack">plotly</span>, you'll note the layering approach similar to what we did with <span class="pack">ggplot2</span>.  Piping is used before plotting to do some data manipulation, after which we seemlessly move to the plot itself.  The `=~` is essentially the way we denote aesthetics[^plotlyaes].  
 
-```{r plotly1, cache=FALSE, eval=TRUE}
+```{r plotly1}
 library(plotly)
 midwest %>% 
   filter(inmetro==T) %>% 
-  plot_ly(x=~percbelowpoverty, y=~percollege, mode='markers') 
+  plot_ly(x=~percbelowpoverty, y=~percollege) %>% 
+  add_markers()
 ```
 
 
-<span class="pack">plotly</span> has <span class="emph">modes</span>, which allow for points, lines, text and combinations.
+<span class="pack">plotly</span> has <span class="emph">modes</span>, which allow for points, lines, text and combinations. <span class="emph">Traces</span> work similar to geoms.
 
-<span class="emph">Traces</span> work similar to geoms.
-
-```{r plotly2, echo=TRUE, cache=FALSE, eval=TRUE}
-library(mgcv); library(modelr)
+```{r plotly2}
+library(mgcv); library(modelr); library(glue)
 
 mtcars %>% 
   mutate(amFactor = factor(am, labels=c('auto', 'manual')),
-         hovertext = paste('weight:',wt, '<br>', 'mgp:', mpg, '<br>', amFactor)) %>% 
+         hovertext = glue('weight: {wt} <br> mgp:  {mpg} <br> {amFactor}')) %>% 
   add_predictions(gam(mpg~s(wt, am, bs='fs'), data=mtcars)) %>% 
-  arrange(wt) %>% 
   plot_ly() %>%
-  add_markers(x=~wt, y=~mpg, color=~amFactor, text=~hovertext, hoverinfo='text') %>% 
-  add_lines(x=~wt, y=~pred, color=~amFactor, alpha=.5, name='gam prediction', showlegend=F)
+  add_markers(x=~wt, y=~mpg, color=~amFactor, opacity=.5, text=~hovertext, hoverinfo='text', showlegend=F) %>% 
+  add_lines(x=~wt, y=~pred, color=~amFactor, name='gam prediction')
 ```
 
-### ggplotly
 
-The nice thing about <span class="pack">plotly</span> is that we can feed a <span class="objclass">ggplot</span> to it.
+While you can use plotly as a one-liner[^qplot], this would only be good for quick peeks while doing data exploration. It would generally be far too limiting otherwise.
 
-It would have been easy to use <span class="func">geom_smooth</span> to get a similar result, so let's do so.
+```{r plotly_1line}
+plot_ly(midwest, x = ~percollege, color = ~state, type = "box")
+```
 
 
-```{r ggplotly, cache=FALSE, eval=TRUE}
+#### ggplotly
+
+One of the strengths of  <span class="pack">plotly</span> is that we can feed a <span class="objclass">ggplot</span> object to it, and turn our formerly static plots into interactive ones.  It would have been easy to use <span class="func">geom_smooth</span> to get a similar result, so let's do so.
+
+
+```{r ggplotly}
 gp = mtcars %>% 
   mutate(amFactor = factor(am, labels=c('auto', 'manual')),
          hovertext = paste(wt, mpg, amFactor)) %>% 
@@ -118,39 +111,33 @@ gp = mtcars %>%
 ggplotly()
 ```
 
+Note that this is not a one-to-one transformation.  The plotly image will have different line widths and point sizes. It will usually be easier to change it within the ggplot process than tweaking the <span class="objclass">ggplotly</span> object.
 
+<div class='note'>
+Be prepared to spend time getting used to plotly.  It has terrible documentation, is not nearly as flexible as ggplot2, has hidden (and arbitrary) defaults that can creep into a plot based on aspects of the data (rather than your settings), and some modes do not play nicely with others.  That said, it works great for a lot of things.
+
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
 
 
 ### Highcharter
 
-<span class="pack">Highcharter</span> is also fairly useful for a wide variety of plots.
+<span class="pack">Highcharter</span> is also fairly useful for a wide variety of plots, and is based on the <span class="pack">highcharts.js</span> library.  If you have data suited to one of its functions, getting a great interactive plot can be ridiculously easy.  
 
-- Uses the <span class="pack">highcharts.js</span> library
+In what follows we use quantmod to create an xts (time series) object of Google's stock price, including opening and closing values.  The highcharter object has a ready made plot for such data[^nobigdeal].
 
-```{r dygraphdata, cache=FALSE, eval=F, echo=FALSE}
-# library(dygraphs)
-# data(UKLungDeaths)
-# cbind(ldeaths, mdeaths, fdeaths) %>% 
-#   dygraph() %>% 
-#   dyOptions(stackedGraph = TRUE, colors=RColorBrewer::brewer.pal(3, name='Dark2')) %>%
-#   dyRangeSelector(height = 20)
-```
-
-```{r highcharts, eval=T}
+```{r highcharts}
 library(highcharter); library(quantmod)
 
-x = getSymbols("GOOG", auto.assign = FALSE)
-
-hchart(x, width=1000)
+google_price = getSymbols("GOOG", auto.assign = FALSE)
+hchart(google_price)
 ```
 
 ### visNetwork
 
-<span class="pack">visNetwork</span> allows for network visualizations
+The <span class="pack">visNetwork</span> package is specific to network visualizations and similar, and is based on the <span class="pack">vis.js</span> library.  Networks require nodes and edges to connect them. These take on different aspects, and so are created in separate data frames.
 
-- Uses the <span class="pack">vis.js</span> library
-
-```{r visNetworkinitial, echo=FALSE, cache=TRUE, eval=T}
+```{r visNetworkinitial}
 set.seed(1352)
 nodes = data.frame(id = 0:5,
                    label = c('Bobby', 'Janie','Timmie', 'Mary', 'Johnny', 'Billy'),
@@ -160,24 +147,49 @@ edges = data.frame(from = c(0,0,0,1,1,2,2,3,3,3,4,5,5),
                    to = sample(0:5, 13, replace = T),
                    value = sample(1:10, 13, replace = T)) %>% 
   filter(from!=to)
-```
 
-```{r visNetwork, eval=F, echo=-1}
-saveWidget(vn, file='visnetwork.html')
 library(visNetwork)
-visNetwork(nodes, edges) %>% #, height=600, width=800
+visNetwork(nodes, edges, height=300, width=800) %>%
   visNodes(shape='circle', 
            font=list(), 
            scaling=list(min=10, max=50, label=list(enable=T))) %>% 
   visLegend()
 ```
 
-<iframe src='../img/visnetwork.html', width=1000, height=600, scrolling="no", frameBorder="0"></iframe>
+```{r visNetwork, eval=F, echo=F}
+# saveWidget(vn, file='visnetwork.html')
+# library(visNetwork)
+# visNetwork(nodes, edges) %>% #, height=600, width=800
+#   visNodes(shape='circle', 
+#            font=list(), 
+#            scaling=list(min=10, max=50, label=list(enable=T))) %>% 
+#   visLegend()
+# <iframe src='../img/visnetwork.html', width=1000, height=600, scrolling="no", frameBorder="0"></iframe>
+
+```
 
 
-### data table
+### leaflet
 
-Use the <span class="pack">DT</span> package for interactive data frames.
+```{r leaflet}
+content <- paste(sep = "<br/>",
+  "<b><a href='http://umich.edu/'>University of Michigan</a></b>",
+  "Ann Arbor, MI"
+)
+
+
+library(leaflet)
+leaflet() %>% 
+  addTiles() %>%
+  addPopups(-83.738222, 42.277030, content,
+    options = popupOptions(closeButton = FALSE)
+  )
+```
+
+
+### DT
+
+Use the <span class="pack">DT</span> package for interactive data frames.  This can be very useful when working in collaborative environments where one shares reports, as you can embed the data within the document itself.
 
 ```{r datatable, eval=TRUE}
 library(DT)
@@ -257,3 +269,9 @@ movies %>%
 
 Create a ggplot of your design and then use <span class="func">ggplotly</span> to make it interactive.
 
+[^plotlyaes]: Often you'll get an error because you used `=` instead of `=~`.  Also, I find trying to set single values for things like size unintuitive, and it may be implemented differently for different traces (e.g. setting size in marker traces requires size=I(value)).
+
+[^qplot]: You can with <span class="pack">ggplot2</span> as well, but I intentionally made no mention of it.  You should learn how to use the package generally before learning how to use its shortcuts.
+
+
+[^nobigdeal]: This is the sort of thing that takes the 'wow factor' out of a lot of stuff you see on the web.  You'll find a lot of those cool plots are actually lazy folks using default settings of stuff that make only take a single line of code.

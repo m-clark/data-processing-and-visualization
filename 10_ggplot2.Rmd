@@ -59,14 +59,14 @@ Each layer is consecutively added by means of a pipe operator, and layers may re
 
 ### Piping
 
-<span class="emph">Layers</span> are added via piping. The first layers added are typically <span class="emph">geoms</span>, or geometric objects that represent the data, and include things like:
+<span class="emph">Layers</span> are added via piping (<span class="emph">+</span>). The first layers added are typically <span class="emph">geoms</span>, or geometric objects that represent the data, and include things like:
 
 - points
 - lines
 - density
 - text
 
-In case you're wondering why ggplot doesn't use `%>%` as in the tidyverse, it's because <span class="pack">ggplot2</span> was using pipes before it was cool, well before those came along (<span class="emph">+</span>). Otherwise, the concept is the same as before.
+In case you're wondering why ggplot doesn't use `%>%` as in the tidyverse, it's because <span class="pack">ggplot2</span> was using pipes before it was cool, well before those came along. Otherwise, the concept is the same as we saw in the data processing section.
 
 ```{r pipeplus, eval=FALSE}
 ggplot(aes(x=myvar, y=myvar2), data=mydata) +
@@ -171,7 +171,7 @@ ggplot(aes(x=times, y=accel), data=mcycle) +
   labs(x='milliseconds after impact', y='head acceleration', title='Motorcycle Accident')
 ```
 
-A frequent operation is changing the x and y look in the form of limits and tickmarks.  Like labs, there is a general <span class="func">lims</span> function and specific functions for just the specific parts.  In addition, we may want to get really detailed using <span class="func">scale_x_\*</span> or <span class="func">scale_y_\*</span>.
+A frequent operation is changing the x and y look in the form of limits and tick marks.  Like labs, there is a general <span class="func">lims</span> function and specific functions for just the specific parts.  In addition, we may want to get really detailed using <span class="func">scale_x_\*</span> or <span class="func">scale_y_\*</span>.
 
 ```{r scale_lims}
 ggplot(mpg, aes(displ, hwy, size=cyl)) + 
@@ -385,7 +385,7 @@ Themes to play with:
 - <span class="func">theme_light</span>
 - <span class="func">theme_linedraw</span>
 - <span class="func">theme_minimal</span>
-- <span class="func">theme_trueMinimal</span> (requires the lazerhawk package and an appreciation of the lamborghini background from the previous visualization)
+- <span class="func">theme_trueMinimal</span> (requires the lazerhawk package and an appreciation of the Lamborghini background from the previous visualization)
 
 ```{r ggplot_ex1, echo=FALSE}
 library(ggplot2)
