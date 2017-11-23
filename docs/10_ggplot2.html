@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-11-20">
+<meta name="date" content="2017-11-22">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -53,6 +53,9 @@
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+<link href="libs/vis-4.20.0/vis.css" rel="stylesheet" />
+<script src="libs/vis-4.20.0/vis.min.js"></script>
+<script src="libs/visNetwork-binding-2.0.1/visNetwork.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
 <link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
 <script src="libs/highcharts-5.0.6/highstock.js"></script>
@@ -336,7 +339,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="aesthetics" class="section level3">
 <h3>Aesthetics</h3>
-<p><span class="emph">Aesthetics</span> map data to various aspects of the plot, including size, color etc. The function used in ggplot to do this is <span class="func">aes</span>.</p>
+<p><span class="emph">Aesthetics</span> map data to various visual aspects of the plot, including size, color etc. The function used in ggplot to do this is <span class="func">aes</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">aes</span>(<span class="dt">x=</span>myvar, <span class="dt">y=</span>myvar2, <span class="dt">color=</span>myvar3, <span class="dt">group=</span>g)</code></pre></div>
 <p>The best way to understand what goes into the aes function is if the value is varying. For example, if I want the size of points to be a certain value, I would code the following.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">... <span class="op">+</span>
@@ -369,10 +372,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_quantile</span>()</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggquant-1.svg" width="672" style="display: block; margin: auto;" /></p>
-<p>Loess (or additive model) smooth:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, hwy)) <span class="op">+</span><span class="st"> </span>
+<p>Loess (or additive model) smooth. This shows how we can do some fine-tuning and use model-based approaches for visualization.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mcycle, <span class="dt">package=</span><span class="st">&#39;MASS&#39;</span>)
+<span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>times, <span class="dt">y=</span>accel), <span class="dt">data=</span>mcycle) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_smooth</span>()</code></pre></div>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">formula=</span>y <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(x, <span class="dt">bs=</span><span class="st">&#39;ad&#39;</span>), <span class="dt">method=</span><span class="st">&#39;gam&#39;</span>)</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggsmooth-1.svg" width="672" style="display: block; margin: auto;" /></p>
 <p>Bootstrapped confidence intervals:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(cyl, mpg)) <span class="op">+</span><span class="st"> </span>
@@ -383,18 +387,63 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="scales" class="section level3">
 <h3>Scales</h3>
+<p>Often there are many things we want to change about the plot, for example, the size and values of axis labels, the range of sizes for points to take, the specific colors we want to use, and so forth. Be aware that there are a great many options here, and you will regularly want to use them.</p>
+<p>A very common thing you’ll do is change the labels for the axes. You definitely don’t have to go and change the variable name itself to do this, just use the <span class="func">labs</span> function. There are also functions for individual parts, e.g. <span class="func">xlab</span>, <span class="func">ylab</span> and <span class="func">ggtitle</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>times, <span class="dt">y=</span>accel), <span class="dt">data=</span>mcycle) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">se=</span>F) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&#39;milliseconds after impact&#39;</span>, <span class="dt">y=</span><span class="st">&#39;head acceleration&#39;</span>, <span class="dt">title=</span><span class="st">&#39;Motorcycle Accident&#39;</span>)</code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/scale_labs-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>A frequent operation is changing the x and y look in the form of limits and tickmarks. Like labs, there is a general <span class="func">lims</span> function and specific functions for just the specific parts. In addition, we may want to get really detailed using <span class="func">scale_x_*</span> or <span class="func">scale_y_*</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, hwy, <span class="dt">size=</span>cyl)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ylim</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">60</span>))</code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/scale_lims-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, hwy, <span class="dt">size=</span>cyl)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">60</span>), 
+                     <span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">60</span>,<span class="dt">by=</span><span class="dv">12</span>), 
+                     <span class="dt">minor_breaks=</span><span class="kw">seq</span>(<span class="dv">6</span>,<span class="dv">60</span>,<span class="dt">by=</span><span class="dv">6</span>))</code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/scale_lims-2.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>Another common option is to change the size of points in some way. While we assign the aesthetic as before, it comes with defaults that might not work for a given situation. Play around with the range values.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, hwy, <span class="dt">size=</span>cyl)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_size</span>(<span class="dt">range=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/scale_size2-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>Now that you know more about color issues, you may want to apply something besides the default options. The following shows a built-in color scale for a color aesthetic that is treated as continuous, and one that is discrete and which we want to supply our own colors (these actually come from plotly’s default color scheme).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, hwy, <span class="dt">color=</span>cyl)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_color_gradient2</span>()</code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/scale_color-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, hwy, <span class="dt">color=</span><span class="kw">factor</span>(cyl))) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;#1f77b4&quot;</span>, <span class="st">&quot;#ff7f0e&quot;</span>, <span class="st">&quot;#2ca02c&quot;</span>, <span class="st">&quot;#d62728&quot;</span>))</code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/scale_color-2.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>We can even change the scale of the data itself.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, hwy)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_x_log10</span>()</code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/scale_scale-1.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>In short, scales alterations are really useful for getting just the plot you want, and there is a lot of flexibility for you to work with.</p>
 </div>
 <div id="facets" class="section level3">
 <h3>Facets</h3>
 <p><span class="emph">Facets</span> allow for paneled display, a very common operation. In general, we often want comparison plots. The <span class="func">facet_grid</span> function will produce a grid, and often this is all that’s needed. However, <span class="func">facet_wrap</span> is more flexible, while possibly taking a bit extra to get things just the way you want. Both use a formula approach to specify the grouping.</p>
 <div id="facet_grid" class="section level5">
 <h5>facet_grid</h5>
-<p>Facet by cycle.</p>
+<p>Facet by cylinder.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(wt, mpg)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>(<span class="op">~</span><span class="st"> </span>cyl, <span class="dt">labeller =</span> label_both)</code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/facetgrid-1.svg" width="672" style="display: block; margin: auto;" /></p>
-<p>Facet by vs and cycle.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, cty)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(<span class="op">~</span><span class="st"> </span>cyl, <span class="dt">labeller =</span> label_both)</code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/facetgrid-2.svg" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(midwest, <span class="kw">aes</span>(popdensity, percbelowpoverty)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(<span class="op">~</span><span class="st"> </span>state, <span class="dt">labeller =</span> label_both)</code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/facetgrid-3.svg" width="672" style="display: block; margin: auto;" /></p>
+<p>Facet by vs and cylinder.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(wt, mpg)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>(vs <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">labeller =</span> label_both)</code></pre></div>

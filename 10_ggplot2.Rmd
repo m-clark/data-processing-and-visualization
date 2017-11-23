@@ -80,7 +80,7 @@ The <span class="func">geom_point</span> function adds a layer of points, and no
 
 ### Aesthetics
 
-<span class="emph">Aesthetics</span> map data to various aspects of the plot, including size, color etc. The function used in ggplot to do this is <span class="func">aes</span>.
+<span class="emph">Aesthetics</span> map data to various visual aspects of the plot, including size, color etc. The function used in ggplot to do this is <span class="func">aes</span>.
 
 ```{r aes, eval=F}
 aes(x=myvar, y=myvar2, color=myvar3, group=g)
@@ -138,12 +138,13 @@ ggplot(mpg, aes(displ, hwy)) +
   geom_quantile()
 ```
 
-Loess (or additive model) smooth:
+Loess (or additive model) smooth. This shows how we can do some fine-tuning and use model-based approaches for visualization.
 
 ```{r ggsmooth}
-ggplot(mpg, aes(displ, hwy)) + 
+data(mcycle, package='MASS')
+ggplot(aes(x=times, y=accel), data=mcycle) +
   geom_point() +
-  geom_smooth()
+  geom_smooth(formula=y ~ s(x, bs='ad'), method='gam')
 ```
 
 Bootstrapped confidence intervals:
@@ -156,7 +157,65 @@ ggplot(mtcars, aes(cyl, mpg)) +
 
 The take-home message here is to always let ggplot do the work for you if at all possible.
 
+
+
 ### Scales
+
+Often there are many things we want to change about the plot, for example, the size and values of axis labels, the range of sizes for points to take, the specific colors we want to use, and so forth.  Be aware that there are a great many options here, and you will regularly want to use them.
+
+A very common thing you'll do is change the labels for the axes. You definitely don't have to go and change the variable name itself to do this, just use the <span class="func">labs</span> function.  There are also functions for individual parts, e.g. <span class="func">xlab</span>, <span class="func">ylab</span> and <span class="func">ggtitle</span>.
+
+```{r scale_labs}
+ggplot(aes(x=times, y=accel), data=mcycle) +
+  geom_smooth(se=F) +
+  labs(x='milliseconds after impact', y='head acceleration', title='Motorcycle Accident')
+```
+
+A frequent operation is changing the x and y look in the form of limits and tickmarks.  Like labs, there is a general <span class="func">lims</span> function and specific functions for just the specific parts.  In addition, we may want to get really detailed using <span class="func">scale_x_\*</span> or <span class="func">scale_y_\*</span>.
+
+```{r scale_lims}
+ggplot(mpg, aes(displ, hwy, size=cyl)) + 
+  geom_point() + 
+  ylim(c(0,60))
+
+ggplot(mpg, aes(displ, hwy, size=cyl)) + 
+  geom_point() + 
+  scale_y_continuous(limits=c(0,60), 
+                     breaks=seq(0,60,by=12), 
+                     minor_breaks=seq(6,60,by=6))
+```
+
+
+Another common option is to change the size of points in some way.  While we assign the aesthetic as before, it comes with defaults that might not work for a given situation.  Play around with the range values.
+
+```{r scale_size2}
+ggplot(mpg, aes(displ, hwy, size=cyl)) + 
+  geom_point() +
+  scale_size(range=c(1,3))
+```
+
+
+Now that you know more about color issues, you may want to apply something besides the default options.  The following shows a built-in color scale for a color aesthetic that is treated as continuous, and one that is discrete and which we want to supply our own colors (these actually come from plotly's default color scheme).
+
+```{r scale_color}
+ggplot(mpg, aes(displ, hwy, color=cyl)) + 
+  geom_point() +
+  scale_color_gradient2()
+
+ggplot(mpg, aes(displ, hwy, color=factor(cyl))) + 
+  geom_point() +
+  scale_color_manual(values=c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"))
+```
+
+We can even change the scale of the data itself.
+
+```{r scale_scale}
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point() +
+  scale_x_log10()
+```
+
+In short, scales alterations are really useful for getting just the plot you want, and there is a lot of flexibility for you to work with.
 
 ### Facets
 
@@ -164,15 +223,21 @@ The take-home message here is to always let ggplot do the work for you if at all
 
 ##### facet_grid
 
-Facet by cycle.
+Facet by cylinder.
 
 ```{r facetgrid}
 ggplot(mtcars, aes(wt, mpg)) + 
   geom_point() +
   facet_grid(~ cyl, labeller = label_both)
+ggplot(mpg, aes(displ, cty)) + 
+  geom_point() +
+  facet_grid(~ cyl, labeller = label_both)
+ggplot(midwest, aes(popdensity, percbelowpoverty)) + 
+  geom_point() +
+  facet_grid(~ state, labeller = label_both)
 ```
 
-Facet by vs and cycle.
+Facet by vs and cylinder.
 
 ```{r facetgrid2}
 ggplot(mtcars, aes(wt, mpg)) + 

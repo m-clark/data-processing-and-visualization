@@ -2,27 +2,24 @@
 
 (SECTION DEVELOPMENT IN PROGRESS)
 
-```{r title, echo=F, eval=F}
-saveWidget(vn, file='vntitle.html')
+```{r title, echo=F, eval=T}
+# saveWidget(vn, file='vntitle.html')
 library(visNetwork)
 nodes = data.frame(id=1:2, label=c('Interactive', 'Visualization'), color='#1e90ff')
 edges = data.frame(from=1, to=2, color='transparent')
-library(visNetwork)
-vn = visNetwork(nodes, edges, height=400, width=600) %>% 
-  visNodes(shape='text', font=list(color='#1e90ff', size=164)) %>% 
+visNetwork(nodes, edges, height=400, width='100%') %>% 
+  visNodes(shape='text', font=list(color=palettes$tyrian_purple2$tyrian_purple, size=64)) %>% 
   visOptions(highlightNearest=F) 
 ```
 
-<iframe src='../img/vntitle.html', width=800, height=300, scrolling="no", frameBorder="0"></iframe>
+<!-- <iframe src='../img/vntitle.html', width=800, height=300, scrolling="no", frameBorder="0"></iframe> -->
 
 
 ### Packages
 
-<span class="pack">ggplot2</span> is the most widely used package for visualization in R.
+<span class="pack">ggplot2</span> is the most widely used package for visualization in R. However, it is not interactive by default. Many packages use <span class="pack">htmlwidgets</span>, **d3** (JavaScript library), etc. to provide interactive graphics.  What's great is that while you may have to learn new packages, you don't necessarily have to change your approach or thinking about a plot, or learn some other language.  
 
-However, it is not interactive by default.
-
-Many packages use <span class="pack">htmlwidgets</span>, **d3** (JavaScript library) etc. to provide interactive graphics.
+Many of these packages can be lumped into more general packages that try to provide a plotting system (similar to ggplot2), versus those that just aim to do a specific type of plot well.  Here are some to give a sense of this.
 
 General:
 
@@ -31,7 +28,7 @@ General:
 - <span class="pack">highcharter</span>
   - also very general wrapper for highcharts.js and works with some R packages out of the box
 - <span class="pack">rbokeh</span>
-  - like plotly, it also has cross program support
+  - like plotly, it also has cross language support
 
 Specific functionality:
 
