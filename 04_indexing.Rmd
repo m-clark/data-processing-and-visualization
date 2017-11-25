@@ -92,7 +92,7 @@ This following is a refresher of base R indexing only.
 
 Here is a <span class="objclass">matrix</span>, a <span class="objclass">data.frame</span> and a <span class="objclass">list</span>.
 
-```{r}
+```{r ixex0}
 mymatrix = matrix(rnorm(100), 10, 10)
 mydf = cars
 mylist = list(mymatrix, thisdf = mydf)
@@ -102,7 +102,7 @@ mylist = list(mymatrix, thisdf = mydf)
 
 For the <span class="objclass">matrix</span>, in separate operations, take a slice of rows, a selection of columns, and a single element.
 
-```{r, echo=F}
+```{r ixex1, echo=F}
 mymatrix[1:5, ]
 mymatrix[, 1:5]
 mymatrix[1,2]
@@ -112,7 +112,7 @@ mymatrix[1,2]
 
 For the <span class="objclass">data.frame</span>, grab a column in 3 different ways.
 
-```{r, echo=F}
+```{r ixex2, echo=F}
 mydf$disp
 mydf[,2]
 mydf['disp']
@@ -122,7 +122,7 @@ mydf['disp']
 
 For the <span class="objclass">list</span> grab an element by number and by name.
 
-```{r, echo=F}
+```{r ixex3, echo=F}
 mylist[2]
 mylist$thisdf
 ```

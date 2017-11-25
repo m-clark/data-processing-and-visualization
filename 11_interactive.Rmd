@@ -62,7 +62,7 @@ The <span class='pack'>htmlwidgets</span> package is a package that makes it eas
 We'll begin our foray into the interactive world with a couple demonstrations of <span class="pack">plotly</span>.  To give some background, you can think of plotly similar to RStudio, in that it has both enterprise (i.e. pay for) aspects and open source aspects.  Just like RStudio, you have full access to what it has to offer via the open source R package.  You may see old help suggestions referring to needing an account, but this is no longer necessary.  
 
 
-When using <span class="pack">plotly</span>, you'll note the layering approach similar to what we did with <span class="pack">ggplot2</span>.  Piping is used before plotting to do some data manipulation, after which we seemlessly move to the plot itself.  The `=~` is essentially the way we denote aesthetics[^plotlyaes].  
+When using <span class="pack">plotly</span>, you'll note the layering approach similar to what we did with <span class="pack">ggplot2</span>.  Piping is used before plotting to do some data manipulation, after which we seamlessly move to the plot itself.  The `=~` is essentially the way we denote aesthetics[^plotlyaes].  
 
 ```{r plotly1}
 library(plotly)
@@ -73,7 +73,7 @@ midwest %>%
 ```
 
 
-<span class="pack">plotly</span> has <span class="emph">modes</span>, which allow for points, lines, text and combinations. <span class="emph">Traces</span> work similar to geoms.
+<span class="pack">plotly</span> has <span class="emph">modes</span>, which allow for points, lines, text and combinations. <span class="emph">Traces</span>, `add_*`, work similar to geoms.
 
 ```{r plotly2}
 library(mgcv); library(modelr); library(glue)
@@ -83,8 +83,17 @@ mtcars %>%
          hovertext = glue('weight: {wt} <br> mgp:  {mpg} <br> {amFactor}')) %>% 
   add_predictions(gam(mpg~s(wt, am, bs='fs'), data=mtcars)) %>% 
   plot_ly() %>%
-  add_markers(x=~wt, y=~mpg, color=~amFactor, opacity=.5, text=~hovertext, hoverinfo='text', showlegend=F) %>% 
-  add_lines(x=~wt, y=~pred, color=~amFactor, name='gam prediction')
+  add_markers(x=~wt, 
+              y=~mpg, 
+              color=~amFactor, 
+              opacity=.5, 
+              text=~hovertext, 
+              hoverinfo='text', 
+              showlegend=F) %>% 
+  add_lines(x=~wt, 
+            y=~pred, 
+            color=~amFactor, 
+            name='gam prediction')
 ```
 
 
@@ -124,7 +133,7 @@ Be prepared to spend time getting used to plotly.  It has terrible documentation
 
 <span class="pack">Highcharter</span> is also fairly useful for a wide variety of plots, and is based on the <span class="pack">highcharts.js</span> library.  If you have data suited to one of its functions, getting a great interactive plot can be ridiculously easy.  
 
-In what follows we use quantmod to create an xts (time series) object of Google's stock price, including opening and closing values.  The highcharter object has a ready made plot for such data[^nobigdeal].
+In what follows we use <span class="pack">quantmod</span> to create an <span class="pack">xts</span> (time series) object of Google's stock price, including opening and closing values.  The highcharter object has a ready-made plot for such data[^nobigdeal].
 
 ```{r highcharts}
 library(highcharter); library(quantmod)
@@ -172,7 +181,7 @@ visNetwork(nodes, edges, height=300, width=800) %>%
 ### leaflet
 
 
-The <span class="pack">leaflet</span> package from RStudio is good for quick interactive maps, but its quite flexible and has some nice functionality.
+The <span class="pack">leaflet</span> package from RStudio is good for quick interactive maps, and it's quite flexible and has some nice functionality to take your maps further.
 
 ```{r leaflet}
 hoevertext <- paste(sep = "<br/>",
@@ -192,9 +201,10 @@ leaflet() %>%
 
 ### DT
 
-Use the <span class="pack">DT</span> package for interactive data frames.  This can be very useful when working in collaborative environments where one shares reports, as you can embed the data within the document itself.
+It might be a bit odd to think of data frames visually, but they can be interactive also. Use the <span class="pack">DT</span> package for interactive data frames.  This can be very useful when working in collaborative environments where one shares reports, as you can embed the data within the document itself.  
 
-```{r datatable, eval=TRUE}
+
+```{r datatable}
 library(DT)
 ggplot2movies::movies %>% 
   select(1:6) %>% 
@@ -202,17 +212,57 @@ ggplot2movies::movies %>%
   datatable()
 ```
 
+<br>
+
+The other thing to be aware of is that tables *can* be visual, it's just that many academic outlets waste this opportunity.  Simple bolding, italics, and even sizing, can make results pop more easily for the audience.  The <span class="pack">DT</span> package even allows for coloring and simple things like bars that connotes values.
+
+```{r datatable_options}
+iris %>% 
+  # arrange(desc(Petal.Length)) %>% 
+  datatable(rownames=F,
+            options=list(dom='firtp'), 
+            class = 'row-border') %>% 
+  formatStyle('Sepal.Length', 
+              fontWeight = styleInterval(5, c('normal', 'bold'))) %>%
+  formatStyle(
+    'Sepal.Width',
+    color = styleInterval(c(3.4, 3.8), c('#7f7f7f', '#00aaff', '#ff5500')),
+    backgroundColor = styleInterval(3.4, c('#ebebeb', 'aliceblue'))
+  ) %>%
+  formatStyle(
+    'Petal.Length',
+    # color = 'transparent',
+    background = styleColorBar(iris$Petal.Length, '#5500ff'),
+    backgroundSize = '100% 90%',
+    backgroundRepeat = 'no-repeat',
+    backgroundPosition = 'center'
+  ) %>%
+  formatStyle(
+    'Species',
+    color='white',
+    transform = 'rotateX(45deg) rotateY(20deg) rotateZ(30deg)',
+    backgroundColor = styleEqual(
+      unique(iris$Species), c('#1f65b7', '#66b71f', '#b71f66')
+    )
+  )
+```
+
+<br>
+
+I would in no way recommend using the bars (unless the you want a visual *instead* of the value) or angled tag options, as that is more or less a prime example of chartjunk.  However, subtle use of color and emphasis can make tables of results that your audience will actually spend time exploring.
 
 ### Shiny
 
+<a href="https://shiny.rstudio.com/gallery/see-more.html"><img src="img/shinygal.png" style="display:block; margin: 0 auto;" width=75% alt='shiny gallery'></a>
+
+<br>
 <span class="emph">Shiny</span> is a framework that can essentially allow you to build an interactive website/app.  Like some of the other packages mentioned, it's provided by [RStudio](https://shiny.rstudio.com/) developers.  However, most of the more recently developed interactive visualization packages will work specifically within the shiny and rmarkdown setting.
 
-You can make shiny apps just for your own use and run them locally.  But note, you are using R to build a webpage, and it's not particularly well-suited for it.  Much of how you use R will not be useful in building a shiny app, and so it will definitely take some getting used to.
-
+You can make shiny apps just for your own use and run them locally.  But note, you are using R to build a webpage, and it's not particularly well-suited for it.  Much of how you use R will not be useful in building a shiny app, and so it will definitely take some getting used to, and you will likely need to do a lot of tedious adjustments to get things just how you want.
 
 Shiny apps have two main components, a part that specifies the user interface, and a server function that will do all the work. With those in place (either in a single 'app.R' file or in separate files), you can then simply run app.
 
-This example is taken from the shiny help file, but you can actually run it as is.
+This example is taken from the shiny help file, and you can actually run it as is.
 
 ```{r shiny, eval=FALSE}
 library(shiny)
@@ -233,7 +283,7 @@ app <- shinyApp(
 runApp(app)
 ```
 
-You can share your app code/directory with anyone and they'll be able to run it also.  However, this is great mostly just for teaching someone how to do shiny, which most people aren't going to do.  Typically you'll want someone to use the app itself, not run code.  In that case you'll need a webserver. You can get up to 5 free 'running' applications at [shinyapps.io](http://shinyapps.io). However, you will notably be limited in the amount of computing resources that can be used to run the apps in a given month. Even minor usage of those could easily overtake the free settings. For personal use it's plenty though.
+You can share your app code/directory with anyone and they'll be able to run it also.  However, this is great mostly just for teaching someone how to do shiny, which most people aren't going to do.  Typically you'll want someone to use the app itself, not run code.  In that case you'll need a web server. You can get up to 5 free 'running' applications at [shinyapps.io](http://shinyapps.io). However, you will notably be limited in the amount of computing resources that can be used to run the apps in a given month. Even minor usage of those could easily overtake the free settings. For personal use it's plenty though.
 
 
 
