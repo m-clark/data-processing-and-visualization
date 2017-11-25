@@ -171,8 +171,11 @@ visNetwork(nodes, edges, height=300, width=800) %>%
 
 ### leaflet
 
+
+The <span class="pack">leaflet</span> package from RStudio is good for quick interactive maps, but its quite flexible and has some nice functionality.
+
 ```{r leaflet}
-content <- paste(sep = "<br/>",
+hoevertext <- paste(sep = "<br/>",
   "<b><a href='http://umich.edu/'>University of Michigan</a></b>",
   "Ann Arbor, MI"
 )
@@ -181,7 +184,7 @@ content <- paste(sep = "<br/>",
 library(leaflet)
 leaflet() %>% 
   addTiles() %>%
-  addPopups(-83.738222, 42.277030, content,
+  addPopups(-83.738222, 42.277030, hoevertext,
     options = popupOptions(closeButton = FALSE)
   )
 ```
@@ -202,23 +205,47 @@ ggplot2movies::movies %>%
 
 ### Shiny
 
-<span class="emph">Shiny</span> is a framework that can essentially allow you to build an interactive website.
+<span class="emph">Shiny</span> is a framework that can essentially allow you to build an interactive website/app.  Like some of the other packages mentioned, it's provided by [RStudio](https://shiny.rstudio.com/) developers.  However, most of the more recently developed interactive visualization packages will work specifically within the shiny and rmarkdown setting.
 
-- Provided by RStudio developers
+You can make shiny apps just for your own use and run them locally.  But note, you are using R to build a webpage, and it's not particularly well-suited for it.  Much of how you use R will not be useful in building a shiny app, and so it will definitely take some getting used to.
 
-Most of the more recently developed visualization packages will work specifically within the shiny and rmarkdown settings.
+
+Shiny apps have two main components, a part that specifies the user interface, and a server function that will do all the work. With those in place (either in a single 'app.R' file or in separate files), you can then simply run app.
+
+This example is taken from the shiny help file, but you can actually run it as is.
+
+```{r shiny, eval=FALSE}
+library(shiny)
+
+# Running a Shiny app object
+app <- shinyApp(
+  ui = bootstrapPage(
+    numericInput('n', 'Number of obs', 100),
+    plotOutput('plot')
+  ),
+  server = function(input, output) {
+    output$plot <- renderPlot({ 
+      hist(runif(input$n)) 
+      })
+  }
+)
+
+runApp(app)
+```
+
+You can share your app code/directory with anyone and they'll be able to run it also.  However, this is great mostly just for teaching someone how to do shiny, which most people aren't going to do.  Typically you'll want someone to use the app itself, not run code.  In that case you'll need a webserver. You can get up to 5 free 'running' applications at [shinyapps.io](http://shinyapps.io). However, you will notably be limited in the amount of computing resources that can be used to run the apps in a given month. Even minor usage of those could easily overtake the free settings. For personal use it's plenty though.
+
+
 
 
 ### Interactive and Visual Data Exploration
 
-Interactivity allows for even more dimensions to be brought to a graphic.
 
-Interactive graphics are more fun too!
+As seen above, just a couple visualization packages can go a very long way.  It's now very easy to incorporate interactivity, so you should use it even if only for your own data exploration.
 
-- But they must serve a purpose
-- Too often they are simply distraction, and detract from the data story
+In general, interactivity allows for even more dimensions to be brought to a graphic, and can be more fun too!
+However, they must serve a purpose. Too often they are simply distraction, and can actually detract from the data story. Make sure to use them when they can enhance the narrative you wish to express.
 
-Just a couple visualization packages can go a very long way.
 
 
 ### **Interactive Visualization Exercises**
@@ -226,18 +253,20 @@ Just a couple visualization packages can go a very long way.
 
 #### Exercise 0
 
-Install and load the <span class="pack">plotly</span> package. Load the <span class="pack">dplyr</span> and <span class="pack">ggplot2</span> packages if necessary.
+Install and load the <span class="pack">plotly</span> package. Load the <span class="pack">tidyverse</span> package if necessary (so you can use <span class="pack">dplyr</span> and <span class="pack">ggplot2</span>), and install/load the <span class="pack">ggplot2movies</span> for the IMDB data.
 
 
 
 #### Exercise 1
 
-Using <span class="pack">dplyr</span> group by year, and summarize to create a new variable that is the Average rating.  Then create a plot with <span class="pack">plotly</span> for a line or scatter plot (for the latter, use the <span class="func">add_markers</span> function). It will take the following form:
+Using <span class="pack">dplyr</span> group by year, and summarize to create a new variable that is the Average rating.  Then create a plot with <span class="pack">plotly</span> for a line or scatter plot (for the latter, use the <span class="func">add_markers</span> function). It will take the following form, but you'll need to supply the plotly arguments.
 
 ```
-data %>% 
-  group_by() %>% 
-  summarize() %>% 
+library(ggplot2movies)
+
+movies %>% 
+  group_by(year) %>% 
+  summarise(Avg_Rating=mean(rating))
   plot_ly() %>% 
   add_markers()
 ```
@@ -253,7 +282,7 @@ movies %>%
 
 #### Exercise 2
 
-This time group by year and Drama. In the <span class="func">summarize</span> create average rating again, but also a variable representing the average number of votes. In your plotly line, use the size and color arguments to represent whether the average number of votes and whether it was drama or not respectively. Use <span class="func">add_markers.</span>
+This time group by year *and* Drama. In the <span class="func">summarize</span> create average rating again, but also a variable representing the average number of votes. In your plotly line, use the size and color arguments to represent whether the average number of votes and whether it was drama or not respectively. Use <span class="func">add_markers</span>.  Note that Drama will be treated as numeric since it's a 0-1 indicator. This won't affect the plot, but if you want, you might use <span class="func">mutate</span> to change it to a factor with labels 'Drama' and 'Other'.
 
 ```{r interactive_ex2, echo=FALSE}
 movies %>% 
@@ -261,13 +290,18 @@ movies %>%
   summarise(Avg_Rating=mean(rating),
             Avg_Votes = mean(votes)) %>% 
   plot_ly() %>% 
-  add_markers(x=~year, y=~Avg_Rating, size=~Avg_Votes, color=~Drama, mode='markers')
+  add_markers(x=~year, 
+              y=~Avg_Rating, 
+              size=~Avg_Votes, 
+              color=~Drama)
 ```
 
 
 #### Exercise 3
 
 Create a ggplot of your design and then use <span class="func">ggplotly</span> to make it interactive.
+
+
 
 [^plotlyaes]: Often you'll get an error because you used `=` instead of `=~`.  Also, I find trying to set single values for things like size unintuitive, and it may be implemented differently for different traces (e.g. setting size in marker traces requires size=I(value)).
 
