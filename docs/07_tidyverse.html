@@ -168,7 +168,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#preparation"><i class="fa fa-check"></i>Preparation</a></li>
 <li class="chapter" data-level="" data-path="01_intro.html"><a href="01_intro.html#other"><i class="fa fa-check"></i>Other</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html"><i class="fa fa-check"></i>Part 1: Data Processing</a><ul>
+<li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html"><i class="fa fa-check"></i>Part I: Data Processing</a><ul>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#data-structures"><i class="fa fa-check"></i>Data Structures</a><ul>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#vectors"><i class="fa fa-check"></i>Vectors</a></li>
 <li class="chapter" data-level="" data-path="02_dataStructures.html"><a href="02_dataStructures.html#matrices"><i class="fa fa-check"></i>Matrices</a></li>
@@ -670,23 +670,23 @@ stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span c
                       <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),
                       <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>) )
 stocks <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre></div>
-<pre><code>        time            X          Y           Z
-1 2009-01-01 -0.111891912 -3.3578661 -3.84786749
-2 2009-01-02  1.747900184 -3.3780200 -5.84662116
-3 2009-01-03  1.288796137 -1.5949740 -2.59391113
-4 2009-01-04  1.495187255 -1.3316997 -3.09674203
-5 2009-01-05  0.001754473  0.7253726 -0.07377812
-6 2009-01-06  1.492266813 -1.8230104  2.02802847</code></pre>
+<pre><code>        time          X          Y          Z
+1 2009-01-01 -0.2719193  0.5491413  4.3865986
+2 2009-01-02 -0.2591219 -1.8420745  0.1846092
+3 2009-01-03 -1.1934447 -0.7980515 -6.0348261
+4 2009-01-04  2.0726259  0.1962904 -1.2891491
+5 2009-01-05 -0.9536876  2.7113528  3.6755673
+6 2009-01-06  2.3763177 -1.0983255  0.8223697</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stocks <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">gather</span>(stock, price, <span class="op">-</span>time) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>head</code></pre></div>
-<pre><code>        time stock        price
-1 2009-01-01     X -0.111891912
-2 2009-01-02     X  1.747900184
-3 2009-01-03     X  1.288796137
-4 2009-01-04     X  1.495187255
-5 2009-01-05     X  0.001754473
-6 2009-01-06     X  1.492266813</code></pre>
+<pre><code>        time stock      price
+1 2009-01-01     X -0.2719193
+2 2009-01-02     X -0.2591219
+3 2009-01-03     X -1.1934447
+4 2009-01-04     X  2.0726259
+5 2009-01-05     X -0.9536876
+6 2009-01-06     X  2.3763177</code></pre>
 <p>Note that the latter is an example of <span class="emph">tidy data</span> while the former is not. Why do we generally prefer such data? Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. <em>This is especially the case for visualization</em>.</p>
 <p>The following demonstrates the separate function utilized for a very common data processing task- dealing with names. Here’ we’ll separate <span class="objclass">player</span> into first and last names based on the space.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>
