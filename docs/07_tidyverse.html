@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-11-25">
+<meta name="date" content="2017-11-26">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -235,7 +235,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#information"><i class="fa fa-check"></i>Information</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#color"><i class="fa fa-check"></i>Color</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
-<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#scaling-by-size"><i class="fa fa-check"></i>Scaling by Size</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#scaling-size"><i class="fa fa-check"></i>Scaling Size</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#accessibility"><i class="fa fa-check"></i>Accessibility</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#a-casual-list-of-things-to-avoid"><i class="fa fa-check"></i>A casual list of things to avoid</a></li>
@@ -250,6 +250,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#scales"><i class="fa fa-check"></i>Scales</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#facets"><i class="fa fa-check"></i>Facets</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#themes"><i class="fa fa-check"></i>Themes</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
 <li><a href="10_ggplot2.html#ggplot2-exercises"><strong>ggplot2 Exercises</strong></a></li>
@@ -670,23 +671,23 @@ stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span c
                       <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),
                       <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>) )
 stocks <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre></div>
-<pre><code>        time          X          Y          Z
-1 2009-01-01 -0.2719193  0.5491413  4.3865986
-2 2009-01-02 -0.2591219 -1.8420745  0.1846092
-3 2009-01-03 -1.1934447 -0.7980515 -6.0348261
-4 2009-01-04  2.0726259  0.1962904 -1.2891491
-5 2009-01-05 -0.9536876  2.7113528  3.6755673
-6 2009-01-06  2.3763177 -1.0983255  0.8223697</code></pre>
+<pre><code>        time          X           Y         Z
+1 2009-01-01  0.3224696 -0.33724275 -1.416837
+2 2009-01-02  0.3347488  0.66004625  2.068788
+3 2009-01-03  0.4928503 -1.59504753 -5.315608
+4 2009-01-04  2.1792589  0.07683249  3.951607
+5 2009-01-05 -0.4488275 -0.64208470 -4.154432
+6 2009-01-06  0.5488021 -2.42665626  3.490227</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stocks <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">gather</span>(stock, price, <span class="op">-</span>time) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>head</code></pre></div>
 <pre><code>        time stock      price
-1 2009-01-01     X -0.2719193
-2 2009-01-02     X -0.2591219
-3 2009-01-03     X -1.1934447
-4 2009-01-04     X  2.0726259
-5 2009-01-05     X -0.9536876
-6 2009-01-06     X  2.3763177</code></pre>
+1 2009-01-01     X  0.3224696
+2 2009-01-02     X  0.3347488
+3 2009-01-03     X  0.4928503
+4 2009-01-04     X  2.1792589
+5 2009-01-05     X -0.4488275
+6 2009-01-06     X  0.5488021</code></pre>
 <p>Note that the latter is an example of <span class="emph">tidy data</span> while the former is not. Why do we generally prefer such data? Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. <em>This is especially the case for visualization</em>.</p>
 <p>The following demonstrates the separate function utilized for a very common data processing task- dealing with names. Here’ we’ll separate <span class="objclass">player</span> into first and last names based on the space.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>

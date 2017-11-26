@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-11-25">
+<meta name="date" content="2017-11-26">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -235,7 +235,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#information"><i class="fa fa-check"></i>Information</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#color"><i class="fa fa-check"></i>Color</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
-<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#scaling-by-size"><i class="fa fa-check"></i>Scaling by Size</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#scaling-size"><i class="fa fa-check"></i>Scaling Size</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#accessibility"><i class="fa fa-check"></i>Accessibility</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#a-casual-list-of-things-to-avoid"><i class="fa fa-check"></i>A casual list of things to avoid</a></li>
@@ -250,6 +250,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#scales"><i class="fa fa-check"></i>Scales</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#facets"><i class="fa fa-check"></i>Facets</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#themes"><i class="fa fa-check"></i>Themes</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
 <li><a href="10_ggplot2.html#ggplot2-exercises"><strong>ggplot2 Exercises</strong></a></li>
@@ -335,8 +336,8 @@ mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&
                <span class="kw">log</span>(mymatrix))</code></pre></div>
 <pre><code>Unit: microseconds
                     expr    min     lq     mean median     uq     max neval
- apply(mymatrix, 2, log) 47.730 48.931 57.83179 49.531 50.432 200.528   100
-           log(mymatrix)  3.002  3.302  3.71348  3.302  3.603  16.811   100</code></pre>
+ apply(mymatrix, 2, log) 44.428 45.629 47.17509 46.229 46.530 117.975   100
+           log(mymatrix)  2.701  3.002  3.06215  3.002  3.302   3.903   100</code></pre>
 <p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
 </div>
 <div id="apply-functions" class="section level3">

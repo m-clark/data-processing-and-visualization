@@ -1,6 +1,5 @@
 # Part II: Visualization
 
-(SECTION DEVELOPMENT IN PROGRESS)
 
 ```{r vissetup, include=FALSE, eval=TRUE, cache=FALSE}
 knitr::opts_chunk$set(eval=T, echo=F)
@@ -51,7 +50,7 @@ sw_height %>%
   theme_bw()
 ```
 
-Now the y axis has been changed to distort the difference, perceptually suggesting a height increase of over `r round(((sw_height$Height - 140)[2]/(sw_height$Height - 140)[1] -1)*100)`%.  Furthermore, color is used but the colors are chosen poorly, and add no information, thus making the legend superfluous.  And finally, the above doesn't even convey the information people think it does, assuming they are even standard error bars[^barerror], which one typically has to guess about in many journal visualizations of this kind.
+Now the y axis has been changed to distort the difference, perceptually suggesting a height increase of over `r round(((sw_height$Height - 140)[2]/(sw_height$Height - 140)[1] -1)*100)`%.  Furthermore, color is used but the colors are chosen poorly, and add no information, thus making the legend superfluous.  And finally, the above doesn't even convey the information people think it does, assuming they are even standard error bars, which one typically has to guess about in many journal visualizations of this kind[^barerror].
 
 
 Now we add more information, but more problems!
@@ -139,16 +138,15 @@ ggplotly()%>%
 
 <br>
 
-Whether this is something you'd prefer or not, the point is that we get quite a bit of information without being overwhelming, and the data is allowed to express itself cleanly.
+Whether this particular scheme is something you'd prefer or not, the point is that we get quite a bit of information without being overwhelming, and the data is allowed to express itself cleanly.
 
 Here are some things to keep in mind when creating visualizations for scientific communication.
 
-
 #### Your audience isn't dumb
 
-Assume your audience, which in academia is full of people with advanced degrees or those aspiring to obtain one, can handle more than a bar graph.  If the visualization is good and well-explained[^captions], they'll be fine. 
+Assume your audience, which in academia is full of people with advanced degrees or those aspiring to obtain one, and in other contexts comprises people who are interested in your story, can handle more than a bar graph.  If the visualization is good and well-explained[^captions], they'll be fine. 
 
-See the data visualization and maps sections of [2016: The Year in Visual Stories and Graphics](https://www.nytimes.com/interactive/2016/12/28/us/year-in-interactive-graphics.html) at the New York Times.  Good data visualization of even complex relationships can be appreciated by more than an academic audience.  Assume you can at least provide visualizations on that level of complexity and be okay.
+See the data visualization and maps sections of [2016: The Year in Visual Stories and Graphics](https://www.nytimes.com/interactive/2016/12/28/us/year-in-interactive-graphics.html) at the New York Times.  Good data visualization of even complex relationships can be appreciated by more than an academic audience.  Assume you can at least provide visualizations on that level of complexity and be okay.  It won't always work, but at least put the same effort you'd appreciate yourself.
 
 <img src="img/nytimes.png" style="display:block; margin: 0 auto;">
 
@@ -158,14 +156,11 @@ Sometimes the clearest message *is* a complicated one.  That's okay, science is 
 
 By the same token, don't needlessly complicate something that is straightforward.  Perhaps a scatter plot with some groupwise coloring is enough.  That's fine.
 
-All of this is easier said than done, and there is no right way to do data visualizations.  Prepare to experiment.
-
+All of this is easier said than done, and there is no right way to do data visualizations.  Prepare to experiment, and focus on visuals that display patterns that will be more readily perceived.
 
 #### Avoid clutter
 
-Gridlines, 3d, unnecessary patterning, and <span class="emph">chartjunk</span> in general will only detract from the message.  As an example, gridlines might even seem necessary, but even faint ones can potentially hinder the pattern recognition you hope will take place, perceptually imposing clumps of data that do not exist.  In addition, they practically insist on a level of data precision that you simply don't have.  What's more, with interactivity they literally convey nothing additional, as a simple hover-over or click on a data point will reveal the precise values.  Use sparingly, if at all.
-
-
+In striving for clarity, there are pitfalls to avoid. Gridlines, 3d, unnecessary patterning, and <span class="emph">chartjunk</span> in general will only detract from the message.  As an example, gridlines might even seem necessary, but even faint ones can potentially hinder the pattern recognition you hope will take place, perceptually imposing clumps of data that do not exist.  In addition, they practically insist on a level of data precision that in many situations you simply don't have.  What's more, with interactivity they literally convey nothing additional, as a simple hover-over or click on a data point will reveal the precise values.  Use sparingly, if at all.
 
 #### Color isn't optional
 
@@ -173,7 +168,8 @@ It's odd for me to have to say this, as it's been the case for many years, but n
 
 #### Think interactively
 
-It might be best to tart by making the visualization *you want to make*, with interactivity and anything else you like.  You can then reduce as necessary for publication or other outlets, and keep the fancy one as supplemental, or accessible on your own website to show off.
+It might be best to start by making the visualization *you want to make*, with interactivity and anything else you like.  You can then reduce as necessary for publication or other outlets, and keep the fancy one as supplemental, or accessible on your own website to show off.
+
 
 
 ### Color
@@ -193,7 +189,7 @@ So basically you have something that will take care of your audience without hav
 <img src="img/viridis_scales.png" style="display:block; margin: 0 auto;" width=50%>
 
 
-These color schemes might seem a bit odd from what you're used to.  But recall that the goal is good communication, and these will allow you to convey information accurately, without implicit bias, and be acceptable in different formats. In addition, there is <span class="pack">ggplot2</span> functionality to boot, e.g. <span class="func">scale_color_viridis</span>, and it will work for discrete or continuous valued data.
+These color schemes might seem a bit odd from what you're used to.  But recall that the goal is good communication, and these will allow you to convey information accurately, without implicit bias, and be acceptable in different formats. In addition, there is <span class="pack">ggplot2</span> functionality to boot, e.g. <span class="func">scale_color_viridis</span>, and it will work for discrete or continuously valued data.
 
 For more, see the [vignette](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html). I also invite you to watch the [introduction of the original module in Python](https://www.youtube.com/watch?v=xAoljeRJ3lU), where you can learn more about the issues in color selection, and why viridis works.
 
@@ -208,6 +204,19 @@ Color Brewer offers another collection of palettes that will generally work well
 <img src="img/colorbrewer.svg" style="display:block; margin: 0 auto;" width=50%>
 
 There is a <span class="pack">ggplot2</span> function, <span class="func">scale_color_brewer</span>, you can use as well. For more, see [colorbrewer.org](http://colorbrewer2.org/).  There you can play around with the palettes to help make your decision.
+
+<div class='note'>
+In R, you have three schemes that work well right out of the box:
+
+- ggplot2 default palette
+- viridis
+- RColorBrewer
+
+Furthermore, they'll work well with discrete or continuous data.  You will have to do some work to come up with better, so they should be your default.  Sometimes though, [one can't help oneself](https://github.com/m-clark/NineteenEightyR).
+
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
+
 
 
 ### Contrast
@@ -227,9 +236,9 @@ So contrast comes into play with text as well as color.  In general, you should 
 
 I personally don't like stark black, and find it visually irritating, but obviously that would be fine to use for most people.
 
-### Scaling by Size
+### Scaling Size
 
-You might not be aware, but there is more than one way to scale objects, e.g. in a scatterplot. Consider the following, where in both cases dots are scaled by the person's body-mass index (BMI).
+You might not be aware, but there is more than one way to scale the size of objects, e.g. in a scatterplot. Consider the following, where in both cases dots are scaled by the person's body-mass index (BMI).
 
 
 ```{r scale_size, out.width='50%'}
@@ -238,24 +247,24 @@ sw2 %>%
   ggplot(aes(x=mass, y=height)) +
   geom_point(aes(label=name,  size=bmi), color=palettes$orange$orange, alpha=.25, show.legend=F) +
   scale_size_continuous(range=c(2,10)) +
-  lazerhawk::theme_trueMinimal()+ 
+  theme_trueMinimal()+ 
   theme(legend.position="none")  # only way to keep plotly from putting a legend
 sw2 %>%
   mutate(bmi = mass/((height/100)^2)) %>% 
   ggplot(aes(x=mass, y=height)) +
   geom_point(aes(label=name, size=bmi), color=palettes$orange$orange, alpha=.25, show.legend=F) +
-  scale_radius() + 
-  lazerhawk::theme_trueMinimal()+ 
+  scale_radius(range=c(2,10)) + 
+  theme_trueMinimal()+ 
   theme(legend.position="none")  # only way to keep plotly from putting a legend
 ```
 
 
-The first plot scales the dots by their area, while the second scales the radius, but otherwise they are identical.  It's not generally recommended to scale the radius, as our perceptual system is more attuned to the area.  Packages like <span class="pack">ggplot2</span> and <span class="pack">plotly</span> will automatically do this, but some might not, so you should check.
+What's the difference? The first plot scales the dots by their area, while the second scales the radius, but otherwise they are identical.  It's not generally recommended to scale the radius, as our perceptual system is more attuned to the area.  Packages like <span class="pack">ggplot2</span> and <span class="pack">plotly</span> will automatically do this, but some might not, so you should check.
 
 
 ### Transparency
 
-Using transparency is a great way to keep detailed information available to the audience without being overwhelming. Consider the following.  Fifty individual trajectories are shown on the left, but it doesn't cause any issue graphically.
+Using transparency is a great way to keep detailed information available to the audience without being overwhelming. Consider the following.  Fifty individual trajectories are shown on the left, but it doesn't cause any issue graphically.  The right has 10 lines plus a fitted line, 20 points and a ribbon to provide a sense of variance.  Using transparency and a viridis color scheme allows it to be perceived cleanly.
 
 ```{r transp_old, eval=FALSE}
 N = 100
@@ -292,7 +301,7 @@ data_frame(g, f=factor(f, labels=c('g1','g2')), x, y) %>%
   theme_plotly()
 ```
 
-```{r transp, out.width='1000px', out.height='326.25px'}
+```{r transp, out.width='75%', fig.asp=.5}
 ########################################################################################
 ### 'Noisy' gaussian process demo.  The matrix labeling is in keeping with Murphy    ###
 ### 2012 and Rasmussen and Williams 2006.  See those sources for more detail.        ###
@@ -332,7 +341,7 @@ Kfn = function(x, y=NULL, l=1, sigmaf=1, sigman=.5){
 #####################
 ### Preliminaries ###
 #####################
-
+set.seed(1234)
 l = 1           # for l, sigmaf, sigman, see note at covariance function
 sigmaf = 1      
 sigman = .25 
@@ -367,6 +376,7 @@ g1 = ggplot(aes(x=x, y=value), data=gdat1) +
   theme_trueMinimal() +
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),
+        axis.line = element_blank(),
         axis.ticks.x=element_blank(),
         axis.ticks.y=element_blank(),
         axis.title.x=element_blank(),
@@ -440,6 +450,7 @@ g2 = ggplot(aes(x=x, y=value), data=gdat2) +
   theme_trueMinimal() +
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),
+        axis.line = element_blank(),
         axis.ticks.x=element_blank(),
         axis.ticks.y=element_blank(),
         axis.title.x=element_blank(),
@@ -451,6 +462,10 @@ g2 = ggplot(aes(x=x, y=value), data=gdat2) +
 ### Plot prior and posterior predictive together ###
 ####################################################
 
+# there is no way with knitr to control the size of this grid object in a
+# logical fashion. The bookdown notes on figures did not work even remotely as
+# described. The only success was found with out.width + fig.asp, so that was
+# set as a default knitr setting
 library(gridExtra)
 grid.arrange(g1, g2, ncol=2)
 ```
@@ -470,13 +485,14 @@ data_frame(g, x, y) %>%
   theme_plotly()
 ```
 
-```{r transp2, out.width='1000px', out.height='326.25px'}
+```{r transp2, out.width='75%', fig.asp=.5}
 g1 = ggplot(aes(x=x, y=value), data=gdat1) + 
   geom_line(aes(group=variable), color='#FF5500', alpha=1) +
   labs(title='Prior') +
   theme_trueMinimal() +
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),
+        axis.line = element_blank(),
         axis.ticks.x=element_blank(),
         axis.ticks.y=element_blank(),
         axis.title.x=element_blank(),
@@ -490,6 +506,7 @@ g2 = ggplot(aes(x=x, y=value), data=gdat2) +
   theme_trueMinimal() +
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),
+        axis.line = element_blank(),
         axis.ticks.x=element_blank(),
         axis.ticks.y=element_blank(),
         axis.title.x=element_blank(),
@@ -593,7 +610,7 @@ Among many things (apparently) rarely considered in typical academic or other vi
 
 > Web accessibility means that people with disabilities can use the Web. More specifically, Web accessibility means that people with disabilities can perceive, understand, navigate, and interact with the Web, and that they can contribute to the Web. Web accessibility also benefits others, including older people with changing abilities due to aging.
 
-The gist is that not everyone is able to use the web in the same manner.  While you won't be able to satisfy everyone who might come across, putting a little thought into your offering can go along way, and potentially widen your audience.
+The main message to get is that not everyone is able to use the web in the same manner.  While you won't be able to satisfy everyone who might come across your work, putting a little thought into your offering can go along way, and potentially widen your audience.
 
 We talked about this previously, but when communicating visually, one can do simple things like choosing a colorblind-friendly palette, or using a font contrast that will make it easier on the eyes of those reading your work.  There are even browser plugins to test your web content for accessibility. In addition, there are little things like adding a title to inserted images, making links more noticeable etc., all of which can help consumers of your information.
 
@@ -666,7 +683,7 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
 For your upcoming presentation, *who* is your audience?
 
 
-[^barerror]: Error bars for group means can overlap and still be statistically different (the test regards the *difference* in means).  Furthermore most visuals of this sort don't bother to say whether it is standard deviation, standard error, or 2*standard error, or even something else.
+[^barerror]: Error bars for group means can overlap and still be statistically different (the test regards the *difference* in means).  Furthermore visuals of this sort often don't bother to say whether it is standard deviation, standard error, or 2*standard error, or even something else.
 
 [^captions]: People seem to think there are text limits for captions.  There are none.
 

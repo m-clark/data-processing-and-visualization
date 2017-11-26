@@ -1,6 +1,5 @@
 ## Interactive Visualization
 
-(SECTION DEVELOPMENT IN PROGRESS)
 
 ```{r interactivesetup, include=FALSE, eval=TRUE, cache=FALSE}
 knitr::opts_chunk$set(cache.rebuild=F)
@@ -25,7 +24,7 @@ As mentioned, <span class="pack">ggplot2</span> is the most widely used package 
 
 Many of these packages can be lumped into more general packages that try to provide a plotting system (similar to <span class="pack">ggplot2</span>), versus those that just aim to do a specific type of plot well.  Here are some to give a sense of this.
 
-General:
+General (click to visit the associated website):
 
 - [plotly](https://plot.ly/r/)
       - used also in Python, Matlab, Julia
@@ -44,7 +43,7 @@ Specific functionality:
   - [visNetwork](http://datastorm-open.github.io/visNetwork/)
       - Network visualization
   
-In what follows we'll see some of these in action.  Note that unlike the previous chapter, the goal here is not to dive deeply, but to get an idea of what's available.
+In what follows we'll see some of these in action.  Note that unlike the previous chapter, the goal here is not to dive deeply, but just to get an idea of what's available.
 
 ### Piping for Visualization
 
@@ -53,8 +52,7 @@ One of the advantages to piping is that it's not limited to <span class="pack">d
 
 ### htmlwidgets
 
-The <span class='pack'>htmlwidgets</span> package is a package that makes it easy to create javascript visualizations.  If you're not familiar with javascript, you actually are, as it's basically the language of the web, visual or otherwise.  The packages using it typically are pipe-oriented and produce interactive plots.  In addition, you can use the htmlwidgets package to create your own functions that use a particular javascript library (but someone probably already has).
-
+The <span class='pack'>htmlwidgets</span> package makes it easy to create visualizations based on JavaScript libraries.  If you're not familiar with JavaScript, you actually are very familiar with its products, as it's basically the language of the web, visual or otherwise.  The R packages using it typically are pipe-oriented and produce interactive plots.  In addition, you can use the <span class='pack'>htmlwidgets</span> package to create your own functions that use a particular JavaScript library (but someone probably already has, so look first).
 
 
 ### Plotly
@@ -62,7 +60,7 @@ The <span class='pack'>htmlwidgets</span> package is a package that makes it eas
 We'll begin our foray into the interactive world with a couple demonstrations of <span class="pack">plotly</span>.  To give some background, you can think of plotly similar to RStudio, in that it has both enterprise (i.e. pay for) aspects and open source aspects.  Just like RStudio, you have full access to what it has to offer via the open source R package.  You may see old help suggestions referring to needing an account, but this is no longer necessary.  
 
 
-When using <span class="pack">plotly</span>, you'll note the layering approach similar to what we did with <span class="pack">ggplot2</span>.  Piping is used before plotting to do some data manipulation, after which we seamlessly move to the plot itself.  The `=~` is essentially the way we denote aesthetics[^plotlyaes].  
+When using <span class="pack">plotly</span>, you'll note the layering approach similar to what we had with <span class="pack">ggplot2</span>.  Piping is used before plotting to do some data manipulation, after which we seamlessly move to the plot itself.  The `=~` is essentially the way we denote aesthetics[^plotlyaes].  
 
 ```{r plotly1}
 library(plotly)
@@ -72,6 +70,7 @@ midwest %>%
   add_markers()
 ```
 
+<br>
 
 <span class="pack">plotly</span> has <span class="emph">modes</span>, which allow for points, lines, text and combinations. <span class="emph">Traces</span>, `add_*`, work similar to geoms.
 
@@ -96,6 +95,7 @@ mtcars %>%
             name='gam prediction')
 ```
 
+<br>
 
 While you can use plotly as a one-liner[^qplot], this would only be good for quick peeks while doing data exploration. It would generally be far too limiting otherwise.
 
@@ -119,6 +119,8 @@ gp = mtcars %>%
   geom_point(aes(color=amFactor))
 ggplotly()
 ```
+
+<br>
 
 Note that this is not a one-to-one transformation.  The plotly image will have different line widths and point sizes. It will usually be easier to change it within the ggplot process than tweaking the <span class="objclass">ggplotly</span> object.
 
@@ -184,7 +186,7 @@ visNetwork(nodes, edges, height=300, width=800) %>%
 The <span class="pack">leaflet</span> package from RStudio is good for quick interactive maps, and it's quite flexible and has some nice functionality to take your maps further. Unfortunately, it actually doesn't play well with many markdown formats.
 
 ```{r leaflet}
-hoevertext <- paste(sep = "<br/>",
+hovertext <- paste(sep = "<br/>",
   "<b><a href='http://umich.edu/'>University of Michigan</a></b>",
   "Ann Arbor, MI"
 )
@@ -193,15 +195,13 @@ hoevertext <- paste(sep = "<br/>",
 library(leaflet)
 leaflet() %>% 
   addTiles() %>%
-  addPopups(-83.738222, 42.277030, hoevertext,
-    options = popupOptions(closeButton = FALSE)
-  )
+  addPopups(lng=-83.738222, lat=42.277030, popup=hovertext)
 ```
 
 
 ### DT
 
-It might be a bit odd to think of data frames visually, but they can be interactive also. Use the <span class="pack">DT</span> package for interactive data frames.  This can be very useful when working in collaborative environments where one shares reports, as you can embed the data within the document itself.  
+It might be a bit odd to think of data frames visually, but they can be interactive also. One can use the <span class="pack">DT</span> package for interactive data frames.  This can be very useful when working in collaborative environments where one shares reports, as you can embed the data within the document itself.  
 
 
 ```{r datatable}
@@ -214,7 +214,7 @@ ggplot2movies::movies %>%
 
 <br>
 
-The other thing to be aware of is that tables *can* be visual, it's just that many academic outlets waste this opportunity.  Simple bolding, italics, and even sizing, can make results pop more easily for the audience.  The <span class="pack">DT</span> package even allows for coloring and simple things like bars that connotes values.
+The other thing to be aware of is that tables *can* be visual, it's just that many academic outlets waste this opportunity.  Simple bolding, italics, and even sizing, can make results pop more easily for the audience.  The <span class="pack">DT</span> package allows for coloring and even simple things like bars that connotes values.  The following gives some idea of its flexibility.
 
 ```{r datatable_options}
 iris %>% 
@@ -249,7 +249,7 @@ iris %>%
 
 <br>
 
-I would in no way recommend using the bars (unless the you want a visual *instead* of the value) or angled tag options, as that is more or less a prime example of chartjunk.  However, subtle use of color and emphasis can make tables of results that your audience will actually spend time exploring.
+I would in no way recommend using the bars, unless the you want a visual *instead* of the value and can show all possible values. I would not recommend angled tag options at all, as that is more or less a prime example of chartjunk.  However, subtle use of color and emphasis can make tables of results that your audience will actually spend time exploring.
 
 ### Shiny
 

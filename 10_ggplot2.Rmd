@@ -1,6 +1,5 @@
 ## ggplot2
 
-(SECTION DEVELOPMENT IN PROGRESS)
 
 ```{r ggplot2setup, include=FALSE, eval=TRUE, cache=FALSE}
 knitr::opts_chunk$set(eval=T, echo=T)
@@ -19,8 +18,8 @@ The most [popular](https://www.rdocumentation.org/trends?page1=1&sort1=total&pag
 Every graph is built from the same few parts, and it's important to be aware of a few key ideas, which we will cover in turn.
 
 - Layers (and geoms)
-- Aesthetics
 - Piping
+- Aesthetics
 - Facets
 - Scales
 - Themes
@@ -35,6 +34,7 @@ Note that while you can obviously use base R for visualization, it's never going
 In general, we start with a base layer and add to it. In most cases you'll start as follows.
 
 ```{r layer, eval=FALSE}
+# recall that starwars is in the dplyr package
 ggplot(aes(x=height, y=mass), data=starwars)
 ```
 
@@ -59,14 +59,14 @@ Each layer is consecutively added by means of a pipe operator, and layers may re
 
 ### Piping
 
-<span class="emph">Layers</span> are added via piping (<span class="emph">+</span>). The first layers added are typically <span class="emph">geoms</span>, or geometric objects that represent the data, and include things like:
+As we saw, <span class="emph">layers</span> are added via piping (<span class="emph">+</span>). The first layers added after the base are typically <span class="emph">geoms</span>, or geometric objects that represent the data, and include things like:
 
 - points
 - lines
 - density
 - text
 
-In case you're wondering why ggplot doesn't use `%>%` as in the tidyverse, it's because <span class="pack">ggplot2</span> was using pipes before it was cool, well before those came along. Otherwise, the concept is the same as we saw in the data processing section.
+In case you're wondering why ggplot doesn't use `%>%` as in the tidyverse and other visualization packages, it's because <span class="pack">ggplot2</span> was using pipes before it was cool, well before those came along. Otherwise, the concept is the same as we saw in the data processing section.
 
 ```{r pipeplus, eval=FALSE}
 ggplot(aes(x=myvar, y=myvar2), data=mydata) +
@@ -97,7 +97,7 @@ However, if I want the size to be associated with the data in some way, I use it
 
 ```{r aes_vs_not2, eval=FALSE}
 ... +
-  geom_point(aes(size=var_x))
+  geom_point(aes(size=myvar))
 ```
 
 The same goes for practically any aspect of a geom- size, color, fill, etc. If it is a fixed value, set it outside the aesthetic. If it varies based on the data, put it within an aesthetic.
@@ -107,19 +107,28 @@ The same goes for practically any aspect of a geom- size, color, fill, etc. If i
 
 ### Examples
 
+Let's get more of a feel for things by seeing some examples that demonstrate some geoms and aesthetics.
+
+To begin, after setting the base aesthetic, we'll set some explicit values for the geom.
+
 ```{r ggscatter, dev='png'}
 library(ggplot2)
 data("diamonds"); data('economics')
 ggplot(aes(x=carat, y=price), data=diamonds) +
-  geom_point()
+  geom_point(size=.5, color='peru')
 ```
+
+Next we use two different geoms, one using a different data source.  Note that geoms often have arguments specific to them, as `label` is for <span class="func">geom_text</span>. It would be ignored by <span class="func">geom_line</span>.
 
 ```{r ggline}
 ggplot(aes(x=date, y=unemploy), data=economics) +
-  geom_line()
+  geom_line() +
+  geom_text(aes(label=unemploy), 
+            vjust=-.5, 
+            data=filter(economics, date=='2009-10-01'))
 ```
 
-In the following, one setting, alpha (transparency), is not mapped to the data.
+In the following, one setting, alpha (transparency), is not mapped to the data, while size and color are[^legendproblem].
 
 ```{r ggalpha, fig.width=6, fig.height=4, dev='png'}
 ggplot(aes(x=carat, y=price), data=diamonds) +
@@ -171,7 +180,7 @@ ggplot(aes(x=times, y=accel), data=mcycle) +
   labs(x='milliseconds after impact', y='head acceleration', title='Motorcycle Accident')
 ```
 
-A frequent operation is changing the x and y look in the form of limits and tick marks.  Like labs, there is a general <span class="func">lims</span> function and specific functions for just the specific parts.  In addition, we may want to get really detailed using <span class="func">scale_x_\*</span> or <span class="func">scale_y_\*</span>.
+A frequent operation is changing the x and y look in the form of limits and tick marks.  Like <span class="func">labs</span>, there is a general <span class="func">lims</span> function and specific functions for just the specific parts.  In addition, we may want to get really detailed using <span class="func">scale_x_\*</span> or <span class="func">scale_y_\*</span>.
 
 ```{r scale_lims}
 ggplot(mpg, aes(displ, hwy, size=cyl)) + 
@@ -215,7 +224,7 @@ ggplot(mpg, aes(displ, hwy)) +
   scale_x_log10()
 ```
 
-In short, scales alterations are really useful for getting just the plot you want, and there is a lot of flexibility for you to work with.
+In short, scale alterations are really useful for getting just the plot you want, and there is a lot of flexibility for you to work with.
 
 ### Facets
 
@@ -225,10 +234,10 @@ In short, scales alterations are really useful for getting just the plot you wan
 
 Facet by cylinder.
 
-```{r facetgrid}
+```{r facetgrid, eval=1, echo=1}
 ggplot(mtcars, aes(wt, mpg)) + 
   geom_point() +
-  facet_grid(~ cyl, labeller = label_both)
+  facet_grid(~ cyl)
 ggplot(mpg, aes(displ, cty)) + 
   geom_point() +
   facet_grid(~ cyl, labeller = label_both)
@@ -290,7 +299,7 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
 ```
 
 
-#### Themes
+### Themes
 
 In the last example you saw two uses of a <span class="emph">theme</span>- a built-in version that comes with ggplot (<span class="func">theme_minimal</span>), and specific customization (<span class="func">theme(...)</span>).  The built-in themes provide ready-made approaches that might be enough for a finished product.  For the theme function, each argument, and there are many, takes on a specific value or an element function:
 
@@ -301,7 +310,7 @@ In the last example you saw two uses of a <span class="emph">theme</span>- a bui
 
 Each of those element functions has arguments specific to it. For example, for <span class="func">element_text</span> you can specify the font size, while for element line you could specify the line type.
 
-Note that the base theme of ggplot is not too good.  Doesn't work well for web presentation, and is even worse for print.  You will almost invariably need to tweak it.
+Note that the base theme of ggplot, and I would say every plotting package, is probably going to need manipulation before a plot is ready for presentation.  For example, the ggplot theme doesn't work well for web presentation, and is even worse for print.  You will almost invariably need to tweak it. I suggest using and saving your own custom theme for easy application for any visualization package you use frequently.
 
 
 ### Extensions
@@ -314,7 +323,8 @@ Note that the base theme of ggplot is not too good.  Doesn't work well for web p
 - animations
 - marginal plots
 - network graphs
-- aligning multiple ggplot visualizations
+- time series
+- aligning multiple ggplot visualizations, possibly of different types
 
 ```{r mullerplot, echo=FALSE}
 library(ggmuller)
@@ -329,24 +339,11 @@ Muller_plot(Muller_df, palette=rep(RColorBrewer::brewer.pal(12, 'Set3'), 4), xla
         axis.text.y=element_blank())
 ```
 
-In short, <span class="pack">ggplot2</span> is only the beginning. You'll have a lot of tools at your disposal. Furthermore, many modeling and other packages will produce ggplot graphics to which you can add your own layers and tweak like you would any other ggplot.
+As one can see, <span class="pack">ggplot2</span> is only the beginning. You'll have a lot of tools at your disposal. Furthermore, many modeling and other packages will produce ggplot graphics to which you can add your own layers and tweak like you would any other ggplot.
 
 ### Summary ggplot2
 
-<span class="pack">ggplot2</span> is an easy to use, but powerful visualization tool.
-
-Allows one to think in many dimensions for any graph:
-
-- x
-- y
-- color
-- size
-- opacity
-- facet
-
-2D graphs are only useful for conveying the simplest of ideas.
-
-Use <span class="pack">ggplot2</span> to easily create more interesting visualizations.
+<span class="pack">ggplot2</span> is an easy to use, but powerful visualization tool. It allows one to think in many dimensions for any graph, and extends well beyond the basics. Use it to easily create more interesting visualizations.
 
 
 
@@ -354,7 +351,7 @@ Use <span class="pack">ggplot2</span> to easily create more interesting visualiz
 
 #### Exercise 0
 
-Install and load the <span class="pack">ggplot2</span> package.
+Install and load the <span class="pack">ggplot2</span> package if you haven't already.
 
 #### Exercise 1
 
@@ -396,7 +393,11 @@ ggplot(aes(x=waiting, y=eruptions), data=faithful) +
 
 #### Exercise 2
 
-Play around and change the arguments to the following. You'll need to install the <span class="pack">maps</span> package. For example, do points for all county midpoints, with different colors. For that you'd need to change the x and y for the point geom to an aesthetic based on the longitude and latitude, as well as change its data argument to use the <span class="objclass">seats</span> data frame.
+Play around and change the arguments to the following. You'll need to install the <span class="pack">maps</span> package. 
+
+- For example, do points for all county midpoints. For that you'd need to change the x and y for the point geom to an aesthetic based on the longitude and latitude, as well as add its data argument to use the <span class="objclass">seats</span> data frame. 
+- Make the color of the points or text based on `subregion`. This will require adding the fill argument to the polygon geom and removing the NA setting. In addition, add the argument show.legend=F (outside the aesthetic), or you'll have a problematic legend (recall what we said before about too many colors!).  Try making color based on subregion too.
+- See if you can use <span class="func">element_blank</span> on a theme argument to remove the axis information.  See ?theme for ideas.
 
 ```{r ggplot_ex2}
 library(maps)
@@ -405,10 +406,18 @@ seats = mi %>%
   group_by(subregion) %>% 
   summarise_at(vars(lat, long), function(x) median(range(x)))
 
+# inspect the data
+# head(mi)
+# head(seats)
+
 ggplot(mi, aes(long, lat)) +
-  geom_polygon(aes(group = group), fill = NA, colour = "grey60") +
+  geom_polygon(aes(group = subregion), fill = NA, colour = "grey60") +
   geom_text(aes(label = subregion), data = seats, size = 1, angle = 45) +
   geom_point(x=-83.748333, y=42.281389, color='#1e90ff', size=3) +
   theme_minimal() +
   theme(panel.grid=element_blank())
 ```
+
+
+
+[^legendproblem]: The reason the legend is hard to make out is because the transparency is mapped to the colors and size. While I personally have never come across this being a desirable situation, nor can fathom why it would be the default, it can be fixed via `+ guides(colour = guide_legend(override.aes = list(alpha = 1)), size = guide_legend(override.aes = list(alpha = 1)))`.  Apparently because that's fun to have to do every time and easy to remember.
