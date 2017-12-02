@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-11-29">
+<meta name="date" content="2017-12-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -139,8 +139,8 @@ code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* Com
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
-<link rel="stylesheet" href="css\book.css" type="text/css" />
-<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
+<link rel="stylesheet" href="css/book.css" type="text/css" />
+<link rel="stylesheet" href="css/standard_html.css" type="text/css" />
 </head>
 
 <body>
@@ -308,40 +308,40 @@ dt =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt"
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[<span class="dv">2</span>]
 dt[<span class="dv">2</span>,]</code></pre></div>
 <pre><code>   x g         y
-1: 2 2 0.2887187
+1: 4 2 0.2385534
    x g         y
-1: 2 2 0.2887187</code></pre>
+1: 4 2 0.2385534</code></pre>
 <p>You use <strong>j</strong> to select (by name!) or create new columns. We can define a new column with the <span class="func">:=</span> operator.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[,x]
 dt[,z <span class="op">:</span><span class="er">=</span><span class="st"> </span>x<span class="op">+</span>y]  <span class="co"># dt now has a new column</span>
 dt[,z]
 dt[g<span class="op">&gt;</span><span class="dv">1</span>, <span class="kw">mean</span>(z), by=g]
 dt</code></pre></div>
-<pre><code>[1] 3 2 5 7 1 4
-[1] 3.147026 2.288719 5.379086 7.263053 1.924139 4.345137
+<pre><code>[1] 6 4 7 8 3 1
+[1] 6.890634 4.238553 7.193629 8.800842 3.688830 1.625085
    g       V1
-1: 2 2.106429
-2: 3 4.862112
+1: 2 3.963691
+2: 3 4.409357
    x g         y        z
-1: 3 1 0.1470262 3.147026
-2: 2 2 0.2887187 2.288719
-3: 5 3 0.3790864 5.379086
-4: 7 1 0.2630534 7.263053
-5: 1 2 0.9241392 1.924139
-6: 4 3 0.3451373 4.345137</code></pre>
+1: 6 1 0.8906342 6.890634
+2: 4 2 0.2385534 4.238553
+3: 7 3 0.1936289 7.193629
+4: 8 1 0.8008420 8.800842
+5: 3 2 0.6888296 3.688830
+6: 1 3 0.6250849 1.625085</code></pre>
 <p>Because <strong>j</strong> is an argument, dropping columns is awkward.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[,<span class="op">-</span>y]             <span class="co"># creates negative values of y</span>
 dt[,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=F]   <span class="co"># drops y, but now needs quotes</span>
 ## dt[,y:=NULL]        # drops y, but this is just a base R approach
 ## dt$y = NULL</code></pre></div>
-<pre><code>[1] -0.1470262 -0.2887187 -0.3790864 -0.2630534 -0.9241392 -0.3451373
+<pre><code>[1] -0.8906342 -0.2385534 -0.1936289 -0.8008420 -0.6888296 -0.6250849
    x g        z
-1: 3 1 3.147026
-2: 2 2 2.288719
-3: 5 3 5.379086
-4: 7 1 7.263053
-5: 1 2 1.924139
-6: 4 3 4.345137</code></pre>
+1: 6 1 6.890634
+2: 4 2 4.238553
+3: 7 3 7.193629
+4: 8 1 8.800842
+5: 3 2 3.688830
+6: 1 3 1.625085</code></pre>
 <p>Data table does not make unnecessary copies. For example if we do the following…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DT =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">A=</span><span class="dv">5</span><span class="op">:</span><span class="dv">1</span>,<span class="dt">B=</span>letters[<span class="dv">5</span><span class="op">:</span><span class="dv">1</span>])
 DT2 =<span class="st"> </span>DT</code></pre></div>
@@ -354,23 +354,23 @@ DT2 =<span class="st"> </span>DT</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1 =<span class="st"> </span>dt2 =<span class="st"> </span>dt
 dt[,<span class="kw">sum</span>(x,y), by=g]                  <span class="co"># sum of all x and y values</span></code></pre></div>
 <pre><code>   g        V1
-1: 1 10.410080
-2: 2  4.212858
-3: 3  9.724224</code></pre>
+1: 1 15.691476
+2: 2  7.927383
+3: 3  8.818714</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1[,newvar <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(x), by=g]         <span class="co"># add new variable to the original data </span>
 dt1</code></pre></div>
 <pre><code>   x g         y        z newvar
-1: 3 1 0.1470262 3.147026     10
-2: 2 2 0.2887187 2.288719      3
-3: 5 3 0.3790864 5.379086      9
-4: 7 1 0.2630534 7.263053     10
-5: 1 2 0.9241392 1.924139      3
-6: 4 3 0.3451373 4.345137      9</code></pre>
+1: 6 1 0.8906342 6.890634     14
+2: 4 2 0.2385534 4.238553      7
+3: 7 3 0.1936289 7.193629      8
+4: 8 1 0.8008420 8.800842     14
+5: 3 2 0.6888296 3.688830      7
+6: 1 3 0.6250849 1.625085      8</code></pre>
 <p>We can also create groupings on the fly. For a new summary data set, we’ll take the following approach- we create a grouping based on whether g is a value of one or not, then get the mean and sum of x for those two categories. The corresponding dplyr approach is also shown (but not evaluated) for comparison.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt2[, <span class="kw">list</span>(<span class="dt">mean_x =</span> <span class="kw">mean</span>(x), <span class="dt">sum_x =</span> <span class="kw">sum</span>(x)), by =<span class="st"> </span>g<span class="op">==</span><span class="dv">1</span>]</code></pre></div>
 <pre><code>       g mean_x sum_x
-1:  TRUE      5    10
-2: FALSE      3    12</code></pre>
+1:  TRUE   7.00    14
+2: FALSE   3.75    15</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## dt2 %&gt;% group_by(g==1) %&gt;% summarise(mean_x=mean(x), sum_x=sum(x))</code></pre></div>
 </div>
 <div id="faster" class="section level3">
@@ -448,7 +448,7 @@ test_dt2 =<span class="st"> </span><span class="kw">setkey</span>(test_dt1, g)
 <p>Consider the following. We sample the first 14 letters 1000 times with replacement and see which ones match in a subset of another subset of letters. I compare the same operation to <span class="pack">stringr</span> and the <span class="pack">stringi</span> package whose functionality it’s using.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lets_<span class="dv">1</span> =<span class="st"> </span><span class="kw">sample</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">14</span>], <span class="dv">1000</span>, <span class="dt">replace=</span>T)
 lets_<span class="dv">1</span> <span class="op">%chin%</span><span class="st"> </span>letters[<span class="dv">13</span><span class="op">:</span><span class="dv">26</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>)</code></pre></div>
-<pre><code> [1] FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE</code></pre>
+<pre><code> [1] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
 <table style="width:43%;">
 <colgroup>
 <col width="13%" />

@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-11-29">
+<meta name="date" content="2017-12-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -139,8 +139,8 @@ code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* Com
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
-<link rel="stylesheet" href="css\book.css" type="text/css" />
-<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
+<link rel="stylesheet" href="css/book.css" type="text/css" />
+<link rel="stylesheet" href="css/standard_html.css" type="text/css" />
 </head>
 
 <body>
@@ -335,10 +335,10 @@ mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(microbenchmark)
 <span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log),
                <span class="kw">log</span>(mymatrix))</code></pre></div>
-<pre><code>Unit: microseconds
-                    expr    min     lq     mean median     uq     max neval
- apply(mymatrix, 2, log) 44.428 45.629 47.17509 46.229 46.530 117.975   100
-           log(mymatrix)  2.701  3.002  3.06215  3.002  3.302   3.903   100</code></pre>
+<pre><code>Unit: nanoseconds
+                    expr   min      lq     mean  median      uq   max neval
+ apply(mymatrix, 2, log) 18389 18842.0 19590.26 19163.5 19454.5 52385   100
+           log(mymatrix)   590   629.5   702.08   685.5   711.0  2818   100</code></pre>
 <p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
 </div>
 <div id="apply-functions" class="section level3">

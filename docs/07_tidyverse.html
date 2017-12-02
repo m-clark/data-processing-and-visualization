@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2017-11-29">
+<meta name="date" content="2017-12-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -139,8 +139,8 @@ code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* Com
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
-<link rel="stylesheet" href="css\book.css" type="text/css" />
-<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
+<link rel="stylesheet" href="css/book.css" type="text/css" />
+<link rel="stylesheet" href="css/standard_html.css" type="text/css" />
 </head>
 
 <body>
@@ -672,23 +672,23 @@ stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span c
                       <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),
                       <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>) )
 stocks <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre></div>
-<pre><code>        time          X           Y         Z
-1 2009-01-01  0.3224696 -0.33724275 -1.416837
-2 2009-01-02  0.3347488  0.66004625  2.068788
-3 2009-01-03  0.4928503 -1.59504753 -5.315608
-4 2009-01-04  2.1792589  0.07683249  3.951607
-5 2009-01-05 -0.4488275 -0.64208470 -4.154432
-6 2009-01-06  0.5488021 -2.42665626  3.490227</code></pre>
+<pre><code>        time          X          Y          Z
+1 2009-01-01 -1.0049138 -1.0395968  0.0730022
+2 2009-01-02 -0.4772437 -0.5617229 -0.2448701
+3 2009-01-03  0.7940856  2.6999072  1.4731007
+4 2009-01-04  1.6565777 -0.1929532  2.1243771
+5 2009-01-05  0.3958647  4.9232890 -5.4346533
+6 2009-01-06  0.1088657  1.0217410  2.8221789</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stocks <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">gather</span>(stock, price, <span class="op">-</span>time) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>head</code></pre></div>
 <pre><code>        time stock      price
-1 2009-01-01     X  0.3224696
-2 2009-01-02     X  0.3347488
-3 2009-01-03     X  0.4928503
-4 2009-01-04     X  2.1792589
-5 2009-01-05     X -0.4488275
-6 2009-01-06     X  0.5488021</code></pre>
+1 2009-01-01     X -1.0049138
+2 2009-01-02     X -0.4772437
+3 2009-01-03     X  0.7940856
+4 2009-01-04     X  1.6565777
+5 2009-01-05     X  0.3958647
+6 2009-01-06     X  0.1088657</code></pre>
 <p>Note that the latter is an example of <span class="emph">tidy data</span> while the former is not. Why do we generally prefer such data? Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. <em>This is especially the case for visualization</em>.</p>
 <p>The following demonstrates the separate function utilized for a very common data processing task- dealing with names. Here’ we’ll separate <span class="objclass">player</span> into first and last names based on the space.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>
