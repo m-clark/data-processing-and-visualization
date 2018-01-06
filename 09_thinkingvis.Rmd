@@ -614,6 +614,19 @@ The main message to get is that not everyone is able to use the web in the same 
 
 We talked about this previously, but when communicating visually, one can do simple things like choosing a colorblind-friendly palette, or using a font contrast that will make it easier on the eyes of those reading your work.  There are even browser plugins to test your web content for accessibility. In addition, there are little things like adding a title to inserted images, making links more noticeable etc., all of which can help consumers of your information.
 
+### File Types
+
+It's one thing to create a visualization, but at some point you're likely going to want to share it.  RStudio will allow for the export of any visualization created in the Plots or Viewer tab.  In addition, various packages may have their own save function, that may allow you to specify size, type or other aspects.  Here we'll discuss some of the options.
+
+- <span class="emph">png</span>: These are relatively small in size and ubiquitous on the web. You should feel fine in this format.  It does not scale however, so if you make a smaller image and someone zooms, it will become blurry.
+- <span class="emph">gif</span>: These are the type used for all the stupid animations you see on the web.  Using them is fine if you want to make an animation, but know that it can go longer than a couple seconds and there is no requirement for it to be asinine.
+- <span class="emph">jpg</span>: Commonly used for photographs, which isn't the case with data generated graphs.  Given their relative size I don't see much need for these.
+- <span class="emph">svg</span>: These take a different approach to imaging and can scale. You can make a very small one and it (potentially) can still look great when zoomed in to a much larger size. Often useful for logos, but possibly in any situation.
+
+As I don't know what screen will see my visualizations, I generally opt for svg.  It may be a bit slower/larger, but in my usage and for my audience size, this is of little concern relative to it looking proper. They also work for pdf if you're still creating those, and there are also lighter weight versions in R, e.g. <span class="pack">svglite</span>.  Beyond that I use png, and have no need for others.
+
+Here is a [discussion on stackexchange](https://stackoverflow.com/questions/2336522/png-vs-gif-vs-jpeg-vs-svg-when-best-to-use) that summarizes some of the above. The initial question is old but there have been recent updates to the responses.
+
 
 ### Summary
 
@@ -622,11 +635,11 @@ The goal of this section was mostly just to help you realize that there are many
 
 ### A casual list of things to avoid
 
-I'm just putting things that come to mind here. Mostly it is personal opinion, though often based on various sources in the data visualization realm or simply my own experience.  
+I'm just putting things that come to mind here as I return to this document. Mostly it is personal opinion, though often based on various sources in the data visualization realm or simply my own experience.  
 
 #### Pie
 
-Pie charts and their cousins, e.g. bar charts (and stacked versions), wind rose plots etc., either convey too little information or make otherwise simple information more difficult to process perceptually.
+Pie charts and their cousins, e.g. bar charts (and stacked versions), wind rose plots, radar plots etc., either convey too little information or make otherwise simple information more difficult to process perceptually.
 
 #### Histograms
 
@@ -642,12 +655,12 @@ Some put a completely non-scientifically based number on this, but the idea hold
 
 #### Showing maps that just display population
 
-Most of the maps I see on the web cover a wide range of data and can be very visually appealing, but pretty much just tell me where the most populated areas are, which is completely uninteresting.  Make sure that your geographical depiction is more informative than this.
+Most of the maps I see on the web cover a wide range of data and can be very visually appealing, but pretty much just tell me where the most populated areas are, which is utterly uninteresting.  Make sure that your geographical depiction is more informative than this.
 
 
 #### Biplots
 
-A lot of folks doing PCA resort to biplots for interpretation, where a graphical model would be much more straightforward.  See [this chapter](http://m-clark.github.io/docs/sem/latent-variables-1.html) for example.
+A lot of folks doing PCA resort to biplots for interpretation, where a graphical model would be much more straightforward.  See [this chapter](http://m-clark.github.io/sem/latent-variables-1.html) for example.
 
 
 ### Thinking Visually Exercises
