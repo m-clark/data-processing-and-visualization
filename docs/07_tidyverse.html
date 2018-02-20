@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Data Processing &amp; Visualization</title>
   <meta name="description" content="Data Processing &amp; Visualization in R">
-  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.6 and GitBook 2.6.7">
 
   <meta property="og:title" content="Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2018-01-28">
+<meta name="date" content="2018-02-20">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -46,16 +46,16 @@
 
 
 
-<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.0/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.7.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
-<link href="libs/vis-4.20.0/vis.css" rel="stylesheet" />
-<script src="libs/vis-4.20.0/vis.min.js"></script>
-<script src="libs/visNetwork-binding-2.0.1/visNetwork.js"></script>
+<link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
+<script src="libs/vis-4.20.1/vis.min.js"></script>
+<script src="libs/visNetwork-binding-2.0.3/visNetwork.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
 <link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
 <script src="libs/highcharts-5.0.6/highstock.js"></script>
@@ -95,10 +95,11 @@
 <script src="libs/Proj4Leaflet-0.7.2/proj4-compressed.js"></script>
 <script src="libs/Proj4Leaflet-0.7.2/proj4leaflet.js"></script>
 <script src="libs/leaflet-binding-1.1.0/leaflet.js"></script>
-<script src="libs/datatables-binding-0.2/datatables.js"></script>
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.4/datatables.js"></script>
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
 
 
 <style type="text/css">
@@ -139,8 +140,8 @@ code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* Com
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
-<link rel="stylesheet" href="css/book.css" type="text/css" />
-<link rel="stylesheet" href="css/standard_html.css" type="text/css" />
+<link rel="stylesheet" href="css\book.css" type="text/css" />
+<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
 </head>
 
 <body>
@@ -508,18 +509,18 @@ $ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;TOT&quot;, &quot;DAL&quot;, &quot;BR
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">slice</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</code></pre></div>
 <pre><code># A tibble: 10 x 30
-      Rk            Player   Pos   Age    Tm     G    GS    MP    FG   FGA   FG.   X3P  X3PA  X3P.   X2P  X2PA  X2P.  eFG.    FT   FTA   FT.   ORB   DRB   TRB   AST   STL   BLK   TOV    PF   PTS
-   &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
- 1     1      Alex Abrines    SG    23   OKC    68     6  1055   134   341  .393    94   247  .381    40    94  .426  .531    44    49  .898    18    68    86    40    37     8    33   114   406
- 2     2        Quincy Acy    PF    26   TOT    38     1   558    70   170  .412    37    90  .411    33    80  .413  .521    45    60  .750    20    95   115    18    14    15    21    67   222
- 3     2        Quincy Acy    PF    26   DAL     6     0    48     5    17  .294     1     7  .143     4    10  .400  .324     2     3  .667     2     6     8     0     0     0     2     9    13
- 4     2        Quincy Acy    PF    26   BRK    32     1   510    65   153  .425    36    83  .434    29    70  .414  .542    43    57  .754    18    89   107    18    14    15    19    58   209
- 5     3      Steven Adams     C    23   OKC    80    80  2389   374   655  .571     0     1  .000   374   654  .572  .571   157   257  .611   281   332   613    86    89    78   146   195   905
- 6     4     Arron Afflalo    SG    31   SAC    61    45  1580   185   420  .440    62   151  .411   123   269  .457  .514    83    93  .892     9   116   125    78    21     6    42   104   515
- 7     5     Alexis Ajinca     C    28   NOP    39    15   584    89   178  .500     0     4  .000    89   174  .511  .500    29    40  .725    46   131   177    12    20    22    31    77   207
- 8     6      Cole Aldrich     C    28   MIN    62     0   531    45    86  .523     0     0          45    86  .523  .523    15    22  .682    51   107   158    25    25    23    17    85   105
- 9     7 LaMarcus Aldridge    PF    31   SAS    72    72  2335   500  1049  .477    23    56  .411   477   993  .480  .488   220   271  .812   172   351   523   139    46    88    98   158  1243
-10     8       Lavoy Allen    PF    27   IND    61     5   871    77   168  .458     0     1  .000    77   167  .461  .458    23    33  .697   105   114   219    57    18    24    29    78   177</code></pre>
+   Rk    Player            Pos   Age   Tm    G     GS    MP    FG    FGA   FG.   X3P   X3PA  X3P.  X2P   X2PA  X2P.  eFG.  FT    FTA   FT.   ORB   DRB   TRB   AST   STL   BLK   TOV   PF    PTS  
+   &lt;chr&gt; &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 1     Alex Abrines      SG    23    OKC   68    6     1055  134   341   .393  94    247   .381  40    94    .426  .531  44    49    .898  18    68    86    40    37    8     33    114   406  
+ 2 2     Quincy Acy        PF    26    TOT   38    1     558   70    170   .412  37    90    .411  33    80    .413  .521  45    60    .750  20    95    115   18    14    15    21    67    222  
+ 3 2     Quincy Acy        PF    26    DAL   6     0     48    5     17    .294  1     7     .143  4     10    .400  .324  2     3     .667  2     6     8     0     0     0     2     9     13   
+ 4 2     Quincy Acy        PF    26    BRK   32    1     510   65    153   .425  36    83    .434  29    70    .414  .542  43    57    .754  18    89    107   18    14    15    19    58    209  
+ 5 3     Steven Adams      C     23    OKC   80    80    2389  374   655   .571  0     1     .000  374   654   .572  .571  157   257   .611  281   332   613   86    89    78    146   195   905  
+ 6 4     Arron Afflalo     SG    31    SAC   61    45    1580  185   420   .440  62    151   .411  123   269   .457  .514  83    93    .892  9     116   125   78    21    6     42    104   515  
+ 7 5     Alexis Ajinca     C     28    NOP   39    15    584   89    178   .500  0     4     .000  89    174   .511  .500  29    40    .725  46    131   177   12    20    22    31    77    207  
+ 8 6     Cole Aldrich      C     28    MIN   62    0     531   45    86    .523  0     0     &quot;&quot;    45    86    .523  .523  15    22    .682  51    107   158   25    25    23    17    85    105  
+ 9 7     LaMarcus Aldridge PF    31    SAS   72    72    2335  500   1049  .477  23    56    .411  477   993   .480  .488  220   271   .812  172   351   523   139   46    88    98    158   1243 
+10 8     Lavoy Allen       PF    27    IND   61    5     871   77    168   .458  0     1     .000  77    167   .461  .458  23    33    .697  105   114   219   57    18    24    29    78    177  </code></pre>
 <p>We can use filtering even with variables just created.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">unite</span>(<span class="st">&quot;posTeam&quot;</span>, Pos, Tm) <span class="op">%&gt;%</span><span class="st">         </span><span class="co"># create a new variable</span>
@@ -576,14 +577,14 @@ $ GS     &lt;dbl&gt; 6, 1, 0, 1, 80, 45, 15, 0, 72, 5, 66, 25, 0, 0, 10, 2, 8, 1
 <span class="st">  </span><span class="kw">group_by</span>(Pos) <span class="op">%&gt;%</span><span class="st">                                                 </span>
 <span class="st">  </span><span class="kw">summarize</span>(<span class="dt">meanTrueShooting =</span> <span class="kw">mean</span>(trueShooting, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))    </code></pre></div>
 <pre><code># A tibble: 6 x 2
-    Pos meanTrueShooting
+  Pos   meanTrueShooting
   &lt;chr&gt;            &lt;dbl&gt;
-1     C        0.5646389
-2    PF        0.5164029
-3  PF-C        0.5093448
-4    PG        0.5105353
-5    SF        0.5295641
-6    SG        0.5154494</code></pre>
+1 C                0.565
+2 PF               0.516
+3 PF-C             0.509
+4 PG               0.511
+5 SF               0.530
+6 SG               0.515</code></pre>
 <p>We can use <span class="func">do</span> on grouped data to go further. This function can be used to create a new <span class="emph">list-column</span> in the data, the elements of which can be <em>anything</em>, even the results of an analysis for each group. As such, we can use <span class="pack">tidyr’s</span> <span class="func">unnest</span> to get back to a standard data frame.</p>
 <p>To demonstrate, the following will group data by position, then get the correlation between field-goal percentage and free-throw shooting percentage. For some reason, one individual was labeled as ‘PF-C’, so we change them to just ‘C’. On your own, I recommend just looking at it to the do line first, and compare to this result.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>
@@ -592,13 +593,13 @@ $ GS     &lt;dbl&gt; 6, 1, 0, 1, 80, 45, 15, 0, 72, 5, 66, 25, 0, 0, 10, 2, 8, 1
 <span class="st">  </span><span class="kw">do</span>(<span class="dt">FgFt_Corr=</span><span class="kw">cor</span>(.<span class="op">$</span>FG., .<span class="op">$</span>FT., <span class="dt">use=</span><span class="st">&#39;complete&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">unnest</span>(FgFt_Corr)</code></pre></div>
 <pre><code># A tibble: 5 x 2
-    Pos   FgFt_Corr
-  &lt;chr&gt;       &lt;dbl&gt;
-1     C -0.43286280
-2    PF -0.08935286
-3    PG  0.12087949
-4    SF  0.02330231
-5    SG -0.01293017</code></pre>
+  Pos   FgFt_Corr
+  &lt;chr&gt;     &lt;dbl&gt;
+1 C       -0.433 
+2 PF      -0.0894
+3 PG       0.121 
+4 SF       0.0233
+5 SG      -0.0129</code></pre>
 <p>As a reminder, data frames are lists. As such, anything can go into the ‘columns’.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(nycflights13)
 carriers =<span class="st"> </span><span class="kw">group_by</span>(flights, carrier)
@@ -609,14 +610,14 @@ mods <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">summarize</span>(<span class="dt">rsq =</span> <span class="kw">summary</span>(model)<span class="op">$</span>r.squared) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>head</code></pre></div>
 <pre><code># A tibble: 6 x 1
-         rsq
-       &lt;dbl&gt;
-1 0.05135040
-2 0.05041396
-3 0.08277597
-4 0.02407390
-5 0.03472122
-6 0.08360260</code></pre>
+     rsq
+   &lt;dbl&gt;
+1 0.0514
+2 0.0504
+3 0.0828
+4 0.0241
+5 0.0347
+6 0.0836</code></pre>
 <div class="note">
 <p>You can use <span class="func">group_by</span> on more than one variable, e.g. <code>group_by(var1, var2)</code></p>
 <p><img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></p>
@@ -634,26 +635,26 @@ mods <span class="op">%&gt;%</span><span class="st"> </span>
 <p>Probably the most common is a left join, where we kind of have one primary data set, and are adding data from another source to it. The following is a simple demonstration.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">band_members</code></pre></div>
 <pre><code># A tibble: 3 x 2
-     Name         Band
-    &lt;chr&gt;        &lt;chr&gt;
-1    Seth   Com Truise
-2 Francis       Pixies
-3   Bubba The New Year</code></pre>
+  Name    Band        
+  &lt;chr&gt;   &lt;chr&gt;       
+1 Seth    Com Truise  
+2 Francis Pixies      
+3 Bubba   The New Year</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">band_instruments</code></pre></div>
 <pre><code># A tibble: 3 x 2
-     Name  Instrument
-    &lt;chr&gt;       &lt;chr&gt;
-1    Seth Synthesizer
-2 Francis      Guitar
-3   Bubba      Guitar</code></pre>
+  Name    Instrument 
+  &lt;chr&gt;   &lt;chr&gt;      
+1 Seth    Synthesizer
+2 Francis Guitar     
+3 Bubba   Guitar     </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">left_join</span>(band_members, band_instruments)</code></pre></div>
 <pre><code>Joining, by = &quot;Name&quot;</code></pre>
 <pre><code># A tibble: 3 x 3
-     Name         Band  Instrument
-    &lt;chr&gt;        &lt;chr&gt;       &lt;chr&gt;
-1    Seth   Com Truise Synthesizer
-2 Francis       Pixies      Guitar
-3   Bubba The New Year      Guitar</code></pre>
+  Name    Band         Instrument 
+  &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt;      
+1 Seth    Com Truise   Synthesizer
+2 Francis Pixies       Guitar     
+3 Bubba   The New Year Guitar     </code></pre>
 <p>Merges can get quite complex, and involve multiple data sources. In many cases you may have to do a lot of processing before getting to the merge, but <span class="pack">dplyr’s</span> joins will help quite a bit.</p>
 </div>
 <div id="tidyr" class="section level3">
@@ -673,23 +674,23 @@ stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span c
                       <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),
                       <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>) )
 stocks <span class="op">%&gt;%</span><span class="st"> </span>head</code></pre></div>
-<pre><code>        time          X          Y          Z
-1 2009-01-01 -1.0049138 -1.0395968  0.0730022
-2 2009-01-02 -0.4772437 -0.5617229 -0.2448701
-3 2009-01-03  0.7940856  2.6999072  1.4731007
-4 2009-01-04  1.6565777 -0.1929532  2.1243771
-5 2009-01-05  0.3958647  4.9232890 -5.4346533
-6 2009-01-06  0.1088657  1.0217410  2.8221789</code></pre>
+<pre><code>        time          X          Y         Z
+1 2009-01-01  1.8411049  1.1938074 -4.541542
+2 2009-01-02  0.4706826 -1.7465627  1.488320
+3 2009-01-03  0.5029151  4.2206820  6.407995
+4 2009-01-04  0.2744825  1.7422138  2.244403
+5 2009-01-05  0.7150627  0.6303446  6.723905
+6 2009-01-06 -1.3937769  2.3109122  1.051287</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stocks <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">gather</span>(stock, price, <span class="op">-</span>time) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>head</code></pre></div>
 <pre><code>        time stock      price
-1 2009-01-01     X -1.0049138
-2 2009-01-02     X -0.4772437
-3 2009-01-03     X  0.7940856
-4 2009-01-04     X  1.6565777
-5 2009-01-05     X  0.3958647
-6 2009-01-06     X  0.1088657</code></pre>
+1 2009-01-01     X  1.8411049
+2 2009-01-02     X  0.4706826
+3 2009-01-03     X  0.5029151
+4 2009-01-04     X  0.2744825
+5 2009-01-05     X  0.7150627
+6 2009-01-06     X -1.3937769</code></pre>
 <p>Note that the latter is an example of <span class="emph">tidy data</span> while the former is not. Why do we generally prefer such data? Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. <em>This is especially the case for visualization</em>.</p>
 <p>The following demonstrates the separate function utilized for a very common data processing task- dealing with names. Here’ we’ll separate <span class="objclass">player</span> into first and last names based on the space.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bball <span class="op">%&gt;%</span><span class="st"> </span>
@@ -787,18 +788,18 @@ x <span class="op">%&gt;%</span><span class="st"> </span>
 <p>It should spit out something like the following:</p>
 <pre><code># A tibble: 10 x 3
 # Groups:   mpaa [?]
-    mpaa Drama AvgRating
+   mpaa  Drama AvgRating
    &lt;chr&gt; &lt;int&gt;     &lt;dbl&gt;
- 1           0  5.940811
- 2           1  6.204495
- 3 NC-17     0  4.275000
- 4 NC-17     1  4.620000
- 5    PG     0  5.193590
- 6    PG     1  6.154913
- 7 PG-13     0  5.435729
- 8 PG-13     1  6.135092
- 9     R     0  4.855603
-10     R     1  5.942602</code></pre>
+ 1 &quot;&quot;        0      5.94
+ 2 &quot;&quot;        1      6.20
+ 3 NC-17     0      4.28
+ 4 NC-17     1      4.62
+ 5 PG        0      5.19
+ 6 PG        1      6.15
+ 7 PG-13     0      5.44
+ 8 PG-13     1      6.14
+ 9 R         0      4.86
+10 R         1      5.94</code></pre>
 
 </div>
 </div>

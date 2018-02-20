@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Data Processing &amp; Visualization</title>
   <meta name="description" content="Data Processing &amp; Visualization in R">
-  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.6 and GitBook 2.6.7">
 
   <meta property="og:title" content="Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2018-01-28">
+<meta name="date" content="2018-02-20">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -46,101 +46,11 @@
 
 
 
-<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
-<script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
-<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
-<link href="libs/vis-4.20.0/vis.css" rel="stylesheet" />
-<script src="libs/vis-4.20.0/vis.min.js"></script>
-<script src="libs/visNetwork-binding-2.0.1/visNetwork.js"></script>
-<script src="libs/proj4js-2.3.15/proj4.js"></script>
-<link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
-<script src="libs/highcharts-5.0.6/highstock.js"></script>
-<script src="libs/highcharts-5.0.6/highcharts-3d.js"></script>
-<script src="libs/highcharts-5.0.6/highcharts-more.js"></script>
-<script src="libs/highcharts-5.0.6/modules/annotations.js"></script>
-<script src="libs/highcharts-5.0.6/modules/broken-axis.js"></script>
-<script src="libs/highcharts-5.0.6/modules/data.js"></script>
-<script src="libs/highcharts-5.0.6/modules/drilldown.js"></script>
-<script src="libs/highcharts-5.0.6/modules/exporting.js"></script>
-<script src="libs/highcharts-5.0.6/modules/funnel.js"></script>
-<script src="libs/highcharts-5.0.6/modules/heatmap.js"></script>
-<script src="libs/highcharts-5.0.6/modules/map.js"></script>
-<script src="libs/highcharts-5.0.6/modules/no-data-to-display.js"></script>
-<script src="libs/highcharts-5.0.6/modules/offline-exporting.js"></script>
-<script src="libs/highcharts-5.0.6/modules/solid-gauge.js"></script>
-<script src="libs/highcharts-5.0.6/modules/treemap.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/annotations.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/draggable-legend.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/draggable-points.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/export-csv.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/grouped-categories.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/motion.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/pattern-fill-v2.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/tooltip-delay.js"></script>
-<script src="libs/highcharts-5.0.6/custom/reset.js"></script>
-<script src="libs/highcharts-5.0.6/custom/symbols-extra.js"></script>
-<script src="libs/highcharts-5.0.6/custom/text-symbols.js"></script>
-<link href="libs/fontawesome-4.5.0/font-awesome.min.css" rel="stylesheet" />
-<link href="libs/htmlwdgtgrid-1/htmlwdgtgrid.css" rel="stylesheet" />
-<script src="libs/highchart-binding-0.5.0/highchart.js"></script>
-<link href="libs/leaflet-0.7.7/leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-0.7.7/leaflet.js"></script>
-<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<link href="libs/leaflet-label-0.2.2/leaflet.label.css" rel="stylesheet" />
-<script src="libs/leaflet-label-0.2.2/leaflet.label.js"></script>
-<script src="libs/Proj4Leaflet-0.7.2/proj4-compressed.js"></script>
-<script src="libs/Proj4Leaflet-0.7.2/proj4leaflet.js"></script>
-<script src="libs/leaflet-binding-1.1.0/leaflet.js"></script>
-<script src="libs/datatables-binding-0.2/datatables.js"></script>
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
 
 
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-</style>
 
-<link rel="stylesheet" href="css/book.css" type="text/css" />
-<link rel="stylesheet" href="css/standard_html.css" type="text/css" />
+<link rel="stylesheet" href="css\book.css" type="text/css" />
+<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
 </head>
 
 <body>
@@ -201,7 +111,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="06_pipes.html"><a href="06_pipes.html#flexibility"><i class="fa fa-check"></i>Flexibility</a></li>
 <li class="chapter" data-level="" data-path="06_pipes.html"><a href="06_pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html"><i class="fa fa-check"></i>Tidyverse</a><ul>
+</ul></li>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html"><i class="fa fa-check"></i>or via subset</a><ul>
+<li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#tidyverse"><i class="fa fa-check"></i>Tidyverse</a><ul>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#what-is-the-tidyverse"><i class="fa fa-check"></i>What is the tidyverse?</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is tidy?</a></li>
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#dplyr"><i class="fa fa-check"></i>dplyr</a></li>
@@ -216,7 +128,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="07_tidyverse.html"><a href="07_tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
 <li><a href="07_tidyverse.html#dplyr-exercises"><strong>dplyr Exercises</strong></a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html"><i class="fa fa-check"></i>data.table</a><ul>
+</ul></li>
+<li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html"><i class="fa fa-check"></i>timing_join =</a><ul>
+<li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html#data.table"><i class="fa fa-check"></i>data.table</a><ul>
 <li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html#basics"><i class="fa fa-check"></i>Basics</a></li>
 <li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html#grouped-operations"><i class="fa fa-check"></i>Grouped operations</a></li>
 <li class="chapter" data-level="" data-path="08_datatable.html"><a href="08_datatable.html#faster"><i class="fa fa-check"></i>Faster!</a></li>
@@ -237,13 +151,26 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#scaling-size"><i class="fa fa-check"></i>Scaling Size</a></li>
 <li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
-<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#accessibility"><i class="fa fa-check"></i>Accessibility</a></li>
-<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#file-types"><i class="fa fa-check"></i>File Types</a></li>
-<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#summary-2"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#a-casual-list-of-things-to-avoid"><i class="fa fa-check"></i>A casual list of things to avoid</a></li>
-<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#noisy-gaussian-process-demo.-the-matrix-labeling-is-in-keeping-with-murphy"><i class="fa fa-check"></i>‘Noisy’ gaussian process demo. The matrix labeling is in keeping with Murphy</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#and-rasmussen-and-williams-2006.-see-those-sources-for-more-detail."><i class="fa fa-check"></i>2012 and Rasmussen and Williams 2006. See those sources for more detail.</a></li>
+<li><a href="09_thinkingvis.html#murphys-matlab-code-can-be-found-here-httpscode.google.comppmtk3-though">Murphy’s matlab code can be found here: <a href="https://code.google.com/p/pmtk3/" class="uri">https://code.google.com/p/pmtk3/</a>, though</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#the-relevant-files-are-housed-alongside-this-code."><i class="fa fa-check"></i>the relevant files are housed alongside this code.</a></li>
+<li><a href="09_thinkingvis.html#section-1"></a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#the-goal-of-this-code-is-to-plot-samples-from-the-prior-and-posterior-predictive"><i class="fa fa-check"></i>The goal of this code is to plot samples from the prior and posterior predictive</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#of-a-gaussian-process-in-which-y-sinx-noise.-it-will-reproduce-an-example"><i class="fa fa-check"></i>of a gaussian process in which y = sin(x) + noise. It will reproduce an example</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#akin-to-figure-15.3-in-murphy-2012."><i class="fa fa-check"></i>akin to figure 15.3 in Murphy 2012.</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#functions"><i class="fa fa-check"></i>Functions</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#preliminaries"><i class="fa fa-check"></i>Preliminaries</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#prior-plot"><i class="fa fa-check"></i>Prior plot</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#data-setup"><i class="fa fa-check"></i>data setup</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#plot"><i class="fa fa-check"></i>plot</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#generate-noisy-training-data"><i class="fa fa-check"></i>generate noisy training data</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#generate-posterior-predictive"><i class="fa fa-check"></i>generate posterior predictive</a></li>
+<li class="chapter" data-level="" data-path="09_thinkingvis.html"><a href="09_thinkingvis.html#create-ky-k-and-k-matrices-as-defined-in-the-texts-posterior-predictive-plot-plot-prior-and-posterior-predictive-together-accessibility-file-types-summary-a-casual-list-of-things-to-avoid-pie-histograms-using-3d-without-adding-any-communicative-value-using-too-many-colors-showing-maps-that-just-display-population-biplots-thinking-visually-exercises-exercise-1-exercise-2-thinking-exercises"><i class="fa fa-check"></i>Create Ky, K*, and K** matrices as defined in the texts ### Posterior predictive plot ### ### Plot prior and posterior predictive together ### ### Accessibility ### File Types ### Summary ### A casual list of things to avoid #### Pie #### Histograms #### Using 3D without adding any communicative value #### Using too many colors #### Showing maps that just display population #### Biplots ### Thinking Visually Exercises #### Exercise 1 #### Exercise 2 #### Thinking exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
+</ul></li>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html"><i class="fa fa-check"></i>recall that starwars is in the dplyr package</a><ul>
+<li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#ggplot2-1"><i class="fa fa-check"></i>ggplot2</a><ul>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
@@ -257,7 +184,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="10_ggplot2.html"><a href="10_ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
 <li><a href="10_ggplot2.html#ggplot2-exercises"><strong>ggplot2 Exercises</strong></a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
+</ul></li>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html"><i class="fa fa-check"></i>saveWidget(vn, file=‘vntitle.html’)</a><ul>
+<li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#interactive-visualization"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
 <li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#packages"><i class="fa fa-check"></i>Packages</a></li>
 <li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#piping-for-visualization"><i class="fa fa-check"></i>Piping for Visualization</a></li>
 <li class="chapter" data-level="" data-path="11_interactive.html"><a href="11_interactive.html#htmlwidgets"><i class="fa fa-check"></i>htmlwidgets</a></li>
@@ -296,7 +225,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="header">
 <h1 class="title"><span style="font-size:125%; font-family:Roboto; font-style:normal">Data Processing &amp; Visualization</span></h1>
 <h4 class="author"><em><p><span style="font-size:125%; font-style:normal; font-variant:small-caps; font-family:&#39;Open Sans&#39;">Michael Clark</span> <br> <span style="font-size:100%"><a href="https://m-clark.github.io/data-processing-and-visualization/" class="uri">https://m-clark.github.io/data-processing-and-visualization/</a></span><br><br> <img src="img/CSCAR_logos/signature-acronym.png" style="width:30%; padding:10px 0;" alt="University of Michigan: CSCAR"> <br> <img src="img/ARC_logos/ARC-acronym-signature.png" style="width:21%; padding:10px 0;" alt="University of Michigan: Advanced Research Computing"></p></em></h4>
-<h4 class="date"><em><span style="font-style:normal;font-family:&#39;Open Sans&#39;">2018-01-28</span></em></h4>
+<h4 class="date"><em><span style="font-style:normal;font-family:&#39;Open Sans&#39;">2018-02-20</span></em></h4>
 </div>
 <div id="section" class="section level1">
 <h1></h1>

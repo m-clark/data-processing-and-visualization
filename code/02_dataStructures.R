@@ -20,6 +20,19 @@ x_num = as.numeric(x)  # convert to a numeric object
 sum(x_num)
 sum(x)
 
+## ----logical-------------------------------------------------------------
+my_logic = c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE)
+
+## ----logical_demo--------------------------------------------------------
+!my_logic
+as.numeric(my_logic)
+mean(my_logic)
+
+## ----int_num-------------------------------------------------------------
+class(1:3)
+
+rnorm(5)
+
 ## ----createMatrix--------------------------------------------------------
 # create vectors
 x = 1:4

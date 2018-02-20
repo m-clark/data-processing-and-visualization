@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Data Processing &amp; Visualization</title>
   <meta name="description" content="Data Processing &amp; Visualization in R">
-  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.6 and GitBook 2.6.7">
 
   <meta property="og:title" content="Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2018-01-28">
+<meta name="date" content="2018-02-20">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -46,16 +46,16 @@
 
 
 
-<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.0/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.7.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
-<link href="libs/vis-4.20.0/vis.css" rel="stylesheet" />
-<script src="libs/vis-4.20.0/vis.min.js"></script>
-<script src="libs/visNetwork-binding-2.0.1/visNetwork.js"></script>
+<link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
+<script src="libs/vis-4.20.1/vis.min.js"></script>
+<script src="libs/visNetwork-binding-2.0.3/visNetwork.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
 <link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
 <script src="libs/highcharts-5.0.6/highstock.js"></script>
@@ -95,10 +95,11 @@
 <script src="libs/Proj4Leaflet-0.7.2/proj4-compressed.js"></script>
 <script src="libs/Proj4Leaflet-0.7.2/proj4leaflet.js"></script>
 <script src="libs/leaflet-binding-1.1.0/leaflet.js"></script>
-<script src="libs/datatables-binding-0.2/datatables.js"></script>
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.4/datatables.js"></script>
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
 
 
 <style type="text/css">
@@ -139,8 +140,8 @@ code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* Com
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
-<link rel="stylesheet" href="css/book.css" type="text/css" />
-<link rel="stylesheet" href="css/standard_html.css" type="text/css" />
+<link rel="stylesheet" href="css\book.css" type="text/css" />
+<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
 </head>
 
 <body>
@@ -364,6 +365,27 @@ $class
 </div>
 </div>
 </div>
+<div id="logicals" class="section level4">
+<h4>Logicals</h4>
+<p>Logical scalar/vectors are those that take on one of two values TRUE or FALSE. They are especially useful in flagging whether to run certain parts of code, and indexing certain parts of data structures (e.g. taking rows that correspond to TRUE). We’ll talk about the latter usage more later in the document.</p>
+<p>Here is a logical vector.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_logic =<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">TRUE</span>)</code></pre></div>
+<p>Note also that logicals are also treated as binary 0:1, and so, for example, taking the mean will provide the proportion of <code>TRUE</code> values.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">!</span>my_logic</code></pre></div>
+<pre><code>[1] FALSE  TRUE FALSE  TRUE FALSE FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.numeric</span>(my_logic)</code></pre></div>
+<pre><code>[1] 1 0 1 0 1 1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(my_logic)</code></pre></div>
+<pre><code>[1] 0.6666667</code></pre>
+</div>
+<div id="numeric-and-integer" class="section level4">
+<h4>Numeric and integer</h4>
+<p>The most common type of data structure you’ll deal with are integer and numeric vectors.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>[1] &quot;integer&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rnorm</span>(<span class="dv">5</span>)</code></pre></div>
+<pre><code>[1] -0.7508215  1.7033773 -1.4541531  0.4516762 -0.4656203</code></pre>
+</div>
 </div>
 <div id="matrices" class="section level3">
 <h3>Matrices</h3>
@@ -396,7 +418,7 @@ z    9   10   11   12</code></pre>
 </div>
 <div id="lists" class="section level3">
 <h3>Lists</h3>
-<p><span class="objclass">Lists</span> in R are highly flexible objects, and probably the most commonly used for data science. Unlike vectors, whose elements must be of the same type, lists can contain anything as their elements, even other lists.</p>
+<p><span class="objclass">Lists</span> in R are highly flexible objects, and probably the most commonly used for applied data science. Unlike vectors, whose elements must be of the same type, lists can contain anything as their elements, even other lists.</p>
 <p>Here is a list. We use the <span class="func">list</span> function to create it.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span>, <span class="st">&quot;apple&quot;</span>, <span class="kw">list</span>(<span class="dv">3</span>, <span class="st">&quot;cat&quot;</span>))
 x</code></pre></div>
@@ -444,7 +466,7 @@ mydf</code></pre></div>
 row1 1 3
 row2 5 8
 row3 2 1</code></pre>
-<p>Everything about lists applies to data.frames, so we can add, select, and remove elements of a data frame just like lists. However, we’ll visit this later, because we’ll have much more flexibility with data frames than we would lists.</p>
+<p>Everything about lists applies to data.frames, so we can add, select, and remove elements of a data frame just like lists. However, we’ll visit this later, because we’ll have much more flexibility with data frames than we would lists for common data analysis and visualiztion.</p>
 </div>
 </div>
 <div id="data-structure-exercises" class="section level3">
