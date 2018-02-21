@@ -1,0 +1,380 @@
+---
+title: "Exercises"
+output: 
+  html_document:
+    theme: paper
+    highlight: pygments
+    code_folding: hide
+    css: [../standard_html.css]
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE, eval=TRUE, cache=FALSE}
+knitr::opts_chunk$set(echo = T, message=F, warning=F, comment=NA, autodep=T, eval=FALSE, cache.rebuild=F, cache=F,
+                      R.options=list(width=120), fig.width=8, fig.align = 'center')
+```
+
+Note that in each exercise, the code is hidden by default, allowing you to test your skills first.  On some occasions you need the code to get started, and that will be noted.  Otherwise, disclose the code if you get stuck, but try on your own or work together first. Make sure you load the packages you need for the exercise.
+
+
+### A NOTE ABOUT INSTALLING R PACKAGES ON THE LAB MACHINES
+
+You do not have write access to the default R library folder. When you attempt to install the first package, a <span class="emph">**pop-under**</span> window will come up (look at your task bar), and ask you if you want to try someplace else.  Just click yes, as it will have selected an appropriate location.
+
+
+
+### Data Structures Exercise
+
+#### Excercise #1
+
+Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span>.
+
+```{r dsex1}
+mydf = data.frame(A=1:3, B=letters[1:3])
+```
+
+#### Exercise 2
+
+Create a <span class="objclass">list</span> of 3 elements, the first of which contains character strings, the second numbers, and the third, the <span class="objclass">data.frame</span> or <span class="objclass">matrix</span> you just created.
+
+```{r dsex2}
+mylist = list(c('a', 'b'), 1:3, mydf)
+```
+
+#### Thinking Exercises
+
+- How is a <span class="objclass">factor</span> different from a character vector?
+
+- How is a <span class="objclass">data.frame</span> the same as and different from a <span class="objclass">matrix</span>?
+
+- How is a <span class="objclass">data.frame</span> the same as and different from a <span class="objclass">list</span>?
+
+
+
+### I/O Exercises
+
+#### Exercise 1
+
+Use <span class="">readr</span> and <span class="">haven</span> to read the following files. Use the url just like you would any filename.  The latter is a Stata file.  You can use the RStudio's menu approach to import the file if you want.
+
+
+```{r ioex1}
+'https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/data/cars.csv'
+'https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/data/presvote.dta'
+
+```
+
+#### Thinking Exercises
+
+Why might you use <span class="func">read_csv</span> from the <span class="pack">readr</span> package rather than <span class="func">read.csv</span> in base R?
+
+What is your definition of 'big' data?
+
+
+### Indexing Exercises
+
+This following is a refresher of base R indexing only.
+
+Here is a <span class="objclass">matrix</span>, a <span class="objclass">data.frame</span> and a <span class="objclass">list</span> (show the code).
+
+```{r}
+mymatrix = matrix(rnorm(100), 10, 10)
+mydf = cars
+mylist = list(mymatrix, thisdf = mydf)
+```
+
+#### Exercise 1
+
+For the <span class="objclass">matrix</span>, in separate operations, take a slice of rows, a selection of columns, and a single element.
+
+```{r}
+mymatrix[1:5, ]
+mymatrix[, 1:5]
+mymatrix[1,2]
+```
+
+#### Exercise 2
+
+For the <span class="objclass">data.frame</span>, grab a column in 3 different ways.
+
+```{r}
+mydf$dist
+mydf[,2]
+mydf['dist']
+```
+
+#### Exercise 3
+
+For the <span class="objclass">list</span> grab an element by number and by name.
+
+```{r}
+mylist[2]
+mylist$thisdf
+```
+
+
+
+
+### Vectorization and Apply Exercises
+
+
+#### Exercise 1
+
+With the following <span class="objclass">matrix</span> (go ahead and show), use <span class="func">apply</span> and the <span class="func">sum</span> function to get row or column sums.  
+
+```{r vectorapp_ex1, echo=1}
+x = matrix(1:9, 3, 3)
+```
+
+#### Exercise 2
+
+With the following <span class="objclass">list</span> (go ahead and show), use <span class="func">lapply</span> and <span class="func">sapply</span> and the <span class="func">sum</span> function to get sums for the elements.  There is no margin to specify with on a list, so just supply the list and the sum function.  
+
+```{r vectorapp_ex2, echo=1}
+x = list(1:3, 4:6, 7:9)
+```
+
+<span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>.  If you supply the argument `simplified=F`, it is identical. Otherwise, it attempts to return a vector or matrix.
+
+
+
+
+
+
+### dplyr Exercises
+
+#### Exercise 0
+
+Install and load the <span class="pack">dplyr</span> <span class="pack">ggplot2movies</span> packages. Look at the help file for the `movies` data set, which contains data from IMDB.
+
+
+```{r}
+install.packages('ggplot2movies')
+library(ggplot2movies)
+```
+
+
+#### Exercise 1
+
+Using the movies data set, perform each of the following actions separately.
+
+##### Exercise 1a
+
+Use <span class="func">mutate</span> to create a centered version of the rating variable.  A centered variable is one whose mean has been subtracted from it. The process will take the following form (show the code):
+
+```{r}
+data %>% 
+  mutate(newvar = '?')
+```
+
+```{r}
+movies %>% 
+  mutate(ratingCen = rating - mean(rating)) 
+```
+
+##### Exercise 1b
+
+Use <span class="func">filter</span> to create a new data frame that has only movies from the years 2000 and beyond. Use the greater than or equal operator `>=`.
+
+```{r}
+movies %>% 
+  filter(year >= 2000) 
+```
+
+##### Exercise 1c
+
+Use <span class="func">select</span> to create a new data frame that only has the title, year, budget, length, rating and votes variables.  There are at least 3 ways to do this.
+
+```{r}
+movies %>% 
+  select(title, year, budget, length, rating, votes) 
+movies %>% 
+  select(1:6)
+movies %>% 
+  select(-num_range('r',1:10), -mpaa, -starts_with('A'), -Comedy, -starts_with('D'), -Romance, -Short)
+```
+
+
+
+#### Exercise 2
+
+Use <span class="func">group_by</span> to group the data by year, and <span class="func">summarize</span> to create a new variable that is the average budget. The <span class="func">summarize</span> function works just like <span class="func">mutate</span> in this case.
+Use the <span class="func">mean</span> function to get the average, but you'll also need to use the argument `na.rm = TRUE` within it because the earliest years have no budget recorded.
+
+
+```{r}
+movies %>% 
+  group_by(year) %>% 
+  summarise(AvgBudget=mean(budget, na.rm=T)) %>% 
+  tail
+```
+
+
+
+
+#### Exercise 3
+
+Now put it all together in one set of piped operations. 
+
+- Filter to post 1990 movies
+- select the same variables as before but also the mpaa, Action, and Drama variables
+- group by mpaa *and* Action *or* Drama
+- get the average rating
+
+
+```{r}
+movies %>%
+  filter(year>=1990) %>% 
+  select(title, year, budget, length, rating, votes, mpaa, Action, Drama) %>% 
+  group_by(mpaa, Drama) %>% 
+  summarise(AvgRating = mean(rating))
+```
+
+
+### data.table Exercises
+
+
+#### Exercise 0
+
+Install and load the <span class="pack">data.table</span> package.
+
+Create the following data table.
+
+```
+mydt = data.table(expand.grid(x=1:3, y=c('a','b','c')), z=sample(1:20, 9))
+```
+
+#### Exercise 1
+
+Create a new object that contains only the 'a' group. Think back to how you use a logical to select rows.
+
+```{r}
+mydt_a = mydt[y=='a',]
+```
+
+
+#### Exercise 2
+
+Create a new object that is the sum of z grouped by x. You don't need to name the sum variable.
+
+
+```{r}
+mydt_grpsum = mydt[,sum(z), by=x]
+mydt_grpsum = mydt[,list(sumz=sum(z)), by=x]
+```
+
+
+
+### ggplot2 Exercises
+
+#### Exercise 0
+
+Install and load the <span class="pack">ggplot2</span> package.
+
+#### Exercise 1
+
+Create two plots, one a scatterplot (e.g. with <span class="func">geom_point</span>) and one with lines (e.g. <span class="func">geom_line</span>) with a data set of your choosing (all are base R or available after loading <span class="pack">ggplot2</span>.  Some suggestions:
+
+- <span class="objclass">faithful</span>: Waiting time between eruptions and the duration of the eruption for the Old Faithful geyser in Yellowstone National Park, Wyoming, USA.
+- <span class="objclass">msleep</span>:  mammals sleep dataset with sleep times and weights etc.
+- <span class="objclass">diamonds</span>: used in the slides
+- <span class="objclass">economics</span>: US economic time series.
+- <span class="objclass">txhousing</span>: Housing sales in TX.
+- <span class="objclass">midwest</span>: Midwest demographics.
+- <span class="objclass">mpg</span>: Fuel economy data from 1999 and 2008 for 38 popular models of car
+
+Recall the basic form for ggplot.
+
+```
+ggplot(aes(x=*, y=*, other), data=*) +
+  geom_*() +
+  otherLayers, theme etc.
+```
+
+Themes to play with:
+
+- <span class="func">theme_bw</span>
+- <span class="func">theme_classic</span>
+- <span class="func">theme_dark</span>
+- <span class="func">theme_gray</span>
+- <span class="func">theme_light</span>
+- <span class="func">theme_linedraw</span>
+- <span class="func">theme_minimal</span>
+
+```{r}
+library(ggplot2)
+ggplot(aes(x=waiting, y=eruptions), data=faithful) +
+  geom_point()
+```
+
+
+#### Exercise 2
+
+Play around and change the arguments to the following.
+
+```{r}
+library(maps)
+mi <- map_data("county", "michigan")
+seats = mi %>% 
+  group_by(subregion) %>% 
+  summarise_at(vars(lat, long), function(x) median(range(x)))
+
+ggplot(mi, aes(long, lat)) +
+  geom_polygon(aes(group = group), fill = NA, colour = "grey60") +
+  geom_text(aes(label = subregion), data = seats, size = 1, angle = 45) +
+  geom_point(y=42.281389, x=-83.748333, color='#1e90ff', size=3) +
+  theme_minimal() +
+  theme(panel.grid=element_blank())
+```
+
+
+### Interactive Visualization Exercises
+
+
+#### Exercise 0
+
+Install and load the <span class="pack">plotly</span> package. Load the <span class="pack">dplyr</span> and <span class="pack">ggplot2</span> packages if necessary.
+
+
+
+#### Exercise 1
+
+
+Using <span class="pack">dplyr</span> group by year, and summarize to create a new variable that is the Average rating.  Then create a plot with <span class="pack">plotly</span> for a line or scatter plot (for the latter, use the <span class="func">add_markers</span> function). It will take the following form:
+
+```
+data %>% 
+  group_by() %>% 
+  summarize() %>% 
+  plot_ly() %>% 
+  add_markers()
+```
+
+```{r, echo=FALSE}
+movies %>% 
+  group_by(year) %>% 
+  summarise(Avg_Rating=mean(rating)) %>% 
+  plot_ly() %>% 
+  add_markers(x=~year, y=~Avg_Rating)
+```
+
+
+#### Exercise 2
+
+This time group by year and Drama. In the <span class="func">summarize</span> create average rating again, but also a variable representing the average number of votes. In your plotly line, use the size and color arguments to represent whether the average number of votes and whether it was drama or not respectively. Use <span class="func">add_markers.</span>
+
+```{r, echo=FALSE}
+movies %>% 
+  group_by(year, Drama) %>% 
+  summarise(Avg_Rating=mean(rating),
+            Avg_Votes = mean(votes)) %>% 
+  plot_ly() %>% 
+  add_markers(x=~year, y=~Avg_Rating, size=~Avg_Votes, color=~Drama, mode='markers')
+```
+
+
+#### Exercise 3
+
+Create a ggplot of your design and then use <span class="func">ggplotly</span> to make it interactive.
+

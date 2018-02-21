@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Data Processing &amp; Visualization</title>
   <meta name="description" content="Data Processing &amp; Visualization in R">
-  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.6 and GitBook 2.6.7">
 
   <meta property="og:title" content="Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2018-02-20">
+<meta name="date" content="2018-02-21">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -46,16 +46,16 @@
 
 
 
-<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.0/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.7.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
-<link href="libs/vis-4.20.0/vis.css" rel="stylesheet" />
-<script src="libs/vis-4.20.0/vis.min.js"></script>
-<script src="libs/visNetwork-binding-2.0.1/visNetwork.js"></script>
+<link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
+<script src="libs/vis-4.20.1/vis.min.js"></script>
+<script src="libs/visNetwork-binding-2.0.3/visNetwork.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
 <link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
 <script src="libs/highcharts-5.0.6/highstock.js"></script>
@@ -95,10 +95,11 @@
 <script src="libs/Proj4Leaflet-0.7.2/proj4-compressed.js"></script>
 <script src="libs/Proj4Leaflet-0.7.2/proj4leaflet.js"></script>
 <script src="libs/leaflet-binding-1.1.0/leaflet.js"></script>
-<script src="libs/datatables-binding-0.2/datatables.js"></script>
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.4/datatables.js"></script>
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
 
 
 <style type="text/css">
@@ -139,8 +140,8 @@ code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* Com
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
-<link rel="stylesheet" href="css/book.css" type="text/css" />
-<link rel="stylesheet" href="css/standard_html.css" type="text/css" />
+<link rel="stylesheet" href="css\book.css" type="text/css" />
+<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
 </head>
 
 <body>
@@ -336,10 +337,10 @@ mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(microbenchmark)
 <span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log),
                <span class="kw">log</span>(mymatrix))</code></pre></div>
-<pre><code>Unit: nanoseconds
-                    expr   min      lq     mean  median      uq   max neval
- apply(mymatrix, 2, log) 18389 18842.0 19590.26 19163.5 19454.5 52385   100
-           log(mymatrix)   590   629.5   702.08   685.5   711.0  2818   100</code></pre>
+<pre><code>Unit: microseconds
+                    expr    min     lq     mean median     uq     max neval cld
+ apply(mymatrix, 2, log) 34.897 36.070 37.71471 36.510 37.243 132.548   100   b
+           log(mymatrix)  2.932  3.226  3.26119  3.226  3.226   4.106   100  a </code></pre>
 <p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
 </div>
 <div id="apply-functions" class="section level3">
@@ -422,12 +423,12 @@ test =<span class="st"> </span>microbenchmark<span class="op">::</span><span cla
 <span class="kw">stopCluster</span>(cl)
 test</code></pre></div>
 <pre><code>Unit: milliseconds
-       expr         min          lq       mean     median         uq        max neval
- doubleloop 2882.148089 2904.739076 2938.21281 2946.57065 2952.25532 3013.29805    25
- singleloop   28.989806   29.512434   33.08177   31.17037   32.42606   84.79185    25
-      apply   32.167901   33.350945   33.96146   34.13204   34.64055   36.18983    25
-   parApply   17.691611   18.213638   21.91323   19.63893   21.12156   73.60683    25
- vectorized    8.085578    8.491433   10.25583   10.66990   11.02532   12.62173    25</code></pre>
+       expr         min          lq       mean     median         uq        max neval cld
+ doubleloop 2882.148089 2904.739076 2938.21281 2946.57065 2952.25532 3013.29805    25   c
+ singleloop   28.989806   29.512434   33.08177   31.17037   32.42606   84.79185    25  b 
+      apply   32.167901   33.350945   33.96146   34.13204   34.64055   36.18983    25  b 
+   parApply   17.691611   18.213638   21.91323   19.63893   21.12156   73.60683    25 ab 
+ vectorized    8.085578    8.491433   10.25583   10.66990   11.02532   12.62173    25 a  </code></pre>
 </div>
 <div id="apply-functions-1" class="section level4">
 <h4>Apply functions</h4>

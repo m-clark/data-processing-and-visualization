@@ -1,0 +1,353 @@
+---
+title: "Exercises for Data Processing with R"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE, exercise.lines=5, exercise.eval=FALSE)
+```
+
+
+## Data Structures
+
+### Exercise 1
+
+Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span>.
+
+```{r dsex1, exercise=TRUE}
+mydf = 
+# mymatrix = 
+```
+
+
+```{r dsex1-hint}
+mydf = data.frame(A=1:3, B=letters[1:3])
+str(mydf)
+```
+
+
+### Exercise 2
+
+Create a <span class="objclass">list</span> of 3 elements, the first of which contains character strings, the second numbers, and the third, the <span class="objclass">data.frame</span> or <span class="objclass">matrix</span> you just created.  You'll have to recreate the data.frame/matrix here.
+
+```{r dsex2, exercise=TRUE, exercise.eval=TRUE}
+
+
+```
+
+```{r dsex2-hint}
+mylist = list(c('a', 'b'), 1:3, mydf)
+```
+
+
+
+#### Thinking Exercises
+
+- How is a <span class="objclass">factor</span> different from a character vector?
+
+- How is a <span class="objclass">data.frame</span> the same as and different from a <span class="objclass">matrix</span>?
+
+- How is a <span class="objclass">data.frame</span> the same as and different from a <span class="objclass">list</span>?
+
+
+
+
+## I/O
+
+
+### Exercise 1
+
+Use <span class="">readr</span> and <span class="">haven</span> to read the following files. Use the url just like you would any filename.  The latter is a Stata file.  You can use the RStudio's menu approach to import the file if you want.
+
+
+```{r ioex1, exercise=TRUE}
+'https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/data/cars.csv'
+
+'https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/data/presvote.dta'
+```
+
+```{r ioex1-hint}
+readr::read_csv()
+```
+
+
+### Thinking Exercises
+
+Why might you use <span class="func">read_csv</span> from the <span class="pack">readr</span> package rather than <span class="func">read.csv</span> in base R?
+
+What is your definition of 'big' data?
+
+
+
+
+## Indexing Exercises
+
+This following is a refresher of base R indexing only.
+
+Here is a <span class="objclass">matrix</span>, a <span class="objclass">data.frame</span> and a <span class="objclass">list</span>.
+
+```{r ixex0}
+mymatrix = matrix(rnorm(100), 10, 10)
+mydf = cars
+mylist = list(mymatrix, thisdf = mydf)
+```
+
+### Exercise 1
+
+For the <span class="objclass">matrix</span>, in separate operations, take a slice of rows, a selection of columns, and a single element.
+
+```{r ixex1, exercise=TRUE}
+mymatrix = matrix(rnorm(100), 10, 10)
+
+```
+
+```{r ixex1-hint}
+mymatrix[1:5, ]
+mymatrix[, 1:5]
+mymatrix[1,2]
+```
+
+### Exercise 2
+
+For the <span class="objclass">data.frame</span>, grab a column in 3 different ways.
+
+```{r ixex2, exercise=TRUE}
+mydf = cars
+```
+
+```{r ixex2-hint}
+mydf$disp
+mydf[,2]
+mydf['disp']
+```
+
+### Exercise 3
+
+For the <span class="objclass">list</span> grab an element by number and by name.
+
+```{r ixex3, exercise=TRUE}
+mylist = list(mymatrix, thisdf = mydf)
+```
+
+```{r ixex3-hint}
+mylist[2]
+mylist$thisdf
+```
+
+
+
+
+
+## Vector/Apply Exercises
+
+
+### Exercise 1
+
+With the following <span class="objclass">matrix</span>, use <span class="func">apply</span> and the <span class="func">sum</span> function to get row or column sums.  
+
+```{r vectorapp_ex1, exercise=TRUE}
+x = matrix(1:9, 3, 3)
+```
+
+```{r vectorapp_ex1-hint}
+apply(x, ???, sum)
+```
+
+### Exercise 2
+
+With the following <span class="objclass">list</span>, use <span class="func">lapply</span> and <span class="func">sapply</span> and the <span class="func">sum</span> function to get sums for the elements.  There is no margin to specify with on a list, so just supply the list and the sum function.  
+
+```{r vectorapp_ex2, exercise=TRUE}
+x = list(1:3, 4:6, 7:9)
+```
+
+```{r vectorapp_ex2-hint}
+lapply(x, sum)
+sapply(x, sum)
+```
+
+<span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>.  If you supply the argument `simplified=F`, it is identical. Otherwise, it attempts to return a vector or matrix.
+
+
+## dplyr Exercises
+
+### Exercise 0
+
+Install and load the <span class="pack">dplyr</span> <span class="pack">ggplot2movies</span> packages. Look at the help file for the `movies` data set, which contains data from IMDB.
+
+
+```{r init_dplyr, exercise=TRUE, message=FALSE}
+install.packages('ggplot2movies')
+library(ggplot2movies)
+data('movies')
+```
+
+
+### Exercise 1
+
+Using the movies data set, perform each of the following actions separately.
+
+#### Exercise 1a
+
+Use <span class="func">mutate</span> to create a centered version of the rating variable.  A centered variable is one whose mean has been subtracted from it. The process will take the following form:
+
+```{r dpex1a, exercise=TRUE}
+movies %>% 
+  mutate(new_var_name = '?')
+```
+
+```{r dpex1a-hint}
+movies %>% 
+  mutate(ratingCen = rating - mean(rating)) 
+```
+
+#### Exercise 1b
+
+Use <span class="func">filter</span> to create a new data frame that has only movies from the years 2000 and beyond. Use the greater than or equal operator `>=`.
+
+```{r dpex1b, exercise=TRUE, exercise.eval=FALSE}
+movies %>% 
+  filter(?) 
+```
+
+```{r dpex1b-hint}
+movies %>% 
+  filter(year >= 2000) 
+```
+
+#### Exercise 1c
+
+Use <span class="func">select</span> to create a new data frame that only has the `title`, `year`, `budget`, `length`, `rating` and `votes` variables.  There are at least 3 ways to do this.
+
+```{r dpex1c, exercise=TRUE, exercise.eval=FALSE}
+movies %>% 
+  select(?) 
+```
+
+```{r dpex1c-hint}
+movies %>% 
+  select(title, year, budget, length, rating, votes) 
+movies %>% 
+  select(1:6)
+movies %>% 
+  select(-num_range('r',1:10), -mpaa, -starts_with('A'), -Comedy, -starts_with('D'), -Romance, -Short)
+```
+
+
+
+### Exercise 2
+
+Use <span class="func">group_by</span> to group the data by year, and <span class="func">summarize</span> to create a new variable that is the average budget. The <span class="func">summarize</span> function works just like <span class="func">mutate</span> in this case.
+
+Use the <span class="func">mean</span> function to get the average, but you'll also need to use the argument `na.rm = TRUE` within it because the earliest years have no budget recorded.
+
+
+```{r dpex2, exercise=TRUE, exercise.eval=FALSE}
+movies %>%
+  group_by(?) %>%
+  summarise(?) %>%
+  tail()
+```
+
+```{r dpex2-hint}
+movies %>%
+  group_by(year) %>%
+  summarise(AvgBudget=mean(budget, na.rm=T)) %>%
+  tail()
+```
+
+
+### Exercise 3
+
+Now put it all together in one set of piped operations.
+
+- Filter movies released *after* 1990
+- select the same variables as before but also the `mpaa`, `Action`, and `Drama` variables
+- group by `mpaa` *and* (your choice) `Action` *or* `Drama`
+- get the average rating
+
+
+
+```{r dpex3, exercise=TRUE, exercise.eval=FALSE}
+movies %>%
+  filter(?) %>%
+  select(?) %>%
+  group_by(?) %>%
+  summarise(?)
+```
+
+```{r dpex3-hint}
+movies %>%
+  filter(year>=1990) %>%
+  select(title, year, budget, length, rating, votes, mpaa, Action, Drama) %>%
+  group_by(mpaa, Drama) %>%
+  summarise(AvgRating = mean(rating))
+```
+
+
+It should spit out something like the following:
+
+```{r dpex3_show, echo=FALSE, message=FALSE}
+data('movies', package='ggplot2movies')
+library(dplyr)
+movies %>%
+  filter(year>=1990) %>%
+  select(title, year, budget, length, rating, votes, mpaa, Action, Drama) %>%
+  group_by(mpaa, Drama) %>%
+  summarise(AvgRating = mean(rating))
+```
+
+
+
+
+
+## data.table Exercises
+
+
+### Exercise 0
+
+Install and load the <span class="pack">data.table</span> package.
+
+
+
+```{r dtex0, message=FALSE, exercise=TRUE, exercise.eval=FALSE}
+install.packages('data.table')
+
+```
+
+
+
+### Exercise 1
+
+Create the following data table. Then, create a new object that contains only the 'a' group. Think back to how you use a logical to select rows.
+
+```{r dtex1, exercise=TRUE, exercise.eval=FALSE, message=FALSE}
+library(data.table)
+
+mydt = data.table(expand.grid(x=1:3, y=c('a','b','c')), z=sample(1:20, 9))
+
+mydt_a = mydt[?,]
+```
+
+```{r dtex1-hint}
+mydt_a = mydt[y=='a',]
+mydt_a
+```
+
+
+### Exercise 2
+
+Create a new object that is the sum of z grouped by x. You don't need to name the sum variable.
+
+
+```{r dtex2, exercise=TRUE, exercise.eval=FALSE}
+mydt = data.table(expand.grid(x=1:3, y=c('a','b','c')), z=sample(1:20, 9))
+
+mydt_grpsum = mydt[,?]
+```
+```{r dtex2-hint}
+mydt_grpsum = mydt[,sum(z), by=x]
+mydt_grpsum = mydt[,list(sumz=sum(z)), by=x]
+```

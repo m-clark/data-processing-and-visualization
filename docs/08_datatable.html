@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Data Processing &amp; Visualization</title>
   <meta name="description" content="Data Processing &amp; Visualization in R">
-  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.6 and GitBook 2.6.7">
 
   <meta property="og:title" content="Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2018-02-20">
+<meta name="date" content="2018-02-21">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -46,16 +46,16 @@
 
 
 
-<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.0/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.7.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
-<link href="libs/vis-4.20.0/vis.css" rel="stylesheet" />
-<script src="libs/vis-4.20.0/vis.min.js"></script>
-<script src="libs/visNetwork-binding-2.0.1/visNetwork.js"></script>
+<link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
+<script src="libs/vis-4.20.1/vis.min.js"></script>
+<script src="libs/visNetwork-binding-2.0.3/visNetwork.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
 <link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
 <script src="libs/highcharts-5.0.6/highstock.js"></script>
@@ -95,10 +95,11 @@
 <script src="libs/Proj4Leaflet-0.7.2/proj4-compressed.js"></script>
 <script src="libs/Proj4Leaflet-0.7.2/proj4leaflet.js"></script>
 <script src="libs/leaflet-binding-1.1.0/leaflet.js"></script>
-<script src="libs/datatables-binding-0.2/datatables.js"></script>
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.4/datatables.js"></script>
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
 
 
 <style type="text/css">
@@ -139,8 +140,8 @@ code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* Com
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
-<link rel="stylesheet" href="css/book.css" type="text/css" />
-<link rel="stylesheet" href="css/standard_html.css" type="text/css" />
+<link rel="stylesheet" href="css\book.css" type="text/css" />
+<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
 </head>
 
 <body>
@@ -309,40 +310,40 @@ dt =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt"
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[<span class="dv">2</span>]
 dt[<span class="dv">2</span>,]</code></pre></div>
 <pre><code>   x g         y
-1: 4 2 0.2385534
+1: 1 2 0.1123355
    x g         y
-1: 4 2 0.2385534</code></pre>
+1: 1 2 0.1123355</code></pre>
 <p>You use <strong>j</strong> to select (by name!) or create new columns. We can define a new column with the <span class="func">:=</span> operator.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[,x]
 dt[,z <span class="op">:</span><span class="er">=</span><span class="st"> </span>x<span class="op">+</span>y]  <span class="co"># dt now has a new column</span>
 dt[,z]
 dt[g<span class="op">&gt;</span><span class="dv">1</span>, <span class="kw">mean</span>(z), by=g]
 dt</code></pre></div>
-<pre><code>[1] 6 4 7 8 3 1
-[1] 6.890634 4.238553 7.193629 8.800842 3.688830 1.625085
+<pre><code>[1] 10  1  4  2  7  5
+[1] 10.516836  1.112335  4.661174  2.071356  7.456255  5.233980
    g       V1
-1: 2 3.963691
-2: 3 4.409357
-   x g         y        z
-1: 6 1 0.8906342 6.890634
-2: 4 2 0.2385534 4.238553
-3: 7 3 0.1936289 7.193629
-4: 8 1 0.8008420 8.800842
-5: 3 2 0.6888296 3.688830
-6: 1 3 0.6250849 1.625085</code></pre>
+1: 2 4.284295
+2: 3 4.947577
+    x g          y         z
+1: 10 1 0.51683595 10.516836
+2:  1 2 0.11233549  1.112335
+3:  4 3 0.66117419  4.661174
+4:  2 1 0.07135639  2.071356
+5:  7 2 0.45625459  7.456255
+6:  5 3 0.23397967  5.233980</code></pre>
 <p>Because <strong>j</strong> is an argument, dropping columns is awkward.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[,<span class="op">-</span>y]             <span class="co"># creates negative values of y</span>
 dt[,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=F]   <span class="co"># drops y, but now needs quotes</span>
 ## dt[,y:=NULL]        # drops y, but this is just a base R approach
 ## dt$y = NULL</code></pre></div>
-<pre><code>[1] -0.8906342 -0.2385534 -0.1936289 -0.8008420 -0.6888296 -0.6250849
-   x g        z
-1: 6 1 6.890634
-2: 4 2 4.238553
-3: 7 3 7.193629
-4: 8 1 8.800842
-5: 3 2 3.688830
-6: 1 3 1.625085</code></pre>
+<pre><code>[1] -0.51683595 -0.11233549 -0.66117419 -0.07135639 -0.45625459 -0.23397967
+    x g         z
+1: 10 1 10.516836
+2:  1 2  1.112335
+3:  4 3  4.661174
+4:  2 1  2.071356
+5:  7 2  7.456255
+6:  5 3  5.233980</code></pre>
 <p>Data table does not make unnecessary copies. For example if we do the following…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DT =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">A=</span><span class="dv">5</span><span class="op">:</span><span class="dv">1</span>,<span class="dt">B=</span>letters[<span class="dv">5</span><span class="op">:</span><span class="dv">1</span>])
 DT2 =<span class="st"> </span>DT
@@ -370,23 +371,23 @@ DT</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1 =<span class="st"> </span>dt2 =<span class="st"> </span>dt
 dt[,<span class="kw">sum</span>(x,y), by=g]                  <span class="co"># sum of all x and y values</span></code></pre></div>
 <pre><code>   g        V1
-1: 1 15.691476
-2: 2  7.927383
-3: 3  8.818714</code></pre>
+1: 1 12.588192
+2: 2  8.568590
+3: 3  9.895154</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1[,newvar <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(x), by=g]         <span class="co"># add new variable to the original data </span>
 dt1</code></pre></div>
-<pre><code>   x g         y        z newvar
-1: 6 1 0.8906342 6.890634     14
-2: 4 2 0.2385534 4.238553      7
-3: 7 3 0.1936289 7.193629      8
-4: 8 1 0.8008420 8.800842     14
-5: 3 2 0.6888296 3.688830      7
-6: 1 3 0.6250849 1.625085      8</code></pre>
+<pre><code>    x g          y         z newvar
+1: 10 1 0.51683595 10.516836     12
+2:  1 2 0.11233549  1.112335      8
+3:  4 3 0.66117419  4.661174      9
+4:  2 1 0.07135639  2.071356     12
+5:  7 2 0.45625459  7.456255      8
+6:  5 3 0.23397967  5.233980      9</code></pre>
 <p>We can also create groupings on the fly. For a new summary data set, we’ll take the following approach- we create a grouping based on whether g is a value of one or not, then get the mean and sum of x for those two categories. The corresponding dplyr approach is also shown (but not evaluated) for comparison.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt2[, <span class="kw">list</span>(<span class="dt">mean_x =</span> <span class="kw">mean</span>(x), <span class="dt">sum_x =</span> <span class="kw">sum</span>(x)), by =<span class="st"> </span>g<span class="op">==</span><span class="dv">1</span>]</code></pre></div>
 <pre><code>       g mean_x sum_x
-1:  TRUE   7.00    14
-2: FALSE   3.75    15</code></pre>
+1:  TRUE   6.00    12
+2: FALSE   4.25    17</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## dt2 %&gt;% group_by(g==1) %&gt;% summarise(mean_x=mean(x), sum_x=sum(x))</code></pre></div>
 </div>
 <div id="faster" class="section level3">
@@ -469,7 +470,7 @@ test_dt2 =<span class="st"> </span>test_dt2[,mean<span class="op">:</span><span 
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lets_<span class="dv">1</span> =<span class="st"> </span><span class="kw">sample</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">14</span>], <span class="dv">1000</span>, <span class="dt">replace=</span>T)
 
 lets_<span class="dv">1</span> <span class="op">%chin%</span><span class="st"> </span>letters[<span class="dv">13</span><span class="op">:</span><span class="dv">26</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>)</code></pre></div>
-<pre><code> [1] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<pre><code> [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># stri_detect_regex(lets_1, paste(letters[13:26], collapse=&#39;|&#39;))</span></code></pre></div>
 </div>
 <div id="reading-files" class="section level4">
