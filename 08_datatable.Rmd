@@ -54,13 +54,21 @@ Data table does not make unnecessary copies.  For example if we do the following
 ```{r dtmemory}
 DT = data.table(A=5:1,B=letters[5:1])
 DT2 = DT
+DT3 = copy(DT)  
 ```
 
-DT2 and DT are just names for the same table.  You'd actually need to use the copy function to make an explicit copy.
+DT2 and DT are just names for the same table.  You'd actually need to use the copy function to make an explicit copy, otherwise whatever you do to DT2 will be done to DT.
+
+```{r dtnocopy}
+DT2[,q:=1]
+DT
+```
 
 ```{r dtcopy}
-DT2 = copy(DT)     
+DT3 
 ```
+
+
 
 
 ### Grouped operations
@@ -87,8 +95,6 @@ dt2 %>% group_by(g==1) %>% summarise(mean_x=mean(x), sum_x=sum(x))
 
 ### Faster!
 
-
-
 As mentioned, the reason to use <span class="pack">data.table</span> is speed.  If you have large data or large operations it'll be useful.
 
 
@@ -99,6 +105,7 @@ Joins can not only be faster but and easy to do. Note that the `i` argument can 
 ```{r dtjoin, eval=FALSE}
 dt1 = setkey(dt1, x)
 dt1[dt2]
+left_join(dt1, dt2, by='x')
 ```
 
 ```{r dtjoin_timing, cache=FALSE, echo=FALSE}
@@ -115,15 +122,19 @@ timing_join %>% pander::pander(justify='lr')
 
 #### Group by
 
-We can use the <span class="func">setkey</span> function to order a data set by a certain column(s).  This ordering is done by reference; again, no copy is made.  Doing this will allow for faster grouped operations, though you likely will only see the speed gain with very large data. 
+We can use the <span class="func">setkey</span> function to order a data set by a certain column(s).  This ordering is done by reference; again, no copy is made.  Doing this will allow for faster grouped operations, though you likely will only see the speed gain with very large data. The timing regards creating a new variable
 
-```{r dtsetkey, echo=1:6,eval=1:8}
+```{r dtsetkey, echo=1:10, eval=1:12}
 test_dt0 = data.table(x=rnorm(10000000), g = sample(letters, 10000000, replace=T))
 test_dt1 = copy(test_dt0)
 test_dt2 = setkey(test_dt1, g)
 
 identical(test_dt0, test_dt1)
 identical(test_dt1, test_dt2)
+
+test_dt0 = test_dt0[,mean:=mean(x),by=g]
+test_dt1 = test_dt1[,mean:=mean(x),by=g]
+test_dt2 = test_dt2[,mean:=mean(x),by=g]
 
 timing_group_by_1 %>% pander::pander(justify='lr')
 
@@ -144,12 +155,17 @@ timing_group_by_1 %>% pander::pander(justify='lr')
 
 The <span class="func">chin</span> function returns a vector of the *positions* of (first) matches of its first argument in its second, where both arguments are character vectors.  Essentially it's just like the <span class="func">%in%</span> function for character vectors. 
 
-Consider the following. We sample the first 14 letters 1000 times with replacement and see which ones match in a subset of another subset of letters.  I compare the same operation to <span class="pack">stringr</span> and the <span class="pack">stringi</span> package whose functionality it's using.
+Consider the following. We sample the first 14 letters 1000 times with replacement and see which ones match in a subset of another subset of letters.  I compare the same operation to <span class="pack">stringr</span> and the <span class="pack">stringi</span> package whose functionality <span class="pack">stringr</span> using.
 
-```{r dtcharacters, echo=2:3, eval=2:4}
+```{r dtcharacters, echo=2:6, eval=2:8}
 set.seed(1234)
 lets_1 = sample(letters[1:14], 1000, replace=T)
+
 lets_1 %chin% letters[13:26] %>% head(10)
+
+# stri_detect_regex(lets_1, paste(letters[13:26], collapse='|'))
+# str_detect(lets_1, paste(letters[13:26], collapse='|'))
+
 timing_chmatch %>% pander::pander(justify='lr')
 
 # library(stringr); library(stringi)
@@ -209,6 +225,8 @@ as.data.table(sapply(timing_group_by_big, `[[`, "elapsed"), keep.rownames = TRUE
 Ever.
 
 Really.
+
+Another thing to note is that the tidy approach is more about clarity and code efficiency relative to base R, as well as doing important background data checks and returning more usable results.  In practice, it likely won't be notably faster except in some cases, like with <span class="func">aggregate</span>.
 
 ### Pipe with data.table
 

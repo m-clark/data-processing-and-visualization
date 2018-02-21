@@ -93,7 +93,7 @@ Let's say we want to select from our data the following variables:
   - The variables **var1** and **var2**, which are the only variables with *var* in their name
   - Any variable that starts with **XYZ**
     
-How might we go about this? There several base R approaches that we could go with, but often they will be tedious, or require multiple objects to be created just to get the columns you want.  Let's start with the worst choice.
+How might we go about this in a dataset of possibly hundreds or even thousands of columns? There are several base R approaches that we could go with, but often they will be tedious, or require multiple objects to be created just to get the columns you want.  Let's start with the worst choice.
 
 ```{r baseRexample1a, eval=FALSE}
 newData = oldData[,c(1,2,3,4, etc.)]
@@ -137,13 +137,13 @@ Now consider doing all of the previous in one piped operation.  The <span class=
 
 ```{r pipeExample, eval=FALSE}
 newData = oldData %>% 
-  filter(Z == 'Yes', Q == 'No') %>% 
   select(num_range('X', 1:10), contains('var'), starts_with('XYZ')) %>% 
+  filter(Z == 'Yes', Q == 'No') %>% 
   top_n(n=50, var2) %>% 
   arrange(desc(var1))
 ```
 
-Even if it hadn't been explained before, you might have been able to guess a little as to what was going on.  The code is fairly succinct, we don't have to keep referencing objects repeatedly, and no intermediary objects are created.
+Even if it hadn't been explained before, you might have been able to guess a little as to what was going on.  The code is fairly succinct, we don't have to keep referencing objects repeatedly, and no explicit intermediary objects are created.
 
 <span class="pack">dplyr</span> and piping is an *alternative*. You can do all this sort of stuff with base R, for example, with functions like <span class="func">with</span>, <span class="func">within</span>, <span class="func">subset</span>, <span class="func">transform</span>, etc.  Though the initial base R approach depicted is fairly concise, in general, it still can potentially be: 
 
@@ -209,7 +209,7 @@ bball %>%
 The <span class="func">select</span> also has helper functions to make selecting columns even easier.  I probably don't even need to explain what's being done above, and this is the power of the tidyverse way.  Here is the list of <span class="emph">helper functions</span> to be aware of:
 
 - <span class="func">starts_with</span>: starts with a prefix
-- <span class="func">ends_with</span>: ends with a prefix
+- <span class="func">ends_with</span>: ends with a suffix
 - <span class="func">contains</span>: contains a literal string
 - <span class="func">matches</span>: matches a regular expression
 - <span class="func">num_range</span>: a numerical range like x01, x02, x03.
@@ -253,7 +253,7 @@ bball %>%
   unite("posTeam", Pos, Tm) %>%         # create a new variable
   filter(posTeam == "PF_SAS") %>%       # use it for filtering
   select(Player, posTeam, Age) %>%      # use it for selection
-  arrange(desc(Age))                    # order 
+  arrange(desc(Age))                    # descending order 
 ```
 
 
@@ -263,7 +263,7 @@ bball %>%
 One of the most common data processing tasks beyond subsetting the data is generating new variables. The function <span class='func'>mutate</span> takes a vector and returns one of the same dimension.  In addition, there is <span class="func">mutate_at</span>, <span class="func">mutate_if</span>, and <span class="func">mutate_all</span> to help with specific scenarios.
 
 
-To demonstrate, we'll use <span class='func'>mutate_at</span> to make appropriate columns numeric, i.e. everything except `Player`, `Pos`, and ` Tm`.  It takes two inputs, variables and functions to apply.  As there are multiple variables and (potentially) multiple functions, we use the <span class="func">vars</span> and <span class="func">funs</span> functions to denote them.
+To demonstrate, we'll use <span class='func'>mutate_at</span> to make appropriate columns numeric, i.e. everything except `Player`, `Pos`, and ` Tm`.  It takes two inputs, variables and functions to apply.  As there are multiple variables and (potentially) multiple functions, we use the <span class="func">vars</span> and <span class="func">funs</span> functions to denote them[^funs].
 
 ```{r mutateAt}
 bball = bball %>% 
@@ -286,7 +286,7 @@ summary(select(bball, shootingDif))  # select and others don't have to be piped 
 
 ### Grouping and Summarizing Data
 
-A very common task is to look at group-based statistics, and we can use <span class='func'>group_by</span> and <span class="func">summarize</span> to help us in this regard[^summarise].  Base R has things like <span class="func">aggregate</span>,<span class="func">by</span>, and <span class="func">tapply</span> for this, but they should not be used, as this approach is much more straightforward, flexible, and faster.
+A very common task is to look at group-based statistics, and we can use <span class='func'>group_by</span> and <span class="func">summarize</span> to help us in this regard[^summarise].  Base R has things like <span class="func">aggregate</span>, <span class="func">by</span>, and <span class="func">tapply</span> for this, but they should not be used, as this approach is much more straightforward, flexible, and faster.
 
 For this, I'm going to start putting together several things we've demonstrated thus far. Ultimately we'll create a variable called <span class="objclass">trueShooting</span>, which represents 'true shooting percentage', and get an average for each position.
 
@@ -370,7 +370,7 @@ Merges can get quite complex, and involve multiple data sources. In many cases y
 
 ### tidyr
 
-The <span class="pack">tidyr</span> can be thought of as a specialized subset of <span class="pack">dplyr's</span> functionality. Some of its functions for manipulating data you'll want to be familiar with are:
+The <span class="pack">tidyr</span> package can be thought of as a specialized subset of <span class="pack">dplyr's</span> functionality, as well as an update to the previous <span class="pack">reshape</span> and <span class="pack">reshape2</span> packages[^reshape]. Some of its functions for manipulating data you'll want to be familiar with are:
 
 - <span class="func">gather</span>: wide to long
 - <span class="func">spread</span>: long to wide
@@ -389,7 +389,7 @@ stocks <- data.frame( time = as.Date('2009-01-01') + 0:9,
 stocks %>% head
 stocks %>% 
   gather(stock, price, -time) %>% 
-  head
+  head()
 ```
 
 Note that the latter is an example of <span class="emph">tidy data</span> while the former is not.  Why do we generally prefer such data?  Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data.  *This is especially the case for visualization*.
@@ -408,7 +408,7 @@ Note that this won't necessarily apply to every name.  So further processing may
 
 ### purrr
 
-Purr allows you to take the <span class="func">apply</span> family approach to the tidyverse.
+The <span class="pack">purr</span> package allows you to take the <span class="func">apply</span> family approach to the tidyverse.
 
 Consider Exercise 2 from the Vectorization/Apply section.  We'll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the same way we would with <span class="func">lapply</span>.
 
@@ -423,7 +423,7 @@ x %>%
   purrr::map(sum)
 ```
 
-The map functions take some getting used to, and in my experience they are typically slower than the apply functions.  However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output[^purrr].
+The map functions take some getting used to, and in my experience they are typically slower than the apply functions, sometimes notably so.  However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output[^purrr].
 
 ### Personal Opinion
 
@@ -432,7 +432,7 @@ The <span class="pack">dplyr</span> grammar is clear for a lot of standard data 
 Extremely useful for data exploration and visualization.
 
 - No need to create/overwrite existing objects
-- Can overwrite columns as they are created
+- Can overwrite columns and use as they are created
 - Makes it easy to look at anything, and do otherwise tedious data checks
 
 Drawbacks:
@@ -541,10 +541,14 @@ movies %>%
 
 [^headers]: You may be thinking- 'it's 2017 and why on earth would anyone do that?!'.  Peruse most sports websites and you'll see that fundamental web design basics escape them.  See also, financial sites.
 
-[^summarise]: As Hadley Wickham is from New Zealand, and his examples use <span class="func">summarise</span>, you'll probably see it about as much as you do the other spelling.
+[^summarise]: As Hadley Wickham is from New Zealand, and his examples use <span class="func">summarise</span>, you'll probably see it about as much as you do the other spelling, especially since it will come up first in autocomplete.
 
 [^multidplyr]: There is <span class="pack">multidplyr</span>, but it doesn't appear to have been updated since well before <span class="pack">dplyr</span> itself underwent major changes.
 
 [^noslice]: If you're following good programming practices, you'll likely never use <span class="func">slice</span>.
 
 [^purrr]: Personally I find the help file description nebulous and examples unrealistic, and oftentimes can come up with a group_by-summarise approach before I can sort out why the map approach didn't work.
+
+[^funs]: For only one function, you could have just supplied `as.numeric` as the second argument.
+
+[^reshape]: Some still use <span class="pack">reshape2</span> but there is no reason to.

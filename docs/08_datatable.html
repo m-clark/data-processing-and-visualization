@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Data Processing &amp; Visualization</title>
   <meta name="description" content="Data Processing &amp; Visualization in R">
-  <meta name="generator" content="bookdown 0.6 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
 
   <meta property="og:title" content="Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
@@ -46,16 +46,16 @@
 
 
 
-<script src="libs/htmlwidgets-1.0/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.7.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 <link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
-<link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
-<script src="libs/vis-4.20.1/vis.min.js"></script>
-<script src="libs/visNetwork-binding-2.0.3/visNetwork.js"></script>
+<link href="libs/vis-4.20.0/vis.css" rel="stylesheet" />
+<script src="libs/vis-4.20.0/vis.min.js"></script>
+<script src="libs/visNetwork-binding-2.0.1/visNetwork.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
 <link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
 <script src="libs/highcharts-5.0.6/highstock.js"></script>
@@ -95,11 +95,10 @@
 <script src="libs/Proj4Leaflet-0.7.2/proj4-compressed.js"></script>
 <script src="libs/Proj4Leaflet-0.7.2/proj4leaflet.js"></script>
 <script src="libs/leaflet-binding-1.1.0/leaflet.js"></script>
-<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.4/datatables.js"></script>
-<link href="libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
 
 
 <style type="text/css">
@@ -140,8 +139,8 @@ code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* Com
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
-<link rel="stylesheet" href="css\book.css" type="text/css" />
-<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
+<link rel="stylesheet" href="css/book.css" type="text/css" />
+<link rel="stylesheet" href="css/standard_html.css" type="text/css" />
 </head>
 
 <body>
@@ -310,45 +309,60 @@ dt =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt"
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[<span class="dv">2</span>]
 dt[<span class="dv">2</span>,]</code></pre></div>
 <pre><code>   x g         y
-1: 1 2 0.1123355
+1: 4 2 0.2385534
    x g         y
-1: 1 2 0.1123355</code></pre>
+1: 4 2 0.2385534</code></pre>
 <p>You use <strong>j</strong> to select (by name!) or create new columns. We can define a new column with the <span class="func">:=</span> operator.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[,x]
 dt[,z <span class="op">:</span><span class="er">=</span><span class="st"> </span>x<span class="op">+</span>y]  <span class="co"># dt now has a new column</span>
 dt[,z]
 dt[g<span class="op">&gt;</span><span class="dv">1</span>, <span class="kw">mean</span>(z), by=g]
 dt</code></pre></div>
-<pre><code>[1] 10  1  4  2  7  5
-[1] 10.516836  1.112335  4.661174  2.071356  7.456255  5.233980
+<pre><code>[1] 6 4 7 8 3 1
+[1] 6.890634 4.238553 7.193629 8.800842 3.688830 1.625085
    g       V1
-1: 2 4.284295
-2: 3 4.947577
-    x g          y         z
-1: 10 1 0.51683595 10.516836
-2:  1 2 0.11233549  1.112335
-3:  4 3 0.66117419  4.661174
-4:  2 1 0.07135639  2.071356
-5:  7 2 0.45625459  7.456255
-6:  5 3 0.23397967  5.233980</code></pre>
+1: 2 3.963691
+2: 3 4.409357
+   x g         y        z
+1: 6 1 0.8906342 6.890634
+2: 4 2 0.2385534 4.238553
+3: 7 3 0.1936289 7.193629
+4: 8 1 0.8008420 8.800842
+5: 3 2 0.6888296 3.688830
+6: 1 3 0.6250849 1.625085</code></pre>
 <p>Because <strong>j</strong> is an argument, dropping columns is awkward.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt[,<span class="op">-</span>y]             <span class="co"># creates negative values of y</span>
 dt[,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=F]   <span class="co"># drops y, but now needs quotes</span>
 ## dt[,y:=NULL]        # drops y, but this is just a base R approach
 ## dt$y = NULL</code></pre></div>
-<pre><code>[1] -0.51683595 -0.11233549 -0.66117419 -0.07135639 -0.45625459 -0.23397967
-    x g         z
-1: 10 1 10.516836
-2:  1 2  1.112335
-3:  4 3  4.661174
-4:  2 1  2.071356
-5:  7 2  7.456255
-6:  5 3  5.233980</code></pre>
+<pre><code>[1] -0.8906342 -0.2385534 -0.1936289 -0.8008420 -0.6888296 -0.6250849
+   x g        z
+1: 6 1 6.890634
+2: 4 2 4.238553
+3: 7 3 7.193629
+4: 8 1 8.800842
+5: 3 2 3.688830
+6: 1 3 1.625085</code></pre>
 <p>Data table does not make unnecessary copies. For example if we do the following…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DT =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">A=</span><span class="dv">5</span><span class="op">:</span><span class="dv">1</span>,<span class="dt">B=</span>letters[<span class="dv">5</span><span class="op">:</span><span class="dv">1</span>])
-DT2 =<span class="st"> </span>DT</code></pre></div>
-<p>DT2 and DT are just names for the same table. You’d actually need to use the copy function to make an explicit copy.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DT2 =<span class="st"> </span><span class="kw">copy</span>(DT)     </code></pre></div>
+DT2 =<span class="st"> </span>DT
+DT3 =<span class="st"> </span><span class="kw">copy</span>(DT)  </code></pre></div>
+<p>DT2 and DT are just names for the same table. You’d actually need to use the copy function to make an explicit copy, otherwise whatever you do to DT2 will be done to DT.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DT2[,q<span class="op">:</span><span class="er">=</span><span class="dv">1</span>]
+DT</code></pre></div>
+<pre><code>   A B q
+1: 5 e 1
+2: 4 d 1
+3: 3 c 1
+4: 2 b 1
+5: 1 a 1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DT3 </code></pre></div>
+<pre><code>   A B
+1: 5 e
+2: 4 d
+3: 3 c
+4: 2 b
+5: 1 a</code></pre>
 </div>
 <div id="grouped-operations" class="section level3">
 <h3>Grouped operations</h3>
@@ -356,23 +370,23 @@ DT2 =<span class="st"> </span>DT</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1 =<span class="st"> </span>dt2 =<span class="st"> </span>dt
 dt[,<span class="kw">sum</span>(x,y), by=g]                  <span class="co"># sum of all x and y values</span></code></pre></div>
 <pre><code>   g        V1
-1: 1 12.588192
-2: 2  8.568590
-3: 3  9.895154</code></pre>
+1: 1 15.691476
+2: 2  7.927383
+3: 3  8.818714</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1[,newvar <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(x), by=g]         <span class="co"># add new variable to the original data </span>
 dt1</code></pre></div>
-<pre><code>    x g          y         z newvar
-1: 10 1 0.51683595 10.516836     12
-2:  1 2 0.11233549  1.112335      8
-3:  4 3 0.66117419  4.661174      9
-4:  2 1 0.07135639  2.071356     12
-5:  7 2 0.45625459  7.456255      8
-6:  5 3 0.23397967  5.233980      9</code></pre>
+<pre><code>   x g         y        z newvar
+1: 6 1 0.8906342 6.890634     14
+2: 4 2 0.2385534 4.238553      7
+3: 7 3 0.1936289 7.193629      8
+4: 8 1 0.8008420 8.800842     14
+5: 3 2 0.6888296 3.688830      7
+6: 1 3 0.6250849 1.625085      8</code></pre>
 <p>We can also create groupings on the fly. For a new summary data set, we’ll take the following approach- we create a grouping based on whether g is a value of one or not, then get the mean and sum of x for those two categories. The corresponding dplyr approach is also shown (but not evaluated) for comparison.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt2[, <span class="kw">list</span>(<span class="dt">mean_x =</span> <span class="kw">mean</span>(x), <span class="dt">sum_x =</span> <span class="kw">sum</span>(x)), by =<span class="st"> </span>g<span class="op">==</span><span class="dv">1</span>]</code></pre></div>
 <pre><code>       g mean_x sum_x
-1:  TRUE   6.00    12
-2: FALSE   4.25    17</code></pre>
+1:  TRUE   7.00    14
+2: FALSE   3.75    15</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## dt2 %&gt;% group_by(g==1) %&gt;% summarise(mean_x=mean(x), sum_x=sum(x))</code></pre></div>
 </div>
 <div id="faster" class="section level3">
@@ -382,7 +396,8 @@ dt1</code></pre></div>
 <h4>Joins</h4>
 <p>Joins can not only be faster but and easy to do. Note that the <code>i</code> argument can be a <span class="objclass">data.table</span> object itself. I compare its speed to the comparable <span class="pack">dplyr’s</span> <span class="func">left_join</span> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt1 =<span class="st"> </span><span class="kw">setkey</span>(dt1, x)
-dt1[dt2]</code></pre></div>
+dt1[dt2]
+<span class="kw">left_join</span>(dt1, dt2, <span class="dt">by=</span><span class="st">&#39;x&#39;</span>)</code></pre></div>
 <table style="width:47%;">
 <colgroup>
 <col width="18%" />
@@ -408,7 +423,7 @@ dt1[dt2]</code></pre></div>
 </div>
 <div id="group-by" class="section level4">
 <h4>Group by</h4>
-<p>We can use the <span class="func">setkey</span> function to order a data set by a certain column(s). This ordering is done by reference; again, no copy is made. Doing this will allow for faster grouped operations, though you likely will only see the speed gain with very large data.</p>
+<p>We can use the <span class="func">setkey</span> function to order a data set by a certain column(s). This ordering is done by reference; again, no copy is made. Doing this will allow for faster grouped operations, though you likely will only see the speed gain with very large data. The timing regards creating a new variable</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test_dt0 =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">x=</span><span class="kw">rnorm</span>(<span class="dv">10000000</span>), <span class="dt">g =</span> <span class="kw">sample</span>(letters, <span class="dv">10000000</span>, <span class="dt">replace=</span>T))
 test_dt1 =<span class="st"> </span><span class="kw">copy</span>(test_dt0)
 test_dt2 =<span class="st"> </span><span class="kw">setkey</span>(test_dt1, g)
@@ -417,6 +432,9 @@ test_dt2 =<span class="st"> </span><span class="kw">setkey</span>(test_dt1, g)
 <pre><code>[1] FALSE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">identical</span>(test_dt1, test_dt2)</code></pre></div>
 <pre><code>[1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test_dt0 =<span class="st"> </span>test_dt0[,mean<span class="op">:</span><span class="er">=</span><span class="kw">mean</span>(x),by=g]
+test_dt1 =<span class="st"> </span>test_dt1[,mean<span class="op">:</span><span class="er">=</span><span class="kw">mean</span>(x),by=g]
+test_dt2 =<span class="st"> </span>test_dt2[,mean<span class="op">:</span><span class="er">=</span><span class="kw">mean</span>(x),by=g]</code></pre></div>
 <table style="width:44%;">
 <colgroup>
 <col width="15%" />
@@ -447,36 +465,12 @@ test_dt2 =<span class="st"> </span><span class="kw">setkey</span>(test_dt1, g)
 <div id="string-matching" class="section level4">
 <h4>String matching</h4>
 <p>The <span class="func">chin</span> function returns a vector of the <em>positions</em> of (first) matches of its first argument in its second, where both arguments are character vectors. Essentially it’s just like the <span class="func">%in%</span> function for character vectors.</p>
-<p>Consider the following. We sample the first 14 letters 1000 times with replacement and see which ones match in a subset of another subset of letters. I compare the same operation to <span class="pack">stringr</span> and the <span class="pack">stringi</span> package whose functionality it’s using.</p>
+<p>Consider the following. We sample the first 14 letters 1000 times with replacement and see which ones match in a subset of another subset of letters. I compare the same operation to <span class="pack">stringr</span> and the <span class="pack">stringi</span> package whose functionality <span class="pack">stringr</span> using.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lets_<span class="dv">1</span> =<span class="st"> </span><span class="kw">sample</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">14</span>], <span class="dv">1000</span>, <span class="dt">replace=</span>T)
+
 lets_<span class="dv">1</span> <span class="op">%chin%</span><span class="st"> </span>letters[<span class="dv">13</span><span class="op">:</span><span class="dv">26</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>)</code></pre></div>
-<pre><code> [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
-<table style="width:43%;">
-<colgroup>
-<col width="13%" />
-<col width="29%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">func</th>
-<th align="right">mean (microseconds)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">dt</td>
-<td align="right">12.25</td>
-</tr>
-<tr class="even">
-<td align="left">stringi</td>
-<td align="right">158.3</td>
-</tr>
-<tr class="odd">
-<td align="left">stringr</td>
-<td align="right">173.2</td>
-</tr>
-</tbody>
-</table>
+<pre><code> [1] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># stri_detect_regex(lets_1, paste(letters[13:26], collapse=&#39;|&#39;))</span></code></pre></div>
 </div>
 <div id="reading-files" class="section level4">
 <h4>Reading files</h4>
@@ -519,6 +513,7 @@ lets_<span class="dv">1</span> <span class="op">%chin%</span><span class="st"> <
 7: data.table    2.71</code></pre>
 <p>Ever.</p>
 <p>Really.</p>
+<p>Another thing to note is that the tidy approach is more about clarity and code efficiency relative to base R, as well as doing important background data checks and returning more usable results. In practice, it likely won’t be notably faster except in some cases, like with <span class="func">aggregate</span>.</p>
 </div>
 </div>
 <div id="pipe-with-data.table" class="section level3">

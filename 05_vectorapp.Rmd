@@ -16,7 +16,7 @@ idx
 x[idx]
 ```
 
-<span class="objclass">Logicals</span> are objects with values of `TRUE` or `FALSE`, like the <span class="objclass">idx</span> variable above.  While sometimes we want to deal with the logical object as an end, it is extremely commonly used as an index in data processing. Note that how we don't have to create an explicit index object first (though often you should), as R indexing is ridiculously flexible.  Here are more examples, not necessarily recommended, but just to demonstrate the flexibility of Boolean indexing.
+As mentioned previously <span class="objclass">logicals</span> are objects with values of `TRUE` or `FALSE`, like the <span class="objclass">idx</span> variable above.  While sometimes we want to deal with the logical object as an end, it is extremely commonly used as an index in data processing. Note how we don't have to create an explicit index object first (though often you should), as R indexing is ridiculously flexible.  Here are more examples, not necessarily recommended, but just to demonstrate the flexibility of Boolean indexing.
 
 ```{r flexindex}
 x[x > 2]
@@ -28,7 +28,7 @@ x[resid(lm(y ~ x)) > 0]
 
 ### Vectorized operations
 
-Boolean indexing allows us to take <span class="emph">vectorized</span> approaches to dealing with data. Consider the following unfortunately coded loop:
+Boolean indexing allows us to take <span class="emph">vectorized</span> approaches to dealing with data. Consider the following unfortunately coded loop, where we create a variable `y`, which takes on the value of **Yes** if the variable `x` is greater than 2, and **No** if otherwise.
 
 ```{r loop}
 for (i in 1:nrow(mydf)) {
@@ -74,7 +74,7 @@ Many vectorized functions already exist in R.  They are often written in C, Fort
 
 ### Apply functions
 
-A family of functions comes with R that allows for a succinct way of looping. Common functions in this family include:
+A family of functions comes with R that allows for a succinct way of looping when it is appropriate. As such, even when you loop in R, you don't have to explicitly. Common functions in this family include:
 
 - <span class="func">apply</span>
     - arrays, matrices, data.frames
@@ -85,7 +85,7 @@ A family of functions comes with R that allows for a succinct way of looping. Co
 - <span class="func">mapply</span>
     - multivariate version of sapply
 - <span class="func">replicate</span>
-    - similar to sapply
+    - performs an operation N times
     
 As an example we'll consider standardizing variables, i.e. taking a set of numbers, subtracting the mean, and dividing by the standard deviation.  This results in a variable with mean of 0 and standard deviation of 1.  Let's start with a loop approach.
 
