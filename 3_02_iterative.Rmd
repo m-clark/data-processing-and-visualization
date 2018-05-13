@@ -1,0 +1,175 @@
+## Iterative Programming
+
+Almost everything you do when dealing with data will need to be done again, and again, and again.  If you are copy-pasting your way to repetitively do the same thing, you're not only doing things inefficiently, you're almost certainly setting yourself up for trouble if practically anything changes about the data or process.
+
+In order to avoid this, you need to be familiar with basic programming, and a starting point is to use iterative programming.  Let's look at the following.  Let's say we want to get the means of some column in our data set.  Do you do something like this?
+
+```{r iter_1, eval=FALSE}
+means1 = mean(df$x)
+means2 = mean(df$y)
+means3 = mean(df$z)
+means4 = mean(df$q)
+```
+
+
+Now consider what you have to change if you change a variable name, decide to do a median, or the data object name changes.  Practically breathing on the data will cause you to have to redo that code, and possibly every line of it.
+
+### For loops
+
+A <span class="emph">for loop</span> will help us get around the problem.  The idea is we want to perform a particular action *for* every iteration of some sequence. That sequence may be over columns, rows, lines in a text, whatever.
+
+```{r iter_loop_demo, eval=FALSE}
+for (column in c('x','y','z','q')) {
+  mean(df[,column])
+}
+```
+
+What's going on here?  We've created a for loop in which, *for* every element in `c('x','y','z','q')`, we are going to do something.  We use the completely arbitrary word `column` as a placeholder to index which of the four columns we're dealing with. On the first iteration, column will equal `x`, on the second `y`, and so on.  We then take the mean of `df[,column]`, which will be `df[,x]`, then `df[,y]` etc.
+
+Here is an example with the <span class="pack">nycflights</span> data, which regards flights that departed New York City in 2013.  The <span class="objclass">weather</span> data set has columns for things like temperature, humidity etc.[^tibbledf]
+
+
+```{r nyc_flights}
+weather = data.frame(nycflights13::weather)
+
+for (column in c('temp','humid','wind_speed','precip')) {
+  print(mean(weather[,column], na.rm = TRUE))
+}
+```
+
+Now if the data name changes, the columns we want change, or we want to calculate something else, we usually end up only changing one thing, rather than *at least* changing one, and probably many more things.  In addition, the amount of code is the same whether the loop goes over 100 columns or 4.
+
+Let's do things a little differently.
+
+```{r nyc_flights2}
+columns = c('temp','humid','wind_speed','precip')
+nyc_means = rep(NA, length(columns))
+
+for (i in seq_along(columns)) {
+  nyc_means[i] = mean(weather[ ,columns[i]], na.rm = TRUE)
+}
+
+nyc_means
+```
+
+By creating a <span class="objclass">columns</span> object, if anything changes about the columns we want, that's the only line in the code that would need to be changed. The `i` is now a place holder for a number that goes from 1 to the length of <span class="objclass">columns</span> (i.e. `r length(columns)`).  We make an empty <span class="objclass">nyc_means</span> object that's the length of the columns, so that each element will eventually be the mean of the corresponding column.
+
+In the following I remove precipitation and add visibility and air pressure.
+
+```{r nyc_flights3}
+columns = c('temp','humid','wind_speed', 'visib', 'pressure')
+nyc_means = rep(NA, length(columns))
+
+for (i in seq_along(columns)) {
+  nyc_means[i] = mean(weather[ ,columns[i]], na.rm = TRUE)
+}
+
+nyc_means %>% round(2)
+```
+
+Had we been copy-pasting, this would require deleting or commenting out a line in our code, pasting two more, and changing each one after pasting to represent the new columns.  
+
+#### A slight speed gain
+
+Note that you do not have to create an empty object like we did.  The following works also.
+
+```{r nyc_flights4}
+columns = c('temp','humid','wind_speed', 'visib', 'pressure')
+nyc_means = c()
+
+for (i in seq_along(columns)) {
+  nyc_means[i] = mean(weather[ ,columns[i]], na.rm = TRUE)
+}
+
+nyc_means %>% round(2)
+```
+
+However, the other approach is slightly faster, because memory is already allocated as needed, rather than updating it every iteration of the loop. This speed gain can become noticeable when dealing with thousands of columns and complex operations.
+
+```{r loop_timing, eval=FALSE, echo=FALSE}
+X = matrix(rnorm(10000000), ncol=100000)
+means1 = rep(NA, ncol(X))
+means2 = c()
+
+loop1 = function(X) {
+  for (i in 1:ncol(X)) {
+    means1[i] = mean(X[,i])
+  }
+}
+loop2 = function(X) {
+  for (i in 1:ncol(X)) {
+    means2[i] = mean(X[,i])
+  }
+}
+
+microbenchmark::microbenchmark(loop1, loop2) 
+```
+
+
+
+### While alternative
+
+When you look at some people's R code, you may see a loop of a different sort. 
+
+```{r nyc_flights_while}
+columns = c('temp','humid','wind_speed', 'visib', 'pressure')
+nyc_means = c()
+
+i = 1
+while (i <= length(columns)) {
+  nyc_means[i] = mean(weather[ ,columns[i]], na.rm = TRUE)
+  i = i + 1
+}
+
+nyc_means %>% round(2)
+```
+
+This involves a <span class="emph">while</span> statement.  It states, while `i` is less than or equal to the length (number) of <span class="objclass">columns</span>, compute the value of the i^th^ element of <span class="objclass">nyc_means</span> as the mean of i^th^ column of <span class="objclass">weather</span>.  After that, increase the value of `i`.  So, we start with `i = 1`, compute that subsequent mean, `i` now equals 2, do the process again and so forth.  The process will stop as soon as `i` is greater than the length of <span class="objclass">columns</span>.
+
+*There is zero difference to using the while approach vs. the for loop*.  While is often used when there is a check to be made, e.g. in modeling functions that have to stop the estimation process at some point, or else they'd go on indefinitely.  In that case the while syntax is probably more natural.  
+
+### (Dots and) Loops
+
+Understanding loops is fundamental toward spending less time processing data and more time toward exploring it.  Your code will be more succinct and more able to handle the usual changes that come with dealing with data.  Now that you have a sense of it, know that once you are armed with the sorts of things we'll be talking about next- apply functions, writing functions, and vectorization - you'll likely have little need to write explicit loops.  While there is always a need for iterative processing of data, R provides even more efficient means to do so.
+
+### Apply family
+
+A family of functions comes with R that allows for a succinct way of looping when it is appropriate. As such, even when you loop in R, you don't have to explicitly. Common functions in this family include:
+
+- <span class="func">apply</span>
+    - arrays, matrices, data.frames
+- <span class="func">lapply</span>, <span class="func">sapply</span>, <span class="func">vapply</span>
+    - lists, data.frames, vectors
+- <span class="func">tapply</span>
+    - grouped operations (table apply)
+- <span class="func">mapply</span>
+    - multivariate version of sapply
+- <span class="func">replicate</span>
+    - performs an operation N times
+    
+As an example we'll consider standardizing variables, i.e. taking a set of numbers, subtracting the mean, and dividing by the standard deviation.  This results in a variable with mean of 0 and standard deviation of 1.  Let's start with a loop approach.
+
+```{r loopvsapply1, eval=FALSE}
+for (i in 1:ncol(mydf)){
+  x = mydf[,i]
+  for (j in 1:length(x)){
+    x[j] = (x[j] - mean(x))/sd(x)
+  }
+}
+```
+
+The above would be a really bad way to use R. It goes over each column individually, then over each value of the column. 
+
+Conversely, <span class="func">apply</span> will take a matrix or data frame, and apply a function over the margin, row or column, you want to loop over.  The first argument is the data you're considering, the margin is the second argument (1 for rows, 2 for columns), and the function you want to apply to those rows is the third argument.  The following example is much cleaner compared to the loop, and now you'd have a function you can use elsewhere if needed.
+
+```{r loopvsapply2, eval=F}
+stdize <- function(x) {
+  (x-mean(x)) / sd(x)
+}
+
+apply(mydf, 2, stdize)   # 1 for rows, 2 for columnwise application
+```
+
+Many of the other apply functions work similarly, taking an object and a function to do the work on the object (possibly implicit), possibly with other arguments if necessary.
+
+[^tibbledf]: Note that weather data frame is originally a <span class="objclass">tbl</span> (tibble) class object, and that loop code won't work with it unless it's converted to a real data frame, because tibbles are annoying like that.  You would have to do something like `weather %>% pull(column)`.

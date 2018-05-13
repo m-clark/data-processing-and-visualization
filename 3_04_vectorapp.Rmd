@@ -72,45 +72,7 @@ microbenchmark(apply(mymatrix, 2, log),
 Many vectorized functions already exist in R.  They are often written in C, Fortran etc., and so even faster.  Not all programming languages lean toward vectorized operations, and may not see much speed gain from it.  In R however, you'll want to prefer it.  Even without, it's cleaner/clearer code, another reason to use the approach.
   
 
-### Apply functions
 
-A family of functions comes with R that allows for a succinct way of looping when it is appropriate. As such, even when you loop in R, you don't have to explicitly. Common functions in this family include:
-
-- <span class="func">apply</span>
-    - arrays, matrices, data.frames
-- <span class="func">lapply</span>, <span class="func">sapply</span>, <span class="func">vapply</span>
-    - lists, data.frames, vectors
-- <span class="func">tapply</span>
-    - grouped operations (table apply)
-- <span class="func">mapply</span>
-    - multivariate version of sapply
-- <span class="func">replicate</span>
-    - performs an operation N times
-    
-As an example we'll consider standardizing variables, i.e. taking a set of numbers, subtracting the mean, and dividing by the standard deviation.  This results in a variable with mean of 0 and standard deviation of 1.  Let's start with a loop approach.
-
-```{r loopvsapply1, eval=FALSE}
-for (i in 1:ncol(mydf)){
-  x = mydf[,i]
-  for (j in 1:length(x)){
-    x[j] = (x[j] - mean(x))/sd(x)
-  }
-}
-```
-
-The above would be a really bad way to use R. It goes over each column individually, then over each value of the column. 
-
-Conversely, <span class="func">apply</span> will take a matrix or data frame, and apply a function over the margin, row or column, you want to loop over.  The first argument is the data you're considering, the margin is the second argument (1 for rows, 2 for columns), and the function you want to apply to those rows is the third argument.  The following example is much cleaner compared to the loop, and now you'd have a function you can use elsewhere if needed.
-
-```{r loopvsapply2, eval=F}
-stdize <- function(x) {
-  (x-mean(x)) / sd(x)
-}
-
-apply(mydf, 2, stdize)   # 1 for rows, 2 for columnwise application
-```
-
-Many of the other apply functions work similarly, taking an object and a function to do the work on the object (possibly implicit), possibly with other arguments if necessary.
 
 #### Timings
 
