@@ -120,63 +120,11 @@ test
 load('data/vectorization.RData'); library(microbenchmark); test
 ```
 
-    
-#### Apply functions
-
-It is important to be familiar with and regularly use the apply family for efficient data processing. A summary of benefits includes:
-  
-- Cleaner/simpler code
-- Environment kept clear of unnecessary objects
-- Potentially more reproducible
-    - more likely to use generalizable functions
-- Might be faster
-- Parallelizable
-    
-Note that apply functions are <span class="emph">NOT</span> necessarily faster than explicit loops.
-
-- single loop over columns was as fast as apply
-- <span class="func">replicate</span> and <span class="func">mapply</span> are especially slow
-
-However, the apply family can ALWAYS can *potentially* be faster than standard R loops do to para parallelization.  With base R's <span class="pack">parallel</span> package, there are parallel versions of the apply family, e.g.<span class="func">parApply</span>, <span class="func">parLapply</span> etc.
-
-Apply functions and similar approaches should be a part of your regular R experience.  We'll talk about other options that may have even more benefits, but you need to know the basics in order to use those.  
-
-
-
-<div class='note'>
-I use R every day, and very rarely use explicit loops.  Note that there is no speed difference for a <span class="func">for</span> loop vs. using <span class="func">while</span>.  And if you must use an explicit loop, create an empty object of the dimension/form you need, and then fill it in via the loop.  This will be notably faster.
-
-I pretty much never use an explicit double loop, as a little more thinking about the problem will usually provide a more efficient path to solving the problem.
-
-<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
-</div>
-
-
-
 
 ### **Vector/Apply Exercises**
 
 
-#### Exercise 1
 
-With the following <span class="objclass">matrix</span>, use <span class="func">apply</span> and the <span class="func">sum</span> function to get row or column sums.  
-
-```{r vectorapp_ex1, echo=1}
-x = matrix(1:9, 3, 3)
-apply()
-```
-
-#### Exercise 2
-
-With the following <span class="objclass">list</span>, use <span class="func">lapply</span> and <span class="func">sapply</span> and the <span class="func">sum</span> function to get sums for the elements.  There is no margin to specify with on a list, so just supply the list and the sum function.  
-
-```{r vectorapp_ex2, echo=1}
-x = list(1:3, 4:6, 7:9)
-lapply()
-sapply()
-```
-
-<span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>.  If you supply the argument `simplified=F`, it is identical. Otherwise, it attempts to return a vector or matrix.
 
 
 [^ifelse]: For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.
