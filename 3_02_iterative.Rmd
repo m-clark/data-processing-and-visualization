@@ -24,7 +24,7 @@ for (column in c('x','y','z','q')) {
 }
 ```
 
-What's going on here?  We've created a for loop in which, *for* every element in `c('x','y','z','q')`, we are going to do something.  We use the completely arbitrary word `column` as a placeholder to index which of the four columns we're dealing with at a given point in the process. On the first iteration, column will equal `x`, on the second `y`, and so on.  We then take the mean of `df[,column]`, which will be `df[,'x']`, then `df[,'y']`, etc.
+What's going on here?  We've created an iterative process in which, *for* every element in `c('x','y','z','q')`, we are going to do something.  We use the completely arbitrary word `column` as a placeholder to index which of the four columns we're dealing with at a given point in the process. On the first iteration, `column` will equal `x`, on the second `y`, and so on.  We then take the mean of `df[,column]`, which will be `df[,'x']`, then `df[,'y']`, etc.
 
 Here is an example with the <span class="pack">nycflights</span> data, which regards flights that departed New York City in 2013.  The <span class="objclass">weather</span> data set has columns for things like temperature, humidity, and so forth.[^tibbledf]
 
@@ -42,7 +42,7 @@ Now if the data name changes, the columns we want change, or we want to calculat
 Let's do things a little differently.
 
 ```{r nyc_flights2}
-columns = c('temp','humid','wind_speed','precip')
+columns = c('temp', 'humid', 'wind_speed', 'precip')
 nyc_means = rep(NA, length(columns))
 
 for (i in seq_along(columns)) {
@@ -57,7 +57,7 @@ By creating a <span class="objclass">columns</span> object, if anything changes 
 In the following I remove precipitation and add visibility and air pressure.
 
 ```{r nyc_flights3}
-columns = c('temp','humid','wind_speed', 'visib', 'pressure')
+columns = c('temp', 'humid', 'wind_speed', 'visib', 'pressure')
 nyc_means = rep(NA, length(columns))
 
 for (i in seq_along(columns)) {
@@ -201,9 +201,114 @@ I pretty much never use an explicit double loop, as a little more thinking about
 </div>
 
 
+### purrr
+
+The <span class="pack">purr</span> package allows you to take the <span class="func">apply</span> family approach to the tidyverse.
+
+Consider the following.  We'll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the same way we would with <span class="func">lapply</span>.
+
+```{r purr_example, eval=TRUE, echo=-1}
+map = purrr::map  # could not remove conflict w
+library(purrr)
+x = list(1:3, 4:6, 7:9)
+x %>% 
+  map(sum)
+```
+
+
+The map functions take some getting used to, and in my experience they are typically slower than the apply functions, sometimes notably so.  However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output[^purrr], which is especially important in reproducibility, package development, producing production-level code, etc.
+
+
+The odd thing, in my opinion, is that they don't work with data.frame objects except in the sense that data.frames are lists.
+
+
+```{r purr_example2}
+mtcars %>% 
+  map(scale)    # returns a list
+
+mtcars %>% 
+  map_df(scale) # returns a df
+
+mtcars %>% 
+  map_dbl(sum)  # returns a numeric (double) vector
+```
 
 
 
+
+
+### Working with lists
+
+Aside from data frames, you may think you don't have much need for list objects.  However, list objects make it very easy to iterate
+Let's say you have models of increasing complexity, and you want to easily summarise and/or compare them.
+
+```{r purr_models}
+mtcars$cyl = factor(mtcars$cyl)
+mod_lm = lm(mpg ~ wt, data=mtcars)
+mod_poly = lm(mpg ~ poly(wt, 2), data=mtcars)
+mod_inter = lm(mpg ~ wt*cyl, data=mtcars)
+mod_gam = gam(mpg ~ s(wt), data=mtcars)
+mod_gam_inter = gam(mpg ~ cyl + s(wt, by=cyl), data=mtcars)
+
+model_list = list(mod_lm = mod_lm,
+                  mod_poly = mod_poly,
+                  mod_inter = mod_inter,
+                  mod_gam = mod_gam,
+                  mod_gam_inter = mod_gam_inter)
+
+# lowest wins
+model_list %>% 
+  map_dbl(AIC) %>% 
+  sort()
+
+# highest wins
+model_list %>% 
+  map_dbl(function(x) if_else(inherits(x, 'gam'),
+                              summary(x)$r.sq,
+                              summary(x)$adj)
+          ) %>% 
+  sort(decreasing = TRUE)
+```
+
+
+Let's go further and create a plot of these results. We'll map to a data frame, use gather to melt it to two columns of model and value, then use ggplot2 to plot the results. Note that ggplot2 will change the ordering of the variable unless you coerce it by creating a factor[^ggplotalpha].
+
+```{r purr_models2}
+model_list %>% 
+  map_df(function(x) if_else(inherits(x, 'gam'),
+                             summary(x)$r.sq,
+                             summary(x)$adj)
+  ) %>% 
+  gather(key = 'model', value = `Adj. Rsq`) %>% 
+  arrange(desc(`Adj. Rsq`)) %>% 
+  mutate(model = factor(model, levels = model)) %>% # sigh
+  ggplot(aes(x=model, y=`Adj. Rsq`)) + 
+  geom_point(aes(color=model), size=10, show.legend = F)
+```
+
+Why not throw in AIC also?
+
+```{r purr_models3}
+mod_rsq = 
+  model_list %>% 
+  map_df(function(x) if_else(inherits(x, 'gam'),
+                             summary(x)$r.sq,
+                             summary(x)$adj)
+  ) %>% 
+  gather(key = 'model', value='Rsq')
+
+mod_aic =
+  map_df(model_list, AIC) %>% 
+  gather(key='model', value='AIC')
+
+left_join(mod_rsq, mod_aic) %>% 
+  arrange(AIC) %>% 
+  mutate(model = factor(model, levels = model)) %>%
+  gather(key = 'measure', value='value', -model) %>% 
+  ggplot(aes(x=model, y=value)) + 
+  geom_point(aes(color=model), size=10, show.legend = F) +
+  facet_wrap(~measure, scales = 'free')
+```
 
 
 #### Exercise 1
@@ -230,3 +335,7 @@ sapply()
 [^tibbledf]: Note that weather data frame is originally a <span class="objclass">tbl</span> (tibble) class object, and that loop code won't work with it unless it's converted to a real data frame, because tibbles are annoying like that.  You would have to do something like `weather %>% pull(column)`.
 
 [^arrays]: You can have 3 or more dimensional arrays, and <span class="func">apply</span> will work over those dimensions (or any combination of them), but this doesn't come up too often.
+
+[^purrr]: Personally I find the help file description nebulous and examples unrealistic (group_by -> lm?), and oftentimes can come up with a group_by-summarise approach before I can sort out why the map approach didn't work.
+
+[^ggplotalpha]: This pretty much defeats the entire purpose of retaining characters over factors everywhere else in the tidyverse.

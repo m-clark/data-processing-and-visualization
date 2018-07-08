@@ -406,24 +406,6 @@ bball %>%
 Note that this won't necessarily apply to every name.  So further processing may be required.
 
 
-### purrr
-
-The <span class="pack">purr</span> package allows you to take the <span class="func">apply</span> family approach to the tidyverse.
-
-Consider Exercise 2 from the Vectorization/Apply section.  We'll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the same way we would with <span class="func">lapply</span>.
-
-```{r purr_example, eval=FALSE}
-x = list(1:3, 4:6, 7:9)
-x %>% 
-  map(sum)
-```
-```{r purr_example2, echo=FALSE}
-x = list(1:3, 4:6, 7:9)
-x %>% 
-  purrr::map(sum)
-```
-
-The map functions take some getting used to, and in my experience they are typically slower than the apply functions, sometimes notably so.  However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output[^purrr].
 
 ### Personal Opinion
 
@@ -547,7 +529,7 @@ movies %>%
 
 [^noslice]: If you're following good programming practices, you'll likely never use <span class="func">slice</span>.
 
-[^purrr]: Personally I find the help file description nebulous and examples unrealistic, and oftentimes can come up with a group_by-summarise approach before I can sort out why the map approach didn't work.
+
 
 [^funs]: For only one function, you could have just supplied `as.numeric` as the second argument.
 

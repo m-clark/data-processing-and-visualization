@@ -1,0 +1,132 @@
+## R Objects
+
+### Object Inspection & Exploration
+
+Let's say you've imported your data into R.  If you are going to be able to do anything with it, you'll have had to create an R object that represents that data.  What is that object?  By now you know it's a <span class="objclass">data frame</span>, specifically, class <span class="objclass">data.frame</span> or possibly a <span class="objclass">tibble</span>.  If you want to look at it, you might be tempted to look at it this way with <span class="func">View</span>, or clicking on it in your Environment viewer.
+
+```{r view, eval=FALSE}
+View(diamonds)
+```
+
+<img src="img/view.png" style="display:block; margin: 0 auto;" width=50%>
+
+While this is certainly one way to inspect it, it's almost useless. There's far too much information to get much out of it, and information you may need to know is absent.
+
+Consider the following:
+
+```{r str}
+str(diamonds)
+glimpse(diamonds)
+```
+
+The <span class="func">str</span> function looks at the *structure* of the object, while <span class="func">glimpse</span> perhaps provides a possibly more readable version and is just <span class="func">str</span> specifically suited toward data frames.  In both cases, we get info about the object and the various things within it. 
+
+While you might be doing this with data frames, you should be doing it with all the objects you're interested in.  Consider a regression model object.
+
+```{r lm_object}
+lm_mod = lm(mpg ~ ., data=mtcars)
+str(lm_mod, 0)
+str(lm_mod, 1)
+```
+
+Here we look at the object at the lowest level of detail (0), which basically just tells us that it's a list of stuff. But if we go into more depth, we can see that there is quite a bit going on in here!  Coefficients, the data frame used in the model (i.e. only the variables used and no `NA`), and much more are available to us, and we can pluck out any piece of it.
+
+```{r lm_object2}
+lm_mod$coefficients
+lm_mod$model %>% 
+  head()
+```
+
+Let's do a summary of it, something you've probably done many times.
+
+```{r lm_mod_summary}
+summary(lm_mod)
+```
+
+But you can assign that to an object and inspect it too!
+
+```{r lm_mod_summary_obj}
+lm_mod_summary = summary(lm_mod)
+str(lm_mod_summary)
+```
+
+If we pull the coefficients from this object, we are not just getting the values, but the table that's printed in the summary. And we can now get that ready for publishing for example[^other_lm_tab].
+
+```{r lm_mod_summary_table}
+lm_mod_summary$coefficients %>% 
+  kableExtra::kable(digits = 2)
+```
+
+After a while, you'll know what's in the objects you use most often, and that will allow you more easily work with the content they contain, allowing you to work with them more efficiently.
+
+### Methods
+
+Consider the following:
+
+```{r summary}
+summary(diamonds)
+summary(diamonds$clarity)
+summary(lm_mod)
+summary(lm_mod_summary)
+```
+
+How is it that one function works on all these different types of objects?  That's not all.  In RStudio, type `summary.` and hit the tab key. 
+
+<img src="img/summary_method.png" style="display:block; margin: 0 auto;" width=50%>
+
+When you load additional packages, you'll see even more *methods* for the summary function.  When you call summary on an object, the appropriate type of summary function will be used depending on the class of the object. If there is no specific type, e.g. when we called summary on something that already had summary called on it, it will just use a default version listing the contents. To see all the methods for summary, type the following
+
+```{r methods_summary}
+methods('summary')
+```
+
+Say you are new to a modeling package, and as such, you might want to see what all you can do with the resulting object.  The following lists all the functions that can be used on that class of object.
+
+```{r methods_brms}
+library(brms)
+methods(class = 'brmsfit')
+```
+
+This allows you to quickly get oriented to a package and the objects it produces, and provides utility you might not have even known to look for in the first place!
+
+### S4 classes
+
+Everything we've been dealing with at this point are S3 objects, classes, and methods. R is a dialect of the [S language](https://www.r-project.org/conferences/useR-2006/Slides/Chambers.pdf), and the S3 name reflects the version of S at the time of R's creation.  S4 was the next iteration of S, but I'm not going to say much about the S4 system of objects other than they are a separate type of object with their own methods.  For practial use you might not see much difference, but if you see an S4 object, it will have <span class="emph">slots</span> accessible via `@`.
+
+```{r s4_example}
+mtcars %>% 
+  as.matrix() %>%       # convert from df to matrix
+  Matrix::Matrix() %>%  # convert to Matrix class (S4)
+  str()
+```
+
+Mostly, I just find S4 objects more annoying to work with for applied work, but you should be at least somewhat familiar with them so that you won't be thrown off course when they appear.
+
+### Others
+
+Indeed there are more types of R objects, but they will probably not be of much notice to the applied user.  As an example, the <span class="pack">text2vec</span> package uses [R6](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html).  I can only say that you'll just have to cross that bridge should you get to it.
+
+
+### Inspecting Functions
+
+You might not think of them as such, but in R, everything's an object, including functions. You can inspect them like anything else.
+
+```{r lm_func}
+str(lm)
+```
+
+```{r lm_func2, eval=2, echo=1}
+lm
+head(lm, 20)
+```
+
+One of the primary reasons for R's popularity is the accessibility of the underlying code.  People can very easily access the code for some function, modify it, extend it, etc.
+
+
+
+
+### Exercises
+
+From an applied perspective, if you want to get better at writing code, or modify existing code, all you have to do is dive in!  We'll talk more about writing functions [later][Writing functions].
+
+[^other_lm_tab]: An alternative would be to use broom::tidy on the lm object itself, or use pander instead of kableExtra to work on the lm object.
