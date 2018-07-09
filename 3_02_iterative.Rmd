@@ -132,7 +132,7 @@ This involves a <span class="emph">while</span> statement.  It states, while `i`
 
 Understanding loops is fundamental toward spending less time processing data and more time toward exploring it.  Your code will be more succinct and more able to handle the usual changes that come with dealing with data.  Now that you have a sense of it, know that once you are armed with the sorts of things we'll be talking about next- apply functions, writing functions, and vectorization - you'll likely have little need to write explicit loops.  While there is always a need for iterative processing of data, R provides even more efficient means to do so.
 
-### Apply family
+### apply family
 
 A family of functions comes with R that allows for a succinct way of looping when it is appropriate. As such, even when you loop in R, you don't have to do so explicitly. Common functions in this family include:
 
@@ -207,42 +207,49 @@ The <span class="pack">purr</span> package allows you to take the <span class="f
 
 Consider the following.  We'll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the same way we would with <span class="func">lapply</span>.
 
-```{r purr_example, eval=TRUE, echo=-1}
-map = purrr::map  # could not remove conflict w
-library(purrr)
+```{r purr_example, eval=TRUE, echo=-(1:2)}
+detach(package:maps)
+map = purrr::map  # could not remove conflict with something, nor able to debug
 x = list(1:3, 4:6, 7:9)
-x %>% 
-  map(sum)
+map(x, sum)
 ```
 
 
-The map functions take some getting used to, and in my experience they are typically slower than the apply functions, sometimes notably so.  However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output[^purrr], which is especially important in reproducibility, package development, producing production-level code, etc.
+The map functions take some getting used to, and in my experience they are typically slower than the apply functions, sometimes notably so.  However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output[^purrr], which is especially important in reproducibility, package development, producing production-level code, etc.  The key idea is that the map functions will always return something the same length as the input given to it.
 
 
-The odd thing, in my opinion, is that they don't work with data.frame objects except in the sense that data.frames are lists.
+The purrr functions want a list or vector, i.e. they don't work with data.frame objects like we've done with mutate and summarize except in the sense that data.frames are lists. 
 
 
-```{r purr_example2}
+```{r purr_example2, eval=-1}
 mtcars %>% 
-  map(scale)    # returns a list
+  map(scale)    # returns a list, not shown
 
 mtcars %>% 
   map_df(scale) # returns a df
 
 mtcars %>% 
-  map_dbl(sum)  # returns a numeric (double) vector
+  map_dbl(sum)  # returns a numeric (double) vector of column sums
+
+diamonds %>% 
+  map_at(c('carat', 'depth', 'price'), 
+         function(x) as.integer(x > median(x))) %>% 
+  as_data_frame()
 ```
 
 
 
+However, working with lists is very useful, so let's turn to that.
 
 
 ### Working with lists
 
-Aside from data frames, you may think you don't have much need for list objects.  However, list objects make it very easy to iterate
+Aside from data frames, you may think you don't have much need for list objects.  However, list objects make it very easy to iterate some form of data processing.
+
 Let's say you have models of increasing complexity, and you want to easily summarise and/or compare them.
 
 ```{r purr_models}
+library(mgcv) # for gam
 mtcars$cyl = factor(mtcars$cyl)
 mod_lm = lm(mpg ~ wt, data=mtcars)
 mod_poly = lm(mpg ~ poly(wt, 2), data=mtcars)
@@ -271,7 +278,7 @@ model_list %>%
 ```
 
 
-Let's go further and create a plot of these results. We'll map to a data frame, use gather to melt it to two columns of model and value, then use ggplot2 to plot the results. Note that ggplot2 will change the ordering of the variable unless you coerce it by creating a factor[^ggplotalpha].
+Let's go further and create a plot of these results. We'll map to a data frame, use gather to melt it to two columns of model and value, then use ggplot2 to plot the results[^ggplotalpha].
 
 ```{r purr_models2}
 model_list %>% 
@@ -310,24 +317,75 @@ left_join(mod_rsq, mod_aic) %>%
   facet_wrap(~measure, scales = 'free')
 ```
 
+##### List columns
+
+As data.frames are lists, anything can be put into a column just as you would a list element.  We'll use pmap here, as it can take more than one argument, and we're feeding all columns of the data.frame.  
+
+```{r list_data_frame}
+mtcars2 = as.matrix(mtcars)
+mtcars2[sample(1:length(mtcars2),50)] = NA
+mtcars2 = as_data_frame(mtcars2)
+
+mtcars2 = mtcars2 %>% 
+  mutate(newvar = pmap(., ~ data.frame(
+    N = sum(!is.na(c(...))),
+    Miss = sum(is.na(c(...)))
+  )))
+```
+
+Now check out the list column.
+
+```{r list_data_frame2}
+mtcars2
+
+mtcars2$newvar %>% head(3)
+```
+
+Unnest it with the tidyr function.
+
+```{r list_data_frame3}
+mtcars2 %>% 
+  unnest(newvar)
+```
+
+
+
+This is a pretty esoteric demonstration, and not something you'd normally want to do, as <span class="func">mutate</span> or other approaches would be far more efficient and sensical.  However, the idea is that you might want to retain the information you might otherwise store in a list with the data that was used to create it.  Once you have that, you can use that colum as you would any list for iterative programming.
+
+### Iterative Programming Exercises
 
 #### Exercise 1
 
 With the following <span class="objclass">matrix</span>, use <span class="func">apply</span> and the <span class="func">sum</span> function to get row or column sums.  
 
-```{r vectorapp_ex1, echo=1, eval=FALSE}
+```{r app_ex1, echo=1, eval=FALSE}
 x = matrix(1:9, 3, 3)
 apply()
 ```
 
 #### Exercise 2
 
-With the following <span class="objclass">list</span>, use <span class="func">lapply</span> and <span class="func">sapply</span> and the <span class="func">sum</span> function to get sums for the elements.  There is no margin to specify with on a list, so just supply the list and the sum function.  
+With the following <span class="objclass">list</span>, use <span class="func">lapply</span> and <span class="func">sapply</span> and the <span class="func">sum</span> function to get sums for the elements.  There is no margin to specify for a list, so just supply the list and the sum function.  
 
-```{r vectorapp_ex2, echo=1, eval=FALSE}
+```{r app_ex2, echo=1, eval=FALSE}
 x = list(1:3, 4:6, 7:9)
 lapply()
 sapply()
+```
+
+
+#### Exercise 3
+
+As in the previous example, use a map function to create a data frame of the column means.
+
+```{r purrr_ex3, echo=1:5, eval=FALSE}
+d = data_frame(
+  x = rnorm(100),
+  y = rnorm(100, 10, 2),
+  z = rnorm(100, 50, 10),
+)
+
+d %>% map_df(mean)
 ```
 
 <span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>.  If you supply the argument `simplified=F`, it is identical. Otherwise, it attempts to return a vector or matrix.
@@ -336,6 +394,6 @@ sapply()
 
 [^arrays]: You can have 3 or more dimensional arrays, and <span class="func">apply</span> will work over those dimensions (or any combination of them), but this doesn't come up too often.
 
-[^purrr]: Personally I find the help file description nebulous and examples unrealistic (group_by -> lm?), and oftentimes can come up with a group_by-summarise approach before I can sort out why the map approach didn't work.
+[^purrr]: Personally I find the help file description nebulous or completely lacking, and the examples unrealistic, and oftentimes can come up with a group_by-summarise approach before I can sort out why the map approach didn't work.
 
-[^ggplotalpha]: This pretty much defeats the entire purpose of retaining characters over factors everywhere else in the tidyverse.
+[^ggplotalpha]: Note that ggplot2 will change the ordering of the variable unless you coerce it by creating a factor. This pretty much defeats the entire purpose of retaining characters over factors everywhere else in the tidyverse.

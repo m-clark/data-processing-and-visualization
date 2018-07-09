@@ -1,5 +1,103 @@
 ## Writing functions
 
+You can't do anything in R without using functions, but have you ever written your own?  Why would you?
+
+- Efficiency
+- Customized functionality
+- Reproducibility
+- Extend the work that's already been done
+
+### DRY
+
+An oft-quoted mantra in programming is *don't repeat yourself*.  One context regards iterative programming, where we would rather write one line of code than one-hundred.  More generally though, we would like to gain efficiency where possible.  A good rule of thumb is, if you are writing the same set of code more than twice, you should write a function to do it instead.  Consider the following example.
+
+```{r dry, eval=FALSE}
+good_mileage_displ_low_cyl_4  = if_else(cyl == 4 & displ < mean(displ) & hwy > 30, 'yes', 'no')
+good_mileage_displ_low_cyl_6  = if_else(cyl == 6 & displ < mean(displ) & hwy > 30, 'yes', 'no')
+good_mileage_displ_low_cyl_8  = if_else(cyl == 8 & displ < mean(displ) & hwy > 30, 'yes', 'no')
+good_mileage_displ_high_cyl_4 = if_else(cyl == 4 & displ > mean(displ) & hwy > 30, 'yes', 'no')
+good_mileage_displ_high_cyl_6 = if_else(cyl == 6 & displ > mean(displ) & hwy > 30, 'yes', 'no')
+good_mileage_displ_high_cyl_8 = if_else(cyl == 8 & displ > mean(displ) & hwy > 30, 'yes', 'no')
+```
+
+It was tedious, but that's not much code.  But now consider- what if you want to change the mpg cutoff? The mean to median? Something else?  You have to change all of it.  Let's write a function instead!
+
+```{r mpgfunc}
+good_mileage <- function(cylinder = 4,
+                         mpg_cutoff = 30,
+                         displ_fun = mean,
+                         displ_low = TRUE,
+                         cls = 'compact') {
+  
+  if (displ_low)
+    mpg %>%
+    filter(cyl == cylinder &
+             displ < displ_fun(displ) &
+             hwy > mpg_cutoff &
+             class == cls)
+  else
+    mpg %>%
+    filter(cyl == cylinder &
+             displ > displ_fun(displ) &
+             hwy > mpg_cutoff &
+             class == cls)
+}
+```
+
+What's going on? The function takes five inputs:
+
+- cyl: Which cylinder type we want
+- mpg_cutoff: The cutoff for 'good' mileage
+- displ_fun: Whether the displacement to be based on the mean or something else
+- displ_low: Whether we are interested in low or high displacement vehicles
+- cls: the class of the vehicle (e.g. compact or suv)
+
+Then it simply filters the data to observations that match the input criteria.
+
+Now we can do whatever we want as needed:
+
+```{r mpgfunc_demo}
+good_mileage(mpg_cutoff = 40)
+
+good_mileage(cylinder = 8, mpg_cutoff = 15, displ_low = F, cls='suv')
+```
+
+Let's extend the functionality by adding a year argument (only values available are 2008 and 1999).
+
+```{r mpgfunc_extend, echo=1:6}
+good_mileage <- function(cylinder = 4,
+                         mpg_cutoff = 30,
+                         displ_fun = mean,
+                         displ_low = TRUE,
+                         cls = 'compact',
+                         yr = 2008) {
+  
+  if (displ_low)
+    mpg %>%
+    filter(cyl == cylinder &
+             displ < displ_fun(displ) &
+             hwy > mpg_cutoff &
+             class == cls &
+             year == yr)
+  else
+    mpg %>%
+    filter(cyl == cylinder &
+             displ > displ_fun(displ) &
+             hwy > mpg_cutoff &
+             class == cls &
+             year == yr)
+}
+```
+
+```{r mpgfunc_extend_demo}
+good_mileage(cylinder = 8, 
+             mpg_cutoff = 15, 
+             displ_low = F, 
+             cls='suv', 
+             yr = 2008)
+```
+
+So we now have something that is flexible, reusable, and extensible, and it took less code than writing out the individual lines of code
 
 
 ### Lambda functions
