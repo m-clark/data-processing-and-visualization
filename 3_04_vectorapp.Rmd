@@ -1,4 +1,4 @@
-## Vectorization & Apply
+## Vectorization 
 
 ```{r vasetup, include=FALSE, eval=TRUE, cache=FALSE}
 knitr::opts_chunk$set(eval=FALSE)
@@ -16,7 +16,7 @@ idx
 x[idx]
 ```
 
-As mentioned previously <span class="objclass">logicals</span> are objects with values of `TRUE` or `FALSE`, like the <span class="objclass">idx</span> variable above.  While sometimes we want to deal with the logical object as an end, it is extremely commonly used as an index in data processing. Note how we don't have to create an explicit index object first (though often you should), as R indexing is ridiculously flexible.  Here are more examples, not necessarily recommended, but just to demonstrate the flexibility of Boolean indexing.
+As mentioned [previously][logicals], <span class="objclass">logicals</span> are objects with values of `TRUE` or `FALSE`, like the <span class="objclass">idx</span> variable above.  While sometimes we want to deal with the logical object as an end, it is extremely commonly used as an index in data processing. Note how we don't have to create an explicit index object first (though often you should), as R indexing is ridiculously flexible.  Here are more examples, not necessarily recommended, but just to demonstrate the flexibility of Boolean indexing.
 
 ```{r flexindex}
 x[x > 2]
@@ -121,7 +121,7 @@ load('data/vectorization.RData'); library(microbenchmark); test
 ```
 
 
-### **Vector/Apply Exercises**
+### **Vector Exercises**
 
 
 

@@ -7,9 +7,78 @@ You can't do anything in R without using functions, but have you ever written yo
 - Reproducibility
 - Extend the work that's already been done
 
+There are many benefits to writing your own functions, and it's actually easy to do.  Once you get the basic concept down, you'll likely find yourself using your own functions more and more.
+
+### A starting point
+
+Let's assume you want to calculate the mean, standard deviation, and number of missing values for a variable, called `myvar`.  We could do something like the following
+
+```{r func_ex, eval=FALSE}
+mean(myvar)
+sd(myvar)
+sum(is.na(myvar))
+```
+
+Now let's say you need to do it for several variables.  Here's what your custom function would look like.  It takes a single input, the variable you want information about, and returns a data frame with that info.
+
+```{r func_ex2}
+my_summary <- function(myvar) {
+  data.frame(
+    mean = mean(myvar, na.rm = TRUE),
+    sd = sd(myvar, na.rm = TRUE),
+    N_missing = sum(is.na(myvar))
+    )
+}
+```
+
+Note that if there are actually missing values, we need to set `na.rm = TRUE` or the mean and sd will return `NA`. Let's try it. I add missing values to test that aspect.
+
+```{r func_ex3, echo=-1}
+mtcars = datasets::mtcars  # to undo previous factors
+my_summary(mtcars$mpg)
+
+mtcars2 = mtcars
+mtcars2$wt[c(3,10)] = NA
+my_summary(mtcars2$wt)
+```
+
+Seems to work fine.  Let's add how many total observations there are.
+
+```{r func_ex4}
+my_summary <- function(myvar) {
+  data.frame(
+    mean = mean(myvar, na.rm = TRUE),
+    sd = sd(myvar, na.rm = TRUE),
+    N_total = length(myvar),
+    N_missing = sum(is.na(myvar))
+    )
+}
+```
+
+That was easy! Let's try it.
+
+```{r func_ex5}
+my_summary(mtcars2$wt)
+```
+
+This shows that writing the first part of any function can be straightforward. Then, once in place, you can usually add functionality without too much trouble.  Eventually you could have something very complicated, but which will make sense to you because you built it from the ground up.
+
+
+Now let's do it for every column!
+
+```{r func_ex6}
+mtcars2 %>% 
+  map_dfr(my_summary, .id = 'variable')
+```
+
+The <span class="func">map_dfr</span> function is just like our previous usage in the [iterative programming][iterative] section, just that it will create mini-data.frames then row bind them together.
+
+
 ### DRY
 
-An oft-quoted mantra in programming is *don't repeat yourself*.  One context regards iterative programming, where we would rather write one line of code than one-hundred.  More generally though, we would like to gain efficiency where possible.  A good rule of thumb is, if you are writing the same set of code more than twice, you should write a function to do it instead.  Consider the following example.
+An oft-quoted mantra in programming is ***D**on't **R**epeat **Y**ourself*.  One context regards iterative programming, where we would rather write one line of code than one-hundred.  More generally though, we would like to gain efficiency where possible.  A good rule of thumb is, if you are writing the same set of code more than twice, you should write a function to do it instead.  
+
+Consider the following example, where we want to subset the data given a set of conditions.  Given the cylinder, engine displacement, and mileage, we'll get different parts of the data.
 
 ```{r dry, eval=FALSE}
 good_mileage_displ_low_cyl_4  = if_else(cyl == 4 & displ < mean(displ) & hwy > 30, 'yes', 'no')
@@ -32,14 +101,14 @@ good_mileage <- function(cylinder = 4,
   if (displ_low)
     mpg %>%
     filter(cyl == cylinder &
-             displ < displ_fun(displ) &
-             hwy > mpg_cutoff &
+             displ <= displ_fun(displ) &
+             hwy >= mpg_cutoff &
              class == cls)
   else
     mpg %>%
     filter(cyl == cylinder &
-             displ > displ_fun(displ) &
-             hwy > mpg_cutoff &
+             displ >= displ_fun(displ) &
+             hwy >= mpg_cutoff &
              class == cls)
 }
 ```
@@ -52,7 +121,7 @@ What's going on? The function takes five inputs:
 - displ_low: Whether we are interested in low or high displacement vehicles
 - cls: the class of the vehicle (e.g. compact or suv)
 
-Then it simply filters the data to observations that match the input criteria.
+Then it simply filters the data to observations that match the input criteria.  We also put <span class="emph">default values</span>, which can be done to your discretion.
 
 Now we can do whatever we want as needed:
 
@@ -75,15 +144,15 @@ good_mileage <- function(cylinder = 4,
   if (displ_low)
     mpg %>%
     filter(cyl == cylinder &
-             displ < displ_fun(displ) &
-             hwy > mpg_cutoff &
+             displ <= displ_fun(displ) &
+             hwy >= mpg_cutoff &
              class == cls &
              year == yr)
   else
     mpg %>%
     filter(cyl == cylinder &
-             displ > displ_fun(displ) &
-             hwy > mpg_cutoff &
+             displ >= displ_fun(displ) &
+             hwy >= mpg_cutoff &
              class == cls &
              year == yr)
 }
@@ -91,7 +160,7 @@ good_mileage <- function(cylinder = 4,
 
 ```{r mpgfunc_extend_demo}
 good_mileage(cylinder = 8, 
-             mpg_cutoff = 15, 
+             mpg_cutoff = 19, 
              displ_low = F, 
              cls='suv', 
              yr = 2008)
@@ -101,3 +170,65 @@ So we now have something that is flexible, reusable, and extensible, and it took
 
 
 ### Lambda functions
+
+Oftentimes we just need a quick and easy function for a one-off application, especially when using apply/map functions.  For example, both the following would calculate standard deviations of columns.
+
+```{r lambda, eval=FALSE}
+apply(mtcars, 2, sd)
+apply(mtcars, 2, function(x) sd(x))
+```
+
+The difference between the two is that for the latter, our function didn't have to be something already available.  To further illustrate this, we'll create a robust standardization function that uses the median and median absolute deviation rather than the mean and standard deviation.
+
+```{r lambda_ex, cache.rebuild=T}
+# some variables have a mad = 0, and so return Inf, NaN
+# apply(mtcars, 2, function(x) (x - median(x))/mad(x)) %>% 
+#   head()
+
+mtcars %>%
+  map_df(function(x) (x - median(x))/mad(x))
+```
+
+
+Even if you don't use lambda functions yourself, it's important to understand them, because you'll often see other people's code using them.
+
+
+
+### Writing Functions Exercises
+
+#### Excercise 1
+
+Write a function that takes the log of the sum of two values (i.e. just two single numbers) using the <span class="func">log</span> function.
+
+```{r wf_ex1, eval=FALSE}
+log_sum <- function(a, b) {
+  ?
+}
+```
+
+#### Exercise 2
+
+
+Let's write a function that will take a numeric variable and convert it to a character string of 'positive' vs. 'negative'.  We can use `if {}... else {}` structure, <span class="func">ifelse</span>, or <span class="pack">dplyr</span>::<span class="func">if_else</span>- they all would accomplish this.  In this case, the input is a single vector of numbers, and the output will recode any negative value to 'negative' and positive values to 'positive' (or whatever you want).  Here is an example of how we would just do it as a one-off.
+
+```{r wf_ex2, eval=FALSE}
+set.seed(123)  # so you get the exact same 'random' result
+x <- rnorm(10)
+if_else(x < 0, "negative", "positive")
+```
+
+Now try your hand at writing a function for that.
+
+```{r wf_ex2b, eval=FALSE}
+pos_neg <- function(?) {
+  ?
+}
+```
+
+
+#### Thinking Exercises
+
+How would you write a check for Exercise 1 to make sure the inputs are numeric and positive (can't take the log of non-positive values)?  See `?stop` and `?message` for starters.
+
+
+
