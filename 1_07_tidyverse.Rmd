@@ -160,19 +160,19 @@ Even if it hadn't been explained before, you might have been able to guess a lit
 
 ### Running example
 
-The following data was scraped initially scraped from the web as follows.  It is data from the NBA basketball league for the 2017-2018 season with things like player names, points per game, field goal percentage etc.  We'll use it as an example to demonstrate various functionality found within <span class="pack">dplyr</span>.
+The following data was scraped initially scraped from the web as follows.  It is data from the NBA basketball league for the 2017-2018 season with things like player names, position, team name, points per game, field goal percentage, and various other statistics.  We'll use it as an example to demonstrate various functionality found within <span class="pack">dplyr</span>.
 
 ```{r basketballDataScrape, eval=FALSE}
 library(rvest)
 url = "http://www.basketball-reference.com/leagues/NBA_2018_totals.html"
 bball = read_html(url) %>% 
   html_nodes("#totals_stats") %>% 
-  html_table %>% 
-  data.frame 
+  html_table() %>% 
+  data.frame() 
 save(bball, file='data/bball.RData')
 ```
 
-However you can just load it into your workspace. Note that when initially downloaded, the data is all character strings.  We'll fix this later.  The following shows the data as it will eventually be.
+However you can just load it into your workspace. Note that when initially gathered from the website, the data is all character strings.  We'll fix this later.  The following shows the data as it will eventually be.
 
 ```{r load_bball}
 load('data/bball.RData')
@@ -187,7 +187,7 @@ Often you do not need the entire data set. While this is easily handled in base 
 ```{r select1}
 bball %>% 
   select(Player, Tm, Pos) %>% 
-  head
+  head()
 ```
 
 What if we want to drop some variables?
@@ -195,7 +195,7 @@ What if we want to drop some variables?
 ```{r select2}
 bball %>%     
   select(-Player, -Tm, -Pos)  %>% 
-  head
+  head()
 ```
 
 #### Helper functions
@@ -206,7 +206,7 @@ Sometimes, we have a lot of variables to select, and if they have a common namin
 bball %>% 
   select(Player, contains("3P"), ends_with("RB")) %>% 
   arrange(desc(TRB)) %>% 
-  head
+  head()
 ```
 
 The <span class="func">select</span> also has helper functions to make selecting columns even easier.  I probably don't even need to explain what's being done above, and this is the power of the tidyverse way.  Here is the list of <span class="emph">helper functions</span> to be aware of:
@@ -219,11 +219,12 @@ The <span class="func">select</span> also has helper functions to make selecting
 - <span class="func">one_of</span>: variables in character vector.
 - <span class="func">everything</span>: all variables.
 
+
 ### Filtering Rows
 
-There are repeated header rows in this data[^headers], so we need to drop them.  This is also why everything was character string when we first imported it, because having any character strings in a column coerces the entire column to be character,  since all elements need to be of the same type.  Character string is chosen over others because anything can be converted to a string, but not everything can be a number.  
+There are repeated header rows in this data[^headers], so we need to drop them.  This is also why everything was character string when we first scraped it, because having any character strings in a column coerces the entire column to be character,  since all elements of a vector [need to be of the same type][vectors].  Character string is chosen over others because anything can be converted to a string, but not everything can be a number.  
 
-Filtering by rows requires the basic indexing knowledge we talked about before, especially Boolean indexing. In the following, `Rk`, or rank, is really just a row id, but if it equals 'Rk' instead of a number, we know we're dealing with a header row, so we'll drop it.
+Filtering by rows requires the basic indexing knowledge [we talked about before][indexing], especially Boolean indexing. In the following, `Rk`, or rank, is for all intents and purposes just a row id, but if it equals 'Rk' instead of something else, we know we're dealing with a header row, so we'll drop it.
 
 ```{r filter0}
 bball = bball %>% 
@@ -242,7 +243,7 @@ bball %>%
   distinct(Player, Pos, Age)              
 ```
 
-Maybe we want just the first 10 rows...
+Maybe we want just the first 10 rows.  This is often the case when we perform some operation and need to quickly verify that what we're doing is working in principle.
 
 ```{r filter2}
 bball %>% 
@@ -254,11 +255,12 @@ We can use filtering even with variables just created.
 ```{r uniteFilterArrange}
 bball %>% 
   unite("posTeam", Pos, Tm) %>%         # create a new variable
-  filter(posTeam == "PF_SAS") %>%       # use it for filtering
+  filter(posTeam == "SG_GSW") %>%       # use it for filtering
   select(Player, posTeam, Age) %>%      # use it for selection
   arrange(desc(Age))                    # descending order 
 ```
 
+Being able to use a newly created variable on the fly, possibly only to filter or create some other variable, goes a long way toward easy visualization and generation of desired summary statistics.
 
 
 ### Generating New Data
@@ -325,7 +327,7 @@ group_size(carriers)
 mods = do(carriers, model = lm(arr_delay ~ dep_time, data = .)) # reminder that data frames are lists
 mods %>% 
   summarize(rsq = summary(model)$r.squared) %>% 
-  head
+  head()
 ```
 
 <div class='note'>
@@ -334,6 +336,31 @@ You can use <span class="func">group_by</span> on more than one variable, e.g. `
 <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
 </div>
  
+
+### Renaming columns
+
+Tidy data doesn't really have a problem with variable names starting with numbers or incorporating symbols.  I would still suggest it is poor practice, because even if your data set looks fine, you'll encounter problems with modeling and visualization package using that data.  However, as a demonstration, we can 'fix' some of the variable names.
+
+One issue is that when we scraped the data and coverted it to a <span class="objclass">data.frame</span>, the names that started with a number, like `3P` for 'three point baskets made', were made into `X3P`, because that's the way R works by default. In addition, `3P%`, i.e. three point percentage made, was made into `3P.`  Same goes for the 2P (two-pointers) and FT (free-throw) variables.
+
+We can use rename to change column names. A basic example is as follows.
+
+```{r rename_ex, eval=FALSE}
+data %>% 
+  rename(new_name = old_name,
+         new_name2 = old_name2)
+```
+
+Very straightforward.  However, oftentimes we'll need to change *patterns*, as with our current problem.  The following uses <span class="func">str_replace</span> from <span class="pack">stringr</span> to look for a pattern in a name, and replace that pattern with some other pattern.  It uses <span class="emph">regular expressions</span> for the patterns.
+
+
+```{r rename_ex2}
+bball %>% 
+  rename_at(vars(contains('.')), str_replace, pattern='\\.', replacement='%') %>% 
+  rename_at(vars(starts_with('X')), str_replace, pattern='X', replacement='') %>% 
+  glimpse()
+```
+
 
 
 ### Merging Data
@@ -366,6 +393,26 @@ band_members
 band_instruments
 
 left_join(band_members, band_instruments)
+```
+
+
+When we don't have a one to one match, the result of the different types of join will become more apparent.
+
+```{r merge_demo2, echo=-(1:2), message=TRUE}
+band_members = data_frame(Name = c('Seth', 'Francis', 'Bubba', 'Stephen'),
+                          Band = c('Com Truise', 'Pixies', 'The New Year', 'Pavement'))
+band_instruments = data_frame(Name = c('Seth', 'Francis', 'Bubba', 'Steve'),
+                              Instrument = c('Synthesizer', 'Guitar', 'Guitar', 'Rage'))
+
+band_members
+band_instruments
+
+left_join(band_members, band_instruments)  
+right_join(band_members, band_instruments)
+inner_join(band_members, band_instruments)
+full_join(band_members, band_instruments)
+anti_join(band_members, band_instruments)
+anti_join(band_instruments, band_members)
 ```
 
 Merges can get quite complex, and involve multiple data sources. In many cases you may have to do a lot of processing before getting to the merge, but <span class="pack">dplyr's</span> joins will help quite a bit.
@@ -403,7 +450,7 @@ The following demonstrates the separate function utilized for a very common data
 bball %>% 
   separate(Player, into=c('firstName', 'lastName'), sep=' ') %>% 
   select(1:5) %>% 
-  head
+  head()
 ```
 
 Note that this won't necessarily apply to every name.  So further processing may be required.
@@ -536,4 +583,4 @@ movies %>%
 
 [^funs]: For only one function, you could have just supplied `as.numeric` as the second argument.
 
-[^reshape]: Some still use <span class="pack">reshape2</span> but there is no reason to.
+[^reshape]: Some still use <span class="pack">reshape2</span> but there is no reason to and it is no longer developed.
