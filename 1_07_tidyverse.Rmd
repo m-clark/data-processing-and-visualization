@@ -2,7 +2,7 @@
 
 
 ```{r tvsetup, include=FALSE, eval=TRUE, cache=FALSE}
-knitr::opts_chunk$set(echo = T, eval=T)
+knitr::opts_chunk$set(echo = T, eval=T, cache.rebuild = F)
 ```
 
 ### What is the tidyverse?
@@ -16,7 +16,7 @@ The tidyverse consists of a few key packages:
 - <span class="pack">purrr</span>: functional programming, e.g. alternate approaches to apply
 - <span class="pack">tibble</span>: tibbles, a modern re-imagining of data frames
 
-And of course the <span class="pack">tidyverse</span> package itself, which will load all of the above in a way that will avoid naming conflicts
+And of course the <span class="pack">tidyverse</span> package itself, which will load all of the above in a way that will avoid naming conflicts.
 
 ```{r tv_load, eval=FALSE}
 library(tidyverse)
@@ -89,9 +89,9 @@ In addition, there is no need to quote variable names.
 Let's say we want to select from our data the following variables:
 
   - Start with the **ID** variable
-  - The variables **X1:X10**, which are not all together, and there are many more *X* columns
+  - The variables **X1** through **X10**, which are not all together, and there are many more *X* columns
   - The variables **var1** and **var2**, which are the only variables with *var* in their name
-  - Any variable that starts with **XYZ**
+  - Any variable with a name that starts with **XYZ**
     
 How might we go about this in a dataset of possibly hundreds or even thousands of columns? There are several base R approaches that we could go with, but often they will be tedious, or require multiple objects to be created just to get the columns you want.  Let's start with the worst choice.
 
@@ -137,15 +137,18 @@ Now consider doing all of the previous in one piped operation.  The <span class=
 
 ```{r pipeExample, eval=FALSE}
 newData = oldData %>% 
-  select(num_range('X', 1:10), contains('var'), starts_with('XYZ')) %>% 
-  filter(Z == 'Yes', Q == 'No') %>% 
+  select(num_range('X', 1:10), 
+         contains('var'), 
+         starts_with('XYZ')) %>% 
+  filter(Z == 'Yes', 
+         Q == 'No') %>% 
   top_n(n=50, var2) %>% 
   arrange(desc(var1))
 ```
 
 Even if it hadn't been explained before, you might have been able to guess a little as to what was going on.  The code is fairly succinct, we don't have to keep referencing objects repeatedly, and no explicit intermediary objects are created.
 
-<span class="pack">dplyr</span> and piping is an *alternative*. You can do all this sort of stuff with base R, for example, with functions like <span class="func">with</span>, <span class="func">within</span>, <span class="func">subset</span>, <span class="func">transform</span>, etc.  Though the initial base R approach depicted is fairly concise, in general, it still can potentially be: 
+<span class="pack">dplyr</span> and piping is an *alternative*. You can do all this sort of stuff with base R, for example, with functions like <span class="func">with</span>, <span class="func">within</span>, <span class="func">subset</span>, <span class="func">transform</span>, etc.  Though the initial base R approach depicted is fairly concise, in general, it can potentially be: 
 
 - more verbose
 - less legible
@@ -157,11 +160,11 @@ Even if it hadn't been explained before, you might have been able to guess a lit
 
 ### Running example
 
-The following data was scraped initially scraped from the web as follows.  It is data from the NBA basketball league for the 2016-2017 season with things like player names, points per game, field goal percentage etc.  We'll use it as an example to demonstrate various functionality found within <span class="pack">dplyr</span>.
+The following data was scraped initially scraped from the web as follows.  It is data from the NBA basketball league for the 2017-2018 season with things like player names, points per game, field goal percentage etc.  We'll use it as an example to demonstrate various functionality found within <span class="pack">dplyr</span>.
 
 ```{r basketballDataScrape, eval=FALSE}
 library(rvest)
-url = "http://www.basketball-reference.com/leagues/NBA_2017_totals.html"
+url = "http://www.basketball-reference.com/leagues/NBA_2018_totals.html"
 bball = read_html(url) %>% 
   html_nodes("#totals_stats") %>% 
   html_table %>% 
@@ -169,7 +172,7 @@ bball = read_html(url) %>%
 save(bball, file='data/bball.RData')
 ```
 
-However you can just load it into your workspace. Note that when initially downloaded, the data is all character strings.  We'll fix this later.
+However you can just load it into your workspace. Note that when initially downloaded, the data is all character strings.  We'll fix this later.  The following shows the data as it will eventually be.
 
 ```{r load_bball}
 load('data/bball.RData')
