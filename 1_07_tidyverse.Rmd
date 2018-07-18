@@ -293,25 +293,26 @@ summary(select(bball, shootingDif))  # select and others don't have to be piped 
 
 A very common task is to look at group-based statistics, and we can use <span class='func'>group_by</span> and <span class="func">summarize</span> to help us in this regard[^summarise].  Base R has things like <span class="func">aggregate</span>, <span class="func">by</span>, and <span class="func">tapply</span> for this, but they should not be used, as this approach is much more straightforward, flexible, and faster.
 
-For this, I'm going to start putting together several things we've demonstrated thus far. Ultimately we'll create a variable called <span class="objclass">trueShooting</span>, which represents 'true shooting percentage', and get an average for each position.
+For this demonstration, I'm going to start putting together several things we've demonstrated thus far. Ultimately we'll create a variable called <span class="objclass">trueShooting</span>, which represents 'true shooting percentage', and get an average for each position, and compare it to the standard field goal percentage.
 
 ```{r groupby}
 bball %>%   
+  select(Pos, FG, FGA, FG., FTA, X3P, PTS) %>% 
   mutate(trueShooting = PTS / (2 * (FGA + (.44 * FTA))),
          effectiveFG = (FG + (.5 * X3P)) / FGA, 
          shootingDif = trueShooting - FG.) %>%  
-  select(Player, Tm, Pos, MP, trueShooting, effectiveFG, PTS) %>% 
   group_by(Pos) %>%                                                 
-  summarize(meanTrueShooting = mean(trueShooting, na.rm = TRUE))    
+  summarize(`meanFG%` = mean(FG., na.rm = TRUE),
+            meanTrueShooting = mean(trueShooting, na.rm = TRUE))    
 ```
 
 We can use <span class="func">do</span> on grouped data to go further.  This function can be used to create a new <span class="emph">list-column</span> in the data, the elements of which can be *anything*, even the results of an analysis for each group.  As such, we can use <span class="pack">tidyr's</span> <span class="func">unnest</span> to get back to a standard data frame.
 
-To demonstrate, the following will group data by position, then get the correlation between field-goal percentage and free-throw shooting percentage.  For some reason, one individual was labeled as 'PF-C', so we change them to just 'C'.  On your own, I recommend just looking at it to the do line first, and compare to this result.
+To demonstrate, the following will group data by position, then get the correlation between field-goal percentage and free-throw shooting percentage.  For some reason, one individual was labeled as 'PG-SG', and only two were labeled 'SF-SG', so we'll change them to just 'SG'.  On your own, I recommend just looking at it to the do line first, and compare to this result.
 
 ```{r do}
 bball %>% 
-  mutate(Pos = if_else(Pos=='PF-C', 'C', Pos)) %>% 
+  mutate(Pos = if_else(Pos=='PG-SG' | Pos=='SF-SG', 'SG', Pos)) %>% 
   group_by(Pos) %>%     
   do(FgFt_Corr=cor(.$FG., .$FT., use='complete')) %>% 
   unnest(FgFt_Corr)
@@ -324,9 +325,14 @@ library(nycflights13)
 carriers = group_by(flights, carrier)
 group_size(carriers)
 
-mods = do(carriers, model = lm(arr_delay ~ dep_time, data = .)) # reminder that data frames are lists
+mods = carriers %>% 
+  do(model = lm(arr_delay ~ dep_time, data = .)) 
+
+mods
+
 mods %>% 
-  summarize(rsq = summary(model)$r.squared) %>% 
+  summarize(carrier = carrier,
+            `Adjusted Rsq` = summary(model)$adj.r.squared) %>% 
   head()
 ```
 
@@ -341,7 +347,7 @@ You can use <span class="func">group_by</span> on more than one variable, e.g. `
 
 Tidy data doesn't really have a problem with variable names starting with numbers or incorporating symbols.  I would still suggest it is poor practice, because even if your data set looks fine, you'll encounter problems with modeling and visualization package using that data.  However, as a demonstration, we can 'fix' some of the variable names.
 
-One issue is that when we scraped the data and coverted it to a <span class="objclass">data.frame</span>, the names that started with a number, like `3P` for 'three point baskets made', were made into `X3P`, because that's the way R works by default. In addition, `3P%`, i.e. three point percentage made, was made into `3P.`  Same goes for the 2P (two-pointers) and FT (free-throw) variables.
+One issue is that when we scraped the data and converted it to a <span class="objclass">data.frame</span>, the names that started with a number, like `3P` for 'three point baskets made', were made into `X3P`, because that's the way R works by default. In addition, `3P%`, i.e. three point percentage made, was made into `3P.`  Same goes for the 2P (two-pointers) and FT (free-throw) variables.
 
 We can use rename to change column names. A basic example is as follows.
 
@@ -472,7 +478,7 @@ Drawbacks:
 - Not as fast as <span class="pack">data.table</span> or even some base R approaches for many things[^multidplyr]
 - The *mindset* can make for unnecessary complication
     - e.g. There is no need to pipe to create a single new variable
-- Some approaches are not very intuitive
+- Some approaches, are not very intuitive
 - Notably less ability to work with some very common data structures (e.g. matrices)
     
 
@@ -480,7 +486,7 @@ All in all, if you've only been using base R approaches, the tidyverse will chan
 
 
 
-### **dplyr Exercises**
+### **tidyverse Exercises**
 
 #### Exercise 0
 
@@ -535,6 +541,12 @@ movies %>%
 ```
 
 
+##### Exercise 1d
+
+Rename the `length` column to `length_in_min` (i.e. length in minutes).
+
+
+
 
 #### Exercise 2
 
@@ -553,7 +565,21 @@ movies %>%
 
 #### Exercise 3
 
-Now put it all together in one set of piped operations. 
+Use <span class="func">gather</span> to create a 'tidy' data set from the following.
+
+```{r ex3, eval=FALSE, echo=1:3}
+dat = data_frame(id = 1:10,
+                 x = rnorm(10),
+                 y = rnorm(10))
+dat %>% gather(key = var, value = score, -id)
+```
+
+
+
+
+#### Exercise 4
+
+Now put several actions together in one set of piped operations. 
 
 - Filter movies released *after* 1990
 - select the same variables as before but also the `mpaa`, `Action`, and `Drama` variables
@@ -562,7 +588,7 @@ Now put it all together in one set of piped operations.
 
 It should spit out something like the following:
 
-```{r ex3, echo=FALSE}
+```{r ex4, echo=FALSE}
 movies %>%
   filter(year>=1990) %>% 
   select(title, year, budget, length, rating, votes, mpaa, Action, Drama) %>% 
@@ -578,8 +604,6 @@ movies %>%
 [^multidplyr]: There is <span class="pack">multidplyr</span>, but it doesn't appear to have been updated since well before <span class="pack">dplyr</span> itself underwent major changes.
 
 [^noslice]: If you're following good programming practices, you'll likely never use <span class="func">slice</span>.
-
-
 
 [^funs]: For only one function, you could have just supplied `as.numeric` as the second argument.
 
