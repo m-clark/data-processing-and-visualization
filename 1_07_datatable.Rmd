@@ -44,7 +44,7 @@ Because **j** is an argument, dropping columns is awkward.
 ```{r dtdropcol, eval=1:2, results='hold'}
 dt[,-y]             # creates negative values of y
 dt[,-'y', with=F]   # drops y, but now needs quotes
-dt[,y:=NULL]        # drops y, but this is just a base R approach
+dt[,y := NULL]      # drops y, but this is just a base R approach
 dt$y = NULL
 ```
 
@@ -250,7 +250,7 @@ mydt[,newvar:=mean(x),] %>%
 
 ### Summary
 
-Faster methods are great to have. If you have large data this is one package that can help.
+Faster and more memory-efficient methods are great to have. If you have large data this is one package that can help.
 
   - Especially for group-by and joins.
 
@@ -259,8 +259,8 @@ Drawbacks:
 - Complex
 - The syntax can be awkward
 - It doesn't work like a data.frame, which can be confusing
-- Piping with brackets isn't really feasible
-- Does not have its own 'verse'
+- Piping with brackets isn't really feasible, and the dot approach is awkward
+- Does not have its own 'verse', though many packages use it
 
 
 If speed and/or memory is (potentially) a concern, <span class="pack">data.table</span>.
