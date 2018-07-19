@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Data Processing &amp; Visualization</title>
+  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. Part of the focus will be on the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks.">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Data Processing &amp; Visualization" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://m-clark.github.io/data-processing-and-visualization/" />
+  <meta property="og:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
+  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. Part of the focus will be on the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta name="github-repo" content="m-clark/data-processing-and-visualization/" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Data Processing &amp; Visualization" />
+  
+  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. Part of the focus will be on the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta name="twitter:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
+
+
+
+<meta name="date" content="2018-07-19">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  <link rel="shortcut icon" href="img/R.ico" type="image/x-icon">
+<link rel="prev" href="3_02_iterative.html">
+<link rel="next" href="3_04_vectorapp.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+<link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
+<script src="libs/vis-4.20.1/vis.min.js"></script>
+<script src="libs/visNetwork-binding-2.0.4/visNetwork.js"></script>
+<script src="libs/proj4js-2.3.15/proj4.js"></script>
+<link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
+<script src="libs/highcharts-5.0.6/highstock.js"></script>
+<script src="libs/highcharts-5.0.6/highcharts-3d.js"></script>
+<script src="libs/highcharts-5.0.6/highcharts-more.js"></script>
+<script src="libs/highcharts-5.0.6/modules/annotations.js"></script>
+<script src="libs/highcharts-5.0.6/modules/broken-axis.js"></script>
+<script src="libs/highcharts-5.0.6/modules/data.js"></script>
+<script src="libs/highcharts-5.0.6/modules/drilldown.js"></script>
+<script src="libs/highcharts-5.0.6/modules/exporting.js"></script>
+<script src="libs/highcharts-5.0.6/modules/funnel.js"></script>
+<script src="libs/highcharts-5.0.6/modules/heatmap.js"></script>
+<script src="libs/highcharts-5.0.6/modules/map.js"></script>
+<script src="libs/highcharts-5.0.6/modules/no-data-to-display.js"></script>
+<script src="libs/highcharts-5.0.6/modules/offline-exporting.js"></script>
+<script src="libs/highcharts-5.0.6/modules/solid-gauge.js"></script>
+<script src="libs/highcharts-5.0.6/modules/treemap.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/annotations.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/draggable-legend.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/draggable-points.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/export-csv.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/grouped-categories.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/motion.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/pattern-fill-v2.js"></script>
+<script src="libs/highcharts-5.0.6/plugins/tooltip-delay.js"></script>
+<script src="libs/highcharts-5.0.6/custom/reset.js"></script>
+<script src="libs/highcharts-5.0.6/custom/symbols-extra.js"></script>
+<script src="libs/highcharts-5.0.6/custom/text-symbols.js"></script>
+<link href="libs/fontawesome-4.5.0/font-awesome.min.css" rel="stylesheet" />
+<link href="libs/htmlwdgtgrid-1/htmlwdgtgrid.css" rel="stylesheet" />
+<script src="libs/highchart-binding-0.5.0/highchart.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.1/leaflet.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.4/datatables.js"></script>
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="css/book.css" type="text/css" />
+<link rel="stylesheet" href="css/standard_html.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class='before'><a href="https://m-clark.github.io/">Data Processing & Visualization</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html"><i class="fa fa-check"></i>Intro</a><ul>
+<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#outline"><i class="fa fa-check"></i>Outline</a><ul>
+<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#part-1-data-processing"><i class="fa fa-check"></i>Part 1: Data Processing</a></li>
+<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#part-2-visualization"><i class="fa fa-check"></i>Part 2: Visualization</a></li>
+<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#part-3-programming-basics"><i class="fa fa-check"></i>Part 3: Programming Basics</a></li>
+<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#part-4-presentation"><i class="fa fa-check"></i>Part 4: Presentation</a></li>
+<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#part-5-modeling"><i class="fa fa-check"></i>Part 5: Modeling</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#preparation"><i class="fa fa-check"></i>Preparation</a></li>
+<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#other"><i class="fa fa-check"></i>Other</a></li>
+<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#python"><i class="fa fa-check"></i>Python</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html"><i class="fa fa-check"></i>Part I: Data Processing</a><ul>
+<li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#data-structures"><i class="fa fa-check"></i>Data Structures</a><ul>
+<li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#vectors"><i class="fa fa-check"></i>Vectors</a></li>
+<li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#matrices"><i class="fa fa-check"></i>Matrices</a></li>
+<li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#lists"><i class="fa fa-check"></i>Lists</a></li>
+<li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#data-frames"><i class="fa fa-check"></i>Data Frames</a></li>
+<li><a href="1_02_dataStructures.html#data-structure-exercises"><strong>Data Structure Exercises</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html"><i class="fa fa-check"></i>Input/Output</a><ul>
+<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#other-approaches"><i class="fa fa-check"></i>Other approaches</a></li>
+<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#faster-approaches"><i class="fa fa-check"></i>Faster approaches</a></li>
+<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#other-data"><i class="fa fa-check"></i>Other Data</a></li>
+<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#on-the-horizon"><i class="fa fa-check"></i>On the horizon</a></li>
+<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#big-data"><i class="fa fa-check"></i>Big Data</a></li>
+<li><a href="1_03_io.html#io-exercises"><strong>I/O Exercises</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="1_04_indexing.html"><a href="1_04_indexing.html"><i class="fa fa-check"></i>Indexing</a><ul>
+<li class="chapter" data-level="" data-path="1_04_indexing.html"><a href="1_04_indexing.html#base-r-indexing-refresher"><i class="fa fa-check"></i>Base R Indexing Refresher</a></li>
+<li class="chapter" data-level="" data-path="1_04_indexing.html"><a href="1_04_indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/Data.frame extraction</a></li>
+<li><a href="1_04_indexing.html#indexing-exercises"><strong>Indexing Exercises</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html"><i class="fa fa-check"></i>Pipes</a><ul>
+<li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html#pipes-for-visualization-more-later"><i class="fa fa-check"></i>Pipes for Visualization (more later)</a></li>
+<li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html#the-dot"><i class="fa fa-check"></i>The dot</a></li>
+<li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html#flexibility"><i class="fa fa-check"></i>Flexibility</a></li>
+<li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html"><i class="fa fa-check"></i>Tidyverse</a><ul>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#what-is-the-tidyverse"><i class="fa fa-check"></i>What is the tidyverse?</a></li>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is tidy?</a></li>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#dplyr"><i class="fa fa-check"></i>dplyr</a></li>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#running-example"><i class="fa fa-check"></i>Running example</a></li>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#selecting-columns"><i class="fa fa-check"></i>Selecting Columns</a></li>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#filtering-rows"><i class="fa fa-check"></i>Filtering Rows</a></li>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#generating-new-data"><i class="fa fa-check"></i>Generating New Data</a></li>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#grouping-and-summarizing-data"><i class="fa fa-check"></i>Grouping and Summarizing Data</a></li>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#renaming-columns"><i class="fa fa-check"></i>Renaming columns</a></li>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#merging-data"><i class="fa fa-check"></i>Merging Data</a></li>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#tidyr"><i class="fa fa-check"></i>tidyr</a></li>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#more-tidyverse"><i class="fa fa-check"></i>More Tidyverse</a></li>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
+<li><a href="1_06_tidyverse.html#tidyverse-exercises"><strong>tidyverse Exercises</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html"><i class="fa fa-check"></i>data.table</a><ul>
+<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#basics"><i class="fa fa-check"></i>Basics</a></li>
+<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#grouped-operations"><i class="fa fa-check"></i>Grouped operations</a></li>
+<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#faster"><i class="fa fa-check"></i>Faster!</a></li>
+<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
+<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#summary-1"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#dtplyr"><i class="fa fa-check"></i>dtplyr</a></li>
+<li><a href="1_07_datatable.html#data.table-exercises"><strong>data.table Exercises</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html"><i class="fa fa-check"></i>Part II: Visualization</a><ul>
+<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#thinking-visually-1"><i class="fa fa-check"></i>Thinking Visually</a><ul>
+<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#information"><i class="fa fa-check"></i>Information</a></li>
+<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#color"><i class="fa fa-check"></i>Color</a></li>
+<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
+<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#scaling-size"><i class="fa fa-check"></i>Scaling Size</a></li>
+<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
+<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#accessibility"><i class="fa fa-check"></i>Accessibility</a></li>
+<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#file-types"><i class="fa fa-check"></i>File Types</a></li>
+<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#summary-2"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#a-casual-list-of-things-to-avoid"><i class="fa fa-check"></i>A casual list of things to avoid</a></li>
+<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
+<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
+<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
+<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
+<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#examples"><i class="fa fa-check"></i>Examples</a></li>
+<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#stats"><i class="fa fa-check"></i>Stats</a></li>
+<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#scales"><i class="fa fa-check"></i>Scales</a></li>
+<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#facets"><i class="fa fa-check"></i>Facets</a></li>
+<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
+<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#themes"><i class="fa fa-check"></i>Themes</a></li>
+<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
+<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
+<li><a href="2_02_ggplot2.html#ggplot2-exercises"><strong>ggplot2 Exercises</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
+<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#packages"><i class="fa fa-check"></i>Packages</a></li>
+<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#piping-for-visualization"><i class="fa fa-check"></i>Piping for Visualization</a></li>
+<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#htmlwidgets"><i class="fa fa-check"></i>htmlwidgets</a></li>
+<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#plotly"><i class="fa fa-check"></i>Plotly</a></li>
+<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#highcharter"><i class="fa fa-check"></i>Highcharter</a></li>
+<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#visnetwork"><i class="fa fa-check"></i>visNetwork</a></li>
+<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#leaflet"><i class="fa fa-check"></i>leaflet</a></li>
+<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#dt"><i class="fa fa-check"></i>DT</a></li>
+<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#shiny"><i class="fa fa-check"></i>Shiny</a></li>
+<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
+<li><a href="2_03_interactive.html#interactive-visualization-exercises"><strong>Interactive Visualization Exercises</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html"><i class="fa fa-check"></i>Part III: Programming</a><ul>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#basics-1"><i class="fa fa-check"></i>Basics</a></li>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#r-objects"><i class="fa fa-check"></i>R Objects</a><ul>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#object-inspection-exploration"><i class="fa fa-check"></i>Object Inspection &amp; Exploration</a></li>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#methods"><i class="fa fa-check"></i>Methods</a></li>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#s4-classes"><i class="fa fa-check"></i>S4 classes</a></li>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#others"><i class="fa fa-check"></i>Others</a></li>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#inspecting-functions"><i class="fa fa-check"></i>Inspecting Functions</a></li>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#exercises"><i class="fa fa-check"></i>Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
+<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a></li>
+<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
+<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#dots-and-loops"><i class="fa fa-check"></i>(Dots and) Loops</a></li>
+<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a></li>
+<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
+<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#working-with-lists"><i class="fa fa-check"></i>Working with lists</a></li>
+<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#iterative-programming-exercises"><i class="fa fa-check"></i>Iterative Programming Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html"><i class="fa fa-check"></i>Writing functions</a><ul>
+<li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#a-starting-point"><i class="fa fa-check"></i>A starting point</a></li>
+<li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#dry"><i class="fa fa-check"></i>DRY</a></li>
+<li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#lambda-functions"><i class="fa fa-check"></i>Lambda functions</a></li>
+<li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#writing-functions-exercises"><i class="fa fa-check"></i>Writing Functions Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="3_04_vectorapp.html"><a href="3_04_vectorapp.html"><i class="fa fa-check"></i>Vectorization</a><ul>
+<li class="chapter" data-level="" data-path="3_04_vectorapp.html"><a href="3_04_vectorapp.html#boolean-indexing"><i class="fa fa-check"></i>Boolean Indexing</a></li>
+<li class="chapter" data-level="" data-path="3_04_vectorapp.html"><a href="3_04_vectorapp.html#vectorized-operations"><i class="fa fa-check"></i>Vectorized operations</a></li>
+<li><a href="3_04_vectorapp.html#vector-exercises"><strong>Vector Exercises</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="999_summary.html"><a href="999_summary.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="divider"></li>
+<li class='after'><a href="https://m-clark.github.io/"><img src="img/mc.png" style="width:50%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo"></a></li>
+<li class='after'><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="width:50%; border-width:0; display:block; margin: 0 auto;" src="img/ccbysa.png" /></a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><span style="font-size:125%; font-family:Roboto; font-style:normal">Data Processing &amp; Visualization</span></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="writing-functions" class="section level2">
+<h2>Writing functions</h2>
+<p>You can’t do anything in R without using functions, but have you ever written your own? Why would you?</p>
+<ul>
+<li>Efficiency</li>
+<li>Customized functionality</li>
+<li>Reproducibility</li>
+<li>Extend the work that’s already been done</li>
+</ul>
+<p>There are many benefits to writing your own functions, and it’s actually easy to do. Once you get the basic concept down, you’ll likely find yourself using your own functions more and more.</p>
+<div id="a-starting-point" class="section level3">
+<h3>A starting point</h3>
+<p>Let’s assume you want to calculate the mean, standard deviation, and number of missing values for a variable, called <code>myvar</code>. We could do something like the following</p>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb289-1" data-line-number="1"><span class="kw">mean</span>(myvar)</a>
+<a class="sourceLine" id="cb289-2" data-line-number="2"><span class="kw">sd</span>(myvar)</a>
+<a class="sourceLine" id="cb289-3" data-line-number="3"><span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</a></code></pre></div>
+<p>Now let’s say you need to do it for several variables. Here’s what your custom function would look like. It takes a single input, the variable you want information about, and returns a data frame with that info.</p>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb290-1" data-line-number="1">my_summary &lt;-<span class="st"> </span><span class="cf">function</span>(myvar) {</a>
+<a class="sourceLine" id="cb290-2" data-line-number="2">  <span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb290-3" data-line-number="3">    <span class="dt">mean =</span> <span class="kw">mean</span>(myvar, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb290-4" data-line-number="4">    <span class="dt">sd =</span> <span class="kw">sd</span>(myvar, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb290-5" data-line-number="5">    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</a>
+<a class="sourceLine" id="cb290-6" data-line-number="6">    )</a>
+<a class="sourceLine" id="cb290-7" data-line-number="7">}</a></code></pre></div>
+<p>Note that if there are actually missing values, we need to set <code>na.rm = TRUE</code> or the mean and sd will return <code>NA</code>. Let’s try it. I add missing values to test that aspect.</p>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb291-1" data-line-number="1"><span class="kw">my_summary</span>(mtcars<span class="op">$</span>mpg)</a></code></pre></div>
+<pre><code>      mean       sd N_missing
+1 20.09062 6.026948         0</code></pre>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb293-1" data-line-number="1">mtcars2 =<span class="st"> </span>mtcars</a>
+<a class="sourceLine" id="cb293-2" data-line-number="2">mtcars2<span class="op">$</span>wt[<span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">10</span>)] =<span class="st"> </span><span class="ot">NA</span></a>
+<a class="sourceLine" id="cb293-3" data-line-number="3"><span class="kw">my_summary</span>(mtcars2<span class="op">$</span>wt)</a></code></pre></div>
+<pre><code>      mean        sd N_missing
+1 3.239733 0.9966999         2</code></pre>
+<p>Seems to work fine. Let’s add how many total observations there are.</p>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb295-1" data-line-number="1">my_summary &lt;-<span class="st"> </span><span class="cf">function</span>(myvar) {</a>
+<a class="sourceLine" id="cb295-2" data-line-number="2">  <span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb295-3" data-line-number="3">    <span class="dt">mean =</span> <span class="kw">mean</span>(myvar, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb295-4" data-line-number="4">    <span class="dt">sd =</span> <span class="kw">sd</span>(myvar, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb295-5" data-line-number="5">    <span class="dt">N_total =</span> <span class="kw">length</span>(myvar),</a>
+<a class="sourceLine" id="cb295-6" data-line-number="6">    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</a>
+<a class="sourceLine" id="cb295-7" data-line-number="7">    )</a>
+<a class="sourceLine" id="cb295-8" data-line-number="8">}</a></code></pre></div>
+<p>That was easy! Let’s try it.</p>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb296-1" data-line-number="1"><span class="kw">my_summary</span>(mtcars2<span class="op">$</span>wt)</a></code></pre></div>
+<pre><code>      mean        sd N_total N_missing
+1 3.239733 0.9966999      32         2</code></pre>
+<p>This shows that writing the first part of any function can be straightforward. Then, once in place, you can usually add functionality without too much trouble. Eventually you could have something very complicated, but which will make sense to you because you built it from the ground up.</p>
+<p>Now let’s do it for every column!</p>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb298-1" data-line-number="1">mtcars2 <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb298-2" data-line-number="2"><span class="st">  </span><span class="kw">map_dfr</span>(my_summary, <span class="dt">.id =</span> <span class="st">&#39;variable&#39;</span>)</a></code></pre></div>
+<pre><code>   variable       mean          sd N_total N_missing
+1       mpg  20.090625   6.0269481      32         0
+2       cyl         NA   0.8929608      32         0
+3      disp 230.721875 123.9386938      32         0
+4        hp 146.687500  68.5628685      32         0
+5      drat   3.596563   0.5346787      32         0
+6        wt   3.239733   0.9966999      32         2
+7      qsec  17.848750   1.7869432      32         0
+8        vs   0.437500   0.5040161      32         0
+9        am   0.406250   0.4989909      32         0
+10     gear   3.687500   0.7378041      32         0
+11     carb   2.812500   1.6152000      32         0</code></pre>
+<p>The <span class="func">map_dfr</span> function is just like our previous usage in the [iterative programming][iterative] section, just that it will create mini-data.frames then row bind them together.</p>
+</div>
+<div id="dry" class="section level3">
+<h3>DRY</h3>
+<p>An oft-quoted mantra in programming is <em><strong>D</strong>on’t <strong>R</strong>epeat <strong>Y</strong>ourself</em>. One context regards iterative programming, where we would rather write one line of code than one-hundred. More generally though, we would like to gain efficiency where possible. A good rule of thumb is, if you are writing the same set of code more than twice, you should write a function to do it instead.</p>
+<p>Consider the following example, where we want to subset the data given a set of conditions. Given the cylinder, engine displacement, and mileage, we’ll get different parts of the data.</p>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb300-1" data-line-number="1">good_mileage_displ_low_cyl_<span class="dv">4</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
+<a class="sourceLine" id="cb300-2" data-line-number="2">good_mileage_displ_low_cyl_<span class="dv">6</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">6</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
+<a class="sourceLine" id="cb300-3" data-line-number="3">good_mileage_displ_low_cyl_<span class="dv">8</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">8</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
+<a class="sourceLine" id="cb300-4" data-line-number="4">good_mileage_displ_high_cyl_<span class="dv">4</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
+<a class="sourceLine" id="cb300-5" data-line-number="5">good_mileage_displ_high_cyl_<span class="dv">6</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">6</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
+<a class="sourceLine" id="cb300-6" data-line-number="6">good_mileage_displ_high_cyl_<span class="dv">8</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">8</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a></code></pre></div>
+<p>It was tedious, but that’s not much code. But now consider- what if you want to change the mpg cutoff? The mean to median? Something else? You have to change all of it. Let’s write a function instead!</p>
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb301-1" data-line-number="1">good_mileage &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">cylinder =</span> <span class="dv">4</span>,</a>
+<a class="sourceLine" id="cb301-2" data-line-number="2">                         <span class="dt">mpg_cutoff =</span> <span class="dv">30</span>,</a>
+<a class="sourceLine" id="cb301-3" data-line-number="3">                         <span class="dt">displ_fun =</span> mean,</a>
+<a class="sourceLine" id="cb301-4" data-line-number="4">                         <span class="dt">displ_low =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb301-5" data-line-number="5">                         <span class="dt">cls =</span> <span class="st">&#39;compact&#39;</span>) {</a>
+<a class="sourceLine" id="cb301-6" data-line-number="6">  </a>
+<a class="sourceLine" id="cb301-7" data-line-number="7">  <span class="cf">if</span> (displ_low)</a>
+<a class="sourceLine" id="cb301-8" data-line-number="8">    mpg <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb301-9" data-line-number="9"><span class="st">    </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb301-10" data-line-number="10"><span class="st">             </span>displ <span class="op">&lt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ) <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb301-11" data-line-number="11"><span class="st">             </span>hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb301-12" data-line-number="12"><span class="st">             </span>class <span class="op">==</span><span class="st"> </span>cls)</a>
+<a class="sourceLine" id="cb301-13" data-line-number="13">  <span class="cf">else</span></a>
+<a class="sourceLine" id="cb301-14" data-line-number="14">    mpg <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb301-15" data-line-number="15"><span class="st">    </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb301-16" data-line-number="16"><span class="st">             </span>displ <span class="op">&gt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ) <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb301-17" data-line-number="17"><span class="st">             </span>hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb301-18" data-line-number="18"><span class="st">             </span>class <span class="op">==</span><span class="st"> </span>cls)</a>
+<a class="sourceLine" id="cb301-19" data-line-number="19">}</a></code></pre></div>
+<p>What’s going on? The function takes five inputs:</p>
+<ul>
+<li>cyl: Which cylinder type we want</li>
+<li>mpg_cutoff: The cutoff for ‘good’ mileage</li>
+<li>displ_fun: Whether the displacement to be based on the mean or something else</li>
+<li>displ_low: Whether we are interested in low or high displacement vehicles</li>
+<li>cls: the class of the vehicle (e.g. compact or suv)</li>
+</ul>
+<p>Then it simply filters the data to observations that match the input criteria. We also put <span class="emph">default values</span>, which can be done to your discretion.</p>
+<p>Now we can do whatever we want as needed:</p>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb302-1" data-line-number="1"><span class="kw">good_mileage</span>(<span class="dt">mpg_cutoff =</span> <span class="dv">40</span>)</a></code></pre></div>
+<pre><code># A tibble: 1 x 11
+  manufacturer model displ  year   cyl trans      drv     cty   hwy fl    class  
+  &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  
+1 volkswagen   jetta   1.9  1999     4 manual(m5) f        33    44 d     compact</code></pre>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb304-1" data-line-number="1"><span class="kw">good_mileage</span>(<span class="dt">cylinder =</span> <span class="dv">8</span>, <span class="dt">mpg_cutoff =</span> <span class="dv">15</span>, <span class="dt">displ_low =</span> F, <span class="dt">cls=</span><span class="st">&#39;suv&#39;</span>)</a></code></pre></div>
+<pre><code># A tibble: 28 x 11
+   manufacturer model              displ  year   cyl trans    drv     cty   hwy fl    class
+   &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 chevrolet    c1500 suburban 2wd   5.3  2008     8 auto(l4) r        14    20 r     suv  
+ 2 chevrolet    c1500 suburban 2wd   5.3  2008     8 auto(l4) r        14    20 r     suv  
+ 3 chevrolet    c1500 suburban 2wd   5.7  1999     8 auto(l4) r        13    17 r     suv  
+ 4 chevrolet    c1500 suburban 2wd   6    2008     8 auto(l4) r        12    17 r     suv  
+ 5 chevrolet    k1500 tahoe 4wd      5.3  2008     8 auto(l4) 4        14    19 r     suv  
+ 6 chevrolet    k1500 tahoe 4wd      6.5  1999     8 auto(l4) 4        14    17 d     suv  
+ 7 dodge        durango 4wd          4.7  2008     8 auto(l5) 4        13    17 r     suv  
+ 8 dodge        durango 4wd          4.7  2008     8 auto(l5) 4        13    17 r     suv  
+ 9 dodge        durango 4wd          5.2  1999     8 auto(l4) 4        11    16 r     suv  
+10 dodge        durango 4wd          5.7  2008     8 auto(l5) 4        13    18 r     suv  
+# ... with 18 more rows</code></pre>
+<p>Let’s extend the functionality by adding a year argument (only values available are 2008 and 1999).</p>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb306-1" data-line-number="1">good_mileage &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">cylinder =</span> <span class="dv">4</span>,</a>
+<a class="sourceLine" id="cb306-2" data-line-number="2">                         <span class="dt">mpg_cutoff =</span> <span class="dv">30</span>,</a>
+<a class="sourceLine" id="cb306-3" data-line-number="3">                         <span class="dt">displ_fun =</span> mean,</a>
+<a class="sourceLine" id="cb306-4" data-line-number="4">                         <span class="dt">displ_low =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb306-5" data-line-number="5">                         <span class="dt">cls =</span> <span class="st">&#39;compact&#39;</span>,</a>
+<a class="sourceLine" id="cb306-6" data-line-number="6">                         <span class="dt">yr =</span> <span class="dv">2008</span>) {</a>
+<a class="sourceLine" id="cb306-7" data-line-number="7">  </a>
+<a class="sourceLine" id="cb306-8" data-line-number="8">  <span class="cf">if</span> (displ_low)</a>
+<a class="sourceLine" id="cb306-9" data-line-number="9">    mpg <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb306-10" data-line-number="10"><span class="st">    </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb306-11" data-line-number="11"><span class="st">             </span>displ <span class="op">&lt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ) <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb306-12" data-line-number="12"><span class="st">             </span>hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb306-13" data-line-number="13"><span class="st">             </span>class <span class="op">==</span><span class="st"> </span>cls <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb306-14" data-line-number="14"><span class="st">             </span>year <span class="op">==</span><span class="st"> </span>yr)</a>
+<a class="sourceLine" id="cb306-15" data-line-number="15">  <span class="cf">else</span></a>
+<a class="sourceLine" id="cb306-16" data-line-number="16">    mpg <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb306-17" data-line-number="17"><span class="st">    </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb306-18" data-line-number="18"><span class="st">             </span>displ <span class="op">&gt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ) <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb306-19" data-line-number="19"><span class="st">             </span>hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb306-20" data-line-number="20"><span class="st">             </span>class <span class="op">==</span><span class="st"> </span>cls <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb306-21" data-line-number="21"><span class="st">             </span>year <span class="op">==</span><span class="st"> </span>yr)</a>
+<a class="sourceLine" id="cb306-22" data-line-number="22">}</a></code></pre></div>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb307-1" data-line-number="1"><span class="kw">good_mileage</span>(<span class="dt">cylinder =</span> <span class="dv">8</span>, </a>
+<a class="sourceLine" id="cb307-2" data-line-number="2">             <span class="dt">mpg_cutoff =</span> <span class="dv">19</span>, </a>
+<a class="sourceLine" id="cb307-3" data-line-number="3">             <span class="dt">displ_low =</span> F, </a>
+<a class="sourceLine" id="cb307-4" data-line-number="4">             <span class="dt">cls=</span><span class="st">&#39;suv&#39;</span>, </a>
+<a class="sourceLine" id="cb307-5" data-line-number="5">             <span class="dt">yr =</span> <span class="dv">2008</span>)</a></code></pre></div>
+<pre><code># A tibble: 6 x 11
+  manufacturer model              displ  year   cyl trans    drv     cty   hwy fl    class
+  &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
+1 chevrolet    c1500 suburban 2wd   5.3  2008     8 auto(l4) r        14    20 r     suv  
+2 chevrolet    c1500 suburban 2wd   5.3  2008     8 auto(l4) r        14    20 r     suv  
+3 chevrolet    k1500 tahoe 4wd      5.3  2008     8 auto(l4) 4        14    19 r     suv  
+4 ford         explorer 4wd         4.6  2008     8 auto(l6) 4        13    19 r     suv  
+5 jeep         grand cherokee 4wd   4.7  2008     8 auto(l5) 4        14    19 r     suv  
+6 mercury      mountaineer 4wd      4.6  2008     8 auto(l6) 4        13    19 r     suv  </code></pre>
+<p>So we now have something that is flexible, reusable, and extensible, and it took less code than writing out the individual lines of code</p>
+</div>
+<div id="lambda-functions" class="section level3">
+<h3>Lambda functions</h3>
+<p>Oftentimes we just need a quick and easy function for a one-off application, especially when using apply/map functions. For example, both the following would calculate standard deviations of columns.</p>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb309-1" data-line-number="1"><span class="kw">apply</span>(mtcars, <span class="dv">2</span>, sd)</a>
+<a class="sourceLine" id="cb309-2" data-line-number="2"><span class="kw">apply</span>(mtcars, <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="kw">sd</span>(x))</a></code></pre></div>
+<p>The difference between the two is that for the latter, our function didn’t have to be something already available. To further illustrate this, we’ll create a robust standardization function that uses the median and median absolute deviation rather than the mean and standard deviation.</p>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb310-1" data-line-number="1"><span class="co"># some variables have a mad = 0, and so return Inf, NaN</span></a>
+<a class="sourceLine" id="cb310-2" data-line-number="2"><span class="co"># apply(mtcars, 2, function(x) (x - median(x))/mad(x)) %&gt;% </span></a>
+<a class="sourceLine" id="cb310-3" data-line-number="3"><span class="co">#   head()</span></a>
+<a class="sourceLine" id="cb310-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb310-5" data-line-number="5">mtcars <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb310-6" data-line-number="6"><span class="st">  </span><span class="kw">map_df</span>(<span class="cf">function</span>(x) (x <span class="op">-</span><span class="st"> </span><span class="kw">median</span>(x))<span class="op">/</span><span class="kw">mad</span>(x))</a></code></pre></div>
+<pre><code># A tibble: 32 x 11
+       mpg    cyl   disp     hp     drat     wt   qsec    vs    am   gear   carb
+     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+ 1  0.333   0     -0.258 -0.169  0.291   -0.919 -0.883   NaN   Inf  0      1.35 
+ 2  0.333   0     -0.258 -0.169  0.291   -0.587 -0.487   NaN   Inf  0      1.35 
+ 3  0.665  -0.674 -0.629 -0.389  0.220   -1.31   0.636   Inf   Inf  0     -0.674
+ 4  0.407   0      0.439 -0.169 -0.873   -0.143  1.22    Inf   NaN -0.674 -0.674
+ 5 -0.0924  0.674  1.17   0.674 -0.774    0.150 -0.487   NaN   NaN -0.674  0    
+ 6 -0.203   0      0.204 -0.233 -1.33     0.176  1.77    Inf   NaN -0.674 -0.674
+ 7 -0.905   0.674  1.17   1.58  -0.689    0.319 -1.32    NaN   NaN -0.674  1.35 
+ 8  0.961  -0.674 -0.353 -0.791 -0.00710 -0.176  1.62    Inf   NaN  0      0    
+ 9  0.665  -0.674 -0.395 -0.363  0.319   -0.228  3.67    Inf   NaN  0      0    
+10  0       0     -0.204  0      0.319    0.150  0.417   Inf   NaN  0      1.35 
+# ... with 22 more rows</code></pre>
+<p>Even if you don’t use lambda functions yourself, it’s important to understand them, because you’ll often see other people’s code using them.</p>
+</div>
+<div id="writing-functions-exercises" class="section level3">
+<h3>Writing Functions Exercises</h3>
+<div id="excercise-1-1" class="section level4">
+<h4>Excercise 1</h4>
+<p>Write a function that takes the log of the sum of two values (i.e. just two single numbers) using the <span class="func">log</span> function.</p>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb312-1" data-line-number="1">log_sum &lt;-<span class="st"> </span><span class="cf">function</span>(a, b) {</a>
+<a class="sourceLine" id="cb312-2" data-line-number="2">  ?</a>
+<a class="sourceLine" id="cb312-3" data-line-number="3">}</a></code></pre></div>
+</div>
+<div id="exercise-2-8" class="section level4">
+<h4>Exercise 2</h4>
+<p>Let’s write a function that will take a numeric variable and convert it to a character string of ‘positive’ vs. ‘negative’. We can use <code>if {}... else {}</code> structure, <span class="func">ifelse</span>, or <span class="pack">dplyr</span>::<span class="func">if_else</span>- they all would accomplish this. In this case, the input is a single vector of numbers, and the output will recode any negative value to ‘negative’ and positive values to ‘positive’ (or whatever you want). Here is an example of how we would just do it as a one-off.</p>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb313-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)  <span class="co"># so you get the exact same &#39;random&#39; result</span></a>
+<a class="sourceLine" id="cb313-2" data-line-number="2">x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb313-3" data-line-number="3"><span class="kw">if_else</span>(x <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>, <span class="st">&quot;negative&quot;</span>, <span class="st">&quot;positive&quot;</span>)</a></code></pre></div>
+<p>Now try your hand at writing a function for that.</p>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb314-1" data-line-number="1">pos_neg &lt;-<span class="st"> </span><span class="cf">function</span>(?) {</a>
+<a class="sourceLine" id="cb314-2" data-line-number="2">  ?</a>
+<a class="sourceLine" id="cb314-3" data-line-number="3">}</a></code></pre></div>
+</div>
+<div id="thinking-exercises-3" class="section level4">
+<h4>Thinking Exercises</h4>
+<p>How would you write a check for Exercise 1 to make sure the inputs are numeric and positive (can’t take the log of non-positive values)? See <code>?stop</code> and <code>?message</code> for starters.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="3_02_iterative.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="3_04_vectorapp.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["twitter", "facebook", "google", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"download": null,
+"toc": {
+"collapse": "section",
+"depth": 3,
+"scroll_highlight": true
+},
+"highlight": "pygments",
+"search": true
+});
+});
+</script>
+
+</body>
+
+</html>
