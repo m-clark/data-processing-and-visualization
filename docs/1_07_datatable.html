@@ -167,8 +167,8 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<link rel="stylesheet" href="css/book.css" type="text/css" />
-<link rel="stylesheet" href="css/standard_html.css" type="text/css" />
+<link rel="stylesheet" href="css\book.css" type="text/css" />
+<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
 </head>
 
 <body>
@@ -299,8 +299,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#s4-classes"><i class="fa fa-check"></i>S4 classes</a></li>
 <li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#others"><i class="fa fa-check"></i>Others</a></li>
 <li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#inspecting-functions"><i class="fa fa-check"></i>Inspecting Functions</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#exercises"><i class="fa fa-check"></i>Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#help-files"><i class="fa fa-check"></i>Help Files</a></li>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#objects-exercises"><i class="fa fa-check"></i>Objects Exercises</a></li>
 <li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
 <li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a></li>
 <li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
@@ -316,10 +317,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#lambda-functions"><i class="fa fa-check"></i>Lambda functions</a></li>
 <li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#writing-functions-exercises"><i class="fa fa-check"></i>Writing Functions Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="3_04_vectorapp.html"><a href="3_04_vectorapp.html"><i class="fa fa-check"></i>Vectorization</a><ul>
-<li class="chapter" data-level="" data-path="3_04_vectorapp.html"><a href="3_04_vectorapp.html#boolean-indexing"><i class="fa fa-check"></i>Boolean Indexing</a></li>
-<li class="chapter" data-level="" data-path="3_04_vectorapp.html"><a href="3_04_vectorapp.html#vectorized-operations"><i class="fa fa-check"></i>Vectorized operations</a></li>
-<li><a href="3_04_vectorapp.html#vector-exercises"><strong>Vector Exercises</strong></a></li>
+<li class="chapter" data-level="" data-path="3_04_more.html"><a href="3_04_more.html"><i class="fa fa-check"></i>More</a><ul>
+<li class="chapter" data-level="" data-path="3_04_more.html"><a href="3_04_more.html#vectorization"><i class="fa fa-check"></i>Vectorization</a></li>
+<li class="chapter" data-level="" data-path="3_04_more.html"><a href="3_04_more.html#regular-expressions"><i class="fa fa-check"></i>Regular Expressions</a></li>
+<li><a href="3_04_more.html#vector-exercises"><strong>Vector Exercises</strong></a></li>
+<li><a href="3_04_more.html#regex-exercises"><strong>Regex Exercises</strong></a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="999_summary.html"><a href="999_summary.html"><i class="fa fa-check"></i>Summary</a></li>
@@ -359,41 +361,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In general, you use <strong>i</strong> for filtering by rows.</p>
 <div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" data-line-number="1">dt[<span class="dv">2</span>]</a>
 <a class="sourceLine" id="cb145-2" data-line-number="2">dt[<span class="dv">2</span>,]</a></code></pre></div>
-<pre><code>   x g        y
-1: 3 2 0.868502
-   x g        y
-1: 3 2 0.868502</code></pre>
+<pre><code>   x g         y
+1: 3 2 0.1817564
+   x g         y
+1: 3 2 0.1817564</code></pre>
 <p>You use <strong>j</strong> to select (by name!) or create new columns. We can define a new column with the <span class="func">:=</span> operator.</p>
 <div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb147-1" data-line-number="1">dt[,x]</a>
 <a class="sourceLine" id="cb147-2" data-line-number="2">dt[,z <span class="op">:</span><span class="er">=</span><span class="st"> </span>x<span class="op">+</span>y]  <span class="co"># dt now has a new column</span></a>
 <a class="sourceLine" id="cb147-3" data-line-number="3">dt[,z]</a>
 <a class="sourceLine" id="cb147-4" data-line-number="4">dt[g<span class="op">&gt;</span><span class="dv">1</span>, <span class="kw">mean</span>(z), by=g]</a>
 <a class="sourceLine" id="cb147-5" data-line-number="5">dt</a></code></pre></div>
-<pre><code>[1] 6 3 4 8 7 5
-[1] 6.817118 3.868502 4.391437 8.513203 7.932889 5.974824
+<pre><code>[1] 5 3 2 9 1 4
+[1] 5.121581 3.181756 2.974460 9.667289 1.492011 4.230505
    g       V1
-1: 2 5.900696
-2: 3 5.183130
+1: 2 2.336884
+2: 3 3.602483
    x g         y        z
-1: 6 1 0.8171183 6.817118
-2: 3 2 0.8685020 3.868502
-3: 4 3 0.3914368 4.391437
-4: 8 1 0.5132027 8.513203
-5: 7 2 0.9328895 7.932889
-6: 5 3 0.9748241 5.974824</code></pre>
+1: 5 1 0.1215814 5.121581
+2: 3 2 0.1817564 3.181756
+3: 2 3 0.9744600 2.974460
+4: 9 1 0.6672886 9.667289
+5: 1 2 0.4920115 1.492011
+6: 4 3 0.2305054 4.230505</code></pre>
 <p>Because <strong>j</strong> is an argument, dropping columns is awkward.</p>
 <div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb149-1" data-line-number="1">dt[,<span class="op">-</span>y]             <span class="co"># creates negative values of y</span></a>
 <a class="sourceLine" id="cb149-2" data-line-number="2">dt[,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=F]   <span class="co"># drops y, but now needs quotes</span></a>
 <a class="sourceLine" id="cb149-3" data-line-number="3">## dt[,y := NULL]      # drops y, but this is just a base R approach</a>
 <a class="sourceLine" id="cb149-4" data-line-number="4">## dt$y = NULL</a></code></pre></div>
-<pre><code>[1] -0.8171183 -0.8685020 -0.3914368 -0.5132027 -0.9328895 -0.9748241
-   x g
-1: 6 1
-2: 3 2
-3: 4 3
-4: 8 1
-5: 7 2
-6: 5 3</code></pre>
+<pre><code>[1] -0.1215814 -0.1817564 -0.9744600 -0.6672886 -0.4920115 -0.2305054
+   x g        z
+1: 5 1 5.121581
+2: 3 2 3.181756
+3: 2 3 2.974460
+4: 9 1 9.667289
+5: 1 2 1.492011
+6: 4 3 4.230505</code></pre>
 <p>Data table does not make unnecessary copies. For example if we do the following…</p>
 <div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb151-1" data-line-number="1">DT =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">A=</span><span class="dv">5</span><span class="op">:</span><span class="dv">1</span>,<span class="dt">B=</span>letters[<span class="dv">5</span><span class="op">:</span><span class="dv">1</span>])</a>
 <a class="sourceLine" id="cb151-2" data-line-number="2">DT2 =<span class="st"> </span>DT</a>
@@ -420,24 +422,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We can now attempt a ‘group-by’ operation, along with creation of a new variable. Note that these operations actually modify the <span class="objclass">dt</span> object <em>in place</em>, a key distinction with <span class="pack">dplyr</span>. Fewer copies means less of a memory hit.</p>
 <div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb156-1" data-line-number="1">dt1 =<span class="st"> </span>dt2 =<span class="st"> </span>dt</a>
 <a class="sourceLine" id="cb156-2" data-line-number="2">dt[,<span class="kw">sum</span>(x,y), by=g]                  <span class="co"># sum of all x and y values</span></a></code></pre></div>
-<pre><code>   g       V1
-1: 1 15.33032
-2: 2 11.80139
-3: 3 10.36626</code></pre>
+<pre><code>   g        V1
+1: 1 14.788870
+2: 2  4.673768
+3: 3  7.204965</code></pre>
 <div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb158-1" data-line-number="1">dt1[,newvar <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(x), by=g]         <span class="co"># add new variable to the original data </span></a>
 <a class="sourceLine" id="cb158-2" data-line-number="2">dt1</a></code></pre></div>
 <pre><code>   x g         y        z newvar
-1: 6 1 0.8171183 6.817118     14
-2: 3 2 0.8685020 3.868502     10
-3: 4 3 0.3914368 4.391437      9
-4: 8 1 0.5132027 8.513203     14
-5: 7 2 0.9328895 7.932889     10
-6: 5 3 0.9748241 5.974824      9</code></pre>
+1: 5 1 0.1215814 5.121581     14
+2: 3 2 0.1817564 3.181756      4
+3: 2 3 0.9744600 2.974460      6
+4: 9 1 0.6672886 9.667289     14
+5: 1 2 0.4920115 1.492011      4
+6: 4 3 0.2305054 4.230505      6</code></pre>
 <p>We can also create groupings on the fly. For a new summary data set, we’ll take the following approach- we create a grouping based on whether g is a value of one or not, then get the mean and sum of x for those two categories. The corresponding dplyr approach is also shown (but not evaluated) for comparison.</p>
 <div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb160-1" data-line-number="1">dt2[, <span class="kw">list</span>(<span class="dt">mean_x =</span> <span class="kw">mean</span>(x), <span class="dt">sum_x =</span> <span class="kw">sum</span>(x)), by =<span class="st"> </span>g<span class="op">==</span><span class="dv">1</span>]</a></code></pre></div>
 <pre><code>       g mean_x sum_x
-1:  TRUE   7.00    14
-2: FALSE   4.75    19</code></pre>
+1:  TRUE    7.0    14
+2: FALSE    2.5    10</code></pre>
 <div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb162-1" data-line-number="1">## dt2 %&gt;% group_by(g==1) %&gt;% summarise(mean_x=mean(x), sum_x=sum(x))</a></code></pre></div>
 </div>
 <div id="faster" class="section level3">
@@ -520,7 +522,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb169-1" data-line-number="1">lets_<span class="dv">1</span> =<span class="st"> </span><span class="kw">sample</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">14</span>], <span class="dv">1000</span>, <span class="dt">replace=</span>T)</a>
 <a class="sourceLine" id="cb169-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb169-3" data-line-number="3">lets_<span class="dv">1</span> <span class="op">%chin%</span><span class="st"> </span>letters[<span class="dv">13</span><span class="op">:</span><span class="dv">26</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>)</a></code></pre></div>
-<pre><code> [1]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE</code></pre>
+<pre><code> [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
 <div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb171-1" data-line-number="1"><span class="co"># stri_detect_regex(lets_1, paste(letters[13:26], collapse=&#39;|&#39;))</span></a></code></pre></div>
 </div>
 <div id="reading-files" class="section level4">

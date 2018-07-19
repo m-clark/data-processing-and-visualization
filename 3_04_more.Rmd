@@ -1,0 +1,227 @@
+## More 
+
+
+### Vectorization 
+
+```{r vasetup, include=FALSE, eval=TRUE, cache=FALSE}
+knitr::opts_chunk$set(eval=FALSE)
+```
+
+
+#### Boolean Indexing
+
+Assume <span class="objclass">x</span> is a vector of numbers. How would we create an index representing any value greater than 2?
+
+```{r boolindex, eval=T}
+x = c(-1, 2, 10, -5)
+idx = x > 2
+idx
+x[idx]
+```
+
+As mentioned [previously][logicals], <span class="objclass">logicals</span> are objects with values of `TRUE` or `FALSE`, like the <span class="objclass">idx</span> variable above.  While sometimes we want to deal with the logical object as an end, it is extremely commonly used as an index in data processing. Note how we don't have to create an explicit index object first (though often you should), as R indexing is ridiculously flexible.  Here are more examples, not necessarily recommended, but just to demonstrate the flexibility of Boolean indexing.
+
+```{r flexindex}
+x[x > 2]
+x[x != 3]
+x[ifelse(x > 2 & x !=10, TRUE, FALSE)]
+x[{y = idx; y}]
+x[resid(lm(y ~ x)) > 0]
+```
+
+#### Vectorized operations
+
+Boolean indexing allows us to take <span class="emph">vectorized</span> approaches to dealing with data. Consider the following unfortunately coded loop, where we create a variable `y`, which takes on the value of **Yes** if the variable `x` is greater than 2, and **No** if otherwise.
+
+```{r loop}
+for (i in 1:nrow(mydf)) {
+  check = mydf$x[i] > 2
+  if (check==TRUE) {
+    mydf$y[i] = 'Yes'
+  } 
+  else {
+    mydf$y[i] = 'No'
+  }
+}
+```
+
+Compare[^ifelse]:
+
+```{r boolnoloop}
+mydf$y = 'No'
+mydf$y[mydf$x > 2] = 'Yes'
+```
+
+This gets us the same thing, and would be much faster than the looped approach. Boolean indexing is an example of a vectorized operation.  The whole vector is considered, rather than each element individually.  The result is that any preprocessing is done once rather than the `n` iterations of the loop.  In R, this will  always faster.
+
+Example: Log all values in a matrix.
+
+```{r vecmatrixop}
+mymatrix_log = log(mymatrix)
+```
+
+This is way faster than looping over elements, rows or columns. Here we'll let the <span class="func">apply</span> function stand in for our loop, logging the elements of each column.
+
+```{r loopvsvec, eval=T}
+mymatrix = matrix(runif(100), 10, 10)
+identical(apply(mymatrix, 2, log), log(mymatrix))
+
+library(microbenchmark)
+microbenchmark(apply(mymatrix, 2, log),
+               log(mymatrix))
+```
+
+
+Many vectorized functions already exist in R.  They are often written in C, Fortran etc., and so even faster.  Not all programming languages lean toward vectorized operations, and may not see much speed gain from it.  In R however, you'll want to prefer it.  Even without, it's cleaner/clearer code, another reason to use the approach.
+  
+
+
+
+##### Timings
+
+The previous demonstrates how to use apply. However, there is a <span class="func">scale</span> function in base R that uses a more vectorized approach under the hood. The following demonstrates various approaches to standardizing the columns of the matrix, even using a parallelized approach. As you'll see, the base R function requires very little code and beats the others.
+
+```{r timings, echo=T}
+mymat = matrix(rnorm(100000), ncol=1000)
+
+stdize <- function(x) {
+  (x-mean(x)) / sd(x)
+}
+
+doubleloop = function() {
+  for (i in 1:ncol(mymat)) {
+    x = mymat[, i]
+    for (j in 1:length(x)) {
+      x[j] = (x[j] - mean(x)) / sd(x)
+    }
+  }
+}
+
+
+singleloop = function() {
+  for (i in 1:ncol(mymat)) {
+    x = mymat[, i]
+    x = (x - mean(x)) / sd(x)
+  }
+}
+
+
+library(parallel)
+cl = makeCluster(8)
+clusterExport(cl, c('stdize', 'mymat'))
+doParallel::registerDoParallel(cl)
+
+test = microbenchmark::microbenchmark(doubleloop=doubleloop(),
+                                      singleloop=singleloop(), 
+                                      apply=apply(mymat, 2, stdize), 
+                                      parApply=parApply(cl, mymat, 2, stdize),
+                                      vectorized=scale(mymat), times=25)
+stopCluster(cl)
+test
+```
+```{r vectorization_timings, echo=FALSE, eval=TRUE, cache=FALSE}
+load('data/vectorization.RData'); library(microbenchmark); test
+```
+
+### Regular Expressions
+
+A <span class="emph">regular expression</span>, regex for short, is a sequence of characters that can be used as a search pattern for a string. Common operations are to merely detect, extract, or replace the matching string.  There are actually many different flavors of regex for different programming languages, which are all flavors that originate with the Perl approach, or can enable the Perl approach to be used.  However, knowing one means you pretty much know the others with only minor modifications if any.
+
+To be clear, not only is regex another language, it's nigh on indecipherable.  You will not learn much regex, but what you do learn will save a potentially enormous amount of time you'd otherwise spend trying to do things in a more haphazard fashion. Furthermore, practically every situation that will come up has already been asked and answered on [Stack Overflow](https://stackoverflow.com/questions/tagged/regex), so you'll almost always be able to search for what you need.
+
+Here is an example:
+
+`^r.*shiny[0-9]$`
+
+What is *that* you may ask?  Well here is an example of strings it would and wouldn't match.
+
+```{r regex_intro_ex}
+string = c('r is the shiny', 'r is the shiny1', 'r shines brightly')
+grepl(string, pattern='^r.*shiny[0-9]$')
+```
+
+What the regex is esoterically attempting to match is any string that starts with 'r' and ends with 'shiny_' where _ is some single digit.  Specifically it breaks down as follows:
+
+- **^** : starts with, so ^r means starts with r
+- **.** : any character
+- **\*** : match the preceding zero or more times
+- **shiny** : match 'shiny'
+- **[0-9]** : any digit 0-9 (note that we are still talking about strings, not actual numbered values)
+- **$** : ends with preceding
+
+
+#### Typical Uses
+
+None of it makes sense, so don't attempt to do so. Just try to remember a couple key approaches, and search the web for the rest.
+
+Along with ^ . * [0-9] $, a couple more common ones are:
+
+- **[a-z]** : letters a-z
+- **[A-Z]** : capital letters
+- **+** : match the preceding one or more times
+- **()** : groupings
+- **|** : logical or e.g. [a-z]|[0-9]  (a lower case letter or a number)
+- **?** : preceding item is optional, and will be matched at most once. Typically used for 'look ahead' and 'look behind'
+- **\\** : escape a character, like if you actually wanted to search for a period instead of using it as a regex pattern, you'd use \\., though in R you need \\\\, i.e. double slashes, for escape.
+
+In addition, in R there are certain predefined characters that can be called:
+
+- **[:punct:]** : punctuation
+- **[:blank:]** : spaces and tabs
+- **[:alnum:]** : alphanumeric characters
+
+Those are just a few.  The key functions can be found by looking at the help file for the <span class="func">grep</span> function (`?grep`).  However, the <span class="pack">stringr</span> package has the same functionality with perhaps a slightly faster processing (though that's due to the underlying <span class="pack">stringi</span> package).  
+
+See if you can guess which of the following will turn up `TRUE`.
+
+```{r quick_regex_exercise, eval=FALSE}
+grepl(c('apple', 'pear', 'banana'), pattern='a')
+grepl(c('apple', 'pear', 'banana'), pattern='^a')
+grepl(c('apple', 'pear', 'banana'), pattern='^a|a$')
+```
+
+
+Scraping the web, munging data, just finding things in your scripts ... you can potentially use this all the time, and not only with text analysis, as we'll now see.
+
+
+
+### **Vector Exercises**
+
+#### Exercise 1
+
+Show a non-vectorized and a vectorized way to add a two to the numbers 1 through 3.
+
+```{r vector_ex1, eval=FALSE}
+?
+```
+
+
+
+#### Exercise 2
+
+Of the following <span class="objclass">matrix</span>, which do you think is faster?  Test it.
+
+```{r vector_ex2, eval=FALSE}
+x = matrix(rpois(100000, lambda = 5), ncol = 100)
+colSums(x)
+apply(x, 2, sum)
+
+microbenchmark::microbenchmark(
+  cs = colSums(x),
+  app = apply(x, 2, sum)
+)
+```
+
+### **Regex Exercises**
+
+#### Exercise 1
+
+Using stringr and str_replace, replace all the states a's with nothing.
+
+```{r regex_ex, eval=FALSE}
+library(stringr)
+str_replace(state.name, pattern = ?, replacement = ?)
+```
+
+
+[^ifelse]: For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.

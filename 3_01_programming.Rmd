@@ -130,13 +130,46 @@ lm
 head(lm, 20)
 ```
 
-One of the primary reasons for R's popularity is the accessibility of the underlying code.  People can very easily access the code for some function, modify it, extend it, etc.
+One of the primary reasons for R's popularity is the accessibility of the underlying code.  People can very easily access the code for some function, modify it, extend it, etc.  From an applied perspective, if you want to get better at writing code, or modify existing code, all you have to do is dive in!  We'll talk more about writing functions [later][Writing functions].
+
+
+## Help Files
+
+Many applied users of R are quick to search the web for available help when they come to a problem.  This is great, you'll find a lot of information out there.  However, it will likely take you a bit to sort through things and find exactly what you need.  Strangely, many users of R don't use the help files first, and yet this is typically the quickest way to answer many of the questions they'll have.
+
+Let's start with an example. We'll use the <span class="func">sample</span> function to get a random sample of 10 values from the range of numbers 1 through 5.  So, go ahead and do so!
+
+```{r help, eval=FALSE}
+sample(?)
+```
+
+Don't know what to put? Consult the help file!
+
+<img src="img/help.png" style="display:block; margin: 0 auto;" width=50%>
+
+We get a brief description of a function at the top, then we see how to actually use it, i.e. the form the syntax should take. There is even an additional function, <span class="func">sample.int</span>, that we could use. Next we see what arguments are possible.  First we need an `x`, so what is the thing we're trying to sample from? The numbers 1 through 5.  Next is the size, which is how many we need, in this case 10. So let's try it.
+
+```{r help2, error=TRUE}
+nums = 1:5
+sample(nums, 10)
+```
+
+Uh, oh, we have a problem with the replace argument! We can see in the help file that, by default, it is `FALSE`, but if we want to sample 10 times from only 5 numbers, we'll need to change it to `TRUE`.
+
+Now we are on our way!
+
+The help file gives detailed information about the sampling that is possible, which actually is not as simple as one would think!  The **`Value`** is important, as it tells us what we can expect the function to return, whether a data frame, list, or whatever.  We even get references, other functions that might be of interest (**`See Also`**), and examples.  There is a lot to digest for this function!
+
+Not all functions have all this information, but most do, and if they are adhering to standards they will[^tidynostandard]
+
+
+## Objects Exercises
 
 
 
 
-### Exercises
 
-From an applied perspective, if you want to get better at writing code, or modify existing code, all you have to do is dive in!  We'll talk more about writing functions [later][Writing functions].
 
 [^other_lm_tab]: An alternative would be to use broom::tidy on the lm object itself, or use pander instead of kableExtra to work on the lm object.
+
+[^tidynostandard]: Ahem, tidyverse.

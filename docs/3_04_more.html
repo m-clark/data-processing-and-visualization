@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   <link rel="shortcut icon" href="img/R.ico" type="image/x-icon">
-<link rel="prev" href="1_03_io.html">
-<link rel="next" href="1_05_pipes.html">
+<link rel="prev" href="3_03_functions.html">
+<link rel="next" href="999_summary.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -346,86 +346,195 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="indexing" class="section level2">
-<h2>Indexing</h2>
-<p>What follows is a refresher. Presumably you’ve had enough R exposure to be aware of some of this. However, much of data processing regards data frames, or other tables of mixed data types, so more time will be spent on slicing and dicing of data frames instead. Even so, it would be impossible to use R effectively without knowing how to handle basic data types.</p>
-<div id="base-r-indexing-refresher" class="section level3">
-<h3>Base R Indexing Refresher</h3>
-<div id="slicing-vectors" class="section level5">
-<h5>Slicing vectors</h5>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">letters[<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>]</a></code></pre></div>
-<pre><code>[1] &quot;d&quot; &quot;e&quot; &quot;f&quot;</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">letters[<span class="kw">c</span>(<span class="dv">13</span>,<span class="dv">10</span>,<span class="dv">3</span>)]</a></code></pre></div>
-<pre><code>[1] &quot;m&quot; &quot;j&quot; &quot;c&quot;</code></pre>
+<div id="more" class="section level2">
+<h2>More</h2>
+<div id="vectorization" class="section level3">
+<h3>Vectorization</h3>
+<div id="boolean-indexing" class="section level4">
+<h4>Boolean Indexing</h4>
+<p>Assume <span class="objclass">x</span> is a vector of numbers. How would we create an index representing any value greater than 2?</p>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb318-1" data-line-number="1">x =<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">-5</span>)</a>
+<a class="sourceLine" id="cb318-2" data-line-number="2">idx =<span class="st"> </span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb318-3" data-line-number="3">idx</a></code></pre></div>
+<pre><code>[1] FALSE FALSE  TRUE FALSE</code></pre>
+<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb320-1" data-line-number="1">x[idx]</a></code></pre></div>
+<pre><code>[1] 10</code></pre>
+<p>As mentioned <a href="1_02_dataStructures.html#logicals">previously</a>, <span class="objclass">logicals</span> are objects with values of <code>TRUE</code> or <code>FALSE</code>, like the <span class="objclass">idx</span> variable above. While sometimes we want to deal with the logical object as an end, it is extremely commonly used as an index in data processing. Note how we don’t have to create an explicit index object first (though often you should), as R indexing is ridiculously flexible. Here are more examples, not necessarily recommended, but just to demonstrate the flexibility of Boolean indexing.</p>
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb322-1" data-line-number="1">x[x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb322-2" data-line-number="2">x[x <span class="op">!=</span><span class="st"> </span><span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb322-3" data-line-number="3">x[<span class="kw">ifelse</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span>x <span class="op">!=</span><span class="dv">10</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)]</a>
+<a class="sourceLine" id="cb322-4" data-line-number="4">x[{y =<span class="st"> </span>idx; y}]</a>
+<a class="sourceLine" id="cb322-5" data-line-number="5">x[<span class="kw">resid</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>]</a></code></pre></div>
 </div>
-<div id="slicing-matricesdata.frames" class="section level5">
-<h5>Slicing matrices/data.frames</h5>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">myMatrix[<span class="dv">1</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</a></code></pre></div>
+<div id="vectorized-operations" class="section level4">
+<h4>Vectorized operations</h4>
+<p>Boolean indexing allows us to take <span class="emph">vectorized</span> approaches to dealing with data. Consider the following unfortunately coded loop, where we create a variable <code>y</code>, which takes on the value of <strong>Yes</strong> if the variable <code>x</code> is greater than 2, and <strong>No</strong> if otherwise.</p>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb323-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mydf)) {</a>
+<a class="sourceLine" id="cb323-2" data-line-number="2">  check =<span class="st"> </span>mydf<span class="op">$</span>x[i] <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb323-3" data-line-number="3">  <span class="cf">if</span> (check<span class="op">==</span><span class="ot">TRUE</span>) {</a>
+<a class="sourceLine" id="cb323-4" data-line-number="4">    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;Yes&#39;</span></a>
+<a class="sourceLine" id="cb323-5" data-line-number="5">  } </a>
+<a class="sourceLine" id="cb323-6" data-line-number="6">  <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb323-7" data-line-number="7">    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;No&#39;</span></a>
+<a class="sourceLine" id="cb323-8" data-line-number="8">  }</a>
+<a class="sourceLine" id="cb323-9" data-line-number="9">}</a></code></pre></div>
+<p>Compare<a href="#fn24" class="footnote-ref" id="fnref24"><sup>24</sup></a>:</p>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb324-1" data-line-number="1">mydf<span class="op">$</span>y =<span class="st"> &#39;No&#39;</span></a>
+<a class="sourceLine" id="cb324-2" data-line-number="2">mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>] =<span class="st"> &#39;Yes&#39;</span></a></code></pre></div>
+<p>This gets us the same thing, and would be much faster than the looped approach. Boolean indexing is an example of a vectorized operation. The whole vector is considered, rather than each element individually. The result is that any preprocessing is done once rather than the <code>n</code> iterations of the loop. In R, this will always faster.</p>
+<p>Example: Log all values in a matrix.</p>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb325-1" data-line-number="1">mymatrix_log =<span class="st"> </span><span class="kw">log</span>(mymatrix)</a></code></pre></div>
+<p>This is way faster than looping over elements, rows or columns. Here we’ll let the <span class="func">apply</span> function stand in for our loop, logging the elements of each column.</p>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb326-1" data-line-number="1">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb326-2" data-line-number="2"><span class="kw">identical</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</a></code></pre></div>
+<pre><code>[1] TRUE</code></pre>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb328-1" data-line-number="1"><span class="kw">library</span>(microbenchmark)</a>
+<a class="sourceLine" id="cb328-2" data-line-number="2"><span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log),</a>
+<a class="sourceLine" id="cb328-3" data-line-number="3">               <span class="kw">log</span>(mymatrix))</a></code></pre></div>
+<pre><code>Unit: microseconds
+                    expr    min     lq     mean median     uq     max neval cld
+ apply(mymatrix, 2, log) 35.776 37.535 40.23336 38.415 39.295 139.584   100   b
+           log(mymatrix)  2.640  2.933  3.51041  3.226  3.226  14.076   100  a </code></pre>
+<p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
+<div id="timings" class="section level5">
+<h5>Timings</h5>
+<p>The previous demonstrates how to use apply. However, there is a <span class="func">scale</span> function in base R that uses a more vectorized approach under the hood. The following demonstrates various approaches to standardizing the columns of the matrix, even using a parallelized approach. As you’ll see, the base R function requires very little code and beats the others.</p>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb330-1" data-line-number="1">mymat =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100000</span>), <span class="dt">ncol=</span><span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb330-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb330-3" data-line-number="3">stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb330-4" data-line-number="4">  (x<span class="op">-</span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
+<a class="sourceLine" id="cb330-5" data-line-number="5">}</a>
+<a class="sourceLine" id="cb330-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb330-7" data-line-number="7">doubleloop =<span class="st"> </span><span class="cf">function</span>() {</a>
+<a class="sourceLine" id="cb330-8" data-line-number="8">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat)) {</a>
+<a class="sourceLine" id="cb330-9" data-line-number="9">    x =<span class="st"> </span>mymat[, i]</a>
+<a class="sourceLine" id="cb330-10" data-line-number="10">    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) {</a>
+<a class="sourceLine" id="cb330-11" data-line-number="11">      x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
+<a class="sourceLine" id="cb330-12" data-line-number="12">    }</a>
+<a class="sourceLine" id="cb330-13" data-line-number="13">  }</a>
+<a class="sourceLine" id="cb330-14" data-line-number="14">}</a>
+<a class="sourceLine" id="cb330-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb330-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb330-17" data-line-number="17">singleloop =<span class="st"> </span><span class="cf">function</span>() {</a>
+<a class="sourceLine" id="cb330-18" data-line-number="18">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat)) {</a>
+<a class="sourceLine" id="cb330-19" data-line-number="19">    x =<span class="st"> </span>mymat[, i]</a>
+<a class="sourceLine" id="cb330-20" data-line-number="20">    x =<span class="st"> </span>(x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
+<a class="sourceLine" id="cb330-21" data-line-number="21">  }</a>
+<a class="sourceLine" id="cb330-22" data-line-number="22">}</a>
+<a class="sourceLine" id="cb330-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb330-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb330-25" data-line-number="25"><span class="kw">library</span>(parallel)</a>
+<a class="sourceLine" id="cb330-26" data-line-number="26">cl =<span class="st"> </span><span class="kw">makeCluster</span>(<span class="dv">8</span>)</a>
+<a class="sourceLine" id="cb330-27" data-line-number="27"><span class="kw">clusterExport</span>(cl, <span class="kw">c</span>(<span class="st">&#39;stdize&#39;</span>, <span class="st">&#39;mymat&#39;</span>))</a>
+<a class="sourceLine" id="cb330-28" data-line-number="28">doParallel<span class="op">::</span><span class="kw">registerDoParallel</span>(cl)</a>
+<a class="sourceLine" id="cb330-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb330-30" data-line-number="30">test =<span class="st"> </span>microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(<span class="dt">doubleloop=</span><span class="kw">doubleloop</span>(),</a>
+<a class="sourceLine" id="cb330-31" data-line-number="31">                                      <span class="dt">singleloop=</span><span class="kw">singleloop</span>(), </a>
+<a class="sourceLine" id="cb330-32" data-line-number="32">                                      <span class="dt">apply=</span><span class="kw">apply</span>(mymat, <span class="dv">2</span>, stdize), </a>
+<a class="sourceLine" id="cb330-33" data-line-number="33">                                      <span class="dt">parApply=</span><span class="kw">parApply</span>(cl, mymat, <span class="dv">2</span>, stdize),</a>
+<a class="sourceLine" id="cb330-34" data-line-number="34">                                      <span class="dt">vectorized=</span><span class="kw">scale</span>(mymat), <span class="dt">times=</span><span class="dv">25</span>)</a>
+<a class="sourceLine" id="cb330-35" data-line-number="35"><span class="kw">stopCluster</span>(cl)</a>
+<a class="sourceLine" id="cb330-36" data-line-number="36">test</a></code></pre></div>
+<pre><code>Unit: milliseconds
+       expr         min          lq       mean     median         uq        max neval cld
+ doubleloop 2882.148089 2904.739076 2938.21281 2946.57065 2952.25532 3013.29805    25   c
+ singleloop   28.989806   29.512434   33.08177   31.17037   32.42606   84.79185    25  b 
+      apply   32.167901   33.350945   33.96146   34.13204   34.64055   36.18983    25  b 
+   parApply   17.691611   18.213638   21.91323   19.63893   21.12156   73.60683    25 ab 
+ vectorized    8.085578    8.491433   10.25583   10.66990   11.02532   12.62173    25 a  </code></pre>
 </div>
-<div id="label-based-indexing" class="section level5">
-<h5>Label-based indexing</h5>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">mydf[<span class="st">&#39;row1&#39;</span>, <span class="st">&#39;b&#39;</span>]</a></code></pre></div>
-</div>
-<div id="position-based-indexing" class="section level5">
-<h5>Position-based indexing</h5>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">mydf[<span class="dv">1</span>, <span class="dv">2</span>]</a></code></pre></div>
-</div>
-<div id="mixed-indexing" class="section level5">
-<h5>Mixed indexing</h5>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">mydf[<span class="st">&#39;row1&#39;</span>, <span class="dv">2</span>]</a></code></pre></div>
-<p>If the row/column value is empty, all rows/columns are retained.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">mydf[<span class="st">&#39;row1&#39;</span>,]</a>
-<a class="sourceLine" id="cb47-2" data-line-number="2">mydf[,<span class="st">&#39;b&#39;</span>]</a></code></pre></div>
-</div>
-<div id="non-contiguous" class="section level5">
-<h5>Non-contiguous</h5>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">mydf[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>),]</a></code></pre></div>
-</div>
-<div id="boolean" class="section level5">
-<h5>Boolean</h5>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">mydf[mydf<span class="op">$</span>a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>,]</a></code></pre></div>
 </div>
 </div>
-<div id="listdata.frame-extraction" class="section level3">
-<h3>List/Data.frame extraction</h3>
-<p><span class="func">[</span> : grab a slice of elements/columns</p>
-<p><span class="func">[[</span> : grab specific elements/columns</p>
-<p><span class="func">$</span> : grab specific elements/columns</p>
-<p><span class="func">@</span>: extract slot for S4 objects</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">my_list_or_df[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>]</a></code></pre></div>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">my_list_or_df[[<span class="st">&#39;name&#39;</span>]]</a></code></pre></div>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">my_list_or_df<span class="op">$</span>name</a></code></pre></div>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">my_list<span class="op">@</span>name</a></code></pre></div>
+<div id="regular-expressions" class="section level3">
+<h3>Regular Expressions</h3>
+<p>A <span class="emph">regular expression</span>, regex for short, is a sequence of characters that can be used as a search pattern for a string. Common operations are to merely detect, extract, or replace the matching string. There are actually many different flavors of regex for different programming languages, which are all flavors that originate with the Perl approach, or can enable the Perl approach to be used. However, knowing one means you pretty much know the others with only minor modifications if any.</p>
+<p>To be clear, not only is regex another language, it’s nigh on indecipherable. You will not learn much regex, but what you do learn will save a potentially enormous amount of time you’d otherwise spend trying to do things in a more haphazard fashion. Furthermore, practically every situation that will come up has already been asked and answered on <a href="https://stackoverflow.com/questions/tagged/regex">Stack Overflow</a>, so you’ll almost always be able to search for what you need.</p>
+<p>Here is an example:</p>
+<p><code>^r.*shiny[0-9]$</code></p>
+<p>What is <em>that</em> you may ask? Well here is an example of strings it would and wouldn’t match.</p>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb332-1" data-line-number="1">string =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;r is the shiny&#39;</span>, <span class="st">&#39;r is the shiny1&#39;</span>, <span class="st">&#39;r shines brightly&#39;</span>)</a>
+<a class="sourceLine" id="cb332-2" data-line-number="2"><span class="kw">grepl</span>(string, <span class="dt">pattern=</span><span class="st">&#39;^r.*shiny[0-9]$&#39;</span>)</a></code></pre></div>
+<p>What the regex is esoterically attempting to match is any string that starts with ‘r’ and ends with ‘shiny_’ where _ is some single digit. Specifically it breaks down as follows:</p>
+<ul>
+<li><strong>^</strong> : starts with, so ^r means starts with r</li>
+<li><strong>.</strong> : any character</li>
+<li><strong>*</strong> : match the preceding zero or more times</li>
+<li><strong>shiny</strong> : match ‘shiny’</li>
+<li><strong>[0-9]</strong> : any digit 0-9 (note that we are still talking about strings, not actual numbered values)</li>
+<li><strong>$</strong> : ends with preceding</li>
+</ul>
+<div id="typical-uses" class="section level4">
+<h4>Typical Uses</h4>
+<p>None of it makes sense, so don’t attempt to do so. Just try to remember a couple key approaches, and search the web for the rest.</p>
+<p>Along with ^ . * [0-9] $, a couple more common ones are:</p>
+<ul>
+<li><strong>[a-z]</strong> : letters a-z</li>
+<li><strong>[A-Z]</strong> : capital letters</li>
+<li><strong>+</strong> : match the preceding one or more times</li>
+<li><strong>()</strong> : groupings</li>
+<li><strong>|</strong> : logical or e.g. [a-z]|[0-9] (a lower case letter or a number)</li>
+<li><strong>?</strong> : preceding item is optional, and will be matched at most once. Typically used for ‘look ahead’ and ‘look behind’</li>
+<li><strong>\</strong> : escape a character, like if you actually wanted to search for a period instead of using it as a regex pattern, you’d use \., though in R you need \\, i.e. double slashes, for escape.</li>
+</ul>
+<p>In addition, in R there are certain predefined characters that can be called:</p>
+<ul>
+<li><strong>[:punct:]</strong> : punctuation</li>
+<li><strong>[:blank:]</strong> : spaces and tabs</li>
+<li><strong>[:alnum:]</strong> : alphanumeric characters</li>
+</ul>
+<p>Those are just a few. The key functions can be found by looking at the help file for the <span class="func">grep</span> function (<code>?grep</code>). However, the <span class="pack">stringr</span> package has the same functionality with perhaps a slightly faster processing (though that’s due to the underlying <span class="pack">stringi</span> package).</p>
+<p>See if you can guess which of the following will turn up <code>TRUE</code>.</p>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb333-1" data-line-number="1"><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;a&#39;</span>)</a>
+<a class="sourceLine" id="cb333-2" data-line-number="2"><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;^a&#39;</span>)</a>
+<a class="sourceLine" id="cb333-3" data-line-number="3"><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;^a|a$&#39;</span>)</a></code></pre></div>
+<p>Scraping the web, munging data, just finding things in your scripts … you can potentially use this all the time, and not only with text analysis, as we’ll now see.</p>
 </div>
-<div id="indexing-exercises" class="section level3">
-<h3><strong>Indexing Exercises</strong></h3>
-<p>This following is a refresher of base R indexing only.</p>
-<p>Here is a <span class="objclass">matrix</span>, a <span class="objclass">data.frame</span> and a <span class="objclass">list</span>.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb54-2" data-line-number="2">mydf =<span class="st"> </span>cars</a>
-<a class="sourceLine" id="cb54-3" data-line-number="3">mylist =<span class="st"> </span><span class="kw">list</span>(mymatrix, <span class="dt">thisdf =</span> mydf)</a></code></pre></div>
-<div id="exercise-1-1" class="section level4">
+</div>
+<div id="vector-exercises" class="section level3">
+<h3><strong>Vector Exercises</strong></h3>
+<div id="exercise-1-8" class="section level4">
 <h4>Exercise 1</h4>
-<p>For the <span class="objclass">matrix</span>, in separate operations, take a slice of rows, a selection of columns, and a single element.</p>
+<p>Show a non-vectorized and a vectorized way to add a two to the numbers 1 through 3.</p>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb334-1" data-line-number="1">?</a></code></pre></div>
 </div>
-<div id="exercise-2-1" class="section level4">
+<div id="exercise-2-9" class="section level4">
 <h4>Exercise 2</h4>
-<p>For the <span class="objclass">data.frame</span>, grab a column in 3 different ways.</p>
+<p>Of the following <span class="objclass">matrix</span>, which do you think is faster? Test it.</p>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb335-1" data-line-number="1">x =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rpois</span>(<span class="dv">100000</span>, <span class="dt">lambda =</span> <span class="dv">5</span>), <span class="dt">ncol =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb335-2" data-line-number="2"><span class="kw">colSums</span>(x)</a>
+<a class="sourceLine" id="cb335-3" data-line-number="3"><span class="kw">apply</span>(x, <span class="dv">2</span>, sum)</a>
+<a class="sourceLine" id="cb335-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb335-5" data-line-number="5">microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(</a>
+<a class="sourceLine" id="cb335-6" data-line-number="6">  <span class="dt">cs =</span> <span class="kw">colSums</span>(x),</a>
+<a class="sourceLine" id="cb335-7" data-line-number="7">  <span class="dt">app =</span> <span class="kw">apply</span>(x, <span class="dv">2</span>, sum)</a>
+<a class="sourceLine" id="cb335-8" data-line-number="8">)</a></code></pre></div>
 </div>
-<div id="exercise-3" class="section level4">
-<h4>Exercise 3</h4>
-<p>For the <span class="objclass">list</span> grab an element by number and by name.</p>
+</div>
+<div id="regex-exercises" class="section level3">
+<h3><strong>Regex Exercises</strong></h3>
+<div id="exercise-1-9" class="section level4">
+<h4>Exercise 1</h4>
+<p>Using stringr and str_replace, replace all the states a’s with nothing.</p>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb336-1" data-line-number="1"><span class="kw">library</span>(stringr)</a>
+<a class="sourceLine" id="cb336-2" data-line-number="2"><span class="kw">str_replace</span>(state.name, <span class="dt">pattern =</span> ?, <span class="dt">replacement =</span> ?)</a></code></pre></div>
 
 </div>
 </div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="24">
+<li id="fn24"><p>For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.<a href="3_04_more.html#fnref24" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="1_03_io.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="1_05_pipes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="3_03_functions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="999_summary.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

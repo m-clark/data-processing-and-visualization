@@ -167,8 +167,8 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<link rel="stylesheet" href="css/book.css" type="text/css" />
-<link rel="stylesheet" href="css/standard_html.css" type="text/css" />
+<link rel="stylesheet" href="css\book.css" type="text/css" />
+<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
 </head>
 
 <body>
@@ -299,8 +299,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#s4-classes"><i class="fa fa-check"></i>S4 classes</a></li>
 <li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#others"><i class="fa fa-check"></i>Others</a></li>
 <li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#inspecting-functions"><i class="fa fa-check"></i>Inspecting Functions</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#exercises"><i class="fa fa-check"></i>Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#help-files"><i class="fa fa-check"></i>Help Files</a></li>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#objects-exercises"><i class="fa fa-check"></i>Objects Exercises</a></li>
 <li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
 <li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a></li>
 <li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
@@ -316,10 +317,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#lambda-functions"><i class="fa fa-check"></i>Lambda functions</a></li>
 <li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#writing-functions-exercises"><i class="fa fa-check"></i>Writing Functions Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="3_04_vectorapp.html"><a href="3_04_vectorapp.html"><i class="fa fa-check"></i>Vectorization</a><ul>
-<li class="chapter" data-level="" data-path="3_04_vectorapp.html"><a href="3_04_vectorapp.html#boolean-indexing"><i class="fa fa-check"></i>Boolean Indexing</a></li>
-<li class="chapter" data-level="" data-path="3_04_vectorapp.html"><a href="3_04_vectorapp.html#vectorized-operations"><i class="fa fa-check"></i>Vectorized operations</a></li>
-<li><a href="3_04_vectorapp.html#vector-exercises"><strong>Vector Exercises</strong></a></li>
+<li class="chapter" data-level="" data-path="3_04_more.html"><a href="3_04_more.html"><i class="fa fa-check"></i>More</a><ul>
+<li class="chapter" data-level="" data-path="3_04_more.html"><a href="3_04_more.html#vectorization"><i class="fa fa-check"></i>Vectorization</a></li>
+<li class="chapter" data-level="" data-path="3_04_more.html"><a href="3_04_more.html#regular-expressions"><i class="fa fa-check"></i>Regular Expressions</a></li>
+<li><a href="3_04_more.html#vector-exercises"><strong>Vector Exercises</strong></a></li>
+<li><a href="3_04_more.html#regex-exercises"><strong>Regex Exercises</strong></a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="999_summary.html"><a href="999_summary.html"><i class="fa fa-check"></i>Summary</a></li>
@@ -863,23 +865,23 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 <a class="sourceLine" id="cb132-4" data-line-number="4">                      <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),</a>
 <a class="sourceLine" id="cb132-5" data-line-number="5">                      <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>) )</a>
 <a class="sourceLine" id="cb132-6" data-line-number="6">stocks <span class="op">%&gt;%</span><span class="st"> </span>head</a></code></pre></div>
-<pre><code>        time          X          Y          Z
-1 2009-01-01 -0.9734986  0.7586405 -0.2485389
-2 2009-01-02 -0.7075647 -5.0142977 -6.1404718
-3 2009-01-03 -0.1218246  1.6978664 -2.3993524
-4 2009-01-04 -1.6656681 -0.7595149 -4.0896484
-5 2009-01-05 -0.1129926 -0.4883803  0.3087103
-6 2009-01-06 -1.0063115 -0.2753342 -0.3819087</code></pre>
+<pre><code>        time           X          Y         Z
+1 2009-01-01  1.21215990 -0.1725611 -7.580504
+2 2009-01-02  0.54985012  2.1669440 -6.117566
+3 2009-01-03  0.07373827  2.5729634  3.151151
+4 2009-01-04 -2.84824602 -0.2110573 -9.511201
+5 2009-01-05 -2.00173750  2.0599337  1.338042
+6 2009-01-06  1.21530503 -2.1003419 -2.745035</code></pre>
 <div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" data-line-number="1">stocks <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb134-2" data-line-number="2"><span class="st">  </span><span class="kw">gather</span>(stock, price, <span class="op">-</span>time) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb134-3" data-line-number="3"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
-<pre><code>        time stock      price
-1 2009-01-01     X -0.9734986
-2 2009-01-02     X -0.7075647
-3 2009-01-03     X -0.1218246
-4 2009-01-04     X -1.6656681
-5 2009-01-05     X -0.1129926
-6 2009-01-06     X -1.0063115</code></pre>
+<pre><code>        time stock       price
+1 2009-01-01     X  1.21215990
+2 2009-01-02     X  0.54985012
+3 2009-01-03     X  0.07373827
+4 2009-01-04     X -2.84824602
+5 2009-01-05     X -2.00173750
+6 2009-01-06     X  1.21530503</code></pre>
 <p>Note that the latter is an example of <span class="emph">tidy data</span> while the former is not. Why do we generally prefer such data? Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. <em>This is especially the case for visualization</em>.</p>
 <p>The following demonstrates the separate function utilized for a very common data processing task- dealing with names. Here’ we’ll separate <span class="objclass">player</span> into first and last names based on the space.</p>
 <div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
