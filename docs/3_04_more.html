@@ -167,8 +167,8 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<link rel="stylesheet" href="css\book.css" type="text/css" />
-<link rel="stylesheet" href="css\standard_html.css" type="text/css" />
+<link rel="stylesheet" href="css/book.css" type="text/css" />
+<link rel="stylesheet" href="css/standard_html.css" type="text/css" />
 </head>
 
 <body>
@@ -391,10 +391,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb328-1" data-line-number="1"><span class="kw">library</span>(microbenchmark)</a>
 <a class="sourceLine" id="cb328-2" data-line-number="2"><span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log),</a>
 <a class="sourceLine" id="cb328-3" data-line-number="3">               <span class="kw">log</span>(mymatrix))</a></code></pre></div>
-<pre><code>Unit: microseconds
-                    expr    min     lq     mean median     uq     max neval cld
- apply(mymatrix, 2, log) 35.776 37.535 40.23336 38.415 39.295 139.584   100   b
-           log(mymatrix)  2.640  2.933  3.51041  3.226  3.226  14.076   100  a </code></pre>
+<pre><code>Unit: nanoseconds
+                    expr   min      lq     mean median      uq   max neval cld
+ apply(mymatrix, 2, log) 20791 21229.5 23006.17  21507 21763.0 77567   100   b
+           log(mymatrix)   621   652.5   778.53    715   753.5  6517   100  a </code></pre>
 <p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
 <div id="timings" class="section level5">
 <h5>Timings</h5>
