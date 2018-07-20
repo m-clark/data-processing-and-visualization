@@ -1,0 +1,164 @@
+---
+title: "Exercises for Exploring the Tidyverse"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE, exercise.lines=5, exercise.eval=FALSE, cache = F)
+```
+
+<!-- ## Tidyverse Exercises -->
+
+## Exercise 0
+
+Install and load the <span class="pack">dplyr</span> <span class="pack">ggplot2movies</span> packages. Look at the help file for the `movies` data set, which contains data from IMDB.
+
+
+```{r init_dplyr, exercise=TRUE, message=FALSE}
+install.packages('ggplot2movies')
+library(ggplot2movies)
+data('movies')
+```
+
+
+## Exercise 1
+
+Using the movies data set, perform each of the following actions separately.
+
+#### Exercise 1a
+
+Use <span class="func">mutate</span> to create a centered version of the rating variable.  A centered variable is one whose mean has been subtracted from it. The process will take the following form:
+
+```{r dpex1a, exercise=TRUE}
+movies %>% 
+  mutate(new_var_name = '?')
+```
+
+```{r dpex1a-hint}
+movies %>% 
+  mutate(ratingCen = rating - mean(rating)) 
+```
+
+#### Exercise 1b
+
+Use <span class="func">filter</span> to create a new data frame that has only movies from the years 2000 and beyond. Use the greater than or equal operator `>=`.
+
+```{r dpex1b, exercise=TRUE, exercise.eval=FALSE}
+movies %>% 
+  filter(?) 
+```
+
+```{r dpex1b-hint}
+movies %>% 
+  filter(year >= 2000) 
+```
+
+#### Exercise 1c
+
+Use <span class="func">select</span> to create a new data frame that only has the `title`, `year`, `budget`, `length`, `rating` and `votes` variables.  There are at least 3 ways to do this.
+
+```{r dpex1c, exercise=TRUE, exercise.eval=FALSE}
+movies %>% 
+  select(?) 
+```
+
+```{r dpex1c-hint}
+movies %>% 
+  select(title, year, budget, length, rating, votes) 
+movies %>% 
+  select(1:6)
+movies %>% 
+  select(-num_range('r',1:10), -mpaa, -starts_with('A'), -Comedy, -starts_with('D'), -Romance, -Short)
+```
+
+#### Exercise 1d
+
+Rename the `length` column to `length_in_min` (i.e. length in minutes).
+
+```{r dpex1d, exercise=TRUE, exercise.eval=FALSE}
+movies %>% 
+  rename(?) 
+```
+
+## Exercise 2
+
+Use <span class="func">group_by</span> to group the data by year, and <span class="func">summarize</span> to create a new variable that is the average budget. The <span class="func">summarize</span> function works just like <span class="func">mutate</span> in this case.
+
+Use the <span class="func">mean</span> function to get the average, but you'll also need to use the argument `na.rm = TRUE` within it because the earliest years have no budget recorded.
+
+
+```{r dpex2, exercise=TRUE, exercise.eval=FALSE}
+movies %>%
+  group_by(?) %>%
+  summarise(?) %>%
+  tail()
+```
+
+```{r dpex2-hint}
+movies %>%
+  group_by(year) %>%
+  summarise(AvgBudget=mean(budget, na.rm=T)) %>%
+  tail()
+```
+
+
+## Exercise 3
+
+Use <span class="func">gather</span> to create a 'tidy' data set from the following.
+
+```{r dpex3, eval=FALSE, exercise=TRUE, exercise.eval=FALSE}
+dat = data_frame(id = 1:10,
+                 x = rnorm(10),
+                 y = rnorm(10))
+```
+
+```{r dpex3-hint, exercise.eval=FALSE}
+dat %>% 
+  gather(key = ?, value = ?, -id)
+```
+
+
+
+## Exercise 4
+
+Now put several actions together in one set of piped operations. 
+
+- Filter movies released *after* 1990
+- select the same variables as before but also the `mpaa`, `Action`, and `Drama` variables
+- group by `mpaa` *and* (your choice) `Action` *or* `Drama`
+- get the average rating
+
+
+
+```{r dpex4, exercise=TRUE, exercise.eval=FALSE}
+movies %>%
+  filter(?) %>%
+  select(?) %>%
+  group_by(?) %>%
+  summarise(?)
+```
+
+```{r dpex4-hint}
+movies %>%
+  filter(year>=1990) %>%
+  select(title, year, budget, length, rating, votes, mpaa, Action, Drama) %>%
+  group_by(mpaa, Drama) %>%
+  summarise(AvgRating = mean(rating))
+```
+
+
+It should spit out something like the following:
+
+```{r dpex4_show, echo=FALSE, message=FALSE}
+data('movies', package='ggplot2movies')
+library(dplyr)
+movies %>%
+  filter(year>=1990) %>%
+  select(title, year, budget, length, rating, votes, mpaa, Action, Drama) %>%
+  group_by(mpaa, Drama) %>%
+  summarise(AvgRating = mean(rating))
+```
+
+
