@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2018-07-19">
+<meta name="date" content="2018-07-22">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -167,8 +167,8 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<link rel="stylesheet" href="css/book.css" type="text/css" />
 <link rel="stylesheet" href="css/standard_html.css" type="text/css" />
+<link rel="stylesheet" href="css/book.css" type="text/css" />
 </head>
 
 <body>
@@ -292,16 +292,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html"><i class="fa fa-check"></i>Part III: Programming</a><ul>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#basics-1"><i class="fa fa-check"></i>Basics</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#r-objects"><i class="fa fa-check"></i>R Objects</a><ul>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#object-inspection-exploration"><i class="fa fa-check"></i>Object Inspection &amp; Exploration</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#methods"><i class="fa fa-check"></i>Methods</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#s4-classes"><i class="fa fa-check"></i>S4 classes</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#others"><i class="fa fa-check"></i>Others</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#inspecting-functions"><i class="fa fa-check"></i>Inspecting Functions</a></li>
-</ul></li>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#basics-1"><i class="fa fa-check"></i>Basics</a><ul>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#r-objects"><i class="fa fa-check"></i>R Objects</a></li>
 <li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#help-files"><i class="fa fa-check"></i>Help Files</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#objects-exercises"><i class="fa fa-check"></i>Objects Exercises</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
 <li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a></li>
 <li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
@@ -338,7 +332,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><span style="font-size:125%; font-family:Roboto; font-style:normal">Data Processing &amp; Visualization</span></a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Data Processing &amp; Visualization</a>
           </h1>
         </div>
 
@@ -363,7 +357,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Now we add more information, but more problems!</p>
 <p><img src="data-processing-and-visualization_files/figure-html/ugly-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>The above has unnecessary border, gridlines, and emphasis. The labels, while possibly interesting, do not relate anything useful to the graph, and many are illegible. It imposes a straight (and too wide of a) straight line on a nonlinear relationship. And finally, color choice is both terrible and tends to draw one’s eye to the female data points. Here is what it looks like to someone with the most common form of colorblindness. If the points were less clumpy on gender, it would be very difficult to distinguish the groups.</p>
-<p><img src="img/deuteranopia.png" style="display:block; margin: 0 auto;" width='75%'></p>
+<p><img class = 'zoom' src="img/deuteranopia.png" style="display:block; margin: 0 auto;" width=50%></p>
 <p>And here is what it might look like when printed.</p>
 <p><img src="data-processing-and-visualization_files/figure-html/badbw-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p><br></p>
@@ -377,7 +371,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4>Your audience isn’t dumb</h4>
 <p>Assume your audience, which in academia is full of people with advanced degrees or those aspiring to obtain one, and in other contexts comprises people who are interested in your story, can handle more than a bar graph. If the visualization is good and well-explained<a href="#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a>, they’ll be fine.</p>
 <p>See the data visualization and maps sections of <a href="https://www.nytimes.com/interactive/2016/12/28/us/year-in-interactive-graphics.html">2016: The Year in Visual Stories and Graphics</a> at the New York Times. Good data visualization of even complex relationships can be appreciated by more than an academic audience. Assume you can at least provide visualizations on that level of complexity and be okay. It won’t always work, but at least put the same effort you’d appreciate yourself.</p>
-<p><img src="img/nytimes.png" style="display:block; margin: 0 auto;"></p>
+<p><img class='zoom' src="img/nytimes.png" style="display:block; margin: 0 auto;"></p>
 </div>
 <div id="clarity-is-key" class="section level4">
 <h4>Clarity is key</h4>
@@ -409,7 +403,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>These color maps are designed in such a way that they will analytically be perfectly perceptually-uniform, both in regular form and also when converted to black-and-white. They are also designed to be perceived by readers with the most common form of color blindness.</p>
 </blockquote>
 <p>So basically you have something that will take care of your audience without having to do much. There are four palettes.</p>
-<p><img src="img/viridis_scales.png" style="display:block; margin: 0 auto;" width=50%></p>
+<p><img class='zoom' src="img/viridis_scales.png" style="display:block; margin: 0 auto;" width=50%></p>
 <p>These color schemes might seem a bit odd from what you’re used to. But recall that the goal is good communication, and these will allow you to convey information accurately, without implicit bias, and be acceptable in different formats. In addition, there is <span class="pack">ggplot2</span> functionality to boot, e.g. <span class="func">scale_color_viridis</span>, and it will work for discrete or continuously valued data.</p>
 <p>For more, see the <a href="https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html">vignette</a>. I also invite you to watch the <a href="https://www.youtube.com/watch?v=xAoljeRJ3lU">introduction of the original module in Python</a>, where you can learn more about the issues in color selection, and why viridis works.</p>
 </div>
@@ -421,7 +415,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Sequential (e.g. Reds)</li>
 <li>Diverging (e.g. RdBu)</li>
 </ul>
-<p><img src="img/colorbrewer.svg" style="display:block; margin: 0 auto;" width=50%></p>
+<p><img class='zoom' src="img/colorbrewer.svg" style="display:block; margin: 0 auto;" width=50%></p>
 <p>There is a <span class="pack">ggplot2</span> function, <span class="func">scale_color_brewer</span>, you can use as well. For more, see <a href="http://colorbrewer2.org/">colorbrewer.org</a>. There you can play around with the palettes to help make your decision.</p>
 <div class="note">
 <p>In R, you have three schemes that work well right out of the box:</p>
@@ -528,12 +522,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb177-2" data-line-number="2"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>carat, <span class="dt">y=</span>price), <span class="dt">data=</span>diamonds) <span class="op">+</span></a>
 <a class="sourceLine" id="cb177-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>price)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb177-4" data-line-number="4"><span class="st">  </span>????</a></code></pre></div>
-<p><img src="img/visex_diamonds.png" style="display:block; margin: 0 auto;" width=75% title='scatterplot of diamond data'></p>
+<p><img class='zoom' src="img/visex_diamonds.png" style="display:block; margin: 0 auto;" width=50% title='scatterplot of diamond data'></p>
 </div>
 <div id="exercise-2-4" class="section level4">
 <h4>Exercise 2</h4>
 <p>Now color it by the <code>cut</code>. To use the scale_color_viridis approach, you’ll have to change one of the arguments to the function (set <code>discrete=T</code>). Reproduce this but using one of the other viridis palettes. See the helpfile via <code>?scale_color_viridis</code> to see how to change the palette.</p>
-<p><img src="img/visex_diamonds2.png" style="display:block; margin: 0 auto;" width=75% title='scatterplot of diamond data with options'></p>
+<p><img class='zoom' src="img/visex_diamonds2.png" style="display:block; margin: 0 auto;" width=50% title='scatterplot of diamond data with options'></p>
 </div>
 <div id="thinking-exercises-2" class="section level4">
 <h4>Thinking exercises</h4>

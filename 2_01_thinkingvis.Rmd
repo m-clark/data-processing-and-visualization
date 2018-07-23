@@ -72,7 +72,7 @@ starwars %>%
 
 The above has unnecessary border, gridlines, and emphasis. The labels, while possibly interesting, do not relate anything useful to the graph, and many are illegible. It imposes a straight (and too wide of a) straight line on a nonlinear relationship.  And finally, color choice is both terrible and tends to draw one's eye to the female data points.  Here is what it looks like to someone with the most common form of colorblindness. If the points were less clumpy on gender, it would be very difficult to distinguish the groups.
 
-<img src="img/deuteranopia.png" style="display:block; margin: 0 auto;" width='75%'>
+<img class = 'zoom' src="img/deuteranopia.png" style="display:block; margin: 0 auto;" width=50%>
 
 
 And here is what it might look like when printed.
@@ -148,7 +148,7 @@ Assume your audience, which in academia is full of people with advanced degrees 
 
 See the data visualization and maps sections of [2016: The Year in Visual Stories and Graphics](https://www.nytimes.com/interactive/2016/12/28/us/year-in-interactive-graphics.html) at the New York Times.  Good data visualization of even complex relationships can be appreciated by more than an academic audience.  Assume you can at least provide visualizations on that level of complexity and be okay.  It won't always work, but at least put the same effort you'd appreciate yourself.
 
-<img src="img/nytimes.png" style="display:block; margin: 0 auto;">
+<img class='zoom' src="img/nytimes.png" style="display:block; margin: 0 auto;">
 
 #### Clarity is key
 
@@ -186,7 +186,7 @@ A couple packages will help you get started in choosing a decent color scheme.  
 
 So basically you have something that will take care of your audience without having to do much. There are four palettes.
 
-<img src="img/viridis_scales.png" style="display:block; margin: 0 auto;" width=50%>
+<img class='zoom' src="img/viridis_scales.png" style="display:block; margin: 0 auto;" width=50%>
 
 
 These color schemes might seem a bit odd from what you're used to.  But recall that the goal is good communication, and these will allow you to convey information accurately, without implicit bias, and be acceptable in different formats. In addition, there is <span class="pack">ggplot2</span> functionality to boot, e.g. <span class="func">scale_color_viridis</span>, and it will work for discrete or continuously valued data.
@@ -201,7 +201,7 @@ Color Brewer offers another collection of palettes that will generally work well
 - Sequential (e.g. Reds)
 - Diverging (e.g. RdBu)
 
-<img src="img/colorbrewer.svg" style="display:block; margin: 0 auto;" width=50%>
+<img class='zoom' src="img/colorbrewer.svg" style="display:block; margin: 0 auto;" width=50%>
 
 There is a <span class="pack">ggplot2</span> function, <span class="func">scale_color_brewer</span>, you can use as well. For more, see [colorbrewer.org](http://colorbrewer2.org/).  There you can play around with the palettes to help make your decision.
 
@@ -683,7 +683,7 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
   scale_color_viridis()
 ```
 
-<img src="img/visex_diamonds.png" style="display:block; margin: 0 auto;" width=75% title='scatterplot of diamond data'>
+<img class='zoom' src="img/visex_diamonds.png" style="display:block; margin: 0 auto;" width=50% title='scatterplot of diamond data'>
 
 #### Exercise 2
 
@@ -695,7 +695,7 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
   scale_color_viridis(discrete=T)
 ```
 
-<img src="img/visex_diamonds2.png" style="display:block; margin: 0 auto;" width=75% title='scatterplot of diamond data with options'>
+<img class='zoom' src="img/visex_diamonds2.png" style="display:block; margin: 0 auto;" width=50% title='scatterplot of diamond data with options'>
 
 #### Thinking exercises
 

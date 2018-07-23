@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2018-07-19">
+<meta name="date" content="2018-07-22">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -167,8 +167,8 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<link rel="stylesheet" href="css/book.css" type="text/css" />
 <link rel="stylesheet" href="css/standard_html.css" type="text/css" />
+<link rel="stylesheet" href="css/book.css" type="text/css" />
 </head>
 
 <body>
@@ -292,16 +292,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html"><i class="fa fa-check"></i>Part III: Programming</a><ul>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#basics-1"><i class="fa fa-check"></i>Basics</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#r-objects"><i class="fa fa-check"></i>R Objects</a><ul>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#object-inspection-exploration"><i class="fa fa-check"></i>Object Inspection &amp; Exploration</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#methods"><i class="fa fa-check"></i>Methods</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#s4-classes"><i class="fa fa-check"></i>S4 classes</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#others"><i class="fa fa-check"></i>Others</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#inspecting-functions"><i class="fa fa-check"></i>Inspecting Functions</a></li>
-</ul></li>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#basics-1"><i class="fa fa-check"></i>Basics</a><ul>
+<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#r-objects"><i class="fa fa-check"></i>R Objects</a></li>
 <li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#help-files"><i class="fa fa-check"></i>Help Files</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#objects-exercises"><i class="fa fa-check"></i>Objects Exercises</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
 <li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a></li>
 <li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
@@ -338,7 +332,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><span style="font-size:125%; font-family:Roboto; font-style:normal">Data Processing &amp; Visualization</span></a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Data Processing &amp; Visualization</a>
           </h1>
         </div>
 
@@ -350,16 +344,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1>Part III: Programming</h1>
 <div id="basics-1" class="section level2">
 <h2>Basics</h2>
-<p>Becoming a better programmer is in many ways like learning any language. While it may be literal, there is much nuance, and many ways to solve the same problem. However, it doesn’t take much in the way of practice to develop a few skills that will not only last, but go a long way toward saving you time and allowing you to explore your data, models, and visualizations more extensively. So let’s get to it!</p>
-</div>
-<div id="r-objects" class="section level2">
-<h2>R Objects</h2>
-<div id="object-inspection-exploration" class="section level3">
-<h3>Object Inspection &amp; Exploration</h3>
-<p>Let’s say you’ve imported your data into R. If you are going to be able to do anything with it, you’ll have had to create an R object that represents that data. What is that object? By now you know it’s a <span class="objclass">data frame</span>, specifically, class <span class="objclass">data.frame</span> or possibly a <span class="objclass">tibble</span>. If you want to look at it, you might be tempted to look at it this way with <span class="func">View</span>, or clicking on it in your Environment viewer.</p>
+<p>Becoming a better programmer is in many ways like learning any language. While it may be literal, there is much nuance, and many ways are available to express yourself in order to solve some problem. However, it doesn’t take much in the way of practice to develop a few skills that will not only last, but go a long way toward saving you time and allowing you to explore your data, models, and visualizations more extensively. So let’s get to it!</p>
+<div id="r-objects" class="section level3">
+<h3>R Objects</h3>
+<div id="object-inspection-exploration" class="section level4">
+<h4>Object Inspection &amp; Exploration</h4>
+<p>Let’s say you’ve imported your data into R. If you are going to be able to do anything with it, you’ll have had to create an R object that represents that data. What is that object? By now you know it’s a data frame, specifically, <a href="https://en.wikipedia.org/wiki/Class_(computer_programming)">class</a> <span class="objclass">data.frame</span> or possibly a <span class="objclass">tibble</span> if you’re working within the tidyverse. If you want to look at it, you might be tempted to look at it this way with <span class="func">View</span>, or clicking on it in your Environment viewer.</p>
 <div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb215-1" data-line-number="1"><span class="kw">View</span>(diamonds)</a></code></pre></div>
-<p><img src="img/view.png" style="display:block; margin: 0 auto;" width=50%></p>
-<p>While this is certainly one way to inspect it, it’s almost useless. There’s far too much information to get much out of it, and information you may need to know is absent.</p>
+<p><img class='zoom' src="img/view.png" style="display:block; margin: 0 auto;" width=50%></p>
+<p>While this is certainly one way to inspect it, it’s not very useful. There’s far too much information to get much out of it, and information you may need to know is absent.</p>
 <p>Consider the following:</p>
 <div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb216-1" data-line-number="1"><span class="kw">str</span>(diamonds)</a></code></pre></div>
 <pre><code>Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:   53940 obs. of  10 variables:
@@ -386,8 +379,8 @@ $ price   &lt;int&gt; 326, 326, 327, 334, 335, 336, 336, 337, 337, 338, 339, 340
 $ x       &lt;dbl&gt; 3.95, 3.89, 4.05, 4.20, 4.34, 3.94, 3.95, 4.07, 3.87, 4.00, 4.25, 3.93, 3.88, 4.35, 3.79, 4.38, 4.31, 4.23, 4.23, 4.21, 4.26, 3.85, 3.94, 4.39, 4.44, 3.97, 3.97, 4.28, 3.96, 3.96, 4.00, 4.04, 3.97, 4...
 $ y       &lt;dbl&gt; 3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, 4.05, 4.28, 3.90, 3.84, 4.37, 3.75, 4.42, 4.34, 4.29, 4.26, 4.27, 4.30, 3.92, 3.96, 4.43, 4.47, 4.01, 3.94, 4.30, 3.97, 3.99, 4.03, 4.06, 4.01, 4...
 $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39, 2.73, 2.46, 2.33, 2.71, 2.27, 2.68, 2.68, 2.70, 2.71, 2.66, 2.71, 2.48, 2.41, 2.62, 2.59, 2.41, 2.47, 2.67, 2.40, 2.42, 2.41, 2.42, 2.42, 2...</code></pre>
-<p>The <span class="func">str</span> function looks at the <em>structure</em> of the object, while <span class="func">glimpse</span> perhaps provides a possibly more readable version and is just <span class="func">str</span> specifically suited toward data frames. In both cases, we get info about the object and the various things within it.</p>
-<p>While you might be doing this with data frames, you should be doing it with all the objects you’re interested in. Consider a regression model object.</p>
+<p>The <span class="func">str</span> function looks at the <em>structure</em> of the object, while <span class="func">glimpse</span> perhaps provides a possibly more readable version, and is just <span class="func">str</span> specifically suited toward data frames. In both cases, we get info about the object and the various things within it.</p>
+<p>While you might be doing this with data frames, you should be doing it with any of the objects you’re interested in. Consider a regression model object.</p>
 <div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb220-1" data-line-number="1">lm_mod =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>mtcars)</a>
 <a class="sourceLine" id="cb220-2" data-line-number="2"><span class="kw">str</span>(lm_mod, <span class="dv">0</span>)</a></code></pre></div>
 <pre><code>List of 12
@@ -516,7 +509,7 @@ F-statistic: 13.93 on 10 and 21 DF,  p-value: 3.793e-07</code></pre>
   .. ..$ : chr [1:11] &quot;(Intercept)&quot; &quot;cyl&quot; &quot;disp&quot; &quot;hp&quot; ...
  - attr(*, &quot;class&quot;)= chr &quot;summary.lm&quot;</code></pre>
 <p>If we pull the coefficients from this object, we are not just getting the values, but the table that’s printed in the summary. And we can now get that ready for publishing for example<a href="#fn18" class="footnote-ref" id="fnref18"><sup>18</sup></a>.</p>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb232-1" data-line-number="1">lm_mod_summary<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span></a>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb232-1" data-line-number="1">lm_mod_summary<span class="op">$</span>coefficients <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb232-2" data-line-number="2"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">2</span>)</a></code></pre></div>
 <table>
 <thead>
@@ -729,8 +722,8 @@ carb
 </table>
 <p>After a while, you’ll know what’s in the objects you use most often, and that will allow you more easily work with the content they contain, allowing you to work with them more efficiently.</p>
 </div>
-<div id="methods" class="section level3">
-<h3>Methods</h3>
+<div id="methods" class="section level4">
+<h4>Methods</h4>
 <p>Consider the following:</p>
 <div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb233-1" data-line-number="1"><span class="kw">summary</span>(diamonds)</a></code></pre></div>
 <pre><code>     carat               cut        color        clarity          depth           table           price             x                y                z         
@@ -786,8 +779,8 @@ adj.r.squared   1    -none- numeric
 fstatistic      3    -none- numeric
 cov.unscaled  121    -none- numeric</code></pre>
 <p>How is it that one function works on all these different types of objects? That’s not all. In RStudio, type <code>summary.</code> and hit the tab key.</p>
-<p><img src="img/summary_method.png" style="display:block; margin: 0 auto;" width=50%></p>
-<p>When you load additional packages, you’ll see even more <em>methods</em> for the summary function. When you call summary on an object, the appropriate type of summary function will be used depending on the class of the object. If there is no specific type, e.g. when we called summary on something that already had summary called on it, it will just use a default version listing the contents. To see all the methods for summary, type the following</p>
+<p><img class='zoom' src="img/summary_method.png" style="display:block; margin: 0 auto;" width=50%></p>
+<p>When you load additional packages, you’ll see even more <span class="emph">methods</span> for the summary function. When you call summary on an object, the appropriate type of summary function will be used depending on the class of the object. If there is no specific type, e.g. when we called summary on something that already had summary called on it, it will just use a default version listing the contents. To see all the methods for summary, type the following, and you’ll see all that is currently available for your R session.</p>
 <div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb241-1" data-line-number="1"><span class="kw">methods</span>(<span class="st">&#39;summary&#39;</span>)</a></code></pre></div>
 <pre><code>  [1] summary,ANY-method             summary,diagonalMatrix-method  summary,quantmod-method        summary,sparseMatrix-method    summary.aareg*                 summary.agnes*                
   [7] summary.aov                    summary.aovlist*               summary.areg.boot*             summary.aspell*                summary.cch*                   summary.check_packages_in_dir*
@@ -827,13 +820,16 @@ see &#39;?methods&#39; for accessing help and source code</code></pre>
 see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>This allows you to quickly get oriented to a package and the objects it produces, and provides utility you might not have even known to look for in the first place!</p>
 </div>
-<div id="s4-classes" class="section level3">
-<h3>S4 classes</h3>
+<div id="s4-classes" class="section level4">
+<h4>S4 classes</h4>
 <p>Everything we’ve been dealing with at this point are S3 objects, classes, and methods. R is a dialect of the <a href="https://www.r-project.org/conferences/useR-2006/Slides/Chambers.pdf">S language</a>, and the S3 name reflects the version of S at the time of R’s creation. S4 was the next iteration of S, but I’m not going to say much about the S4 system of objects other than they are a separate type of object with their own methods. For practical use you might not see much difference, but if you see an S4 object, it will have <span class="emph">slots</span> accessible via <code>@</code>.</p>
-<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb245-1" data-line-number="1">mtcars <span class="op">%&gt;%</span><span class="st"> </span></a>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb245-1" data-line-number="1">car_matrix =<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb245-2" data-line-number="2"><span class="st">  </span><span class="kw">as.matrix</span>() <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># convert from df to matrix</span></a>
-<a class="sourceLine" id="cb245-3" data-line-number="3"><span class="st">  </span>Matrix<span class="op">::</span><span class="kw">Matrix</span>() <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># convert to Matrix class (S4)</span></a>
-<a class="sourceLine" id="cb245-4" data-line-number="4"><span class="st">  </span><span class="kw">str</span>()</a></code></pre></div>
+<a class="sourceLine" id="cb245-3" data-line-number="3"><span class="st">  </span>Matrix<span class="op">::</span><span class="kw">Matrix</span>()      <span class="co"># convert to Matrix class (S4)</span></a>
+<a class="sourceLine" id="cb245-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb245-5" data-line-number="5"><span class="kw">typeof</span>(car_matrix)</a></code></pre></div>
+<pre><code>[1] &quot;S4&quot;</code></pre>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb247-1" data-line-number="1"><span class="kw">str</span>(car_matrix)</a></code></pre></div>
 <pre><code>Formal class &#39;dgeMatrix&#39; [package &quot;Matrix&quot;] with 4 slots
   ..@ x       : num [1:352] 21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
   ..@ Dim     : int [1:2] 32 11
@@ -841,18 +837,18 @@ see &#39;?methods&#39; for accessing help and source code</code></pre>
   .. ..$ : chr [1:32] &quot;Mazda RX4&quot; &quot;Mazda RX4 Wag&quot; &quot;Datsun 710&quot; &quot;Hornet 4 Drive&quot; ...
   .. ..$ : chr [1:11] &quot;mpg&quot; &quot;cyl&quot; &quot;disp&quot; &quot;hp&quot; ...
   ..@ factors : list()</code></pre>
-<p>Mostly, I just find S4 objects more annoying to work with for applied work, but you should be at least somewhat familiar with them so that you won’t be thrown off course when they appear.</p>
+<p>Mostly, I just find S4 objects slightly more annoying to work with for applied work, but you should be at least somewhat familiar with them so that you won’t be thrown off course when they appear.</p>
 </div>
-<div id="others" class="section level3">
-<h3>Others</h3>
+<div id="others" class="section level4">
+<h4>Others</h4>
 <p>Indeed there are more types of R objects, but they will probably not be of much notice to the applied user. As an example, the <span class="pack">text2vec</span> package uses <a href="https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html">R6</a>. I can only say that you’ll just have to cross that bridge should you get to it.</p>
 </div>
-<div id="inspecting-functions" class="section level3">
-<h3>Inspecting Functions</h3>
+<div id="inspecting-functions" class="section level4">
+<h4>Inspecting Functions</h4>
 <p>You might not think of them as such, but in R, everything’s an object, including functions. You can inspect them like anything else.</p>
-<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb247-1" data-line-number="1"><span class="kw">str</span>(lm)</a></code></pre></div>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb249-1" data-line-number="1"><span class="kw">str</span>(lm)</a></code></pre></div>
 <pre><code>function (formula, data, subset, weights, na.action, method = &quot;qr&quot;, model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, contrasts = NULL, offset, ...)  </code></pre>
-<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb249-1" data-line-number="1">## lm</a></code></pre></div>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb251-1" data-line-number="1">## lm</a></code></pre></div>
 <pre><code>                                                                          
 1  function (formula, data, subset, weights, na.action, method = &quot;qr&quot;,    
 2      model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, 
@@ -876,32 +872,37 @@ see &#39;?methods&#39; for accessing help and source code</code></pre>
 20     mt &lt;- attr(mf, &quot;terms&quot;)                                            </code></pre>
 <p>One of the primary reasons for R’s popularity is the accessibility of the underlying code. People can very easily access the code for some function, modify it, extend it, etc. From an applied perspective, if you want to get better at writing code, or modify existing code, all you have to do is dive in! We’ll talk more about writing functions <a href="3_03_functions.html#writing-functions">later</a>.</p>
 </div>
+<div id="objects-exercises" class="section level4">
+<h4>Objects Exercises</h4>
+<p>With one function, find out what the class, number of rows, number of columns are of the following object, including what kind of object the last three columns are.</p>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb253-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb253-2" data-line-number="2">?starwars</a></code></pre></div>
 </div>
-<div id="help-files" class="section level2">
-<h2>Help Files</h2>
-<p>Many applied users of R are quick to search the web for available help when they come to a problem. This is great, you’ll find a lot of information out there. However, it will likely take you a bit to sort through things and find exactly what you need. Strangely, many users of R don’t use the help files first, and yet this is typically the quickest way to answer many of the questions they’ll have.</p>
+</div>
+<div id="help-files" class="section level3">
+<h3>Help Files</h3>
+<p>Many applied users of R are quick to search the web for available help when they come to a problem. This is great, you’ll find a lot of information out there. However, it will likely take you a bit to sort through things and find exactly what you need. Strangely, many users of R I see don’t use the help files first, and yet this is typically the quickest way to answer many of the questions they’ll have.</p>
 <p>Let’s start with an example. We’ll use the <span class="func">sample</span> function to get a random sample of 10 values from the range of numbers 1 through 5. So, go ahead and do so!</p>
-<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb251-1" data-line-number="1"><span class="kw">sample</span>(?)</a></code></pre></div>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb254-1" data-line-number="1"><span class="kw">sample</span>(?)</a></code></pre></div>
 <p>Don’t know what to put? Consult the help file!</p>
-<p><img src="img/help.png" style="display:block; margin: 0 auto;" width=50%></p>
-<p>We get a brief description of a function at the top, then we see how to actually use it, i.e. the form the syntax should take. There is even an additional function, <span class="func">sample.int</span>, that we could use. Next we see what arguments are possible. First we need an <code>x</code>, so what is the thing we’re trying to sample from? The numbers 1 through 5. Next is the size, which is how many we need, in this case 10. So let’s try it.</p>
-<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb252-1" data-line-number="1">nums =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb252-2" data-line-number="2"><span class="kw">sample</span>(nums, <span class="dv">10</span>)</a></code></pre></div>
+<p><img class="zoom" src="img/help.png" style="display:block; margin: 0 auto;" width=50%></p>
+<p>We get a brief description of a function at the top, then we see how to actually use it, i.e. the form the syntax should take. We find out there is even an additional function, <span class="func">sample.int</span>, that we could use. Next we see what arguments are possible. First we need an <code>x</code>, so what is the thing we’re trying to sample from? The numbers 1 through 5. Next is the size, which is how many values we want, in this case 10. So let’s try it.</p>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb255-1" data-line-number="1">nums =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></a>
+<a class="sourceLine" id="cb255-2" data-line-number="2"><span class="kw">sample</span>(nums, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>Error in sample.int(length(x), size, replace, prob): cannot take a sample larger than the population when &#39;replace = FALSE&#39;</code></pre>
-<p>Uh, oh, we have a problem with the replace argument! We can see in the help file that, by default, it is <code>FALSE</code>, but if we want to sample 10 times from only 5 numbers, we’ll need to change it to <code>TRUE</code>.</p>
+<p>Uh oh- we have a problem with the <code>replace</code> argument! We can see in the help file that, by default, it is <code>FALSE</code><a href="#fn19" class="footnote-ref" id="fnref19"><sup>19</sup></a>, but if we want to sample 10 times from only 5 numbers, we’ll need to change it to <code>TRUE</code>.</p>
 <p>Now we are on our way!</p>
 <p>The help file gives detailed information about the sampling that is possible, which actually is not as simple as one would think! The <strong><code>Value</code></strong> is important, as it tells us what we can expect the function to return, whether a data frame, list, or whatever. We even get references, other functions that might be of interest (<strong><code>See Also</code></strong>), and examples. There is a lot to digest for this function!</p>
-<p>Not all functions have all this information, but most do, and if they are adhering to standards they will<a href="#fn19" class="footnote-ref" id="fnref19"><sup>19</sup></a></p>
-</div>
-<div id="objects-exercises" class="section level2">
-<h2>Objects Exercises</h2>
+<p>Not all functions have all this information, but most do, and if they are adhering to standards they will<a href="#fn20" class="footnote-ref" id="fnref20"><sup>20</sup></a>. However, all functions have this same documentation form, which puts R above and beyond most programming languages in this regard. Once you look at a couple of help files, you’ll always be able to quickly find the information you need from any other.</p>
 
+</div>
 </div>
 <div class="footnotes">
 <hr />
 <ol start="18">
 <li id="fn18"><p>An alternative would be to use broom::tidy on the lm object itself, or use pander instead of kableExtra to work on the lm object.<a href="3_01_programming.html#fnref18" class="footnote-back">↩</a></p></li>
-<li id="fn19"><p>Ahem, tidyverse.<a href="3_01_programming.html#fnref19" class="footnote-back">↩</a></p></li>
+<li id="fn19"><p>An odd choice in my opinion. For the things I do, I need sample with replacement far more than I don’t, but that may not be the same for everyone.<a href="3_01_programming.html#fnref19" class="footnote-back">↩</a></p></li>
+<li id="fn20"><p>Ahem, tidyverse.<a href="3_01_programming.html#fnref20" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
             </section>

@@ -6,21 +6,21 @@ knitr::opts_chunk$set(eval=T, echo=T)
 
 ## Basics
 
-Becoming a better programmer is in many ways like learning any language.  While it may be literal, there is much nuance, and many ways to solve the same problem.  However, it doesn't take much in the way of practice to develop a few skills that will not only last, but go a long way toward saving you time and allowing you to explore your data, models, and visualizations more extensively.  So let's get to it!
+Becoming a better programmer is in many ways like learning any language.  While it may be literal, there is much nuance, and many ways are available to express yourself in order to solve some problem.  However, it doesn't take much in the way of practice to develop a few skills that will not only last, but go a long way toward saving you time and allowing you to explore your data, models, and visualizations more extensively.  So let's get to it!
 
-## R Objects
+### R Objects
 
-### Object Inspection & Exploration
+#### Object Inspection & Exploration
 
-Let's say you've imported your data into R.  If you are going to be able to do anything with it, you'll have had to create an R object that represents that data.  What is that object?  By now you know it's a <span class="objclass">data frame</span>, specifically, class <span class="objclass">data.frame</span> or possibly a <span class="objclass">tibble</span>.  If you want to look at it, you might be tempted to look at it this way with <span class="func">View</span>, or clicking on it in your Environment viewer.
+Let's say you've imported your data into R.  If you are going to be able to do anything with it, you'll have had to create an R object that represents that data.  What is that object?  By now you know it's a data frame, specifically, [class](https://en.wikipedia.org/wiki/Class_(computer_programming)) <span class="objclass">data.frame</span> or possibly a <span class="objclass">tibble</span> if you're working within the tidyverse.  If you want to look at it, you might be tempted to look at it this way with <span class="func">View</span>, or clicking on it in your Environment viewer.
 
 ```{r view, eval=FALSE}
 View(diamonds)
 ```
 
-<img src="img/view.png" style="display:block; margin: 0 auto;" width=50%>
+<img class='zoom' src="img/view.png" style="display:block; margin: 0 auto;" width=50%>
 
-While this is certainly one way to inspect it, it's almost useless. There's far too much information to get much out of it, and information you may need to know is absent.
+While this is certainly one way to inspect it, it's not very useful. There's far too much information to get much out of it, and information you may need to know is absent.
 
 Consider the following:
 
@@ -29,9 +29,9 @@ str(diamonds)
 glimpse(diamonds)
 ```
 
-The <span class="func">str</span> function looks at the *structure* of the object, while <span class="func">glimpse</span> perhaps provides a possibly more readable version and is just <span class="func">str</span> specifically suited toward data frames.  In both cases, we get info about the object and the various things within it. 
+The <span class="func">str</span> function looks at the *structure* of the object, while <span class="func">glimpse</span> perhaps provides a possibly more readable version, and is just <span class="func">str</span> specifically suited toward data frames.  In both cases, we get info about the object and the various things within it. 
 
-While you might be doing this with data frames, you should be doing it with all the objects you're interested in.  Consider a regression model object.
+While you might be doing this with data frames, you should be doing it with any of the objects you're interested in.  Consider a regression model object.
 
 ```{r lm_object}
 lm_mod = lm(mpg ~ ., data=mtcars)
@@ -63,13 +63,13 @@ str(lm_mod_summary)
 If we pull the coefficients from this object, we are not just getting the values, but the table that's printed in the summary. And we can now get that ready for publishing for example[^other_lm_tab].
 
 ```{r lm_mod_summary_table}
-lm_mod_summary$coefficients %>% 
+lm_mod_summary$coefficients %>%
   kableExtra::kable(digits = 2)
 ```
 
 After a while, you'll know what's in the objects you use most often, and that will allow you more easily work with the content they contain, allowing you to work with them more efficiently.
 
-### Methods
+#### Methods
 
 Consider the following:
 
@@ -82,9 +82,9 @@ summary(lm_mod_summary)
 
 How is it that one function works on all these different types of objects?  That's not all.  In RStudio, type `summary.` and hit the tab key. 
 
-<img src="img/summary_method.png" style="display:block; margin: 0 auto;" width=50%>
+<img class='zoom' src="img/summary_method.png" style="display:block; margin: 0 auto;" width=50%>
 
-When you load additional packages, you'll see even more *methods* for the summary function.  When you call summary on an object, the appropriate type of summary function will be used depending on the class of the object. If there is no specific type, e.g. when we called summary on something that already had summary called on it, it will just use a default version listing the contents. To see all the methods for summary, type the following
+When you load additional packages, you'll see even more <span class="emph">methods</span> for the summary function.  When you call summary on an object, the appropriate type of summary function will be used depending on the class of the object. If there is no specific type, e.g. when we called summary on something that already had summary called on it, it will just use a default version listing the contents. To see all the methods for summary, type the following, and you'll see all that is currently available for your R session.
 
 ```{r methods_summary}
 methods('summary')
@@ -99,25 +99,27 @@ methods(class = 'brmsfit')
 
 This allows you to quickly get oriented to a package and the objects it produces, and provides utility you might not have even known to look for in the first place!
 
-### S4 classes
+#### S4 classes
 
 Everything we've been dealing with at this point are S3 objects, classes, and methods. R is a dialect of the [S language](https://www.r-project.org/conferences/useR-2006/Slides/Chambers.pdf), and the S3 name reflects the version of S at the time of R's creation.  S4 was the next iteration of S, but I'm not going to say much about the S4 system of objects other than they are a separate type of object with their own methods.  For practical use you might not see much difference, but if you see an S4 object, it will have <span class="emph">slots</span> accessible via `@`.
 
 ```{r s4_example}
-mtcars %>% 
+car_matrix = mtcars %>% 
   as.matrix() %>%       # convert from df to matrix
-  Matrix::Matrix() %>%  # convert to Matrix class (S4)
-  str()
+  Matrix::Matrix()      # convert to Matrix class (S4)
+
+typeof(car_matrix)
+str(car_matrix)
 ```
 
-Mostly, I just find S4 objects more annoying to work with for applied work, but you should be at least somewhat familiar with them so that you won't be thrown off course when they appear.
+Mostly, I just find S4 objects slightly more annoying to work with for applied work, but you should be at least somewhat familiar with them so that you won't be thrown off course when they appear.
 
-### Others
+#### Others
 
 Indeed there are more types of R objects, but they will probably not be of much notice to the applied user.  As an example, the <span class="pack">text2vec</span> package uses [R6](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html).  I can only say that you'll just have to cross that bridge should you get to it.
 
 
-### Inspecting Functions
+#### Inspecting Functions
 
 You might not think of them as such, but in R, everything's an object, including functions. You can inspect them like anything else.
 
@@ -132,10 +134,19 @@ head(lm, 20)
 
 One of the primary reasons for R's popularity is the accessibility of the underlying code.  People can very easily access the code for some function, modify it, extend it, etc.  From an applied perspective, if you want to get better at writing code, or modify existing code, all you have to do is dive in!  We'll talk more about writing functions [later][Writing functions].
 
+#### Objects Exercises
 
-## Help Files
+With one function, find out what the class, number of rows, number of columns are of the following object, including what kind of object the last three columns are.
 
-Many applied users of R are quick to search the web for available help when they come to a problem.  This is great, you'll find a lot of information out there.  However, it will likely take you a bit to sort through things and find exactly what you need.  Strangely, many users of R don't use the help files first, and yet this is typically the quickest way to answer many of the questions they'll have.
+```{r tibble_inspect}
+library(dplyr)
+?starwars
+```
+
+
+### Help Files
+
+Many applied users of R are quick to search the web for available help when they come to a problem.  This is great, you'll find a lot of information out there.  However, it will likely take you a bit to sort through things and find exactly what you need.  Strangely, many users of R I see don't use the help files first, and yet this is typically the quickest way to answer many of the questions they'll have.
 
 Let's start with an example. We'll use the <span class="func">sample</span> function to get a random sample of 10 values from the range of numbers 1 through 5.  So, go ahead and do so!
 
@@ -145,25 +156,25 @@ sample(?)
 
 Don't know what to put? Consult the help file!
 
-<img src="img/help.png" style="display:block; margin: 0 auto;" data-action="zoom" width=50%>
+<img class="zoom" src="img/help.png" style="display:block; margin: 0 auto;" width=50%>
 
-We get a brief description of a function at the top, then we see how to actually use it, i.e. the form the syntax should take. There is even an additional function, <span class="func">sample.int</span>, that we could use. Next we see what arguments are possible.  First we need an `x`, so what is the thing we're trying to sample from? The numbers 1 through 5.  Next is the size, which is how many we need, in this case 10. So let's try it.
+We get a brief description of a function at the top, then we see how to actually use it, i.e. the form the syntax should take. We find out there is even an additional function, <span class="func">sample.int</span>, that we could use. Next we see what arguments are possible.  First we need an `x`, so what is the thing we're trying to sample from? The numbers 1 through 5.  Next is the size, which is how many values we want, in this case 10. So let's try it.
 
 ```{r help2, error=TRUE}
 nums = 1:5
 sample(nums, 10)
 ```
 
-Uh, oh, we have a problem with the replace argument! We can see in the help file that, by default, it is `FALSE`, but if we want to sample 10 times from only 5 numbers, we'll need to change it to `TRUE`.
+Uh oh- we have a problem with the `replace` argument! We can see in the help file that, by default, it is `FALSE`[^sample_default], but if we want to sample 10 times from only 5 numbers, we'll need to change it to `TRUE`.
 
 Now we are on our way!
 
 The help file gives detailed information about the sampling that is possible, which actually is not as simple as one would think!  The **`Value`** is important, as it tells us what we can expect the function to return, whether a data frame, list, or whatever.  We even get references, other functions that might be of interest (**`See Also`**), and examples.  There is a lot to digest for this function!
 
-Not all functions have all this information, but most do, and if they are adhering to standards they will[^tidynostandard]
+Not all functions have all this information, but  most do, and if they are adhering to standards they will[^tidynostandard].  However, all functions have this same documentation form, which puts R above and beyond most programming languages in this regard.  Once you look at a couple of help files, you'll always be able to quickly find the information you need from any other. 
 
 
-## Objects Exercises
+
 
 
 
@@ -171,5 +182,7 @@ Not all functions have all this information, but most do, and if they are adheri
 
 
 [^other_lm_tab]: An alternative would be to use broom::tidy on the lm object itself, or use pander instead of kableExtra to work on the lm object.
+
+[^sample_default]: An odd choice in my opinion.  For the things I do, I need sample with replacement far more than I don't, but that may not be the same for everyone.
 
 [^tidynostandard]: Ahem, tidyverse.

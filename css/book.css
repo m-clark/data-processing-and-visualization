@@ -1,5 +1,26 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
 
+/* title page */
+.title {
+  font-size: 125%; 
+  font-family: Roboto; 
+  font-style: normal;
+}
+
+.author {
+  font-size:  125%; 
+  font-style:  normal;       /* ignored thanks to bootstrap random enforecement of em*/
+  font-variant:  small-caps; 
+  font-family:  'Open Sans';
+}
+
+.date {
+  font-style: normal;
+  font-family: 'Open Sans';
+}
+
+/* main */
+
 .book  {
   background-color: #fffff8;
 }
@@ -215,6 +236,11 @@ i {
  color: #aa5500;
 }
 
+/* package */
+code span.st {
+ color: #aa5500;
+}
+
 /* float, other */
 .fl, .dv {
  color: #23527c;
@@ -225,16 +251,13 @@ i {
   color: #585858;
 }
 
-.zoom-img, .zoom-img-wrap {
-    position: relative;
-    z-index: 666;
-    -webkit-transition: all .3s;
+
+/* zoom for img*/
+.zoom {
     transition: all .3s;
 }
 
-/*
-*, ::after, ::before {
-    -webkit-box-sizing: inherit;
-    box-sizing: inherit;
+
+.zoom:hover {
+    transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
-*/
