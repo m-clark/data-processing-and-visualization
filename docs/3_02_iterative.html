@@ -388,7 +388,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb263-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb263-8" data-line-number="8">nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</a></code></pre></div>
 <pre><code>[1]   55.26   62.53   10.52    9.26 1017.90</code></pre>
-<p>Had we been copy-pasting, this would require deleting or commenting out a line in our code, pasting two more, and changing each one after pasting to represent the new columns. That’s tedious and not a fun way to code.</p>
+<p>Had we been copy-pasting, this would require deleting or commenting out a line in our code, pasting two more, and changing each one after pasting to represent the new columns. That’s tedious, and not a fun way to code.</p>
 <div id="a-slight-speed-gain" class="section level4">
 <h4>A slight speed gain</h4>
 <p>Note that you do not have to create an empty object like we did. The following works also.</p>
@@ -401,7 +401,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb265-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb265-8" data-line-number="8">nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</a></code></pre></div>
 <pre><code>[1]   55.26   62.53   10.52    9.26 1017.90</code></pre>
-<p>However, the other approach is slightly faster, because memory is already allocated as needed, rather than updating it every iteration of the loop. This speed gain can become noticeable when dealing with thousands of columns and complex operations.</p>
+<p>However, the other approach is slightly faster, because memory is already allocated for all elements of <span class="objclass">nyc_means</span>, rather than updating it every iteration of the loop. This speed gain can become noticeable when dealing with thousands of columns and complex operations.</p>
 </div>
 </div>
 <div id="while-alternative" class="section level3">
@@ -502,7 +502,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [[3]]
 [1] 24</code></pre>
 <p>The map functions take some getting used to, and in my experience they are typically slower than the apply functions, sometimes notably so. However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output<a href="#fn23" class="footnote-ref" id="fnref23"><sup>23</sup></a>, which is especially important in reproducibility, package development, producing production-level code, etc. The key idea is that the map functions will always return something the same length as the input given to it.</p>
-<p>The purrr functions want a list or vector, i.e. they don’t work with data.frame objects like we’ve done with mutate and summarize except in the sense that data.frames are lists.</p>
+<p>The <span class="pack">purrr</span> functions want a list or vector, i.e. they don’t work with data.frame objects like we’ve done with mutate and summarize except in the sense that data.frames are lists.</p>
 <div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb273-1" data-line-number="1">## mtcars %&gt;% </a>
 <a class="sourceLine" id="cb273-2" data-line-number="2">##   map(scale)    # returns a list, not shown</a>
 <a class="sourceLine" id="cb273-3" data-line-number="3"></a>
@@ -614,7 +614,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="data-processing-and-visualization_files/figure-html/purr_models3-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <div id="list-columns" class="section level5">
 <h5>List columns</h5>
-<p>As data.frames are lists, anything can be put into a column just as you would a list element. We’ll use pmap here, as it can take more than one argument, and we’re feeding all columns of the data.frame.</p>
+<p>As data.frames are lists, anything can be put into a column just as you would a list element. We’ll use <span class="func">pmap</span> here, as it can take more than one argument, and we’re feeding all columns of the data.frame.</p>
 <div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb285-1" data-line-number="1">mtcars2 =<span class="st"> </span><span class="kw">as.matrix</span>(mtcars)</a>
 <a class="sourceLine" id="cb285-2" data-line-number="2">mtcars2[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(mtcars2),<span class="dv">50</span>)] =<span class="st"> </span><span class="ot">NA</span></a>
 <a class="sourceLine" id="cb285-3" data-line-number="3">mtcars2 =<span class="st"> </span><span class="kw">as_data_frame</span>(mtcars2)</a>
@@ -652,7 +652,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [[3]]
   N Miss
 1 8    3</code></pre>
-<p>Unnest it with the tidyr function.</p>
+<p>Unnest it with the <span class="pack">tidyr</span> function.</p>
 <div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb290-1" data-line-number="1">mtcars2 <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb290-2" data-line-number="2"><span class="st">  </span><span class="kw">unnest</span>(newvar)</a></code></pre></div>
 <pre><code># A tibble: 32 x 13
@@ -669,7 +669,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  9 22.8  &lt;NA&gt;  140.8 &quot; 95&quot; 3.92  3.150 22.90 1     0     4     2        10     1
 10 19.2  6     167.6 123   3.92  &lt;NA&gt;  18.30 1     0     4     4        10     1
 # ... with 22 more rows</code></pre>
-<p>This is a pretty esoteric demonstration, and not something you’d normally want to do, as <span class="func">mutate</span> or other approaches would be far more efficient and sensical. However, the idea is that you might want to retain the information you might otherwise store in a list with the data that was used to create it. Once you have that, you can use that colum as you would any list for iterative programming.</p>
+<p>This is a pretty esoteric demonstration, and not something you’d normally want to do, as <span class="func">mutate</span> or other approaches would be far more efficient and sensical. However, the idea is that you might want to retain the information you might otherwise store in a list with the data that was used to create it. Once you have that, you can use that column as you would any list for iterative programming.</p>
 </div>
 </div>
 <div id="iterative-programming-exercises" class="section level3">

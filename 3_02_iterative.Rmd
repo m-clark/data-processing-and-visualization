@@ -67,7 +67,7 @@ for (i in seq_along(columns)) {
 nyc_means %>% round(2)
 ```
 
-Had we been copy-pasting, this would require deleting or commenting out a line in our code, pasting two more, and changing each one after pasting to represent the new columns.  That's tedious and not a fun way to code.
+Had we been copy-pasting, this would require deleting or commenting out a line in our code, pasting two more, and changing each one after pasting to represent the new columns.  That's tedious, and not a fun way to code.
 
 #### A slight speed gain
 
@@ -84,7 +84,7 @@ for (i in seq_along(columns)) {
 nyc_means %>% round(2)
 ```
 
-However, the other approach is slightly faster, because memory is already allocated as needed, rather than updating it every iteration of the loop. This speed gain can become noticeable when dealing with thousands of columns and complex operations.
+However, the other approach is slightly faster, because memory is already allocated for all elements of <span class="objclass">nyc_means</span>, rather than updating it every iteration of the loop. This speed gain can become noticeable when dealing with thousands of columns and complex operations.
 
 ```{r loop_timing, eval=FALSE, echo=FALSE}
 X = matrix(rnorm(10000000), ncol=100000)
@@ -218,7 +218,7 @@ map(x, sum)
 The map functions take some getting used to, and in my experience they are typically slower than the apply functions, sometimes notably so.  However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output[^purrr], which is especially important in reproducibility, package development, producing production-level code, etc.  The key idea is that the map functions will always return something the same length as the input given to it.
 
 
-The purrr functions want a list or vector, i.e. they don't work with data.frame objects like we've done with mutate and summarize except in the sense that data.frames are lists. 
+The <span class="pack">purrr</span> functions want a list or vector, i.e. they don't work with data.frame objects like we've done with mutate and summarize except in the sense that data.frames are lists. 
 
 
 ```{r purr_example2, eval=-1}
@@ -319,7 +319,7 @@ left_join(mod_rsq, mod_aic) %>%
 
 ##### List columns
 
-As data.frames are lists, anything can be put into a column just as you would a list element.  We'll use pmap here, as it can take more than one argument, and we're feeding all columns of the data.frame.  
+As data.frames are lists, anything can be put into a column just as you would a list element.  We'll use <span class="func">pmap</span> here, as it can take more than one argument, and we're feeding all columns of the data.frame.  
 
 ```{r list_data_frame}
 mtcars2 = as.matrix(mtcars)
@@ -341,16 +341,14 @@ mtcars2
 mtcars2$newvar %>% head(3)
 ```
 
-Unnest it with the tidyr function.
+Unnest it with the <span class="pack">tidyr</span> function.
 
 ```{r list_data_frame3}
 mtcars2 %>% 
   unnest(newvar)
 ```
 
-
-
-This is a pretty esoteric demonstration, and not something you'd normally want to do, as <span class="func">mutate</span> or other approaches would be far more efficient and sensical.  However, the idea is that you might want to retain the information you might otherwise store in a list with the data that was used to create it.  Once you have that, you can use that colum as you would any list for iterative programming.
+This is a pretty esoteric demonstration, and not something you'd normally want to do, as <span class="func">mutate</span> or other approaches would be far more efficient and sensical.  However, the idea is that you might want to retain the information you might otherwise store in a list with the data that was used to create it.  Once you have that, you can use that column as you would any list for iterative programming.
 
 ### Iterative Programming Exercises
 
