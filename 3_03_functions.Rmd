@@ -19,7 +19,7 @@ sd(myvar)
 sum(is.na(myvar))
 ```
 
-Now let's say you need to do it for several variables.  Here's what your custom function would look like.  It takes a single input, the variable you want information about, and returns a data frame with that info.
+Now let's say you need to do it for several variables.  Here's what your custom function could look like.  It takes a single input, the variable you want information about, and returns a data frame with that info.
 
 ```{r func_ex2}
 my_summary <- function(myvar) {
@@ -71,7 +71,7 @@ mtcars2 %>%
   map_dfr(my_summary, .id = 'variable')
 ```
 
-The <span class="func">map_dfr</span> function is just like our previous usage in the [iterative programming][iterative] section, just that it will create mini-data.frames then row bind them together.
+The <span class="func">map_dfr</span> function is just like our previous usage in the [iterative programming][Iterative programming] section, just that it will create mini-data.frames then row bind them together.
 
 
 ### DRY
@@ -98,22 +98,26 @@ good_mileage <- function(cylinder = 4,
                          displ_low = TRUE,
                          cls = 'compact') {
   
-  if (displ_low)
-    mpg %>%
-    filter(cyl == cylinder &
-             displ <= displ_fun(displ) &
-             hwy >= mpg_cutoff &
+  if (displ_low == TRUE) {
+    result = mpg %>%
+      filter(cyl == cylinder,
+             displ <= displ_fun(displ),
+             hwy >= mpg_cutoff,
              class == cls)
-  else
-    mpg %>%
-    filter(cyl == cylinder &
-             displ >= displ_fun(displ) &
-             hwy >= mpg_cutoff &
+  }
+  else {
+    result = mpg %>%
+      filter(cyl == cylinder,
+             displ >= displ_fun(displ),
+             hwy >= mpg_cutoff,
              class == cls)
+  }
+  
+  result
 }
 ```
 
-What's going on? The function takes five inputs:
+So what's going on here? The function takes five inputs:
 
 - cyl: Which cylinder type we want
 - mpg_cutoff: The cutoff for 'good' mileage
@@ -121,9 +125,32 @@ What's going on? The function takes five inputs:
 - displ_low: Whether we are interested in low or high displacement vehicles
 - cls: the class of the vehicle (e.g. compact or suv)
 
-Then it simply filters the data to observations that match the input criteria.  We also put <span class="emph">default values</span>, which can be done to your discretion.
+Then it simply filters the data to observations that match the input criteria, and returns that result at the end.  We also put <span class="emph">default values</span> to the arguments, which can be done to your discretion.  
 
-Now we can do whatever we want as needed:
+The core of the function uses a <span class="emph">conditional statement</span> using standard <span class="func">if</span>...<span class="func">else</span> structure.  The <span class="func">if</span> part determines whether some condition holds.  If it does, then proceed to the next step in the brackets.  If not, skip to the <span class="func">else</span> part. You may have used the <span class="func">ifelse</span> function in base R, or <span class="pack">dplyr</span>'s <span class="func">if_else</span> as above, which are a short cuts for this approach.  We can also add conditional else statements (<span class="func">else if</span>) and nest, drop the <span class="func">else</span> entirely, nest conditionals within other conditionals, etc.  Like loops, conditional statements look very similar across all programming languages.
+
+Javascript:
+
+```{javascript, eval=FALSE}
+if (Math.random() < 0.5) {
+console.log("You got Heads!");
+} else {
+console.log("You got Tails!");
+}
+```
+
+Python: 
+
+```{python, eval=FALSE}
+if x == 2:
+  print(x)
+else:
+  print(x*x)
+```
+
+
+
+In any case, with our function at the ready, we can now do the things we want to as needed:
 
 ```{r mpgfunc_demo}
 good_mileage(mpg_cutoff = 40)
@@ -141,20 +168,24 @@ good_mileage <- function(cylinder = 4,
                          cls = 'compact',
                          yr = 2008) {
   
-  if (displ_low)
-    mpg %>%
-    filter(cyl == cylinder &
-             displ <= displ_fun(displ) &
-             hwy >= mpg_cutoff &
-             class == cls &
-             year == yr)
-  else
-    mpg %>%
-    filter(cyl == cylinder &
-             displ >= displ_fun(displ) &
-             hwy >= mpg_cutoff &
-             class == cls &
-             year == yr)
+  if (displ_low) {
+    result = mpg %>%
+    filter(cyl == cylinder,
+           displ <= displ_fun(displ),
+           hwy >= mpg_cutoff,
+           class == cls,
+           year == yr)
+  }
+  else {
+    result = mpg %>%
+    filter(cyl == cylinder,
+           displ >= displ_fun(displ),
+           hwy >= mpg_cutoff,
+           class == cls,
+           year == yr)
+  }
+  
+  result
 }
 ```
 
@@ -169,7 +200,7 @@ good_mileage(cylinder = 8,
 So we now have something that is flexible, reusable, and extensible, and it took less code than writing out the individual lines of code
 
 
-### Lambda functions
+### Anonymous functions
 
 Oftentimes we just need a quick and easy function for a one-off application, especially when using apply/map functions.  For example, both the following would calculate standard deviations of columns.
 
@@ -178,7 +209,7 @@ apply(mtcars, 2, sd)
 apply(mtcars, 2, function(x) sd(x))
 ```
 
-The difference between the two is that for the latter, our function didn't have to be something already available.  To further illustrate this, we'll create a robust standardization function that uses the median and median absolute deviation rather than the mean and standard deviation.
+The difference between the two is that for the latter, our function didn't have to be a named object already available.  To further illustrate this, we'll create a robust standardization function that uses the median and median absolute deviation rather than the mean and standard deviation.
 
 ```{r lambda_ex, cache.rebuild=T}
 # some variables have a mad = 0, and so return Inf, NaN
@@ -190,7 +221,7 @@ mtcars %>%
 ```
 
 
-Even if you don't use lambda functions yourself, it's important to understand them, because you'll often see other people's code using them.
+Even if you don't use [anonymous functions](https://en.wikipedia.org/wiki/Anonymous_function) (sometimes called lambda functions or similar), it's important to understand them, because you'll often see other people's code using them.
 
 
 
@@ -198,13 +229,36 @@ Even if you don't use lambda functions yourself, it's important to understand th
 
 #### Excercise 1
 
-Write a function that takes the log of the sum of two values (i.e. just two single numbers) using the <span class="func">log</span> function.
+Write a function that takes the log of the sum of two values (i.e. just two single numbers) using the <span class="func">log</span> function.  Just remember that within a function, you can write R code just like you normally would.
 
 ```{r wf_ex1, eval=FALSE}
 log_sum <- function(a, b) {
   ?
 }
+
 ```
+
+
+#### Excercise 1b
+
+What happens if the sum of the two numbers is negative?  You can't take a log of a negative value, so it's an error.  How might we deal with this?  Try using a conditional to provide an error message using the stop function.  Make the message whatever you want.
+
+```{r wf_ex1b, eval=FALSE}
+log_sum <- function(a, b) {
+  #
+  #
+  #
+  
+  if (?) {
+    stop('Your message here.')
+  } 
+  else {
+    return(your_log_sum_object)
+  }
+}
+
+```
+
 
 #### Exercise 2
 

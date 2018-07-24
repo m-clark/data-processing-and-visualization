@@ -1,4 +1,4 @@
-# Part II: Visualization
+# Part II: Visualization {-}
 
 
 ```{r vissetup, include=FALSE, eval=TRUE, cache=FALSE}
@@ -115,12 +115,12 @@ g = sw2 %>%
   scale_color_manual(values=lazerhawk::palettes$orange$complementary) +
   # geom_text(aes(label=name)) +
   scale_size_continuous(range=c(2,10)) +
-  lazerhawk::theme_trueMinimal()+ 
+  visibly::theme_trueMinimal()+ 
   theme(legend.position="none")  # only way to keep plotly from putting a legend
 
 ggplotly()%>% 
   # add_lines(x=~mass, y=~height)
-  config(displayModeBar = F) %>% 
+  config(displayModeBar = F) %>%
   layout(title='Star Wars Characters',
          font=list(family='Roboto'),
          xaxis=list(title='Mass'),
