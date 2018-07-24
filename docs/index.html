@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2018-07-22">
+<meta name="date" content="2018-07-23">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -47,15 +47,17 @@
 
 
 <script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="libs/plotly-binding-4.8.0/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
-<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.39.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.39.2/plotly-latest.min.js"></script>
 <link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
 <script src="libs/vis-4.20.1/vis.min.js"></script>
 <script src="libs/visNetwork-binding-2.0.4/visNetwork.js"></script>
+<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
 <link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
 <script src="libs/highcharts-5.0.6/highstock.js"></script>
@@ -169,6 +171,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <link rel="stylesheet" href="css/standard_html.css" type="text/css" />
 <link rel="stylesheet" href="css/book.css" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" type="text/css" />
 </head>
 
 <body>
@@ -184,7 +187,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class='before'><a href="https://m-clark.github.io/">Data Processing & Visualization</a></li>
 
 <li class="divider"></li>
-<li><a href="index.html#section"></a></li>
 <li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html"><i class="fa fa-check"></i>Intro</a><ul>
 <li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#outline"><i class="fa fa-check"></i>Outline</a><ul>
 <li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#part-1-data-processing"><i class="fa fa-check"></i>Part 1: Data Processing</a></li>
@@ -198,34 +200,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#python"><i class="fa fa-check"></i>Python</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html"><i class="fa fa-check"></i>Part I: Data Processing</a><ul>
-<li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#data-structures"><i class="fa fa-check"></i>Data Structures</a><ul>
+<li><a href="1_02_dataStructures.html#data-structures"><strong>Data Structures</strong></a><ul>
 <li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#vectors"><i class="fa fa-check"></i>Vectors</a></li>
 <li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#matrices"><i class="fa fa-check"></i>Matrices</a></li>
 <li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#lists"><i class="fa fa-check"></i>Lists</a></li>
 <li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#data-frames"><i class="fa fa-check"></i>Data Frames</a></li>
-<li><a href="1_02_dataStructures.html#data-structure-exercises"><strong>Data Structure Exercises</strong></a></li>
+<li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#data-structure-exercises"><i class="fa fa-check"></i>Data Structure Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html"><i class="fa fa-check"></i>Input/Output</a><ul>
-<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#other-approaches"><i class="fa fa-check"></i>Other approaches</a></li>
+<li><a href="1_03_io.html#io"><strong>Input/Output</strong></a><ul>
+<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html"><i class="fa fa-check"></i>Other approaches</a></li>
 <li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#faster-approaches"><i class="fa fa-check"></i>Faster approaches</a></li>
 <li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#other-data"><i class="fa fa-check"></i>Other Data</a></li>
 <li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#on-the-horizon"><i class="fa fa-check"></i>On the horizon</a></li>
 <li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#big-data"><i class="fa fa-check"></i>Big Data</a></li>
-<li><a href="1_03_io.html#io-exercises"><strong>I/O Exercises</strong></a></li>
+<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#io-exercises"><i class="fa fa-check"></i>I/O Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="1_04_indexing.html"><a href="1_04_indexing.html"><i class="fa fa-check"></i>Indexing</a><ul>
-<li class="chapter" data-level="" data-path="1_04_indexing.html"><a href="1_04_indexing.html#base-r-indexing-refresher"><i class="fa fa-check"></i>Base R Indexing Refresher</a></li>
+<li><a href="1_04_indexing.html#indexing"><strong>Indexing</strong></a><ul>
+<li class="chapter" data-level="" data-path="1_04_indexing.html"><a href="1_04_indexing.html"><i class="fa fa-check"></i>Base R Indexing Refresher</a></li>
 <li class="chapter" data-level="" data-path="1_04_indexing.html"><a href="1_04_indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/Data.frame extraction</a></li>
-<li><a href="1_04_indexing.html#indexing-exercises"><strong>Indexing Exercises</strong></a></li>
+<li class="chapter" data-level="" data-path="1_04_indexing.html"><a href="1_04_indexing.html#indexing-exercises"><i class="fa fa-check"></i>Indexing Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html"><i class="fa fa-check"></i>Pipes</a><ul>
-<li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html#pipes-for-visualization-more-later"><i class="fa fa-check"></i>Pipes for Visualization (more later)</a></li>
+<li><a href="1_05_pipes.html#pipes"><strong>Pipes</strong></a><ul>
+<li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html"><i class="fa fa-check"></i>Pipes for Visualization (more later)</a></li>
 <li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html#the-dot"><i class="fa fa-check"></i>The dot</a></li>
 <li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html#flexibility"><i class="fa fa-check"></i>Flexibility</a></li>
 <li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html"><i class="fa fa-check"></i>Tidyverse</a><ul>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#what-is-the-tidyverse"><i class="fa fa-check"></i>What is the tidyverse?</a></li>
+<li><a href="1_06_tidyverse.html#tidyverse"><strong>Tidyverse</strong></a><ul>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html"><i class="fa fa-check"></i>What is the tidyverse?</a></li>
 <li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is tidy?</a></li>
 <li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#dplyr"><i class="fa fa-check"></i>dplyr</a></li>
 <li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#running-example"><i class="fa fa-check"></i>Running example</a></li>
@@ -238,16 +240,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#tidyr"><i class="fa fa-check"></i>tidyr</a></li>
 <li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#more-tidyverse"><i class="fa fa-check"></i>More Tidyverse</a></li>
 <li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
-<li><a href="1_06_tidyverse.html#tidyverse-exercises"><strong>tidyverse Exercises</strong></a></li>
+<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#tidyverse-exercises"><i class="fa fa-check"></i>tidyverse Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html"><i class="fa fa-check"></i>data.table</a><ul>
-<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#basics"><i class="fa fa-check"></i>Basics</a></li>
+<li><a href="1_07_datatable.html#data.table"><strong>data.table</strong></a><ul>
+<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html"><i class="fa fa-check"></i>Basics</a></li>
 <li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#grouped-operations"><i class="fa fa-check"></i>Grouped operations</a></li>
 <li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#faster"><i class="fa fa-check"></i>Faster!</a></li>
 <li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
 <li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#summary-1"><i class="fa fa-check"></i>Summary</a></li>
 <li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#dtplyr"><i class="fa fa-check"></i>dtplyr</a></li>
-<li><a href="1_07_datatable.html#data.table-exercises"><strong>data.table Exercises</strong></a></li>
+<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#data.table-exercises"><i class="fa fa-check"></i>data.table Exercises</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html"><i class="fa fa-check"></i>Part II: Visualization</a><ul>
@@ -308,11 +310,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html"><i class="fa fa-check"></i>Writing functions</a><ul>
 <li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#a-starting-point"><i class="fa fa-check"></i>A starting point</a></li>
 <li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#dry"><i class="fa fa-check"></i>DRY</a></li>
-<li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#lambda-functions"><i class="fa fa-check"></i>Lambda functions</a></li>
+<li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#anonymous-functions"><i class="fa fa-check"></i>Anonymous functions</a></li>
 <li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#writing-functions-exercises"><i class="fa fa-check"></i>Writing Functions Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="3_04_more.html"><a href="3_04_more.html"><i class="fa fa-check"></i>More</a><ul>
 <li class="chapter" data-level="" data-path="3_04_more.html"><a href="3_04_more.html#vectorization"><i class="fa fa-check"></i>Vectorization</a></li>
+<li class="chapter" data-level="" data-path="3_04_more.html"><a href="3_04_more.html#naming-things"><i class="fa fa-check"></i>Naming things</a></li>
 <li class="chapter" data-level="" data-path="3_04_more.html"><a href="3_04_more.html#regular-expressions"><i class="fa fa-check"></i>Regular Expressions</a></li>
 <li><a href="3_04_more.html#vector-exercises"><strong>Vector Exercises</strong></a></li>
 <li><a href="3_04_more.html#regex-exercises"><strong>Regex Exercises</strong></a></li>
@@ -320,8 +323,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="999_summary.html"><a href="999_summary.html"><i class="fa fa-check"></i>Summary</a></li>
 <li class="divider"></li>
-<li class='after'><a href="https://m-clark.github.io/"><img src="img/mc.png" style="width:50%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo"></a></li>
-<li class='after'><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="width:50%; border-width:0; display:block; margin: 0 auto;" src="img/ccbysa.png" /></a></li>
+<li class='after'"><a href="https://m-clark.github.io/"><img src="img/mc.png" style="width:50%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo"></a></li>
+<li class='after'">
+   <div style='text-align:center'>
+     <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+        <i class="fab fa-creative-commons fa-lg"    style='color:#ff5500; background-color:transparent;'></i> 
+        <i class="fab fa-creative-commons-by fa-lg" style='color:#ff5500; background-color:transparent;'></i> 
+        <i class="fab fa-creative-commons-sa fa-lg" style='color:#ff5500; background-color:transparent;'></i>
+     </a>
+   </div>
+</li>
 
 </ul>
 
@@ -342,14 +353,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">Data Processing &amp; Visualization</h1>
-<h4 class="author"><em>Michael Clark <br><br>
-<span style="font-size:100%"><a href="https://m-clark.github.io/data-processing-and-visualization/" class="uri">https://m-clark.github.io/data-processing-and-visualization/</a></span><br><br>
+<h4 class="author"><em><span class="noem">Michael Clark</span> <br><br>
+<a href="https://m-clark.github.io/data-processing-and-visualization/" class="uri">https://m-clark.github.io/data-processing-and-visualization/</a><br><br>
 <img src="img/CSCAR_logos/signature-acronym.png" style="width:30%; padding:10px 0;" alt="University of Michigan: CSCAR"> <br>
 <img src="img/ARC_logos/ARC-acronym-signature.png" style="width:21%; padding:10px 0;" alt="University of Michigan: Advanced Research Computing"></em></h4>
-<h4 class="date"><em>2018-07-22</em></h4>
+<h4 class="date"><em>2018-07-23</em></h4>
 </div>
-<div id="section" class="section level1">
-<h1></h1>
+<div id="section" class="section level5 unnumbered">
+<h5></h5>
 <p><img src="img/198R.png" width="300" style="display: block; margin: auto;" /></p>
 <p><img src="img/ccbysa.png" width="0" style="display: block; margin: auto;" /><img src="img/mc.png" width="0" style="display: block; margin: auto;" /></p>
 
@@ -393,10 +404,9 @@ gitbook.start({
 "download": null,
 "toc": {
 "collapse": "section",
-"depth": 3,
+"depth": 2,
 "scroll_highlight": true
 },
-"highlight": "pygments",
 "search": true
 });
 });

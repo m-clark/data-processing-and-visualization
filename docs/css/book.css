@@ -1,22 +1,33 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto");
+@import url("https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono|Roboto+Condensed|Lato|Lora|Fira+Sans");
 
 /* title page */
-.title {
-  font-size: 125%; 
-  font-family: Roboto; 
+.book .book-body .page-wrapper .page-inner section.normal h1.title {
+  font-size: 250%; 
+  font-family: 'Fira Sans', Karla, 'Roboto Condensed', Lora, Lato, Roboto, sans; 
   font-style: normal;
+  font-weight: 100;
 }
 
-.author {
+.book .book-body .page-wrapper .page-inner section.normal .author .noem {
   font-size:  125%; 
   font-style:  normal;       /* ignored thanks to bootstrap random enforecement of em*/
   font-variant:  small-caps; 
-  font-family:  'Open Sans';
+  font-weight: 200;
+  font-family: 'Roboto Condensed', 'Fira Sans', Roboto, 'Open Sans', sans;
 }
 
-.date {
+
+.book .book-body .page-wrapper .page-inner section.normal a.uri {
+  font-size:  75%; 
+  font-style:  normal;       /* ignored thanks to bootstrap random enforecement of em*/
+  font-variant:  small-caps; 
+  font-family:  Roboto, 'Open Sans', sans;
+}
+
+.book .book-body .page-wrapper .page-inner section.normal h4.date {
   font-style: normal;
-  font-family: 'Open Sans';
+  font-size:  100%; 
+  font-family: 'Open Sans', sans;
 }
 
 /* main */
@@ -256,7 +267,6 @@ code span.st {
 .zoom {
     transition: all .3s;
 }
-
 
 .zoom:hover {
     transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
