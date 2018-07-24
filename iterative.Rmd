@@ -75,7 +75,7 @@ Note that you do not have to create an empty object like we did.  The following 
 
 ```{r nyc_flights4}
 columns = c('temp','humid','wind_speed', 'visib', 'pressure')
-nyc_means = c()
+nyc_means = numeric()
 
 for (i in seq_along(columns)) {
   nyc_means[i] = mean(weather[ ,columns[i]], na.rm = TRUE)
