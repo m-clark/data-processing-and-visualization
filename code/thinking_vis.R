@@ -1,5 +1,6 @@
 ## ----vissetup, include=FALSE, eval=TRUE, cache=FALSE---------------------
 knitr::opts_chunk$set(eval=T, echo=F)
+library(viridisLite); library(scico)
 
 ## ----problems------------------------------------------------------------
 library(plotly)
@@ -75,12 +76,12 @@ g = sw2 %>%
   scale_color_manual(values=lazerhawk::palettes$orange$complementary) +
   # geom_text(aes(label=name)) +
   scale_size_continuous(range=c(2,10)) +
-  lazerhawk::theme_trueMinimal()+ 
+  visibly::theme_trueMinimal()+ 
   theme(legend.position="none")  # only way to keep plotly from putting a legend
 
 ggplotly()%>% 
   # add_lines(x=~mass, y=~height)
-  config(displayModeBar = F) %>% 
+  config(displayModeBar = F) %>%
   layout(title='Star Wars Characters',
          font=list(family='Roboto'),
          xaxis=list(title='Mass'),
@@ -205,7 +206,9 @@ yg1 = mvtnorm::rmvnorm(nprior,
 
 ### plot
 # reshape data for plotting
-palviridis = viridis::plasma(4)
+# pal = viridis::plasma(4)
+# scico::scico_palette_show()
+pal = scico::scico(4, end = .75, palette = 'turku')
 gdat1 = gather(data.frame(x=xg1, 
                           y=t(yg1), 
                           sd=apply(yg1, 2, sd)),
@@ -215,7 +218,7 @@ gdat1 = gather(data.frame(x=xg1,
 
 
 g1 = ggplot(aes(x=x, y=value), data=gdat1) + 
-  geom_line(aes(group=variable), color='#FF5500', alpha=.15) +
+  geom_line(aes(group=variable), color=pal[2], alpha=.15) +
   labs(title='Prior') +
   theme_trueMinimal() +
   theme(axis.text.x=element_blank(),
@@ -286,10 +289,10 @@ gdat2 = gather(data.frame(x=Xtest,
 #   theme_trueMinimal()
 
 g2 = ggplot(aes(x=x, y=value), data=gdat2) + 
-  geom_ribbon(aes(ymin=selower, ymax=seupper,group=variable), fill=palviridis[1], alpha=.01) +
-  geom_line(aes(group=variable), color=palviridis[2], alpha=.25) +
-  geom_line(aes(group=variable, y=fmean), color=palviridis[3], size=1, alpha=.5) +
-  geom_point(aes(x=Xtrain, y=ytrain), color=palviridis[4], alpha=1, size=2, data=data.frame(Xtrain, ytrain)) +
+  geom_ribbon(aes(ymin=selower, ymax=seupper,group=variable), fill=pal[1], alpha=.01) +
+  geom_line(aes(group=variable), color=pal[2], alpha=.25) +
+  geom_line(aes(group=variable, y=fmean), color=pal[3], size=1, alpha=.5) +
+  geom_point(aes(x=Xtrain, y=ytrain), color=pal[4], alpha=1, size=2, data=data.frame(Xtrain, ytrain)) +
   labs(title='Posterior Predictive') +
   theme_trueMinimal() +
   theme(axis.text.x=element_blank(),
@@ -325,7 +328,7 @@ grid.arrange(g1, g2, ncol=2)
 
 ## ----transp2, out.width='75%', fig.asp=.5--------------------------------
 g1 = ggplot(aes(x=x, y=value), data=gdat1) + 
-  geom_line(aes(group=variable), color='#FF5500', alpha=1) +
+  geom_line(aes(group=variable), color=pal[2], alpha=1) +
   labs(title='Prior') +
   theme_trueMinimal() +
   theme(axis.text.x=element_blank(),
@@ -336,10 +339,10 @@ g1 = ggplot(aes(x=x, y=value), data=gdat1) +
         axis.title.x=element_blank(),
         axis.title.y=element_blank())
 g2 = ggplot(aes(x=x, y=value), data=gdat2) + 
-  geom_ribbon(aes(ymin=selower, ymax=seupper,group=variable), fill=palviridis[1], alpha=1) +
-  geom_line(aes(group=variable), color=palviridis[2], alpha=1) +
-  geom_line(aes(group=variable, y=fmean), color=palviridis[3], size=1, alpha=1) +
-  geom_point(aes(x=Xtrain, y=ytrain), color=palviridis[4], alpha=1, size=2, data=data.frame(Xtrain, ytrain)) +
+  geom_ribbon(aes(ymin=selower, ymax=seupper,group=variable), fill=pal[1], alpha=1) +
+  geom_line(aes(group=variable), color=pal[2], alpha=1) +
+  geom_line(aes(group=variable, y=fmean), color=pal[3], size=1, alpha=1) +
+  geom_point(aes(x=Xtrain, y=ytrain), color=pal[4], alpha=1, size=2, data=data.frame(Xtrain, ytrain)) +
   labs(title='Posterior Predictive') +
   theme_trueMinimal() +
   theme(axis.text.x=element_blank(),
@@ -388,7 +391,7 @@ gdat = data.frame(rbind(g1, g2), group=rep(0:1, e=nsim))
 
 gdat %>%
   ggplot(aes(x=waiting, y=eruptions)) +
-  geom_point(size = 3, alpha=.25, color='#ff5500') +
+  geom_point(size = 3, alpha=.10, color='#ff5500') +
   theme_trueMinimal()
 
 ## ----transp_density------------------------------------------------------

@@ -196,7 +196,7 @@ Either use text in an R Markdown file or comment your R script.  Explain *why*, 
 
 #### Assignment
 
-You see some using `<-` or `=` for assignment.  While there is a slight difference, if you're writing decent code it shouldn't matter. Far more programming languages use `=`, so that's reason to prefer it.  However, if you like being snobby about things, go with `<-`.  Whichever you go with, use it consistently.
+You see some using `<-` or `=` for assignment.  While there is a slight difference, if you're writing decent code it shouldn't matter. Far more programming languages use `=`, so that's reason to prefer it.  However, if you like being snobby about things, go with `<-`.  Whichever you use, do so consistently.
 
 #### Code length
 
@@ -204,7 +204,7 @@ If your script is becoming hundreds of lines long, you probably need to compartm
 
 #### Spacing
 
-Don't be stingy with spaces. As you start out, err on the side of using them.  Just note there are exceptions (e.g. no space between function name and parenthsis, unless that function is something like <span class="func">if</span> or <span class="func">else</span>), but you'll get used to those over time.
+Don't be stingy with spaces. As you start out, err on the side of using them.  Just note there are exceptions (e.g. no space between function name and parenthesis, unless that function is something like <span class="func">if</span> or <span class="func">else</span>), but you'll get used to those over time.
 
 ```{r space, eval=FALSE}
 x=rnorm(10, mean=0,sd=1)
@@ -212,26 +212,33 @@ x=rnorm(10, mean=0,sd=1)
 x = rnorm(10, mean = 0, sd = 1)
 ```
 
-Use tools like the build in RStudio code cleanup shortcut like `Ctrl/Cmd + Shft + A`. It's not perfect, in the sense I disagree with some of its the style choice, but it will be better than you will do on your own starting out.
-
 #### Naming things
 
-You might not think of it as such initially, but one of the more difficult challenges in programming is naming things.  Even if we can come up with a name, there are different styles we can use for the name.
+You might not think of it as such initially, but one of the more difficult challenges in programming is naming things.  Even if we can come up with a name for an object or file, there are different styles we can use for the name.
 
 Here is a brief list of things to keep in mind.
 
-- Don't name something that is already an R function/object (e.g. `T`, <span class="func">c</span>, etc.)
-- Try to be concise
-- Make liberal use of suffixes/prefixes for naming the same types of things
+- The name should make sense to you, your future self, and others that will use the code
+- Try to be concise, but see the previous
+- Make liberal use of suffixes/prefixes for naming the same types of things e.g. model_x, model_z
 
-Styles include:
+- Don't name anything with 'final'
+- Don't name something that is already an R function/object (e.g. `T`, <span class="func">c</span>, <span class="func">data</span>, etc.)
+- Avoid distinguishing names only by number, e.g. <span class="objclass">data1</span> <span class="objclass">data2</span>
+
+
+Naming styles include:
 
 - snake_case
 - CamelCase or camelCase
 - spinal-case (e.g. for file names)
-- dots.case
+- dot.case
 
-For objects and functions, I find snake case easier[^style_claim] to read and less prone to issues. For example, camel case can fail miserably when acronyms are involved. Dots already have specific uses (file name extensions, function methods, etc.), so should be avoided unless you're using them for that specific purpose (they can also make selecting the whole name difficult depending on the context).
+For objects and functions, I find snake case easier to read and less prone to issues[^style_claim]. For example, camel case can fail miserably when acronyms are involved. Dots already have specific uses (file name extensions, function methods, etc.), so probably should be avoided unless you're using them for that specific purpose (they can also make selecting the whole name difficult depending on the context).
+
+#### Other
+
+Use tools like the build in RStudio code cleanup shortcut like `Ctrl/Cmd + Shft + A`. It's not perfect, in the sense I disagree with some of its the style choice, but it will be better than you will do on your own starting out.
 
 ### Vectorization Exercises
 
@@ -264,7 +271,8 @@ microbenchmark::microbenchmark(
 
 #### Exercise 1
 
-Using stringr and str_replace, replace all the states a's with nothing.
+Using <span class="pack">stringr</span> and <span class="func">str_replace</span>, replace all the states a's with nothing.
+
 
 ```{r regex_ex, eval=FALSE}
 library(stringr)
@@ -274,12 +282,14 @@ str_replace(state.name, pattern = ?, replacement = ?)
 
 ### Naming Exercises
 
+#### Exercise 1 
+
 For the following model related output, come up with a name for each object.
 
 ```{r name_ex, eval=FALSE}
-lm(hwy ~ cyl, data=mpg)
-summary(lm(hwy ~ cyl, data=mpg))
-lm(hwy ~ cyl + displ + year, data=mpg)
+lm(hwy ~ cyl, data=mpg)                 # hwy mileage predicted by number of cylinders
+summary(lm(hwy ~ cyl, data=mpg))        # the summary of that
+lm(hwy ~ cyl + displ + year, data=mpg)  # an extension of that
 ```
 
 

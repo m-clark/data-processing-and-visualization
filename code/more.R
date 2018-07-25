@@ -81,3 +81,39 @@ test
 ## ----vectorization_timings, echo=FALSE, eval=TRUE, cache=FALSE-----------
 load('data/vectorization.RData'); library(microbenchmark); test
 
+## ----regex_intro_ex------------------------------------------------------
+string = c('r is the shiny', 'r is the shiny1', 'r shines brightly')
+grepl(string, pattern='^r.*shiny[0-9]$')
+
+## ----quick_regex_exercise, eval=FALSE------------------------------------
+## grepl(c('apple', 'pear', 'banana'), pattern='a')
+## grepl(c('apple', 'pear', 'banana'), pattern='^a')
+## grepl(c('apple', 'pear', 'banana'), pattern='^a|a$')
+
+## ----space, eval=FALSE---------------------------------------------------
+## x=rnorm(10, mean=0,sd=1)
+## 
+## x = rnorm(10, mean = 0, sd = 1)
+
+## ----vector_ex1, eval=FALSE----------------------------------------------
+## ?
+
+## ----vector_ex2, eval=FALSE----------------------------------------------
+## x = matrix(rpois(100000, lambda = 5), ncol = 100)
+## colSums(x)
+## apply(x, 2, sum)
+## 
+## microbenchmark::microbenchmark(
+##   cs = colSums(x),
+##   app = apply(x, 2, sum)
+## )
+
+## ----regex_ex, eval=FALSE------------------------------------------------
+## library(stringr)
+## str_replace(state.name, pattern = ?, replacement = ?)
+
+## ----name_ex, eval=FALSE-------------------------------------------------
+## lm(hwy ~ cyl, data=mpg)                 # hwy mileage predicted by number of cylinders
+## summary(lm(hwy ~ cyl, data=mpg))        # the summary of that
+## lm(hwy ~ cyl + displ + year, data=mpg)  # an extension of that
+

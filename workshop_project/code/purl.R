@@ -1,8 +1,8 @@
 # purl code
 
 library(stringr)
-files_from = dir()[str_detect(dir(), pattern='[0-9]+(.)*Rmd')]
-files_from
+files_from = dir()[str_detect(dir(), pattern='(.)*Rmd')]
+files_from = files_from[!str_detect(files_from, 'summary|index.Rmd|intro')]
 files_to = paste0('code/', str_sub(files_from, end=-4), 'R')
 
 library(knitr); library(purrr)

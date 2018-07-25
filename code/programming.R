@@ -26,7 +26,7 @@ lm_mod_summary = summary(lm_mod)
 str(lm_mod_summary)
 
 ## ----lm_mod_summary_table------------------------------------------------
-lm_mod_summary$coefficients %>% 
+lm_mod_summary$coefficients %>%
   kableExtra::kable(digits = 2)
 
 ## ----summary-------------------------------------------------------------
@@ -43,10 +43,12 @@ library(brms)
 methods(class = 'brmsfit')
 
 ## ----s4_example----------------------------------------------------------
-mtcars %>% 
+car_matrix = mtcars %>% 
   as.matrix() %>%       # convert from df to matrix
-  Matrix::Matrix() %>%  # convert to Matrix class (S4)
-  str()
+  Matrix::Matrix()      # convert to Matrix class (S4)
+
+typeof(car_matrix)
+str(car_matrix)
 
 ## ----lm_func-------------------------------------------------------------
 str(lm)
@@ -54,4 +56,15 @@ str(lm)
 ## ----lm_func2, eval=2, echo=1--------------------------------------------
 lm
 head(lm, 20)
+
+## ----tibble_inspect------------------------------------------------------
+library(dplyr)
+?starwars
+
+## ----help, eval=FALSE----------------------------------------------------
+## sample(?)
+
+## ----help2, error=TRUE---------------------------------------------------
+nums = 1:5
+sample(nums, 10)
 

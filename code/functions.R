@@ -52,19 +52,27 @@ good_mileage <- function(cylinder = 4,
                          displ_low = TRUE,
                          cls = 'compact') {
   
-  if (displ_low)
-    mpg %>%
-    filter(cyl == cylinder &
-             displ <= displ_fun(displ) &
-             hwy >= mpg_cutoff &
+  if (displ_low == TRUE) {
+    result = mpg %>%
+      filter(cyl == cylinder,
+             displ <= displ_fun(displ),
+             hwy >= mpg_cutoff,
              class == cls)
-  else
-    mpg %>%
-    filter(cyl == cylinder &
-             displ >= displ_fun(displ) &
-             hwy >= mpg_cutoff &
+  }
+  else {
+    result = mpg %>%
+      filter(cyl == cylinder,
+             displ >= displ_fun(displ),
+             hwy >= mpg_cutoff,
              class == cls)
+  }
+  
+  result
 }
+
+## if (Math.random() < 0.5) {
+
+## if x == 2:
 
 ## ----mpgfunc_demo--------------------------------------------------------
 good_mileage(mpg_cutoff = 40)
@@ -79,20 +87,24 @@ good_mileage <- function(cylinder = 4,
                          cls = 'compact',
                          yr = 2008) {
   
-  if (displ_low)
-    mpg %>%
-    filter(cyl == cylinder &
-             displ <= displ_fun(displ) &
-             hwy >= mpg_cutoff &
-             class == cls &
-             year == yr)
-  else
-    mpg %>%
-    filter(cyl == cylinder &
-             displ >= displ_fun(displ) &
-             hwy >= mpg_cutoff &
-             class == cls &
-             year == yr)
+  if (displ_low) {
+    result = mpg %>%
+    filter(cyl == cylinder,
+           displ <= displ_fun(displ),
+           hwy >= mpg_cutoff,
+           class == cls,
+           year == yr)
+  }
+  else {
+    result = mpg %>%
+    filter(cyl == cylinder,
+           displ >= displ_fun(displ),
+           hwy >= mpg_cutoff,
+           class == cls,
+           year == yr)
+  }
+  
+  result
 }
 
 ## ----mpgfunc_extend_demo-------------------------------------------------
@@ -118,6 +130,22 @@ mtcars %>%
 ## log_sum <- function(a, b) {
 ##   ?
 ## }
+## 
+
+## ----wf_ex1b, eval=FALSE-------------------------------------------------
+## log_sum <- function(a, b) {
+##   #
+##   #
+##   #
+## 
+##   if (?) {
+##     stop('Your message here.')
+##   }
+##   else {
+##     return(your_log_sum_object)
+##   }
+## }
+## 
 
 ## ----wf_ex2, eval=FALSE--------------------------------------------------
 ## set.seed(123)  # so you get the exact same 'random' result

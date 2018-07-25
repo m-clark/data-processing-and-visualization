@@ -38,7 +38,7 @@ nyc_means %>% round(2)
 
 ## ----nyc_flights4--------------------------------------------------------
 columns = c('temp','humid','wind_speed', 'visib', 'pressure')
-nyc_means = c()
+nyc_means = numeric()
 
 for (i in seq_along(columns)) {
   nyc_means[i] = mean(weather[ ,columns[i]], na.rm = TRUE)
@@ -198,7 +198,7 @@ mtcars2 %>%
 ## apply()
 
 ## ----app_ex2, echo=1, eval=FALSE-----------------------------------------
-## x = list(1:3, 4:6, 7:9)
+## x = list(1:3, 4:10, 11:100)
 ## lapply()
 ## sapply()
 
