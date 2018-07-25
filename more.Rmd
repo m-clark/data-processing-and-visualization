@@ -125,8 +125,6 @@ load('data/vectorization.RData'); library(microbenchmark); test
 ```
 
 
-### Naming things
-
 ### Regular Expressions
 
 A <span class="emph">regular expression</span>, regex for short, is a sequence of characters that can be used as a search pattern for a string. Common operations are to merely detect, extract, or replace the matching string.  There are actually many different flavors of regex for different programming languages, which are all flavors that originate with the Perl approach, or can enable the Perl approach to be used.  However, knowing one means you pretty much know the others with only minor modifications if any.
@@ -137,7 +135,7 @@ Here is an example:
 
 `^r.*shiny[0-9]$`
 
-What is *that* you may ask?  Well here is an example of strings it would and wouldn't match.
+What is *that* you may ask?  Well here is an example of strings it would and wouldn't match.  We're using <span class="func">grepl</span> to return a logical (i.e. `TRUE` or `FALSE`) if any of the strings match the pattern in some way.
 
 ```{r regex_intro_ex}
 string = c('r is the shiny', 'r is the shiny1', 'r shines brightly')
@@ -188,8 +186,54 @@ grepl(c('apple', 'pear', 'banana'), pattern='^a|a$')
 Scraping the web, munging data, just finding things in your scripts ... you can potentially use this all the time, and not only with text analysis, as we'll now see.
 
 
+### Code Style
 
-### **Vector Exercises**
+A lot has been written about coding <span class="emph">style</span> over the decades.  If there was a definitive answer, you would have heard of it by now.  However, there are a couple things you can do at the beginning of your programming approach to go a long way making your code notably better.
+
+#### Why does your code exist?
+
+Either use text in an R Markdown file or comment your R script.  Explain *why*, not *what*, the code is doing.  Think of it as leaving your future self a note (they will thank you!).  Be clear and don't assume you'll remember why you were doing what you did.
+
+#### Assignment
+
+You see some using `<-` or `=` for assignment.  While there is a slight difference, if you're writing decent code it shouldn't matter. Far more programming languages use `=`, so that's reason to prefer it.  However, if you like being snobby about things, go with `<-`.  Whichever you go with, use it consistently.
+
+#### Code length
+
+If your script is becoming hundreds of lines long, you probably need to compartmentalize your operations into separate scripts.  For example, separate your data processing from your model scripts.
+
+#### Spacing
+
+Don't be stingy with spaces. As you start out, err on the side of using them.  Just note there are exceptions (e.g. no space between function name and parenthsis, unless that function is something like <span class="func">if</span> or <span class="func">else</span>), but you'll get used to those over time.
+
+```{r space, eval=FALSE}
+x=rnorm(10, mean=0,sd=1)
+
+x = rnorm(10, mean = 0, sd = 1)
+```
+
+Use tools like the build in RStudio code cleanup shortcut like `Ctrl/Cmd + Shft + A`. It's not perfect, in the sense I disagree with some of its the style choice, but it will be better than you will do on your own starting out.
+
+#### Naming things
+
+You might not think of it as such initially, but one of the more difficult challenges in programming is naming things.  Even if we can come up with a name, there are different styles we can use for the name.
+
+Here is a brief list of things to keep in mind.
+
+- Don't name something that is already an R function/object (e.g. `T`, <span class="func">c</span>, etc.)
+- Try to be concise
+- Make liberal use of suffixes/prefixes for naming the same types of things
+
+Styles include:
+
+- snake_case
+- CamelCase or camelCase
+- spinal-case (e.g. for file names)
+- dots.case
+
+For objects and functions, I find snake case easier[^style_claim] to read and less prone to issues. For example, camel case can fail miserably when acronyms are involved. Dots already have specific uses (file name extensions, function methods, etc.), so should be avoided unless you're using them for that specific purpose (they can also make selecting the whole name difficult depending on the context).
+
+### Vectorization Exercises
 
 #### Exercise 1
 
@@ -203,7 +247,7 @@ Show a non-vectorized and a vectorized way to add a two to the numbers 1 through
 
 #### Exercise 2
 
-Of the following <span class="objclass">matrix</span>, which do you think is faster?  Test it.
+Of the following, which do you think is faster?  Test it with the <span class="pack">microbenchmark</span> package.
 
 ```{r vector_ex2, eval=FALSE}
 x = matrix(rpois(100000, lambda = 5), ncol = 100)
@@ -216,7 +260,7 @@ microbenchmark::microbenchmark(
 )
 ```
 
-### **Regex Exercises**
+### Regex Exercises
 
 #### Exercise 1
 
@@ -228,4 +272,17 @@ str_replace(state.name, pattern = ?, replacement = ?)
 ```
 
 
+### Naming Exercises
+
+For the following model related output, come up with a name for each object.
+
+```{r name_ex, eval=FALSE}
+lm(hwy ~ cyl, data=mpg)
+summary(lm(hwy ~ cyl, data=mpg))
+lm(hwy ~ cyl + displ + year, data=mpg)
+```
+
+
 [^ifelse]: For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.
+
+[^style_claim]: Note how I didn't say it's easier to read without qualification (even though I think it's obviously easier to read, based on how eyes/brains work).  Many style guides you encounter will try to come across as definitive.  They are not, nor are most claims tested.
