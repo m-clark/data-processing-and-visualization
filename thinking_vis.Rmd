@@ -1,4 +1,4 @@
-# Part II: Visualization {-}
+# (PART\*) Part II: Visualization {-}
 
 
 ```{r vissetup, include=FALSE, eval=TRUE, cache=FALSE}
@@ -6,10 +6,10 @@ knitr::opts_chunk$set(eval=T, echo=F)
 library(viridisLite); library(scico)
 ```
 
-## Thinking Visually
+# Thinking Visually
 
 
-### Information
+## Information
 
 A starting point for data visualization regards the information you want to display, and then how you want to display it in order to tell the data's story.  As in statistical modeling, parsimony is the goal, but not at the cost of the more compelling story.  We don't want to waste the time of the audience or be redundant, but we also want to avoid unnecessary clutter, chart junk, and the like. 
 
@@ -143,7 +143,7 @@ Whether this particular scheme is something you'd prefer or not, the point is th
 
 Here are some things to keep in mind when creating visualizations for scientific communication.
 
-#### Your audience isn't dumb
+### Your audience isn't dumb
 
 Assume your audience, which in academia is full of people with advanced degrees or those aspiring to obtain one, and in other contexts comprises people who are interested in your story, can handle more than a bar graph.  If the visualization is good and well-explained[^captions], they'll be fine. 
 
@@ -151,7 +151,7 @@ See the data visualization and maps sections of [2016: The Year in Visual Storie
 
 <img class='zoom' src="img/nytimes.png" style="display:block; margin: 0 auto;">
 
-#### Clarity is key
+### Clarity is key
 
 Sometimes the clearest message *is* a complicated one.  That's okay, science is an inherently fuzzy process.  Make sure your visualization tells the story you think is important, and don't dumb the story down in the visualization.  People will likely remember the graphic before they'll remember the table of numbers.
 
@@ -159,27 +159,27 @@ By the same token, don't needlessly complicate something that is straightforward
 
 All of this is easier said than done, and there is no right way to do data visualizations.  Prepare to experiment, and focus on visuals that display patterns that will be more readily perceived.
 
-#### Avoid clutter
+### Avoid clutter
 
 In striving for clarity, there are pitfalls to avoid. Gridlines, 3d, unnecessary patterning, and <span class="emph">chartjunk</span> in general will only detract from the message.  As an example, gridlines might even seem necessary, but even faint ones can potentially hinder the pattern recognition you hope will take place, perceptually imposing clumps of data that do not exist.  In addition, they practically insist on a level of data precision that in many situations you simply don't have.  What's more, with interactivity they literally convey nothing additional, as a simple hover-over or click on a data point will reveal the precise values.  Use sparingly, if at all.
 
-#### Color isn't optional
+### Color isn't optional
 
 It's odd for me to have to say this, as it's been the case for many years, but no modern scientific outlet should be a print-first outfit, and if they are, you shouldn't care to send your work there.  The only thing you should be concerned with is how it will look online, because that's how people will interact with your work first and foremost.  That means that color is essentially a requirement for any visualization, so use it well in yours.
 
-#### Think interactively
+### Think interactively
 
 It might be best to start by making the visualization *you want to make*, with interactivity and anything else you like.  You can then reduce as necessary for publication or other outlets, and keep the fancy one as supplemental, or accessible on your own website to show off.
 
 
 
-### Color
+## Color
 
 There is a lot to consider regarding color.  Until recently, the default color schemes of most visualization packages were poor at best.  Thankfully, <span class="pack">ggplot2</span>, its imitators and extenders, in both the R world and beyond, have made it much easier to have a decent color scheme by default[^jet].
 
 However, the defaults are still potentially problematic, so you should be prepared to go with something else.  In other cases, you may just simply prefer something else.  For example, for me, the gray background of <span class="pack">ggplot2</span> defaults is something I have to remove for every plot[^hadleygray].
 
-#### Viridis
+### Viridis
 
 A couple packages will help you get started in choosing a decent color scheme.  One is <span class="pack">viridis</span>.  As stated in the package description:
 
@@ -194,7 +194,7 @@ These color schemes might seem a bit odd from what you're used to.  But recall t
 
 For more, see the [vignette](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html). I also invite you to watch the [introduction of the original module in Python](https://www.youtube.com/watch?v=xAoljeRJ3lU), where you can learn more about the issues in color selection, and why viridis works.
 
-#### RColorBrewer
+### RColorBrewer
 
 Color Brewer offers another collection of palettes that will generally work well in a variety of situations.  While there are print and color-blind friendly palettes, not all adhere to those restrictions.  Specifically though, you have palettes for the following data situations:
 
@@ -220,7 +220,7 @@ Furthermore, they'll work well with discrete or continuous data.  You will have 
 
 
 
-### Contrast
+## Contrast
 
 <span class="" style="color:#B3B3B3">Thankfully, websites have mostly gotten past the phase where there text looks like this</span>.  The goal of scientific communication is to, well, *communicate*.  Making text hard to read is pretty much antithetical to this.
 
@@ -237,7 +237,7 @@ So contrast comes into play with text as well as color.  In general, you should 
 
 I personally don't like stark black, and find it visually irritating, but obviously that would be fine to use for most people.
 
-### Scaling Size
+## Scaling Size
 
 You might not be aware, but there is more than one way to scale the size of objects, e.g. in a scatterplot. Consider the following, where in both cases dots are scaled by the person's body-mass index (BMI).
 
@@ -263,7 +263,7 @@ sw2 %>%
 What's the difference? The first plot scales the dots by their area, while the second scales the radius, but otherwise they are identical.  It's not generally recommended to scale the radius, as our perceptual system is more attuned to the area.  Packages like <span class="pack">ggplot2</span> and <span class="pack">plotly</span> will automatically do this, but some might not, so you should check.
 
 
-### Transparency
+## Transparency
 
 Using transparency is a great way to keep detailed information available to the audience without being overwhelming. Consider the following.  Fifty individual trajectories are shown on the left, but it doesn't cause any issue graphically.  The right has 10 lines plus a fitted line, 20 points and a ribbon to provide a sense of variance.  Using transparency and a viridis color scheme allows it to be perceived cleanly.
 
@@ -607,7 +607,7 @@ gdat %>%
 
 In general, a good use of transparency can potentially help any visualization, but consider it especially when trying to display many points, or otherwise have overlapping data.
 
-### Accessibility
+## Accessibility
 
 Among many things (apparently) rarely considered in typical academic or other visualization is <span class="emph">accessibility</span>.  The following definition comes from the <span class="emph">World Wide Web Consortium</span>.
 
@@ -617,7 +617,7 @@ The main message to get is that not everyone is able to use the web in the same 
 
 We talked about this previously, but when communicating visually, one can do simple things like choosing a colorblind-friendly palette, or using a font contrast that will make it easier on the eyes of those reading your work.  There are even browser plugins to test your web content for accessibility. In addition, there are little things like adding a title to inserted images, making links more noticeable etc., all of which can help consumers of your information.
 
-### File Types
+## File Types
 
 It's one thing to create a visualization, but at some point you're likely going to want to share it.  RStudio will allow for the export of any visualization created in the Plots or Viewer tab.  In addition, various packages may have their own save function, that may allow you to specify size, type or other aspects.  Here we'll discuss some of the options.
 
@@ -631,44 +631,44 @@ As I don't know what screen will see my visualizations, I generally opt for svg.
 Here is a [discussion on stackexchange](https://stackoverflow.com/questions/2336522/png-vs-gif-vs-jpeg-vs-svg-when-best-to-use) that summarizes some of the above. The initial question is old but there have been recent updates to the responses.
 
 
-### Summary
+## Summary
 
 The goal of this section was mostly just to help you realize that there are many things to consider when visualizing information and attempting to communicate the contents of data.  The approach is not the same as what one would do in say, an artistic venture, or where there is nothing specific to impart to an audience. Even some of the most common things you see published are fundamentally problematic, so you can't even use what people traditionally do as a guide.  However, there are many tools available to help you.  Another thing to keep in mind is that there is no right way to do a particular visualization, and many ways, to have fun with it.
 
 
-### A casual list of things to avoid
+## A casual list of things to avoid
 
 I'm just putting things that come to mind here as I return to this document. Mostly it is personal opinion, though often based on various sources in the data visualization realm or simply my own experience.  
 
-#### Pie
+### Pie
 
 Pie charts and their cousins, e.g. bar charts (and stacked versions), wind rose plots, radar plots etc., either convey too little information or make otherwise simple information more difficult to process perceptually.
 
-#### Histograms
+### Histograms
 
 Anyone that's used R's <span class="func">hist</span> function knows the frustration here.  Use density plots instead.  They convey the same information but better, and typical defaults are usually fine.
 
-#### Using 3D without adding any communicative value
+### Using 3D without adding any communicative value
 
 You will often come across use of 3D in scientific communication which is fairly poor and makes the data harder to interpret.  In general, when going beyond two dimensions, your first thought should be to use color, size, etc. and finally prefer interactivity to 3D.  Where it is useful is in things like showing structure (e.g. molecular, geographical), or continuous multi-way interactions.
 
-#### Using too many colors 
+### Using too many colors 
 
 Some put a completely non-scientifically based number on this, but the idea holds. For example, if you're trying to show U.S. state grouping by using a different color for all 50 states, no one's going to be able to tell the yellow for Alabama vs. the slightly different yellow for Idaho.  Alternatives would be to show the information via a map or use a hover over display.
 
-#### Showing maps that just display population
+### Showing maps that just display population
 
 Most of the maps I see on the web cover a wide range of data and can be very visually appealing, but pretty much just tell me where the most populated areas are, which is utterly uninteresting.  Make sure that your geographical depiction is more informative than this.
 
 
-#### Biplots
+### Biplots
 
 A lot of folks doing PCA resort to biplots for interpretation, where a graphical model would be much more straightforward.  See [this chapter](http://m-clark.github.io/sem/latent-variables-1.html) for example.
 
 
-### Thinking Visually Exercises
+## Thinking Visually Exercises
 
-#### Exercise 1
+### Exercise 1
 
 The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>.  Use the <span class="func">scale_color_viridis</span> function to add a more accessible palette.
 
@@ -688,7 +688,7 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
 
 <img class='zoom' src="img/visex_diamonds.png" style="display:block; margin: 0 auto;" width=50% title='scatterplot of diamond data'>
 
-#### Exercise 2
+### Exercise 2
 
 Now color it by the `cut`.  To use the scale_color_viridis approach, you'll have to change one of the arguments to the function (set `discrete=T`).  Reproduce this but using one of the other viridis palettes.  See the helpfile via `?scale_color_viridis` to see how to change the palette.
 
@@ -700,7 +700,7 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
 
 <img class='zoom' src="img/visex_diamonds2.png" style="display:block; margin: 0 auto;" width=50% title='scatterplot of diamond data with options'>
 
-#### Thinking exercises
+### Thinking exercises
 
 For your upcoming presentation, *who* is your audience?
 

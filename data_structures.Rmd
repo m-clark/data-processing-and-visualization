@@ -1,8 +1,8 @@
 
-# Part I: Data Processing {-}
+# (PART\*) Part I: Data Processing {-}
 
 
-## Data Structures
+# Data Structures
 
 R has several core data structures, and we'll take a look at each.
   
@@ -14,7 +14,7 @@ R has several core data structures, and we'll take a look at each.
 
 The more you know about R data structures, the more you'll know how to use them, the more you'll know *why* things go wrong if they do, and the further you'll be able to go with your data.
 
-### Vectors
+## Vectors
 
 <span class="objclass">Vectors</span> form the basis of R data structures. Two main types are <span class="objclass">atomic</span> and <span class="objclass">lists</span>, but we'll talk about lists separately.
 
@@ -41,7 +41,7 @@ You can use <span class="func">typeof</span> to examine an object's type, or use
 <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
 </div>
 
-#### Character strings
+### Character strings
 
 When dealing with text, objects of class character are what you'd typically be dealing with.  
 
@@ -53,7 +53,7 @@ x
 Not much to it, but be aware there is no real limit to what is represented as a character vector. For example, in a data frame, you could have a column where each entry is one of the works of Shakespeare.
 
 
-#### Factors
+### Factors
 
 An important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures.  Although not exactly precise, one can think of factors as integers with labels.  So the underlying representation of a variable for <span class="objclass">sex</span> is 1:2 with labels 'Male' and 'Female'.  They are a special class with attributes, or metadata, that contains the information about the <span class="objclass">levels</span>.
 
@@ -78,7 +78,7 @@ sum(x_num)
 sum(x)
 ```
 
-##### Strings vs. Factors
+#### Strings vs. Factors
 
 The main thing to note is that factors are generally a statistical phenomenon, and are required to do statistical things with data that would otherwise be a simple character string.  If you know the relatively few levels the data can take, you'll generally want to use factors, or at least know that statistical packages and methods may require them.  In addition, factors allow you to easily overcome the silly default alphabetical ordering of category levels in some very popular visualization packages.
 
@@ -93,7 +93,7 @@ Some packages to note to help you with processing strings and factors:
 <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
 </div>
 
-#### Logicals
+### Logicals
 
 Logical scalar/vectors are those that take on one of two values `r TRUE` or `r FALSE`. They are especially useful in flagging whether to run certain parts of code, and indexing certain parts of data structures (e.g. taking rows that correspond to `r TRUE`). We'll talk about the latter usage more later in the document.
 
@@ -111,7 +111,7 @@ as.numeric(my_logic)
 mean(my_logic)
 ```
 
-#### Numeric and integer
+### Numeric and integer
 
 The most common type of data structure you'll deal with are integer and numeric vectors.  
 
@@ -124,13 +124,13 @@ rnorm(5)
 
 
 
-### Matrices
+## Matrices
 
 With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing[^tidynomatrix]. The vectors making up a matrix *must all be of the same type*.  For example, all values in a matrix might be <span class="objclass">numeric</span>, or all <span class="objclass">character strings</span>.
 
 
 
-#### Creating a matrix
+### Creating a matrix
 
 Creating a matrix can be done in a variety of ways.
 
@@ -146,7 +146,7 @@ matrix(c(x, y, z), nrow=3, ncol=4, byrow=TRUE)
 ```
 
 
-### Lists
+## Lists
 
 <span class="objclass">Lists</span> in R are highly flexible objects, and probably the most commonly used for applied data science. Unlike vectors, whose elements must be of the same type, lists can contain anything as their elements, even other lists.
 
@@ -179,14 +179,14 @@ Python has similar structures, <span class="objclass">lists</span> and <span cla
 <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
 </div>
 
-### Data Frames
+## Data Frames
 
 Data frames are a very commonly used data structure. Elements of a data frame can be different types, and this is because the <span class="objclass">data.frame</span> class is actually just a list.  As such, everything about lists applies to them. But they can also be indexed by row or column as well, just like matrices.  There are other very common types of object classes associated with packages that are both a <span class="objclass">data.frame</span> and some other type of structure (e.g. <span class="objclass">tibbles</span> in the tidyverse).
 
 Usually your data frame will come directly from import or manipulation of other R objects (e.g. matrices).  However, you should know how to create one from scratch.
 
 
-#### Creating a data frame
+### Creating a data frame
 
 The following will create a data frame with two columns, `a` and `b`.
 
@@ -205,9 +205,9 @@ mydf
 Everything about lists applies to data.frames, so we can add, select, and remove elements of a data frame just like lists. However, we'll visit this later, because we'll have much more flexibility with data frames than we would lists for common data analysis and visualization.
 
 
-### Data Structure Exercises
+## Data Structure Exercises
 
-#### Excercise #1
+### Excercise #1
 
 Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span> (use the <span class="func">class</span> or <span class="func">str</span> functions) on the object you just created.
 
@@ -216,7 +216,7 @@ mydf = data.frame(A=1:3, B=letters[1:3])
 ```
 
 
-#### Exercise #2
+### Exercise #2
 
 Create a <span class="objclass">list</span> of 3 elements, the first of which contains character strings, the second numbers, and the third, the <span class="objclass">data.frame</span> or <span class="objclass">matrix</span> you just created.
 
@@ -226,7 +226,7 @@ mylist = list(c('a', 'b'), 1:3, mydf)
 
 
 
-#### Thinking Exercises
+### Thinking Exercises
 
 - How is a <span class="objclass">factor</span> different from a character vector?
 

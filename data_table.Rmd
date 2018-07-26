@@ -1,4 +1,4 @@
-## data.table
+# data.table
 
 
 Another package for data processing that has been useful to many is <span class="pack">data.table</span>. It works in a notably different way than <span class="pack">dplyr</span>. However, you'd use it for the same reasons, e.g. subset, grouping, update, ordered joins etc., but with key advantages in speed and memory efficiency. Like <span class="pack">dplyr</span>, the data objects are both <span class="objclass">data.frames</span> and a package specific class.
@@ -10,7 +10,7 @@ dt = data.table(x=sample(1:10, 6), g=1:3, y=runif(6))
 class(dt)
 ```
 
-### Basics
+## Basics
 
 In general, <span class="pack">data.table</span> works with brackets as in base R data frames.  However, in order to use <span class="pack">data.table</span> effectively you'll need to forget the data frame similarity. The brackets actually work like a function call, with several key arguments.  Consider the following notation to start.
 
@@ -71,7 +71,7 @@ DT3
 
 
 
-### Grouped operations
+## Grouped operations
 
 We can now attempt a 'group-by' operation, along with creation of a new variable. Note that these operations actually modify the <span class="objclass">dt</span> object *in place*, a key distinction with <span class="pack">dplyr</span>.  Fewer copies means less of a memory hit.
 
@@ -93,12 +93,12 @@ dt2 %>% group_by(g==1) %>% summarise(mean_x=mean(x), sum_x=sum(x))
 
 
 
-### Faster!
+## Faster!
 
 As mentioned, the reason to use <span class="pack">data.table</span> is speed.  If you have large data or large operations it'll be useful.
 
 
-#### Joins
+### Joins
 
 Joins can not only be faster but and easy to do. Note that the `i` argument can be a <span class="objclass">data.table</span> object itself.  I compare its speed to the comparable <span class="pack">dplyr's</span> <span class="func">left_join</span> function.
 
@@ -120,7 +120,7 @@ timing_join %>% pander::pander(justify='lr')
 #   rename(func=expr, `mean (microseconds)`=mean)
 ```
 
-#### Group by
+### Group by
 
 We can use the <span class="func">setkey</span> function to order a data set by a certain column(s).  This ordering is done by reference; again, no copy is made.  Doing this will allow for faster grouped operations, though you likely will only see the speed gain with very large data. The timing regards creating a new variable
 
@@ -151,7 +151,7 @@ timing_group_by_1 %>% pander::pander(justify='lr')
 
 ```
 
-#### String matching
+### String matching
 
 The <span class="func">chin</span> function returns a vector of the *positions* of (first) matches of its first argument in its second, where both arguments are character vectors.  Essentially it's just like the <span class="func">%in%</span> function for character vectors. 
 
@@ -186,7 +186,7 @@ timing_chmatch %>% pander::pander(justify='lr')
 
 
 
-#### Reading files
+### Reading files
 
 If you use <span class="pack">data.table</span> for nothing else, you'd still want to consider it strongly for reading in large text files.  The function <span class="func">fread</span> may be quite useful in being memory efficient too.  I compare it to <span class="pack">readr</span>.
 
@@ -211,7 +211,7 @@ timing_read %>% pander::pander(justify='lr')
 
 
 
-#### More speed
+### More speed
 
 The following demonstrates some timings from [here](http://stackoverflow.com/questions/3505701/r-grouping-functions-sapply-vs-lapply-vs-apply-vs-tapply-vs-by-vs-aggrega/34167477#34167477).  I reproduced it on my own machine based on 50 million observations. The grouped operations that are applied are just a sum and length on a vector. 
 
@@ -228,7 +228,7 @@ Really.
 
 Another thing to note is that the tidy approach is more about clarity and code efficiency relative to base R, as well as doing important background data checks and returning more usable results.  In practice, it likely won't be notably faster except in some cases, like with <span class="func">aggregate</span>.
 
-### Pipe with data.table
+## Pipe with data.table
 
 Piping can be done with data.table objects too, using the brackets, but it's awkward at best.
 
@@ -248,7 +248,7 @@ mydt[,newvar:=mean(x),] %>%
   .[,-'y', with=FALSE]
 ```
 
-### Summary
+## Summary
 
 Faster and more memory-efficient methods are great to have. If you have large data this is one package that can help.
 
@@ -271,7 +271,7 @@ Piping allows one to use both, so no need to choose.
 
 And on the horizon...
 
-### dtplyr
+## dtplyr
 
 Coming soon to an R near you, or possibly abandonware, only time will tell.  However, what the <span class="pack">dtplyr</span> package purports to do is implement the <span class="pack">data.table</span> back-end for <span class="pack">dplyr</span> so that you can seamlessly use them together.  The following shows times for a grouped operation of a data frame of two variables, a random uniform draw of 5e7 values, and a grouping variable of 500k groups.
 
@@ -305,10 +305,10 @@ As of this writing, <span class="pack">dplyr</span> went through a notable updat
 <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
 </div>
 
-### data.table Exercises
+## data.table Exercises
 
 
-#### Exercise 0
+### Exercise 0
 
 Install and load the <span class="pack">data.table</span> package.
 
@@ -318,7 +318,7 @@ Create the following data table.
 mydt = data.table(expand.grid(x=1:3, y=c('a','b','c')), z=sample(1:20, 9))
 ```
 
-#### Exercise 1
+### Exercise 1
 
 Create a new object that contains only the 'a' group. Think back to how you use a logical to select rows.
 
@@ -327,7 +327,7 @@ mydt_a = mydt[y=='a',]
 ```
 
 
-#### Exercise 2
+### Exercise 2
 
 Create a new object that is the sum of z grouped by x. You don't need to name the sum variable.
 

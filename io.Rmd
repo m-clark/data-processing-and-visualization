@@ -1,5 +1,5 @@
 
-## Input/Output {#io}
+# Input/Output {#io}
 
 Until you get comfortable getting data into R, you're not going to use it as much as you would.  You should at least be able to read in common data formats like comma/tab-separated, Excel, etc. Standard methods of reading in tabular data include the following functions:
 
@@ -22,19 +22,19 @@ You can use that for any package, which can help avoid naming conflicts by not l
 <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
 </div>
 
-### Other approaches
+## Other approaches
 
 There are some better and faster ways to read in data than the base R approach.  A package for reading in foreign statistical files is <span class="pack">haven</span>, which has functions like <span class="func">read_spss</span> and <span class="func">read_dta</span> for SPSS and Stata files respectively.  The package <span class="pack">readxl</span> is a clean way to read Excel files that doesn't require any outside packages or languages.  The package <span class="pack">rio</span> uses <span class="pack">haven</span>, <span class="pack">readxl</span> etc., but with just two functions for everything: <span class="func">import</span>, <span class="func">export</span> (also <span class="func">convert</span>).
 
 
-### Faster approaches
+## Faster approaches
 
 For faster versions of base R functions, <span class="pack">readr</span> has <span class="func">read_csv</span>, <span class="func">read_delim</span>, and others.  These make assumptions about what type each vector is after an initial scan of the data, then proceed accordingly.  If you don't have 'big' data, the subsequent speed gain won't help much, however, such an approach actually can be used as a diagnostic to pick up potential data entry errors, as warnings are given when unexpected observations occur.
 
 The <span class="pack">data.table</span> package provides a faster version <span class="func">read.table</span>, and is typically faster than <span class="pack">readr</span> approaches (<span class="func">fread</span>).
 
 
-### Other Data
+## Other Data
 
 Be aware that R can handle practically any type of data you want to throw at it. Some examples include:
 
@@ -51,12 +51,12 @@ Be aware that R can handle practically any type of data you want to throw at it.
 And many, many others.
 
 
-### On the horizon
+## On the horizon
  
 <span class="pack">feather</span> is designed to make reading/writing data frames efficient, and the really nice thing about it is that it works in both Python and R. It's still in early stages of development on the R side though.
 
 
-### Big Data
+## Big Data
 
 You may come across the situation where your data cannot be held in memory.  One of the first things to be aware of for data processing is that you may not need to have the data all in memory at once.  Before shifting to a hardware solution, consider if the following is possible.
 
@@ -72,9 +72,9 @@ However, it may be that the end result is still too large.  In that case you'll 
 
 And more.
 
-### I/O Exercises
+## I/O Exercises
 
-#### Exercise 1
+### Exercise 1
 
 Use <span class="">readr</span> and <span class="">haven</span> to read the following files. Use the url just like you would any file name.  The latter is a Stata file.  You can use the RStudio's menu approach to import the file if you want.
 
@@ -83,7 +83,7 @@ Use <span class="">readr</span> and <span class="">haven</span> to read the foll
 
 If you downloaded the data for this workshop, the files can be accessed in that folder
 
-#### Thinking Exercises
+### Thinking Exercises
 
 Why might you use <span class="func">read_csv</span> from the <span class="pack">readr</span> package rather than <span class="func">read.csv</span> in base R?
 

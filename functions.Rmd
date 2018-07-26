@@ -1,4 +1,4 @@
-## Writing functions
+# Writing Functions
 
 You can't do anything in R without using functions, but have you ever written your own?  Why would you?
 
@@ -9,7 +9,7 @@ You can't do anything in R without using functions, but have you ever written yo
 
 There are many benefits to writing your own functions, and it's actually easy to do.  Once you get the basic concept down, you'll likely find yourself using your own functions more and more.
 
-### A starting point
+## A starting point
 
 Let's assume you want to calculate the mean, standard deviation, and number of missing values for a variable, called `myvar`.  We could do something like the following
 
@@ -31,7 +31,7 @@ my_summary <- function(myvar) {
 }
 ```
 
-Note that if there are actually missing values, we need to set `na.rm = TRUE` or the mean and sd will return `NA`. Let's try it. I add missing values to test that aspect.
+Note that if there are actually missing values, we need to set `na.rm = TRUE` or the <span class="func">mean</span> and <span class="func">sd</span> will return `NA`. Let's try it. I add missing values to test that aspect.
 
 ```{r func_ex3, echo=-1}
 mtcars = datasets::mtcars  # to undo previous factors
@@ -74,7 +74,7 @@ mtcars2 %>%
 The <span class="func">map_dfr</span> function is just like our previous usage in the [iterative programming][Iterative programming] section, just that it will create mini-data.frames then row bind them together.
 
 
-### DRY
+## DRY
 
 An oft-quoted mantra in programming is ***D**on't **R**epeat **Y**ourself*.  One context regards iterative programming, where we would rather write one line of code than one-hundred.  More generally though, we would like to gain efficiency where possible.  A good rule of thumb is, if you are writing the same set of code more than twice, you should write a function to do it instead.  
 
@@ -129,7 +129,7 @@ Then it simply filters the data to observations that match the input criteria, a
 
 The core of the function uses a <span class="emph">conditional statement</span> using standard <span class="func">if</span>...<span class="func">else</span> structure.  The <span class="func">if</span> part determines whether some condition holds.  If it does, then proceed to the next step in the brackets.  If not, skip to the <span class="func">else</span> part. You may have used the <span class="func">ifelse</span> function in base R, or <span class="pack">dplyr</span>'s <span class="func">if_else</span> as above, which are a short cuts for this approach.  We can also add conditional else statements (<span class="func">else if</span>) and nest, drop the <span class="func">else</span> entirely, nest conditionals within other conditionals, etc.  Like loops, conditional statements look very similar across all programming languages.
 
-Javascript:
+JavaScript:
 
 ```{javascript, eval=FALSE}
 if (Math.random() < 0.5) {
@@ -200,7 +200,7 @@ good_mileage(cylinder = 8,
 So we now have something that is flexible, reusable, and extensible, and it took less code than writing out the individual lines of code
 
 
-### Anonymous functions
+## Anonymous functions
 
 Oftentimes we just need a quick and easy function for a one-off application, especially when using apply/map functions.  For example, both the following would calculate standard deviations of columns.
 
@@ -225,9 +225,9 @@ Even if you don't use [anonymous functions](https://en.wikipedia.org/wiki/Anonym
 
 
 
-### Writing Functions Exercises
+## Writing Functions Exercises
 
-#### Excercise 1
+### Excercise 1
 
 Write a function that takes the log of the sum of two values (i.e. just two single numbers) using the <span class="func">log</span> function.  Just remember that within a function, you can write R code just like you normally would.
 
@@ -239,7 +239,7 @@ log_sum <- function(a, b) {
 ```
 
 
-#### Excercise 1b
+### Excercise 1b
 
 What happens if the sum of the two numbers is negative?  You can't take a log of a negative value, so it's an error.  How might we deal with this?  Try using a conditional to provide an error message using the stop function.  Make the message whatever you want.
 
@@ -260,7 +260,7 @@ log_sum <- function(a, b) {
 ```
 
 
-#### Exercise 2
+### Exercise 2
 
 
 Let's write a function that will take a numeric variable and convert it to a character string of 'positive' vs. 'negative'.  We can use `if {}... else {}` structure, <span class="func">ifelse</span>, or <span class="pack">dplyr</span>::<span class="func">if_else</span>- they all would accomplish this.  In this case, the input is a single vector of numbers, and the output will recode any negative value to 'negative' and positive values to 'positive' (or whatever you want).  Here is an example of how we would just do it as a one-off.
@@ -280,7 +280,7 @@ pos_neg <- function(?) {
 ```
 
 
-#### Thinking Exercises
+### Thinking Exercises
 
 How would you write a check for Exercise 1 to make sure the inputs are numeric and positive (can't take the log of non-positive values)?  See `?stop` and `?message` for starters.
 

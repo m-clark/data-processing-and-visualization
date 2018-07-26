@@ -1,11 +1,11 @@
-## Tidyverse
+# Tidyverse
 
 
 ```{r tvsetup, include=FALSE, eval=TRUE, cache=FALSE}
 knitr::opts_chunk$set(echo = T, eval=T, cache.rebuild = F)
 ```
 
-### What is the tidyverse?
+## What is the tidyverse?
 
 The tidyverse consists of a few key packages:
 
@@ -38,7 +38,7 @@ lag():    dplyr, stats" %>%
 
 In addition, there are other packages like <span class="pack">lubridate</span>, <span class="pack">rvest</span>, <span class="pack">stringr</span> and others in the **hadleyverse** that are also greatly useful.
 
-### What is tidy?
+## What is tidy?
 
 <span class="emph">Tidy data</span> refers to data arranged in a way that makes data processing, analysis, and visualization simpler.
 
@@ -51,7 +51,7 @@ In a tidy data set:
 Think *long* before *wide*.
 
 
-### dplyr
+## dplyr
 
 <span class="pack">dplyr</span> provides a grammar of data manipulation (like <span class="pack">ggplot2</span> does for visualization).  It is the next iteration of <span class="pack">plyr</span>, but there is no longer any need for <span class="pack">plyr</span> really.  It's focused on tools for working with data frames, with over 100 functions that might be of specific use to you.
 
@@ -84,7 +84,7 @@ And there are a lot of little things like:
 In addition, there is no need to quote variable names.
 
 
-#### An example
+### An example
 
 Let's say we want to select from our data the following variables:
 
@@ -158,7 +158,7 @@ Even if it hadn't been explained before, you might have been able to guess a lit
 - often slower, possibly greatly
 
 
-### Running example
+## Running example
 
 The following data was scraped initially scraped from the web as follows.  It is data from the NBA basketball league for the 2017-2018 season with things like player names, position, team name, points per game, field goal percentage, and various other statistics.  We'll use it as an example to demonstrate various functionality found within <span class="pack">dplyr</span>.
 
@@ -180,7 +180,7 @@ glimpse(bball[,1:5])
 ```
 
 
-### Selecting Columns
+## Selecting Columns
 
 Often you do not need the entire data set. While this is easily handled in base R (as shown earlier), it can be more clear to use <span class="func">select</span> in <span class='pack'>dplyr</span>.  Now we won't have to create separate objects, use quotes or $, etc.
 
@@ -198,7 +198,7 @@ bball %>%
   head()
 ```
 
-#### Helper functions
+### Helper functions
 
 Sometimes, we have a lot of variables to select, and if they have a common naming scheme, this can be very easy.
 
@@ -220,7 +220,7 @@ The <span class="func">select</span> also has helper functions to make selecting
 - <span class="func">everything</span>: all variables.
 
 
-### Filtering Rows
+## Filtering Rows
 
 There are repeated header rows in this data[^headers], so we need to drop them.  This is also why everything was character string when we first scraped it, because having any character strings in a column coerces the entire column to be character,  since all elements of a vector [need to be of the same type][vectors].  Character string is chosen over others because anything can be converted to a string, but not everything can be a number.  
 
@@ -263,7 +263,7 @@ bball %>%
 Being able to use a newly created variable on the fly, possibly only to filter or create some other variable, goes a long way toward easy visualization and generation of desired summary statistics.
 
 
-### Generating New Data
+## Generating New Data
 
 One of the most common data processing tasks beyond subsetting the data is generating new variables. The function <span class='func'>mutate</span> takes a vector and returns one of the same dimension.  In addition, there is <span class="func">mutate_at</span>, <span class="func">mutate_if</span>, and <span class="func">mutate_all</span> to help with specific scenarios.
 
@@ -289,7 +289,7 @@ summary(select(bball, shootingDif))  # select and others don't have to be piped 
 ```
 
 
-### Grouping and Summarizing Data
+## Grouping and Summarizing Data
 
 A very common task is to look at group-based statistics, and we can use <span class='func'>group_by</span> and <span class="func">summarize</span> to help us in this regard[^summarise].  Base R has things like <span class="func">aggregate</span>, <span class="func">by</span>, and <span class="func">tapply</span> for this, but they should not be used, as this approach is much more straightforward, flexible, and faster.
 
@@ -343,7 +343,7 @@ You can use <span class="func">group_by</span> on more than one variable, e.g. `
 </div>
  
 
-### Renaming columns
+## Renaming columns
 
 Tidy data doesn't really have a problem with variable names starting with numbers or incorporating symbols.  I would still suggest it is poor practice, because even if your data set looks fine, you'll encounter problems with modeling and visualization package using that data.  However, as a demonstration, we can 'fix' some of the variable names.
 
@@ -369,7 +369,7 @@ bball %>%
 
 
 
-### Merging Data
+## Merging Data
 
 Merging data is yet another very common data task, as data often comes from multiple sources. In order to do this, we need some common identifier among the sources by which to join them. The following is a list of <span class="pack">dplyr</span> join functions.
 
@@ -424,7 +424,7 @@ anti_join(band_instruments, band_members)
 Merges can get quite complex, and involve multiple data sources. In many cases you may have to do a lot of processing before getting to the merge, but <span class="pack">dplyr's</span> joins will help quite a bit.
 
 
-### tidyr
+## tidyr
 
 The <span class="pack">tidyr</span> package can be thought of as a specialized subset of <span class="pack">dplyr's</span> functionality, as well as an update to the previous <span class="pack">reshape</span> and <span class="pack">reshape2</span> packages[^reshape]. Some of its functions for manipulating data you'll want to be familiar with are:
 
@@ -462,7 +462,7 @@ bball %>%
 Note that this won't necessarily apply to every name.  So further processing may be required.
 
 
-### More Tidyverse
+## More Tidyverse
 
 - dplyr functions: There are over a hundred functions that perform very common tasks.  You really need to be aware of them as their use will come up often.
 
@@ -476,7 +476,7 @@ Note that this won't necessarily apply to every name.  So further processing may
     
 Seriously, there are [a lot](https://www.r-pkg.org/search.html?q=tidy).
 
-### Personal Opinion
+## Personal Opinion
 
 The <span class="pack">dplyr</span> grammar is clear for a lot of standard data processing tasks, and some not so common.
 
@@ -499,9 +499,9 @@ All in all, if you've only been using base R approaches, the tidyverse will chan
 
 
 
-### tidyverse Exercises
+## tidyverse Exercises
 
-#### Exercise 0
+### Exercise 0
 
 Install and load the <span class="pack">dplyr</span> <span class="pack">ggplot2movies</span> packages. Look at the help file for the `movies` data set, which contains data from IMDB.
 
@@ -513,11 +513,11 @@ data('movies')
 ```
 
 
-#### Exercise 1
+### Exercise 1
 
 Using the movies data set, perform each of the following actions separately.
 
-##### Exercise 1a
+#### Exercise 1a
 
 Use <span class="func">mutate</span> to create a centered version of the rating variable.  A centered variable is one whose mean has been subtracted from it. The process will take the following form:
 
@@ -531,7 +531,7 @@ movies %>%
   mutate(ratingCen = rating - mean(rating)) 
 ```
 
-##### Exercise 1b
+#### Exercise 1b
 
 Use <span class="func">filter</span> to create a new data frame that has only movies from the years 2000 and beyond. Use the greater than or equal operator `>=`.
 
@@ -540,7 +540,7 @@ movies %>%
   filter(year >= 2000) 
 ```
 
-##### Exercise 1c
+#### Exercise 1c
 
 Use <span class="func">select</span> to create a new data frame that only has the `title`, `year`, `budget`, `length`, `rating` and `votes` variables.  There are at least 3 ways to do this.
 
@@ -554,14 +554,14 @@ movies %>%
 ```
 
 
-##### Exercise 1d
+#### Exercise 1d
 
 Rename the `length` column to `length_in_min` (i.e. length in minutes).
 
 
 
 
-#### Exercise 2
+### Exercise 2
 
 Use <span class="func">group_by</span> to group the data by year, and <span class="func">summarize</span> to create a new variable that is the average budget. The <span class="func">summarize</span> function works just like <span class="func">mutate</span> in this case.
 
@@ -576,7 +576,7 @@ movies %>%
 ```
 
 
-#### Exercise 3
+### Exercise 3
 
 Use <span class="func">gather</span> to create a 'tidy' data set from the following.
 
@@ -590,7 +590,7 @@ dat %>% gather(key = var, value = score, -id)
 
 
 
-#### Exercise 4
+### Exercise 4
 
 Now put several actions together in one set of piped operations. 
 

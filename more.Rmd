@@ -1,15 +1,70 @@
-## More 
+# More 
 
 This section is kind of a grab bag of miscellaneous things related to programming.  If you've made it this far, feel free to keep going!
 
-### Vectorization 
+## Code Style
+
+A lot has been written about coding <span class="emph" style="font-family:'Alex Brush'; font-size:200%">style</span> over the decades.  If there was a definitive answer, you would have heard of it by now.  However, there are a couple things you can do at the beginning of your programming approach to go a long way making your code notably better.
+
+### Why does your code exist?
+
+Either use text in an R Markdown file or comment your R script.  Explain *why*, not *what*, the code is doing.  Think of it as leaving your future self a note (they will thank you!).  Be clear and don't assume you'll remember why you were doing what you did.
+
+### Assignment
+
+You see some using `<-` or `=` for assignment.  While there is a slight difference, if you're writing decent code it shouldn't matter. Far more programming languages use `=`, so that's reason to prefer it.  However, if you like being snobby about things, go with `<-`.  Whichever you use, do so consistently.
+
+### Code length
+
+If your script is becoming hundreds of lines long, you probably need to compartmentalize your operations into separate scripts.  For example, separate your data processing from your model scripts.
+
+#### Spacing
+
+Don't be stingy with spaces. As you start out, err on the side of using them.  Just note there are exceptions (e.g. no space between function name and parenthesis, unless that function is something like <span class="func">if</span> or <span class="func">else</span>), but you'll get used to those over time.
+
+```{r space, eval=FALSE}
+x=rnorm(10, mean=0,sd=1)
+
+x = rnorm(10, mean = 0, sd = 1)
+```
+
+### Naming things
+
+You might not think of it as such initially, but one of the more difficult challenges in programming is naming things.  Even if we can come up with a name for an object or file, there are different styles we can use for the name.
+
+Here is a brief list of things to keep in mind.
+
+- The name should make sense to you, your future self, and others that will use the code
+- Try to be concise, but see the previous
+- Make liberal use of suffixes/prefixes for naming the same types of things e.g. model_x, model_z
+
+- Don't name anything with 'final'
+- Don't name something that is already an R function/object (e.g. `T`, <span class="func">c</span>, <span class="func">data</span>, etc.)
+- Avoid distinguishing names only by number, e.g. <span class="objclass">data1</span> <span class="objclass">data2</span>
+
+
+Naming styles include:
+
+- snake_case
+- CamelCase or camelCase
+- spinal-case (e.g. for file names)
+- dot.case
+
+For objects and functions, I find snake case easier to read and less prone to issues[^style_claim]. For example, camel case can fail miserably when acronyms are involved. Dots already have specific uses (file name extensions, function methods, etc.), so probably should be avoided unless you're using them for that specific purpose (they can also make selecting the whole name difficult depending on the context).
+
+### Other
+
+Use tools like the build in RStudio code cleanup shortcut like `Ctrl/Cmd + Shft + A`. It's not perfect, in the sense I disagree with some of its the style choice, but it will be better than you will do on your own starting out.
+
+
+## Vectorization 
 
 ```{r vasetup, include=FALSE, eval=TRUE, cache=FALSE}
 knitr::opts_chunk$set(eval=FALSE)
 ```
 
 
-#### Boolean Indexing
+### Boolean Indexing
 
 Assume <span class="objclass">x</span> is a vector of numbers. How would we create an index representing any value greater than 2?
 
@@ -30,7 +85,7 @@ x[{y = idx; y}]
 x[resid(lm(y ~ x)) > 0]
 ```
 
-#### Vectorized operations
+### Vectorized operations
 
 Boolean indexing allows us to take <span class="emph">vectorized</span> approaches to dealing with data. Consider the following unfortunately coded loop, where we create a variable `y`, which takes on the value of **Yes** if the variable `x` is greater than 2, and **No** if otherwise.
 
@@ -78,7 +133,7 @@ Many vectorized functions already exist in R.  They are often written in C, Fort
 
 
 
-##### Timings
+#### Timings
 
 The previous demonstrates how to use apply. However, there is a <span class="func">scale</span> function in base R that uses a more vectorized approach under the hood. The following demonstrates various approaches to standardizing the columns of the matrix, even using a parallelized approach. As you'll see, the base R function requires very little code and beats the others.
 
@@ -125,7 +180,7 @@ load('data/vectorization.RData'); library(microbenchmark); test
 ```
 
 
-### Regular Expressions
+## Regular Expressions
 
 A <span class="emph">regular expression</span>, regex for short, is a sequence of characters that can be used as a search pattern for a string. Common operations are to merely detect, extract, or replace the matching string.  There are actually many different flavors of regex for different programming languages, which are all flavors that originate with the Perl approach, or can enable the Perl approach to be used.  However, knowing one means you pretty much know the others with only minor modifications if any.
 
@@ -152,7 +207,7 @@ What the regex is esoterically attempting to match is any string that starts wit
 - **$** : ends with preceding
 
 
-#### Typical Uses
+### Typical Uses
 
 None of it makes sense, so don't attempt to do so. Just try to remember a couple key approaches, and search the web for the rest.
 
@@ -186,63 +241,9 @@ grepl(c('apple', 'pear', 'banana'), pattern='^a|a$')
 Scraping the web, munging data, just finding things in your scripts ... you can potentially use this all the time, and not only with text analysis, as we'll now see.
 
 
-### Code Style
+## Vectorization Exercises
 
-A lot has been written about coding <span class="emph">style</span> over the decades.  If there was a definitive answer, you would have heard of it by now.  However, there are a couple things you can do at the beginning of your programming approach to go a long way making your code notably better.
-
-#### Why does your code exist?
-
-Either use text in an R Markdown file or comment your R script.  Explain *why*, not *what*, the code is doing.  Think of it as leaving your future self a note (they will thank you!).  Be clear and don't assume you'll remember why you were doing what you did.
-
-#### Assignment
-
-You see some using `<-` or `=` for assignment.  While there is a slight difference, if you're writing decent code it shouldn't matter. Far more programming languages use `=`, so that's reason to prefer it.  However, if you like being snobby about things, go with `<-`.  Whichever you use, do so consistently.
-
-#### Code length
-
-If your script is becoming hundreds of lines long, you probably need to compartmentalize your operations into separate scripts.  For example, separate your data processing from your model scripts.
-
-#### Spacing
-
-Don't be stingy with spaces. As you start out, err on the side of using them.  Just note there are exceptions (e.g. no space between function name and parenthesis, unless that function is something like <span class="func">if</span> or <span class="func">else</span>), but you'll get used to those over time.
-
-```{r space, eval=FALSE}
-x=rnorm(10, mean=0,sd=1)
-
-x = rnorm(10, mean = 0, sd = 1)
-```
-
-#### Naming things
-
-You might not think of it as such initially, but one of the more difficult challenges in programming is naming things.  Even if we can come up with a name for an object or file, there are different styles we can use for the name.
-
-Here is a brief list of things to keep in mind.
-
-- The name should make sense to you, your future self, and others that will use the code
-- Try to be concise, but see the previous
-- Make liberal use of suffixes/prefixes for naming the same types of things e.g. model_x, model_z
-
-- Don't name anything with 'final'
-- Don't name something that is already an R function/object (e.g. `T`, <span class="func">c</span>, <span class="func">data</span>, etc.)
-- Avoid distinguishing names only by number, e.g. <span class="objclass">data1</span> <span class="objclass">data2</span>
-
-
-Naming styles include:
-
-- snake_case
-- CamelCase or camelCase
-- spinal-case (e.g. for file names)
-- dot.case
-
-For objects and functions, I find snake case easier to read and less prone to issues[^style_claim]. For example, camel case can fail miserably when acronyms are involved. Dots already have specific uses (file name extensions, function methods, etc.), so probably should be avoided unless you're using them for that specific purpose (they can also make selecting the whole name difficult depending on the context).
-
-#### Other
-
-Use tools like the build in RStudio code cleanup shortcut like `Ctrl/Cmd + Shft + A`. It's not perfect, in the sense I disagree with some of its the style choice, but it will be better than you will do on your own starting out.
-
-### Vectorization Exercises
-
-#### Exercise 1
+### Exercise 1
 
 Show a non-vectorized and a vectorized way to add a two to the numbers 1 through 3.
 
@@ -252,7 +253,7 @@ Show a non-vectorized and a vectorized way to add a two to the numbers 1 through
 
 
 
-#### Exercise 2
+### Exercise 2
 
 Of the following, which do you think is faster?  Test it with the <span class="pack">microbenchmark</span> package.
 
@@ -267,9 +268,9 @@ microbenchmark::microbenchmark(
 )
 ```
 
-### Regex Exercises
+## Regex Exercises
 
-#### Exercise 1
+### Exercise 1
 
 Using <span class="pack">stringr</span> and <span class="func">str_replace</span>, replace all the states a's with nothing.
 
@@ -280,9 +281,9 @@ str_replace(state.name, pattern = ?, replacement = ?)
 ```
 
 
-### Naming Exercises
+## Naming Exercises
 
-#### Exercise 1 
+### Exercise 1 
 
 For the following model related output, come up with a name for each object.
 

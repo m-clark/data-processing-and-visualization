@@ -1,4 +1,4 @@
-## Interactive Visualization
+# Interactive Visualization
 
 
 ```{r interactivesetup, include=FALSE, eval=TRUE, cache=FALSE}
@@ -18,7 +18,7 @@ visNetwork(nodes, edges, height=400, width='100%') %>%
 <!-- <iframe src='../img/vntitle.html', width=800, height=300, scrolling="no", frameBorder="0"></iframe> -->
 
 
-### Packages
+## Packages
 
 As mentioned, <span class="pack">ggplot2</span> is the most widely used package for visualization in R. However, it is not interactive by default. Many packages use <span class="pack">htmlwidgets</span>, <span class="pack">d3</span> (JavaScript library), and other tools to provide interactive graphics.  What's great is that while you may have to learn new packages, you don't necessarily have to change your approach or thinking about a plot, or learn some other language.
 
@@ -45,17 +45,17 @@ Specific functionality:
   
 In what follows we'll see some of these in action.  Note that unlike the previous chapter, the goal here is not to dive deeply, but just to get an idea of what's available.
 
-### Piping for Visualization
+## Piping for Visualization
 
 One of the advantages to piping is that it's not limited to <span class="pack">dplyr</span> style data management functions. <span class='emph'>*Any*</span> R function can be potentially piped to, and several examples have already been shown. Many newer visualization packages take advantage of piping, and this facilitates data exploration. We don't have to create objects just to do a visualization.  New variables can be easily created and subsequently manipulated just for visualization. Furthermore, data manipulation not separated from visualization.
 
 
-### htmlwidgets
+## htmlwidgets
 
 The <span class='pack'>htmlwidgets</span> package makes it easy to create visualizations based on JavaScript libraries.  If you're not familiar with JavaScript, you actually are very familiar with its products, as it's basically the language of the web, visual or otherwise.  The R packages using it typically are pipe-oriented and produce interactive plots.  In addition, you can use the <span class='pack'>htmlwidgets</span> package to create your own functions that use a particular JavaScript library (but someone probably already has, so look first).
 
 
-### Plotly
+## Plotly
 
 We'll begin our foray into the interactive world with a couple demonstrations of <span class="pack">plotly</span>.  To give some background, you can think of plotly similar to RStudio, in that it has both enterprise (i.e. pay for) aspects and open source aspects.  Just like RStudio, you have full access to what it has to offer via the open source R package.  You may see old help suggestions referring to needing an account, but this is no longer necessary.  
 
@@ -104,7 +104,7 @@ plot_ly(midwest, x = ~percollege, color = ~state, type = "box")
 ```
 
 
-#### ggplotly
+### ggplotly
 
 One of the strengths of  <span class="pack">plotly</span> is that we can feed a <span class="objclass">ggplot</span> object to it, and turn our formerly static plots into interactive ones.  It would have been easy to use <span class="func">geom_smooth</span> to get a similar result, so let's do so.
 
@@ -131,7 +131,7 @@ Be prepared to spend time getting used to plotly.  It has terrible documentation
 </div>
 
 
-### Highcharter
+## Highcharter
 
 <span class="pack">Highcharter</span> is also fairly useful for a wide variety of plots, and is based on the <span class="pack">highcharts.js</span> library.  If you have data suited to one of its functions, getting a great interactive plot can be ridiculously easy.  
 
@@ -144,7 +144,7 @@ google_price = getSymbols("GOOG", auto.assign = FALSE)
 hchart(google_price)
 ```
 
-### visNetwork
+## visNetwork
 
 The <span class="pack">visNetwork</span> package is specific to network visualizations and similar, and is based on the <span class="pack">vis.js</span> library.  Networks require nodes and edges to connect them. These take on different aspects, and so are created in separate data frames.
 
@@ -180,7 +180,7 @@ visNetwork(nodes, edges, height=300, width=800) %>%
 ```
 
 
-### leaflet
+## leaflet
 
 
 The <span class="pack">leaflet</span> package from RStudio is good for quick interactive maps, and it's quite flexible and has some nice functionality to take your maps further. Unfortunately, it actually doesn't play well with many markdown formats.
@@ -199,7 +199,7 @@ leaflet() %>%
 ```
 
 
-### DT
+## DT
 
 It might be a bit odd to think of data frames visually, but they can be interactive also. One can use the <span class="pack">DT</span> package for interactive data frames.  This can be very useful when working in collaborative environments where one shares reports, as you can embed the data within the document itself.  
 
@@ -251,7 +251,7 @@ iris %>%
 
 I would in no way recommend using the bars, unless the you want a visual *instead* of the value and can show all possible values. I would not recommend angled tag options at all, as that is more or less a prime example of chartjunk.  However, subtle use of color and emphasis can make tables of results that your audience will actually spend time exploring.
 
-### Shiny
+## Shiny
 
 <a href="https://shiny.rstudio.com/gallery/see-more.html"><img src="img/shinygal.png" style="display:block; margin: 0 auto;" width=75% alt='shiny gallery'></a>
 
@@ -288,7 +288,7 @@ You can share your app code/directory with anyone and they'll be able to run it 
 
 
 
-### Interactive and Visual Data Exploration
+## Interactive and Visual Data Exploration
 
 
 As seen above, just a couple visualization packages can go a very long way.  It's now very easy to incorporate interactivity, so you should use it even if only for your own data exploration.
@@ -298,16 +298,16 @@ However, they must serve a purpose. Too often they are simply distraction, and c
 
 
 
-### **Interactive Visualization Exercises**
+## Interactive Visualization Exercises
 
 
-#### Exercise 0
+### Exercise 0
 
 Install and load the <span class="pack">plotly</span> package. Load the <span class="pack">tidyverse</span> package if necessary (so you can use <span class="pack">dplyr</span> and <span class="pack">ggplot2</span>), and install/load the <span class="pack">ggplot2movies</span> for the IMDB data.
 
 
 
-#### Exercise 1
+### Exercise 1
 
 Using <span class="pack">dplyr</span> group by year, and summarize to create a new variable that is the Average rating.  Then create a plot with <span class="pack">plotly</span> for a line or scatter plot (for the latter, use the <span class="func">add_markers</span> function). It will take the following form, but you'll need to supply the plotly arguments.
 
@@ -330,7 +330,7 @@ movies %>%
 ```
 
 
-#### Exercise 2
+### Exercise 2
 
 This time group by year *and* Drama. In the <span class="func">summarize</span> create average rating again, but also a variable representing the average number of votes. In your plotly line, use the size and color arguments to represent whether the average number of votes and whether it was drama or not respectively. Use <span class="func">add_markers</span>.  Note that Drama will be treated as numeric since it's a 0-1 indicator. This won't affect the plot, but if you want, you might use <span class="func">mutate</span> to change it to a factor with labels 'Drama' and 'Other'.
 
@@ -347,7 +347,7 @@ movies %>%
 ```
 
 
-#### Exercise 3
+### Exercise 3
 
 Create a ggplot of your design and then use <span class="func">ggplotly</span> to make it interactive.
 

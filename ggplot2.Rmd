@@ -1,4 +1,4 @@
-## ggplot2
+# ggplot2
 
 
 ```{r ggplot2setup, include=FALSE, eval=TRUE, cache=FALSE}
@@ -29,7 +29,7 @@ Note that while you can obviously use base R for visualization, it's never going
 
 
 
-### Layers
+## Layers
 
 In general, we start with a base layer and add to it. In most cases you'll start as follows.
 
@@ -57,7 +57,7 @@ ggplot(aes(x=height, y=mass), data=starwars) +
 Each layer is consecutively added by means of a pipe operator, and layers may regard geoms, scales, labels, facets etc.  You may have many different layers to produce one plot, and there really is no limit.  However some efficiencies may be possible for a given situation.  For example, it's more straightforward to use <span class="func">geom_smooth</span> than calculate fits, standard errors etc. and then add multiple geoms to produce the same thing.  This is the sort of thing you'll get used to as you use ggplot more.
 
 
-### Piping
+## Piping
 
 As we saw, <span class="emph">layers</span> are added via piping (<span class="emph">+</span>). The first layers added after the base are typically <span class="emph">geoms</span>, or geometric objects that represent the data, and include things like:
 
@@ -78,7 +78,7 @@ Our base is provided via the <span class="func">ggplot</span> function, and spec
 The <span class="func">geom_point</span> function adds a layer of points, and now we would have a scatterplot. Alternatively, you could have specified the x and y aesthetic at the geom_point layer, but if you're going to have the same x, y, color, etc. aesthetics regardless of layer, put it in the base. Otherwise, doing it by layer gives you more flexibility if needed.  Geoms even have their own data argument, allowing you to combine information from several sources for a single visualization.
 
 
-### Aesthetics
+## Aesthetics
 
 <span class="emph">Aesthetics</span> map data to various visual aspects of the plot, including size, color etc. The function used in ggplot to do this is <span class="func">aes</span>.
 
@@ -105,7 +105,7 @@ The same goes for practically any aspect of a geom- size, color, fill, etc. If i
 
 
 
-### Examples
+## Examples
 
 Let's get more of a feel for things by seeing some examples that demonstrate some geoms and aesthetics.
 
@@ -135,7 +135,7 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
   geom_point(aes(size=carat, color=clarity), alpha=.05) 
 ```
 
-### Stats
+## Stats
 
 There are many statistical functions built in, and it is a key strength of ggplot that you don't have to do a lot of processing for very common plots.
 
@@ -168,7 +168,7 @@ The take-home message here is to always let ggplot do the work for you if at all
 
 
 
-### Scales
+## Scales
 
 Often there are many things we want to change about the plot, for example, the size and values of axis labels, the range of sizes for points to take, the specific colors we want to use, and so forth.  Be aware that there are a great many options here, and you will regularly want to use them.
 
@@ -226,11 +226,11 @@ ggplot(mpg, aes(displ, hwy)) +
 
 In short, scale alterations are really useful for getting just the plot you want, and there is a lot of flexibility for you to work with.
 
-### Facets
+## Facets
 
 <span class="emph">Facets</span> allow for paneled display, a very common operation. In general, we often want comparison plots. The <span class="func">facet_grid</span> function will produce a grid, and often this is all that's needed.  However, <span class="func">facet_wrap</span> is more flexible, while possibly taking a bit extra to get things just the way you want. Both use a formula approach to specify the grouping.
 
-##### facet_grid
+#### facet_grid
 
 Facet by cylinder.
 
@@ -255,7 +255,7 @@ ggplot(mtcars, aes(wt, mpg)) +
 ```
 
 
-##### facet_wrap
+#### facet_wrap
 
 Specify the number of columns or rows with <span class="func">facet_wrap</span>.
 
@@ -266,7 +266,7 @@ ggplot(mtcars, aes(wt, mpg)) +
 ```
 
 
-### Fine control
+## Fine control
 
 <span class="pack">ggplot2</span> makes it easy to get good looking graphs quickly. However the amount of fine control is extensive.  The following plot is hideous (aside from the background, which is totally rad), but illustrates the point.
 
@@ -299,7 +299,7 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
 ```
 
 
-### Themes
+## Themes
 
 In the last example you saw two uses of a <span class="emph">theme</span>- a built-in version that comes with ggplot (<span class="func">theme_minimal</span>), and specific customization (<span class="func">theme(...)</span>).  The built-in themes provide ready-made approaches that might be enough for a finished product.  For the theme function, each argument, and there are many, takes on a specific value or an element function:
 
@@ -313,7 +313,7 @@ Each of those element functions has arguments specific to it. For example, for <
 Note that the base theme of ggplot, and I would say every plotting package, is probably going to need manipulation before a plot is ready for presentation.  For example, the ggplot theme doesn't work well for web presentation, and is even worse for print.  You will almost invariably need to tweak it. I suggest using and saving your own custom theme for easy application for any visualization package you use frequently.
 
 
-### Extensions
+## Extensions
 
 <span class="pack">ggplot2</span> now has its own extension system, and there is even a [website](http://www.ggplot2-exts.org/) to track the extensions. Examples include:
 
@@ -341,19 +341,19 @@ Muller_plot(Muller_df, palette=rep(RColorBrewer::brewer.pal(12, 'Set3'), 4), xla
 
 As one can see, <span class="pack">ggplot2</span> is only the beginning. You'll have a lot of tools at your disposal. Furthermore, many modeling and other packages will produce ggplot graphics to which you can add your own layers and tweak like you would any other ggplot.
 
-### Summary ggplot2
+## Summary ggplot2
 
 <span class="pack">ggplot2</span> is an easy to use, but powerful visualization tool. It allows one to think in many dimensions for any graph, and extends well beyond the basics. Use it to easily create more interesting visualizations.
 
 
 
-### **ggplot2 Exercises**
+## ggplot2 Exercises
 
-#### Exercise 0
+### Exercise 0
 
 Install and load the <span class="pack">ggplot2</span> package if you haven't already.
 
-#### Exercise 1
+### Exercise 1
 
 Create two plots, one a scatterplot (e.g. with <span class="func">geom_point</span>) and one with lines (e.g. <span class="func">geom_line</span>) with a data set of your choosing (all of the following are base R or available after loading <span class="pack">ggplot2</span>.  Some suggestions:
 
@@ -391,7 +391,7 @@ ggplot(aes(x=waiting, y=eruptions), data=faithful) +
 ```
 
 
-#### Exercise 2
+### Exercise 2
 
 Play around and change the arguments to the following. You'll need to install the <span class="pack">maps</span> package. 
 

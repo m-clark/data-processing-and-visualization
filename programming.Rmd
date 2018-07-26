@@ -1,16 +1,16 @@
-# Part III: Programming
+# (PART\*) Part III: Programming {-}
 
 ```{r progsetup, include=FALSE, eval=TRUE, cache=FALSE}
 knitr::opts_chunk$set(eval=T, echo=T)
 ```
 
-## Basics
+# Basics
 
 Becoming a better programmer is in many ways like learning any language.  While it may be literal, there is much nuance, and many ways are available to express yourself in order to solve some problem.  However, it doesn't take much in the way of practice to develop a few skills that will not only last, but go a long way toward saving you time and allowing you to explore your data, models, and visualizations more extensively.  So let's get to it!
 
-### R Objects
+## R Objects
 
-#### Object Inspection & Exploration
+### Object Inspection & Exploration
 
 Let's say you've imported your data into R.  If you are going to be able to do anything with it, you'll have had to create an R object that represents that data.  What is that object?  By now you know it's a data frame, specifically, [class](https://en.wikipedia.org/wiki/Class_(computer_programming)) <span class="objclass">data.frame</span> or possibly a <span class="objclass">tibble</span> if you're working within the tidyverse.  If you want to look at it, you might be tempted to look at it this way with <span class="func">View</span>, or clicking on it in your Environment viewer.
 
@@ -69,7 +69,7 @@ lm_mod_summary$coefficients %>%
 
 After a while, you'll know what's in the objects you use most often, and that will allow you more easily work with the content they contain, allowing you to work with them more efficiently.
 
-#### Methods
+### Methods
 
 Consider the following:
 
@@ -99,7 +99,7 @@ methods(class = 'brmsfit')
 
 This allows you to quickly get oriented to a package and the objects it produces, and provides utility you might not have even known to look for in the first place!
 
-#### S4 classes
+### S4 classes
 
 Everything we've been dealing with at this point are S3 objects, classes, and methods. R is a dialect of the [S language](https://www.r-project.org/conferences/useR-2006/Slides/Chambers.pdf), and the S3 name reflects the version of S at the time of R's creation.  S4 was the next iteration of S, but I'm not going to say much about the S4 system of objects other than they are a separate type of object with their own methods.  For practical use you might not see much difference, but if you see an S4 object, it will have <span class="emph">slots</span> accessible via `@`.
 
@@ -114,12 +114,12 @@ str(car_matrix)
 
 Mostly, I just find S4 objects slightly more annoying to work with for applied work, but you should be at least somewhat familiar with them so that you won't be thrown off course when they appear.
 
-#### Others
+### Others
 
 Indeed there are more types of R objects, but they will probably not be of much notice to the applied user.  As an example, the <span class="pack">text2vec</span> package uses [R6](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html).  I can only say that you'll just have to cross that bridge should you get to it.
 
 
-#### Inspecting Functions
+### Inspecting Functions
 
 You might not think of them as such, but in R, everything's an object, including functions. You can inspect them like anything else.
 
@@ -134,17 +134,8 @@ head(lm, 20)
 
 One of the primary reasons for R's popularity is the accessibility of the underlying code.  People can very easily access the code for some function, modify it, extend it, etc.  From an applied perspective, if you want to get better at writing code, or modify existing code, all you have to do is dive in!  We'll talk more about writing functions [later][Writing functions].
 
-#### Objects Exercises
 
-With one function, find out what the class, number of rows, number of columns are of the following object, including what kind of object the last three columns are.
-
-```{r tibble_inspect}
-library(dplyr)
-?starwars
-```
-
-
-### Help Files
+## Help Files
 
 Many applied users of R are quick to search the web for available help when they come to a problem.  This is great, you'll find a lot of information out there.  However, it will likely take you a bit to sort through things and find exactly what you need.  Strangely, many users of R I see don't use the help files first, and yet this is typically the quickest way to answer many of the questions they'll have.
 
@@ -175,9 +166,14 @@ Not all functions have all this information, but  most do, and if they are adher
 
 
 
+### Objects Exercises
 
+With one function, find out what the class, number of rows, number of columns are of the following object, including what kind of object the last three columns are.
 
-
+```{r tibble_inspect}
+library(dplyr)
+?starwars
+```
 
 
 
