@@ -211,7 +211,7 @@ apply(mtcars, 2, function(x) sd(x))
 
 The difference between the two is that for the latter, our function didn't have to be a named object already available.  To further illustrate this, we'll create a robust standardization function that uses the median and median absolute deviation rather than the mean and standard deviation.
 
-```{r lambda_ex, cache.rebuild=T}
+```{r lambda_ex}
 # some variables have a mad = 0, and so return Inf, NaN
 # apply(mtcars, 2, function(x) (x - median(x))/mad(x)) %>% 
 #   head()
