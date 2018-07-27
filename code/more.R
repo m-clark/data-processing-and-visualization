@@ -1,3 +1,8 @@
+## ----space, eval=FALSE---------------------------------------------------
+## x=rnorm(10, mean=0,sd=1)
+## 
+## x = rnorm(10, mean = 0, sd = 1)
+
 ## ----vasetup, include=FALSE, eval=TRUE, cache=FALSE----------------------
 knitr::opts_chunk$set(eval=FALSE)
 
@@ -89,11 +94,6 @@ grepl(string, pattern='^r.*shiny[0-9]$')
 ## grepl(c('apple', 'pear', 'banana'), pattern='a')
 ## grepl(c('apple', 'pear', 'banana'), pattern='^a')
 ## grepl(c('apple', 'pear', 'banana'), pattern='^a|a$')
-
-## ----space, eval=FALSE---------------------------------------------------
-## x=rnorm(10, mean=0,sd=1)
-## 
-## x = rnorm(10, mean = 0, sd = 1)
 
 ## ----vector_ex1, eval=FALSE----------------------------------------------
 ## ?
