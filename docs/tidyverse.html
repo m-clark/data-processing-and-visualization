@@ -6,33 +6,33 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Data Processing &amp; Visualization</title>
-  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. Part of the focus will be on the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks.">
+  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks.">
   <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://m-clark.github.io/data-processing-and-visualization/" />
   <meta property="og:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
-  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. Part of the focus will be on the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
   <meta name="github-repo" content="m-clark/data-processing-and-visualization/" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Data Processing &amp; Visualization" />
   
-  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. Part of the focus will be on the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
   <meta name="twitter:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
 
 
 
-<meta name="date" content="2018-07-23">
+<meta name="date" content="2018-07-26">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   <link rel="shortcut icon" href="img/R.ico" type="image/x-icon">
-<link rel="prev" href="1_05_pipes.html">
-<link rel="next" href="1_07_datatable.html">
+<link rel="prev" href="pipes.html">
+<link rel="next" href="data_table.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -184,152 +184,265 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class='before'><a href="https://m-clark.github.io/">Data Processing & Visualization</a></li>
+<li class='before'><a href="https://m-clark.github.io/data-processing-and-visualization/">Data Processing & Visualization</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html"><i class="fa fa-check"></i>Intro</a><ul>
-<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#outline"><i class="fa fa-check"></i>Outline</a><ul>
-<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#part-1-data-processing"><i class="fa fa-check"></i>Part 1: Data Processing</a></li>
-<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#part-2-visualization"><i class="fa fa-check"></i>Part 2: Visualization</a></li>
-<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#part-3-programming-basics"><i class="fa fa-check"></i>Part 3: Programming Basics</a></li>
-<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#part-4-presentation"><i class="fa fa-check"></i>Part 4: Presentation</a></li>
-<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#part-5-modeling"><i class="fa fa-check"></i>Part 5: Modeling</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i>Intro</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#outline"><i class="fa fa-check"></i>Outline</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-1-data-processing"><i class="fa fa-check"></i>Part 1: Data Processing</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-2-visualization"><i class="fa fa-check"></i>Part 2: Visualization</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-3-programming-basics"><i class="fa fa-check"></i>Part 3: Programming Basics</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-4-presentation"><i class="fa fa-check"></i>Part 4: Presentation</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-5-modeling"><i class="fa fa-check"></i>Part 5: Modeling</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#preparation"><i class="fa fa-check"></i>Preparation</a></li>
-<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#other"><i class="fa fa-check"></i>Other</a></li>
-<li class="chapter" data-level="" data-path="1_01_intro.html"><a href="1_01_intro.html#python"><i class="fa fa-check"></i>Python</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html"><i class="fa fa-check"></i>Part I: Data Processing</a><ul>
-<li><a href="1_02_dataStructures.html#data-structures"><strong>Data Structures</strong></a><ul>
-<li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#vectors"><i class="fa fa-check"></i>Vectors</a></li>
-<li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#matrices"><i class="fa fa-check"></i>Matrices</a></li>
-<li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#lists"><i class="fa fa-check"></i>Lists</a></li>
-<li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#data-frames"><i class="fa fa-check"></i>Data Frames</a></li>
-<li class="chapter" data-level="" data-path="1_02_dataStructures.html"><a href="1_02_dataStructures.html#data-structure-exercises"><i class="fa fa-check"></i>Data Structure Exercises</a></li>
-</ul></li>
-<li><a href="1_03_io.html#io"><strong>Input/Output</strong></a><ul>
-<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html"><i class="fa fa-check"></i>Other approaches</a></li>
-<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#faster-approaches"><i class="fa fa-check"></i>Faster approaches</a></li>
-<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#other-data"><i class="fa fa-check"></i>Other Data</a></li>
-<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#on-the-horizon"><i class="fa fa-check"></i>On the horizon</a></li>
-<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#big-data"><i class="fa fa-check"></i>Big Data</a></li>
-<li class="chapter" data-level="" data-path="1_03_io.html"><a href="1_03_io.html#io-exercises"><i class="fa fa-check"></i>I/O Exercises</a></li>
-</ul></li>
-<li><a href="1_04_indexing.html#indexing"><strong>Indexing</strong></a><ul>
-<li class="chapter" data-level="" data-path="1_04_indexing.html"><a href="1_04_indexing.html"><i class="fa fa-check"></i>Base R Indexing Refresher</a></li>
-<li class="chapter" data-level="" data-path="1_04_indexing.html"><a href="1_04_indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/Data.frame extraction</a></li>
-<li class="chapter" data-level="" data-path="1_04_indexing.html"><a href="1_04_indexing.html#indexing-exercises"><i class="fa fa-check"></i>Indexing Exercises</a></li>
-</ul></li>
-<li><a href="1_05_pipes.html#pipes"><strong>Pipes</strong></a><ul>
-<li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html"><i class="fa fa-check"></i>Pipes for Visualization (more later)</a></li>
-<li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html#the-dot"><i class="fa fa-check"></i>The dot</a></li>
-<li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html#flexibility"><i class="fa fa-check"></i>Flexibility</a></li>
-<li class="chapter" data-level="" data-path="1_05_pipes.html"><a href="1_05_pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
-</ul></li>
-<li><a href="1_06_tidyverse.html#tidyverse"><strong>Tidyverse</strong></a><ul>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html"><i class="fa fa-check"></i>What is the tidyverse?</a></li>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is tidy?</a></li>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#dplyr"><i class="fa fa-check"></i>dplyr</a></li>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#running-example"><i class="fa fa-check"></i>Running example</a></li>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#selecting-columns"><i class="fa fa-check"></i>Selecting Columns</a></li>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#filtering-rows"><i class="fa fa-check"></i>Filtering Rows</a></li>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#generating-new-data"><i class="fa fa-check"></i>Generating New Data</a></li>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#grouping-and-summarizing-data"><i class="fa fa-check"></i>Grouping and Summarizing Data</a></li>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#renaming-columns"><i class="fa fa-check"></i>Renaming columns</a></li>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#merging-data"><i class="fa fa-check"></i>Merging Data</a></li>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#tidyr"><i class="fa fa-check"></i>tidyr</a></li>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#more-tidyverse"><i class="fa fa-check"></i>More Tidyverse</a></li>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
-<li class="chapter" data-level="" data-path="1_06_tidyverse.html"><a href="1_06_tidyverse.html#tidyverse-exercises"><i class="fa fa-check"></i>tidyverse Exercises</a></li>
-</ul></li>
-<li><a href="1_07_datatable.html#data.table"><strong>data.table</strong></a><ul>
-<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html"><i class="fa fa-check"></i>Basics</a></li>
-<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#grouped-operations"><i class="fa fa-check"></i>Grouped operations</a></li>
-<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#faster"><i class="fa fa-check"></i>Faster!</a></li>
-<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
-<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#summary-1"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#dtplyr"><i class="fa fa-check"></i>dtplyr</a></li>
-<li class="chapter" data-level="" data-path="1_07_datatable.html"><a href="1_07_datatable.html#data.table-exercises"><i class="fa fa-check"></i>data.table Exercises</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#preparation"><i class="fa fa-check"></i>Preparation</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#other"><i class="fa fa-check"></i>Other</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#python"><i class="fa fa-check"></i>Python</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#r"><i class="fa fa-check"></i>R</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html"><i class="fa fa-check"></i>Part II: Visualization</a><ul>
-<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#thinking-visually-1"><i class="fa fa-check"></i>Thinking Visually</a><ul>
-<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#information"><i class="fa fa-check"></i>Information</a></li>
-<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#color"><i class="fa fa-check"></i>Color</a></li>
-<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
-<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#scaling-size"><i class="fa fa-check"></i>Scaling Size</a></li>
-<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
-<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#accessibility"><i class="fa fa-check"></i>Accessibility</a></li>
-<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#file-types"><i class="fa fa-check"></i>File Types</a></li>
-<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#summary-2"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#a-casual-list-of-things-to-avoid"><i class="fa fa-check"></i>A casual list of things to avoid</a></li>
-<li class="chapter" data-level="" data-path="2_01_thinkingvis.html"><a href="2_01_thinkingvis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a></li>
+<li class="part"><span><b>Part I: Data Processing</b></span></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html"><i class="fa fa-check"></i>Data Structures</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#vectors"><i class="fa fa-check"></i>Vectors</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#character-strings"><i class="fa fa-check"></i>Character strings</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#factors"><i class="fa fa-check"></i>Factors</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#logicals"><i class="fa fa-check"></i>Logicals</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#numeric-and-integer"><i class="fa fa-check"></i>Numeric and integer</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
-<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
-<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
-<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
-<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#examples"><i class="fa fa-check"></i>Examples</a></li>
-<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#stats"><i class="fa fa-check"></i>Stats</a></li>
-<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#scales"><i class="fa fa-check"></i>Scales</a></li>
-<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#facets"><i class="fa fa-check"></i>Facets</a></li>
-<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
-<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#themes"><i class="fa fa-check"></i>Themes</a></li>
-<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
-<li class="chapter" data-level="" data-path="2_02_ggplot2.html"><a href="2_02_ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
-<li><a href="2_02_ggplot2.html#ggplot2-exercises"><strong>ggplot2 Exercises</strong></a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#matrices"><i class="fa fa-check"></i>Matrices</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#creating-a-matrix"><i class="fa fa-check"></i>Creating a matrix</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
-<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#packages"><i class="fa fa-check"></i>Packages</a></li>
-<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#piping-for-visualization"><i class="fa fa-check"></i>Piping for Visualization</a></li>
-<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#htmlwidgets"><i class="fa fa-check"></i>htmlwidgets</a></li>
-<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#plotly"><i class="fa fa-check"></i>Plotly</a></li>
-<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#highcharter"><i class="fa fa-check"></i>Highcharter</a></li>
-<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#visnetwork"><i class="fa fa-check"></i>visNetwork</a></li>
-<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#leaflet"><i class="fa fa-check"></i>leaflet</a></li>
-<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#dt"><i class="fa fa-check"></i>DT</a></li>
-<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#shiny"><i class="fa fa-check"></i>Shiny</a></li>
-<li class="chapter" data-level="" data-path="2_03_interactive.html"><a href="2_03_interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
-<li><a href="2_03_interactive.html#interactive-visualization-exercises"><strong>Interactive Visualization Exercises</strong></a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#lists"><i class="fa fa-check"></i>Lists</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#data-frames"><i class="fa fa-check"></i>Data Frames</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#creating-a-data-frame"><i class="fa fa-check"></i>Creating a data frame</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#data-structure-exercises"><i class="fa fa-check"></i>Data Structure Exercises</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#excercise-1"><i class="fa fa-check"></i>Excercise #1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise #2</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#thinking-exercises"><i class="fa fa-check"></i>Thinking Exercises</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html"><i class="fa fa-check"></i>Part III: Programming</a><ul>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#basics-1"><i class="fa fa-check"></i>Basics</a><ul>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#r-objects"><i class="fa fa-check"></i>R Objects</a></li>
-<li class="chapter" data-level="" data-path="3_01_programming.html"><a href="3_01_programming.html#help-files"><i class="fa fa-check"></i>Help Files</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
-<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a></li>
-<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
-<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#dots-and-loops"><i class="fa fa-check"></i>(Dots and) Loops</a></li>
-<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a></li>
-<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
-<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#working-with-lists"><i class="fa fa-check"></i>Working with lists</a></li>
-<li class="chapter" data-level="" data-path="3_02_iterative.html"><a href="3_02_iterative.html#iterative-programming-exercises"><i class="fa fa-check"></i>Iterative Programming Exercises</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html"><i class="fa fa-check"></i>Writing functions</a><ul>
-<li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#a-starting-point"><i class="fa fa-check"></i>A starting point</a></li>
-<li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#dry"><i class="fa fa-check"></i>DRY</a></li>
-<li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#anonymous-functions"><i class="fa fa-check"></i>Anonymous functions</a></li>
-<li class="chapter" data-level="" data-path="3_03_functions.html"><a href="3_03_functions.html#writing-functions-exercises"><i class="fa fa-check"></i>Writing Functions Exercises</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="3_04_more.html"><a href="3_04_more.html"><i class="fa fa-check"></i>More</a><ul>
-<li class="chapter" data-level="" data-path="3_04_more.html"><a href="3_04_more.html#vectorization"><i class="fa fa-check"></i>Vectorization</a></li>
-<li class="chapter" data-level="" data-path="3_04_more.html"><a href="3_04_more.html#naming-things"><i class="fa fa-check"></i>Naming things</a></li>
-<li class="chapter" data-level="" data-path="3_04_more.html"><a href="3_04_more.html#regular-expressions"><i class="fa fa-check"></i>Regular Expressions</a></li>
-<li><a href="3_04_more.html#vector-exercises"><strong>Vector Exercises</strong></a></li>
-<li><a href="3_04_more.html#regex-exercises"><strong>Regex Exercises</strong></a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html"><i class="fa fa-check"></i>Input/Output</a><ul>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#other-approaches"><i class="fa fa-check"></i>Other approaches</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#faster-approaches"><i class="fa fa-check"></i>Faster approaches</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#other-data"><i class="fa fa-check"></i>Other Data</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#on-the-horizon"><i class="fa fa-check"></i>On the horizon</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#big-data"><i class="fa fa-check"></i>Big Data</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#io-exercises"><i class="fa fa-check"></i>I/O Exercises</a><ul>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#thinking-exercises-1"><i class="fa fa-check"></i>Thinking Exercises</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="999_summary.html"><a href="999_summary.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html"><i class="fa fa-check"></i>Indexing</a><ul>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#base-r-indexing-refresher"><i class="fa fa-check"></i>Base R Indexing Refresher</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/Data.frame extraction</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#indexing-exercises"><i class="fa fa-check"></i>Indexing Exercises</a><ul>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-1-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-2-1"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html"><i class="fa fa-check"></i>Pipes</a><ul>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#using-variables-as-they-are-created"><i class="fa fa-check"></i>Using variables as they are created</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#pipes-for-visualization-more-later"><i class="fa fa-check"></i>Pipes for Visualization (more later)</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#the-dot"><i class="fa fa-check"></i>The dot</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#flexibility"><i class="fa fa-check"></i>Flexibility</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html"><i class="fa fa-check"></i>Tidyverse</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-the-tidyverse"><i class="fa fa-check"></i>What is the tidyverse?</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is tidy?</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#dplyr"><i class="fa fa-check"></i>dplyr</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#an-example"><i class="fa fa-check"></i>An example</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#running-example"><i class="fa fa-check"></i>Running example</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#selecting-columns"><i class="fa fa-check"></i>Selecting Columns</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#helper-functions"><i class="fa fa-check"></i>Helper functions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#filtering-rows"><i class="fa fa-check"></i>Filtering Rows</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#generating-new-data"><i class="fa fa-check"></i>Generating New Data</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#grouping-and-summarizing-data"><i class="fa fa-check"></i>Grouping and Summarizing Data</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#renaming-columns"><i class="fa fa-check"></i>Renaming columns</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#merging-data"><i class="fa fa-check"></i>Merging Data</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyr"><i class="fa fa-check"></i>tidyr</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#more-tidyverse"><i class="fa fa-check"></i>More Tidyverse</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyverse-exercises"><i class="fa fa-check"></i>tidyverse Exercises</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-1-2"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-2-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-3-1"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-4"><i class="fa fa-check"></i>Exercise 4</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html"><i class="fa fa-check"></i>data.table</a><ul>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#basics"><i class="fa fa-check"></i>Basics</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#grouped-operations"><i class="fa fa-check"></i>Grouped operations</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster"><i class="fa fa-check"></i>Faster!</a><ul>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#joins"><i class="fa fa-check"></i>Joins</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#group-by"><i class="fa fa-check"></i>Group by</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#string-matching"><i class="fa fa-check"></i>String matching</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#reading-files"><i class="fa fa-check"></i>Reading files</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#more-speed"><i class="fa fa-check"></i>More speed</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#summary-1"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#dtplyr"><i class="fa fa-check"></i>dtplyr</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-exercises"><i class="fa fa-check"></i>data.table Exercises</a><ul>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-0-1"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-1-3"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-2-3"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Part II: Visualization</b></span></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html"><i class="fa fa-check"></i>Thinking Visually</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#information"><i class="fa fa-check"></i>Information</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#your-audience-isnt-dumb"><i class="fa fa-check"></i>Your audience isn’t dumb</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#clarity-is-key"><i class="fa fa-check"></i>Clarity is key</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#avoid-clutter"><i class="fa fa-check"></i>Avoid clutter</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#color-isnt-optional"><i class="fa fa-check"></i>Color isn’t optional</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#think-interactively"><i class="fa fa-check"></i>Think interactively</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#color"><i class="fa fa-check"></i>Color</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#viridis"><i class="fa fa-check"></i>Viridis</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#rcolorbrewer"><i class="fa fa-check"></i>RColorBrewer</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#scaling-size"><i class="fa fa-check"></i>Scaling Size</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#accessibility"><i class="fa fa-check"></i>Accessibility</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#file-types"><i class="fa fa-check"></i>File Types</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#summary-2"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#a-casual-list-of-things-to-avoid"><i class="fa fa-check"></i>A casual list of things to avoid</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#pie"><i class="fa fa-check"></i>Pie</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#histograms"><i class="fa fa-check"></i>Histograms</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#using-3d-without-adding-any-communicative-value"><i class="fa fa-check"></i>Using 3D without adding any communicative value</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#using-too-many-colors"><i class="fa fa-check"></i>Using too many colors</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#showing-maps-that-just-display-population"><i class="fa fa-check"></i>Showing maps that just display population</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#biplots"><i class="fa fa-check"></i>Biplots</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-1-4"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-2-4"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-exercises-2"><i class="fa fa-check"></i>Thinking exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#examples"><i class="fa fa-check"></i>Examples</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#stats"><i class="fa fa-check"></i>Stats</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#scales"><i class="fa fa-check"></i>Scales</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i>Facets</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#themes"><i class="fa fa-check"></i>Themes</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-exercises"><i class="fa fa-check"></i>ggplot2 Exercises</a><ul>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-0-2"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-1-5"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-2-5"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#packages"><i class="fa fa-check"></i>Packages</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#piping-for-visualization"><i class="fa fa-check"></i>Piping for Visualization</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#htmlwidgets"><i class="fa fa-check"></i>htmlwidgets</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#plotly"><i class="fa fa-check"></i>Plotly</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#ggplotly"><i class="fa fa-check"></i>ggplotly</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#highcharter"><i class="fa fa-check"></i>Highcharter</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#visnetwork"><i class="fa fa-check"></i>visNetwork</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#leaflet"><i class="fa fa-check"></i>leaflet</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#dt"><i class="fa fa-check"></i>DT</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#shiny"><i class="fa fa-check"></i>Shiny</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-visualization-exercises"><i class="fa fa-check"></i>Interactive Visualization Exercises</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-0-3"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-1-6"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-2-6"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-3-2"><i class="fa fa-check"></i>Exercise 3</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Part III: Programming</b></span></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html"><i class="fa fa-check"></i>Basics</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#r-objects"><i class="fa fa-check"></i>R Objects</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#object-inspection-exploration"><i class="fa fa-check"></i>Object Inspection &amp; Exploration</a></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#methods"><i class="fa fa-check"></i>Methods</a></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#s4-classes"><i class="fa fa-check"></i>S4 classes</a></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#others"><i class="fa fa-check"></i>Others</a></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#inspecting-functions"><i class="fa fa-check"></i>Inspecting Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#help-files"><i class="fa fa-check"></i>Help Files</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#objects-exercises"><i class="fa fa-check"></i>Objects Exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#a-slight-speed-gain"><i class="fa fa-check"></i>A slight speed gain</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#dots-and-loops"><i class="fa fa-check"></i>(Dots and) Loops</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#working-with-lists"><i class="fa fa-check"></i>Working with lists</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#iterative-programming-exercises"><i class="fa fa-check"></i>Iterative Programming Exercises</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-1-7"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-2-7"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-3-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i>Writing Functions</a><ul>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#a-starting-point"><i class="fa fa-check"></i>A starting point</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#dry"><i class="fa fa-check"></i>DRY</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#anonymous-functions"><i class="fa fa-check"></i>Anonymous functions</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#writing-functions-exercises"><i class="fa fa-check"></i>Writing Functions Exercises</a><ul>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1-1"><i class="fa fa-check"></i>Excercise 1</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1b"><i class="fa fa-check"></i>Excercise 1b</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#exercise-2-8"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#thinking-exercises-3"><i class="fa fa-check"></i>Thinking Exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html"><i class="fa fa-check"></i>More</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-style"><i class="fa fa-check"></i>Code Style</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#why-does-your-code-exist"><i class="fa fa-check"></i>Why does your code exist?</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#assignment"><i class="fa fa-check"></i>Assignment</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-length"><i class="fa fa-check"></i>Code length</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#naming-things"><i class="fa fa-check"></i>Naming things</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#other-1"><i class="fa fa-check"></i>Other</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorization"><i class="fa fa-check"></i>Vectorization</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#boolean-indexing"><i class="fa fa-check"></i>Boolean Indexing</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorized-operations"><i class="fa fa-check"></i>Vectorized operations</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#regular-expressions"><i class="fa fa-check"></i>Regular Expressions</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#typical-uses"><i class="fa fa-check"></i>Typical Uses</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorization-exercises"><i class="fa fa-check"></i>Vectorization Exercises</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-8"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-9"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#regex-exercises"><i class="fa fa-check"></i>Regex Exercises</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-9"><i class="fa fa-check"></i>Exercise 1</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#naming-exercises"><i class="fa fa-check"></i>Naming Exercises</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-10"><i class="fa fa-check"></i>Exercise 1</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Wrap-up</b></span></li>
+<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
-<li class='after'"><a href="https://m-clark.github.io/"><img src="img/mc.png" style="width:50%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo"></a></li>
+<li class='after'"><a href="https://m-clark.github.io/"><img src="img/mc_logo.png" style="width:25%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo"></a></li>
 <li class='after'">
    <div style='text-align:center'>
      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
-        <i class="fab fa-creative-commons fa-lg"    style='color:#ff5500; background-color:transparent;'></i> 
-        <i class="fab fa-creative-commons-by fa-lg" style='color:#ff5500; background-color:transparent;'></i> 
-        <i class="fab fa-creative-commons-sa fa-lg" style='color:#ff5500; background-color:transparent;'></i>
+        <i class="fab fa-creative-commons fa-lg"></i> 
+        <i class="fab fa-creative-commons-by fa-lg"></i> 
+        <i class="fab fa-creative-commons-sa fa-lg"></i>
      </a>
    </div>
 </li>
@@ -351,10 +464,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="tidyverse" class="section level2">
-<h2><strong>Tidyverse</strong></h2>
-<div id="what-is-the-tidyverse" class="section level3">
-<h3>What is the tidyverse?</h3>
+<div id="tidyverse" class="section level1">
+<h1>Tidyverse</h1>
+<div id="what-is-the-tidyverse" class="section level2">
+<h2>What is the tidyverse?</h2>
 <p>The tidyverse consists of a few key packages:</p>
 <ul>
 <li><span class="pack">ggplot2</span>: data visualization</li>
@@ -377,8 +490,8 @@ filter(): dplyr, stats
 lag():    dplyr, stats</code></pre>
 <p>In addition, there are other packages like <span class="pack">lubridate</span>, <span class="pack">rvest</span>, <span class="pack">stringr</span> and others in the <strong>hadleyverse</strong> that are also greatly useful.</p>
 </div>
-<div id="what-is-tidy" class="section level3">
-<h3>What is tidy?</h3>
+<div id="what-is-tidy" class="section level2">
+<h2>What is tidy?</h2>
 <p><span class="emph">Tidy data</span> refers to data arranged in a way that makes data processing, analysis, and visualization simpler.</p>
 <p>In a tidy data set:</p>
 <ul>
@@ -388,8 +501,8 @@ lag():    dplyr, stats</code></pre>
 </ul>
 <p>Think <em>long</em> before <em>wide</em>.</p>
 </div>
-<div id="dplyr" class="section level3">
-<h3>dplyr</h3>
+<div id="dplyr" class="section level2">
+<h2>dplyr</h2>
 <p><span class="pack">dplyr</span> provides a grammar of data manipulation (like <span class="pack">ggplot2</span> does for visualization). It is the next iteration of <span class="pack">plyr</span>, but there is no longer any need for <span class="pack">plyr</span> really. It’s focused on tools for working with data frames, with over 100 functions that might be of specific use to you.</p>
 <p>It has three main goals:</p>
 <ul>
@@ -418,8 +531,8 @@ lag():    dplyr, stats</code></pre>
 <li><span class="func">n</span>, <span class="func">n_distinct</span>, <span class="func">nth</span>, <span class="func">n_groups</span>, <span class="func">count</span>, <span class="func">recode</span>, <span class="func">between</span></li>
 </ul>
 <p>In addition, there is no need to quote variable names.</p>
-<div id="an-example" class="section level4">
-<h4>An example</h4>
+<div id="an-example" class="section level3">
+<h3>An example</h3>
 <p>Let’s say we want to select from our data the following variables:</p>
 <ul>
 <li>Start with the <strong>ID</strong> variable</li>
@@ -467,8 +580,8 @@ lag():    dplyr, stats</code></pre>
 </ul>
 </div>
 </div>
-<div id="running-example" class="section level3">
-<h3>Running example</h3>
+<div id="running-example" class="section level2">
+<h2>Running example</h2>
 <p>The following data was scraped initially scraped from the web as follows. It is data from the NBA basketball league for the 2017-2018 season with things like player names, position, team name, points per game, field goal percentage, and various other statistics. We’ll use it as an example to demonstrate various functionality found within <span class="pack">dplyr</span>.</p>
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="kw">library</span>(rvest)</a>
 <a class="sourceLine" id="cb70-2" data-line-number="2">url =<span class="st"> &quot;http://www.basketball-reference.com/leagues/NBA_2018_totals.html&quot;</span></a>
@@ -488,8 +601,8 @@ $ Pos    &lt;chr&gt; &quot;SG&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;C&quot
 $ Age    &lt;dbl&gt; 24, 27, 24, 20, 32, 29, 32, 19, 25, 36, 27, 24, 24, 29, 19, 23, 33, 20, 23, 32, 29, 25, 31, 31, 31, 30, 28, 28, 28, 22, 24, 21, 20, 33, 25, 27, 29, 29, 31, 28, 24, 21, 29, 31, 31, 31, 23, 23, 20, 25, ...
 $ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MIA&quot;, &quot;ORL&quot;, &quot;MIN&quot;, &quot;SAS&quot;, &quot;BRK&quot;, &quot;BOS&quot;, &quot;NOP&quot;, &quot;POR&quot;, &quot;PHI&quot;, &quot;SAS&quot;, &quot;HOU&quot;, &quot;IND&quot;, &quot;MIL&quot;, &quot;OKC&quot;, &quot;TOR&quot;, &quot;CHI&quot;, &quot;HOU&quot;, &quot;DEN&quot;, &quot;ORL&quot;, &quot;TOT&quot;, &quot;NOP&quot;, &quot;CHI&quot;, &quot;ORL&quot;, &quot;TOT&quot;, &quot;ATL&quot;, &quot;MIA...</code></pre>
 </div>
-<div id="selecting-columns" class="section level3">
-<h3>Selecting Columns</h3>
+<div id="selecting-columns" class="section level2">
+<h2>Selecting Columns</h2>
 <p>Often you do not need the entire data set. While this is easily handled in base R (as shown earlier), it can be more clear to use <span class="func">select</span> in <span class="pack">dplyr</span>. Now we won’t have to create separate objects, use quotes or $, etc.</p>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb73-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(Player, Tm, Pos) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -512,8 +625,8 @@ $ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MI
 4  4  20 69 19 1368 174 340 0.512   0    7 0.000 174  333 0.523 0.512 129 179 0.721 118 263 381 101  32  41  66 138  477
 5  5  32 53  3  682  65 162 0.401  27   70 0.386  38   92 0.413 0.485  22  26 0.846   4  62  66  30   4   9  21  56  179
 6  6  29 21  0   49   5  15 0.333   0    0    NA   5   15 0.333 0.333   2   6 0.333   3  12  15   3   2   1   1  11   12</code></pre>
-<div id="helper-functions" class="section level4">
-<h4>Helper functions</h4>
+<div id="helper-functions" class="section level3">
+<h3>Helper functions</h3>
 <p>Sometimes, we have a lot of variables to select, and if they have a common naming scheme, this can be very easy.</p>
 <div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb77-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(Player, <span class="kw">contains</span>(<span class="st">&quot;3P&quot;</span>), <span class="kw">ends_with</span>(<span class="st">&quot;RB&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -538,10 +651,10 @@ $ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MI
 </ul>
 </div>
 </div>
-<div id="filtering-rows" class="section level3">
-<h3>Filtering Rows</h3>
-<p>There are repeated header rows in this data<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>, so we need to drop them. This is also why everything was character string when we first scraped it, because having any character strings in a column coerces the entire column to be character, since all elements of a vector <a href="1_02_dataStructures.html#vectors">need to be of the same type</a>. Character string is chosen over others because anything can be converted to a string, but not everything can be a number.</p>
-<p>Filtering by rows requires the basic indexing knowledge [we talked about before][indexing], especially Boolean indexing. In the following, <code>Rk</code>, or rank, is for all intents and purposes just a row id, but if it equals ‘Rk’ instead of something else, we know we’re dealing with a header row, so we’ll drop it.</p>
+<div id="filtering-rows" class="section level2">
+<h2>Filtering Rows</h2>
+<p>There are repeated header rows in this data<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>, so we need to drop them. This is also why everything was character string when we first scraped it, because having any character strings in a column coerces the entire column to be character, since all elements of a vector <a href="data_structures.html#vectors">need to be of the same type</a>. Character string is chosen over others because anything can be converted to a string, but not everything can be a number.</p>
+<p>Filtering by rows requires the basic indexing knowledge <a href="indexing.html#indexing">we talked about before</a>, especially Boolean indexing. In the following, <code>Rk</code>, or rank, is for all intents and purposes just a row id, but if it equals ‘Rk’ instead of something else, we know we’re dealing with a header row, so we’ll drop it.</p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1">bball =<span class="st"> </span>bball <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb79-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(Rk <span class="op">!=</span><span class="st"> &quot;Rk&quot;</span>)</a></code></pre></div>
 <ul>
@@ -586,8 +699,8 @@ $ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MI
 3 Patrick McCaw  SG_GSW  22</code></pre>
 <p>Being able to use a newly created variable on the fly, possibly only to filter or create some other variable, goes a long way toward easy visualization and generation of desired summary statistics.</p>
 </div>
-<div id="generating-new-data" class="section level3">
-<h3>Generating New Data</h3>
+<div id="generating-new-data" class="section level2">
+<h2>Generating New Data</h2>
 <p>One of the most common data processing tasks beyond subsetting the data is generating new variables. The function <span class="func">mutate</span> takes a vector and returns one of the same dimension. In addition, there is <span class="func">mutate_at</span>, <span class="func">mutate_if</span>, and <span class="func">mutate_all</span> to help with specific scenarios.</p>
 <p>To demonstrate, we’ll use <span class="func">mutate_at</span> to make appropriate columns numeric, i.e. everything except <code>Player</code>, <code>Pos</code>, and <code>Tm</code>. It takes two inputs, variables and functions to apply. As there are multiple variables and (potentially) multiple functions, we use the <span class="func">vars</span> and <span class="func">funs</span> functions to denote them<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>.</p>
 <div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1">bball =<span class="st"> </span>bball <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -619,8 +732,8 @@ $ GS     &lt;dbl&gt; 8, 8, 76, 19, 3, 0, 75, 31, 1, 0, 67, 0, 67, 50, 0, 75, 78,
  Max.   : 0.50000  
  NA&#39;s   :4         </code></pre>
 </div>
-<div id="grouping-and-summarizing-data" class="section level3">
-<h3>Grouping and Summarizing Data</h3>
+<div id="grouping-and-summarizing-data" class="section level2">
+<h2>Grouping and Summarizing Data</h2>
 <p>A very common task is to look at group-based statistics, and we can use <span class="func">group_by</span> and <span class="func">summarize</span> to help us in this regard<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>. Base R has things like <span class="func">aggregate</span>, <span class="func">by</span>, and <span class="func">tapply</span> for this, but they should not be used, as this approach is much more straightforward, flexible, and faster.</p>
 <p>For this demonstration, I’m going to start putting together several things we’ve demonstrated thus far. Ultimately we’ll create a variable called <span class="objclass">trueShooting</span>, which represents ‘true shooting percentage’, and get an average for each position, and compare it to the standard field goal percentage.</p>
 <div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st">   </span></a>
@@ -705,8 +818,8 @@ Groups: &lt;by row&gt;
 <p><img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></p>
 </div>
 </div>
-<div id="renaming-columns" class="section level3">
-<h3>Renaming columns</h3>
+<div id="renaming-columns" class="section level2">
+<h2>Renaming columns</h2>
 <p>Tidy data doesn’t really have a problem with variable names starting with numbers or incorporating symbols. I would still suggest it is poor practice, because even if your data set looks fine, you’ll encounter problems with modeling and visualization package using that data. However, as a demonstration, we can ‘fix’ some of the variable names.</p>
 <p>One issue is that when we scraped the data and converted it to a <span class="objclass">data.frame</span>, the names that started with a number, like <code>3P</code> for ‘three point baskets made’, were made into <code>X3P</code>, because that’s the way R works by default. In addition, <code>3P%</code>, i.e. three point percentage made, was made into <code>3P.</code> Same goes for the 2P (two-pointers) and FT (free-throw) variables.</p>
 <p>We can use rename to change column names. A basic example is as follows.</p>
@@ -754,8 +867,8 @@ $ trueShooting &lt;dbl&gt; 0.5670865, 0.5250383, 0.6298611, 0.5695386, 0.5160286
 $ effectiveFG  &lt;dbl&gt; 0.5395189, 0.4958904, 0.6292135, 0.5117647, 0.4845679, 0.3333333, 0.5200445, 0.5957179, 0.2727273, 0.5054945, 0.5025773, 0.5148515, 0.5490868, 0.5677083, 0.4444444, 0.5445792, 0.4764555, 0.57658...
 $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.0575386379, 0.1150285978, 0.0071360544, 0.0597640815, 0.0467217120, 0.0929476117, 0.0297669593, 0.1267109527, 0.1085025604, 0.0553908888, 0.1612214543...</code></pre>
 </div>
-<div id="merging-data" class="section level3">
-<h3>Merging Data</h3>
+<div id="merging-data" class="section level2">
+<h2>Merging Data</h2>
 <p>Merging data is yet another very common data task, as data often comes from multiple sources. In order to do this, we need some common identifier among the sources by which to join them. The following is a list of <span class="pack">dplyr</span> join functions.</p>
 <p><span class="func">inner_join</span>: return all rows from x where there are matching values in y, and all columns from x and y. If there are multiple matches between x and y, all combination of the matches are returned.</p>
 <p><span class="func">left_join</span>: return all rows from x, and all columns from x and y. Rows in x with no match in y will have NA values in the new columns. If there are multiple matches between x and y, all combinations of the matches are returned.</p>
@@ -853,8 +966,8 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 1 Steve Rage      </code></pre>
 <p>Merges can get quite complex, and involve multiple data sources. In many cases you may have to do a lot of processing before getting to the merge, but <span class="pack">dplyr’s</span> joins will help quite a bit.</p>
 </div>
-<div id="tidyr" class="section level3">
-<h3>tidyr</h3>
+<div id="tidyr" class="section level2">
+<h2>tidyr</h2>
 <p>The <span class="pack">tidyr</span> package can be thought of as a specialized subset of <span class="pack">dplyr’s</span> functionality, as well as an update to the previous <span class="pack">reshape</span> and <span class="pack">reshape2</span> packages<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>. Some of its functions for manipulating data you’ll want to be familiar with are:</p>
 <ul>
 <li><span class="func">gather</span>: wide to long</li>
@@ -902,8 +1015,8 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 6  6      Cole  Aldrich   C  29</code></pre>
 <p>Note that this won’t necessarily apply to every name. So further processing may be required.</p>
 </div>
-<div id="more-tidyverse" class="section level3">
-<h3>More Tidyverse</h3>
+<div id="more-tidyverse" class="section level2">
+<h2>More Tidyverse</h2>
 <ul>
 <li><p>dplyr functions: There are over a hundred functions that perform very common tasks. You really need to be aware of them as their use will come up often.</p></li>
 <li><p>broom: Convert statistical analysis objects from R into tidy data frames, so that they can more easily be combined, reshaped and otherwise processed with tools like dplyr, tidyr and ggplot2.</p></li>
@@ -917,8 +1030,8 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 </ul>
 <p>Seriously, there are <a href="https://www.r-pkg.org/search.html?q=tidy">a lot</a>.</p>
 </div>
-<div id="personal-opinion" class="section level3">
-<h3>Personal Opinion</h3>
+<div id="personal-opinion" class="section level2">
+<h2>Personal Opinion</h2>
 <p>The <span class="pack">dplyr</span> grammar is clear for a lot of standard data processing tasks, and some not so common.</p>
 <p>Extremely useful for data exploration and visualization.</p>
 <ul>
@@ -938,51 +1051,51 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 </ul>
 <p>All in all, if you’ve only been using base R approaches, the tidyverse will change your R life! It makes all the sorts of things you do all the time easier and clearer. Highly recommended!</p>
 </div>
-<div id="tidyverse-exercises" class="section level3">
-<h3>tidyverse Exercises</h3>
-<div id="exercise-0" class="section level4">
-<h4>Exercise 0</h4>
+<div id="tidyverse-exercises" class="section level2">
+<h2>tidyverse Exercises</h2>
+<div id="exercise-0" class="section level3">
+<h3>Exercise 0</h3>
 <p>Install and load the <span class="pack">dplyr</span> <span class="pack">ggplot2movies</span> packages. Look at the help file for the <code>movies</code> data set, which contains data from IMDB.</p>
 <div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&#39;ggplot2movies&#39;</span>)</a>
 <a class="sourceLine" id="cb138-2" data-line-number="2"><span class="kw">library</span>(ggplot2movies)</a>
 <a class="sourceLine" id="cb138-3" data-line-number="3"><span class="kw">data</span>(<span class="st">&#39;movies&#39;</span>)</a></code></pre></div>
 </div>
-<div id="exercise-1-2" class="section level4">
-<h4>Exercise 1</h4>
+<div id="exercise-1-2" class="section level3">
+<h3>Exercise 1</h3>
 <p>Using the movies data set, perform each of the following actions separately.</p>
-<div id="exercise-1a" class="section level5">
-<h5>Exercise 1a</h5>
+<div id="exercise-1a" class="section level4">
+<h4>Exercise 1a</h4>
 <p>Use <span class="func">mutate</span> to create a centered version of the rating variable. A centered variable is one whose mean has been subtracted from it. The process will take the following form:</p>
 <div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" data-line-number="1">data <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb139-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">new_var_name =</span> <span class="st">&#39;?&#39;</span>)</a></code></pre></div>
 </div>
-<div id="exercise-1b" class="section level5">
-<h5>Exercise 1b</h5>
+<div id="exercise-1b" class="section level4">
+<h4>Exercise 1b</h4>
 <p>Use <span class="func">filter</span> to create a new data frame that has only movies from the years 2000 and beyond. Use the greater than or equal operator <code>&gt;=</code>.</p>
 </div>
-<div id="exercise-1c" class="section level5">
-<h5>Exercise 1c</h5>
+<div id="exercise-1c" class="section level4">
+<h4>Exercise 1c</h4>
 <p>Use <span class="func">select</span> to create a new data frame that only has the <code>title</code>, <code>year</code>, <code>budget</code>, <code>length</code>, <code>rating</code> and <code>votes</code> variables. There are at least 3 ways to do this.</p>
 </div>
-<div id="exercise-1d" class="section level5">
-<h5>Exercise 1d</h5>
+<div id="exercise-1d" class="section level4">
+<h4>Exercise 1d</h4>
 <p>Rename the <code>length</code> column to <code>length_in_min</code> (i.e. length in minutes).</p>
 </div>
 </div>
-<div id="exercise-2-2" class="section level4">
-<h4>Exercise 2</h4>
+<div id="exercise-2-2" class="section level3">
+<h3>Exercise 2</h3>
 <p>Use <span class="func">group_by</span> to group the data by year, and <span class="func">summarize</span> to create a new variable that is the average budget. The <span class="func">summarize</span> function works just like <span class="func">mutate</span> in this case.</p>
 <p>Use the <span class="func">mean</span> function to get the average, but you’ll also need to use the argument <code>na.rm = TRUE</code> within it because the earliest years have no budget recorded.</p>
 </div>
-<div id="exercise-3-1" class="section level4">
-<h4>Exercise 3</h4>
+<div id="exercise-3-1" class="section level3">
+<h3>Exercise 3</h3>
 <p>Use <span class="func">gather</span> to create a ‘tidy’ data set from the following.</p>
 <div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1">dat =<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">id =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,</a>
 <a class="sourceLine" id="cb140-2" data-line-number="2">                 <span class="dt">x =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>),</a>
 <a class="sourceLine" id="cb140-3" data-line-number="3">                 <span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>))</a></code></pre></div>
 </div>
-<div id="exercise-4" class="section level4">
-<h4>Exercise 4</h4>
+<div id="exercise-4" class="section level3">
+<h3>Exercise 4</h3>
 <p>Now put several actions together in one set of piped operations.</p>
 <ul>
 <li>Filter movies released <em>after</em> 1990</li>
@@ -1012,12 +1125,12 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 <div class="footnotes">
 <hr />
 <ol start="3">
-<li id="fn3"><p>You may be thinking- ‘it’s 2017 and why on earth would anyone do that?!’. Peruse most sports websites and you’ll see that fundamental web design basics escape them. See also, financial sites.<a href="1_06_tidyverse.html#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p>If you’re following good programming practices, you’ll likely never use <span class="func">slice</span>.<a href="1_06_tidyverse.html#fnref4" class="footnote-back">↩</a></p></li>
-<li id="fn5"><p>For only one function, you could have just supplied <code>as.numeric</code> as the second argument.<a href="1_06_tidyverse.html#fnref5" class="footnote-back">↩</a></p></li>
-<li id="fn6"><p>As Hadley Wickham is from New Zealand, and his examples use <span class="func">summarise</span>, you’ll probably see it about as much as you do the other spelling, especially since it will come up first in autocomplete.<a href="1_06_tidyverse.html#fnref6" class="footnote-back">↩</a></p></li>
-<li id="fn7"><p>Some still use <span class="pack">reshape2</span> but there is no reason to and it is no longer developed.<a href="1_06_tidyverse.html#fnref7" class="footnote-back">↩</a></p></li>
-<li id="fn8"><p>There is <span class="pack">multidplyr</span>, but it doesn’t appear to have been updated since well before <span class="pack">dplyr</span> itself underwent major changes.<a href="1_06_tidyverse.html#fnref8" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>You may be thinking- ‘it’s 2017 and why on earth would anyone do that?!’. Peruse most sports websites and you’ll see that fundamental web design basics escape them. See also, financial sites.<a href="tidyverse.html#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>If you’re following good programming practices, you’ll likely never use <span class="func">slice</span>.<a href="tidyverse.html#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>For only one function, you could have just supplied <code>as.numeric</code> as the second argument.<a href="tidyverse.html#fnref5" class="footnote-back">↩</a></p></li>
+<li id="fn6"><p>As Hadley Wickham is from New Zealand, and his examples use <span class="func">summarise</span>, you’ll probably see it about as much as you do the other spelling, especially since it will come up first in autocomplete.<a href="tidyverse.html#fnref6" class="footnote-back">↩</a></p></li>
+<li id="fn7"><p>Some still use <span class="pack">reshape2</span> but there is no reason to and it is no longer developed.<a href="tidyverse.html#fnref7" class="footnote-back">↩</a></p></li>
+<li id="fn8"><p>There is <span class="pack">multidplyr</span>, but it doesn’t appear to have been updated since well before <span class="pack">dplyr</span> itself underwent major changes.<a href="tidyverse.html#fnref8" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
             </section>
@@ -1025,8 +1138,8 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
           </div>
         </div>
       </div>
-<a href="1_05_pipes.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="1_07_datatable.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="pipes.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="data_table.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

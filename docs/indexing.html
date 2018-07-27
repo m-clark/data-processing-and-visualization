@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   <link rel="shortcut icon" href="img/R.ico" type="image/x-icon">
-
-<link rel="next" href="intro.html">
+<link rel="prev" href="io.html">
+<link rel="next" href="pipes.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -464,27 +464,86 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Data Processing &amp; Visualization</h1>
-<h4 class="author"><em><span class="noem">Michael Clark</span> <br><br>
-<a href="https://m-clark.github.io/data-processing-and-visualization/" class="uri">https://m-clark.github.io/data-processing-and-visualization/</a><br><br>
-<img src="img/CSCAR_logos/signature-acronym.png" style="width:30%; padding:10px 0;" alt="University of Michigan: CSCAR"> <br>
-<img src="img/ARC_logos/ARC-acronym-signature.png" style="width:21%; padding:10px 0;" alt="University of Michigan: Advanced Research Computing"></em></h4>
-<h4 class="date"><em>2018-07-26</em></h4>
+<div id="indexing" class="section level1">
+<h1>Indexing</h1>
+<p>What follows is a refresher. Presumably you’ve had enough R exposure to be aware of some of this. However, much of data processing regards data frames, or other tables of mixed data types, so more time will be spent on slicing and dicing of data frames instead. Even so, it would be impossible to use R effectively without knowing how to handle basic data types.</p>
+<div id="base-r-indexing-refresher" class="section level2">
+<h2>Base R Indexing Refresher</h2>
+<div id="slicing-vectors" class="section level4">
+<h4>Slicing vectors</h4>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">letters[<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>]</a></code></pre></div>
+<pre><code>[1] &quot;d&quot; &quot;e&quot; &quot;f&quot;</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">letters[<span class="kw">c</span>(<span class="dv">13</span>,<span class="dv">10</span>,<span class="dv">3</span>)]</a></code></pre></div>
+<pre><code>[1] &quot;m&quot; &quot;j&quot; &quot;c&quot;</code></pre>
 </div>
-<div id="section" class="section level5 unnumbered">
-<h5></h5>
-<p><img src="img/198R.png" width="300" style="display: block; margin: auto;" /></p>
-<p><img src="img/ccbysa.png" width="0" style="display: block; margin: auto;" /><img src="img/mc_logo.png" width="0" style="display: block; margin: auto;" /></p>
+<div id="slicing-matricesdata.frames" class="section level4">
+<h4>Slicing matrices/data.frames</h4>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">myMatrix[<span class="dv">1</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</a></code></pre></div>
+</div>
+<div id="label-based-indexing" class="section level4">
+<h4>Label-based indexing</h4>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">mydf[<span class="st">&#39;row1&#39;</span>, <span class="st">&#39;b&#39;</span>]</a></code></pre></div>
+</div>
+<div id="position-based-indexing" class="section level4">
+<h4>Position-based indexing</h4>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">mydf[<span class="dv">1</span>, <span class="dv">2</span>]</a></code></pre></div>
+</div>
+<div id="mixed-indexing" class="section level4">
+<h4>Mixed indexing</h4>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">mydf[<span class="st">&#39;row1&#39;</span>, <span class="dv">2</span>]</a></code></pre></div>
+<p>If the row/column value is empty, all rows/columns are retained.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">mydf[<span class="st">&#39;row1&#39;</span>,]</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">mydf[,<span class="st">&#39;b&#39;</span>]</a></code></pre></div>
+</div>
+<div id="non-contiguous" class="section level4">
+<h4>Non-contiguous</h4>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">mydf[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>),]</a></code></pre></div>
+</div>
+<div id="boolean" class="section level4">
+<h4>Boolean</h4>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">mydf[mydf<span class="op">$</span>a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>,]</a></code></pre></div>
+</div>
+</div>
+<div id="listdata.frame-extraction" class="section level2">
+<h2>List/Data.frame extraction</h2>
+<p><span class="func">[</span> : grab a slice of elements/columns</p>
+<p><span class="func">[[</span> : grab specific elements/columns</p>
+<p><span class="func">$</span> : grab specific elements/columns</p>
+<p><span class="func">@</span>: extract slot for S4 objects</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">my_list_or_df[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">my_list_or_df[[<span class="st">&#39;name&#39;</span>]]</a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">my_list_or_df<span class="op">$</span>name</a></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">my_list<span class="op">@</span>name</a></code></pre></div>
+</div>
+<div id="indexing-exercises" class="section level2">
+<h2>Indexing Exercises</h2>
+<p>This following is a refresher of base R indexing only.</p>
+<p>Here is a <span class="objclass">matrix</span>, a <span class="objclass">data.frame</span> and a <span class="objclass">list</span>.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb54-2" data-line-number="2">mydf =<span class="st"> </span>cars</a>
+<a class="sourceLine" id="cb54-3" data-line-number="3">mylist =<span class="st"> </span><span class="kw">list</span>(mymatrix, <span class="dt">thisdf =</span> mydf)</a></code></pre></div>
+<div id="exercise-1-1" class="section level3">
+<h3>Exercise 1</h3>
+<p>For the <span class="objclass">matrix</span>, in separate operations, take a slice of rows, a selection of columns, and a single element.</p>
+</div>
+<div id="exercise-2-1" class="section level3">
+<h3>Exercise 2</h3>
+<p>For the <span class="objclass">data.frame</span>, grab a column in 3 different ways.</p>
+</div>
+<div id="exercise-3" class="section level3">
+<h3>Exercise 3</h3>
+<p>For the <span class="objclass">list</span> grab an element by number and by name.</p>
 
+</div>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="io.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="pipes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
