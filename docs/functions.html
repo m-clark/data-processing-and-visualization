@@ -374,9 +374,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#others"><i class="fa fa-check"></i>Others</a></li>
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#inspecting-functions"><i class="fa fa-check"></i>Inspecting Functions</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#help-files"><i class="fa fa-check"></i>Help Files</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#help-files"><i class="fa fa-check"></i>Help Files</a></li>
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#objects-exercises"><i class="fa fa-check"></i>Objects Exercises</a></li>
-</ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a><ul>
@@ -403,7 +402,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1-1"><i class="fa fa-check"></i>Excercise 1</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1b"><i class="fa fa-check"></i>Excercise 1b</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#exercise-2-8"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#thinking-exercises-3"><i class="fa fa-check"></i>Thinking Exercises</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html"><i class="fa fa-check"></i>More</a><ul>
@@ -428,7 +426,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#regex-exercises"><i class="fa fa-check"></i>Regex Exercises</a><ul>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-9"><i class="fa fa-check"></i>Exercise 1</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#naming-exercises"><i class="fa fa-check"></i>Naming Exercises</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-style-exercises"><i class="fa fa-check"></i>Code Style Exercises</a><ul>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-10"><i class="fa fa-check"></i>Exercise 1</a></li>
 </ul></li>
 </ul></li>
@@ -437,6 +435,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li class='after'"><a href="https://m-clark.github.io/"><img src="img/mc_logo.png" style="width:25%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo"></a></li>
+<li class='after'">
+  <div style='text-align:center'>
+    <a href="https://github.com/m-clark/">
+      <i class="fab fa-github fa-3x" aria-hidden="true"></i>
+    </a>
+  </div>
+</li>
 <li class='after'">
    <div style='text-align:center'>
      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
@@ -686,7 +691,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="excercise-1b" class="section level3">
 <h3>Excercise 1b</h3>
-<p>What happens if the sum of the two numbers is negative? You can’t take a log of a negative value, so it’s an error. How might we deal with this? Try using a conditional to provide an error message using the stop function. Make the message whatever you want.</p>
+<p>What happens if the sum of the two numbers is negative? You can’t take a log of a negative value, so it’s an error. How might we deal with this? Try using a conditional to provide an error message using the <span class="func">stop</span> function. Make the message whatever you want.</p>
 <div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb321-1" data-line-number="1">log_sum &lt;-<span class="st"> </span><span class="cf">function</span>(a, b) {</a>
 <a class="sourceLine" id="cb321-2" data-line-number="2">  <span class="co">#</span></a>
 <a class="sourceLine" id="cb321-3" data-line-number="3">  <span class="co">#</span></a>
@@ -696,9 +701,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb321-7" data-line-number="7">    <span class="kw">stop</span>(<span class="st">&#39;Your message here.&#39;</span>)</a>
 <a class="sourceLine" id="cb321-8" data-line-number="8">  } </a>
 <a class="sourceLine" id="cb321-9" data-line-number="9">  <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb321-10" data-line-number="10">    <span class="kw">return</span>(your_log_sum_object)</a>
-<a class="sourceLine" id="cb321-11" data-line-number="11">  }</a>
-<a class="sourceLine" id="cb321-12" data-line-number="12">}</a></code></pre></div>
+<a class="sourceLine" id="cb321-10" data-line-number="10">    ?</a>
+<a class="sourceLine" id="cb321-11" data-line-number="11">    <span class="kw">return</span>(your_log_sum_object)</a>
+<a class="sourceLine" id="cb321-12" data-line-number="12">  }</a>
+<a class="sourceLine" id="cb321-13" data-line-number="13">}</a></code></pre></div>
 </div>
 <div id="exercise-2-8" class="section level3">
 <h3>Exercise 2</h3>
@@ -710,10 +716,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb323-1" data-line-number="1">pos_neg &lt;-<span class="st"> </span><span class="cf">function</span>(?) {</a>
 <a class="sourceLine" id="cb323-2" data-line-number="2">  ?</a>
 <a class="sourceLine" id="cb323-3" data-line-number="3">}</a></code></pre></div>
-</div>
-<div id="thinking-exercises-3" class="section level3">
-<h3>Thinking Exercises</h3>
-<p>How would you write a check for Exercise 1 to make sure the inputs are numeric and positive (can’t take the log of non-positive values)? See <code>?stop</code> and <code>?message</code> for starters.</p>
 
 </div>
 </div>
