@@ -1,0 +1,245 @@
+---
+title: "Exercises for Programming"
+output: learnr::tutorial
+css: css/standard_html.css
+highlight: pygments
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE, 
+                      eval=FALSE, 
+                      exercise.lines=5, 
+                      exercise.eval=FALSE,
+                      cache = F)
+```
+
+
+# Basics
+
+## Objects Exercises
+
+With one function, find out what the class, number of rows, number of columns are of <span class="objclass">starwars</span> data set in that comes with <span class="pack">dplyr</span>, including what kind of object the last three columns are. Inspect the help file also.
+
+```{r tibble_inspect, exercise=T}
+library(dplyr)
+```
+
+```{r tibble_inspect-hint}
+?starwars
+```
+
+
+
+
+## Iterative Programming Exercises
+
+### Exercise 1
+
+With the following <span class="objclass">matrix</span>, use <span class="func">apply</span> and the <span class="func">sum</span> function to get row or column sums of the matrix <span class="objclass">x</span>.
+
+```{r app_ex1, exercise=TRUE}
+x = matrix(1:9, 3, 3)
+apply(?)
+```
+
+```{r app_ex1-hint}
+apply(x, ?, sum)
+```
+
+### Exercise 2
+
+With the following list object <span class="objclass">x</span>, use <span class="func">lapply</span> and <span class="func">sapply</span> and the <span class="func">sum</span> function to get sums for the elements.  There is no margin to specify for a list, so just supply the list and the sum function.  
+
+```{r app_ex2, exercise=TRUE}
+x = list(1:3, 4:10, 11:100)
+```
+
+```{r app_ex2-hint}
+lapply(x, ?)
+sapply(x, ?)
+```
+
+
+
+### Exercise 3
+
+As in the previous example, use a map function to create a data frame of the column means.
+
+```{r purrr_ex3, exercise=TRUE}
+d = data_frame(
+  x = rnorm(100),
+  y = rnorm(100, 10, 2),
+  z = rnorm(100, 50, 10)
+)
+
+```
+
+```{r purrr_ex3-hint}
+d %>% map_df(?)
+```
+
+
+
+
+
+## Writing Functions Exercises
+
+### Excercise 1
+
+Write a function that takes the log of the sum of two values (i.e. just two single numbers) using the <span class="func">log</span> function.  Just remember that within a function, you can write R code just like you normally would.
+
+```{r wf_ex1, exercise=TRUE}
+log_sum <- function(a, b) {
+  ?
+}
+```
+
+```{r wf_ex1-hint}
+log_sum <- function(a, b) {
+  sum_result = ?
+  log(sum_result)
+}
+```
+
+
+```{r wf_ex1-answer}
+
+```
+
+
+
+### Excercise 1b
+
+What happens if the sum of the two numbers is negative?  You can't take a log of a negative value, so it's an error.  How might we deal with this?  Try using a conditional to provide an error message using the <span class="func">stop</span> function.  Make the message whatever you want.
+
+```{r wf_ex1b, exercise=TRUE, exercise.lines=15}
+log_sum <- function(a, b) {
+  #
+  #
+  #
+  
+  if (?) {
+    stop('Your message here.')
+  } 
+  else {
+    ?
+    return(your_log_sum_object)
+  }
+}
+```
+
+
+```{r wf_ex1b-hint}
+log_sum <- function(a, b) {
+  
+  sum_result = a + b
+  
+  if (sum_result < 0) {
+    stop('Your message here.')
+  } 
+  else {
+    return(your_log_sum_object)
+  }
+}
+```
+
+
+### Exercise 2
+
+
+Let's write a function that will take a numeric variable and convert it to a character string of 'positive' vs. 'negative'.  We can use `if {}... else {}` structure, <span class="func">ifelse</span>, or <span class="pack">dplyr</span>::<span class="func">if_else</span>- they all would accomplish this.  In this case, the input is a single vector of numbers, and the output will recode any negative value to 'negative' and positive values to 'positive' (or whatever you want).  Here is an example of how we would just do it as a one-off.
+
+```{r wf_ex2, eval=FALSE}
+set.seed(123)  # so you get the exact same 'random' result
+x <- rnorm(10)
+if_else(x < 0, "negative", "positive")
+```
+
+Now try your hand at writing a function for that.
+
+```{r wf_ex2b, exercise=TRUE}
+pos_neg <- function(?) {
+  ?
+}
+```
+
+```{r wf_ex2b-hint}
+pos_neg <- function(x) {
+  ifelse(?)
+}
+```
+
+
+
+
+## Code Style Exercises
+
+### Exercise 1 
+
+For the following model related output, come up with a name for each object.
+
+```{r name_ex, eval=FALSE, echo=TRUE}
+lm(hwy ~ cyl, data=mpg)                 # hwy mileage predicted by number of cylinders
+summary(lm(hwy ~ cyl, data=mpg))        # the summary of that
+lm(hwy ~ cyl + displ + year, data=mpg)  # an extension of that
+```
+
+
+## Vectorization Exercises
+
+### Exercise 1
+
+Show a non-vectorized and a vectorized way to add a two to the numbers 1 through 3.
+
+```{r vector_ex1, exercise=TRUE}
+?
+```
+
+```{r vector_ex1-hint}
+# non-vectorized
+for (i in 1:3) print(2 + i)
+2 + 1
+2 + 2
+2 + 3
+
+# vectorized
+2 + ?
+```
+
+
+
+### Exercise 2
+
+Of the following, which do you think is faster?  Test it with the <span class="pack">microbenchmark</span> package.
+
+```{r vector_ex2, exercise=TRUE, exercise.lines=9}
+x = matrix(rpois(100000, lambda = 5), ncol = 100)
+colSums(x)
+apply(x, 2, sum)
+
+microbenchmark::microbenchmark(
+  cs = colSums(x),
+  app = apply(x, 2, sum)
+)
+```
+
+## Regex Exercises
+
+### Exercise 1
+
+Using <span class="pack">stringr</span> and <span class="func">str_replace</span>, replace all the states a's with nothing.
+
+
+```{r regex_ex, exercise=TRUE}
+library(stringr)
+str_replace(state.name, pattern = ?, replacement = ?)
+```
+
+```{r regex_ex-hint}
+library(stringr)
+str_replace(state.name, pattern = 'a', replacement = ?)
+```
+
+
