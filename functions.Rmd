@@ -46,12 +46,16 @@ Seems to work fine.  Let's add how many total observations there are.
 
 ```{r func_ex4}
 my_summary <- function(myvar) {
-  data.frame(
+  # create an arbitrarily named object with the summary information
+  summary_data = data.frame(
     mean = mean(myvar, na.rm = TRUE),
     sd = sd(myvar, na.rm = TRUE),
     N_total = length(myvar),
     N_missing = sum(is.na(myvar))
-    )
+  )
+  
+  # return the result!
+  summary_data       
 }
 ```
 
@@ -60,8 +64,6 @@ That was easy! Let's try it.
 ```{r func_ex5}
 my_summary(mtcars2$wt)
 ```
-
-This shows that writing the first part of any function can be straightforward. Then, once in place, you can usually add functionality without too much trouble.  Eventually you could have something very complicated, but which will make sense to you because you built it from the ground up.
 
 
 Now let's do it for every column!
@@ -72,6 +74,44 @@ mtcars2 %>%
 ```
 
 The <span class="func">map_dfr</span> function is just like our previous usage in the [iterative programming][Iterative programming] section, just that it will create mini-data.frames then row bind them together.
+
+This shows that writing the first part of any function can be straightforward. Then, once in place, you can usually add functionality without too much trouble.  Eventually you could have something very complicated, but which will make sense to you because you built it from the ground up.  
+
+Keep in mind as you start out that your initial decisions to make are:
+
+- What are the inputs (<span class="emph">arguments</span>) to the function?
+- What is the <span class="emph">value</span> to be returned? 
+
+What goes in and what comes out could be anything, even nothing!
+
+```{r nothing_function}
+two <- function() {
+  2
+}
+
+two()
+```
+
+However, try to make a clear decision at the beginning - what is the goal of your function?  What is needed to obtain that goal?
+
+If you are working within an RStudio project, it would be a good idea to create a folder for your functions and save each as their own script. When you need the function just use the following:
+
+```{r source_func, eval=FALSE}
+source('my_functions/awesome_func.R')
+```
+
+
+This would make it easy to even create your own personal package with the functions you create.  
+
+<br>
+<div class='note'>
+There is a keyboard shortcut to even create R style documentation automatically! 
+
+<div style='text-align:center; font-family:"Roboto Mono"'>Cmd/Ctrl + Option/Alt + Shift + R</div>
+<br>
+
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
 
 
 ## DRY
@@ -98,22 +138,22 @@ good_mileage <- function(cylinder = 4,
                          displ_low = TRUE,
                          cls = 'compact') {
   
-  if (displ_low == TRUE) {
-    result = mpg %>%
+  if (displ_low == TRUE) {              # condition to check, if it holds,
+    result <- mpg %>%                   # filter data given the arguments
       filter(cyl == cylinder,
              displ <= displ_fun(displ),
              hwy >= mpg_cutoff,
              class == cls)
   }
-  else {
-    result = mpg %>%
+  else {                                # if the condition doesn't hold, filter 
+    result <- mpg %>%                   # the data this way instead
       filter(cyl == cylinder,
              displ >= displ_fun(displ),
              hwy >= mpg_cutoff,
              class == cls)
   }
   
-  result
+  result                                # return the object
 }
 ```
 
@@ -224,6 +264,15 @@ mtcars %>%
 Even if you don't use [anonymous functions](https://en.wikipedia.org/wiki/Anonymous_function) (sometimes called lambda functions or similar), it's important to understand them, because you'll often see other people's code using them.
 
 
+<br>
+<div class='note'>
+While it goes beyond the scope of this document at present, I should note that RStudio has a very nice and easy to use debugger.  Once you get comfortable writing functions, you can use the debugger to troubleshoot problems that arise and test new functionality (see the 'Debug' menu).  In addition, one can profile functions to see what parts are, for example, more memory intensive, or otherwise serve as a bottleneck (see the 'Profile' menu).  You can use the profiler on any code, not just functions.
+<br>
+
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
+
+
 
 ## Writing Functions Exercises
 
@@ -235,7 +284,6 @@ Write a function that takes the log of the sum of two values (i.e. just two sing
 log_sum <- function(a, b) {
   ?
 }
-
 ```
 
 
