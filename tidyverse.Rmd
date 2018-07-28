@@ -109,7 +109,7 @@ newData = oldData[,c('ID','X1', 'X2', etc.)]
 
 This would be fine if there are only a handful.  But if you're trying to reduce a 1000 column data set to several dozen it's tedious, and generally not pretty regardless.
 
-A more advanced alternative regards a two-step approach with <span class="emph">regular expressions</span>. This requires that you know something about regex (and you should), but it is difficult to read/understand by those who don't, and often by even yourself if it's more complicated.  In any case, you first will need to create an object that represents the column names first, otherwise it looks unwieldy if used within brackets or a function like <span class="func">subset</span>.
+A more advanced alternative regards a two-step approach with [regular expressions][Regular Expressions]. This requires that you know something about regex (and you should), but it is difficult to read/understand by those who don't, and often by even yourself if it's more complicated.  In any case, you first will need to create an object that represents the column names first, otherwise it looks unwieldy if used within brackets or a function like <span class="func">subset</span>.
 
 ```{r baseRexample1c, eval=FALSE}
 cols = c('ID', paste0('X', 1:10), 'var1', 'var2', grep(colnames(oldData), '^XYZ', value=T))

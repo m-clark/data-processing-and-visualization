@@ -10,7 +10,7 @@
 
 .book .book-body .page-wrapper .page-inner section.normal .author .noem {
   font-size:  125%; 
-  font-style:  normal;       /* ignored thanks to bootstrap random enforecement of em*/
+  font-style:  normal;
   font-variant:  small-caps; 
   font-weight: 200;
   font-family: 'Roboto Condensed', 'Fira Sans', Roboto, 'Open Sans', sans;
@@ -19,7 +19,7 @@
 
 .book .book-body .page-wrapper .page-inner section.normal a.uri {
   font-size:  75%; 
-  font-style:  normal;       /* ignored thanks to bootstrap random enforecement of em*/
+  font-style:  normal;       /* ignored thanks to bootstrap random enforcement of em*/
   font-variant:  small-caps; 
   font-family:  Roboto, 'Open Sans', sans;
 }
@@ -39,6 +39,8 @@
 .section {
   background-color: #fffff8;
 }
+
+
 
 .book .book-body .page-wrapper .page-inner section.normal {
     display: block;
@@ -132,6 +134,7 @@ i {
   background-color: #fffff8;
 }
 
+/* toc area general */
 .book .book-summary {
     position: absolute;
     font-family: "Open Sans", 'Helvetica Neue', Roboto, sans-serif;
@@ -230,6 +233,14 @@ i {
   padding: 1em;
 }
 
+/* headers */
+
+h1, h2, h3, h4, h5 {
+  color:#990024;
+  font-family: 'Roboto Condensed';
+}
+
+/* notes */
 
 .img-note {
   vertical-align: central;
@@ -239,6 +250,9 @@ i {
 .footnotes {
   color: #00000080;
 }
+
+
+/* code */
 
 /* logical NA */
 .ot {
@@ -265,6 +279,12 @@ code span.st {
   color: #585858;
 }
 
+/* img */
+
+img {
+  display: block; 
+  margin: 0 auto;
+}
 
 /* zoom for img*/
 .zoom {
@@ -280,4 +300,26 @@ code span.st {
 .fab .fa-creative-commons, .fa-creative-commons-sa, .fa-creative-commons-by, .fa-github, .fa-lg {
   color: #990024;
   background-color: transparent;
+}
+
+/* text highlights */
+.emph {
+  color: #E32D00 ;  /*#ff5500 #D14300*/
+  font-weight: 500;
+}
+
+/* pack func and objclass colors initially come from hcl(seq(90,360, length.out=4), c=80, l=80); redone for contrast*/
+.pack {
+  color: #990071; /*#AC9CFF #e41a1c*/
+  font-weight: 500;
+}
+
+.func {
+  color: #007020;   /*#007199 #00CBB6; #984ea3; can just use `` instead*/
+  font-weight: bold;
+}
+
+.objclass {
+  color:  #947100;  /*#AAB400 #4daf4a; #FFC5D0*/
+  font-weight: 500;
 }

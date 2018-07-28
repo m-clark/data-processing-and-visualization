@@ -169,7 +169,6 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<link rel="stylesheet" href="css/standard_html.css" type="text/css" />
 <link rel="stylesheet" href="css/book.css" type="text/css" />
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" type="text/css" />
 </head>
@@ -555,7 +554,7 @@ lag():    dplyr, stats</code></pre>
 <p>We could name the variables explicitly.</p>
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">newData =<span class="st"> </span>oldData[,<span class="kw">c</span>(<span class="st">&#39;ID&#39;</span>,<span class="st">&#39;X1&#39;</span>, <span class="st">&#39;X2&#39;</span>, etc.)]</a></code></pre></div>
 <p>This would be fine if there are only a handful. But if you’re trying to reduce a 1000 column data set to several dozen it’s tedious, and generally not pretty regardless.</p>
-<p>A more advanced alternative regards a two-step approach with <span class="emph">regular expressions</span>. This requires that you know something about regex (and you should), but it is difficult to read/understand by those who don’t, and often by even yourself if it’s more complicated. In any case, you first will need to create an object that represents the column names first, otherwise it looks unwieldy if used within brackets or a function like <span class="func">subset</span>.</p>
+<p>A more advanced alternative regards a two-step approach with <a href="more.html#regular-expressions">regular expressions</a>. This requires that you know something about regex (and you should), but it is difficult to read/understand by those who don’t, and often by even yourself if it’s more complicated. In any case, you first will need to create an object that represents the column names first, otherwise it looks unwieldy if used within brackets or a function like <span class="func">subset</span>.</p>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">cols =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;ID&#39;</span>, <span class="kw">paste0</span>(<span class="st">&#39;X&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>), <span class="st">&#39;var1&#39;</span>, <span class="st">&#39;var2&#39;</span>, <span class="kw">grep</span>(<span class="kw">colnames</span>(oldData), <span class="st">&#39;^XYZ&#39;</span>, <span class="dt">value=</span>T))</a>
 <a class="sourceLine" id="cb67-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb67-3" data-line-number="3">newData =<span class="st"> </span>oldData[,cols]</a>
