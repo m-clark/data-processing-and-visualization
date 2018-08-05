@@ -32,7 +32,7 @@ sw_height %>%
 ```
 
 
-So what's wrong with this? Plenty. Aside from being boring, the entire story can be said with a couple words- males are taller than females (even in the Star Wars universe).  There is no reason to have a visualization. And if a simple group difference is the most exciting thing you have to talk about, not many are going to be interested.
+So what's wrong with this? Plenty. Aside from being boring, the entire story can be said with a couple words- males are taller than females (even in the Star Wars universe). There is no reason to have a visualization. And if a simple group difference is the most exciting thing you have to talk about, not many are going to be interested.
 
 Minor issues can also be noted, including unnecessary border around the bars, unnecessary vertical gridlines, and an unnecessary X axis label.
 
@@ -95,7 +95,9 @@ starwars %>%
 
 <br>
 
-Now consider the following.  We have six pieces of information in one graph- name (on hover), homeworld (shape), age (size), gender (color), mass (x), and height (y).  The colors are evenly spaced from one another, and so do not draw one's attention to one group over another, or even to the line over groups. Opacity allows the line to be added and the points to overlap without loss of information.  We technically don't need a caption, legend or gridlines, because hovering over the data tells us everything we'd want to know about a given data point.  
+Now consider the following.  We have six pieces of information in one graph- name (on hover), homeworld (shape), age (size), gender (color), mass (x), and height (y).  The colors are evenly spaced from one another, and so do not draw one's attention to one group over another, or even to the line over groups. Opacity allows the line to be added and the points to overlap without loss of information.  We technically don't need a caption, legend or gridlines, because hovering over the data tells us everything we'd want to know about a given data point.  The interactivity additionally allows one to select and zoom on specific areas.
+
+<br>
 
 ```{r better}
 sw2 = starwars %>% 
@@ -107,34 +109,26 @@ sw2 = starwars %>%
 
 
 # adding label=name will add name to plotly tooltip; ggplot will ignore
+pal = viridis(3, begin = 0, end = .75, direction = 1, option = 'plasma') # direction evidently doesn't work
+linecol = scales::alpha(pal[1], .5)# because plotly doesn't know what alpha is.
 g = sw2 %>% 
   select(-homeworld) %>% 
   rename(homeworld=homeworld2) %>% 
   ggplot(aes(x=mass, y=height)) +
-  geom_smooth(color=lazerhawk::palettes$orange$tetradic[4], se=F, size=.5, alpha=.15) +
+  geom_smooth(color=linecol, se=F, size=.5, alpha=.5) +
   geom_point(aes(label=name, color=gender, shape=homeworld, size=birth_year), alpha=.5, show.legend=F) +
-  scale_color_manual(values=lazerhawk::palettes$orange$complementary) +
+  scale_color_manual(values=pal[2:3]) +
   # geom_text(aes(label=name)) +
   scale_size_continuous(range=c(2,10)) +
-  visibly::theme_trueMinimal()+ 
+  theme_trueMinimal()+ 
   theme(legend.position="none")  # only way to keep plotly from putting a legend
 
 ggplotly()%>% 
-  # add_lines(x=~mass, y=~height)
-  config(displayModeBar = F) %>%
   layout(title='Star Wars Characters',
          font=list(family='Roboto'),
          xaxis=list(title='Mass'),
-         yaxis=list(title='Height'))
-
-# 
-# sw2 %>% #drop_na() %>% 
-#   # group_by(gender) %>% 
-#   plot_ly(split=~gender) %>% 
-#   add_markers(x=~mass, y=~height, color=~homeworld2,# colors=c("#1f77b4", "#ff7f0e"),
-#               text=~name, size=~birth_year, opacity=.85,# symbol=~gender,
-#               sizes=c(50,100)) %>% 
-#   lazerhawk::theme_plotly()
+         yaxis=list(title='Height')) %>% 
+  theme_plotly()
 ```
 
 <br>
@@ -147,9 +141,9 @@ Here are some things to keep in mind when creating visualizations for scientific
 
 Assume your audience, which in academia is full of people with advanced degrees or those aspiring to obtain one, and in other contexts comprises people who are interested in your story, can handle more than a bar graph.  If the visualization is good and well-explained[^captions], they'll be fine. 
 
-See the data visualization and maps sections of [2016: The Year in Visual Stories and Graphics](https://www.nytimes.com/interactive/2016/12/28/us/year-in-interactive-graphics.html) at the New York Times.  Good data visualization of even complex relationships can be appreciated by more than an academic audience.  Assume you can at least provide visualizations on that level of complexity and be okay.  It won't always work, but at least put the same effort you'd appreciate yourself.
+See the data visualization and maps sections of [2017: The Year in Visual Stories and Graphics](https://www.nytimes.com/interactive/2017/12/21/us/2017-year-in-graphics.html) at the New York Times.  Good data visualization of even complex relationships can be appreciated by more than an academic audience.  Assume you can at least provide visualizations on that level of complexity and be okay.  It won't always work, but at least put the same effort you'd appreciate yourself.
 
-<img class='zoom' src="img/nytimes.png" style="display:block; margin: 0 auto;">
+<img class='zoom' src="img/nyt2017.png" width=50%>
 
 ### Clarity is key
 
@@ -218,7 +212,18 @@ Furthermore, they'll work well with discrete or continuous data.  You will have 
 <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
 </div>
 
+### Scientific colors
 
+Yet another set of palletes are available via the <span class="pack">scico</span> package, and are specifically geared toward for scientific presentation. These perceptually-uniform color maps will handle data variations equally all along the colour bar and still work for black and white print. Just another option beyond viridis palettes.
+
+
+- Perceptually uniform     
+- Perceptually ordered     
+- Colour-vision-deficiency friendly     
+- Readable as black-and-white print
+
+
+<img class='zoom' src="img/scico.png" width=50%> 
 
 ## Contrast
 
@@ -231,11 +236,24 @@ So contrast comes into play with text as well as color.  In general, you should 
 
 -<span class="" style="color:#7f7f7f; size:150%; font-weight:500">Here is text at 4 to 1</span>
 
--<span class="" style="color:#585858; size:150%; font-weight:500">Here is text at 7 to 1</span>
+-<span class="" style="color:#585858; size:150%; font-weight:500">Here is text at 7 to 1</span> (this document)
 
 -<span class="" style="color:black; size:150%; font-weight:500">Here is black</span>
 
 I personally don't like stark black, and find it visually irritating, but obviously that would be fine to use for most people.
+
+Contrast concerns regard color as well.  When considering color, one should consider the background for plots, or perhaps the surrounding text.  The following function will check for this. Ideally one would pass AAA.
+
+```{r contrast, echo=TRUE}
+# default ggplot2 discrete color against the default ggplot2 gray background
+visibly::color_contrast_checker(foreground = '#F8766D', background = 'gray92')
+
+# the dark viridis would work 
+visibly::color_contrast_checker(foreground = '#21908C', background = 'gray92')
+```
+
+You can't win all battles however.  It will be difficult to choose colors that are perceptually even, avoid color-blindness issues, have good contrast, and work to convey the information you need.  The main thing is to make the attempt.
+
 
 ## Scaling Size
 
@@ -374,7 +392,8 @@ gdat1 = gather(data.frame(x=xg1,
 
 
 g1 = ggplot(aes(x=x, y=value), data=gdat1) + 
-  geom_line(aes(group=variable), color=pal[2], alpha=.15) +
+  geom_line(aes(group=variable, alpha=abs(value)), color=pal[2], show.legend = F) +
+  scale_alpha_continuous(range=c(.15,.25)) +
   labs(title='Prior') +
   theme_trueMinimal() +
   theme(axis.text.x=element_blank(),
@@ -475,7 +494,7 @@ grid.arrange(g1, g2, ncol=2)
 
 
 
-Without transparency, it just looks ugly, and notably busier if nothing else.
+Without transparency, it just looks ugly, and notably busier if nothing else. This plot is using the exact same <span class="pack">scico</span> palette.
 
 ```{r transp2_old, eval=FALSE}
 data_frame(g, x, y) %>% 
@@ -563,7 +582,7 @@ gdat %>%
   theme_trueMinimal()
 ```
 
-Here we apply it to a density plot to convey a group difference in distributions, while still being able to visualize the whole distribution of each group.
+Here we apply transparency to a density plot to convey a group difference in distributions, while still being able to visualize the whole distribution of each group.
 
 ```{r transp_density}
 detach(package:mclust)
@@ -622,7 +641,7 @@ We talked about this previously, but when communicating visually, one can do sim
 It's one thing to create a visualization, but at some point you're likely going to want to share it.  RStudio will allow for the export of any visualization created in the Plots or Viewer tab.  In addition, various packages may have their own save function, that may allow you to specify size, type or other aspects.  Here we'll discuss some of the options.
 
 - <span class="emph">png</span>: These are relatively small in size and ubiquitous on the web. You should feel fine in this format.  It does not scale however, so if you make a smaller image and someone zooms, it will become blurry.
-- <span class="emph">gif</span>: These are the type used for all the stupid animations you see on the web.  Using them is fine if you want to make an animation, but know that it can go longer than a couple seconds and there is no requirement for it to be asinine.
+- <span class="emph">gif</span>: These are the type used for all the silly animations you see on the web.  Using them is fine if you want to make an animation, but know that it can go longer than a couple seconds, and there is no requirement for it to be asinine.
 - <span class="emph">jpg</span>: Commonly used for photographs, which isn't the case with data generated graphs.  Given their relative size I don't see much need for these.
 - <span class="emph">svg</span>: These take a different approach to imaging and can scale. You can make a very small one and it (potentially) can still look great when zoomed in to a much larger size. Often useful for logos, but possibly in any situation.
 
@@ -650,7 +669,7 @@ Anyone that's used R's <span class="func">hist</span> function knows the frustra
 
 ### Using 3D without adding any communicative value
 
-You will often come across use of 3D in scientific communication which is fairly poor and makes the data harder to interpret.  In general, when going beyond two dimensions, your first thought should be to use color, size, etc. and finally prefer interactivity to 3D.  Where it is useful is in things like showing structure (e.g. molecular, geographical), or continuous multi-way interactions.
+You will often come across use of 3D in scientific communication which is fairly poor and makes the data harder to interpret.  In general, when going beyond two dimensions, your first thought should be to use color, size, etc. and finally, prefer interactivity to 3D.  Where it is useful is in things like showing structure (e.g. molecular, geographical), or continuous multi-way interactions.
 
 ### Using too many colors 
 

@@ -2,31 +2,35 @@
 
 /* title page */
 .book .book-body .page-wrapper .page-inner section.normal h1.title {
-  font-size: 250%; 
-  font-family: 'Fira Sans', Karla, 'Roboto Condensed', Lora, Lato, Roboto, sans; 
+  font-size: 250%;
+  font-family: 'Fira Sans', Karla, 'Roboto Condensed', Lora, Lato, Roboto, sans;
   font-style: normal;
   font-weight: 100;
 }
 
 .book .book-body .page-wrapper .page-inner section.normal .author .noem {
-  font-size:  125%; 
+  display: block;
+  margin: 0 0 10px 0;
+  font-size:  125%;
   font-style:  normal;
-  font-variant:  small-caps; 
+  font-variant:  small-caps;
   font-weight: 200;
   font-family: 'Roboto Condensed', 'Fira Sans', Roboto, 'Open Sans', sans;
 }
 
 
 .book .book-body .page-wrapper .page-inner section.normal a.uri {
-  font-size:  75%; 
+  display: block;
+  margin: 0 0 10px 0;
+  font-size:  75%;
   font-style:  normal;       /* ignored thanks to bootstrap random enforcement of em*/
-  font-variant:  small-caps; 
+  font-variant:  small-caps;
   font-family:  Roboto, 'Open Sans', sans;
 }
 
 .book .book-body .page-wrapper .page-inner section.normal h4.date {
   font-style: normal;
-  font-size:  100%; 
+  font-size:  100%;
   font-family: 'Open Sans', sans;
 }
 
@@ -264,6 +268,11 @@ h1, h2, h3, h4, h5 {
  color: #aa5500;
 }
 
+/* args */
+.dt {
+
+}
+
 /* package */
 code span.st {
  color: #aa5500;
@@ -282,8 +291,22 @@ code span.st {
 /* img */
 
 img {
-  display: block; 
+  display: block;
   margin: 0 auto;
+}
+
+.arc {
+  display: block;
+  width:30%;
+  padding:5px 0;
+  margin: 0 0 10px 0;
+}
+
+.cscar {
+  display: block;
+  width:21%;
+  padding:5px 0;
+  margin: 0 0 10px 0;
 }
 
 /* zoom for img*/
@@ -322,4 +345,50 @@ img {
 .objclass {
   color:  #947100;  /*#AAB400 #4daf4a; #FFC5D0*/
   font-weight: 500;
+}
+
+
+/* miscellaneous */
+
+.col2 {
+  columns: 2 200px;         /* number of columns and width in pixels*/
+  -webkit-columns: 2 200px; /* chrome, safari */
+  -moz-columns: 2 200px;    /* firefox */
+}
+.col3 {
+  columns: 3 100px;
+  -webkit-columns: 3 100px;
+  -moz-columns: 3 100px;
+}
+
+.plotly {
++
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+/*.plotly html-widget {
+  width: 100%;
+}*/
+
+.d3heatmap {
+  margin-left: 5%;
+  margin-right: 5%;
+  width: 75%;
+}
+
+
+/* tables */
+
+table {
+  margin: auto;
+}
+
+.book .book-body .page-wrapper .page-inner section.normal table tr:nth-child(2n) {
+    background-color: white;
+}
+
+div.datatables {
+    margin-left: auto;     /* to center them when full is not necessary. */
+    margin-right: auto;
 }

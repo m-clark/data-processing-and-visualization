@@ -1,0 +1,51 @@
+---
+title: "Thinking Visually"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE, exercise.lines=5, exercise.eval=FALSE, cache = F)
+```
+
+# Thinking Visually Exercises
+
+
+
+## Exercise 1
+
+The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>.  Use the <span class="func">scale_color_viridis</span> function to add a more accessible palette.
+
+```{r thinkingvis_ex1, exercise=TRUE, echo=T, eval=FALSE, cache=FALSE, out.width='50%'}
+library(ggplot2); library(viridis)
+ggplot(aes(x=carat, y=price), data=diamonds) +
+  geom_point(aes(color=price)) +
+  ????
+```
+
+```{r thinkingvis_ex1-hint, eval=F, out.width='50%'}
+library(ggplot2); library(viridis)
+ggplot(aes(x=carat, y=price), data=diamonds) +
+  geom_point(aes(color=price)) +
+  scale_color_viridis()
+```
+
+
+## Exercise 2
+
+Now color it by the `cut`.  To use the scale_color_viridis approach, you'll have to change one of the arguments to the function (set `discrete=T`).  Reproduce this but using one of the other viridis palettes.  See the helpfile via `?scale_color_viridis` to see how to change the palette.
+
+```{r thinkingvis_ex2, exercise=TRUE, exercise.eval=FALSE, out.width='50%'}
+ggplot(aes(x=carat, y=price), data=diamonds) +
+  geom_point(aes(????)) +
+  scale_color_viridis(discrete=T)
+```
+
+
+
+```{r thinkingvis_ex2-hint, eval=FALSE, out.width='50%'}
+ggplot(aes(x=carat, y=price), data=diamonds) +
+  geom_point(aes(color=cut)) +
+  scale_color_viridis(discrete=T)
+```

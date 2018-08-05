@@ -332,7 +332,7 @@ Muller_df <- get_Muller_df(example_edges, example_pop_df, cutoff = 0.005)
 
 # generate pretty plot
 Muller_plot(Muller_df, palette=rep(RColorBrewer::brewer.pal(12, 'Set3'), 4), xlab='', ylab='') +
-  lazerhawk::theme_trueMinimal() +
+  theme_trueMinimal() +
   theme(axis.ticks.x=element_blank(),
         axis.ticks.y=element_blank(),
         axis.text.x=element_blank(),
@@ -382,7 +382,7 @@ Themes to play with:
 - <span class="func">theme_light</span>
 - <span class="func">theme_linedraw</span>
 - <span class="func">theme_minimal</span>
-- <span class="func">theme_trueMinimal</span> (requires the lazerhawk package and an appreciation of the Lamborghini background from the previous visualization)
+- <span class="func">theme_trueMinimal</span> (requires the visibly package and an appreciation of the Lamborghini background from the previous visualization)
 
 ```{r ggplot_ex1, echo=FALSE}
 library(ggplot2)
