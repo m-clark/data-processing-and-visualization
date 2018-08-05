@@ -5,26 +5,28 @@ runtime: shiny_prerendered
 ---
 
 ```{r setup, include=FALSE}
-library(learnr)
-knitr::opts_chunk$set(echo = FALSE, exercise.lines=5, exercise.eval=FALSE, cache = F)
+library(learnr); library(tidyverse)
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, error=FALSE, comment=NA, R.options=list(width=220),
+                      exercise.lines=5, exercise.eval=FALSE, cache = FALSE, out.width='50%')
+
 ```
 
-# Thinking Visually Exercises
+## Thinking Visually Exercises
 
 
 
-## Exercise 1
+### Exercise 1
 
 The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>.  Use the <span class="func">scale_color_viridis</span> function to add a more accessible palette.
 
-```{r thinkingvis_ex1, exercise=TRUE, echo=T, eval=FALSE, cache=FALSE, out.width='50%'}
+```{r thinkingvis_ex1, exercise=TRUE, eval=FALSE, cache=FALSE}
 library(ggplot2); library(viridis)
 ggplot(aes(x=carat, y=price), data=diamonds) +
   geom_point(aes(color=price)) +
   ????
 ```
 
-```{r thinkingvis_ex1-hint, eval=F, out.width='50%'}
+```{r thinkingvis_ex1-hint, eval=F}
 library(ggplot2); library(viridis)
 ggplot(aes(x=carat, y=price), data=diamonds) +
   geom_point(aes(color=price)) +
@@ -32,7 +34,7 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
 ```
 
 
-## Exercise 2
+### Exercise 2
 
 Now color it by the `cut`.  To use the scale_color_viridis approach, you'll have to change one of the arguments to the function (set `discrete=T`).  Reproduce this but using one of the other viridis palettes.  See the helpfile via `?scale_color_viridis` to see how to change the palette.
 
@@ -48,4 +50,88 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
 ggplot(aes(x=carat, y=price), data=diamonds) +
   geom_point(aes(color=cut)) +
   scale_color_viridis(discrete=T)
+```
+
+
+## ggplot2
+
+
+### Exercise 0
+
+Load the <span class="pack">ggplot2</span> package if you haven't already, or better yet, <span class="pack">tidyverse</span>.
+
+### Exercise 1
+
+Create two plots, one a scatterplot (e.g. with <span class="func">geom_point</span>) and one with lines (e.g. <span class="func">geom_line</span>) with a data set of your choosing (all of the following are base R or available after loading <span class="pack">ggplot2</span>.  Some suggestions:
+
+- <span class="objclass">faithful</span>: Waiting time between eruptions and the duration of the eruption for the Old Faithful geyser in Yellowstone National Park, Wyoming, USA.
+- <span class="objclass">msleep</span>:  mammals sleep dataset with sleep times and weights etc.
+- <span class="objclass">diamonds</span>: used in the slides
+- <span class="objclass">economics</span>: US economic time series.
+- <span class="objclass">txhousing</span>: Housing sales in TX.
+- <span class="objclass">midwest</span>: Midwest demographics.
+- <span class="objclass">mpg</span>: Fuel economy data from 1999 and 2008 for 38 popular models of car
+
+Recall the basic form for ggplot.
+
+```
+ggplot(aes(x=*, y=*, other), data=*) +
+  geom_*() +
+  otherLayers, theme etc.
+```
+
+Themes to play with:
+
+- <span class="func">theme_bw</span>
+- <span class="func">theme_classic</span>
+- <span class="func">theme_dark</span>
+- <span class="func">theme_gray</span>
+- <span class="func">theme_light</span>
+- <span class="func">theme_linedraw</span>
+- <span class="func">theme_minimal</span>
+- <span class="func">theme_trueMinimal</span> (requires the visibly package and an appreciation of the Lamborghini background from the previous visualization)
+
+```{r ggplot_ex1, exercise=TRUE, echo=FALSE, eval=FALSE}
+library(ggplot2)
+ggplot(aes(x=waiting, y=eruptions), data=faithful) +
+  geom_point(???)
+```
+
+
+### Exercise 2
+
+Play around and change the arguments to the following. You'll need to install the <span class="pack">maps</span> package. 
+
+- For example, do points for all county midpoints. For that you'd need to change the x and y for the point geom to an aesthetic based on the longitude and latitude, as well as add its data argument to use the <span class="objclass">seats</span> data frame. 
+- Make the color of the points or text based on `subregion`. This will require adding the fill argument to the polygon geom and removing the NA setting. In addition, add the argument show.legend=F (outside the aesthetic), or you'll have a problematic legend (recall what we said before about too many colors!).  Try making color based on subregion too.
+- See if you can use <span class="func">element_blank</span> on a theme argument to remove the axis information.  See `?theme` for ideas.
+
+```{r ggplot_ex2, exercise=TRUE, exercise.eval=TRUE, exercise.lines=20}
+library(maps)
+mi = map_data("county", "michigan")
+seats = mi %>% 
+  group_by(subregion) %>% 
+  summarise_at(vars(lat, long), function(x) median(range(x)))
+
+# inspect the data
+# head(mi)
+# head(seats)
+
+ggplot(mi, aes(long, lat)) +
+  geom_polygon(aes(group = subregion), fill = NA, colour = "grey60") +
+  geom_text(aes(label = subregion), data = seats, size = 1, angle = 45) +
+  geom_point(x=-83.748333, y=42.281389, color='#1e90ff', size=3) +
+  theme_minimal() +
+  theme(panel.grid=element_blank())
+```
+
+
+
+```{r ggplot_ex2-hint, echo=FALSE, exercise.lines=20}
+ggplot(mi, aes(long, lat)) +
+  geom_polygon(aes(group = subregion, fill = subregion, alpha= - lat), colour = "grey60", show.legend = F) +
+  geom_text(aes(label = subregion), data = seats, size = 1, angle = 45) +
+  geom_point(aes(x=long, y=lat), color='#1e90ff', size=3, data = seats) +
+  theme_minimal() +
+  theme(panel.grid=element_blank())
 ```

@@ -214,12 +214,12 @@ Furthermore, they'll work well with discrete or continuous data.  You will have 
 
 ### Scientific colors
 
-Yet another set of palletes are available via the <span class="pack">scico</span> package, and are specifically geared toward for scientific presentation. These perceptually-uniform color maps will handle data variations equally all along the colour bar and still work for black and white print. Just another option beyond viridis palettes.
+Yet another set of palettes are available via the <span class="pack">scico</span> package, and are specifically geared toward for scientific presentation. These perceptually-uniform color maps will handle data variations equally all along the colour bar and still work for black and white print. Just another option beyond viridis palettes.
 
 
 - Perceptually uniform     
 - Perceptually ordered     
-- Colour-vision-deficiency friendly     
+- Color-vision-deficiency friendly     
 - Readable as black-and-white print
 
 
@@ -649,6 +649,13 @@ As I don't know what screen will see my visualizations, I generally opt for svg.
 
 Here is a [discussion on stackexchange](https://stackoverflow.com/questions/2336522/png-vs-gif-vs-jpeg-vs-svg-when-best-to-use) that summarizes some of the above. The initial question is old but there have been recent updates to the responses.
 
+Note also, you can import files directly into your documents with R, HTML tags, or $\LaTeX$.  See `?png` for a starting point.  The following demonstrates an image insert for HTML output, with a couple options for centering and size.
+
+`<img src="file.jpg" style="display:block; margin: 0 auto;" width=50%>`
+
+<img src="img/future.jpg" style="display:block; margin: 0 auto;" width=50%>
+
+
 
 ## Summary
 
@@ -730,6 +737,6 @@ For your upcoming presentation, *who* is your audience?
 
 [^jet]: Even Matlab finally joined the club, except that they still screwed up with their default coloring scheme.
 
-[^hadleygray]: Hadley states "The grey background gives the plot a similar colour (in a typographical sense) to the remainder of the text, ensuring that the graphics fit in with the flow of a text without jumping out with a bright white background. Finally, the grey background creates a continuous field of colour which ensures that the plot is perceived as a single visual entity.".  The part about it being ugly is apparently left out. ☺  Also, my opinion is that it has the opposite effect, making the visualization jump out because nothing on the web is gray by default. If anything the page background is white, and having a white/transparent background would perhaps be better, but honestly, don't you *want* a visualization to jump out?
+[^hadleygray]: Hadley states "The grey background gives the plot a similar colour (in a typographical sense) to the remainder of the text, ensuring that the graphics fit in with the flow of a text without jumping out with a bright white background. Finally, the grey background creates a continuous field of colour which ensures that the plot is perceived as a single visual entity.".  The part about it being ugly is apparently left out. ☺  Also, my opinion is that it has the opposite effect, making the visualization jump out because nothing on the web is typically gray by default. If anything the page background is white, and having a white/transparent background would perhaps be better, but honestly, don't you *want* a visualization to jump out?
 
 [^Dark1]: Don't even think about asking what the Dark1 palette is.

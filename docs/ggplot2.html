@@ -331,10 +331,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#geoms"><i class="fa fa-check"></i>Geoms</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#examples"><i class="fa fa-check"></i>Examples</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#stats"><i class="fa fa-check"></i>Stats</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#scales"><i class="fa fa-check"></i>Scales</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i>Facets</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#multiple-plots"><i class="fa fa-check"></i>Multiple plots</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#themes"><i class="fa fa-check"></i>Themes</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
@@ -507,7 +509,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="data-processing-and-visualization_files/figure-html/layer2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Perhaps we want to change labels or theme. These would be additional layers to the plot.</p>
 <div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb184-1" data-line-number="1"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>height, <span class="dt">y=</span>mass), <span class="dt">data=</span>starwars) <span class="op">+</span></a>
-<a class="sourceLine" id="cb184-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb184-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">color=</span><span class="st">&#39;white&#39;</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb184-3" data-line-number="3"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&#39;Height in cm&#39;</span>, <span class="dt">y=</span><span class="st">&#39;Weight in kg&#39;</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb184-4" data-line-number="4"><span class="st">  </span><span class="kw">theme_dark</span>()</a></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/layer3-1.svg" width="75%" style="display: block; margin: auto;" /></p>
@@ -532,13 +534,66 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Aesthetics</h2>
 <p><span class="emph">Aesthetics</span> map data to various visual aspects of the plot, including size, color etc. The function used in ggplot to do this is <span class="func">aes</span>.</p>
 <div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb186-1" data-line-number="1"><span class="kw">aes</span>(<span class="dt">x=</span>myvar, <span class="dt">y=</span>myvar2, <span class="dt">color=</span>myvar3, <span class="dt">group=</span>g)</a></code></pre></div>
-<p>The best way to understand what goes into the aes function is if the value is varying. For example, if I want the size of points to be a certain value, I would code the following.</p>
+<p>The best way to understand what goes into the <span class="func">aes</span> function is if the value is varying. For example, if I want the size of points to be a certain value, I would code the following.</p>
 <div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb187-1" data-line-number="1">... <span class="op">+</span></a>
 <a class="sourceLine" id="cb187-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>(..., <span class="dt">size=</span><span class="dv">4</span>)</a></code></pre></div>
 <p>However, if I want the size to be associated with the data in some way, I use it as an aesthetic.</p>
 <div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb188-1" data-line-number="1">... <span class="op">+</span></a>
 <a class="sourceLine" id="cb188-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>myvar))</a></code></pre></div>
 <p>The same goes for practically any aspect of a geom- size, color, fill, etc. If it is a fixed value, set it outside the aesthetic. If it varies based on the data, put it within an aesthetic.</p>
+</div>
+<div id="geoms" class="section level2">
+<h2>Geoms</h2>
+<p>In the ggplot2 world, geoms are the geometric objects- shapes, lines, and other parts of the visualization we want to display. Even if you use ggplot2 a lot, you probably didn’t know about many or most of these.</p>
+<div style="font-size:75%">
+<ul>
+<li><span class="func">geom_abline</span>: Reference lines: horizontal, vertical, and diagonal</li>
+<li><span class="func">geom_area</span>: Ribbons and area plots</li>
+<li><span class="func">geom_bar</span>: Bar charts</li>
+<li><span class="func">geom_bin2d</span>: Heatmap of 2d bin counts</li>
+<li><span class="func">geom_blank</span>: Draw nothing</li>
+<li><span class="func">geom_boxplot</span>: A box and whiskers plot (in the style of Tukey)</li>
+<li><span class="func">geom_col</span>: Bar charts</li>
+<li><span class="func">geom_contour</span>: 2d contours of a 3d surface</li>
+<li><span class="func">geom_count</span>: Count overlapping points</li>
+<li><span class="func">geom_crossbar</span>: Vertical intervals: lines, crossbars &amp; errorbars</li>
+<li><span class="func">geom_curve</span>: Line segments and curves</li>
+<li><span class="func">geom_density</span>: Smoothed density estimates</li>
+<li><span class="func">geom_density_2d</span>: Contours of a 2d density estimate</li>
+<li><span class="func">geom_dotplot</span>: Dot plot</li>
+<li><span class="func">geom_errorbar</span>: Vertical intervals: lines, crossbars &amp; errorbars</li>
+<li><span class="func">geom_errorbarh</span>: Horizontal error bars</li>
+<li><span class="func">geom_freqpoly</span>: Histograms and frequency polygons</li>
+<li><span class="func">geom_hex</span>: Hexagonal heatmap of 2d bin counts</li>
+<li><span class="func">geom_histogram</span>: Histograms and frequency polygons</li>
+<li><span class="func">geom_hline</span>: Reference lines: horizontal, vertical, and diagonal</li>
+<li><span class="func">geom_jitter</span>: Jittered points</li>
+<li><span class="func">geom_label</span>: Text</li>
+<li><span class="func">geom_line</span>: Connect observations</li>
+<li><span class="func">geom_linerange</span>: Vertical intervals: lines, crossbars &amp; errorbars</li>
+<li><span class="func">geom_map</span>: Polygons from a reference map</li>
+<li><span class="func">geom_path</span>: Connect observations</li>
+<li><span class="func">geom_point</span>: Points</li>
+<li><span class="func">geom_pointrange</span>: Vertical intervals: lines, crossbars &amp; errorbars</li>
+<li><span class="func">geom_polygon</span>: Polygons</li>
+<li><span class="func">geom_qq</span>: A quantile-quantile plot</li>
+<li><span class="func">geom_qq_line</span>: A quantile-quantile plot</li>
+<li><span class="func">geom_quantile</span>: Quantile regression</li>
+<li><span class="func">geom_raster</span>: Rectangles</li>
+<li><span class="func">geom_rect</span>: Rectangles</li>
+<li><span class="func">geom_ribbon</span>: Ribbons and area plots</li>
+<li><span class="func">geom_rug</span>: Rug plots in the margins</li>
+<li><span class="func">geom_segment</span>: Line segments and curves</li>
+<li><span class="func">geom_sf</span>: Visualise sf objects</li>
+<li><span class="func">geom_smooth</span>: Smoothed conditional means</li>
+<li><span class="func">geom_spoke</span>: Line segments parameterised by location, direction and distance</li>
+<li><span class="func">geom_step</span>: Connect observations</li>
+<li><span class="func">geom_text</span>: Text</li>
+<li><span class="func">geom_tile</span>: Rectangles</li>
+<li><span class="func">geom_violin</span>: Violin plot</li>
+<li><span class="func">geom_vline</span>: Reference lines: horizontal, vertical, and diagonal</li>
+</ul>
+</div>
 </div>
 <div id="examples" class="section level2">
 <h2>Examples</h2>
@@ -580,7 +635,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb194-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
 <a class="sourceLine" id="cb194-3" data-line-number="3"><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun.data =</span> <span class="st">&quot;mean_cl_boot&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;orange&quot;</span>, <span class="dt">alpha=</span>.<span class="dv">75</span>, <span class="dt">size =</span> <span class="dv">1</span>)</a></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggstatsum-1.svg" width="75%" style="display: block; margin: auto;" /></p>
-<p>The take-home message here is to always let ggplot do the work for you if at all possible.</p>
+<p>The take-home message here is to always let ggplot do the work for you if at all possible. However, I will say that I find it easier to create the summary data I want to visualize with tidyverse tools, rather than use <span class="func">stat_summary</span>, and you may have a similar experience.</p>
 </div>
 <div id="scales" class="section level2">
 <h2>Scales</h2>
@@ -620,7 +675,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb201-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
 <a class="sourceLine" id="cb201-3" data-line-number="3"><span class="st">  </span><span class="kw">scale_x_log10</span>()</a></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/scale_scale-1.svg" width="75%" style="display: block; margin: auto;" /></p>
-<p>In short, scale alterations are really useful for getting just the plot you want, and there is a lot of flexibility for you to work with.</p>
+<p>In short, scale alterations are really useful for getting just the plot you want, and there is a lot of flexibility for you to work with. There are a lot of scales too, so know what you have available.</p>
+<div style="font-size:75%">
+<ul>
+<li><p><span class="func">scale_alpha</span>, <span class="func">scale_alpha_continuous</span>, <span class="func">scale_alpha_date</span>, <span class="func">scale_alpha_datetime</span>, <span class="func">scale_alpha_discrete</span>, <span class="func">scale_alpha_identity</span>, <span class="func">scale_alpha_manual</span>, <span class="func">scale_alpha_ordinal</span>: Alpha transparency scales</p></li>
+<li><p><span class="func">scale_color_brewer</span>, <span class="func">scale_color_distiller</span>: Sequential, diverging and qualitative colour scales from colorbrewer.org</p></li>
+<li><p><span class="func">scale_color_continuous</span>, <span class="func">scale_color_discrete</span>, <span class="func">scale_color_gradient</span>, <span class="func">scale_color_gradient2</span>, <span class="func">scale_color_gradientn</span>, <span class="func">scale_color_grey</span>, <span class="func">scale_color_hue</span>, <span class="func">scale_color_identity</span>, <span class="func">scale_color_manual</span>, <span class="func">scale_color_viridis_c</span>, <span class="func">scale_color_viridis_d</span>, <span class="func">scale_continuous_identity</span> Various color scales</p></li>
+<li><p><span class="func">scale_discrete_identity</span>, <span class="func">scale_discrete_manual</span>: Discrete scales</p></li>
+<li><p><span class="func">scale_fill_brewer</span>, <span class="func">scale_fill_continuous</span>, <span class="func">scale_fill_date</span>, <span class="func">scale_fill_datetime</span>, <span class="func">scale_fill_discrete</span>, <span class="func">scale_fill_distiller</span>, <span class="func">scale_fill_gradient</span>, <span class="func">scale_fill_gradient2</span>, <span class="func">scale_fill_gradientn</span>, <span class="func">scale_fill_grey</span>, <span class="func">scale_fill_hue</span>, <span class="func">scale_fill_identity</span>, <span class="func">scale_fill_manual</span>, <span class="func">scale_fill_ordinal</span>, <span class="func">scale_fill_viridis_c</span>, <span class="func">scale_fill_viridis_d</span>: Scales for geoms that can be filled with color</p></li>
+<li><p><span class="func">scale_linetype</span>, <span class="func">scale_linetype_continuous</span>, <span class="func">scale_linetype_discrete</span>, <span class="func">scale_linetype_identity</span>, <span class="func">scale_linetype_manual</span>: Scales for line patterns</p></li>
+<li><p><span class="func">scale_shape</span>, <span class="func">scale_shape_continuous</span>, <span class="func">scale_shape_discrete</span>, <span class="func">scale_shape_identity</span>, <span class="func">scale_shape_manual</span>, <span class="func">scale_shape_ordinal</span>: Scales for shapes, aka glyphs</p></li>
+<li><p><span class="func">scale_size</span>, <span class="func">scale_size_area</span>, <span class="func">scale_size_continuous</span>, <span class="func">scale_size_date</span>, <span class="func">scale_size_datetime</span>, <span class="func">scale_size_discrete</span>, <span class="func">scale_size_identity</span>, <span class="func">scale_size_manual</span>, <span class="func">scale_size_ordinal</span>: Scales for area or radius</p></li>
+<li><p><span class="func">scale_x_continuous</span>, <span class="func">scale_x_date</span>, <span class="func">scale_x_datetime</span>, <span class="func">scale_x_discrete</span>, <span class="func">scale_x_log10</span>, <span class="func">scale_x_reverse</span>, <span class="func">scale_x_sqrt</span>, &lt; <span class="func">scale_y_continuous</span>, <span class="func">scale_y_date</span>, <span class="func">scale_y_datetime</span>, <span class="func">scale_y_discrete</span>, <span class="func">scale_y_log10</span>, <span class="func">scale_y_reverse</span>, <span class="func">scale_y_sqrt</span>: Position scales for continuous data (x &amp; y)</p></li>
+<li><span class="func">scale_x_time</span>, <span class="func">scale_y_time</span>: Position scales for date/time data</li>
+</ul>
+</div>
 </div>
 <div id="facets" class="section level2">
 <h2>Facets</h2>
@@ -647,34 +716,67 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="data-processing-and-visualization_files/figure-html/facetwrap-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
+<div id="multiple-plots" class="section level2">
+<h2>Multiple plots</h2>
+<p>Often we want distinct visualizations to come together in one plot. There are several packages that can help you here: <span class="pack">gridExtra</span>, <span class="pack">cowplot</span>, and more recently <span class="pack">patchwork</span><a href="#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a>. The latter especially makes things easy.</p>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb205-1" data-line-number="1"><span class="kw">library</span>(patchwork)</a>
+<a class="sourceLine" id="cb205-2" data-line-number="2">g1 =<span class="st"> </span><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(wt, mpg)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb205-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_point</span>()</a>
+<a class="sourceLine" id="cb205-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb205-5" data-line-number="5">g2 =<span class="st"> </span><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(wt)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb205-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_density</span>()</a>
+<a class="sourceLine" id="cb205-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb205-8" data-line-number="8">g3 =<span class="st"> </span><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(mpg)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb205-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_density</span>()</a>
+<a class="sourceLine" id="cb205-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb205-11" data-line-number="11">g1 <span class="op">/</span><span class="st">                       </span><span class="co"># initial plot place next part underneath</span></a>
+<a class="sourceLine" id="cb205-12" data-line-number="12"><span class="st">  </span>(g2 <span class="op">|</span><span class="st"> </span>g3)                <span class="co"># groups g2 and g3 side by side</span></a></code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/patchwork-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p>Not that you want this, but just to demonstrate the flexibility.</p>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb206-1" data-line-number="1">p1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(mtcars) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(mpg, disp))</a>
+<a class="sourceLine" id="cb206-2" data-line-number="2">p2 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(mtcars) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(gear, disp, <span class="dt">group =</span> gear))</a>
+<a class="sourceLine" id="cb206-3" data-line-number="3">p3 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(mtcars) <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="kw">aes</span>(disp, qsec))</a>
+<a class="sourceLine" id="cb206-4" data-line-number="4">p4 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(mtcars) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(carb))</a>
+<a class="sourceLine" id="cb206-5" data-line-number="5">p5 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(mtcars) <span class="op">+</span><span class="st"> </span><span class="kw">geom_violin</span>(<span class="kw">aes</span>(cyl, mpg, <span class="dt">group =</span> cyl))</a>
+<a class="sourceLine" id="cb206-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb206-7" data-line-number="7">p1 <span class="op">+</span></a>
+<a class="sourceLine" id="cb206-8" data-line-number="8"><span class="st">  </span>p2 <span class="op">+</span></a>
+<a class="sourceLine" id="cb206-9" data-line-number="9"><span class="st">  </span>(p3 <span class="op">+</span></a>
+<a class="sourceLine" id="cb206-10" data-line-number="10"><span class="st">     </span>p4 <span class="op">+</span></a>
+<a class="sourceLine" id="cb206-11" data-line-number="11"><span class="st">     </span><span class="kw">plot_layout</span>(<span class="dt">ncol =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb206-12" data-line-number="12">  ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb206-13" data-line-number="13"><span class="st">  </span>p5 <span class="op">+</span></a>
+<a class="sourceLine" id="cb206-14" data-line-number="14"><span class="st">  </span><span class="kw">plot_layout</span>(<span class="dt">widths =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</a></code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/patchwork2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+</div>
 <div id="fine-control" class="section level2">
 <h2>Fine control</h2>
 <p><span class="pack">ggplot2</span> makes it easy to get good looking graphs quickly. However the amount of fine control is extensive. The following plot is hideous (aside from the background, which is totally rad), but illustrates the point.</p>
-<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb205-1" data-line-number="1"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>carat, <span class="dt">y=</span>price), <span class="dt">data=</span>diamonds) <span class="op">+</span></a>
-<a class="sourceLine" id="cb205-2" data-line-number="2"><span class="st">  </span><span class="kw">annotation_custom</span>(<span class="kw">rasterGrob</span>(lambosun, </a>
-<a class="sourceLine" id="cb205-3" data-line-number="3">                               <span class="dt">width=</span><span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;npc&quot;</span>), </a>
-<a class="sourceLine" id="cb205-4" data-line-number="4">                               <span class="dt">height=</span><span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;npc&quot;</span>), </a>
-<a class="sourceLine" id="cb205-5" data-line-number="5">                               <span class="dt">interpolate =</span> <span class="ot">FALSE</span>), </a>
-<a class="sourceLine" id="cb205-6" data-line-number="6">                    <span class="op">-</span><span class="ot">Inf</span>, <span class="ot">Inf</span>, <span class="op">-</span><span class="ot">Inf</span>, <span class="ot">Inf</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb205-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>clarity), <span class="dt">alpha=</span>.<span class="dv">5</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb205-8" data-line-number="8"><span class="st">  </span><span class="kw">scale_y_log10</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1000</span>,<span class="dv">5000</span>,<span class="dv">10000</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb205-9" data-line-number="9"><span class="st">  </span><span class="kw">xlim</span>(<span class="dv">0</span>, <span class="dv">10</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb205-10" data-line-number="10"><span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">type=</span><span class="st">&#39;div&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb205-11" data-line-number="11"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>cut, <span class="dt">ncol=</span><span class="dv">3</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb205-12" data-line-number="12"><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb205-13" data-line-number="13"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.ticks.x=</span><span class="kw">element_line</span>(<span class="dt">color=</span><span class="st">&#39;darkred&#39;</span>),</a>
-<a class="sourceLine" id="cb205-14" data-line-number="14">        <span class="dt">axis.text.x=</span><span class="kw">element_text</span>(<span class="dt">angle=</span><span class="op">-</span><span class="dv">45</span>),</a>
-<a class="sourceLine" id="cb205-15" data-line-number="15">        <span class="dt">axis.text.y=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">20</span>),</a>
-<a class="sourceLine" id="cb205-16" data-line-number="16">        <span class="dt">strip.text=</span><span class="kw">element_text</span>(<span class="dt">color=</span><span class="st">&#39;forestgreen&#39;</span>),</a>
-<a class="sourceLine" id="cb205-17" data-line-number="17">        <span class="dt">strip.background=</span><span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb205-18" data-line-number="18">        <span class="dt">panel.grid.minor=</span><span class="kw">element_line</span>(<span class="dt">color=</span><span class="st">&#39;lightblue&#39;</span>),</a>
-<a class="sourceLine" id="cb205-19" data-line-number="19">        <span class="dt">legend.key=</span><span class="kw">element_rect</span>(<span class="dt">linetype=</span><span class="dv">4</span>),</a>
-<a class="sourceLine" id="cb205-20" data-line-number="20">        <span class="dt">legend.position=</span><span class="st">&#39;bottom&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb207-1" data-line-number="1"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>carat, <span class="dt">y=</span>price), <span class="dt">data=</span>diamonds) <span class="op">+</span></a>
+<a class="sourceLine" id="cb207-2" data-line-number="2"><span class="st">  </span><span class="kw">annotation_custom</span>(<span class="kw">rasterGrob</span>(lambosun, </a>
+<a class="sourceLine" id="cb207-3" data-line-number="3">                               <span class="dt">width=</span><span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;npc&quot;</span>), </a>
+<a class="sourceLine" id="cb207-4" data-line-number="4">                               <span class="dt">height=</span><span class="kw">unit</span>(<span class="dv">1</span>,<span class="st">&quot;npc&quot;</span>), </a>
+<a class="sourceLine" id="cb207-5" data-line-number="5">                               <span class="dt">interpolate =</span> <span class="ot">FALSE</span>), </a>
+<a class="sourceLine" id="cb207-6" data-line-number="6">                    <span class="op">-</span><span class="ot">Inf</span>, <span class="ot">Inf</span>, <span class="op">-</span><span class="ot">Inf</span>, <span class="ot">Inf</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb207-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>clarity), <span class="dt">alpha=</span>.<span class="dv">5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb207-8" data-line-number="8"><span class="st">  </span><span class="kw">scale_y_log10</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1000</span>,<span class="dv">5000</span>,<span class="dv">10000</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb207-9" data-line-number="9"><span class="st">  </span><span class="kw">xlim</span>(<span class="dv">0</span>, <span class="dv">10</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb207-10" data-line-number="10"><span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">type=</span><span class="st">&#39;div&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb207-11" data-line-number="11"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>cut, <span class="dt">ncol=</span><span class="dv">3</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb207-12" data-line-number="12"><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb207-13" data-line-number="13"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.ticks.x=</span><span class="kw">element_line</span>(<span class="dt">color=</span><span class="st">&#39;darkred&#39;</span>),</a>
+<a class="sourceLine" id="cb207-14" data-line-number="14">        <span class="dt">axis.text.x=</span><span class="kw">element_text</span>(<span class="dt">angle=</span><span class="op">-</span><span class="dv">45</span>),</a>
+<a class="sourceLine" id="cb207-15" data-line-number="15">        <span class="dt">axis.text.y=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">20</span>),</a>
+<a class="sourceLine" id="cb207-16" data-line-number="16">        <span class="dt">strip.text=</span><span class="kw">element_text</span>(<span class="dt">color=</span><span class="st">&#39;forestgreen&#39;</span>),</a>
+<a class="sourceLine" id="cb207-17" data-line-number="17">        <span class="dt">strip.background=</span><span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb207-18" data-line-number="18">        <span class="dt">panel.grid.minor=</span><span class="kw">element_line</span>(<span class="dt">color=</span><span class="st">&#39;lightblue&#39;</span>),</a>
+<a class="sourceLine" id="cb207-19" data-line-number="19">        <span class="dt">legend.key=</span><span class="kw">element_rect</span>(<span class="dt">linetype=</span><span class="dv">4</span>),</a>
+<a class="sourceLine" id="cb207-20" data-line-number="20">        <span class="dt">legend.position=</span><span class="st">&#39;bottom&#39;</span>)</a></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/finecontrol-1.png" width="75%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="themes" class="section level2">
 <h2>Themes</h2>
-<p>In the last example you saw two uses of a <span class="emph">theme</span>- a built-in version that comes with ggplot (<span class="func">theme_minimal</span>), and specific customization (<span class="func">theme(…)</span>). The built-in themes provide ready-made approaches that might be enough for a finished product. For the theme function, each argument, and there are many, takes on a specific value or an element function:</p>
+<p>In the last example you saw two uses of a <span class="emph">theme</span>- a built-in version that comes with ggplot (<span class="func">theme_minimal</span>), and specific customization (<span class="func">theme</span>(…)). The built-in themes provide ready-made approaches that might already be enough for a finished product. For the theme function, each argument, and there are many, takes on a specific value or an element function:</p>
 <ul>
 <li><span class="func">element_rect</span></li>
 <li><span class="func">element_line</span></li>
@@ -697,7 +799,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>time series</li>
 <li>aligning multiple ggplot visualizations, possibly of different types</li>
 </ul>
-<p><img src="data-processing-and-visualization_files/figure-html/mullerplot-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb208-1" data-line-number="1"><span class="co"># library(ggmuller)</span></a>
+<a class="sourceLine" id="cb208-2" data-line-number="2"><span class="co"># Muller_df &lt;- get_Muller_df(example_edges, example_pop_df, cutoff = 0.005)</span></a>
+<a class="sourceLine" id="cb208-3" data-line-number="3"><span class="co"># </span></a>
+<a class="sourceLine" id="cb208-4" data-line-number="4"><span class="co"># # generate pretty plot</span></a>
+<a class="sourceLine" id="cb208-5" data-line-number="5"><span class="co"># Muller_plot(Muller_df, palette=c(NineteenEightyR::sonny(), NineteenEightyR::malibu()[4:5]), xlab=&#39;&#39;, ylab=&#39;&#39;) +</span></a>
+<a class="sourceLine" id="cb208-6" data-line-number="6"><span class="co">#   theme_trueMinimal() +</span></a>
+<a class="sourceLine" id="cb208-7" data-line-number="7"><span class="co">#   theme(axis.ticks.x=element_blank(),</span></a>
+<a class="sourceLine" id="cb208-8" data-line-number="8"><span class="co">#         axis.ticks.y=element_blank(),</span></a>
+<a class="sourceLine" id="cb208-9" data-line-number="9"><span class="co">#         axis.text.x=element_blank(),</span></a>
+<a class="sourceLine" id="cb208-10" data-line-number="10"><span class="co">#         axis.text.y=element_blank())</span></a></code></pre></div>
 <p>As one can see, <span class="pack">ggplot2</span> is only the beginning. You’ll have a lot of tools at your disposal. Furthermore, many modeling and other packages will produce ggplot graphics to which you can add your own layers and tweak like you would any other ggplot.</p>
 </div>
 <div id="summary-ggplot2" class="section level2">
@@ -708,7 +819,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>ggplot2 Exercises</h2>
 <div id="exercise-0-2" class="section level3">
 <h3>Exercise 0</h3>
-<p>Install and load the <span class="pack">ggplot2</span> package if you haven’t already.</p>
+<p>Load the <span class="pack">ggplot2</span> package if you haven’t already.</p>
 </div>
 <div id="exercise-1-5" class="section level3">
 <h3>Exercise 1</h3>
@@ -747,22 +858,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Make the color of the points or text based on <code>subregion</code>. This will require adding the fill argument to the polygon geom and removing the NA setting. In addition, add the argument show.legend=F (outside the aesthetic), or you’ll have a problematic legend (recall what we said before about too many colors!). Try making color based on subregion too.</li>
 <li>See if you can use <span class="func">element_blank</span> on a theme argument to remove the axis information. See ?theme for ideas.</li>
 </ul>
-<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb207-1" data-line-number="1"><span class="kw">library</span>(maps)</a>
-<a class="sourceLine" id="cb207-2" data-line-number="2">mi =<span class="st"> </span><span class="kw">map_data</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;michigan&quot;</span>)</a>
-<a class="sourceLine" id="cb207-3" data-line-number="3">seats =<span class="st"> </span>mi <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb207-4" data-line-number="4"><span class="st">  </span><span class="kw">group_by</span>(subregion) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb207-5" data-line-number="5"><span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(lat, long), <span class="cf">function</span>(x) <span class="kw">median</span>(<span class="kw">range</span>(x)))</a>
-<a class="sourceLine" id="cb207-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb207-7" data-line-number="7"><span class="co"># inspect the data</span></a>
-<a class="sourceLine" id="cb207-8" data-line-number="8"><span class="co"># head(mi)</span></a>
-<a class="sourceLine" id="cb207-9" data-line-number="9"><span class="co"># head(seats)</span></a>
-<a class="sourceLine" id="cb207-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb207-11" data-line-number="11"><span class="kw">ggplot</span>(mi, <span class="kw">aes</span>(long, lat)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb207-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_polygon</span>(<span class="kw">aes</span>(<span class="dt">group =</span> subregion), <span class="dt">fill =</span> <span class="ot">NA</span>, <span class="dt">colour =</span> <span class="st">&quot;grey60&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb207-13" data-line-number="13"><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> subregion), <span class="dt">data =</span> seats, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">angle =</span> <span class="dv">45</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb207-14" data-line-number="14"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">x=</span><span class="op">-</span><span class="fl">83.748333</span>, <span class="dt">y=</span><span class="fl">42.281389</span>, <span class="dt">color=</span><span class="st">&#39;#1e90ff&#39;</span>, <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb207-15" data-line-number="15"><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb207-16" data-line-number="16"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid=</span><span class="kw">element_blank</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb210-1" data-line-number="1"><span class="kw">library</span>(maps)</a>
+<a class="sourceLine" id="cb210-2" data-line-number="2">mi =<span class="st"> </span><span class="kw">map_data</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;michigan&quot;</span>)</a>
+<a class="sourceLine" id="cb210-3" data-line-number="3">seats =<span class="st"> </span>mi <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb210-4" data-line-number="4"><span class="st">  </span><span class="kw">group_by</span>(subregion) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb210-5" data-line-number="5"><span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(lat, long), <span class="cf">function</span>(x) <span class="kw">median</span>(<span class="kw">range</span>(x)))</a>
+<a class="sourceLine" id="cb210-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb210-7" data-line-number="7"><span class="co"># inspect the data</span></a>
+<a class="sourceLine" id="cb210-8" data-line-number="8"><span class="co"># head(mi)</span></a>
+<a class="sourceLine" id="cb210-9" data-line-number="9"><span class="co"># head(seats)</span></a>
+<a class="sourceLine" id="cb210-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb210-11" data-line-number="11"><span class="kw">ggplot</span>(mi, <span class="kw">aes</span>(long, lat)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb210-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_polygon</span>(<span class="kw">aes</span>(<span class="dt">group =</span> subregion), <span class="dt">fill =</span> <span class="ot">NA</span>, <span class="dt">colour =</span> <span class="st">&quot;grey60&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb210-13" data-line-number="13"><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> subregion), <span class="dt">data =</span> seats, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">angle =</span> <span class="dv">45</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb210-14" data-line-number="14"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">x=</span><span class="op">-</span><span class="fl">83.748333</span>, <span class="dt">y=</span><span class="fl">42.281389</span>, <span class="dt">color=</span><span class="st">&#39;#1e90ff&#39;</span>, <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb210-15" data-line-number="15"><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb210-16" data-line-number="16"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid=</span><span class="kw">element_blank</span>())</a></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggplot_ex2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 
 </div>
@@ -772,6 +883,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <hr />
 <ol start="14">
 <li id="fn14"><p>The reason the legend is hard to make out is because the transparency is mapped to the colors and size. While I personally have never come across this being a desirable situation, nor can fathom why it would be the default, it can be fixed via <code>+ guides(colour = guide_legend(override.aes = list(alpha = 1)), size = guide_legend(override.aes = list(alpha = 1)))</code>. Apparently because that’s fun to have to do every time and easy to remember.<a href="ggplot2.html#fnref14" class="footnote-back">↩</a></p></li>
+<li id="fn15"><p>The author of <span class="pack">patchwork</span> is the same as that for the <span class="pack">scico</span> package. He also provides <span class="pack">gganimate</span>, <span class="pack">lime</span> and other useful tools.<a href="ggplot2.html#fnref15" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
             </section>
@@ -821,6 +933,19 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

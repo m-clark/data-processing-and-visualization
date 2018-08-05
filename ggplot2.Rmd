@@ -49,7 +49,7 @@ Perhaps we want to change labels or theme. These would be additional layers to t
 
 ```{r layer3}
 ggplot(aes(x=height, y=mass), data=starwars) +
-  geom_point() +
+  geom_point(color='white') +
   labs(x='Height in cm', y='Weight in kg') +
   theme_dark()
 ```
@@ -86,7 +86,7 @@ The <span class="func">geom_point</span> function adds a layer of points, and no
 aes(x=myvar, y=myvar2, color=myvar3, group=g)
 ```
 
-The best way to understand what goes into the aes function is if the value is varying.  For example, if I want the size of points to be a certain value, I would code the following.
+The best way to understand what goes into the <span class="func">aes</span> function is if the value is varying.  For example, if I want the size of points to be a certain value, I would code the following.
 
 ```{r aes_vs_not1, eval=FALSE}
 ... +
@@ -102,8 +102,57 @@ However, if I want the size to be associated with the data in some way, I use it
 
 The same goes for practically any aspect of a geom- size, color, fill, etc. If it is a fixed value, set it outside the aesthetic. If it varies based on the data, put it within an aesthetic.
 
+## Geoms
 
+In the ggplot2 world, geoms are the geometric objects- shapes, lines, and other parts of the visualization we want to display.  Even if you use ggplot2 a lot, you probably didn't know about many or most of these.  
 
+<div style='font-size:75%'>
+- <span class="func">geom_abline</span>:	Reference lines: horizontal, vertical, and diagonal
+- <span class="func">geom_area</span>:	Ribbons and area plots
+- <span class="func">geom_bar</span>:	Bar charts
+- <span class="func">geom_bin2d</span>:	Heatmap of 2d bin counts
+- <span class="func">geom_blank</span>:	Draw nothing
+- <span class="func">geom_boxplot</span>:	A box and whiskers plot (in the style of Tukey)
+- <span class="func">geom_col</span>:	Bar charts
+- <span class="func">geom_contour</span>:	2d contours of a 3d surface
+- <span class="func">geom_count</span>:	Count overlapping points
+- <span class="func">geom_crossbar</span>:	Vertical intervals: lines, crossbars & errorbars
+- <span class="func">geom_curve</span>:	Line segments and curves
+- <span class="func">geom_density</span>:	Smoothed density estimates
+- <span class="func">geom_density_2d</span>:	Contours of a 2d density estimate
+- <span class="func">geom_dotplot</span>:	Dot plot
+- <span class="func">geom_errorbar</span>:	Vertical intervals: lines, crossbars & errorbars
+- <span class="func">geom_errorbarh</span>:	Horizontal error bars
+- <span class="func">geom_freqpoly</span>:	Histograms and frequency polygons
+- <span class="func">geom_hex</span>:	Hexagonal heatmap of 2d bin counts
+- <span class="func">geom_histogram</span>:	Histograms and frequency polygons
+- <span class="func">geom_hline</span>:	Reference lines: horizontal, vertical, and diagonal
+- <span class="func">geom_jitter</span>:	Jittered points
+- <span class="func">geom_label</span>:	Text
+- <span class="func">geom_line</span>:	Connect observations
+- <span class="func">geom_linerange</span>:	Vertical intervals: lines, crossbars & errorbars
+- <span class="func">geom_map</span>:	Polygons from a reference map
+- <span class="func">geom_path</span>:	Connect observations
+- <span class="func">geom_point</span>:	Points
+- <span class="func">geom_pointrange</span>:	Vertical intervals: lines, crossbars & errorbars
+- <span class="func">geom_polygon</span>:	Polygons
+- <span class="func">geom_qq</span>:	A quantile-quantile plot
+- <span class="func">geom_qq_line</span>:	A quantile-quantile plot
+- <span class="func">geom_quantile</span>:	Quantile regression
+- <span class="func">geom_raster</span>:	Rectangles
+- <span class="func">geom_rect</span>:	Rectangles
+- <span class="func">geom_ribbon</span>:	Ribbons and area plots
+- <span class="func">geom_rug</span>:	Rug plots in the margins
+- <span class="func">geom_segment</span>:	Line segments and curves
+- <span class="func">geom_sf</span>:	Visualise sf objects
+- <span class="func">geom_smooth</span>:	Smoothed conditional means
+- <span class="func">geom_spoke</span>:	Line segments parameterised by location, direction and distance
+- <span class="func">geom_step</span>:	Connect observations
+- <span class="func">geom_text</span>:	Text
+- <span class="func">geom_tile</span>:	Rectangles
+- <span class="func">geom_violin</span>:	Violin plot
+- <span class="func">geom_vline</span>:	Reference lines: horizontal, vertical, and diagonal
+</div>
 
 ## Examples
 
@@ -164,7 +213,7 @@ ggplot(mtcars, aes(cyl, mpg)) +
   stat_summary(fun.data = "mean_cl_boot", colour = "orange", alpha=.75, size = 1)
 ```
 
-The take-home message here is to always let ggplot do the work for you if at all possible.
+The take-home message here is to always let ggplot do the work for you if at all possible.  However, I will say that I find it easier to create the summary data I want to visualize with tidyverse tools, rather than use <span class="func">stat_summary</span>, and you may have a similar experience.
 
 
 
@@ -224,7 +273,30 @@ ggplot(mpg, aes(displ, hwy)) +
   scale_x_log10()
 ```
 
-In short, scale alterations are really useful for getting just the plot you want, and there is a lot of flexibility for you to work with.
+In short, scale alterations are really useful for getting just the plot you want, and there is a lot of flexibility for you to work with.  There are a lot of scales too, so know what you have available.
+
+<div style='font-size:75%'>
+- <span class="func">scale_alpha</span>, <span class="func">scale_alpha_continuous</span>, <span class="func">scale_alpha_date</span>, <span class="func">scale_alpha_datetime</span>, <span class="func">scale_alpha_discrete</span>, <span class="func">scale_alpha_identity</span>, <span class="func">scale_alpha_manual</span>, <span class="func">scale_alpha_ordinal</span>:	Alpha transparency scales
+
+- <span class="func">scale_color_brewer</span>, <span class="func">scale_color_distiller</span>:	Sequential, diverging and qualitative colour scales from colorbrewer.org
+
+- <span class="func">scale_color_continuous</span>, <span class="func">scale_color_discrete</span>, <span class="func">scale_color_gradient</span>, <span class="func">scale_color_gradient2</span>, <span class="func">scale_color_gradientn</span>, <span class="func">scale_color_grey</span>, <span class="func">scale_color_hue</span>, <span class="func">scale_color_identity</span>, <span class="func">scale_color_manual</span>, <span class="func">scale_color_viridis_c</span>, <span class="func">scale_color_viridis_d</span>,  <span class="func">scale_continuous_identity</span> Various color scales
+
+- <span class="func">scale_discrete_identity</span>, <span class="func">scale_discrete_manual</span>: 	Discrete scales
+
+- <span class="func">scale_fill_brewer</span>, <span class="func">scale_fill_continuous</span>, <span class="func">scale_fill_date</span>, <span class="func">scale_fill_datetime</span>, <span class="func">scale_fill_discrete</span>, <span class="func">scale_fill_distiller</span>, <span class="func">scale_fill_gradient</span>, <span class="func">scale_fill_gradient2</span>, <span class="func">scale_fill_gradientn</span>, <span class="func">scale_fill_grey</span>, <span class="func">scale_fill_hue</span>, <span class="func">scale_fill_identity</span>, <span class="func">scale_fill_manual</span>, <span class="func">scale_fill_ordinal</span>, <span class="func">scale_fill_viridis_c</span>, <span class="func">scale_fill_viridis_d</span>: Scales for geoms that can be filled with color
+
+- <span class="func">scale_linetype</span>, <span class="func">scale_linetype_continuous</span>, <span class="func">scale_linetype_discrete</span>, <span class="func">scale_linetype_identity</span>, <span class="func">scale_linetype_manual</span>:	Scales for line patterns
+
+
+- <span class="func">scale_shape</span>, <span class="func">scale_shape_continuous</span>, <span class="func">scale_shape_discrete</span>, <span class="func">scale_shape_identity</span>, <span class="func">scale_shape_manual</span>, <span class="func">scale_shape_ordinal</span>:	Scales for shapes, aka glyphs
+
+- <span class="func">scale_size</span>, <span class="func">scale_size_area</span>, <span class="func">scale_size_continuous</span>, <span class="func">scale_size_date</span>, <span class="func">scale_size_datetime</span>, <span class="func">scale_size_discrete</span>, <span class="func">scale_size_identity</span>, <span class="func">scale_size_manual</span>, <span class="func">scale_size_ordinal</span>:	Scales for area or radius
+
+- <span class="func">scale_x_continuous</span>, <span class="func">scale_x_date</span>, <span class="func">scale_x_datetime</span>, <span class="func">scale_x_discrete</span>, <span class="func">scale_x_log10</span>, <span class="func">scale_x_reverse</span>, <span class="func">scale_x_sqrt</span>, < <span class="func">scale_y_continuous</span>, <span class="func">scale_y_date</span>, <span class="func">scale_y_datetime</span>, <span class="func">scale_y_discrete</span>, <span class="func">scale_y_log10</span>, <span class="func">scale_y_reverse</span>, <span class="func">scale_y_sqrt</span>: Position scales for continuous data (x & y)
+
+- <span class="func">scale_x_time</span>, <span class="func">scale_y_time</span>:	Position scales for date/time data
+</div>
 
 ## Facets
 
@@ -265,6 +337,46 @@ ggplot(mtcars, aes(wt, mpg)) +
   facet_wrap(vs ~ cyl, labeller = label_both, ncol=2)
 ```
 
+## Multiple plots
+
+Often we want distinct visualizations to come together in one plot.  There are several packages that can help you here: <span class="pack">gridExtra</span>, <span class="pack">cowplot</span>, and more recently <span class="pack">patchwork</span>[^patch]. The latter especially makes things easy.
+
+```{r patchwork}
+library(patchwork)
+g1 = ggplot(mtcars, aes(wt, mpg)) + 
+  geom_point()
+
+g2 = ggplot(mtcars, aes(wt)) + 
+  geom_density()
+
+g3 = ggplot(mtcars, aes(mpg)) + 
+  geom_density()
+
+g1 /                       # initial plot place next part underneath
+  (g2 | g3)                # groups g2 and g3 side by side
+```
+
+Not that you want this, but just to demonstrate the flexibility.
+
+```{r patchwork2}
+p1 <- ggplot(mtcars) + geom_point(aes(mpg, disp))
+p2 <- ggplot(mtcars) + geom_boxplot(aes(gear, disp, group = gear))
+p3 <- ggplot(mtcars) + geom_smooth(aes(disp, qsec))
+p4 <- ggplot(mtcars) + geom_bar(aes(carb))
+p5 <- ggplot(mtcars) + geom_violin(aes(cyl, mpg, group = cyl))
+
+p1 +
+  p2 +
+  (p3 +
+     p4 +
+     plot_layout(ncol = 1)
+  ) +
+  p5 +
+  plot_layout(widths = c(2, 1))
+```
+
+
+
 
 ## Fine control
 
@@ -301,7 +413,7 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
 
 ## Themes
 
-In the last example you saw two uses of a <span class="emph">theme</span>- a built-in version that comes with ggplot (<span class="func">theme_minimal</span>), and specific customization (<span class="func">theme(...)</span>).  The built-in themes provide ready-made approaches that might be enough for a finished product.  For the theme function, each argument, and there are many, takes on a specific value or an element function:
+In the last example you saw two uses of a <span class="emph">theme</span>- a built-in version that comes with ggplot (<span class="func">theme_minimal</span>), and specific customization (<span class="func">theme</span>(...)).  The built-in themes provide ready-made approaches that might already be enough for a finished product.  For the theme function, each argument, and there are many, takes on a specific value or an element function:
 
 - <span class="func">element_rect</span>
 - <span class="func">element_line</span>
@@ -326,17 +438,17 @@ Note that the base theme of ggplot, and I would say every plotting package, is p
 - time series
 - aligning multiple ggplot visualizations, possibly of different types
 
-```{r mullerplot, echo=FALSE}
-library(ggmuller)
-Muller_df <- get_Muller_df(example_edges, example_pop_df, cutoff = 0.005)
-
-# generate pretty plot
-Muller_plot(Muller_df, palette=rep(RColorBrewer::brewer.pal(12, 'Set3'), 4), xlab='', ylab='') +
-  theme_trueMinimal() +
-  theme(axis.ticks.x=element_blank(),
-        axis.ticks.y=element_blank(),
-        axis.text.x=element_blank(),
-        axis.text.y=element_blank())
+```{r mullerplot, eval=FALSE}
+# library(ggmuller)
+# Muller_df <- get_Muller_df(example_edges, example_pop_df, cutoff = 0.005)
+# 
+# # generate pretty plot
+# Muller_plot(Muller_df, palette=c(NineteenEightyR::sonny(), NineteenEightyR::malibu()[4:5]), xlab='', ylab='') +
+#   theme_trueMinimal() +
+#   theme(axis.ticks.x=element_blank(),
+#         axis.ticks.y=element_blank(),
+#         axis.text.x=element_blank(),
+#         axis.text.y=element_blank())
 ```
 
 As one can see, <span class="pack">ggplot2</span> is only the beginning. You'll have a lot of tools at your disposal. Furthermore, many modeling and other packages will produce ggplot graphics to which you can add your own layers and tweak like you would any other ggplot.
@@ -351,7 +463,7 @@ As one can see, <span class="pack">ggplot2</span> is only the beginning. You'll 
 
 ### Exercise 0
 
-Install and load the <span class="pack">ggplot2</span> package if you haven't already.
+Load the <span class="pack">ggplot2</span> package if you haven't already.
 
 ### Exercise 1
 
@@ -421,3 +533,5 @@ ggplot(mi, aes(long, lat)) +
 
 
 [^legendproblem]: The reason the legend is hard to make out is because the transparency is mapped to the colors and size. While I personally have never come across this being a desirable situation, nor can fathom why it would be the default, it can be fixed via `+ guides(colour = guide_legend(override.aes = list(alpha = 1)), size = guide_legend(override.aes = list(alpha = 1)))`.  Apparently because that's fun to have to do every time and easy to remember.
+
+[^patch]: The author of <span class="pack">patchwork</span> is the same as that for the <span class="pack">scico</span> package.  He also provides <span class="pack">gganimate</span>, <span class="pack">lime</span> and other useful tools.

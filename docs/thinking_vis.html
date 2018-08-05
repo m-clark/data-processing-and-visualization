@@ -331,10 +331,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#geoms"><i class="fa fa-check"></i>Geoms</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#examples"><i class="fa fa-check"></i>Examples</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#stats"><i class="fa fa-check"></i>Stats</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#scales"><i class="fa fa-check"></i>Scales</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i>Facets</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#multiple-plots"><i class="fa fa-check"></i>Multiple plots</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#themes"><i class="fa fa-check"></i>Themes</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
@@ -562,13 +564,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="scientific-colors" class="section level3">
 <h3>Scientific colors</h3>
-<p>Yet another set of palletes are available via the <span class="pack">scico</span> package, and are specifically geared toward for scientific presentation. These perceptually-uniform color maps will handle data variations equally all along the colour bar and still work for black and white print. Just another option beyond viridis palettes.</p>
+<p>Yet another set of palettes are available via the <span class="pack">scico</span> package, and are specifically geared toward for scientific presentation. These perceptually-uniform color maps will handle data variations equally all along the colour bar and still work for black and white print. Just another option beyond viridis palettes.</p>
 <ul>
 <li>Perceptually uniform<br />
 </li>
 <li>Perceptually ordered<br />
 </li>
-<li>Colour-vision-deficiency friendly<br />
+<li>Color-vision-deficiency friendly<br />
 </li>
 <li>Readable as black-and-white print</li>
 </ul>
@@ -636,6 +638,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>As I don’t know what screen will see my visualizations, I generally opt for svg. It may be a bit slower/larger, but in my usage and for my audience size, this is of little concern relative to it looking proper. They also work for pdf if you’re still creating those, and there are also lighter weight versions in R, e.g. <span class="pack">svglite</span>. Beyond that I use png, and have no need for others.</p>
 <p>Here is a <a href="https://stackoverflow.com/questions/2336522/png-vs-gif-vs-jpeg-vs-svg-when-best-to-use">discussion on stackexchange</a> that summarizes some of the above. The initial question is old but there have been recent updates to the responses.</p>
+<p>Note also, you can import files directly into your documents with R, HTML tags, or <span class="math inline">\(\LaTeX\)</span>. See <code>?png</code> for a starting point. The following demonstrates an image insert for HTML output, with a couple options for centering and size.</p>
+<p><code>&lt;img src=&quot;file.jpg&quot; style=&quot;display:block; margin: 0 auto;&quot; width=50%&gt;</code></p>
+<p><img src="img/future.jpg" style="display:block; margin: 0 auto;" width=50%></p>
 </div>
 <div id="summary-2" class="section level2">
 <h2>Summary</h2>
@@ -698,7 +703,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li id="fn9"><p>Error bars for group means can overlap and still be statistically different (the test regards the <em>difference</em> in means). Furthermore visuals of this sort often don’t bother to say whether it is standard deviation, standard error, or 2*standard error, or even something else.<a href="thinking_vis.html#fnref9" class="footnote-back">↩</a></p></li>
 <li id="fn10"><p>People seem to think there are text limits for captions. There are none.<a href="thinking_vis.html#fnref10" class="footnote-back">↩</a></p></li>
 <li id="fn11"><p>Even Matlab finally joined the club, except that they still screwed up with their default coloring scheme.<a href="thinking_vis.html#fnref11" class="footnote-back">↩</a></p></li>
-<li id="fn12"><p>Hadley states “The grey background gives the plot a similar colour (in a typographical sense) to the remainder of the text, ensuring that the graphics fit in with the flow of a text without jumping out with a bright white background. Finally, the grey background creates a continuous field of colour which ensures that the plot is perceived as a single visual entity.”. The part about it being ugly is apparently left out. ☺ Also, my opinion is that it has the opposite effect, making the visualization jump out because nothing on the web is gray by default. If anything the page background is white, and having a white/transparent background would perhaps be better, but honestly, don’t you <em>want</em> a visualization to jump out?<a href="thinking_vis.html#fnref12" class="footnote-back">↩</a></p></li>
+<li id="fn12"><p>Hadley states “The grey background gives the plot a similar colour (in a typographical sense) to the remainder of the text, ensuring that the graphics fit in with the flow of a text without jumping out with a bright white background. Finally, the grey background creates a continuous field of colour which ensures that the plot is perceived as a single visual entity.”. The part about it being ugly is apparently left out. ☺ Also, my opinion is that it has the opposite effect, making the visualization jump out because nothing on the web is typically gray by default. If anything the page background is white, and having a white/transparent background would perhaps be better, but honestly, don’t you <em>want</em> a visualization to jump out?<a href="thinking_vis.html#fnref12" class="footnote-back">↩</a></p></li>
 <li id="fn13"><p>Don’t even think about asking what the Dark1 palette is.<a href="thinking_vis.html#fnref13" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
@@ -749,6 +754,19 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
