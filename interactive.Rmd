@@ -8,10 +8,24 @@ knitr::opts_chunk$set(cache.rebuild=F)
 ```{r title, echo=F}
 # saveWidget(vn, file='vntitle.html')
 library(visNetwork)
-nodes = data.frame(id=1:2, label=c('Interactive', 'Visualization'), color='#1e90ff')
+nodes = data.frame(id=1:2, label=c('Interactive', 'Visualization'))
 edges = data.frame(from=1, to=2, color='transparent')
+# visNetwork(nodes, edges, height=400, width='100%') %>% 
+#   visNodes(shape='text', font=list(color=palettes$tyrian_purple2$tyrian_purple, size=64)) %>% 
+#   visOptions(highlightNearest=F) 
 visNetwork(nodes, edges, height=400, width='100%') %>% 
-  visNodes(shape='text', font=list(color=palettes$tyrian_purple2$tyrian_purple, size=64)) %>% 
+  visNodes(shape='circle', 
+           color = list(background='#fffff8', 
+                        # highlight=col2rgb(palettes$tyrian_purple$tetradic[2], .25)[,1],
+                        highlight='rgba(2,102,44,.5)',
+                        border=palettes$tyrian_purple2$tyrian_purple),
+           borderWidth = 3,
+           size=50, 
+           label='text', 
+           font=list(color=palettes$tyrian_purple2$tyrian_purple,
+                     size=24,
+                     highlight='#ffffff8'),
+           shadow = T) %>% 
   visOptions(highlightNearest=F) 
 ```
 
@@ -125,7 +139,7 @@ ggplotly()
 Note that this is not a one-to-one transformation.  The plotly image will have different line widths and point sizes. It will usually be easier to change it within the ggplot process than tweaking the <span class="objclass">ggplotly</span> object.
 
 <div class='note'>
-Be prepared to spend time getting used to plotly.  It has terrible documentation, is not nearly as flexible as ggplot2, has hidden (and arbitrary) defaults that can creep into a plot based on aspects of the data (rather than your settings), and some modes do not play nicely with others.  That said, it works great for a lot of things.
+Be prepared to spend time getting used to plotly.  It has (in my opinion) poor documentation, is not nearly as flexible as ggplot2, has hidden (and arbitrary) defaults that can creep into a plot based on aspects of the data (rather than your settings), and some modes do not play nicely with others.  That said, it works great for a lot of things, and I use it regularly
 
 <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
 </div>
@@ -183,7 +197,7 @@ visNetwork(nodes, edges, height=300, width=800) %>%
 ## leaflet
 
 
-The <span class="pack">leaflet</span> package from RStudio is good for quick interactive maps, and it's quite flexible and has some nice functionality to take your maps further. Unfortunately, it actually doesn't play well with many markdown formats.
+The <span class="pack">leaflet</span> package from RStudio is good for quick interactive maps, and it's quite flexible and has some nice functionality to take your maps further. Unfortunately, it actually doesn't always play well with many markdown formats.
 
 ```{r leaflet}
 hovertext <- paste(sep = "<br/>",
@@ -249,18 +263,18 @@ iris %>%
 
 <br>
 
-I would in no way recommend using the bars, unless the you want a visual *instead* of the value and can show all possible values. I would not recommend angled tag options at all, as that is more or less a prime example of chartjunk.  However, subtle use of color and emphasis can make tables of results that your audience will actually spend time exploring.
+I would in no way recommend using the bars, unless the you want a visual *instead* of the value and can show all possible values. I would not recommend angled tag options at all, as that is more or less a prime example of chartjunk.  However, subtle use of color and emphasis, as with the Sepal columns, can make tables of results that your audience will actually spend time exploring.
 
 ## Shiny
 
-<a href="https://shiny.rstudio.com/gallery/see-more.html"><img src="img/shinygal.png" style="display:block; margin: 0 auto;" width=75% alt='shiny gallery'></a>
+<a href="https://shiny.rstudio.com/gallery/see-more.html"><img class='zoom' src="img/shinygal.png" style="display:block; margin: 0 auto;" width=75% alt='shiny gallery'></a>
 
 <br>
 <span class="emph">Shiny</span> is a framework that can essentially allow you to build an interactive website/app.  Like some of the other packages mentioned, it's provided by [RStudio](https://shiny.rstudio.com/) developers.  However, most of the more recently developed interactive visualization packages will work specifically within the shiny and rmarkdown setting.
 
-You can make shiny apps just for your own use and run them locally.  But note, you are using R to build a webpage, and it's not particularly well-suited for it.  Much of how you use R will not be useful in building a shiny app, and so it will definitely take some getting used to, and you will likely need to do a lot of tedious adjustments to get things just how you want.
+You can make shiny apps just for your own use and run them locally.  But note, you are using R, a statistical programming language, to build a webpage, and it's not necessarily particularly well-suited for it.  Much of how you use R will not be useful in building a shiny app, and so it will definitely take some getting used to, and you will likely need to do a lot of tedious adjustments to get things just how you want.
 
-Shiny apps have two main components, a part that specifies the user interface, and a server function that will do all the work. With those in place (either in a single 'app.R' file or in separate files), you can then simply run app.
+Shiny apps have two main components, a part that specifies the user interface, and a server function that will do all the work. With those in place (either in a single 'app.R' file or in separate files), you can then simply click `run app` or use the function.
 
 This example is taken from the shiny help file, and you can actually run it as is.
 
@@ -270,12 +284,12 @@ library(shiny)
 # Running a Shiny app object
 app <- shinyApp(
   ui = bootstrapPage(
-    numericInput('n', 'Number of obs', 100),
+    numericInput('n', 'Number of obs', 10),
     plotOutput('plot')
   ),
   server = function(input, output) {
     output$plot <- renderPlot({ 
-      hist(runif(input$n)) 
+      ggplot2::qplot(rnorm(input$n), xlab='Is this normal?!') 
       })
   }
 )
@@ -309,9 +323,9 @@ Install and load the <span class="pack">plotly</span> package. Load the <span cl
 
 ### Exercise 1
 
-Using <span class="pack">dplyr</span> group by year, and summarize to create a new variable that is the Average rating.  Then create a plot with <span class="pack">plotly</span> for a line or scatter plot (for the latter, use the <span class="func">add_markers</span> function). It will take the following form, but you'll need to supply the plotly arguments.
+Using <span class="pack">dplyr</span>, group by year, and summarize to create a new variable that is the Average rating.   Refer to the [tidyverse][tidyverse] section if you need a refresher on what's being done here. Then create a plot with <span class="pack">plotly</span> for a line or scatter plot (for the latter, use the <span class="func">add_markers</span> function). It will take the following form, but you'll need to supply the plotly arguments.
 
-```
+```{r interactive_ex1, eval=FALSE}
 library(ggplot2movies)
 
 movies %>% 
@@ -321,7 +335,7 @@ movies %>%
   add_markers()
 ```
 
-```{r interactive_ex1, echo=FALSE}
+```{r interactive_ex1-hint, echo=FALSE}
 movies %>% 
   group_by(year) %>% 
   summarise(Avg_Rating=mean(rating)) %>% 
@@ -349,7 +363,7 @@ movies %>%
 
 ### Exercise 3
 
-Create a ggplot of your design and then use <span class="func">ggplotly</span> to make it interactive.
+Create a ggplot of your own design and then use <span class="func">ggplotly</span> to make it interactive.
 
 
 

@@ -135,3 +135,78 @@ ggplot(mi, aes(long, lat)) +
   theme_minimal() +
   theme(panel.grid=element_blank())
 ```
+
+## Interactive Visualization 
+### Exercise 0
+
+Install and load the <span class="pack">plotly</span> package. Load the <span class="pack">tidyverse</span> package if necessary (so you can use <span class="pack">dplyr</span> and <span class="pack">ggplot2</span>), and install/load the <span class="pack">ggplot2movies</span> for the IMDB data.
+
+```{r setup_IV, include=FALSE}
+library(learnr); library(tidyverse)
+knitr::opts_chunk$set(exercise.lines=10, out.width='75%')
+
+```
+
+
+```{r interactive_ex0, exercise=TRUE, exercise.eval=TRUE}
+library(plotly)
+library(ggplot2movies)
+library(tidyverse)
+```
+
+
+
+### Exercise 1
+
+Using <span class="pack">dplyr</span>, group by year, and summarize to create a new variable that is the Average rating.   Refer to the [tidyverse][tidyverse] section if you need a refresher on what's being done here. Then create a plot with <span class="pack">plotly</span> for a line or scatter plot (for the latter, use the <span class="func">add_markers</span> function). It will take the following form, but you'll need to supply the plotly arguments.
+
+```{r interactive_ex1, exercise=TRUE}
+library(ggplot2movies)
+
+movies %>% 
+  group_by(year) %>% 
+  summarise(Avg_Rating=mean(rating))
+  plot_ly() %>% 
+  add_markers()
+```
+
+```{r interactive_ex1-hint, echo=FALSE}
+library(ggplot2movies)
+
+movies %>% 
+  group_by(year) %>% 
+  summarise(Avg_Rating=mean(rating)) %>% 
+  plot_ly() %>% 
+  add_markers(x=~year, y=~Avg_Rating)
+```
+
+
+### Exercise 2
+
+This time group by year *and* Drama. In the <span class="func">summarize</span> create average rating again, but also a variable representing the average number of votes. In your plotly line, use the size and color arguments to represent whether the average number of votes and whether it was drama or not respectively. Use <span class="func">add_markers</span>.  Note that Drama will be treated as numeric since it's a 0-1 indicator. This won't affect the plot, but if you want, you might use <span class="func">mutate</span> to change it to a factor with labels 'Drama' and 'Other'.
+
+```{r interactive_ex2, exercise=TRUE, echo=FALSE}
+movies %>% 
+  group_by(year, Drama) %>% 
+  summarise(Avg_Rating=mean(rating),
+            Avg_Votes = mean(votes)) %>% 
+  plot_ly() %>% 
+  add_markers()
+```
+
+```{r interactive_ex2-hint, echo=FALSE}
+movies %>% 
+  group_by(year, Drama) %>% 
+  summarise(Avg_Rating=mean(rating),
+            Avg_Votes = mean(votes)) %>% 
+  plot_ly() %>% 
+  add_markers(x=~year, 
+              y=~Avg_Rating, 
+              size=~Avg_Votes, 
+              color=~Drama)
+```
+
+
+### Exercise 3
+
+Create a ggplot of your own design and then use <span class="func">ggplotly</span> to make it interactive.
