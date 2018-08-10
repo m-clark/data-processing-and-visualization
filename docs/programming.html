@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2018-08-06">
+<meta name="date" content="2018-08-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -483,11 +483,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="object-inspection-exploration" class="section level3">
 <h3>Object Inspection &amp; Exploration</h3>
 <p>Let’s say you’ve imported your data into R. If you are going to be able to do anything with it, you’ll have had to create an R object that represents that data. What is that object? By now you know it’s a data frame, specifically, <a href="https://en.wikipedia.org/wiki/Class_(computer_programming)">class</a> <span class="objclass">data.frame</span> or possibly a <span class="objclass">tibble</span> if you’re working within the tidyverse. If you want to look at it, you might be tempted to look at it this way with <span class="func">View</span>, or clicking on it in your Environment viewer.</p>
-<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb222-1" data-line-number="1"><span class="kw">View</span>(diamonds)</a></code></pre></div>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb221-1" data-line-number="1"><span class="kw">View</span>(diamonds)</a></code></pre></div>
 <p><img class='zoom' src="img/view.png" style="display:block; margin: 0 auto;" width=50%></p>
 <p>While this is certainly one way to inspect it, it’s not very useful. There’s far too much information to get much out of it, and information you may need to know is absent.</p>
 <p>Consider the following:</p>
-<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb223-1" data-line-number="1"><span class="kw">str</span>(diamonds)</a></code></pre></div>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb222-1" data-line-number="1"><span class="kw">str</span>(diamonds)</a></code></pre></div>
 <pre><code>Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:   53940 obs. of  10 variables:
  $ carat  : num  0.23 0.21 0.23 0.29 0.31 0.24 0.24 0.26 0.22 0.23 ...
  $ cut    : Ord.factor w/ 5 levels &quot;Fair&quot;&lt;&quot;Good&quot;&lt;..: 5 4 2 4 2 3 3 3 1 3 ...
@@ -499,7 +499,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  $ x      : num  3.95 3.89 4.05 4.2 4.34 3.94 3.95 4.07 3.87 4 ...
  $ y      : num  3.98 3.84 4.07 4.23 4.35 3.96 3.98 4.11 3.78 4.05 ...
  $ z      : num  2.43 2.31 2.31 2.63 2.75 2.48 2.47 2.53 2.49 2.39 ...</code></pre>
-<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb225-1" data-line-number="1"><span class="kw">glimpse</span>(diamonds)</a></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb224-1" data-line-number="1"><span class="kw">glimpse</span>(diamonds)</a></code></pre></div>
 <pre><code>Observations: 53,940
 Variables: 10
 $ carat   &lt;dbl&gt; 0.23, 0.21, 0.23, 0.29, 0.31, 0.24, 0.24, 0.26, 0.22, 0.23, 0.30, 0.23, 0.22, 0.31, 0.20, 0.32, 0.30, 0.30, 0.30, 0.30, 0.30, 0.23, 0.23, 0.31, 0.31, 0.23, 0.24, 0.30, 0.23, 0.23, 0.23, 0.23, 0.23, 0...
@@ -514,11 +514,11 @@ $ y       &lt;dbl&gt; 3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, 4.05
 $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39, 2.73, 2.46, 2.33, 2.71, 2.27, 2.68, 2.68, 2.70, 2.71, 2.66, 2.71, 2.48, 2.41, 2.62, 2.59, 2.41, 2.47, 2.67, 2.40, 2.42, 2.41, 2.42, 2.42, 2...</code></pre>
 <p>The <span class="func">str</span> function looks at the <em>structure</em> of the object, while <span class="func">glimpse</span> perhaps provides a possibly more readable version, and is just <span class="func">str</span> specifically suited toward data frames. In both cases, we get info about the object and the various things within it.</p>
 <p>While you might be doing this with data frames, you should be doing it with any of the objects you’re interested in. Consider a regression model object.</p>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb227-1" data-line-number="1">lm_mod =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>mtcars)</a>
-<a class="sourceLine" id="cb227-2" data-line-number="2"><span class="kw">str</span>(lm_mod, <span class="dv">0</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb226-1" data-line-number="1">lm_mod =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>mtcars)</a>
+<a class="sourceLine" id="cb226-2" data-line-number="2"><span class="kw">str</span>(lm_mod, <span class="dv">0</span>)</a></code></pre></div>
 <pre><code>List of 12
  - attr(*, &quot;class&quot;)= chr &quot;lm&quot;</code></pre>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb229-1" data-line-number="1"><span class="kw">str</span>(lm_mod, <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb228-1" data-line-number="1"><span class="kw">str</span>(lm_mod, <span class="dv">1</span>)</a></code></pre></div>
 <pre><code>List of 12
  $ coefficients : Named num [1:11] 12.3034 -0.1114 0.0133 -0.0215 0.7871 ...
   ..- attr(*, &quot;names&quot;)= chr [1:11] &quot;(Intercept)&quot; &quot;cyl&quot; &quot;disp&quot; &quot;hp&quot; ...
@@ -562,11 +562,11 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
   .. .. .. ..- attr(*, &quot;names&quot;)= chr [1:11] &quot;mpg&quot; &quot;cyl&quot; &quot;disp&quot; &quot;hp&quot; ...
  - attr(*, &quot;class&quot;)= chr &quot;lm&quot;</code></pre>
 <p>Here we look at the object at the lowest level of detail (0), which basically just tells us that it’s a list of stuff. But if we go into more depth, we can see that there is quite a bit going on in here! Coefficients, the data frame used in the model (i.e. only the variables used and no <code>NA</code>), and much more are available to us, and we can pluck out any piece of it.</p>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb231-1" data-line-number="1">lm_mod<span class="op">$</span>coefficients</a></code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb230-1" data-line-number="1">lm_mod<span class="op">$</span>coefficients</a></code></pre></div>
 <pre><code>(Intercept)         cyl        disp          hp        drat          wt        qsec          vs          am        gear        carb 
 12.30337416 -0.11144048  0.01333524 -0.02148212  0.78711097 -3.71530393  0.82104075  0.31776281  2.52022689  0.65541302 -0.19941925 </code></pre>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb233-1" data-line-number="1">lm_mod<span class="op">$</span>model <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb233-2" data-line-number="2"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb232-1" data-line-number="1">lm_mod<span class="op">$</span>model <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb232-2" data-line-number="2"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
 <pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
 Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
 Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
@@ -575,7 +575,7 @@ Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
 Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
 Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
 <p>Let’s do a summary of it, something you’ve probably done many times.</p>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb235-1" data-line-number="1"><span class="kw">summary</span>(lm_mod)</a></code></pre></div>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb234-1" data-line-number="1"><span class="kw">summary</span>(lm_mod)</a></code></pre></div>
 <pre><code>
 Call:
 lm(formula = mpg ~ ., data = mtcars)
@@ -604,8 +604,8 @@ Residual standard error: 2.65 on 21 degrees of freedom
 Multiple R-squared:  0.869, Adjusted R-squared:  0.8066 
 F-statistic: 13.93 on 10 and 21 DF,  p-value: 3.793e-07</code></pre>
 <p>But you can assign that to an object and inspect it too!</p>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb237-1" data-line-number="1">lm_mod_summary =<span class="st"> </span><span class="kw">summary</span>(lm_mod)</a>
-<a class="sourceLine" id="cb237-2" data-line-number="2"><span class="kw">str</span>(lm_mod_summary)</a></code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb236-1" data-line-number="1">lm_mod_summary =<span class="st"> </span><span class="kw">summary</span>(lm_mod)</a>
+<a class="sourceLine" id="cb236-2" data-line-number="2"><span class="kw">str</span>(lm_mod_summary)</a></code></pre></div>
 <pre><code>List of 11
  $ call         : language lm(formula = mpg ~ ., data = mtcars)
  $ terms        :Classes &#39;terms&#39;, &#39;formula&#39;  language mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb
@@ -642,8 +642,8 @@ F-statistic: 13.93 on 10 and 21 DF,  p-value: 3.793e-07</code></pre>
   .. ..$ : chr [1:11] &quot;(Intercept)&quot; &quot;cyl&quot; &quot;disp&quot; &quot;hp&quot; ...
  - attr(*, &quot;class&quot;)= chr &quot;summary.lm&quot;</code></pre>
 <p>If we pull the coefficients from this object, we are not just getting the values, but the table that’s printed in the summary. And we can now get that ready for publishing for example<a href="#fn19" class="footnote-ref" id="fnref19"><sup>19</sup></a>.</p>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb239-1" data-line-number="1">lm_mod_summary<span class="op">$</span>coefficients <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb239-2" data-line-number="2"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb238-1" data-line-number="1">lm_mod_summary<span class="op">$</span>coefficients <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb238-2" data-line-number="2"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">2</span>)</a></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -858,7 +858,7 @@ carb
 <div id="methods" class="section level3">
 <h3>Methods</h3>
 <p>Consider the following:</p>
-<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb240-1" data-line-number="1"><span class="kw">summary</span>(diamonds)</a></code></pre></div>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb239-1" data-line-number="1"><span class="kw">summary</span>(diamonds)</a></code></pre></div>
 <pre><code>     carat               cut        color        clarity          depth           table           price             x                y                z         
  Min.   :0.2000   Fair     : 1610   D: 6775   SI1    :13065   Min.   :43.00   Min.   :43.00   Min.   :  326   Min.   : 0.000   Min.   : 0.000   Min.   : 0.000  
  1st Qu.:0.4000   Good     : 4906   E: 9797   VS2    :12258   1st Qu.:61.00   1st Qu.:56.00   1st Qu.:  950   1st Qu.: 4.710   1st Qu.: 4.720   1st Qu.: 2.910  
@@ -867,10 +867,10 @@ carb
  3rd Qu.:1.0400   Ideal    :21551   H: 8304   VVS2   : 5066   3rd Qu.:62.50   3rd Qu.:59.00   3rd Qu.: 5324   3rd Qu.: 6.540   3rd Qu.: 6.540   3rd Qu.: 4.040  
  Max.   :5.0100                     I: 5422   VVS1   : 3655   Max.   :79.00   Max.   :95.00   Max.   :18823   Max.   :10.740   Max.   :58.900   Max.   :31.800  
                                     J: 2808   (Other): 2531                                                                                                     </code></pre>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb242-1" data-line-number="1"><span class="kw">summary</span>(diamonds<span class="op">$</span>clarity)</a></code></pre></div>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb241-1" data-line-number="1"><span class="kw">summary</span>(diamonds<span class="op">$</span>clarity)</a></code></pre></div>
 <pre><code>   I1   SI2   SI1   VS2   VS1  VVS2  VVS1    IF 
   741  9194 13065 12258  8171  5066  3655  1790 </code></pre>
-<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb244-1" data-line-number="1"><span class="kw">summary</span>(lm_mod)</a></code></pre></div>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb243-1" data-line-number="1"><span class="kw">summary</span>(lm_mod)</a></code></pre></div>
 <pre><code>
 Call:
 lm(formula = mpg ~ ., data = mtcars)
@@ -898,7 +898,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 Residual standard error: 2.65 on 21 degrees of freedom
 Multiple R-squared:  0.869, Adjusted R-squared:  0.8066 
 F-statistic: 13.93 on 10 and 21 DF,  p-value: 3.793e-07</code></pre>
-<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb246-1" data-line-number="1"><span class="kw">summary</span>(lm_mod_summary)</a></code></pre></div>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb245-1" data-line-number="1"><span class="kw">summary</span>(lm_mod_summary)</a></code></pre></div>
 <pre><code>              Length Class  Mode   
 call            3    -none- call   
 terms           3    terms  call   
@@ -914,7 +914,7 @@ cov.unscaled  121    -none- numeric</code></pre>
 <p>How is it that one function works on all these different types of objects? That’s not all. In RStudio, type <code>summary.</code> and hit the tab key.</p>
 <p><img class='zoom' src="img/summary_method.png" style="display:block; margin: 0 auto;" width=50%></p>
 <p>When you load additional packages, you’ll see even more <span class="emph">methods</span> for the summary function. When you call summary on an object, the appropriate type of summary function will be used depending on the class of the object. If there is no specific type, e.g. when we called summary on something that already had summary called on it, it will just use a default version listing the contents. To see all the methods for summary, type the following, and you’ll see all that is currently available for your R session.</p>
-<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb248-1" data-line-number="1"><span class="kw">methods</span>(<span class="st">&#39;summary&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb247-1" data-line-number="1"><span class="kw">methods</span>(<span class="st">&#39;summary&#39;</span>)</a></code></pre></div>
 <pre><code>  [1] summary,ANY-method             summary,diagonalMatrix-method  summary,quantmod-method        summary,sparseMatrix-method    summary.aareg*                 summary.agnes*                
   [7] summary.aov                    summary.aovlist*               summary.areg.boot*             summary.aspell*                summary.cch*                   summary.check_packages_in_dir*
  [13] summary.clara*                 summary.clustCombi             summary.cohesiveBlocks*        summary.connection             summary.corAR1*                summary.corARMA*              
@@ -940,8 +940,8 @@ cov.unscaled  121    -none- numeric</code></pre>
 [133] summary.warnings               summary.yearmon*               summary.yearqtr*               summary.zoo*                  
 see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>Say you are new to a modeling package, and as such, you might want to see what all you can do with the resulting object. Once you’ve discrened the class of the model object, you can then list all the functions that can be used on that oøbject.</p>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb250-1" data-line-number="1"><span class="kw">library</span>(brms)</a>
-<a class="sourceLine" id="cb250-2" data-line-number="2"><span class="kw">methods</span>(<span class="dt">class =</span> <span class="st">&#39;brmsfit&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb249-1" data-line-number="1"><span class="kw">library</span>(brms)</a>
+<a class="sourceLine" id="cb249-2" data-line-number="2"><span class="kw">methods</span>(<span class="dt">class =</span> <span class="st">&#39;brmsfit&#39;</span>)</a></code></pre></div>
 <pre><code> [1] add_ic                  as.array                as.data.frame           as.matrix               as.mcmc                 autocor                 bayes_factor            bayes_R2                bridge_sampler         
 [10] coef                    control_params          expose_functions        family                  fitted                  fixef                   formula                 getCall                 hypothesis             
 [19] kfold                   launch_shinystan        log_lik                 log_posterior           logLik                  loo_linpred             loo_model_weights       loo_predict             loo_predictive_interval
@@ -956,13 +956,13 @@ see &#39;?methods&#39; for accessing help and source code</code></pre>
 <div id="s4-classes" class="section level3">
 <h3>S4 classes</h3>
 <p>Everything we’ve been dealing with at this point are S3 objects, classes, and methods. R is a dialect of the <a href="https://www.r-project.org/conferences/useR-2006/Slides/Chambers.pdf">S language</a>, and the S3 name reflects the version of S at the time of R’s creation. S4 was the next iteration of S, but I’m not going to say much about the S4 system of objects other than they are a separate type of object with their own methods. For practical use you might not see much difference, but if you see an S4 object, it will have <span class="emph">slots</span> accessible via <code>@</code>.</p>
-<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb252-1" data-line-number="1">car_matrix =<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb252-2" data-line-number="2"><span class="st">  </span><span class="kw">as.matrix</span>() <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># convert from df to matrix</span></a>
-<a class="sourceLine" id="cb252-3" data-line-number="3"><span class="st">  </span>Matrix<span class="op">::</span><span class="kw">Matrix</span>()      <span class="co"># convert to Matrix class (S4)</span></a>
-<a class="sourceLine" id="cb252-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb252-5" data-line-number="5"><span class="kw">typeof</span>(car_matrix)</a></code></pre></div>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb251-1" data-line-number="1">car_matrix =<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb251-2" data-line-number="2"><span class="st">  </span><span class="kw">as.matrix</span>() <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># convert from df to matrix</span></a>
+<a class="sourceLine" id="cb251-3" data-line-number="3"><span class="st">  </span>Matrix<span class="op">::</span><span class="kw">Matrix</span>()      <span class="co"># convert to Matrix class (S4)</span></a>
+<a class="sourceLine" id="cb251-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb251-5" data-line-number="5"><span class="kw">typeof</span>(car_matrix)</a></code></pre></div>
 <pre><code>[1] &quot;S4&quot;</code></pre>
-<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb254-1" data-line-number="1"><span class="kw">str</span>(car_matrix)</a></code></pre></div>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb253-1" data-line-number="1"><span class="kw">str</span>(car_matrix)</a></code></pre></div>
 <pre><code>Formal class &#39;dgeMatrix&#39; [package &quot;Matrix&quot;] with 4 slots
   ..@ x       : num [1:352] 21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
   ..@ Dim     : int [1:2] 32 11
@@ -979,9 +979,9 @@ see &#39;?methods&#39; for accessing help and source code</code></pre>
 <div id="inspecting-functions" class="section level3">
 <h3>Inspecting Functions</h3>
 <p>You might not think of them as such, but in R, everything’s an object, including functions. You can inspect them like anything else.</p>
-<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb256-1" data-line-number="1"><span class="kw">str</span>(lm)</a></code></pre></div>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb255-1" data-line-number="1"><span class="kw">str</span>(lm)</a></code></pre></div>
 <pre><code>function (formula, data, subset, weights, na.action, method = &quot;qr&quot;, model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, contrasts = NULL, offset, ...)  </code></pre>
-<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb258-1" data-line-number="1">## lm</a></code></pre></div>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb257-1" data-line-number="1">## lm</a></code></pre></div>
 <pre><code>                                                                          
 1  function (formula, data, subset, weights, na.action, method = &quot;qr&quot;,    
 2      model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, 
@@ -1010,12 +1010,12 @@ see &#39;?methods&#39; for accessing help and source code</code></pre>
 <h2>Help Files</h2>
 <p>Many applied users of R are quick to search the web for available help when they come to a problem. This is great, you’ll find a lot of information out there. However, it will likely take you a bit to sort through things and find exactly what you need. Strangely, many users of R I see don’t use the help files first, and yet this is typically the quickest way to answer many of the questions they’ll have.</p>
 <p>Let’s start with an example. We’ll use the <span class="func">sample</span> function to get a random sample of 10 values from the range of numbers 1 through 5. So, go ahead and do so!</p>
-<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb260-1" data-line-number="1"><span class="kw">sample</span>(?)</a></code></pre></div>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb259-1" data-line-number="1"><span class="kw">sample</span>(?)</a></code></pre></div>
 <p>Don’t know what to put? Consult the help file!</p>
 <p><img class="zoom" src="img/help.png" style="display:block; margin: 0 auto;" width=50%></p>
 <p>We get a brief description of a function at the top, then we see how to actually use it, i.e. the form the syntax should take. We find out there is even an additional function, <span class="func">sample.int</span>, that we could use. Next we see what arguments are possible. First we need an <code>x</code>, so what is the thing we’re trying to sample from? The numbers 1 through 5. Next is the size, which is how many values we want, in this case 10. So let’s try it.</p>
-<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb261-1" data-line-number="1">nums =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb261-2" data-line-number="2"><span class="kw">sample</span>(nums, <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb260-1" data-line-number="1">nums =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></a>
+<a class="sourceLine" id="cb260-2" data-line-number="2"><span class="kw">sample</span>(nums, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>Error in sample.int(length(x), size, replace, prob): cannot take a sample larger than the population when &#39;replace = FALSE&#39;</code></pre>
 <p>Uh oh- we have a problem with the <code>replace</code> argument! We can see in the help file that, by default, it is <code>FALSE</code><a href="#fn20" class="footnote-ref" id="fnref20"><sup>20</sup></a>, but if we want to sample 10 times from only 5 numbers, we’ll need to change it to <code>TRUE</code>.</p>
 <p>Now we are on our way!</p>
@@ -1025,8 +1025,8 @@ see &#39;?methods&#39; for accessing help and source code</code></pre>
 <div id="objects-exercises" class="section level2">
 <h2>Objects Exercises</h2>
 <p>With one function, find out what the class, number of rows, number of columns are of the following object, including what kind of object the last three columns are.</p>
-<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb263-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb263-2" data-line-number="2">?starwars</a></code></pre></div>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb262-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb262-2" data-line-number="2">?starwars</a></code></pre></div>
 
 </div>
 </div>

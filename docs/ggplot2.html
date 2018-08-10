@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2018-08-06">
+<meta name="date" content="2018-08-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -799,16 +799,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>time series</li>
 <li>aligning multiple ggplot visualizations, possibly of different types</li>
 </ul>
-<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb208-1" data-line-number="1"><span class="co"># library(ggmuller)</span></a>
-<a class="sourceLine" id="cb208-2" data-line-number="2"><span class="co"># Muller_df &lt;- get_Muller_df(example_edges, example_pop_df, cutoff = 0.005)</span></a>
-<a class="sourceLine" id="cb208-3" data-line-number="3"><span class="co"># </span></a>
-<a class="sourceLine" id="cb208-4" data-line-number="4"><span class="co"># # generate pretty plot</span></a>
-<a class="sourceLine" id="cb208-5" data-line-number="5"><span class="co"># Muller_plot(Muller_df, palette=c(NineteenEightyR::sonny(), NineteenEightyR::malibu()[4:5]), xlab=&#39;&#39;, ylab=&#39;&#39;) +</span></a>
-<a class="sourceLine" id="cb208-6" data-line-number="6"><span class="co">#   theme_trueMinimal() +</span></a>
-<a class="sourceLine" id="cb208-7" data-line-number="7"><span class="co">#   theme(axis.ticks.x=element_blank(),</span></a>
-<a class="sourceLine" id="cb208-8" data-line-number="8"><span class="co">#         axis.ticks.y=element_blank(),</span></a>
-<a class="sourceLine" id="cb208-9" data-line-number="9"><span class="co">#         axis.text.x=element_blank(),</span></a>
-<a class="sourceLine" id="cb208-10" data-line-number="10"><span class="co">#         axis.text.y=element_blank())</span></a></code></pre></div>
 <p>As one can see, <span class="pack">ggplot2</span> is only the beginning. You’ll have a lot of tools at your disposal. Furthermore, many modeling and other packages will produce ggplot graphics to which you can add your own layers and tweak like you would any other ggplot.</p>
 </div>
 <div id="summary-ggplot2" class="section level2">
@@ -858,22 +848,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Make the color of the points or text based on <code>subregion</code>. This will require adding the fill argument to the polygon geom and removing the NA setting. In addition, add the argument show.legend=F (outside the aesthetic), or you’ll have a problematic legend (recall what we said before about too many colors!). Try making color based on subregion too.</li>
 <li>See if you can use <span class="func">element_blank</span> on a theme argument to remove the axis information. See ?theme for ideas.</li>
 </ul>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb210-1" data-line-number="1"><span class="kw">library</span>(maps)</a>
-<a class="sourceLine" id="cb210-2" data-line-number="2">mi =<span class="st"> </span><span class="kw">map_data</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;michigan&quot;</span>)</a>
-<a class="sourceLine" id="cb210-3" data-line-number="3">seats =<span class="st"> </span>mi <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb210-4" data-line-number="4"><span class="st">  </span><span class="kw">group_by</span>(subregion) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb210-5" data-line-number="5"><span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(lat, long), <span class="cf">function</span>(x) <span class="kw">median</span>(<span class="kw">range</span>(x)))</a>
-<a class="sourceLine" id="cb210-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb210-7" data-line-number="7"><span class="co"># inspect the data</span></a>
-<a class="sourceLine" id="cb210-8" data-line-number="8"><span class="co"># head(mi)</span></a>
-<a class="sourceLine" id="cb210-9" data-line-number="9"><span class="co"># head(seats)</span></a>
-<a class="sourceLine" id="cb210-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb210-11" data-line-number="11"><span class="kw">ggplot</span>(mi, <span class="kw">aes</span>(long, lat)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb210-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_polygon</span>(<span class="kw">aes</span>(<span class="dt">group =</span> subregion), <span class="dt">fill =</span> <span class="ot">NA</span>, <span class="dt">colour =</span> <span class="st">&quot;grey60&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb210-13" data-line-number="13"><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> subregion), <span class="dt">data =</span> seats, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">angle =</span> <span class="dv">45</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb210-14" data-line-number="14"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">x=</span><span class="op">-</span><span class="fl">83.748333</span>, <span class="dt">y=</span><span class="fl">42.281389</span>, <span class="dt">color=</span><span class="st">&#39;#1e90ff&#39;</span>, <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb210-15" data-line-number="15"><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb210-16" data-line-number="16"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid=</span><span class="kw">element_blank</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb209-1" data-line-number="1"><span class="kw">library</span>(maps)</a>
+<a class="sourceLine" id="cb209-2" data-line-number="2">mi =<span class="st"> </span><span class="kw">map_data</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;michigan&quot;</span>)</a>
+<a class="sourceLine" id="cb209-3" data-line-number="3">seats =<span class="st"> </span>mi <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb209-4" data-line-number="4"><span class="st">  </span><span class="kw">group_by</span>(subregion) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb209-5" data-line-number="5"><span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(lat, long), <span class="cf">function</span>(x) <span class="kw">median</span>(<span class="kw">range</span>(x)))</a>
+<a class="sourceLine" id="cb209-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb209-7" data-line-number="7"><span class="co"># inspect the data</span></a>
+<a class="sourceLine" id="cb209-8" data-line-number="8"><span class="co"># head(mi)</span></a>
+<a class="sourceLine" id="cb209-9" data-line-number="9"><span class="co"># head(seats)</span></a>
+<a class="sourceLine" id="cb209-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb209-11" data-line-number="11"><span class="kw">ggplot</span>(mi, <span class="kw">aes</span>(long, lat)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb209-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_polygon</span>(<span class="kw">aes</span>(<span class="dt">group =</span> subregion), <span class="dt">fill =</span> <span class="ot">NA</span>, <span class="dt">colour =</span> <span class="st">&quot;grey60&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb209-13" data-line-number="13"><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> subregion), <span class="dt">data =</span> seats, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">angle =</span> <span class="dv">45</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb209-14" data-line-number="14"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">x=</span><span class="op">-</span><span class="fl">83.748333</span>, <span class="dt">y=</span><span class="fl">42.281389</span>, <span class="dt">color=</span><span class="st">&#39;#1e90ff&#39;</span>, <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb209-15" data-line-number="15"><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb209-16" data-line-number="16"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid=</span><span class="kw">element_blank</span>())</a></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggplot_ex2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 
 </div>

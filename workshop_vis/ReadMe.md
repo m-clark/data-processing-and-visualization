@@ -1,4 +1,4 @@
-## Workshop Project folder for the Tidyverse
+## Workshop Project folder for Visualization
 
 This folder contains an RStudio project. You have access to several things:
 
@@ -24,7 +24,7 @@ To begin with, it would be better to simply read the notes and try for yourself 
 To use the interactive version:
 
   - You must install the `learnr` package
-  - Open the `interactive_exercises_tidyverse.Rmd`
+  - Open the `interactive_exercises_thinking_visually.Rmd`
   - Click `Run Document`. By default it will appear in your viewer.
   
   
