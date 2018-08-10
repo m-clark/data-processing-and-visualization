@@ -95,6 +95,11 @@ grepl(string, pattern='^r.*shiny[0-9]$')
 ## grepl(c('apple', 'pear', 'banana'), pattern='^a')
 ## grepl(c('apple', 'pear', 'banana'), pattern='^a|a$')
 
+## ----name_ex, eval=FALSE-------------------------------------------------
+## lm(hwy ~ cyl, data=mpg)                 # hwy mileage predicted by number of cylinders
+## summary(lm(hwy ~ cyl, data=mpg))        # the summary of that
+## lm(hwy ~ cyl + displ + year, data=mpg)  # an extension of that
+
 ## ----vector_ex1, eval=FALSE----------------------------------------------
 ## ?
 
@@ -111,9 +116,4 @@ grepl(string, pattern='^r.*shiny[0-9]$')
 ## ----regex_ex, eval=FALSE------------------------------------------------
 ## library(stringr)
 ## str_replace(state.name, pattern = ?, replacement = ?)
-
-## ----name_ex, eval=FALSE-------------------------------------------------
-## lm(hwy ~ cyl, data=mpg)                 # hwy mileage predicted by number of cylinders
-## summary(lm(hwy ~ cyl, data=mpg))        # the summary of that
-## lm(hwy ~ cyl + displ + year, data=mpg)  # an extension of that
 

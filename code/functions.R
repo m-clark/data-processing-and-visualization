@@ -22,12 +22,16 @@ my_summary(mtcars2$wt)
 
 ## ----func_ex4------------------------------------------------------------
 my_summary <- function(myvar) {
-  data.frame(
+  # create an arbitrarily named object with the summary information
+  summary_data = data.frame(
     mean = mean(myvar, na.rm = TRUE),
     sd = sd(myvar, na.rm = TRUE),
     N_total = length(myvar),
     N_missing = sum(is.na(myvar))
-    )
+  )
+  
+  # return the result!
+  summary_data       
 }
 
 ## ----func_ex5------------------------------------------------------------
@@ -36,6 +40,16 @@ my_summary(mtcars2$wt)
 ## ----func_ex6------------------------------------------------------------
 mtcars2 %>% 
   map_dfr(my_summary, .id = 'variable')
+
+## ----nothing_function----------------------------------------------------
+two <- function() {
+  2
+}
+
+two()
+
+## ----source_func, eval=FALSE---------------------------------------------
+## source('my_functions/awesome_func.R')
 
 ## ----dry, eval=FALSE-----------------------------------------------------
 ## good_mileage_displ_low_cyl_4  = if_else(cyl == 4 & displ < mean(displ) & hwy > 30, 'yes', 'no')
@@ -52,22 +66,22 @@ good_mileage <- function(cylinder = 4,
                          displ_low = TRUE,
                          cls = 'compact') {
   
-  if (displ_low == TRUE) {
-    result = mpg %>%
+  if (displ_low == TRUE) {              # condition to check, if it holds,
+    result <- mpg %>%                   # filter data given the arguments
       filter(cyl == cylinder,
              displ <= displ_fun(displ),
              hwy >= mpg_cutoff,
              class == cls)
   }
-  else {
-    result = mpg %>%
+  else {                                # if the condition doesn't hold, filter 
+    result <- mpg %>%                   # the data this way instead
       filter(cyl == cylinder,
              displ >= displ_fun(displ),
              hwy >= mpg_cutoff,
              class == cls)
   }
   
-  result
+  result                                # return the object
 }
 
 ## if (Math.random() < 0.5) {
@@ -118,7 +132,7 @@ good_mileage(cylinder = 8,
 ## apply(mtcars, 2, sd)
 ## apply(mtcars, 2, function(x) sd(x))
 
-## ----lambda_ex, cache.rebuild=T------------------------------------------
+## ----lambda_ex-----------------------------------------------------------
 # some variables have a mad = 0, and so return Inf, NaN
 # apply(mtcars, 2, function(x) (x - median(x))/mad(x)) %>% 
 #   head()
@@ -130,7 +144,6 @@ mtcars %>%
 ## log_sum <- function(a, b) {
 ##   ?
 ## }
-## 
 
 ## ----wf_ex1b, eval=FALSE-------------------------------------------------
 ## log_sum <- function(a, b) {
@@ -142,10 +155,10 @@ mtcars %>%
 ##     stop('Your message here.')
 ##   }
 ##   else {
+##     ?
 ##     return(your_log_sum_object)
 ##   }
 ## }
-## 
 
 ## ----wf_ex2, eval=FALSE--------------------------------------------------
 ## set.seed(123)  # so you get the exact same 'random' result
