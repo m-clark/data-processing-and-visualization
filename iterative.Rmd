@@ -2,7 +2,7 @@
 
 Almost everything you do when dealing with data will need to be done again, and again, and again.  If you are copy-pasting your way to repetitively do the same thing, you're not only doing things inefficiently, you're almost certainly setting yourself up for trouble if practically anything changes about the data or process.
 
-In order to avoid this, you need to be familiar with basic programming, and a starting point is to use iterative programming.  Let's look at the following.  Let's say we want to get the means of some columns in our data set.  Do you do something like this?
+In order to avoid this, you need to be familiar with basic programming, and a starting point is to use an iterative approach to repetitive problems.  Let's look at the following.  Let's say we want to get the means of some columns in our data set.  Do you do something like this?
 
 ```{r iter_1, eval=FALSE}
 means1 = mean(df$x)
@@ -20,20 +20,20 @@ A <span class="emph">for loop</span> will help us get around the problem.  The i
 
 ```{r iter_loop_demo, eval=FALSE}
 for (column in c('x','y','z','q')) {
-  mean(df[,column])
+  mean(df[[column]])
 }
 ```
 
-What's going on here?  We've created an iterative process in which, *for* every element in `c('x','y','z','q')`, we are going to do something.  We use the completely arbitrary word `column` as a placeholder to index which of the four columns we're dealing with at a given point in the process. On the first iteration, `column` will equal `x`, on the second `y`, and so on.  We then take the mean of `df[,column]`, which will be `df[,'x']`, then `df[,'y']`, etc.
+What's going on here?  We've created an iterative process in which, *for* every element in `c('x','y','z','q')`, we are going to do something.  We use the completely arbitrary word `column` as a placeholder to index which of the four columns we're dealing with at a given point in the process. On the first iteration, `column` will equal `x`, on the second `y`, and so on.  We then take the mean of `df[[column]]`, which will be `df[['x']]`, then `df[['y']]`, etc.
 
-Here is an example with the <span class="pack">nycflights</span> data, which regards flights that departed New York City in 2013.  The <span class="objclass">weather</span> data set has columns for things like temperature, humidity, and so forth.[^tibbledf]
+Here is an example with the <span class="pack">nycflights</span> data, which regards flights that departed New York City in 2013.  The <span class="objclass">weather</span> data set has columns for things like temperature, humidity, and so forth.
 
 
 ```{r nyc_flights}
-weather = data.frame(nycflights13::weather)
+weather = nycflights13::weather
 
 for (column in c('temp','humid','wind_speed','precip')) {
-  print(mean(weather[,column], na.rm = TRUE))
+  print(mean(weather[[column]], na.rm = TRUE))
 }
 ```
 
@@ -46,7 +46,11 @@ columns = c('temp', 'humid', 'wind_speed', 'precip')
 nyc_means = rep(NA, length(columns))
 
 for (i in seq_along(columns)) {
-  nyc_means[i] = mean(weather[ ,columns[i]], na.rm = TRUE)
+  column = columns[i]
+  nyc_means[i] = mean(weather[[column]], na.rm = TRUE)
+  
+  # alternative without the initial first step
+  # nyc_means[i] = mean(weather[[columns[i]]], na.rm = TRUE)  
 }
 
 nyc_means
@@ -61,7 +65,7 @@ columns = c('temp', 'humid', 'wind_speed', 'visib', 'pressure')
 nyc_means = rep(NA, length(columns))
 
 for (i in seq_along(columns)) {
-  nyc_means[i] = mean(weather[ ,columns[i]], na.rm = TRUE)
+  nyc_means[i] = mean(weather[[columns[i]]], na.rm = TRUE)
 }
 
 nyc_means %>% round(2)
@@ -78,7 +82,7 @@ columns = c('temp','humid','wind_speed', 'visib', 'pressure')
 nyc_means = numeric()
 
 for (i in seq_along(columns)) {
-  nyc_means[i] = mean(weather[ ,columns[i]], na.rm = TRUE)
+  nyc_means[i] = mean(weather[[columns[i]]], na.rm = TRUE)
 }
 
 nyc_means %>% round(2)
@@ -87,7 +91,7 @@ nyc_means %>% round(2)
 However, the other approach is slightly faster, because memory is already allocated for all elements of <span class="objclass">nyc_means</span>, rather than updating it every iteration of the loop. This speed gain can become noticeable when dealing with thousands of columns and complex operations.
 
 ```{r loop_timing, eval=FALSE, echo=FALSE}
-X = matrix(rnorm(10000000), ncol=100000)
+X = matrix(rnorm(1000000), ncol=10000)
 means1 = rep(NA, ncol(X))
 means2 = c()
 
@@ -96,13 +100,14 @@ loop1 = function(X) {
     means1[i] = mean(X[,i])
   }
 }
+
 loop2 = function(X) {
   for (i in 1:ncol(X)) {
     means2[i] = mean(X[,i])
   }
 }
 
-microbenchmark::microbenchmark(loop1, loop2) 
+microbenchmark::microbenchmark(loop1(X), loop2(X)) 
 ```
 
 
@@ -173,6 +178,27 @@ apply(mydf, 2, stdize)   # 1 for rows, 2 for columnwise application
 
 Many of the other apply functions work similarly, taking an object and a function to do the work on the object (possibly implicit), possibly with other arguments specified if necessary.
 
+
+#### lapply
+
+Let's say we have a list object, or even just a vector of values. There are no rows or columns to iterate over, so what do we do here?
+
+```{r lapply_example}
+x = list('aba', 'abb', 'abc', 'abd', 'abe')
+
+lapply(x, str_remove, pattern = 'ab')
+```
+
+The <span class="func">lapply</span> operation iterates over each element of the list and applies a function to them.  In this case, the function is <span class="func">str_remove</span>.  It has an argument for the string pattern we want to take out of the character string that is fed to it ('ab').  For example, for 'aba' we will be left with just the 'a'. 
+
+As can be seen, <span class="func">lapply</span> starts with a <span class="objclass">list</span> and returns a <span class="objclass">list</span>.  The only difference with <span class="func">sapply</span> is that <span class="func">sapply</span> will return a simplified form if possible.
+
+```{r sapply_example}
+sapply(x, str_remove, pattern = 'ab')
+```
+
+In this case we just get a vector back.
+
     
 ### Apply functions
 
@@ -199,6 +225,10 @@ I pretty much never use an explicit double loop, as a little more thinking about
 
 <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
 </div>
+
+
+
+
 
 
 ## purrr
@@ -246,7 +276,7 @@ However, working with lists is very useful, so let's turn to that.
 
 Aside from data frames, you may think you don't have much need for list objects.  However, list objects make it very easy to iterate some form of data processing.
 
-Let's say you have models of increasing complexity, and you want to easily summarise and/or compare them.
+Let's say you have models of increasing complexity, and you want to easily summarise and/or compare them.  We create a list for which each element is a model object. We then apply a function, e.g. to get the AIC value for each, or adjusted R square (this requires a custom function).
 
 ```{r purr_models}
 library(mgcv) # for gam
@@ -319,18 +349,24 @@ left_join(mod_rsq, mod_aic) %>%
 
 #### List columns
 
-As data.frames are lists, anything can be put into a column just as you would a list element.  We'll use <span class="func">pmap</span> here, as it can take more than one argument, and we're feeding all columns of the data.frame.  
+As data.frames are lists, anything can be put into a column just as you would a list element.  We'll use <span class="func">pmap</span> here, as it can take more than one argument, and we're feeding all columns of the data.frame.  You don't need to worry about the details here, we just want to create a column that is actually a list.
 
 ```{r list_data_frame}
 mtcars2 = as.matrix(mtcars)
-mtcars2[sample(1:length(mtcars2),50)] = NA
-mtcars2 = as_data_frame(mtcars2)
+mtcars2[sample(1:length(mtcars2),50)] = NA   # add some missing data
+mtcars2 = data.frame(mtcars2) %>%
+  rownames_to_column(var = 'observation') %>% 
+  as_data_frame()
 
-mtcars2 = mtcars2 %>% 
-  mutate(newvar = pmap(., ~ data.frame(
-    N = sum(!is.na(c(...))),
-    Miss = sum(is.na(c(...)))
-  )))
+head(mtcars2)
+
+mtcars2 = mtcars2%>% 
+  mutate(newvar = 
+           pmap(., ~ data.frame(
+             N = sum(!is.na(c(...))),
+             Missing = sum(is.na(c(...)))
+           ))
+         )
 ```
 
 Now check out the list column.
@@ -349,6 +385,7 @@ mtcars2 %>%
 ```
 
 This is a pretty esoteric demonstration, and not something you'd normally want to do, as <span class="func">mutate</span> or other approaches would be far more efficient and sensical.  However, the idea is that you might want to retain the information you might otherwise store in a list with the data that was used to create it.  Once you have that, you can use that column as you would any list for iterative programming.
+
 
 ## Iterative Programming Exercises
 
@@ -388,10 +425,8 @@ d %>% map_df(mean)
 
 <span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>.  If you supply the argument `simplified=F`, it is identical. Otherwise, it attempts to return a vector or matrix.
 
-[^tibbledf]: Note that weather data frame is originally a <span class="objclass">tbl</span> (tibble) class object, and that loop code won't work with it unless it's converted to a real data frame, because tibbles are annoying like that.  You would have to do something like `weather %>% pull(column)`.
-
 [^arrays]: You can have 3 or more dimensional arrays, and <span class="func">apply</span> will work over those dimensions (or any combination of them), but this doesn't come up too often.
 
-[^purrr]: Personally I find the help file description nebulous or completely lacking, and the examples unrealistic, and oftentimes can come up with a group_by-summarise approach before I can sort out why the map approach didn't work.
+[^purrr]: Personally I find the help file description nebulous or completely lacking, and the examples unrealistic, and oftentimes I can come up with a group_by-summarise approach before I can sort out why the map approach didn't work.
 
 [^ggplotalpha]: Note that ggplot2 will change the ordering of the variable unless you coerce it by creating a factor. This pretty much defeats the entire purpose of retaining characters over factors everywhere else in the tidyverse.

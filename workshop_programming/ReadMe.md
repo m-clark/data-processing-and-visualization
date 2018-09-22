@@ -18,13 +18,13 @@ The code is purled from the document automatically without any addtional cleanin
 
 ### A note about the exercises
 
-To begin with, it would be better to simply read the notes and try for yourself in your own R script or R Markdown file.
+To begin with, it would be better to simply read the notes and try for yourself in your own R script or R Markdown file.  However, an 'interactive' version is also provided. When you run the document, by default it will appear in your viewer. But you can click the key to pop it open in your browser by clicking the 'Show in new window' button. Exercises contain code hints that you can copy into the code area and run.
 
 
 To use the interactive version:
 
-  - You must install the `learnr` package
+  - You must install the `learnr` package.  If you haven't already, you should also install the `tidyverse`.
   - Open the `interactive_exercises_tidyverse.Rmd`
-  - Click `Run Document`. By default it will appear in your viewer.
+  - Click `Run Document`. 
   
   
