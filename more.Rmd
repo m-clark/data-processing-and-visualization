@@ -4,7 +4,7 @@ This section is kind of a grab bag of miscellaneous things related to programmin
 
 ## Code Style
 
-A lot has been written about coding <span class="emph" style="font-family:'Alex Brush'; font-size:200%">style</span> over the decades.  If there was a definitive answer, you would have heard of it by now.  However, there are a couple things you can do at the beginning of your programming approach to go a long way making your code notably better.
+A lot has been written about coding <span class="emph" style="font-family:'Alex Brush'; font-size:1.5em">style</span> over the decades.  If there was a definitive answer, you would have heard of it by now.  However, there are a couple things you can do at the beginning of your programming approach to go a long way making your code notably better.
 
 ### Why does your code exist?
 
@@ -54,7 +54,7 @@ For objects and functions, I find snake case easier to read and less prone to is
 
 ### Other
 
-Use tools like the build in RStudio code cleanup shortcut like `Ctrl/Cmd + Shft + A`. It's not perfect, in the sense I disagree with some of its the style choice, but it will be better than you will do on your own starting out.
+Use tools like the built-in RStudio code cleanup shortcut like `Ctrl/Cmd + Shft + A`. It's not perfect, in the sense I disagree with some of its the style choice, but it will be better than you will do on your own starting out.
 
 
 ## Vectorization 
@@ -79,7 +79,7 @@ As mentioned [previously][logicals], <span class="objclass">logicals</span> are 
 
 ```{r flexindex}
 x[x > 2]
-x[x != 3]
+x[x != 'cat']
 x[ifelse(x > 2 & x !=10, TRUE, FALSE)]
 x[{y = idx; y}]
 x[resid(lm(y ~ x)) > 0]
@@ -135,7 +135,7 @@ Many vectorized functions already exist in R.  They are often written in C, Fort
 
 #### Timings
 
-The previous demonstrates how to use apply. However, there is a <span class="func">scale</span> function in base R that uses a more vectorized approach under the hood. The following demonstrates various approaches to standardizing the columns of the matrix, even using a parallelized approach. As you'll see, the base R function requires very little code and beats the others.
+We made our own function before, however, there is a <span class="func">scale</span> function in base R that uses a more vectorized approach under the hood to standardize variables. The following demonstrates various approaches to standardizing the columns of the matrix, even using a parallelized approach. As you'll see, the base R function requires very little code and beats the others.
 
 ```{r timings, echo=T}
 mymat = matrix(rnorm(100000), ncol=1000)
@@ -167,11 +167,16 @@ cl = makeCluster(8)
 clusterExport(cl, c('stdize', 'mymat'))
 doParallel::registerDoParallel(cl)
 
-test = microbenchmark::microbenchmark(doubleloop=doubleloop(),
-                                      singleloop=singleloop(), 
-                                      apply=apply(mymat, 2, stdize), 
-                                      parApply=parApply(cl, mymat, 2, stdize),
-                                      vectorized=scale(mymat), times=25)
+
+test = microbenchmark::microbenchmark(
+  doubleloop = doubleloop(),
+  singleloop = singleloop(),
+  apply = apply(mymat, 2, stdize),
+  parApply = parApply(cl, mymat, 2, stdize),
+  vectorized = scale(mymat),
+  times = 25
+)
+
 stopCluster(cl)
 test
 ```
@@ -186,13 +191,13 @@ A <span class="emph">regular expression</span>, regex for short, is a sequence o
 
 To be clear, not only is regex another language, it's nigh on indecipherable.  You will not learn much regex, but what you do learn will save a potentially enormous amount of time you'd otherwise spend trying to do things in a more haphazard fashion. Furthermore, practically every situation that will come up has already been asked and answered on [Stack Overflow](https://stackoverflow.com/questions/tagged/regex), so you'll almost always be able to search for what you need.
 
-Here is an example:
+Here is an example of a pattern we might be interested in:
 
 `^r.*shiny[0-9]$`
 
 What is *that* you may ask?  Well here is an example of strings it would and wouldn't match.  We're using <span class="func">grepl</span> to return a logical (i.e. `TRUE` or `FALSE`) if any of the strings match the pattern in some way.
 
-```{r regex_intro_ex}
+```{r regex_intro_ex, eval=TRUE}
 string = c('r is the shiny', 'r is the shiny1', 'r shines brightly')
 grepl(string, pattern='^r.*shiny[0-9]$')
 ```
@@ -253,12 +258,23 @@ summary(lm(hwy ~ cyl, data=mpg))        # the summary of that
 lm(hwy ~ cyl + displ + year, data=mpg)  # an extension of that
 ```
 
+### Exercise 2
 
-[^ifelse]: For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.
 
-[^style_claim]: Note how I didn't say it's easier to read without qualification (even though I think it's obviously easier to read, based on how eyes/brains work).  Many style guides you encounter will try to come across as definitive.  They are not, nor are most claims tested.
+Fix this code.
+
+```{r fix_code, eval=FALSE}
+x=rnorm(100, 10, 2)
+y=.2* x+ rnorm(100)
+data = data.frame(x,y)
+q = lm(y~x, data=data)
+summary(q)
+```
+
 
 ## Vectorization Exercises
+
+Did you remember to fix the names in the previous exercise?
 
 ### Exercise 1
 
@@ -298,3 +314,7 @@ str_replace(state.name, pattern = ?, replacement = ?)
 ```
 
 
+
+[^ifelse]: For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.
+
+[^style_claim]: Note how I didn't say it's easier to read without qualification (even though I think it's obviously easier to read, based on how eyes/brains work).  Many style guides you encounter will try to come across as definitive.  They are not, nor are most of their claims tested.
