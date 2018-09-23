@@ -6,14 +6,14 @@
 
 ## ----iter_loop_demo, eval=FALSE------------------------------------------
 ## for (column in c('x','y','z','q')) {
-##   mean(df[,column])
+##   mean(df[[column]])
 ## }
 
 ## ----nyc_flights---------------------------------------------------------
-weather = data.frame(nycflights13::weather)
+weather = nycflights13::weather
 
 for (column in c('temp','humid','wind_speed','precip')) {
-  print(mean(weather[,column], na.rm = TRUE))
+  print(mean(weather[[column]], na.rm = TRUE))
 }
 
 ## ----nyc_flights2--------------------------------------------------------
@@ -21,7 +21,11 @@ columns = c('temp', 'humid', 'wind_speed', 'precip')
 nyc_means = rep(NA, length(columns))
 
 for (i in seq_along(columns)) {
-  nyc_means[i] = mean(weather[ ,columns[i]], na.rm = TRUE)
+  column = columns[i]
+  nyc_means[i] = mean(weather[[column]], na.rm = TRUE)
+  
+  # alternative without the initial first step
+  # nyc_means[i] = mean(weather[[columns[i]]], na.rm = TRUE)  
 }
 
 nyc_means
@@ -31,7 +35,7 @@ columns = c('temp', 'humid', 'wind_speed', 'visib', 'pressure')
 nyc_means = rep(NA, length(columns))
 
 for (i in seq_along(columns)) {
-  nyc_means[i] = mean(weather[ ,columns[i]], na.rm = TRUE)
+  nyc_means[i] = mean(weather[[columns[i]]], na.rm = TRUE)
 }
 
 nyc_means %>% round(2)
@@ -41,13 +45,13 @@ columns = c('temp','humid','wind_speed', 'visib', 'pressure')
 nyc_means = numeric()
 
 for (i in seq_along(columns)) {
-  nyc_means[i] = mean(weather[ ,columns[i]], na.rm = TRUE)
+  nyc_means[i] = mean(weather[[columns[i]]], na.rm = TRUE)
 }
 
 nyc_means %>% round(2)
 
 ## ----loop_timing, eval=FALSE, echo=FALSE---------------------------------
-## X = matrix(rnorm(10000000), ncol=100000)
+## X = matrix(rnorm(1000000), ncol=10000)
 ## means1 = rep(NA, ncol(X))
 ## means2 = c()
 ## 
@@ -56,13 +60,14 @@ nyc_means %>% round(2)
 ##     means1[i] = mean(X[,i])
 ##   }
 ## }
+## 
 ## loop2 = function(X) {
 ##   for (i in 1:ncol(X)) {
 ##     means2[i] = mean(X[,i])
 ##   }
 ## }
 ## 
-## microbenchmark::microbenchmark(loop1, loop2)
+## microbenchmark::microbenchmark(loop1(X), loop2(X))
 
 ## ----nyc_flights_while---------------------------------------------------
 columns = c('temp','humid','wind_speed', 'visib', 'pressure')
@@ -90,6 +95,14 @@ nyc_means %>% round(2)
 ## }
 ## 
 ## apply(mydf, 2, stdize)   # 1 for rows, 2 for columnwise application
+
+## ----lapply_example------------------------------------------------------
+x = list('aba', 'abb', 'abc', 'abd', 'abe')
+
+lapply(x, str_remove, pattern = 'ab')
+
+## ----sapply_example------------------------------------------------------
+sapply(x, str_remove, pattern = 'ab')
 
 ## ----purr_example, eval=TRUE, echo=-(1:2)--------------------------------
 detach(package:maps)
@@ -175,14 +188,20 @@ left_join(mod_rsq, mod_aic) %>%
 
 ## ----list_data_frame-----------------------------------------------------
 mtcars2 = as.matrix(mtcars)
-mtcars2[sample(1:length(mtcars2),50)] = NA
-mtcars2 = as_data_frame(mtcars2)
+mtcars2[sample(1:length(mtcars2),50)] = NA   # add some missing data
+mtcars2 = data.frame(mtcars2) %>%
+  rownames_to_column(var = 'observation') %>% 
+  as_data_frame()
 
-mtcars2 = mtcars2 %>% 
-  mutate(newvar = pmap(., ~ data.frame(
-    N = sum(!is.na(c(...))),
-    Miss = sum(is.na(c(...)))
-  )))
+head(mtcars2)
+
+mtcars2 = mtcars2%>% 
+  mutate(newvar = 
+           pmap(., ~ data.frame(
+             N = sum(!is.na(c(...))),
+             Missing = sum(is.na(c(...)))
+           ))
+         )
 
 ## ----list_data_frame2----------------------------------------------------
 mtcars2

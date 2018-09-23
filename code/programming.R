@@ -30,10 +30,10 @@ lm_mod_summary$coefficients %>%
   kableExtra::kable(digits = 2)
 
 ## ----summary-------------------------------------------------------------
-summary(diamonds)
-summary(diamonds$clarity)
-summary(lm_mod)
-summary(lm_mod_summary)
+summary(diamonds)            # data frame
+summary(diamonds$clarity)    # vector
+summary(lm_mod)              # lm object
+summary(lm_mod_summary)      # lm summary object
 
 ## ----methods_summary-----------------------------------------------------
 methods('summary')

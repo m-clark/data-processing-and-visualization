@@ -176,7 +176,7 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
         legend.key=element_rect(linetype=4),
         legend.position='bottom')
 
-## ----mullerplot, eval=FALSE----------------------------------------------
+## ----mullerplot, eval=FALSE, echo=FALSE----------------------------------
 ## # library(ggmuller)
 ## # Muller_df <- get_Muller_df(example_edges, example_pop_df, cutoff = 0.005)
 ## #

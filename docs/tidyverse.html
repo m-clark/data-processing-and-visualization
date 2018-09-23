@@ -24,7 +24,7 @@
 
 
 
-<meta name="date" content="2018-09-22">
+<meta name="date" content="2018-09-23">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -996,23 +996,23 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 <a class="sourceLine" id="cb132-4" data-line-number="4">                      <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),</a>
 <a class="sourceLine" id="cb132-5" data-line-number="5">                      <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>) )</a>
 <a class="sourceLine" id="cb132-6" data-line-number="6">stocks <span class="op">%&gt;%</span><span class="st"> </span>head</a></code></pre></div>
-<pre><code>        time           X          Y          Z
-1 2009-01-01 -0.06546867  0.5816049 -2.8910160
-2 2009-01-02  2.30947902 -1.9926465 -1.3353190
-3 2009-01-03 -0.33040393  0.3562913  3.1471085
-4 2009-01-04 -0.83435315  1.6770826  3.0540476
-5 2009-01-05 -0.52591356  0.1699624 -1.5776236
-6 2009-01-06  0.29455561  0.7914883 -0.5646063</code></pre>
+<pre><code>        time           X           Y          Z
+1 2009-01-01  0.50239388 -1.84520156  2.3316098
+2 2009-01-02 -0.56581816 -0.21322557  2.4148066
+3 2009-01-03 -0.25490412 -0.78170859  1.0096480
+4 2009-01-04 -0.07015346 -2.85341785  0.7571537
+5 2009-01-05 -0.22466645 -1.48090063  1.0393046
+6 2009-01-06  0.06788464  0.09070423 -6.8831528</code></pre>
 <div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" data-line-number="1">stocks <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb134-2" data-line-number="2"><span class="st">  </span><span class="kw">gather</span>(stock, price, <span class="op">-</span>time) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb134-3" data-line-number="3"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
 <pre><code>        time stock       price
-1 2009-01-01     X -0.06546867
-2 2009-01-02     X  2.30947902
-3 2009-01-03     X -0.33040393
-4 2009-01-04     X -0.83435315
-5 2009-01-05     X -0.52591356
-6 2009-01-06     X  0.29455561</code></pre>
+1 2009-01-01     X  0.50239388
+2 2009-01-02     X -0.56581816
+3 2009-01-03     X -0.25490412
+4 2009-01-04     X -0.07015346
+5 2009-01-05     X -0.22466645
+6 2009-01-06     X  0.06788464</code></pre>
 <p>Note that the latter is an example of <span class="emph">tidy data</span> while the former is not. Why do we generally prefer such data? Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. <em>This is especially the case for visualization</em>.</p>
 <p>The following demonstrates the separate function utilized for a very common data processing task- dealing with names. Here’ we’ll separate <span class="objclass">player</span> into first and last names based on the space.</p>
 <div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>

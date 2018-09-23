@@ -14,7 +14,7 @@ x[idx]
 
 ## ----flexindex-----------------------------------------------------------
 x[x > 2]
-x[x != 3]
+x[x != 'cat']
 x[ifelse(x > 2 & x !=10, TRUE, FALSE)]
 x[{y = idx; y}]
 x[resid(lm(y ~ x)) > 0]
@@ -75,18 +75,23 @@ cl = makeCluster(8)
 clusterExport(cl, c('stdize', 'mymat'))
 doParallel::registerDoParallel(cl)
 
-test = microbenchmark::microbenchmark(doubleloop=doubleloop(),
-                                      singleloop=singleloop(), 
-                                      apply=apply(mymat, 2, stdize), 
-                                      parApply=parApply(cl, mymat, 2, stdize),
-                                      vectorized=scale(mymat), times=25)
+
+test = microbenchmark::microbenchmark(
+  doubleloop = doubleloop(),
+  singleloop = singleloop(),
+  apply = apply(mymat, 2, stdize),
+  parApply = parApply(cl, mymat, 2, stdize),
+  vectorized = scale(mymat),
+  times = 25
+)
+
 stopCluster(cl)
 test
 
 ## ----vectorization_timings, echo=FALSE, eval=TRUE, cache=FALSE-----------
 load('data/vectorization.RData'); library(microbenchmark); test
 
-## ----regex_intro_ex------------------------------------------------------
+## ----regex_intro_ex, eval=TRUE-------------------------------------------
 string = c('r is the shiny', 'r is the shiny1', 'r shines brightly')
 grepl(string, pattern='^r.*shiny[0-9]$')
 
@@ -99,6 +104,13 @@ grepl(string, pattern='^r.*shiny[0-9]$')
 ## lm(hwy ~ cyl, data=mpg)                 # hwy mileage predicted by number of cylinders
 ## summary(lm(hwy ~ cyl, data=mpg))        # the summary of that
 ## lm(hwy ~ cyl + displ + year, data=mpg)  # an extension of that
+
+## ----fix_code, eval=FALSE------------------------------------------------
+## x=rnorm(100, 10, 2)
+## y=.2* x+ rnorm(100)
+## data = data.frame(x,y)
+## q = lm(y~x, data=data)
+## summary(q)
 
 ## ----vector_ex1, eval=FALSE----------------------------------------------
 ## ?

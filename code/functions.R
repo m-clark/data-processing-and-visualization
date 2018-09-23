@@ -4,12 +4,12 @@
 ## sum(is.na(myvar))
 
 ## ----func_ex2------------------------------------------------------------
-my_summary <- function(myvar) {
+my_summary <- function(x) {
   data.frame(
-    mean = mean(myvar, na.rm = TRUE),
-    sd = sd(myvar, na.rm = TRUE),
-    N_missing = sum(is.na(myvar))
-    )
+    mean = mean(x, na.rm = TRUE),
+    sd = sd(x, na.rm = TRUE),
+    N_missing = sum(is.na(x))
+  )
 }
 
 ## ----func_ex3, echo=-1---------------------------------------------------
@@ -21,13 +21,13 @@ mtcars2$wt[c(3,10)] = NA
 my_summary(mtcars2$wt)
 
 ## ----func_ex4------------------------------------------------------------
-my_summary <- function(myvar) {
+my_summary <- function(x) {
   # create an arbitrarily named object with the summary information
   summary_data = data.frame(
-    mean = mean(myvar, na.rm = TRUE),
-    sd = sd(myvar, na.rm = TRUE),
-    N_total = length(myvar),
-    N_missing = sum(is.na(myvar))
+    mean = mean(x, na.rm = TRUE),
+    sd = sd(x, na.rm = TRUE),
+    N_total = length(x),
+    N_missing = sum(is.na(x))
   )
   
   # return the result!
@@ -41,12 +41,47 @@ my_summary(mtcars2$wt)
 mtcars2 %>% 
   map_dfr(my_summary, .id = 'variable')
 
+## ----func_ex_redux, eval=FALSE-------------------------------------------
+## mean(myvar)
+## sd(myvar)
+## sum(is.na(myvar))
+
+## ----func_ex_redux_redux, eval=FALSE-------------------------------------
+## test_fun <- function(myvar) {
+##   mean(myvar)
+##   sd(myvar)
+##   sum(is.na(myvar))
+## }
+
 ## ----nothing_function----------------------------------------------------
 two <- function() {
   2
 }
 
 two()
+
+## ----function_function---------------------------------------------------
+center <- function(type) {
+  if (type == 'mean') {
+    mean
+  } else {
+    median
+  }
+}
+
+center(type = 'mean')
+
+myfun = center(type = 'mean')
+
+myfun(1:3)
+
+## ----default_arg---------------------------------------------------------
+hi <- function(name = 'Beyoncé') {
+  paste0('Hi ', name, '!')
+}
+
+hi()
+hi(name = 'Jay-Z')
 
 ## ----source_func, eval=FALSE---------------------------------------------
 ## source('my_functions/awesome_func.R')
@@ -72,11 +107,10 @@ good_mileage <- function(cylinder = 4,
              displ <= displ_fun(displ),
              hwy >= mpg_cutoff,
              class == cls)
-  }
-  else {                                # if the condition doesn't hold, filter 
+  } else {                              # if the condition doesn't hold, filter 
     result <- mpg %>%                   # the data this way instead
       filter(cyl == cylinder,
-             displ >= displ_fun(displ),
+             displ >= displ_fun(displ), # the only change is here
              hwy >= mpg_cutoff,
              class == cls)
   }
@@ -108,8 +142,7 @@ good_mileage <- function(cylinder = 4,
            hwy >= mpg_cutoff,
            class == cls,
            year == yr)
-  }
-  else {
+  } else {
     result = mpg %>%
     filter(cyl == cylinder,
            displ >= displ_fun(displ),
@@ -130,10 +163,10 @@ good_mileage(cylinder = 8,
 
 ## ----lambda, eval=FALSE--------------------------------------------------
 ## apply(mtcars, 2, sd)
-## apply(mtcars, 2, function(x) sd(x))
+## apply(mtcars, 2, function(x) x/2)
 
 ## ----lambda_ex-----------------------------------------------------------
-# some variables have a mad = 0, and so return Inf, NaN
+# some variables have a mad = 0, and so return Inf (x/0) or NaN (0/0)
 # apply(mtcars, 2, function(x) (x - median(x))/mad(x)) %>% 
 #   head()
 
@@ -153,8 +186,7 @@ mtcars %>%
 ## 
 ##   if (?) {
 ##     stop('Your message here.')
-##   }
-##   else {
+##   } else {
 ##     ?
 ##     return(your_log_sum_object)
 ##   }
