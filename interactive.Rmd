@@ -152,7 +152,8 @@ Be prepared to spend time getting used to plotly.  It has (in my opinion) poor d
 In what follows we use <span class="pack">quantmod</span> to create an <span class="pack">xts</span> (time series) object of Google's stock price, including opening and closing values.  The highcharter object has a ready-made plot for such data[^nobigdeal].
 
 ```{r highcharts}
-library(highcharter); library(quantmod)
+library(highcharter)
+library(quantmod)
 
 google_price = getSymbols("GOOG", auto.assign = FALSE)
 hchart(google_price)

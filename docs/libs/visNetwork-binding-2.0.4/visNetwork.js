@@ -1,3 +1,134 @@
+// Production steps of ECMA-262, Edition 6, 22.1.2.1
+// Référence : https://people.mozilla.org/~jorendorff/es6-draft.html#sec-array.from
+if (!Array.from) {
+  Array.from = (function () {
+    var toStr = Object.prototype.toString;
+    var isCallable = function (fn) { 
+      return typeof fn === 'function' || toStr.call(fn) === '[object Function]';
+    };
+    var toInteger = function (value) { 
+      var number = Number(value); 
+      if (isNaN(number)) { return 0; }
+      if (number === 0 || !isFinite(number)) { return number; }
+      return (number > 0 ? 1 : -1) * Math.floor(Math.abs(number)); 
+    };
+    var maxSafeInteger = Math.pow(2, 53) - 1;
+    var toLength = function (value) { 
+      var len = toInteger(value);
+      return Math.min(Math.max(len, 0), maxSafeInteger);
+    }; 
+  
+    // La propriété length de la méthode vaut 1.
+    return function from(arrayLike/*, mapFn, thisArg */) { 
+      // 1. Soit C, la valeur this
+      var C = this;
+      
+      // 2. Soit items le ToObject(arrayLike).
+      var items = Object(arrayLike); 
+      
+      // 3. ReturnIfAbrupt(items).
+      if (arrayLike == null) { 
+        throw new TypeError("Array.from doit utiliser un objet semblable à un tableau - null ou undefined ne peuvent pas être utilisés");
+      }
+    
+      // 4. Si mapfn est undefined, le mapping sera false.
+      var mapFn = arguments.length > 1 ? arguments[1] : void undefined;
+      var T;
+      if (typeof mapFn !== 'undefined') {  
+        // 5. sinon      
+        // 5. a. si IsCallable(mapfn) est false, on lève une TypeError.
+        if (!isCallable(mapFn)) { 
+          throw new TypeError('Array.from: lorsqu il est utilisé le deuxième argument doit être une fonction'); 
+        }
+     
+        // 5. b. si thisArg a été fourni, T sera thisArg ; sinon T sera undefined.
+        if (arguments.length > 2) { 
+          T = arguments[2];
+        }
+      }
+    
+      // 10. Soit lenValue pour Get(items, "length").
+      // 11. Soit len pour ToLength(lenValue).
+      var len = toLength(items.length);  
+     
+      // 13. Si IsConstructor(C) vaut true, alors
+      // 13. a. Soit A le résultat de l'appel à la méthode interne [[Construct]] avec une liste en argument qui contient l'élément len.
+      // 14. a. Sinon, soit A le résultat de ArrayCreate(len).
+      var A = isCallable(C) ? Object(new C(len)) : new Array(len);
+   
+      // 16. Soit k égal à 0.
+      var k = 0;  // 17. On répète tant que k < len… 
+      var kValue;
+      while (k < len) {
+        kValue = items[k]; 
+        if (mapFn) {
+          A[k] = typeof T === 'undefined' ? mapFn(kValue, k) : mapFn.call(T, kValue, k); 
+        } else {
+          A[k] = kValue;
+        }
+        k += 1;
+      }
+      // 18. Soit putStatus égal à Put(A, "length", len, true).
+      A.length = len;  // 20. On renvoie A.
+      return A;
+    };
+  }());
+};
+
+
+// https://tc39.github.io/ecma262/#sec-array.prototype.includes
+if (!Array.prototype.includes) {
+  Object.defineProperty(Array.prototype, 'includes', {
+    value: function(searchElement, fromIndex) {
+
+      if (this == null) {
+        throw new TypeError('"this" est nul ou non défini');
+      }
+
+      // 1. Soit o égal à ? Object(cette valeur).
+      var o = Object(this);
+
+      // 2. Soit len égal à ? Length(? Get(o, "length")).
+      var len = o.length >>> 0;
+
+      // 3. Si len = 0, renvoyer "false".
+      if (len === 0) {
+        return false;
+      }
+
+      // 4. Soit n = ? ToInteger(fromIndex).
+      // Pour la cohérence du code, on gardera le nom anglais "fromIndex" pour la variable auparavant appelée "indiceDépart"
+      //    (Si fromIndex n'est pas défini, cette étape produit la valeur 0.)
+      var n = fromIndex | 0;
+
+      // 5. Si n ≥ 0,
+      //  a. Alors k = n.
+      // 6. Sinon, si n < 0,
+      //  a. Alors k = len + n.
+      //  b. Si k < 0, alors k = 0.
+      var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
+
+      function sameValueZero(x, y) {
+        return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y));
+      }
+
+      // 7. Répéter tant que k < len
+      while (k < len) {
+        // a. Soit elementK le résultat de ? Get(O, ! ToString(k)).
+        // b. Si SameValueZero(searchElement, elementK) est vrai, renvoyer "true".
+        if (sameValueZero(o[k], searchElement)) {
+          return true;
+        }
+        // c. Augmenter la valeur de k de 1. 
+        k++;
+      }
+
+      // 8. Renvoyer "false"
+      return false;
+    }
+  });
+}
+
 // Add shim for Function.prototype.bind() from:
 // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind#Compatibility
 // for fix some RStudio viewer bug (Desktop / windows)
@@ -59,7 +190,9 @@ function edgeAsHardToRead(edge, hideColor1, hideColor2, network, type){
       //network.clustering.updateEdge(edge.id, {hiddenColor : edge.color});
       edge.hiddenColor = edge.color;
     }
-    network.clustering.updateEdge(edge.id, {color : hideColor1});
+    // set "hard to read" color
+    edge.color = hideColor1;
+    //network.clustering.updateEdge(edge.id, {color : hideColor1});
     //edge.color = hideColor1;
     // reset and save label
     if (edge.hiddenLabel === undefined) {
@@ -770,6 +903,12 @@ function uniqueArray(arr, exclude_cluster, network) {
 
   return a;
 }
+
+function uniqueShiny(arr) {
+  return arr.filter(function (value, index, self) { 
+    return self.indexOf(value) === index;
+  });
+};
 // clone an object
 function clone(obj) {
     if(obj === null || typeof(obj) != 'object')
@@ -886,7 +1025,17 @@ function networkOpenCluster(params){
       var elid = this.body.container.id.substring(5);
       var fit = document.getElementById(elid).collapseFit;
       var resetHighlight = document.getElementById(elid).collapseResetHighlight;
-      this.openCluster(params.nodes[0]);
+      
+      if(document.getElementById(elid).collapseKeepCoord){
+        this.openCluster(params.nodes[0], 
+        {releaseFunction : function(clusterPosition, containedNodesPositions) {
+              return containedNodesPositions;
+            }
+        });
+      } else {
+        this.openCluster(params.nodes[0]);
+      }
+
       
       if(resetHighlight){
         document.getElementById("nodeSelect"+elid).value = "";
@@ -899,7 +1048,7 @@ function networkOpenCluster(params){
   }
 }
 
-function collapsedNetwork(nodes, fit, resetHighlight, clusterParams, treeParams, network, elid) {
+function collapsedNetwork(nodes, fit, resetHighlight, clusterParams, labelSuffix, treeParams, network, elid) {
   
   var set_position = true;
   var selectedNode;
@@ -936,7 +1085,9 @@ function collapsedNetwork(nodes, fit, resetHighlight, clusterParams, treeParams,
             },
             returnType :'Array'
           });
-              
+          
+          
+          
           for (j = 0; j < connectedToNodes.length; j++) {
             firstLevelNodes = firstLevelNodes.concat(connectedToNodes[j].to);
           }
@@ -979,7 +1130,7 @@ function collapsedNetwork(nodes, fit, resetHighlight, clusterParams, treeParams,
               finalClusterNodes = finalClusterNodes.concat(findnode[0]);
             }
           }
-    
+
           if(set_position){ 
             network.storePositions();
           }
@@ -1024,9 +1175,9 @@ function collapsedNetwork(nodes, fit, resetHighlight, clusterParams, treeParams,
                 }
                         
                 if(clusterOptions.label !== undefined){
-                  clusterOptions.label = clusterOptions.label + ' (cluster)'
+                  clusterOptions.label = clusterOptions.label + " " + labelSuffix;
                 } else {
-                  clusterOptions.label =  '(cluster)'
+                  clusterOptions.label =  labelSuffix;
                 }
                         
                 if(clusterOptions.borderWidth !== undefined){
@@ -1053,7 +1204,7 @@ function collapsedNetwork(nodes, fit, resetHighlight, clusterParams, treeParams,
               return clusterOptions;
             },
             clusterNodeProperties: {
-              allowSingleNodeCluster: false,
+              allowSingleNodeCluster: false
             }
           }
           network.cluster(clusterOptions);
@@ -1071,7 +1222,7 @@ function collapsedNetwork(nodes, fit, resetHighlight, clusterParams, treeParams,
   }
 };
 
-function uncollapsedNetwork(nodes, fit, resetHighlight, network, elid) {
+function uncollapsedNetwork(nodes, fit, resetHighlight, keepCoord, network, elid) {
   var selectedNode;
   var j;
   var arr_nodes = [];
@@ -1094,14 +1245,30 @@ function uncollapsedNetwork(nodes, fit, resetHighlight, network, elid) {
     selectedNode = '' + arr_nodes[inodes];
     if(selectedNode !== undefined){
         if(network.isCluster(selectedNode)){
-          network.openCluster(selectedNode)
+          if(keepCoord){
+            network.openCluster(selectedNode, 
+              {releaseFunction : function(clusterPosition, containedNodesPositions) {
+                    return containedNodesPositions;
+                  }
+              });
+          } else {
+            network.openCluster(selectedNode)
+          }
         } else {
           if(indexOf.call(nodes_in_clusters, selectedNode, true) > -1){
             // not a cluster into a cluster...
             if(selectedNode.search(/^cluster/i) === -1){
               cluster_node = network.clustering.findNode(selectedNode)[0];
               if(network.isCluster(cluster_node)){
-                network.openCluster(cluster_node)
+                if(keepCoord){
+                  network.openCluster(cluster_node, 
+                    {releaseFunction : function(clusterPosition, containedNodesPositions) {
+                          return containedNodesPositions;
+                        }
+                    });
+                } else {
+                  network.openCluster(cluster_node)
+                }
               }
             }
           }
@@ -1127,7 +1294,7 @@ if (HTMLWidgets.shinyMode){
       // get container id
       var el = document.getElementById("graph"+data.id);
       if(el){
-        collapsedNetwork(data.nodes, data.fit, data.resetHighlight, data.clusterOptions, undefined, el.chart, data.id)
+        collapsedNetwork(data.nodes, data.fit, data.resetHighlight, data.clusterOptions, data.labelSuffix, undefined, el.chart, data.id)
       }
   });
   
@@ -1136,7 +1303,7 @@ if (HTMLWidgets.shinyMode){
       // get container id
       var el = document.getElementById("graph"+data.id);
       if(el){
-        uncollapsedNetwork(data.nodes, data.fit, data.resetHighlight, el.chart, data.id)
+        uncollapsedNetwork(data.nodes, data.fit, data.resetHighlight, data.keepCoord, el.chart, data.id)
       }
   });
 
@@ -1197,6 +1364,7 @@ if (HTMLWidgets.shinyMode){
   Shiny.addCustomMessageHandler('visShinyOptions', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
+      
       if(el){
         var network = el.chart;
         var options = el.options;
@@ -1212,6 +1380,34 @@ if (HTMLWidgets.shinyMode){
           }
         }
     
+        //*************************
+        // pre-treatment for icons (unicode)
+        //*************************
+        if(data.options.groups){
+          for (var gr in data.options.groups){
+            if(data.options.groups[gr].icon){
+              if(data.options.groups[gr].icon.code){
+                data.options.groups[gr].icon.code = JSON.parse( '"'+'\\u' + data.options.groups[gr].icon.code + '"');
+              }
+              if(data.options.groups[gr].icon.color){
+                data.options.groups[gr].color = data.options.groups[gr].icon.color;
+              }
+            }
+          }
+        }
+        
+        if(data.options.nodes){
+          if(data.options.nodes.icon){
+            if(data.options.nodes.icon.code){
+              data.options.nodes.icon.code = JSON.parse( '"'+'\\u' + data.options.nodes.icon.code + '"');
+            }
+            if(data.options.nodes.icon.color){
+              data.options.nodes.color = data.options.nodes.icon.color;
+            }
+          }
+        }
+
+        
         update(options, data.options);
         network.setOptions(options);
       }
@@ -1542,6 +1738,8 @@ if (HTMLWidgets.shinyMode){
             el.collapse = data.options.collapse.enabled;
             el.collapseFit = data.options.collapse.fit;
             el.collapseResetHighlight = data.options.collapse.resetHighlight;
+            el.collapseKeepCoord = data.options.collapse.keepCoord;
+            el.collapseLabelSuffix = data.options.collapse.labelSuffix;
             el.clusterOptions = data.options.collapse.clusterOptions;
           }
           
@@ -1679,7 +1877,9 @@ if (HTMLWidgets.shinyMode){
           
           // reset some parameters / data before
           if (main_el.selectActive === true | main_el.highlightActive === true) {
+
             //reset nodes
+            resetAllEdges(el.edges, el.highlightColor, el.byselectionColor, el.chart);
             resetAllNodes(el.nodes, true, el.chart.groups, el.options, el.chart);
             
             if (main_el.selectActive === true){
@@ -2014,12 +2214,16 @@ HTMLWidgets.widget({
         el_id.collapse = true;
         el_id.collapseFit = x.collapse.fit;
         el_id.collapseResetHighlight = x.collapse.resetHighlight;
+        el_id.collapseKeepCoord = x.collapse.keepCoord;
+        el_id.collapseLabelSuffix = x.collapse.labelSuffix;
         el_id.clusterOptions = x.collapse.clusterOptions;
       }
     } else {
       el_id.collapse = false;
       el_id.collapseFit = false;
       el_id.collapseResetHighlight = false;
+      el_id.collapseKeepCoord = true;
+      el_id.collapseLabelSuffix = " (cluster)";
       el_id.clusterOptions = undefined;
     }
     
@@ -2601,61 +2805,165 @@ HTMLWidgets.widget({
 
       el_id.appendChild(div);
 
-      options.manipulation.addNode = function(data, callback) {
-        document.getElementById('operation').innerHTML = "Add Node";
-        document.getElementById('node-id').value = data.id;
-        document.getElementById('node-label').value = data.label;
-        document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "addNode");
-        document.getElementById('cancelButton').onclick = clearPopUp.bind();
-        document.getElementById('network-popUp').style.display = 'block';
-      };
+      if(x.options.manipulation.addNode === undefined){
+        options.manipulation.addNode = function(data, callback) {
+          document.getElementById('operation').innerHTML = "Add Node";
+          document.getElementById('node-id').value = data.id;
+          document.getElementById('node-label').value = data.label;
+          document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "addNode");
+          document.getElementById('cancelButton').onclick = clearPopUp.bind();
+          document.getElementById('network-popUp').style.display = 'block';
+        };
+      } else if(typeof(x.options.manipulation.addNode) === typeof(true)){
+        if(x.options.manipulation.addNode){
+          options.manipulation.addNode = function(data, callback) {
+            document.getElementById('operation').innerHTML = "Add Node";
+            document.getElementById('node-id').value = data.id;
+            document.getElementById('node-label').value = data.label;
+            document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "addNode");
+            document.getElementById('cancelButton').onclick = clearPopUp.bind();
+            document.getElementById('network-popUp').style.display = 'block';
+          };
+        } else {
+          options.manipulation.addNode = false;
+        }
+      } else {
+        options.manipulation.addNode = x.options.manipulation.addNode;
+      }
 
-      options.manipulation.editNode = function(data, callback) {
-        document.getElementById('operation').innerHTML = "Edit Node";
-        document.getElementById('node-id').value = data.id;
-        document.getElementById('node-label').value = data.label;
-        document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "editNode");
-        document.getElementById('cancelButton').onclick = cancelEdit.bind(this,callback);
-        document.getElementById('network-popUp').style.display = 'block';
-      };
+      if(x.options.manipulation.editNode === undefined){
+        options.manipulation.editNode = function(data, callback) {
+            document.getElementById('operation').innerHTML = "Edit Node";
+            document.getElementById('node-id').value = data.id;
+            document.getElementById('node-label').value = data.label;
+            document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "editNode");
+            document.getElementById('cancelButton').onclick = cancelEdit.bind(this,callback);
+            document.getElementById('network-popUp').style.display = 'block';
+          };
+      } else if(typeof(x.options.manipulation.editNode) === typeof(true)){
+        if(x.options.manipulation.editNode){
+          options.manipulation.editNode = function(data, callback) {
+              document.getElementById('operation').innerHTML = "Edit Node";
+              document.getElementById('node-id').value = data.id;
+              document.getElementById('node-label').value = data.label;
+              document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "editNode");
+              document.getElementById('cancelButton').onclick = cancelEdit.bind(this,callback);
+              document.getElementById('network-popUp').style.display = 'block';
+            };
+        } else {
+          options.manipulation.editNode = false;
+        }
+      } else {
+        options.manipulation.editNode = x.options.manipulation.editNode;
+      }
+  
+      if(x.options.manipulation.deleteNode === undefined){
+        options.manipulation.deleteNode = function(data, callback) {
+            var r = confirm("Do you want to delete " + data.nodes.length + " node(s) and " + data.edges.length + " edges ?");
+            if (r === true) {
+              deleteSubGraph(data, callback);
+            } else { clearPopUp(); callback(null); }
+        };
+      } else if(typeof(x.options.manipulation.deleteNode) === typeof(true)){
+        if(x.options.manipulation.deleteNode){
+          options.manipulation.deleteNode = function(data, callback) {
+              var r = confirm("Do you want to delete " + data.nodes.length + " node(s) and " + data.edges.length + " edges ?");
+              if (r === true) {
+                deleteSubGraph(data, callback);
+              } else { clearPopUp(); callback(null); }
+          };
+        } else {
+          options.manipulation.deleteNode = false;
+        }
+      } else {
+        options.manipulation.deleteNode = x.options.manipulation.deleteNode;
+      }
 
-      options.manipulation.deleteNode = function(data, callback) {
-          var r = confirm("Do you want to delete " + data.nodes.length + " node(s) and " + data.edges.length + " edges ?");
-          if (r === true) {
-            deleteSubGraph(data, callback);
+      if(x.options.manipulation.deleteEdge === undefined){
+        options.manipulation.deleteEdge = function(data, callback) {
+            var r = confirm("Do you want to delete " + data.edges.length + " edges ?");
+            if (r === true) {
+              deleteSubGraph(data, callback);
+            } else { clearPopUp(); callback(null); }
+        };
+      } else if(typeof(x.options.manipulation.deleteEdge) === typeof(true)){
+        if(x.options.manipulation.deleteEdge){
+          options.manipulation.deleteEdge = function(data, callback) {
+              var r = confirm("Do you want to delete " + data.edges.length + " edges ?");
+              if (r === true) {
+                deleteSubGraph(data, callback);
+              } else { clearPopUp(); callback(null); }
+          };
+        } else {
+          options.manipulation.deleteEdge = false;
+        }
+      } else {
+        options.manipulation.deleteEdge = x.options.manipulation.deleteEdge;
+      }
+
+      if(x.options.manipulation.addEdge === undefined){
+        options.manipulation.addEdge = function(data, callback) {
+          if (data.from == data.to) {
+            var r = confirm("Do you want to connect the node to itself?");
+            if (r === true) {
+              saveEdge(data, callback, "addEdge");
+            }
           }
-      };
-
-      options.manipulation.deleteEdge = function(data, callback) {
-          var r = confirm("Do you want to delete " + data.edges.length + " edges ?");
-          if (r === true) {
-            deleteSubGraph(data, callback);
-          }
-      };
-
-      options.manipulation.addEdge = function(data, callback) {
-        if (data.from == data.to) {
-          var r = confirm("Do you want to connect the node to itself?");
-          if (r === true) {
+          else {
             saveEdge(data, callback, "addEdge");
           }
+        };
+      } else if(typeof(x.options.manipulation.addEdge) === typeof(true)){
+        if(x.options.manipulation.addEdge){
+          options.manipulation.addEdge = function(data, callback) {
+            if (data.from == data.to) {
+              var r = confirm("Do you want to connect the node to itself?");
+              if (r === true) {
+                saveEdge(data, callback, "addEdge");
+              }
+            }
+            else {
+              saveEdge(data, callback, "addEdge");
+            }
+          };
+        } else {
+          options.manipulation.addEdge = false;
         }
-        else {
-          saveEdge(data, callback, "addEdge");
-        }
-      };
-      
-      options.manipulation.editEdge = function(data, callback) {
-        if (data.from == data.to) {
-          var r = confirm("Do you want to connect the node to itself?");
-          if (r === true) {
+      } else {
+        options.manipulation.addEdge = x.options.manipulation.addEdge;
+      }
+
+      if(x.options.manipulation.editEdge === undefined){
+        options.manipulation.editEdge = function(data, callback) {
+          if (data.from == data.to) {
+            var r = confirm("Do you want to connect the node to itself?");
+            if (r === true) {
+              saveEdge(data, callback, "editEdge");
+            }
+          }
+          else {
             saveEdge(data, callback, "editEdge");
           }
+        };
+      } else if(typeof(x.options.manipulation.editEdge) === typeof(true)){
+        if(x.options.manipulation.editEdge){
+          options.manipulation.editEdge = function(data, callback) {
+            if (data.from == data.to) {
+              var r = confirm("Do you want to connect the node to itself?");
+              if (r === true) {
+                saveEdge(data, callback, "editEdge");
+              }
+            }
+            else {
+              saveEdge(data, callback, "editEdge");
+            }
+          };
+        } else {
+          options.manipulation.editEdge = false;
         }
-        else {
-          saveEdge(data, callback, "editEdge");
-        }
-      };
+      } else {
+        options.manipulation.editEdge = x.options.manipulation.editEdge;
+      }
     }
     
     // create network
@@ -2713,7 +3021,7 @@ HTMLWidgets.widget({
     style.innerHTML = 'div.vis-tooltip {display : none}';
     document.getElementsByTagName('head')[0].appendChild(style);
 
-    var popupStyle = 'position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2)'
+    var popupStyle = 'position: fixed;visibility:hidden;padding: 5px;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);max-width:400px;word-break: break-all'
     
     if(x.tooltipStyle !== undefined){
       popupStyle = x.tooltipStyle
@@ -3051,6 +3359,16 @@ HTMLWidgets.widget({
 
             // all in degree nodes get their own color and their label back + main nodes
             connectedNodes = connectedNodes.concat(selectedNode);
+            
+            if (window.Shiny){
+              Shiny.onInputChange(el.id + '_highlight_color_id', uniqueShiny(connectedNodes));
+            }
+            if(el_id.highlightLabelOnly === true){
+              if (window.Shiny){
+                Shiny.onInputChange(el.id + '_highlight_label_id', allConnectedNodes.filter(function(x){ return !connectedNodes.includes(x)}));
+              }
+            }  
+   
             array_cluster_id = [];
             for (i = 0; i < connectedNodes.length; i++) {
               resetOneNode(allNodes[connectedNodes[i]], instance.network.groups, options, instance.network);
@@ -3060,7 +3378,7 @@ HTMLWidgets.widget({
                 }
               }
             }
-
+            
             if(array_cluster_id.length > 0){
               array_cluster_id = uniqueArray(array_cluster_id, false, instance.network);
               for (i = 0; i < array_cluster_id.length; i++) {
@@ -3099,7 +3417,6 @@ HTMLWidgets.widget({
               }
             }
             edges.update(edgesHardToRead);
-            
           } else if(algorithm === "hierarchical"){
             
             var degree_from = degrees.from;
@@ -3249,6 +3566,15 @@ HTMLWidgets.widget({
               }
             }
              
+            if (window.Shiny){ 
+              Shiny.onInputChange(el.id + '_highlight_color_id', uniqueShiny(allConnectedNodes));
+            }
+            if(el_id.highlightLabelOnly === true){
+              if (window.Shiny){
+                Shiny.onInputChange(el.id + '_highlight_label_id', nodesWithLabel.filter(function(x) {return !allConnectedNodes.includes(x)}));
+              }
+            }  
+            
             // set some edges as hard to read
             var edgesHardToRead = edges.get({
               fields: ['id', 'color', 'hiddenColor', 'hiddenLabel', 'label'],
@@ -3308,6 +3634,11 @@ HTMLWidgets.widget({
           resetAllNodes(nodes, update, instance.network.groups, options, instance.network)
           el_id.highlightActive = false;
           is_clicked = false;
+          
+          if (window.Shiny){
+            Shiny.onInputChange(el.id + '_highlight_label_id', null)
+            Shiny.onInputChange(el.id + '_highlight_color_id', null)
+          }
         }
       }
       // reset selectedBy list if actived
@@ -3352,7 +3683,7 @@ HTMLWidgets.widget({
           neighbourhoodHighlight(params.nodes, "click", el_id.highlightAlgorithm);
         }else if((el_id.idselection || el_id.byselection) && x.nodes){
           onClickIDSelection(params)
-        } 
+        }
     };
     
     // Set event in relation with highlightNearest      
@@ -3381,8 +3712,9 @@ HTMLWidgets.widget({
     //*************************
     instance.network.on("doubleClick", function(params){
       if(el_id.collapse){
-        collapsedNetwork(params.nodes, el_id.collapseFit, el_id.collapseResetHighlight, el_id.clusterOptions, 
-        el_id.tree, instance.network, el.id) 
+        collapsedNetwork(params.nodes, el_id.collapseFit, el_id.collapseResetHighlight, 
+          el_id.clusterOptions, el_id.collapseLabelSuffix,
+          el_id.tree, instance.network, el.id) 
       }
     }); 
     
@@ -3532,12 +3864,25 @@ HTMLWidgets.widget({
       el_id.appendChild(clusterbutton);
       
       clusterbutton.onclick =  function(){
-        instance.network.setData(data);
+        // reset some parameters / data before
+        if (el_id.selectActive === true | el_id.highlightActive === true) {
+          //reset nodes
+          neighbourhoodHighlight([], "click", el_id.highlightAlgorithm);
+          if (el_id.selectActive === true){
+            el_id.selectActive = false;
+            resetList('selectedBy',el.id, 'selectedBy');
+          }
+          if (el_id.highlightActive === true){
+            el_id.highlightActive = false;
+            resetList('nodeSelect', el.id, 'selected');
+          }
+        }
+        //instance.network.setData(data);
         if(x.clusteringColor){
           clusterByColor();
         }
         if(x.clusteringGroup){
-          clusterByGroup();
+          clusterByGroup(x.clusteringGroup.groups);
         }
         if(x.clusteringHubsize){
           clusterByHubsize();
@@ -3552,11 +3897,25 @@ HTMLWidgets.widget({
     if(x.clusteringGroup || x.clusteringColor || x.clusteringOutliers || x.clusteringHubsize || x.clusteringConnection){
       // if we click on a node, we want to open it up!
       instance.network.on("doubleClick", function (params){
+        
         if (params.nodes.length === 1) {
           if (instance.network.isCluster(params.nodes[0]) === true) {
+            is_clicked = false;
             instance.network.openCluster(params.nodes[0], {releaseFunction : function(clusterPosition, containedNodesPositions) {
               return containedNodesPositions;
             }});
+          } else {
+            if(x.clusteringGroup){
+              var array_group = nodes.get({
+                fields: ['group'],
+                filter: function (item) {
+                  return  item.id === params.nodes[0] ;
+                },
+                returnType :'Array'
+              });
+            
+              clusterByGroup([array_group[0].group]);
+            }
           }
         }
       });
@@ -3582,8 +3941,12 @@ HTMLWidgets.widget({
       function clusterByHubsize() {
         var clusterOptionsByData = {
           processProperties: function(clusterOptions, childNodes) {
+            var cluster_level = 9999999
                   for (var i = 0; i < childNodes.length; i++) {
                       //totalMass += childNodes[i].mass;
+                      if(childNodes[i].level){
+                        cluster_level = Math.min(cluster_level, childNodes[i].level)
+                      }
                       if(i === 0){
                         //clusterOptions.shape =  childNodes[i].shape;
                         clusterOptions.color =  childNodes[i].color.background;
@@ -3597,6 +3960,9 @@ HTMLWidgets.widget({
                       }
                   }
             clusterOptions.label = "[" + childNodes.length + "]";
+            if(cluster_level !== 9999999){
+              clusterOptions.level = cluster_level
+            }
             return clusterOptions;
           },
           clusterNodeProperties: {borderWidth:3, shape:'box', font:{size:30}}
@@ -3621,28 +3987,37 @@ HTMLWidgets.widget({
         var clusterOptionsByData;
         for (var i = 0; i < colors.length; i++) {
           var color = colors[i];
+          var sh = x.clusteringColor.shape[i];
+          var force = x.clusteringColor.force[i];
           clusterOptionsByData = {
               joinCondition: function (childOptions) {
                   return childOptions.color.background == color; // the color is fully defined in the node.
               },
               processProperties: function (clusterOptions, childNodes, childEdges) {
                   var totalMass = 0;
+                  var cluster_level = 9999999;
                   for (var i = 0; i < childNodes.length; i++) {
                       totalMass += childNodes[i].mass;
-                      if(x.clusteringColor.force === false){
+                      if(childNodes[i].level){
+                        cluster_level = Math.min(cluster_level, childNodes[i].level)
+                      }
+                      if(force === false){
                         if(i === 0){
                           clusterOptions.shape =  childNodes[i].shape;
                         }else{
                           if(childNodes[i].shape !== clusterOptions.shape){
-                            clusterOptions.shape = x.clusteringColor.shape;
+                            clusterOptions.shape = sh;
                           }
                         }
                       } else {
-                        clusterOptions.shape = x.clusteringColor.shape;
+                        clusterOptions.shape = sh;
                       }
 
                   }
                   clusterOptions.value = totalMass;
+                  if(cluster_level !== 9999999){
+                    clusterOptions.level = cluster_level
+                  }
                   return clusterOptions;
               },
               clusterNodeProperties: {id: 'cluster:' + color, borderWidth: 3, color:color, label: x.clusteringColor.label + color}
@@ -3659,46 +4034,62 @@ HTMLWidgets.widget({
     //*************************
     if(x.clusteringGroup){
       
-      function clusterByGroup() {
-        var groups = x.clusteringGroup.groups;
+      function clusterByGroup(groups) {
         var clusterOptionsByData;
         for (var i = 0; i < groups.length; i++) {
           var group = groups[i];
-          clusterOptionsByData = {
-              joinCondition: function (childOptions) {
-                  return childOptions.group == group; //
-              },
-              processProperties: function (clusterOptions, childNodes, childEdges) {
-                //console.info(clusterOptions);
-                  var totalMass = 0;
-                  for (var i = 0; i < childNodes.length; i++) {
-                      totalMass += childNodes[i].mass;
-                      if(x.clusteringGroup.force === false){
-                        if(i === 0){
-                          clusterOptions.shape =  childNodes[i].shape;
-                          clusterOptions.color =  childNodes[i].color.background;
-                        }else{
-                          if(childNodes[i].shape !== clusterOptions.shape){
-                            clusterOptions.shape = x.clusteringGroup.shape;
-                          }
-                          if(childNodes[i].color.background !== clusterOptions.color){
-                            clusterOptions.color = x.clusteringGroup.color;
-                          }
+          var j = x.clusteringGroup.groups.indexOf(group);
+          if(j !== -1) {
+            var col = x.clusteringGroup.color[j];
+            var sh = x.clusteringGroup.shape[j];
+            var force = x.clusteringGroup.force[j];
+            var sc_size = x.clusteringGroup.scale_size[j];
+            
+            clusterOptionsByData = {
+                joinCondition: function (childOptions) {
+                    return childOptions.group == group; //
+                },
+                processProperties: function (clusterOptions, childNodes, childEdges) {
+                    var totalMass = 0;
+                    var cluster_level = 9999999;
+                    for (var i = 0; i < childNodes.length; i++) {
+                        totalMass += childNodes[i].mass;
+                        if(childNodes[i].level){
+                          cluster_level = Math.min(cluster_level, childNodes[i].level)
                         }
-                      } else {
-                        clusterOptions.shape = x.clusteringGroup.shape;
-                        clusterOptions.color = x.clusteringGroup.color;
-                      }
-                  }
-                  clusterOptions.value = totalMass;
-                  return clusterOptions;
-              },
-              clusterNodeProperties: {id: 'cluster:' + group, borderWidth: 3, label:x.clusteringGroup.label + group}
+                        if(force === false){
+                          if(i === 0){
+                            clusterOptions.shape =  childNodes[i].shape;
+                            clusterOptions.color =  childNodes[i].color.background;
+                          }else{
+                            if(childNodes[i].shape !== clusterOptions.shape){
+                              clusterOptions.shape = sh;
+                            }
+                            if(childNodes[i].color.background !== clusterOptions.color){
+                              clusterOptions.color = col;
+                            }
+                          }
+                        } else {
+                          clusterOptions.shape = sh;
+                          clusterOptions.color = col;
+                        }
+                    }
+                    if(sc_size){
+                       clusterOptions.value = totalMass;
+                    }
+                    if(cluster_level !== 9999999){
+                      clusterOptions.level = cluster_level
+                    }
+                    return clusterOptions;
+                },
+                clusterNodeProperties: {id: 'cluster:' + group, borderWidth: 3, label:x.clusteringGroup.label + group}
+            }
+            instance.network.cluster(clusterOptionsByData);
           }
-          instance.network.cluster(clusterOptionsByData);
+
         }
       }
-      clusterByGroup();
+      clusterByGroup(x.clusteringGroup.groups);
     }
   
     //*************************
@@ -3738,14 +4129,22 @@ HTMLWidgets.widget({
             processProperties: function (clusterOptions, childNodes) {
                 clusterIndex = clusterIndex + 1;
                 var childrenCount = 0;
+                var cluster_level = 9999999;
                 for (var i = 0; i < childNodes.length; i++) {
                     childrenCount += childNodes[i].childrenCount || 1;
+                    if(childNodes[i].level){
+                      cluster_level = Math.min(cluster_level, childNodes[i].level)
+                    }
                 }
                 clusterOptions.childrenCount = childrenCount;
                 clusterOptions.label = "# " + childrenCount + "";
                 clusterOptions.font = {size: childrenCount*5+30}
                 clusterOptions.id = 'cluster:' + clusterIndex;
                 clusters.push({id:'cluster:' + clusterIndex, scale:scale});
+                
+                if(cluster_level !== 9999999){
+                  clusterOptions.level = cluster_level
+                }
                 return clusterOptions;
             },
             clusterNodeProperties: {borderWidth: 3, shape: 'database', font: {size: 30}}
@@ -3799,10 +4198,12 @@ HTMLWidgets.widget({
           instance.network.redraw();
         if(instance.legend)
           instance.legend.redraw();
-      }, 200);
-    }
+      }, 250);
+    };
+    
     if(x.iconsRedraw !== undefined){
       if(x.iconsRedraw){
+        iconsRedraw();
         instance.network.once("stabilized", function(){iconsRedraw();})
       }
     }

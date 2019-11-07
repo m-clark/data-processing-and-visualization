@@ -160,7 +160,7 @@ as.data.table(sapply(timing_group_by_big, `[[`, "elapsed"), keep.rownames = TRUE
 # timingsdtplyr = append(timing[6:7], list(dtplyr=dtplyrtest))
 # save(timingsdtplyr, 'data/timingsdtplyr.RData')
 load('data/timingsdtplyr.RData')
-data_frame(package=names(timingsdtplyr)) %>% 
+tibble(package=names(timingsdtplyr)) %>% 
   mutate(timing = sapply(timingsdtplyr, `[[`, "elapsed")) %>% 
   arrange(desc(timing)) %>% 
   pander::pander()

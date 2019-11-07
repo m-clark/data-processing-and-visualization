@@ -153,9 +153,9 @@ bball %>%
   glimpse()
 
 ## ----merge_demo, echo=-(1:2), message=TRUE-------------------------------
-band_members = data_frame(Name = c('Seth', 'Francis', 'Bubba'),
+band_members = tibble(Name = c('Seth', 'Francis', 'Bubba'),
                           Band = c('Com Truise', 'Pixies', 'The New Year'))
-band_instruments = data_frame(Name = c('Seth', 'Francis', 'Bubba'),
+band_instruments = tibble(Name = c('Seth', 'Francis', 'Bubba'),
                               Instrument = c('Synthesizer', 'Guitar', 'Guitar'))
 
 band_members
@@ -164,9 +164,9 @@ band_instruments
 left_join(band_members, band_instruments)
 
 ## ----merge_demo2, echo=-(1:2), message=TRUE------------------------------
-band_members = data_frame(Name = c('Seth', 'Francis', 'Bubba', 'Stephen'),
+band_members = tibble(Name = c('Seth', 'Francis', 'Bubba', 'Stephen'),
                           Band = c('Com Truise', 'Pixies', 'The New Year', 'Pavement'))
-band_instruments = data_frame(Name = c('Seth', 'Francis', 'Bubba', 'Steve'),
+band_instruments = tibble(Name = c('Seth', 'Francis', 'Bubba', 'Steve'),
                               Instrument = c('Synthesizer', 'Guitar', 'Guitar', 'Rage'))
 
 band_members
@@ -228,7 +228,7 @@ bball %>%
 ##   tail
 
 ## ----ex3, eval=FALSE, echo=1:3-------------------------------------------
-## dat = data_frame(id = 1:10,
+## dat = tibble(id = 1:10,
 ##                  x = rnorm(10),
 ##                  y = rnorm(10))
 ## dat %>% gather(key = var, value = score, -id)

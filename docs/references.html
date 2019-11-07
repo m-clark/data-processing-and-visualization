@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html >
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Data Processing &amp; Visualization</title>
-  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>References | Data Processing &amp; Visualization</title>
+  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Data Processing &amp; Visualization" />
+  <meta property="og:title" content="References | Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://m-clark.github.io/data-processing-and-visualization/" />
   <meta property="og:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
@@ -17,24 +16,25 @@
   <meta name="github-repo" content="m-clark/data-processing-and-visualization/" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Data Processing &amp; Visualization" />
+  <meta name="twitter:title" content="References | Data Processing &amp; Visualization" />
   
   <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
   <meta name="twitter:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
 
 
 
-<meta name="date" content="2018-09-23">
+<meta name="date" content="2019-11-06" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
-  <link rel="shortcut icon" href="img/R.ico" type="image/x-icon">
-<link rel="prev" href="summary.html">
+  <link rel="shortcut icon" href="img/R.ico" type="image/x-icon" />
+<link rel="prev" href="summary.html"/>
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -46,7 +46,7 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.8.0/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
@@ -59,36 +59,45 @@
 <link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
-<link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
-<script src="libs/highcharts-5.0.6/highstock.js"></script>
-<script src="libs/highcharts-5.0.6/highcharts-3d.js"></script>
-<script src="libs/highcharts-5.0.6/highcharts-more.js"></script>
-<script src="libs/highcharts-5.0.6/modules/annotations.js"></script>
-<script src="libs/highcharts-5.0.6/modules/broken-axis.js"></script>
-<script src="libs/highcharts-5.0.6/modules/data.js"></script>
-<script src="libs/highcharts-5.0.6/modules/drilldown.js"></script>
-<script src="libs/highcharts-5.0.6/modules/exporting.js"></script>
-<script src="libs/highcharts-5.0.6/modules/funnel.js"></script>
-<script src="libs/highcharts-5.0.6/modules/heatmap.js"></script>
-<script src="libs/highcharts-5.0.6/modules/map.js"></script>
-<script src="libs/highcharts-5.0.6/modules/no-data-to-display.js"></script>
-<script src="libs/highcharts-5.0.6/modules/offline-exporting.js"></script>
-<script src="libs/highcharts-5.0.6/modules/solid-gauge.js"></script>
-<script src="libs/highcharts-5.0.6/modules/treemap.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/annotations.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/draggable-legend.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/draggable-points.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/export-csv.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/grouped-categories.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/motion.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/pattern-fill-v2.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/tooltip-delay.js"></script>
-<script src="libs/highcharts-5.0.6/custom/reset.js"></script>
-<script src="libs/highcharts-5.0.6/custom/symbols-extra.js"></script>
-<script src="libs/highcharts-5.0.6/custom/text-symbols.js"></script>
-<link href="libs/fontawesome-4.5.0/font-awesome.min.css" rel="stylesheet" />
-<link href="libs/htmlwdgtgrid-1/htmlwdgtgrid.css" rel="stylesheet" />
-<script src="libs/highchart-binding-0.5.0/highchart.js"></script>
+<link href="libs/highcharts-7.0.1/css/motion.css" rel="stylesheet" />
+<link href="libs/highcharts-7.0.1/css/htmlwdgtgrid.css" rel="stylesheet" />
+<script src="libs/highcharts-7.0.1/highcharts.js"></script>
+<script src="libs/highcharts-7.0.1/highcharts-3d.js"></script>
+<script src="libs/highcharts-7.0.1/highcharts-more.js"></script>
+<script src="libs/highcharts-7.0.1/modules/stock.js"></script>
+<script src="libs/highcharts-7.0.1/modules/map.js"></script>
+<script src="libs/highcharts-7.0.1/modules/annotations.js"></script>
+<script src="libs/highcharts-7.0.1/modules/boost.js"></script>
+<script src="libs/highcharts-7.0.1/modules/data.js"></script>
+<script src="libs/highcharts-7.0.1/modules/drag-panes.js"></script>
+<script src="libs/highcharts-7.0.1/modules/drilldown.js"></script>
+<script src="libs/highcharts-7.0.1/modules/item-series.js"></script>
+<script src="libs/highcharts-7.0.1/modules/offline-exporting.js"></script>
+<script src="libs/highcharts-7.0.1/modules/overlapping-datalabels.js"></script>
+<script src="libs/highcharts-7.0.1/modules/exporting.js"></script>
+<script src="libs/highcharts-7.0.1/modules/export-data.js"></script>
+<script src="libs/highcharts-7.0.1/modules/funnel.js"></script>
+<script src="libs/highcharts-7.0.1/modules/heatmap.js"></script>
+<script src="libs/highcharts-7.0.1/modules/treemap.js"></script>
+<script src="libs/highcharts-7.0.1/modules/sankey.js"></script>
+<script src="libs/highcharts-7.0.1/modules/solid-gauge.js"></script>
+<script src="libs/highcharts-7.0.1/modules/streamgraph.js"></script>
+<script src="libs/highcharts-7.0.1/modules/sunburst.js"></script>
+<script src="libs/highcharts-7.0.1/modules/vector.js"></script>
+<script src="libs/highcharts-7.0.1/modules/wordcloud.js"></script>
+<script src="libs/highcharts-7.0.1/modules/xrange.js"></script>
+<script src="libs/highcharts-7.0.1/modules/tilemap.js"></script>
+<script src="libs/highcharts-7.0.1/modules/venn.js"></script>
+<script src="libs/highcharts-7.0.1/modules/gantt.js"></script>
+<script src="libs/highcharts-7.0.1/modules/timeline.js"></script>
+<script src="libs/highcharts-7.0.1/modules/parallel-coordinates.js"></script>
+<script src="libs/highcharts-7.0.1/plugins/grouped-categories.js"></script>
+<script src="libs/highcharts-7.0.1/plugins/motion.js"></script>
+<script src="libs/highcharts-7.0.1/plugins/multicolor_series.js"></script>
+<script src="libs/highcharts-7.0.1/custom/reset.js"></script>
+<script src="libs/highcharts-7.0.1/custom/symbols-extra.js"></script>
+<script src="libs/highcharts-7.0.1/custom/text-symbols.js"></script>
+<script src="libs/highchart-binding-0.7.0/highchart.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
@@ -106,10 +115,9 @@
 <style type="text/css">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -119,13 +127,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -384,7 +390,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#a-slight-speed-gain"><i class="fa fa-check"></i>A slight speed gain</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#dots-and-loops"><i class="fa fa-check"></i>(Dots and) Loops</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#loops-summary"><i class="fa fa-check"></i>Loops summary</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 </ul></li>
@@ -483,16 +489,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="refs" class="references">
 <div>
-<p>Grolemund, Garrett, and Hadley Wickham. 2018. <em>R for Data Science</em>. <a href="http://r4ds.had.co.nz/" class="uri">http://r4ds.had.co.nz/</a>.</p>
+<p>Grolemund, Garrett, and Hadley Wickham. 2018. <em>R for Data Science</em>. <a href="http://r4ds.had.co.nz/">http://r4ds.had.co.nz/</a>.</p>
 </div>
 <div>
-<p>Wickham, Hadley. 2018. <em>Advanced R: The Definitive Guide</em>. <a href="https://adv-r.hadley.nz/" class="uri">https://adv-r.hadley.nz/</a>.</p>
+<p>Wickham, Hadley. 2018. <em>Advanced R: The Definitive Guide</em>. <a href="https://adv-r.hadley.nz/">https://adv-r.hadley.nz/</a>.</p>
 </div>
 <div>
-<p>Wilke, Claus O. 2018. <em>Fundamentals of Data Visualization</em>. <a href="https://serialmentor.com/dataviz/" class="uri">https://serialmentor.com/dataviz/</a>.</p>
+<p>Wilke, Claus O. 2018. <em>Fundamentals of Data Visualization</em>. <a href="https://serialmentor.com/dataviz/">https://serialmentor.com/dataviz/</a>.</p>
 </div>
 <div>
-<p>Xie, Yihui, J. J. Allaire, and Garrett Grolemund. 2018. <em>R Markdown: The Definitive Guide</em>. <a href="https://bookdown.org/yihui/rmarkdown/" class="uri">https://bookdown.org/yihui/rmarkdown/</a>.</p>
+<p>Xie, Yihui, J. J. Allaire, and Garrett Grolemund. 2018. <em>R Markdown: The Definitive Guide</em>. <a href="https://bookdown.org/yihui/rmarkdown/">https://bookdown.org/yihui/rmarkdown/</a>.</p>
 </div>
 </div>
 </div>
@@ -553,9 +559,10 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
-"all": ["twitter", "facebook", "google", "weibo", "instapaper"]
+"all": ["twitter", "facebook", "google", "weibo", "instapaper"],
+"instapper": false
 },
 "fontsettings": {
 "theme": "white",
@@ -563,6 +570,10 @@ gitbook.start({
 "size": 2
 },
 "edit": null,
+"history": {
+"link": null,
+"text": null
+},
 "download": null,
 "toc": {
 "collapse": "section",
@@ -580,9 +591,10 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

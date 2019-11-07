@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html >
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Data Processing &amp; Visualization</title>
-  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Basics | Data Processing &amp; Visualization</title>
+  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Data Processing &amp; Visualization" />
+  <meta property="og:title" content="Basics | Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://m-clark.github.io/data-processing-and-visualization/" />
   <meta property="og:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
@@ -17,24 +16,25 @@
   <meta name="github-repo" content="m-clark/data-processing-and-visualization/" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Data Processing &amp; Visualization" />
+  <meta name="twitter:title" content="Basics | Data Processing &amp; Visualization" />
   
   <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
   <meta name="twitter:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
 
 
 
-<meta name="date" content="2018-09-23">
+<meta name="date" content="2019-11-06" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
-  <link rel="shortcut icon" href="img/R.ico" type="image/x-icon">
-<link rel="prev" href="interactive.html">
-<link rel="next" href="iterative.html">
+  <link rel="shortcut icon" href="img/R.ico" type="image/x-icon" />
+<link rel="prev" href="interactive.html"/>
+<link rel="next" href="iterative.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -46,7 +46,7 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.8.0/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
@@ -59,36 +59,45 @@
 <link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
-<link href="libs/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
-<script src="libs/highcharts-5.0.6/highstock.js"></script>
-<script src="libs/highcharts-5.0.6/highcharts-3d.js"></script>
-<script src="libs/highcharts-5.0.6/highcharts-more.js"></script>
-<script src="libs/highcharts-5.0.6/modules/annotations.js"></script>
-<script src="libs/highcharts-5.0.6/modules/broken-axis.js"></script>
-<script src="libs/highcharts-5.0.6/modules/data.js"></script>
-<script src="libs/highcharts-5.0.6/modules/drilldown.js"></script>
-<script src="libs/highcharts-5.0.6/modules/exporting.js"></script>
-<script src="libs/highcharts-5.0.6/modules/funnel.js"></script>
-<script src="libs/highcharts-5.0.6/modules/heatmap.js"></script>
-<script src="libs/highcharts-5.0.6/modules/map.js"></script>
-<script src="libs/highcharts-5.0.6/modules/no-data-to-display.js"></script>
-<script src="libs/highcharts-5.0.6/modules/offline-exporting.js"></script>
-<script src="libs/highcharts-5.0.6/modules/solid-gauge.js"></script>
-<script src="libs/highcharts-5.0.6/modules/treemap.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/annotations.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/draggable-legend.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/draggable-points.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/export-csv.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/grouped-categories.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/motion.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/pattern-fill-v2.js"></script>
-<script src="libs/highcharts-5.0.6/plugins/tooltip-delay.js"></script>
-<script src="libs/highcharts-5.0.6/custom/reset.js"></script>
-<script src="libs/highcharts-5.0.6/custom/symbols-extra.js"></script>
-<script src="libs/highcharts-5.0.6/custom/text-symbols.js"></script>
-<link href="libs/fontawesome-4.5.0/font-awesome.min.css" rel="stylesheet" />
-<link href="libs/htmlwdgtgrid-1/htmlwdgtgrid.css" rel="stylesheet" />
-<script src="libs/highchart-binding-0.5.0/highchart.js"></script>
+<link href="libs/highcharts-7.0.1/css/motion.css" rel="stylesheet" />
+<link href="libs/highcharts-7.0.1/css/htmlwdgtgrid.css" rel="stylesheet" />
+<script src="libs/highcharts-7.0.1/highcharts.js"></script>
+<script src="libs/highcharts-7.0.1/highcharts-3d.js"></script>
+<script src="libs/highcharts-7.0.1/highcharts-more.js"></script>
+<script src="libs/highcharts-7.0.1/modules/stock.js"></script>
+<script src="libs/highcharts-7.0.1/modules/map.js"></script>
+<script src="libs/highcharts-7.0.1/modules/annotations.js"></script>
+<script src="libs/highcharts-7.0.1/modules/boost.js"></script>
+<script src="libs/highcharts-7.0.1/modules/data.js"></script>
+<script src="libs/highcharts-7.0.1/modules/drag-panes.js"></script>
+<script src="libs/highcharts-7.0.1/modules/drilldown.js"></script>
+<script src="libs/highcharts-7.0.1/modules/item-series.js"></script>
+<script src="libs/highcharts-7.0.1/modules/offline-exporting.js"></script>
+<script src="libs/highcharts-7.0.1/modules/overlapping-datalabels.js"></script>
+<script src="libs/highcharts-7.0.1/modules/exporting.js"></script>
+<script src="libs/highcharts-7.0.1/modules/export-data.js"></script>
+<script src="libs/highcharts-7.0.1/modules/funnel.js"></script>
+<script src="libs/highcharts-7.0.1/modules/heatmap.js"></script>
+<script src="libs/highcharts-7.0.1/modules/treemap.js"></script>
+<script src="libs/highcharts-7.0.1/modules/sankey.js"></script>
+<script src="libs/highcharts-7.0.1/modules/solid-gauge.js"></script>
+<script src="libs/highcharts-7.0.1/modules/streamgraph.js"></script>
+<script src="libs/highcharts-7.0.1/modules/sunburst.js"></script>
+<script src="libs/highcharts-7.0.1/modules/vector.js"></script>
+<script src="libs/highcharts-7.0.1/modules/wordcloud.js"></script>
+<script src="libs/highcharts-7.0.1/modules/xrange.js"></script>
+<script src="libs/highcharts-7.0.1/modules/tilemap.js"></script>
+<script src="libs/highcharts-7.0.1/modules/venn.js"></script>
+<script src="libs/highcharts-7.0.1/modules/gantt.js"></script>
+<script src="libs/highcharts-7.0.1/modules/timeline.js"></script>
+<script src="libs/highcharts-7.0.1/modules/parallel-coordinates.js"></script>
+<script src="libs/highcharts-7.0.1/plugins/grouped-categories.js"></script>
+<script src="libs/highcharts-7.0.1/plugins/motion.js"></script>
+<script src="libs/highcharts-7.0.1/plugins/multicolor_series.js"></script>
+<script src="libs/highcharts-7.0.1/custom/reset.js"></script>
+<script src="libs/highcharts-7.0.1/custom/symbols-extra.js"></script>
+<script src="libs/highcharts-7.0.1/custom/text-symbols.js"></script>
+<script src="libs/highchart-binding-0.7.0/highchart.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
@@ -106,10 +115,9 @@
 <style type="text/css">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -119,13 +127,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -384,7 +390,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#a-slight-speed-gain"><i class="fa fa-check"></i>A slight speed gain</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#dots-and-loops"><i class="fa fa-check"></i>(Dots and) Loops</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#loops-summary"><i class="fa fa-check"></i>Loops summary</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 </ul></li>
@@ -504,16 +510,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb224-1" data-line-number="1"><span class="kw">glimpse</span>(diamonds)</a></code></pre></div>
 <pre><code>Observations: 53,940
 Variables: 10
-$ carat   &lt;dbl&gt; 0.23, 0.21, 0.23, 0.29, 0.31, 0.24, 0.24, 0.26, 0.22, 0.23, 0.30, 0.23, 0.22, 0.31, 0.20, 0.32, 0.30, 0.30, 0.30, 0.30, 0.30, 0.23, 0.23, 0.31, 0.31, 0.23, 0.24, 0.30, 0.23, 0.23, 0.23, 0.23, 0.23, 0...
-$ cut     &lt;ord&gt; Ideal, Premium, Good, Premium, Good, Very Good, Very Good, Very Good, Fair, Very Good, Good, Ideal, Premium, Ideal, Premium, Premium, Ideal, Good, Good, Very Good, Good, Very Good, Very Good, Very Go...
-$ color   &lt;ord&gt; E, E, E, I, J, J, I, H, E, H, J, J, F, J, E, E, I, J, J, J, I, E, H, J, J, G, I, J, D, F, F, F, E, E, D, F, E, H, D, I, I, J, D, D, H, F, H, H, E, H, F, G, I, E, D, I, J, I, I, I, I, D, D, D, I, G, I...
-$ clarity &lt;ord&gt; SI2, SI1, VS1, VS2, SI2, VVS2, VVS1, SI1, VS2, VS1, SI1, VS1, SI1, SI2, SI2, I1, SI2, SI1, SI1, SI1, SI2, VS2, VS1, SI1, SI1, VVS2, VS1, VS2, VS2, VS1, VS1, VS1, VS1, VS1, VS1, VS1, VS1, SI1, VS2, SI...
-$ depth   &lt;dbl&gt; 61.5, 59.8, 56.9, 62.4, 63.3, 62.8, 62.3, 61.9, 65.1, 59.4, 64.0, 62.8, 60.4, 62.2, 60.2, 60.9, 62.0, 63.4, 63.8, 62.7, 63.3, 63.8, 61.0, 59.4, 58.1, 60.4, 62.5, 62.2, 60.5, 60.9, 60.0, 59.8, 60.7, 5...
-$ table   &lt;dbl&gt; 55.0, 61.0, 65.0, 58.0, 58.0, 57.0, 57.0, 55.0, 61.0, 61.0, 55.0, 56.0, 61.0, 54.0, 62.0, 58.0, 54.0, 54.0, 56.0, 59.0, 56.0, 55.0, 57.0, 62.0, 62.0, 58.0, 57.0, 57.0, 61.0, 57.0, 57.0, 57.0, 59.0, 5...
-$ price   &lt;int&gt; 326, 326, 327, 334, 335, 336, 336, 337, 337, 338, 339, 340, 342, 344, 345, 345, 348, 351, 351, 351, 351, 352, 353, 353, 353, 354, 355, 357, 357, 357, 402, 402, 402, 402, 402, 402, 402, 402, 403, 403,...
-$ x       &lt;dbl&gt; 3.95, 3.89, 4.05, 4.20, 4.34, 3.94, 3.95, 4.07, 3.87, 4.00, 4.25, 3.93, 3.88, 4.35, 3.79, 4.38, 4.31, 4.23, 4.23, 4.21, 4.26, 3.85, 3.94, 4.39, 4.44, 3.97, 3.97, 4.28, 3.96, 3.96, 4.00, 4.04, 3.97, 4...
-$ y       &lt;dbl&gt; 3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, 4.05, 4.28, 3.90, 3.84, 4.37, 3.75, 4.42, 4.34, 4.29, 4.26, 4.27, 4.30, 3.92, 3.96, 4.43, 4.47, 4.01, 3.94, 4.30, 3.97, 3.99, 4.03, 4.06, 4.01, 4...
-$ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39, 2.73, 2.46, 2.33, 2.71, 2.27, 2.68, 2.68, 2.70, 2.71, 2.66, 2.71, 2.48, 2.41, 2.62, 2.59, 2.41, 2.47, 2.67, 2.40, 2.42, 2.41, 2.42, 2.42, 2...</code></pre>
+$ carat   &lt;dbl&gt; 0.23, 0.21, 0.23, 0.29, 0.31, 0.24, 0.24, 0.26, 0.22, 0.23, 0.30, 0.23, 0.22, 0.31, 0.20, 0.32, 0.30, 0.30, 0.30, 0.30, 0.30, 0.23, 0.23, 0.31, 0.31, 0.23, 0.24, 0.30, 0.23, 0.23, 0.23, 0.23, 0.23, 0.2…
+$ cut     &lt;ord&gt; Ideal, Premium, Good, Premium, Good, Very Good, Very Good, Very Good, Fair, Very Good, Good, Ideal, Premium, Ideal, Premium, Premium, Ideal, Good, Good, Very Good, Good, Very Good, Very Good, Very Good…
+$ color   &lt;ord&gt; E, E, E, I, J, J, I, H, E, H, J, J, F, J, E, E, I, J, J, J, I, E, H, J, J, G, I, J, D, F, F, F, E, E, D, F, E, H, D, I, I, J, D, D, H, F, H, H, E, H, F, G, I, E, D, I, J, I, I, I, I, D, D, D, I, G, I, …
+$ clarity &lt;ord&gt; SI2, SI1, VS1, VS2, SI2, VVS2, VVS1, SI1, VS2, VS1, SI1, VS1, SI1, SI2, SI2, I1, SI2, SI1, SI1, SI1, SI2, VS2, VS1, SI1, SI1, VVS2, VS1, VS2, VS2, VS1, VS1, VS1, VS1, VS1, VS1, VS1, VS1, SI1, VS2, SI2,…
+$ depth   &lt;dbl&gt; 61.5, 59.8, 56.9, 62.4, 63.3, 62.8, 62.3, 61.9, 65.1, 59.4, 64.0, 62.8, 60.4, 62.2, 60.2, 60.9, 62.0, 63.4, 63.8, 62.7, 63.3, 63.8, 61.0, 59.4, 58.1, 60.4, 62.5, 62.2, 60.5, 60.9, 60.0, 59.8, 60.7, 59.…
+$ table   &lt;dbl&gt; 55.0, 61.0, 65.0, 58.0, 58.0, 57.0, 57.0, 55.0, 61.0, 61.0, 55.0, 56.0, 61.0, 54.0, 62.0, 58.0, 54.0, 54.0, 56.0, 59.0, 56.0, 55.0, 57.0, 62.0, 62.0, 58.0, 57.0, 57.0, 61.0, 57.0, 57.0, 57.0, 59.0, 58.…
+$ price   &lt;int&gt; 326, 326, 327, 334, 335, 336, 336, 337, 337, 338, 339, 340, 342, 344, 345, 345, 348, 351, 351, 351, 351, 352, 353, 353, 353, 354, 355, 357, 357, 357, 402, 402, 402, 402, 402, 402, 402, 402, 403, 403, 4…
+$ x       &lt;dbl&gt; 3.95, 3.89, 4.05, 4.20, 4.34, 3.94, 3.95, 4.07, 3.87, 4.00, 4.25, 3.93, 3.88, 4.35, 3.79, 4.38, 4.31, 4.23, 4.23, 4.21, 4.26, 3.85, 3.94, 4.39, 4.44, 3.97, 3.97, 4.28, 3.96, 3.96, 4.00, 4.04, 3.97, 4.0…
+$ y       &lt;dbl&gt; 3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, 4.05, 4.28, 3.90, 3.84, 4.37, 3.75, 4.42, 4.34, 4.29, 4.26, 4.27, 4.30, 3.92, 3.96, 4.43, 4.47, 4.01, 3.94, 4.30, 3.97, 3.99, 4.03, 4.06, 4.01, 4.0…
+$ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39, 2.73, 2.46, 2.33, 2.71, 2.27, 2.68, 2.68, 2.70, 2.71, 2.66, 2.71, 2.48, 2.41, 2.62, 2.59, 2.41, 2.47, 2.67, 2.40, 2.42, 2.41, 2.42, 2.42, 2.4…</code></pre>
 <p>The <span class="func">str</span> function looks at the <em>structure</em> of the object, while <span class="func">glimpse</span> perhaps provides a possibly more readable version, and is just <span class="func">str</span> specifically suited toward data frames. In both cases, we get info about the object and the various things within it.</p>
 <p>While you might be doing this with data frames, you should be doing it with any of the objects you’re interested in. Consider a regression model object.</p>
 <div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb226-1" data-line-number="1">lm_mod =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>mtcars)</a>
@@ -917,41 +923,40 @@ cov.unscaled  121    -none- numeric</code></pre>
 <p><img class='zoom' src="img/summary_method.png" style="display:block; margin: 0 auto;" width=50%></p>
 <p>When you load additional packages, you’ll see even more <span class="emph">methods</span> for the summary function. When you call summary on an object, the appropriate type of summary function will be used depending on the class of the object. If there is no specific type, e.g. when we called summary on something that already had summary called on it, it will just use a default version listing the contents. To see all the methods for summary, type the following, and you’ll see all that is currently available for your R session.</p>
 <div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb247-1" data-line-number="1"><span class="kw">methods</span>(<span class="st">&#39;summary&#39;</span>)</a></code></pre></div>
-<pre><code>  [1] summary,ANY-method             summary,diagonalMatrix-method  summary,quantmod-method        summary,sparseMatrix-method    summary.aareg*                 summary.agnes*                
-  [7] summary.aov                    summary.aovlist*               summary.areg.boot*             summary.aspell*                summary.cch*                   summary.check_packages_in_dir*
- [13] summary.clara*                 summary.clustCombi             summary.cohesiveBlocks*        summary.connection             summary.corAR1*                summary.corARMA*              
+<pre><code>  [1] summary,ANY-method             summary,diagonalMatrix-method  summary,mle-method             summary,quantmod-method        summary,sparseMatrix-method    summary,stanfit-method        
+  [7] summary.aov                    summary.aovlist*               summary.aspell*                summary.bridge*                summary.bridge_list*           summary.brmsfit*              
+ [13] summary.check_packages_in_dir* summary.clustCombi             summary.cohesiveBlocks*        summary.connection             summary.corAR1*                summary.corARMA*              
  [19] summary.corCAR1*               summary.corCompSymm*           summary.corExp*                summary.corGaus*               summary.corIdent*              summary.corLin*               
- [25] summary.corNatural*            summary.corRatio*              summary.corSpher*              summary.corStruct*             summary.corSymm*               summary.coxph*                
- [31] summary.coxph.penal*           summary.crq                    summary.crqs                   summary.data.frame             summary.Date                   summary.default               
- [37] summary.diana*                 summary.dissimilarity*         summary.Duration*              summary.dynrqs                 summary.ecdf*                  summary.factor                
- [43] summary.fanny*                 summary.find.matches*          summary.formula*               summary.gam                    summary.ggplot*                summary.glm                   
- [49] summary.gls*                   summary.gmmhd                  summary.igraph*                summary.impute*                summary.infl*                  summary.Interval*             
- [55] summary.List*                  summary.lm                     summary.lme*                   summary.lmList*                summary.loess*                 summary.manova                
- [61] summary.matrix                 summary.mChoice*               summary.Mclust                 summary.mclustBIC              summary.MclustBootstrap        summary.MclustDA              
- [67] summary.MclustDR               summary.MclustDRsubsel         summary.mclustICL              summary.mlm*                   summary.modelStruct*           summary.mona*                 
- [73] summary.mslm                   summary.multinom*              summary.nlrq                   summary.nls*                   summary.nlsList*               summary.nnet*                 
- [79] summary.packageStatus*         summary.pam*                   summary.pdBlocked*             summary.pdCompSymm*            summary.pdDiag*                summary.PDF_Dictionary*       
- [85] summary.PDF_Stream*            summary.pdIdent*               summary.pdIdnot*               summary.pdLogChol*             summary.pdMat*                 summary.pdNatural*            
- [91] summary.pdSymm*                summary.pdTens*                summary.Period*                summary.phylo*                 summary.phymltest*             summary.POSIXct               
- [97] summary.POSIXlt                summary.ppr*                   summary.prcomp*                summary.princomp*              summary.proc_time              summary.prop.part*            
-[103] summary.psych*                 summary.pyears*                summary.ratetable*             summary.reStruct*              summary.rpart*                 summary.rq                    
-[109] summary.rqs                    summary.rqss                   summary.shingle*               summary.silhouette*            summary.slm                    summary.srcfile               
-[115] summary.srcref                 summary.stepfun                summary.stl*                   summary.survexp*               summary.survfit*               summary.survfitms*            
-[121] summary.survreg*               summary.table                  summary.transcan*              summary.trellis*               summary.tukeysmooth*           summary.varComb*              
-[127] summary.varConstPower*         summary.varExp*                summary.varFixed*              summary.varFunc*               summary.varIdent*              summary.varPower*             
-[133] summary.warnings               summary.yearmon*               summary.yearqtr*               summary.zoo*                  
+ [25] summary.corNatural*            summary.corRatio*              summary.corSpher*              summary.corStruct*             summary.corSymm*               summary.crq                   
+ [31] summary.crqs                   summary.customfamily*          summary.data.frame             summary.Date                   summary.default                summary.Duration*             
+ [37] summary.dynrqs                 summary.ecdf*                  summary.factor                 summary.family*                summary.gam                    summary.ggplot*               
+ [43] summary.glm                    summary.gls*                   summary.gmmhd                  summary.hcl_palettes*          summary.igraph*                summary.infl*                 
+ [49] summary.Interval*              summary.List*                  summary.lm                     summary.lme*                   summary.lmList*                summary.loess*                
+ [55] summary.manova                 summary.matrix                 summary.Mclust                 summary.mclustBIC              summary.MclustBootstrap        summary.MclustDA              
+ [61] summary.MclustDR               summary.MclustDRsubsel         summary.mclustICL              summary.mcmc*                  summary.mcmc.list*             summary.microbenchmark*       
+ [67] summary.mixfamily*             summary.mlm*                   summary.modelStruct*           summary.mslm                   summary.nlrq                   summary.nls*                  
+ [73] summary.nlsList*               summary.packageStatus*         summary.pdBlocked*             summary.pdCompSymm*            summary.pdDiag*                summary.pdIdent*              
+ [79] summary.pdIdnot*               summary.pdLogChol*             summary.pdMat*                 summary.pdNatural*             summary.pdSymm*                summary.pdTens*               
+ [85] summary.Period*                summary.phylo*                 summary.phymltest*             summary.POSIXct                summary.POSIXlt                summary.ppr*                  
+ [91] summary.prcomp*                summary.princomp*              summary.proc_time              summary.prop.part*             summary.reStruct*              summary.rlang_error*          
+ [97] summary.rlang_trace*           summary.rq                     summary.rqs                    summary.rqss                   summary.shingle*               summary.slm                   
+[103] summary.srcfile                summary.srcref                 summary.stepfun                summary.stl*                   summary.table                  summary.trellis*              
+[109] summary.tukeysmooth*           summary.varComb*               summary.varConstPower*         summary.varExp*                summary.varFixed*              summary.varFunc*              
+[115] summary.varIdent*              summary.varPower*              summary.vctrs_sclr*            summary.vctrs_vctr*            summary.warnings               summary.yearmon*              
+[121] summary.yearqtr*               summary.zoo*                  
 see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>Say you are new to a modeling package, and as such, you might want to see what all you can do with the resulting object. Once you’ve discerned the class of the model object, you can then list all the functions that can be used on that object.</p>
 <div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb249-1" data-line-number="1"><span class="kw">library</span>(brms)</a>
 <a class="sourceLine" id="cb249-2" data-line-number="2"><span class="kw">methods</span>(<span class="dt">class =</span> <span class="st">&#39;brmsfit&#39;</span>)</a></code></pre></div>
-<pre><code> [1] add_ic                  as.array                as.data.frame           as.matrix               as.mcmc                 autocor                 bayes_factor            bayes_R2                bridge_sampler         
-[10] coef                    control_params          expose_functions        family                  fitted                  fixef                   formula                 getCall                 hypothesis             
-[19] kfold                   launch_shinystan        log_lik                 log_posterior           logLik                  loo_linpred             loo_model_weights       loo_predict             loo_predictive_interval
-[28] loo                     LOO                     marginal_effects        marginal_smooths        model_weights           model.frame             neff_ratio              ngrps                   nobs                   
-[37] nsamples                nuts_params             pairs                   parnames                plot                    post_prob               posterior_average       posterior_interval      posterior_linpred      
-[46] posterior_predict       posterior_samples       posterior_summary       pp_average              pp_check                pp_mixture              predict                 predictive_error        print                  
-[55] prior_samples           prior_summary           ranef                   residuals               rhat                    stancode                standata                stanplot                summary                
-[64] update                  VarCorr                 vcov                    waic                    WAIC                   
+<pre><code> [1] add_criterion           add_ic                  as.array                as.data.frame           as.matrix               as.mcmc                 autocor                 bayes_factor            bayes_R2               
+[10] bridge_sampler          coef                    control_params          expose_functions        extract_draws           family                  fitted                  fixef                   formula                
+[19] getCall                 hypothesis              kfold                   launch_shinystan        log_lik                 log_posterior           logLik                  loo_compare             loo_linpred            
+[28] loo_model_weights       loo_predict             loo_predictive_interval loo_R2                  loo                     LOO                     marginal_effects        marginal_smooths        model_weights          
+[37] model.frame             neff_ratio              ngrps                   nobs                    nsamples                nuts_params             pairs                   parnames                plot_coefficients      
+[46] plot                    post_prob               posterior_average       posterior_interval      posterior_linpred       posterior_predict       posterior_samples       posterior_summary       pp_average             
+[55] pp_check                pp_mixture              predict                 predictive_error        predictive_interval     print                   prior_samples           prior_summary           ranef                  
+[64] reloo                   residuals               rhat                    stancode                standata                stanplot                summary                 update                  VarCorr                
+[73] vcov                    waic                    WAIC                   
 see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>This allows you to more quickly get familiar with a package and the objects it produces, and provides utility you might not have even known to look for in the first place!</p>
 </div>
@@ -983,7 +988,7 @@ see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>You might not think of them as such, but in R, everything’s an object, including functions. You can inspect them like anything else.</p>
 <div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb255-1" data-line-number="1"><span class="kw">str</span>(lm)</a></code></pre></div>
 <pre><code>function (formula, data, subset, weights, na.action, method = &quot;qr&quot;, model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, contrasts = NULL, offset, ...)  </code></pre>
-<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb257-1" data-line-number="1">## lm</a></code></pre></div>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb257-1" data-line-number="1"><span class="co">## lm</span></a></code></pre></div>
 <pre><code>                                                                          
 1  function (formula, data, subset, weights, na.action, method = &quot;qr&quot;,    
 2      model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, 
@@ -1066,9 +1071,10 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
-"all": ["twitter", "facebook", "google", "weibo", "instapaper"]
+"all": ["twitter", "facebook", "google", "weibo", "instapaper"],
+"instapper": false
 },
 "fontsettings": {
 "theme": "white",
@@ -1076,6 +1082,10 @@ gitbook.start({
 "size": 2
 },
 "edit": null,
+"history": {
+"link": null,
+"text": null
+},
 "download": null,
 "toc": {
 "collapse": "section",
@@ -1093,9 +1103,10 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

@@ -304,13 +304,13 @@ lmer(y ~ x + xsq + (1+x+xsq |g))
 # lm(y~poly(x,2)) %>% summary()
 
 # 
-# gg = data_frame(g, x, y) %>% 
+# gg = tibble(g, x, y) %>% 
 #   mutate(y = scale(y)) %>% 
 #   ggplot(aes(x,y)) + 
 #   geom_smooth(aes(group=g), se=F, color=alpha(palettes$orange$orange, .2), lwd=.5)
 # ggplotly() %>% 
 #   theme_plotly()
-data_frame(g, f=factor(f, labels=c('g1','g2')), x, y) %>% 
+tibble(g, f=factor(f, labels=c('g1','g2')), x, y) %>% 
   group_by(g) %>% 
   mutate(updown = if_else(last(y) > first(y), 'up', 'down')) %>% 
   # ungroup() %>%
@@ -497,7 +497,7 @@ grid.arrange(g1, g2, ncol=2)
 Without transparency, it just looks ugly, and notably busier if nothing else. This plot is using the exact same <span class="pack">scico</span> palette.
 
 ```{r transp2_old, eval=FALSE}
-data_frame(g, x, y) %>% 
+tibble(g, x, y) %>% 
   group_by(g) %>% 
   mutate(updown = if_else(last(y) > first(y), 'up', 'down')) %>% 
   # ungroup() %>%
