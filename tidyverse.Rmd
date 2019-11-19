@@ -428,8 +428,8 @@ Merges can get quite complex, and involve multiple data sources. In many cases y
 
 The <span class="pack">tidyr</span> package can be thought of as a specialized subset of <span class="pack">dplyr's</span> functionality, as well as an update to the previous <span class="pack">reshape</span> and <span class="pack">reshape2</span> packages[^reshape]. Some of its functions for manipulating data you'll want to be familiar with are:
 
-- <span class="func">gather</span>: wide to long
-- <span class="func">spread</span>: long to wide
+- <span class="func">pivot_longer</span>: wide to long
+- <span class="func">pivot_wider</span>: long to wide
 - <span class="func">unite</span>: paste together multiple columns into one
 - <span class="func">separate</span>: complement of unite
 - <span class="func">unnest</span>: unnest 'list columns'
@@ -438,19 +438,24 @@ The following example shows how we take a 'wide-form' data set, where multiple c
 
 ```{r gather_spread}
 library(tidyr)
-stocks <- data.frame( time = as.Date('2009-01-01') + 0:9,
-                      X = rnorm(10, 0, 1),
-                      Y = rnorm(10, 0, 2),
-                      Z = rnorm(10, 0, 4) )
+
+stocks <- data.frame(
+  time = as.Date('2009-01-01') + 0:9,
+  X = rnorm(10, 0, 1),
+  Y = rnorm(10, 0, 2),
+  Z = rnorm(10, 0, 4)
+)
+
 stocks %>% head
+
 stocks %>% 
-  gather(stock, price, -time) %>% 
+  pivot_longer(cols = -time, names_to = 'stock', values_to = 'price') %>% 
   head()
 ```
 
 Note that the latter is an example of <span class="emph">tidy data</span> while the former is not.  Why do we generally prefer such data?  Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data.  *This is especially the case for visualization*.
 
-The following demonstrates the separate function utilized for a very common data processing task- dealing with names. Here' we'll separate <span class="objclass">player</span> into first and last names based on the space.
+The following demonstrates the <span class="func" style = "">separate</span> function utilized for a very common data processing task- dealing with names. Here' we'll separate <span class="objclass">player</span> into first and last names based on the space.
 
 ```{r tidyrSpread}
 bball %>% 
