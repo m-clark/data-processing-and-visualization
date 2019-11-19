@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2019-11-06" />
+<meta name="date" content="2019-11-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -485,13 +485,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="iterative-programming" class="section level1">
 <h1>Iterative Programming</h1>
-<p>Almost everything you do when dealing with data will need to be done again, and again, and again. If you are copy-pasting your way to repetitively do the same thing, you’re not only doing things inefficiently, you’re almost certainly setting yourself up for trouble if practically anything changes about the data or process.</p>
+<p>Almost everything you do when dealing with data will need to be done again, and again, and again. If you are copy-pasting your way to repetitively do the same thing, you’re not only doing things inefficiently, you’re almost certainly setting yourself up for trouble if anything changes about the data or underlying process.</p>
 <p>In order to avoid this, you need to be familiar with basic programming, and a starting point is to use an iterative approach to repetitive problems. Let’s look at the following. Let’s say we want to get the means of some columns in our data set. Do you do something like this?</p>
 <div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb263-1" data-line-number="1">means1 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>x)</a>
 <a class="sourceLine" id="cb263-2" data-line-number="2">means2 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>y)</a>
 <a class="sourceLine" id="cb263-3" data-line-number="3">means3 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>z)</a>
 <a class="sourceLine" id="cb263-4" data-line-number="4">means4 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>q)</a></code></pre></div>
-<p>Now consider what you have to change if you change a variable name, decide to do a median, or the data object name changes. Practically breathing on the data will cause you to have to redo that code, and possibly every line of it.</p>
+<p>Now consider what you have to change if you change a variable name, decide to do a median, or the data object name changes. Any minor change with the data will cause you to have to redo that code, and possibly every line of it.</p>
 <div id="for-loops" class="section level2">
 <h2>For loops</h2>
 <p>A <span class="emph">for loop</span> will help us get around the problem. The idea is that we want to perform a particular action <em>for</em> every iteration of some sequence. That sequence may be over columns, rows, lines in a text, whatever. Here is a loop.</p>
@@ -509,6 +509,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [1] 62.53006
 [1] 10.51749
 [1] 0.004469079</code></pre>
+<p>You can check this for yourself by testing a column or two directly with just <code>mean(df$x)</code>.</p>
 <p>Now if the data name changes, the columns we want change, or we want to calculate something else, we usually end up only changing one thing, rather than <em>at least</em> changing one, and probably many more things. In addition, the amount of code is the same whether the loop goes over 100 columns or 4.</p>
 <p>Let’s do things a little differently.</p>
 <div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb267-1" data-line-number="1">columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;precip&#39;</span>)</a>
@@ -559,12 +560,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb273-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb273-4" data-line-number="4">i =<span class="st"> </span><span class="dv">1</span></a>
 <a class="sourceLine" id="cb273-5" data-line-number="5"><span class="cf">while</span> (i <span class="op">&lt;=</span><span class="st"> </span><span class="kw">length</span>(columns)) {</a>
-<a class="sourceLine" id="cb273-6" data-line-number="6">  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[ ,columns[i]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb273-6" data-line-number="6">  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[columns[i]]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb273-7" data-line-number="7">  i =<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></a>
 <a class="sourceLine" id="cb273-8" data-line-number="8">}</a>
 <a class="sourceLine" id="cb273-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb273-10" data-line-number="10">nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</a></code></pre></div>
-<pre><code>[1] NA NA NA NA NA</code></pre>
+<pre><code>[1]   55.26   62.53   10.52    9.26 1017.90</code></pre>
 <p>This involves a <span class="emph">while</span> statement. It states, while <code>i</code> is less than or equal to the length (number) of <span class="objclass">columns</span>, compute the value of the i<sup>th</sup> element of <span class="objclass">nyc_means</span> as the mean of i<sup>th</sup> column of <span class="objclass">weather</span>. After that, increase the value of <code>i</code>. So, we start with <code>i = 1</code>, compute that subsequent mean, <code>i</code> now equals 2, do the process again, and so on. The process will stop as soon as the value of <code>i</code> is greater than the length of <span class="objclass">columns</span>.</p>
 <p><em>There is zero difference to using the while approach vs. the for loop</em>. While is often used when there is a check to be made, e.g. in modeling functions that have to stop the estimation process at some point, or else they’d go on indefinitely. In that case the while syntax is probably more natural. Either is fine.</p>
 </div>
@@ -633,14 +634,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [[5]]
 [1] &quot;e&quot;</code></pre>
 <p>The <span class="func">lapply</span> operation iterates over each element of the list and applies a function to them. In this case, the function is <span class="func">str_remove</span>. It has an argument for the string pattern we want to take out of the character string that is fed to it (‘ab’). For example, for ‘aba’ we will be left with just the ‘a’.</p>
-<p>As can be seen, <span class="func">lapply</span> starts with a <span class="objclass">list</span> and returns a <span class="objclass">list</span>. The only difference with <span class="func">sapply</span> is that <span class="func">sapply</span> will return a simplified form if possible.</p>
+<p>As can be seen, <span class="func">lapply</span> starts with a <span class="objclass">list</span> and returns a <span class="objclass">list</span>. The only difference with <span class="func">sapply</span> is that <span class="func">sapply</span> will return a simplified form if possible<a href="#fn23" class="footnote-ref" id="fnref23"><sup>23</sup></a>.</p>
 <div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb279-1" data-line-number="1"><span class="kw">sapply</span>(x, str_remove, <span class="dt">pattern =</span> <span class="st">&#39;ab&#39;</span>)</a></code></pre></div>
 <pre><code>[1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot;</code></pre>
 <p>In this case we just get a vector back.</p>
 </div>
 <div id="apply-functions" class="section level3">
 <h3>Apply functions</h3>
-<p>It is important to be familiar with and regularly use the apply family for efficient data processing. A summary of benefits includes:</p>
+<p>It is important to be familiar with the apply family for efficient data processing, if only because you’ll regularly come code employing these functions. A summary of benefits includes:</p>
 <ul>
 <li>Cleaner/simpler code</li>
 <li>Environment kept clear of unnecessary objects</li>
@@ -662,10 +663,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="purrr" class="section level2">
 <h2>purrr</h2>
-<p>The <span class="pack">purrr</span> package allows you to take the <span class="func">apply</span> family approach to the tidyverse.</p>
+<p>The <span class="pack">purrr</span> package allows you to take the <span class="func">apply</span> family approach to the tidyverse. And with packages <span class="pack" style="">future</span> + <span class="pack" style="">furrr</span>, they too are parallelizable.</p>
 <p>Consider the following. We’ll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the same way we would with <span class="func">lapply</span>.</p>
-<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb281-1" data-line-number="1">x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">7</span><span class="op">:</span><span class="dv">9</span>)</a>
-<a class="sourceLine" id="cb281-2" data-line-number="2"><span class="kw">map</span>(x, sum)</a></code></pre></div>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb281-1" data-line-number="1">map =<span class="st"> </span>purrr<span class="op">::</span>map  <span class="co"># could not remove conflict with something, nor able to debug</span></a>
+<a class="sourceLine" id="cb281-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb281-3" data-line-number="3">x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">7</span><span class="op">:</span><span class="dv">9</span>)</a>
+<a class="sourceLine" id="cb281-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb281-5" data-line-number="5"><span class="kw">map</span>(x, sum)</a></code></pre></div>
 <pre><code>[[1]]
 [1] 6
 
@@ -674,8 +678,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 [[3]]
 [1] 24</code></pre>
-<p>The map functions take some getting used to, and in my experience they are typically slower than the apply functions, sometimes notably so. However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output<a href="#fn23" class="footnote-ref" id="fnref23"><sup>23</sup></a>, which is especially important in reproducibility, package development, producing production-level code, etc. The key idea is that the map functions will always return something the same length as the input given to it.</p>
-<p>The <span class="pack">purrr</span> functions want a list or vector, i.e. they don’t work with data.frame objects like we’ve done with mutate and summarize except in the sense that data.frames are lists.</p>
+<p>The map functions take some getting used to, and in my experience they are typically slower than the apply functions, sometimes notably so. However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output<a href="#fn24" class="footnote-ref" id="fnref24"><sup>24</sup></a>, which is especially important in reproducibility, package development, producing production-level code, etc. The key idea is that the map functions will always return something the same length as the input given to it.</p>
+<p>The <span class="pack">purrr</span> functions want a list or vector, i.e. they don’t work with data.frame objects in the same way we’ve done with mutate and summarize except in the sense that data.frames are lists.</p>
 <div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb283-1" data-line-number="1"><span class="co">## mtcars %&gt;% </span></a>
 <a class="sourceLine" id="cb283-2" data-line-number="2"><span class="co">##   map(scale)    # returns a list, not shown</span></a>
 <a class="sourceLine" id="cb283-3" data-line-number="3"></a>
@@ -727,25 +731,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Aside from data frames, you may think you don’t have much need for list objects. However, list objects make it very easy to iterate some form of data processing.</p>
 <p>Let’s say you have models of increasing complexity, and you want to easily summarise and/or compare them. We create a list for which each element is a model object. We then apply a function, e.g. to get the AIC value for each, or adjusted R square (this requires a custom function).</p>
 <div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb289-1" data-line-number="1"><span class="kw">library</span>(mgcv) <span class="co"># for gam</span></a>
-<a class="sourceLine" id="cb289-2" data-line-number="2">mtcars<span class="op">$</span>cyl =<span class="st"> </span><span class="kw">factor</span>(mtcars<span class="op">$</span>cyl)</a>
-<a class="sourceLine" id="cb289-3" data-line-number="3">mod_lm =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars)</a>
-<a class="sourceLine" id="cb289-4" data-line-number="4">mod_poly =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(wt, <span class="dv">2</span>), <span class="dt">data =</span> mtcars)</a>
-<a class="sourceLine" id="cb289-5" data-line-number="5">mod_inter =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt <span class="op">*</span><span class="st"> </span>cyl, <span class="dt">data =</span> mtcars)</a>
-<a class="sourceLine" id="cb289-6" data-line-number="6">mod_gam =<span class="st"> </span><span class="kw">gam</span>(mpg <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(wt), <span class="dt">data =</span> mtcars)</a>
-<a class="sourceLine" id="cb289-7" data-line-number="7">mod_gam_inter =<span class="st"> </span><span class="kw">gam</span>(mpg <span class="op">~</span><span class="st"> </span>cyl <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(wt, <span class="dt">by =</span> cyl), <span class="dt">data =</span> mtcars)</a>
+<a class="sourceLine" id="cb289-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb289-3" data-line-number="3">mtcars<span class="op">$</span>cyl =<span class="st"> </span><span class="kw">factor</span>(mtcars<span class="op">$</span>cyl)</a>
+<a class="sourceLine" id="cb289-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb289-5" data-line-number="5">mod_lm =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars)</a>
+<a class="sourceLine" id="cb289-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb289-7" data-line-number="7">mod_poly =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(wt, <span class="dv">2</span>), <span class="dt">data =</span> mtcars)</a>
 <a class="sourceLine" id="cb289-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb289-9" data-line-number="9">model_list =<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb289-10" data-line-number="10">  <span class="dt">mod_lm        =</span> mod_lm,</a>
-<a class="sourceLine" id="cb289-11" data-line-number="11">  <span class="dt">mod_poly      =</span> mod_poly,</a>
-<a class="sourceLine" id="cb289-12" data-line-number="12">  <span class="dt">mod_inter     =</span> mod_inter,</a>
-<a class="sourceLine" id="cb289-13" data-line-number="13">  <span class="dt">mod_gam       =</span> mod_gam,</a>
-<a class="sourceLine" id="cb289-14" data-line-number="14">  <span class="dt">mod_gam_inter =</span> mod_gam_inter</a>
-<a class="sourceLine" id="cb289-15" data-line-number="15">)</a>
-<a class="sourceLine" id="cb289-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb289-17" data-line-number="17"><span class="co"># lowest wins</span></a>
-<a class="sourceLine" id="cb289-18" data-line-number="18">model_list <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb289-19" data-line-number="19"><span class="st">  </span><span class="kw">map_dbl</span>(AIC) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb289-20" data-line-number="20"><span class="st">  </span><span class="kw">sort</span>()</a></code></pre></div>
+<a class="sourceLine" id="cb289-9" data-line-number="9">mod_inter =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt <span class="op">*</span><span class="st"> </span>cyl, <span class="dt">data =</span> mtcars)</a>
+<a class="sourceLine" id="cb289-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb289-11" data-line-number="11">mod_gam =<span class="st"> </span><span class="kw">gam</span>(mpg <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(wt), <span class="dt">data =</span> mtcars)</a>
+<a class="sourceLine" id="cb289-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb289-13" data-line-number="13">mod_gam_inter =<span class="st"> </span><span class="kw">gam</span>(mpg <span class="op">~</span><span class="st"> </span>cyl <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(wt, <span class="dt">by =</span> cyl), <span class="dt">data =</span> mtcars)</a>
+<a class="sourceLine" id="cb289-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb289-15" data-line-number="15">model_list =<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb289-16" data-line-number="16">  <span class="dt">mod_lm        =</span> mod_lm,</a>
+<a class="sourceLine" id="cb289-17" data-line-number="17">  <span class="dt">mod_poly      =</span> mod_poly,</a>
+<a class="sourceLine" id="cb289-18" data-line-number="18">  <span class="dt">mod_inter     =</span> mod_inter,</a>
+<a class="sourceLine" id="cb289-19" data-line-number="19">  <span class="dt">mod_gam       =</span> mod_gam,</a>
+<a class="sourceLine" id="cb289-20" data-line-number="20">  <span class="dt">mod_gam_inter =</span> mod_gam_inter</a>
+<a class="sourceLine" id="cb289-21" data-line-number="21">)</a>
+<a class="sourceLine" id="cb289-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb289-23" data-line-number="23"><span class="co"># lowest wins</span></a>
+<a class="sourceLine" id="cb289-24" data-line-number="24">model_list <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb289-25" data-line-number="25"><span class="st">  </span><span class="kw">map_dbl</span>(AIC) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb289-26" data-line-number="26"><span class="st">  </span><span class="kw">sort</span>()</a></code></pre></div>
 <pre><code>mod_gam_inter     mod_inter      mod_poly       mod_gam        mod_lm 
      150.6324      155.4811      158.0484      158.5717      166.0294 </code></pre>
 <div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb291-1" data-line-number="1"><span class="co"># highest wins</span></a>
@@ -759,7 +769,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb291-9" data-line-number="9"><span class="st">  </span><span class="kw">sort</span>(<span class="dt">decreasing =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>mod_gam_inter     mod_inter      mod_poly       mod_gam        mod_lm 
     0.8643020     0.8349382     0.8065828     0.8041651     0.7445939 </code></pre>
-<p>Let’s go further and create a plot of these results. We’ll map to a data frame, use gather to melt it to two columns of model and value, then use ggplot2 to plot the results<a href="#fn24" class="footnote-ref" id="fnref24"><sup>24</sup></a>.</p>
+<p>Let’s go further and create a plot of these results. We’ll map to a data frame, use gather to melt it to two columns of model and value, then use ggplot2 to plot the results<a href="#fn25" class="footnote-ref" id="fnref25"><sup>25</sup></a>.</p>
 <div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb293-1" data-line-number="1">model_list <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb293-2" data-line-number="2"><span class="st">  </span><span class="kw">map_df</span>(</a>
 <a class="sourceLine" id="cb293-3" data-line-number="3">    <span class="cf">function</span>(x)</a>
@@ -767,11 +777,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb293-5" data-line-number="5">              <span class="kw">summary</span>(x)<span class="op">$</span>r.sq,</a>
 <a class="sourceLine" id="cb293-6" data-line-number="6">              <span class="kw">summary</span>(x)<span class="op">$</span>adj)</a>
 <a class="sourceLine" id="cb293-7" data-line-number="7">  ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb293-8" data-line-number="8"><span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">&#39;model&#39;</span>, <span class="dt">value =</span> <span class="st">`</span><span class="dt">Adj. Rsq</span><span class="st">`</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb293-9" data-line-number="9"><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(<span class="st">`</span><span class="dt">Adj. Rsq</span><span class="st">`</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb293-10" data-line-number="10"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="kw">factor</span>(model, <span class="dt">levels =</span> model)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># sigh</span></a>
-<a class="sourceLine" id="cb293-11" data-line-number="11"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> model, <span class="dt">y =</span> <span class="st">`</span><span class="dt">Adj. Rsq</span><span class="st">`</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb293-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> model), <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">show.legend =</span> F)</a></code></pre></div>
+<a class="sourceLine" id="cb293-8" data-line-number="8"><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</a>
+<a class="sourceLine" id="cb293-9" data-line-number="9">               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</a>
+<a class="sourceLine" id="cb293-10" data-line-number="10">               <span class="dt">values_to =</span> <span class="st">&quot;Adj. Rsq&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb293-11" data-line-number="11"><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(<span class="st">`</span><span class="dt">Adj. Rsq</span><span class="st">`</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb293-12" data-line-number="12"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="kw">factor</span>(model, <span class="dt">levels =</span> model)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># sigh</span></a>
+<a class="sourceLine" id="cb293-13" data-line-number="13"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> model, <span class="dt">y =</span> <span class="st">`</span><span class="dt">Adj. Rsq</span><span class="st">`</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb293-14" data-line-number="14"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> model), <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">show.legend =</span> F)</a></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/purr_models2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Why not throw in AIC also?</p>
 <div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb294-1" data-line-number="1">mod_rsq =<span class="st"> </span></a>
@@ -784,30 +796,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb294-8" data-line-number="8">        <span class="kw">summary</span>(x)<span class="op">$</span>adj</a>
 <a class="sourceLine" id="cb294-9" data-line-number="9">      )</a>
 <a class="sourceLine" id="cb294-10" data-line-number="10">  ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb294-11" data-line-number="11"><span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">&#39;model&#39;</span>, <span class="dt">value=</span><span class="st">&#39;Rsq&#39;</span>)</a>
-<a class="sourceLine" id="cb294-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb294-13" data-line-number="13">mod_aic =</a>
-<a class="sourceLine" id="cb294-14" data-line-number="14"><span class="st">  </span><span class="kw">map_df</span>(model_list, AIC) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb294-15" data-line-number="15"><span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">&#39;model&#39;</span>, <span class="dt">value =</span> <span class="st">&#39;AIC&#39;</span>)</a>
-<a class="sourceLine" id="cb294-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb294-17" data-line-number="17"><span class="kw">left_join</span>(mod_rsq, mod_aic) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb294-18" data-line-number="18"><span class="st">  </span><span class="kw">arrange</span>(AIC) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb294-19" data-line-number="19"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="kw">factor</span>(model, <span class="dt">levels =</span> model)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb294-20" data-line-number="20"><span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">&#39;measure&#39;</span>, <span class="dt">value =</span> <span class="st">&#39;value&#39;</span>,<span class="op">-</span>model) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb294-21" data-line-number="21"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> model, <span class="dt">y =</span> value)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb294-22" data-line-number="22"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> model), <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">show.legend =</span> F) <span class="op">+</span></a>
-<a class="sourceLine" id="cb294-23" data-line-number="23"><span class="st">  </span><span class="kw">facet_wrap</span>( <span class="op">~</span><span class="st"> </span>measure, <span class="dt">scales =</span> <span class="st">&#39;free&#39;</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb294-11" data-line-number="11"><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</a>
+<a class="sourceLine" id="cb294-12" data-line-number="12">               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</a>
+<a class="sourceLine" id="cb294-13" data-line-number="13">               <span class="dt">values_to =</span> <span class="st">&#39;Rsq&#39;</span>)</a>
+<a class="sourceLine" id="cb294-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb294-15" data-line-number="15">mod_aic =</a>
+<a class="sourceLine" id="cb294-16" data-line-number="16"><span class="st">  </span>model_list <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb294-17" data-line-number="17"><span class="st">  </span><span class="kw">map_df</span>(AIC) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb294-18" data-line-number="18"><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</a>
+<a class="sourceLine" id="cb294-19" data-line-number="19">               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</a>
+<a class="sourceLine" id="cb294-20" data-line-number="20">               <span class="dt">values_to =</span> <span class="st">&#39;AIC&#39;</span>)</a>
+<a class="sourceLine" id="cb294-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb294-22" data-line-number="22"><span class="kw">left_join</span>(mod_rsq, mod_aic) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb294-23" data-line-number="23"><span class="st">  </span><span class="kw">arrange</span>(AIC) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb294-24" data-line-number="24"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="kw">factor</span>(model, <span class="dt">levels =</span> model)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb294-25" data-line-number="25"><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="op">-</span>model, <span class="dt">names_to =</span> <span class="st">&#39;measure&#39;</span>, <span class="dt">values_to =</span> <span class="st">&#39;value&#39;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb294-26" data-line-number="26"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> model, <span class="dt">y =</span> value)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb294-27" data-line-number="27"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> model), <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">show.legend =</span> F) <span class="op">+</span></a>
+<a class="sourceLine" id="cb294-28" data-line-number="28"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>measure, <span class="dt">scales =</span> <span class="st">&#39;free&#39;</span>)</a></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/purr_models3-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <div id="list-columns" class="section level4">
 <h4>List columns</h4>
-<p>As data.frames are lists, anything can be put into a column just as you would a list element. We’ll use <span class="func">pmap</span> here, as it can take more than one argument, and we’re feeding all columns of the data.frame. You don’t need to worry about the details here, we just want to create a column that is actually a list.</p>
+<p>As data.frames are lists, anything can be put into a column just as you would a list element. We’ll use <span class="func">pmap</span> here, as it can take more than one argument, and we’re feeding all columns of the data.frame. You don’t need to worry about the details here, we just want to create a column that is actually a list. In this case the column will contain a data frame in each entry.</p>
 <div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb295-1" data-line-number="1">mtcars2 =<span class="st"> </span><span class="kw">as.matrix</span>(mtcars)</a>
-<a class="sourceLine" id="cb295-2" data-line-number="2">mtcars2[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(mtcars2), <span class="dv">50</span>)] =<span class="st"> </span><span class="ot">NA</span>   <span class="co"># add some missing data</span></a>
-<a class="sourceLine" id="cb295-3" data-line-number="3">mtcars2 =<span class="st"> </span><span class="kw">data.frame</span>(mtcars2) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb295-4" data-line-number="4"><span class="st">  </span><span class="kw">rownames_to_column</span>(<span class="dt">var =</span> <span class="st">&#39;observation&#39;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb295-5" data-line-number="5"><span class="st">  </span><span class="kw">as_tibble</span>()</a>
-<a class="sourceLine" id="cb295-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb295-7" data-line-number="7"><span class="kw">head</span>(mtcars2)</a></code></pre></div>
+<a class="sourceLine" id="cb295-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb295-3" data-line-number="3">mtcars2[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(mtcars2), <span class="dv">50</span>)] =<span class="st"> </span><span class="ot">NA</span>   <span class="co"># add some missing data</span></a>
+<a class="sourceLine" id="cb295-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb295-5" data-line-number="5">mtcars2 =<span class="st"> </span><span class="kw">data.frame</span>(mtcars2) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb295-6" data-line-number="6"><span class="st">  </span><span class="kw">rownames_to_column</span>(<span class="dt">var =</span> <span class="st">&#39;observation&#39;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb295-7" data-line-number="7"><span class="st">  </span><span class="kw">as_tibble</span>()</a>
+<a class="sourceLine" id="cb295-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb295-9" data-line-number="9"><span class="kw">head</span>(mtcars2)</a></code></pre></div>
 <pre><code># A tibble: 6 x 12
   observation       mpg   cyl   disp  hp    drat  wt    qsec  vs    am    gear  carb 
   &lt;chr&gt;             &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;
@@ -872,7 +891,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  9 Merc 230          22.8  &lt;NA&gt;  140.8 &quot; 95&quot; 3.92  3.150 22.90 1     0     4     2        11       1
 10 Merc 280          19.2  6     167.6 123   3.92  &lt;NA&gt;  18.30 1     0     4     4        11       1
 # … with 22 more rows</code></pre>
-<p>This is a pretty esoteric demonstration, and not something you’d normally want to do, as <span class="func">mutate</span> or other approaches would be far more efficient and sensical. However, the idea is that you might want to retain the information you might otherwise store in a list with the data that was used to create it. Once you have that, you can use that column as you would any list for iterative programming.</p>
+<p>This is a pretty esoteric demonstration, and not something you’d normally want to do, as <span class="func">mutate</span> or other approaches would be far more efficient and sensical. However, the idea is that you might want to retain the information you might otherwise store in a list with the data that was used to create it. As an example, you could potentially attach models as a list column to a dataframe that contains meta-information about each model. Once you have a list column, you can use that column as you would any list for iterative programming.</p>
 </div>
 </div>
 <div id="iterative-programming-exercises" class="section level2">
@@ -895,7 +914,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb306-3" data-line-number="3">  <span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">10</span>, <span class="dv">2</span>),</a>
 <a class="sourceLine" id="cb306-4" data-line-number="4">  <span class="dt">z =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">50</span>, <span class="dv">10</span>),</a>
 <a class="sourceLine" id="cb306-5" data-line-number="5">)</a></code></pre></div>
-<p><span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>. If you supply the argument <code>simplified=F</code>, it is identical. Otherwise, it attempts to return a vector or matrix.</p>
 
 </div>
 </div>
@@ -904,8 +922,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <hr />
 <ol start="22">
 <li id="fn22"><p>You can have 3 or more dimensional arrays, and <span class="func">apply</span> will work over those dimensions (or any combination of them), but this doesn’t come up too often.<a href="iterative.html#fnref22" class="footnote-back">↩</a></p></li>
-<li id="fn23"><p>Personally I find the help file description nebulous or completely lacking, and the examples unrealistic, and oftentimes I can come up with a group_by-summarise approach before I can sort out why the map approach didn’t work.<a href="iterative.html#fnref23" class="footnote-back">↩</a></p></li>
-<li id="fn24"><p>Note that ggplot2 will change the ordering of the variable unless you coerce it by creating a factor. This pretty much defeats the entire purpose of retaining characters over factors everywhere else in the tidyverse.<a href="iterative.html#fnref24" class="footnote-back">↩</a></p></li>
+<li id="fn23"><p><span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>. If you supply the argument <code>simplified=F</code>, it is identical. Otherwise, it attempts to return a vector or matrix.<a href="iterative.html#fnref23" class="footnote-back">↩</a></p></li>
+<li id="fn24"><p>Personally I find the help file description nebulous or completely lacking, and the examples unrealistic, and oftentimes I can come up with a group_by-summarise approach before I can sort out why the map approach didn’t work. The main thing to note is that both the benefit and difficulty of using the <code>map_*</code> functions is they are more strict with inputs, which typically should be lists or list-like objects like data frames, and outputs.<a href="iterative.html#fnref24" class="footnote-back">↩</a></p></li>
+<li id="fn25"><p>Note that ggplot2 will change the ordering of the variable unless you coerce it by creating a factor. This pretty much defeats the entire purpose of retaining characters over factors everywhere else in the tidyverse.<a href="iterative.html#fnref25" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
             </section>

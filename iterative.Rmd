@@ -1,6 +1,6 @@
 # Iterative Programming
 
-Almost everything you do when dealing with data will need to be done again, and again, and again.  If you are copy-pasting your way to repetitively do the same thing, you're not only doing things inefficiently, you're almost certainly setting yourself up for trouble if practically anything changes about the data or process.
+Almost everything you do when dealing with data will need to be done again, and again, and again.  If you are copy-pasting your way to repetitively do the same thing, you're not only doing things inefficiently, you're almost certainly setting yourself up for trouble if anything changes about the data or underlying process.
 
 In order to avoid this, you need to be familiar with basic programming, and a starting point is to use an iterative approach to repetitive problems.  Let's look at the following.  Let's say we want to get the means of some columns in our data set.  Do you do something like this?
 
@@ -12,7 +12,7 @@ means4 = mean(df$q)
 ```
 
 
-Now consider what you have to change if you change a variable name, decide to do a median, or the data object name changes.  Practically breathing on the data will cause you to have to redo that code, and possibly every line of it.
+Now consider what you have to change if you change a variable name, decide to do a median, or the data object name changes.  Any minor change with the data will cause you to have to redo that code, and possibly every line of it.
 
 ## For loops
 
@@ -36,6 +36,8 @@ for (column in c('temp', 'humid', 'wind_speed', 'precip')) {
   print(mean(weather[[column]], na.rm = TRUE))
 }
 ```
+
+You can check this for yourself by testing a column or two directly with just `mean(df$x)`.
 
 Now if the data name changes, the columns we want change, or we want to calculate something else, we usually end up only changing one thing, rather than *at least* changing one, and probably many more things.  In addition, the amount of code is the same whether the loop goes over 100 columns or 4.
 
@@ -122,7 +124,7 @@ nyc_means = c()
 
 i = 1
 while (i <= length(columns)) {
-  nyc_means[i] = mean(weather[ ,columns[i]], na.rm = TRUE)
+  nyc_means[i] = mean(weather[[columns[i]]], na.rm = TRUE)
   i = i + 1
 }
 
@@ -191,7 +193,7 @@ lapply(x, str_remove, pattern = 'ab')
 
 The <span class="func">lapply</span> operation iterates over each element of the list and applies a function to them.  In this case, the function is <span class="func">str_remove</span>.  It has an argument for the string pattern we want to take out of the character string that is fed to it ('ab').  For example, for 'aba' we will be left with just the 'a'. 
 
-As can be seen, <span class="func">lapply</span> starts with a <span class="objclass">list</span> and returns a <span class="objclass">list</span>.  The only difference with <span class="func">sapply</span> is that <span class="func">sapply</span> will return a simplified form if possible.
+As can be seen, <span class="func">lapply</span> starts with a <span class="objclass">list</span> and returns a <span class="objclass">list</span>.  The only difference with <span class="func">sapply</span> is that <span class="func">sapply</span> will return a simplified form if possible[^slapply].
 
 ```{r sapply_example}
 sapply(x, str_remove, pattern = 'ab')
@@ -202,7 +204,7 @@ In this case we just get a vector back.
     
 ### Apply functions
 
-It is important to be familiar with and regularly use the apply family for efficient data processing. A summary of benefits includes:
+It is important to be familiar with the apply family for efficient data processing, if only because you'll regularly come code employing these functions. A summary of benefits includes:
   
 - Cleaner/simpler code
 - Environment kept clear of unnecessary objects
@@ -233,14 +235,17 @@ I pretty much never use an explicit double loop, as a little more thinking about
 
 ## purrr
 
-The <span class="pack">purrr</span> package allows you to take the <span class="func">apply</span> family approach to the tidyverse.
+The <span class="pack">purrr</span> package allows you to take the <span class="func">apply</span> family approach to the tidyverse.  And with packages <span class="pack" style = "">future</span> + <span class="pack" style = "">furrr</span>, they too are parallelizable.
 
 Consider the following.  We'll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the same way we would with <span class="func">lapply</span>.
 
 ```{r purr_example, eval=TRUE, echo=-(1:2)}
 detach(package:maps)
+
 map = purrr::map  # could not remove conflict with something, nor able to debug
+
 x = list(1:3, 4:6, 7:9)
+
 map(x, sum)
 ```
 
@@ -248,7 +253,7 @@ map(x, sum)
 The map functions take some getting used to, and in my experience they are typically slower than the apply functions, sometimes notably so.  However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output[^purrr], which is especially important in reproducibility, package development, producing production-level code, etc.  The key idea is that the map functions will always return something the same length as the input given to it.
 
 
-The <span class="pack">purrr</span> functions want a list or vector, i.e. they don't work with data.frame objects like we've done with mutate and summarize except in the sense that data.frames are lists. 
+The <span class="pack">purrr</span> functions want a list or vector, i.e. they don't work with data.frame objects in the same way we've done with mutate and summarize except in the sense that data.frames are lists. 
 
 
 ```{r purr_example2, eval=-1}
@@ -283,11 +288,17 @@ Let's say you have models of increasing complexity, and you want to easily summa
 
 ```{r purr_models}
 library(mgcv) # for gam
+
 mtcars$cyl = factor(mtcars$cyl)
+
 mod_lm = lm(mpg ~ wt, data = mtcars)
+
 mod_poly = lm(mpg ~ poly(wt, 2), data = mtcars)
+
 mod_inter = lm(mpg ~ wt * cyl, data = mtcars)
+
 mod_gam = gam(mpg ~ s(wt), data = mtcars)
+
 mod_gam_inter = gam(mpg ~ cyl + s(wt, by = cyl), data = mtcars)
 
 model_list = list(
@@ -325,7 +336,9 @@ model_list %>%
               summary(x)$r.sq,
               summary(x)$adj)
   ) %>% 
-  gather(key = 'model', value = `Adj. Rsq`) %>%
+  pivot_longer(cols = starts_with('mod'),
+               names_to = 'model',
+               values_to = "Adj. Rsq") %>% 
   arrange(desc(`Adj. Rsq`)) %>%
   mutate(model = factor(model, levels = model)) %>% # sigh
   ggplot(aes(x = model, y = `Adj. Rsq`)) +
@@ -345,28 +358,35 @@ mod_rsq =
         summary(x)$adj
       )
   ) %>% 
-  gather(key = 'model', value='Rsq')
+  pivot_longer(cols = starts_with('mod'),
+               names_to = 'model',
+               values_to = 'Rsq')
 
 mod_aic =
-  map_df(model_list, AIC) %>%
-  gather(key = 'model', value = 'AIC')
+  model_list %>% 
+  map_df(AIC) %>%
+  pivot_longer(cols = starts_with('mod'),
+               names_to = 'model',
+               values_to = 'AIC')
 
 left_join(mod_rsq, mod_aic) %>%
   arrange(AIC) %>%
   mutate(model = factor(model, levels = model)) %>%
-  gather(key = 'measure', value = 'value',-model) %>%
+  pivot_longer(cols = -model, names_to = 'measure', values_to = 'value') %>%
   ggplot(aes(x = model, y = value)) +
   geom_point(aes(color = model), size = 10, show.legend = F) +
-  facet_wrap( ~ measure, scales = 'free')
+  facet_wrap(~ measure, scales = 'free')
 ```
 
 #### List columns
 
-As data.frames are lists, anything can be put into a column just as you would a list element.  We'll use <span class="func">pmap</span> here, as it can take more than one argument, and we're feeding all columns of the data.frame.  You don't need to worry about the details here, we just want to create a column that is actually a list.
+As data.frames are lists, anything can be put into a column just as you would a list element.  We'll use <span class="func">pmap</span> here, as it can take more than one argument, and we're feeding all columns of the data.frame.  You don't need to worry about the details here, we just want to create a column that is actually a list. In this case the column will contain a data frame in each entry.
 
 ```{r list_tibble}
 mtcars2 = as.matrix(mtcars)
+
 mtcars2[sample(1:length(mtcars2), 50)] = NA   # add some missing data
+
 mtcars2 = data.frame(mtcars2) %>%
   rownames_to_column(var = 'observation') %>%
   as_tibble()
@@ -400,7 +420,7 @@ mtcars2 %>%
   unnest(newvar)
 ```
 
-This is a pretty esoteric demonstration, and not something you'd normally want to do, as <span class="func">mutate</span> or other approaches would be far more efficient and sensical.  However, the idea is that you might want to retain the information you might otherwise store in a list with the data that was used to create it.  Once you have that, you can use that column as you would any list for iterative programming.
+This is a pretty esoteric demonstration, and not something you'd normally want to do, as <span class="func">mutate</span> or other approaches would be far more efficient and sensical.  However, the idea is that you might want to retain the information you might otherwise store in a list with the data that was used to create it. As an example, you could potentially attach models as a list column to a dataframe that contains meta-information about each model. Once you have a list column, you can use that column as you would any list for iterative programming.  
 
 
 ## Iterative Programming Exercises
@@ -439,10 +459,10 @@ d = tibble(
 d %>% map_df(mean)
 ```
 
-<span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>.  If you supply the argument `simplified=F`, it is identical. Otherwise, it attempts to return a vector or matrix.
+[^slapply]: <span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>.  If you supply the argument `simplified=F`, it is identical. Otherwise, it attempts to return a vector or matrix.
 
 [^arrays]: You can have 3 or more dimensional arrays, and <span class="func">apply</span> will work over those dimensions (or any combination of them), but this doesn't come up too often.
 
-[^purrr]: Personally I find the help file description nebulous or completely lacking, and the examples unrealistic, and oftentimes I can come up with a group_by-summarise approach before I can sort out why the map approach didn't work.
+[^purrr]: Personally I find the help file description nebulous or completely lacking, and the examples unrealistic, and oftentimes I can come up with a group_by-summarise approach before I can sort out why the map approach didn't work.  The main thing to note is that both the benefit and difficulty of using the `map_*` functions is they are more strict with inputs, which typically should be lists or list-like objects like data frames, and outputs.
 
 [^ggplotalpha]: Note that ggplot2 will change the ordering of the variable unless you coerce it by creating a factor. This pretty much defeats the entire purpose of retaining characters over factors everywhere else in the tidyverse.

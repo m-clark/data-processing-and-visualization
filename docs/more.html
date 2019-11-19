@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2019-11-06" />
+<meta name="date" content="2019-11-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -527,7 +527,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>spinal-case (e.g. for file names)</li>
 <li>dot.case</li>
 </ul>
-<p>For objects and functions, I find snake case easier to read and less prone to issues<a href="#fn25" class="footnote-ref" id="fnref25"><sup>25</sup></a>. For example, camel case can fail miserably when acronyms are involved. Dots already have specific uses (file name extensions, function methods, etc.), so probably should be avoided unless you’re using them for that specific purpose (they can also make selecting the whole name difficult depending on the context).</p>
+<p>For objects and functions, I find snake case easier to read and less prone to issues<a href="#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a>. For example, camel case can fail miserably when acronyms are involved. Dots already have specific uses (file name extensions, function methods, etc.), so probably should be avoided unless you’re using them for that specific purpose (they can also make selecting the whole name difficult depending on the context).</p>
 </div>
 <div id="other-1" class="section level3">
 <h3>Other</h3>
@@ -564,7 +564,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb355-7" data-line-number="7">    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;No&#39;</span></a>
 <a class="sourceLine" id="cb355-8" data-line-number="8">  }</a>
 <a class="sourceLine" id="cb355-9" data-line-number="9">}</a></code></pre></div>
-<p>Compare<a href="#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a>:</p>
+<p>Compare<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a>:</p>
 <div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb356-1" data-line-number="1">mydf<span class="op">$</span>y =<span class="st"> &#39;No&#39;</span></a>
 <a class="sourceLine" id="cb356-2" data-line-number="2">mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>] =<span class="st"> &#39;Yes&#39;</span></a></code></pre></div>
 <p>This gets us the same thing, and would be much faster than the looped approach. Boolean indexing is an example of a vectorized operation. The whole vector is considered, rather than each element individually. The result is that any preprocessing is done once rather than the <code>n</code> iterations of the loop. In R, this will always faster.</p>
@@ -738,9 +738,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div class="footnotes">
 <hr />
-<ol start="25">
-<li id="fn25"><p>Note how I didn’t say it’s easier to read without qualification (even though I think it’s obviously easier to read, based on how eyes/brains work). Many style guides you encounter will try to come across as definitive. They are not, nor are most of their claims tested.<a href="more.html#fnref25" class="footnote-back">↩</a></p></li>
-<li id="fn26"><p>For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.<a href="more.html#fnref26" class="footnote-back">↩</a></p></li>
+<ol start="26">
+<li id="fn26"><p>Note how I didn’t say it’s easier to read without qualification (even though I think it’s obviously easier to read, based on how eyes/brains work). Many style guides you encounter will try to come across as definitive. They are not, nor are most of their claims tested.<a href="more.html#fnref26" class="footnote-back">↩</a></p></li>
+<li id="fn27"><p>For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.<a href="more.html#fnref27" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
             </section>
