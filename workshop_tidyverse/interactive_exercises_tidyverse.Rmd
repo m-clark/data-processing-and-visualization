@@ -106,17 +106,17 @@ movies %>%
 
 ## Exercise 3
 
-Use <span class="func">gather</span> to create a 'tidy' data set from the following.
+Use <span class="func">pivot_longer</span> to create a 'tidy' data set from the following.
 
 ```{r dpex3, eval=FALSE, exercise=TRUE, exercise.eval=FALSE}
 dat = tibble(id = 1:10,
-                 x = rnorm(10),
-                 y = rnorm(10))
+             x = rnorm(10),
+             y = rnorm(10))
 ```
 
 ```{r dpex3-hint, exercise.eval=FALSE}
 dat %>% 
-  gather(key = ?, value = ?, -id)
+  pivot_longer(cols = ?, names_to = ?, values_to = ?)
 ```
 
 

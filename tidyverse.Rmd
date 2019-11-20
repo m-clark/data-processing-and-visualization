@@ -434,9 +434,9 @@ The <span class="pack">tidyr</span> package can be thought of as a specialized s
 - <span class="func">separate</span>: complement of unite
 - <span class="func">unnest</span>: unnest 'list columns'
 
-The following example shows how we take a 'wide-form' data set, where multiple columns represent different stock prices, and turn it into two columns, one representing stock name, and one for the price.
+The following example shows how we take a 'wide-form' data set, where multiple columns represent different stock prices, and turn it into two columns, one representing stock name, and one for the price.  We need to know which columns to work on, which is the first entry.  It works very much like the select function, where you can use helpers etc. Then we need to give a name to the column(s) representing the indicators of what were multiple columns in the wide format. And finally we need to specify the column(s) of the values.
 
-```{r gather_spread}
+```{r pivot}
 library(tidyr)
 
 stocks <- data.frame(
@@ -449,9 +449,41 @@ stocks <- data.frame(
 stocks %>% head
 
 stocks %>% 
-  pivot_longer(cols = -time, names_to = 'stock', values_to = 'price') %>% 
+  pivot_longer(
+    cols = -time,
+    names_to = 'stock',
+    values_to = 'price'
+  ) %>% 
   head()
 ```
+
+Here is a more complex example where we can handle multiple repeated entries.
+
+```{r pivot2}
+library(tidyr)
+
+stocks <- data.frame(
+  time = as.Date('2009-01-01') + 0:9,
+  X_1 = rnorm(10, 0, 1),
+  X_2 = rnorm(10, 0, 1),
+  Y_1 = rnorm(10, 0, 2),
+  Y_2 = rnorm(10, 0, 2),
+  Z_1 = rnorm(10, 0, 4),
+  Z_2 = rnorm(10, 0, 4)
+)
+
+stocks %>% head
+
+stocks %>% 
+  pivot_longer(
+    cols = -time,
+    names_to = c('stock', 'entry'),
+    names_sep = '_',
+    values_to = 'price'
+  ) %>% 
+  head()
+```
+
 
 Note that the latter is an example of <span class="emph">tidy data</span> while the former is not.  Why do we generally prefer such data?  Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data.  *This is especially the case for visualization*.
 
@@ -583,13 +615,13 @@ movies %>%
 
 ### Exercise 3
 
-Use <span class="func">gather</span> to create a 'tidy' data set from the following.
+Use <span class="func">pivot_longer</span> to create a 'tidy' data set from the following.
 
 ```{r ex3, eval=FALSE, echo=1:3}
 dat = tibble(id = 1:10,
-                 x = rnorm(10),
-                 y = rnorm(10))
-dat %>% gather(key = var, value = score, -id)
+             x = rnorm(10),
+             y = rnorm(10))
+dat %>% pivot_longer(key = var, value = score, -id)
 ```
 
 

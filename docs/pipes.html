@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Pipes | Data Processing &amp; Visualization</title>
   <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
-  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.15 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Pipes | Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2019-11-18" />
+<meta name="date" content="2019-11-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -39,6 +39,7 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
 
 
 
@@ -46,18 +47,18 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.8.0/plotly.js"></script>
+
+
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-1.39.2/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-1.39.2/plotly-latest.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.49.4/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.49.4/plotly-latest.min.js"></script>
 <link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
 <script src="libs/vis-4.20.1/vis.min.js"></script>
-<script src="libs/visNetwork-binding-2.0.4/visNetwork.js"></script>
-<link href="libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+<script src="libs/visNetwork-binding-2.0.8/visNetwork.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
 <link href="libs/highcharts-7.0.1/css/motion.css" rel="stylesheet" />
 <link href="libs/highcharts-7.0.1/css/htmlwdgtgrid.css" rel="stylesheet" />
@@ -104,12 +105,12 @@
 <script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.4/datatables.js"></script>
-<link href="libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="libs/datatables-binding-0.10/datatables.js"></script>
+<link href="libs/dt-core-1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.19/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.19/js/jquery.dataTables.min.js"></script>
 
 
 <style type="text/css">
@@ -129,7 +130,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -175,8 +176,8 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<link rel="stylesheet" href="css/book.css" type="text/css" />
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" type="text/css" />
+<link rel="stylesheet" href="css\book.css" type="text/css" />
+<link rel="stylesheet" href="https:\\use.fontawesome.com\releases\v5.0.13\css\all.css" type="text/css" />
 </head>
 
 <body>
@@ -496,10 +497,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Here, we’ll focus on their use with the <span class="pack">dplyr</span> package, and the tidyverse more generally. Pipes are also utilized heavily in visualization.</p>
 <p>Example:</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">mydf <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb55-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(var1, var2) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb55-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(var1 <span class="op">==</span><span class="st"> &#39;Yes&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb55-4" data-line-number="4"><span class="st">  </span>summary</a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" title="1">mydf <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb55-2" title="2"><span class="st">  </span><span class="kw">select</span>(var1, var2) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb55-3" title="3"><span class="st">  </span><span class="kw">filter</span>(var1 <span class="op">==</span><span class="st"> &#39;Yes&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb55-4" title="4"><span class="st">  </span>summary</a></code></pre></div>
 <pre><code>Start with a data.frame %&gt;% 
     select columns from it %&gt;% 
     filter/subset it %&gt;% 
@@ -507,27 +508,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="using-variables-as-they-are-created" class="section level2">
 <h2>Using variables as they are created</h2>
 <p>One nice thing about pipelines is that we can use variables as soon as they are created, with out having to break out separate objects/steps.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">mydf <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb57-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">newvar1 =</span> var1 <span class="op">+</span><span class="st"> </span>var2,</a>
-<a class="sourceLine" id="cb57-3" data-line-number="3">         <span class="dt">newvar2 =</span> newvar1<span class="op">/</span>var3) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb57-4" data-line-number="4"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">newvar2avg =</span> <span class="kw">mean</span>(newvar2))</a></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" title="1">mydf <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb57-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">newvar1 =</span> var1 <span class="op">+</span><span class="st"> </span>var2,</a>
+<a class="sourceLine" id="cb57-3" title="3">         <span class="dt">newvar2 =</span> newvar1<span class="op">/</span>var3) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb57-4" title="4"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">newvar2avg =</span> <span class="kw">mean</span>(newvar2))</a></code></pre></div>
 </div>
 <div id="pipes-for-visualization-more-later" class="section level2">
 <h2>Pipes for Visualization (more later)</h2>
 <p>The following provides a means to think about pipes for visualization. It’s just a generic example for now, but we’ll see more later.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">basegraph <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb58-2" data-line-number="2"><span class="st">  </span>points <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb58-3" data-line-number="3"><span class="st">  </span>lines <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb58-4" data-line-number="4"><span class="st">  </span>layout</a></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" title="1">basegraph <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb58-2" title="2"><span class="st">  </span>points <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb58-3" title="3"><span class="st">  </span>lines <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb58-4" title="4"><span class="st">  </span>layout</a></code></pre></div>
 </div>
 <div id="the-dot" class="section level2">
 <h2>The dot</h2>
 <p>Most functions are not ‘pipe-aware’ by default. In the following we try to send our data frame to <span class="func">lm</span> for a regression.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1">mydf <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb59-2" data-line-number="2"><span class="st">  </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)  <span class="co"># error</span></a></code></pre></div>
-<p>Other pipes could work in this situation, e.g. <span class="func">%$%</span> in <span class="pack">magrittr</span>. But generally, when you come upon this situation, you can use a dot to represent the object before the pipe.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">mydf <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb60-2" data-line-number="2"><span class="st">  </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>.)  <span class="co"># . == mydf</span></a></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" title="1">mydf <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb59-2" title="2"><span class="st">  </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)  <span class="co"># error</span></a></code></pre></div>
+<p>Other pipes could work in this situation, e.g. <span class="func">%$%</span> in <span class="pack">magrittr</span>. But generally, when you come upon this situation, you can use a dot to represent the object before the pipe.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" title="1">mydf <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb60-2" title="2"><span class="st">  </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>.)  <span class="co"># . == mydf</span></a></code></pre></div>
 </div>
 <div id="flexibility" class="section level2">
 <h2>Flexibility</h2>
@@ -541,13 +542,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>After the function is created, it’s used on ., which represents the string before the pipe.</li>
 <li>Result: pipes between the words<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</li>
 </ul>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">c</span>(<span class="st">&#39;Ceci&#39;</span>, <span class="st">&quot;n&#39;est&quot;</span>, <span class="st">&#39;pas&#39;</span>, <span class="st">&#39;une&#39;</span>, <span class="st">&#39;pipe!&#39;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb61-2" data-line-number="2">{</a>
-<a class="sourceLine" id="cb61-3" data-line-number="3">  .. &lt;-<span class="st">  </span>. <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb61-4" data-line-number="4"><span class="st">    </span><span class="cf">if</span> (<span class="kw">length</span>(.) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)  .</a>
-<a class="sourceLine" id="cb61-5" data-line-number="5">    <span class="cf">else</span> <span class="kw">paste</span>(.[<span class="dv">1</span>], <span class="st">&#39;%&gt;%&#39;</span>, <span class="kw">..</span>(.[<span class="op">-</span><span class="dv">1</span>]))</a>
-<a class="sourceLine" id="cb61-6" data-line-number="6">  <span class="kw">..</span>(.)</a>
-<a class="sourceLine" id="cb61-7" data-line-number="7">} </a></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" title="1"><span class="kw">c</span>(<span class="st">&#39;Ceci&#39;</span>, <span class="st">&quot;n&#39;est&quot;</span>, <span class="st">&#39;pas&#39;</span>, <span class="st">&#39;une&#39;</span>, <span class="st">&#39;pipe!&#39;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb61-2" title="2">{</a>
+<a class="sourceLine" id="cb61-3" title="3">  .. &lt;-<span class="st">  </span>. <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb61-4" title="4"><span class="st">    </span><span class="cf">if</span> (<span class="kw">length</span>(.) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)  .</a>
+<a class="sourceLine" id="cb61-5" title="5">    <span class="cf">else</span> <span class="kw">paste</span>(.[<span class="dv">1</span>], <span class="st">&#39;%&gt;%&#39;</span>, <span class="kw">..</span>(.[<span class="op">-</span><span class="dv">1</span>]))</a>
+<a class="sourceLine" id="cb61-6" title="6">  <span class="kw">..</span>(.)</a>
+<a class="sourceLine" id="cb61-7" title="7">} </a></code></pre></div>
 <pre><code>[1] &quot;Ceci %&gt;% n&#39;est %&gt;% pas %&gt;% une %&gt;% pipe!&quot;</code></pre>
 <blockquote>
 <p>Put that in your pipe and smoke it René Magritte!</p>
@@ -566,7 +567,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="footnotes">
 <hr />
 <ol start="2">
-<li id="fn2"><p>That was a very complicated way to do this <code>paste(c('Ceci', &quot;n'est&quot;, 'pas', 'une', 'pipe!'), collapse=' %&gt;% ')</code>.<a href="pipes.html#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>That was a very complicated way to do this <code>paste(c('Ceci', "n'est", 'pas', 'une', 'pipe!'), collapse=' %&gt;% ')</code>.<a href="pipes.html#fnref2" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
             </section>
@@ -580,24 +581,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
-"github": false,
 "facebook": false,
 "twitter": false,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["twitter", "facebook", "google", "weibo", "instapaper"],
+"all": ["twitter", "facebook", "weibo", "instapaper"],
 "instapper": false
 },
 "fontsettings": {

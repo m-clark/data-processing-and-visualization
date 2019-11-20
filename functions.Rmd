@@ -24,23 +24,53 @@ Now let's say you need to do it for several variables.  Here's what your custom 
 ```{r func_ex2}
 my_summary <- function(x) {
   data.frame(
-    mean = mean(x, na.rm = TRUE),
-    sd = sd(x, na.rm = TRUE),
+    mean = mean(x),
+    sd = sd(x),
     N_missing = sum(is.na(x))
   )
 }
 ```
 
-Note that if there are actually missing values, we need to set `na.rm = TRUE` or the <span class="func">mean</span> and <span class="func">sd</span> will return `NA`. Let's try it. I add missing values to test that aspect.
 
 ```{r func_ex3, echo=-1}
 mtcars = datasets::mtcars  # to undo previous factors
 my_summary(mtcars$mpg)
-
-mtcars2 = mtcars
-mtcars2$wt[c(3,10)] = NA
-my_summary(mtcars2$wt)
 ```
+
+Works fine. However, data typically isn't that pretty. It often has missing values.
+
+```{r func_ex_missing}
+load('data/gapminder.RData')
+my_summary(gapminder_2019$lifeExp)
+```
+
+
+If there are actually missing values, we need to set `na.rm = TRUE` or the <span class="func">mean</span> and <span class="func">sd</span> will return `NA`. Let's try it. We can either hard bake it in as in the initial example, or add an argument to let us control how to handle NAs with our custom function.
+
+```{r func_ex2}
+my_summary <- function(x) {
+  data.frame(
+    mean = mean(x, na.rm = TRUE),
+    sd = sd(x, na.rm = TRUE),
+    N_missing = sum(is.na(x))
+  )
+}
+
+
+my_summary_na <- function(x, remove_na = TRUE) {
+  data.frame(
+    mean = mean(x, na.rm = remove_na),
+    sd = sd(x, na.rm = remove_na),
+    N_missing = sum(is.na(x))
+  )
+}
+
+
+my_summary(gapminder_2019$lifeExp)
+
+my_summary_na(gapminder_2019$lifeExp, remove_na = FALSE)
+```
+
 
 Seems to work fine.  Let's add how many total observations there are.
 

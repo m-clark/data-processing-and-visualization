@@ -120,7 +120,7 @@ g = sw2 %>%
   scale_color_manual(values=pal[2:3]) +
   # geom_text(aes(label=name)) +
   scale_size_continuous(range=c(2,10)) +
-  theme_trueMinimal()+ 
+  theme_clean()+ 
   theme(legend.position="none")  # only way to keep plotly from putting a legend
 
 ggplotly()%>% 
@@ -266,14 +266,14 @@ sw2 %>%
   ggplot(aes(x=mass, y=height)) +
   geom_point(aes(label=name,  size=bmi), color=palettes$orange$orange, alpha=.25, show.legend=F) +
   scale_size_continuous(range=c(2,10)) +
-  theme_trueMinimal()+ 
+  theme_clean()+ 
   theme(legend.position="none")  # only way to keep plotly from putting a legend
 sw2 %>%
   mutate(bmi = mass/((height/100)^2)) %>% 
   ggplot(aes(x=mass, y=height)) +
   geom_point(aes(label=name, size=bmi), color=palettes$orange$orange, alpha=.25, show.legend=F) +
   scale_radius(range=c(2,10)) + 
-  theme_trueMinimal()+ 
+  theme_clean()+ 
   theme(legend.position="none")  # only way to keep plotly from putting a legend
 ```
 
@@ -383,19 +383,23 @@ yg1 = mvtnorm::rmvnorm(nprior,
 # pal = viridis::plasma(4)
 # scico::scico_palette_show()
 pal = scico::scico(4, end = .75, palette = 'turku')
-gdat1 = gather(data.frame(x=xg1, 
-                          y=t(yg1), 
-                          sd=apply(yg1, 2, sd)),
-               key=variable,
-               value=value,
-               -x, -sd)
+gdat1 = data.frame(
+  x = xg1,
+  y = t(yg1),
+  sd = apply(yg1, 2, sd)
+) %>% 
+  pivot_longer(
+    starts_with('y'),
+    names_to = 'variable',
+    values_to = 'value')
 
-
-g1 = ggplot(aes(x=x, y=value), data=gdat1) + 
-  geom_line(aes(group=variable, alpha=abs(value)), color=pal[2], show.legend = F) +
-  scale_alpha_continuous(range=c(.15,.25)) +
-  labs(title='Prior') +
-  theme_trueMinimal() +
+g1 = ggplot(aes(x = x, y = value), data = gdat1) +
+  geom_line(aes(group = variable, alpha = abs(value)),
+            color = pal[2],
+            show.legend = F) +
+  scale_alpha_continuous(range = c(.15, .25)) +
+  labs(title = 'Prior') +
+  theme_clean() +
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),
         axis.line = element_blank(),
@@ -445,23 +449,18 @@ y2 = data.frame(t(mvtnorm::rmvnorm(npostpred, mean=postMu, sigma=postCov)))
 #################################
 
 # reshape data for plotting
-gdat2 = gather(data.frame(x=Xtest, 
-                         y=y2, 
-                         fmean=postMu, 
-                         selower=postMu-2*sqrt(s2), 
-                         seupper=postMu+2*sqrt(s2)),
-              key=variable,
-              value=value, 
-              -x, -fmean, -selower, -seupper)
-
-
-# g2 = ggplot(aes(x=x, y=value), data=gdat) + 
-#   geom_ribbon(aes(ymin=selower, ymax=seupper,group=variable), fill='#00aaff', alpha=.01) +
-#   geom_line(aes(group=variable), color='#FF5500', alpha=.5) +
-#   geom_line(aes(group=variable, y=fmean), color='#5500ff', size=1, alpha=.5) +
-#   geom_point(aes(x=Xtrain, y=ytrain), color='#aaff00', alpha=.5, data=data.frame(Xtrain, ytrain)) +
-#   labs(title='Posterior Predictive') +
-#   theme_trueMinimal()
+gdat2 = data.frame(
+  x = Xtest,
+  y = y2,
+  fmean = postMu,
+  selower = postMu - 2 * sqrt(s2),
+  seupper = postMu + 2 * sqrt(s2)
+) %>%
+  pivot_longer(
+    starts_with('y'),
+    names_to = 'variable',
+    values_to = 'value'
+  )
 
 g2 = ggplot(aes(x=x, y=value), data=gdat2) + 
   geom_ribbon(aes(ymin=selower, ymax=seupper,group=variable), fill=pal[1], alpha=.01) +
@@ -469,7 +468,7 @@ g2 = ggplot(aes(x=x, y=value), data=gdat2) +
   geom_line(aes(group=variable, y=fmean), color=pal[3], size=1, alpha=.5) +
   geom_point(aes(x=Xtrain, y=ytrain), color=pal[4], alpha=1, size=2, data=data.frame(Xtrain, ytrain)) +
   labs(title='Posterior Predictive') +
-  theme_trueMinimal() +
+  theme_clean() +
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),
         axis.line = element_blank(),
@@ -488,52 +487,44 @@ g2 = ggplot(aes(x=x, y=value), data=gdat2) +
 # logical fashion. The bookdown notes on figures did not work even remotely as
 # described. The only success was found with out.width + fig.asp, so that was
 # set as a default knitr setting
-library(gridExtra)
-grid.arrange(g1, g2, ncol=2)
+library(patchwork)
+g1 + g2
 ```
 
 
 
 Without transparency, it just looks ugly, and notably busier if nothing else. This plot is using the exact same <span class="pack">scico</span> palette.
 
-```{r transp2_old, eval=FALSE}
-tibble(g, x, y) %>% 
-  group_by(g) %>% 
-  mutate(updown = if_else(last(y) > first(y), 'up', 'down')) %>% 
-  # ungroup() %>%
-  plot_ly() %>% 
-  add_lines(x=~x, y=~y,  color=~updown, showlegend=F) %>%
-  add_markers(x=~x, y=~y, color=~updown) %>% 
-  theme_plotly()
-```
-
 ```{r transp2, out.width='75%', fig.asp=.5}
-g1 = ggplot(aes(x=x, y=value), data=gdat1) + 
-  geom_line(aes(group=variable), color=pal[2], alpha=1) +
-  labs(title='Prior') +
-  theme_trueMinimal() +
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.line = element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.ticks.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank())
-g2 = ggplot(aes(x=x, y=value), data=gdat2) + 
-  geom_ribbon(aes(ymin=selower, ymax=seupper,group=variable), fill=pal[1], alpha=1) +
-  geom_line(aes(group=variable), color=pal[2], alpha=1) +
-  geom_line(aes(group=variable, y=fmean), color=pal[3], size=1, alpha=1) +
-  geom_point(aes(x=Xtrain, y=ytrain), color=pal[4], alpha=1, size=2, data=data.frame(Xtrain, ytrain)) +
-  labs(title='Posterior Predictive') +
-  theme_trueMinimal() +
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.line = element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.ticks.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank())
-grid.arrange(g1, g2, ncol=2)
+g1 = ggplot(aes(x = x, y = value), data = gdat1) +
+  geom_line(aes(group = variable), color = pal[2], alpha = 1) +
+  labs(title = 'Prior') +
+  theme_void()
+
+g2 = ggplot(aes(x = x, y = value), data = gdat2) +
+  geom_ribbon(
+    aes(ymin = selower, ymax = seupper, group = variable),
+    fill = pal[1],
+    alpha = 1
+  ) +
+  geom_line(aes(group = variable), color = pal[2], alpha = 1) +
+  geom_line(
+    aes(group = variable, y = fmean),
+    color = pal[3],
+    size = 1,
+    alpha = 1
+  ) +
+  geom_point(
+    aes(x = Xtrain, y = ytrain),
+    color = pal[4],
+    alpha = 1,
+    size = 2,
+    data = data.frame(Xtrain, ytrain)
+  ) +
+  labs(title = 'Posterior Predictive') +
+  theme_void()
+
+g1 + g2
 ```
 
 
@@ -579,7 +570,7 @@ gdat = data.frame(rbind(g1, g2), group=rep(0:1, e=nsim))
 gdat %>%
   ggplot(aes(x=waiting, y=eruptions)) +
   geom_point(size = 3, alpha=.10, color='#ff5500') +
-  theme_trueMinimal()
+  theme_clean()
 ```
 
 Here we apply transparency to a density plot to convey a group difference in distributions, while still being able to visualize the whole distribution of each group.
@@ -591,14 +582,14 @@ gdat = 1:4 %>%
   map(~rnorm(20, mean=.x, sd=.x/2)) %>% 
   data.frame() %>% 
   rename_all(function(x) paste0('x', 1:4)) %>% 
-  gather(key=g) %>% 
+  pivot_longer(everything(), names_to = 'g', values_to = 'value') %>% 
   mutate(g = fct_relevel(g, 'x1', after=2))
 
 gdat %>% 
   ggplot(aes(x=value, group=g)) +
   geom_density(aes(color=g, fill=g), alpha=.2, show.legend=F) +
   xlim(-3,10) +
-  theme_trueMinimal() +
+  theme_clean() +
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),
         axis.ticks.x=element_blank(),
@@ -610,17 +601,19 @@ gdat %>%
 Had we not done so, we might not be able to tell what's going on with some of the groups at all.
 
 ```{r transp_density2}
-gdat %>% 
-  ggplot(aes(x=value, group=g)) +
-  geom_density(aes(color=g, fill=g), show.legend=F) +
-  xlim(-3,10) +
-  theme_trueMinimal() +
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.ticks.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank())
+gdat %>%
+  ggplot(aes(x = value, group = g)) +
+  geom_density(aes(color = g, fill = g), show.legend = F) +
+  xlim(-3, 10) +
+  theme_clean() +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  )
 ```
 
 

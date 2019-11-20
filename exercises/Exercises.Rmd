@@ -211,13 +211,25 @@ movies %>%
 
 ### Exercise 3
 
-Use <span class="func">gather</span> to create a 'tidy' data set from the following.
+Use <span class="func">pivot_longer</span> to create a 'tidy' data set from the following.  Try to create a data frame of three columns of `id`, `group`, and `value`.
 
 ```{r ex3, eval=FALSE, echo=1:3}
-dat = data_frame(id = 1:10,
-                 x = rnorm(10),
-                 y = rnorm(10))
-dat %>% gather(key = var, value = score, -id)
+N = 100
+
+dat = tibble(
+  id = 1:N,
+  a = rnorm(N),
+  b = rpois(N, lambda = 5),
+  c = runif(N),
+  d = rbinom(N, size = 1, prob = .5)
+)
+```
+
+```{r ex3_hint, eval=FALSE, echo=FALSE}
+dat %>% 
+  pivot_longer(cols = ?,
+               names_to = ?,
+               values_to = ?)
 ```
 
 
