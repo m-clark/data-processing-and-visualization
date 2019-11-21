@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2019-11-20" />
+<meta name="date" content="2019-11-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -492,11 +492,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>A lot has been written about coding <span class="emph" style="font-family:&#39;Alex Brush&#39;; font-size:1.5em">style</span> over the decades. If there was a definitive answer, you would have heard of it by now. However, there are a couple things you can do at the beginning of your programming approach to go a long way making your code notably better.</p>
 <div id="why-does-your-code-exist" class="section level3">
 <h3>Why does your code exist?</h3>
-<p>Either use text in an R Markdown file or comment your R script. Explain <em>why</em>, not <em>what</em>, the code is doing. Think of it as leaving your future self a note (they will thank you!). Be clear and don’t assume you’ll remember why you were doing what you did.</p>
+<p>Either use text in an R Markdown file or comment your R script. Explain <em>why</em>, not <em>what</em>, the code is doing. Think of it as leaving your future self a note (they will thank you!). Be clear, and don’t assume you’ll remember why you were doing what you did.</p>
 </div>
 <div id="assignment" class="section level3">
 <h3>Assignment</h3>
-<p>You see some using <code>&lt;-</code> or <code>=</code> for assignment. While there is a slight difference, if you’re writing decent code it shouldn’t matter. Far more programming languages use <code>=</code>, so that’s reason to prefer it. However, if you like being snobby about things, go with <code>&lt;-</code>. Whichever you use, do so consistently.</p>
+<p>You see some using <code>&lt;-</code> or <code>=</code> for assignment. While there is a slight difference, if you’re writing decent code it shouldn’t matter. Far more programming languages use <code>=</code>, so that’s reason to prefer it. However, if you like being snobby about things, go with <code>&lt;-</code>. Whichever you use, do so consistently<a href="#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a>.</p>
 </div>
 <div id="code-length" class="section level3">
 <h3>Code length</h3>
@@ -504,9 +504,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="spacing" class="section level4">
 <h4>Spacing</h4>
 <p>Don’t be stingy with spaces. As you start out, err on the side of using them. Just note there are exceptions (e.g. no space between function name and parenthesis, unless that function is something like <span class="func">if</span> or <span class="func">else</span>), but you’ll get used to those over time.</p>
-<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb357-1" data-line-number="1">x=<span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean=</span><span class="dv">0</span>,<span class="dt">sd=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb357-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb357-3" data-line-number="3">x =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb357-1" data-line-number="1">x=<span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean=</span><span class="dv">0</span>,<span class="dt">sd=</span><span class="dv">1</span>)              <span class="co"># harder to read</span></a>
+<a class="sourceLine" id="cb357-2" data-line-number="2">                                      <span class="co"># space between lines too!</span></a>
+<a class="sourceLine" id="cb357-3" data-line-number="3">x =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>)       <span class="co"># easier to read</span></a></code></pre></div>
 </div>
 </div>
 <div id="naming-things" class="section level3">
@@ -516,7 +516,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>The name should make sense to you, your future self, and others that will use the code</li>
 <li>Try to be concise, but see the previous</li>
-<li><p>Make liberal use of suffixes/prefixes for naming the same types of things e.g. model_x, model_z</p></li>
+<li>Make liberal use of suffixes/prefixes for naming the same types of things e.g. model_x, model_z</li>
+<li><p>For function names, try for verbs that describe what they do</p></li>
 <li>Don’t name anything with ‘final’</li>
 <li>Don’t name something that is already an R function/object (e.g. <code>T</code>, <span class="func">c</span>, <span class="func">data</span>, etc.)</li>
 <li><p>Avoid distinguishing names only by number, e.g. <span class="objclass">data1</span> <span class="objclass">data2</span></p></li>
@@ -528,11 +529,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>spinal-case (e.g. for file names)</li>
 <li>dot.case</li>
 </ul>
-<p>For objects and functions, I find snake case easier to read and less prone to issues<a href="#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a>. For example, camel case can fail miserably when acronyms are involved. Dots already have specific uses (file name extensions, function methods, etc.), so probably should be avoided unless you’re using them for that specific purpose (they can also make selecting the whole name difficult depending on the context).</p>
+<p>For objects and functions, I find snake case easier to read and less prone to issues<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a>. For example, camel case can fail miserably when acronyms are involved. Dots already have specific uses (file name extensions, function methods, etc.), so probably should be avoided unless you’re using them for that specific purpose (they can also make selecting the whole name difficult depending on the context).</p>
 </div>
 <div id="other-1" class="section level3">
 <h3>Other</h3>
-<p>Use tools like the built-in RStudio code cleanup shortcut like <code>Ctrl/Cmd + Shft + A</code>. It’s not perfect, in the sense I disagree with some of its the style choice, but it will be better than you will do on your own starting out.</p>
+<p>Use tools like the built-in RStudio code cleanup shortcut like <code>Ctrl/Cmd + Shft + A</code>. It’s not perfect, in the sense I disagree with some of its the style choice, but it will definitely be better than you will do on your own starting out.</p>
 </div>
 </div>
 <div id="vectorization" class="section level2">
@@ -548,92 +549,98 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>[1] 10</code></pre>
 <p>As mentioned <a href="data_structures.html#logicals">previously</a>, <span class="objclass">logicals</span> are objects with values of <code>TRUE</code> or <code>FALSE</code>, like the <span class="objclass">idx</span> variable above. While sometimes we want to deal with the logical object as an end, it is extremely commonly used as an index in data processing. Note how we don’t have to create an explicit index object first (though often you should), as R indexing is ridiculously flexible. Here are more examples, not necessarily recommended, but just to demonstrate the flexibility of Boolean indexing.</p>
 <div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb362-1" data-line-number="1">x[x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb362-2" data-line-number="2">x[x <span class="op">!=</span><span class="st"> &#39;cat&#39;</span>]</a>
-<a class="sourceLine" id="cb362-3" data-line-number="3">x[<span class="kw">ifelse</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span>x <span class="op">!=</span><span class="dv">10</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)]</a>
-<a class="sourceLine" id="cb362-4" data-line-number="4">x[{y =<span class="st"> </span>idx; y}]</a>
-<a class="sourceLine" id="cb362-5" data-line-number="5">x[<span class="kw">resid</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>]</a></code></pre></div>
+<a class="sourceLine" id="cb362-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb362-3" data-line-number="3">x[x <span class="op">!=</span><span class="st"> &#39;cat&#39;</span>]</a>
+<a class="sourceLine" id="cb362-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb362-5" data-line-number="5">x[<span class="kw">ifelse</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span>x <span class="op">!=</span><span class="dv">10</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)]</a>
+<a class="sourceLine" id="cb362-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb362-7" data-line-number="7">x[{y =<span class="st"> </span>idx; y}]</a>
+<a class="sourceLine" id="cb362-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb362-9" data-line-number="9">x[<span class="kw">resid</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>]</a></code></pre></div>
+<p>All of these will transfer to the tidyverse <span class="func" style="">filter</span> function.</p>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb363-1" data-line-number="1">df <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb363-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>, z <span class="op">==</span><span class="st"> &#39;a&#39;</span>)  <span class="co"># commas are like &amp;</span></a></code></pre></div>
 </div>
 <div id="vectorized-operations" class="section level3">
 <h3>Vectorized operations</h3>
 <p>Boolean indexing allows us to take <span class="emph">vectorized</span> approaches to dealing with data. Consider the following unfortunately coded loop, where we create a variable <code>y</code>, which takes on the value of <strong>Yes</strong> if the variable <code>x</code> is greater than 2, and <strong>No</strong> if otherwise.</p>
-<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb363-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mydf)) {</a>
-<a class="sourceLine" id="cb363-2" data-line-number="2">  check =<span class="st"> </span>mydf<span class="op">$</span>x[i] <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb363-3" data-line-number="3">  <span class="cf">if</span> (check<span class="op">==</span><span class="ot">TRUE</span>) {</a>
-<a class="sourceLine" id="cb363-4" data-line-number="4">    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;Yes&#39;</span></a>
-<a class="sourceLine" id="cb363-5" data-line-number="5">  } </a>
-<a class="sourceLine" id="cb363-6" data-line-number="6">  <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb363-7" data-line-number="7">    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;No&#39;</span></a>
-<a class="sourceLine" id="cb363-8" data-line-number="8">  }</a>
-<a class="sourceLine" id="cb363-9" data-line-number="9">}</a></code></pre></div>
-<p>Compare<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a>:</p>
-<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb364-1" data-line-number="1">mydf<span class="op">$</span>y =<span class="st"> &#39;No&#39;</span></a>
-<a class="sourceLine" id="cb364-2" data-line-number="2">mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>] =<span class="st"> &#39;Yes&#39;</span></a></code></pre></div>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb364-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mydf)) {</a>
+<a class="sourceLine" id="cb364-2" data-line-number="2">  </a>
+<a class="sourceLine" id="cb364-3" data-line-number="3">  check =<span class="st"> </span>mydf<span class="op">$</span>x[i] <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb364-4" data-line-number="4">  </a>
+<a class="sourceLine" id="cb364-5" data-line-number="5">  <span class="cf">if</span> (check <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) {</a>
+<a class="sourceLine" id="cb364-6" data-line-number="6">    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;Yes&#39;</span></a>
+<a class="sourceLine" id="cb364-7" data-line-number="7">  }</a>
+<a class="sourceLine" id="cb364-8" data-line-number="8">  <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb364-9" data-line-number="9">    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;No&#39;</span></a>
+<a class="sourceLine" id="cb364-10" data-line-number="10">  }</a>
+<a class="sourceLine" id="cb364-11" data-line-number="11">}</a></code></pre></div>
+<p>Compare<a href="#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a>:</p>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb365-1" data-line-number="1">mydf<span class="op">$</span>y =<span class="st"> &#39;No&#39;</span></a>
+<a class="sourceLine" id="cb365-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb365-3" data-line-number="3">mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>] =<span class="st"> &#39;Yes&#39;</span></a></code></pre></div>
 <p>This gets us the same thing, and would be much faster than the looped approach. Boolean indexing is an example of a vectorized operation. The whole vector is considered, rather than each element individually. The result is that any preprocessing is done once rather than the <code>n</code> iterations of the loop. In R, this will always faster.</p>
 <p>Example: Log all values in a matrix.</p>
-<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb365-1" data-line-number="1">mymatrix_log =<span class="st"> </span><span class="kw">log</span>(mymatrix)</a></code></pre></div>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb366-1" data-line-number="1">mymatrix_log =<span class="st"> </span><span class="kw">log</span>(mymatrix)</a></code></pre></div>
 <p>This is way faster than looping over elements, rows or columns. Here we’ll let the <span class="func">apply</span> function stand in for our loop, logging the elements of each column.</p>
-<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb366-1" data-line-number="1">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb366-2" data-line-number="2"><span class="kw">identical</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</a></code></pre></div>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb367-1" data-line-number="1">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb367-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb367-3" data-line-number="3"><span class="kw">identical</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</a></code></pre></div>
 <pre><code>[1] TRUE</code></pre>
-<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb368-1" data-line-number="1"><span class="kw">library</span>(microbenchmark)</a>
-<a class="sourceLine" id="cb368-2" data-line-number="2"><span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log),</a>
-<a class="sourceLine" id="cb368-3" data-line-number="3">               <span class="kw">log</span>(mymatrix))</a></code></pre></div>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb369-1" data-line-number="1"><span class="kw">library</span>(microbenchmark)</a>
+<a class="sourceLine" id="cb369-2" data-line-number="2"><span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</a></code></pre></div>
 <pre><code>Unit: nanoseconds
                     expr   min      lq     mean  median      uq   max neval cld
- apply(mymatrix, 2, log) 20910 21537.0 22854.94 21896.5 22261.5 72868   100   b
-           log(mymatrix)   603   628.5   705.12   711.5   750.5  1288   100  a </code></pre>
+ apply(mymatrix, 2, log) 21953 22693.0 26224.40 23203.5 25393.5 81844   100   b
+           log(mymatrix)   640   672.5   924.99   759.5   828.5  3858   100  a </code></pre>
 <p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
 <div id="timings" class="section level4">
 <h4>Timings</h4>
 <p>We made our own function before, however, there is a <span class="func">scale</span> function in base R that uses a more vectorized approach under the hood to standardize variables. The following demonstrates various approaches to standardizing the columns of the matrix, even using a parallelized approach. As you’ll see, the base R function requires very little code and beats the others.</p>
-<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb370-1" data-line-number="1">mymat =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100000</span>), <span class="dt">ncol=</span><span class="dv">1000</span>)</a>
-<a class="sourceLine" id="cb370-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb370-3" data-line-number="3">stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb370-4" data-line-number="4">  (x<span class="op">-</span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
-<a class="sourceLine" id="cb370-5" data-line-number="5">}</a>
-<a class="sourceLine" id="cb370-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb370-7" data-line-number="7">doubleloop =<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb370-8" data-line-number="8">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat)) {</a>
-<a class="sourceLine" id="cb370-9" data-line-number="9">    x =<span class="st"> </span>mymat[, i]</a>
-<a class="sourceLine" id="cb370-10" data-line-number="10">    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) {</a>
-<a class="sourceLine" id="cb370-11" data-line-number="11">      x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
-<a class="sourceLine" id="cb370-12" data-line-number="12">    }</a>
-<a class="sourceLine" id="cb370-13" data-line-number="13">  }</a>
-<a class="sourceLine" id="cb370-14" data-line-number="14">}</a>
-<a class="sourceLine" id="cb370-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb370-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb370-17" data-line-number="17">singleloop =<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb370-18" data-line-number="18">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat)) {</a>
-<a class="sourceLine" id="cb370-19" data-line-number="19">    x =<span class="st"> </span>mymat[, i]</a>
-<a class="sourceLine" id="cb370-20" data-line-number="20">    x =<span class="st"> </span>(x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
-<a class="sourceLine" id="cb370-21" data-line-number="21">  }</a>
-<a class="sourceLine" id="cb370-22" data-line-number="22">}</a>
-<a class="sourceLine" id="cb370-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb370-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb370-25" data-line-number="25"><span class="kw">library</span>(parallel)</a>
-<a class="sourceLine" id="cb370-26" data-line-number="26">cl =<span class="st"> </span><span class="kw">makeCluster</span>(<span class="dv">8</span>)</a>
-<a class="sourceLine" id="cb370-27" data-line-number="27"><span class="kw">clusterExport</span>(cl, <span class="kw">c</span>(<span class="st">&#39;stdize&#39;</span>, <span class="st">&#39;mymat&#39;</span>))</a>
-<a class="sourceLine" id="cb370-28" data-line-number="28">doParallel<span class="op">::</span><span class="kw">registerDoParallel</span>(cl)</a>
-<a class="sourceLine" id="cb370-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb370-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb370-31" data-line-number="31">test =<span class="st"> </span>microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(</a>
-<a class="sourceLine" id="cb370-32" data-line-number="32">  <span class="dt">doubleloop =</span> <span class="kw">doubleloop</span>(),</a>
-<a class="sourceLine" id="cb370-33" data-line-number="33">  <span class="dt">singleloop =</span> <span class="kw">singleloop</span>(),</a>
-<a class="sourceLine" id="cb370-34" data-line-number="34">  <span class="dt">apply =</span> <span class="kw">apply</span>(mymat, <span class="dv">2</span>, stdize),</a>
-<a class="sourceLine" id="cb370-35" data-line-number="35">  <span class="dt">parApply =</span> <span class="kw">parApply</span>(cl, mymat, <span class="dv">2</span>, stdize),</a>
-<a class="sourceLine" id="cb370-36" data-line-number="36">  <span class="dt">vectorized =</span> <span class="kw">scale</span>(mymat),</a>
-<a class="sourceLine" id="cb370-37" data-line-number="37">  <span class="dt">times =</span> <span class="dv">25</span></a>
-<a class="sourceLine" id="cb370-38" data-line-number="38">)</a>
-<a class="sourceLine" id="cb370-39" data-line-number="39"></a>
-<a class="sourceLine" id="cb370-40" data-line-number="40"><span class="kw">stopCluster</span>(cl)</a>
-<a class="sourceLine" id="cb370-41" data-line-number="41">test</a></code></pre></div>
-<pre><code>Unit: milliseconds
-       expr         min          lq       mean     median         uq        max neval cld
- doubleloop 2882.148089 2904.739076 2938.21281 2946.57065 2952.25532 3013.29805    25   c
- singleloop   28.989806   29.512434   33.08177   31.17037   32.42606   84.79185    25  b 
-      apply   32.167901   33.350945   33.96146   34.13204   34.64055   36.18983    25  b 
-   parApply   17.691611   18.213638   21.91323   19.63893   21.12156   73.60683    25 ab 
- vectorized    8.085578    8.491433   10.25583   10.66990   11.02532   12.62173    25 a  </code></pre>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb371-1" data-line-number="1">mymat =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100000</span>), <span class="dt">ncol=</span><span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb371-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb371-3" data-line-number="3">stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb371-4" data-line-number="4">  (x<span class="op">-</span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
+<a class="sourceLine" id="cb371-5" data-line-number="5">}</a>
+<a class="sourceLine" id="cb371-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb371-7" data-line-number="7">doubleloop =<span class="st"> </span><span class="cf">function</span>() {</a>
+<a class="sourceLine" id="cb371-8" data-line-number="8">  </a>
+<a class="sourceLine" id="cb371-9" data-line-number="9">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat_asdf)) {</a>
+<a class="sourceLine" id="cb371-10" data-line-number="10">    x =<span class="st"> </span>mymat_asdf[, i]</a>
+<a class="sourceLine" id="cb371-11" data-line-number="11">    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) {</a>
+<a class="sourceLine" id="cb371-12" data-line-number="12">      x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
+<a class="sourceLine" id="cb371-13" data-line-number="13">    }</a>
+<a class="sourceLine" id="cb371-14" data-line-number="14">  }</a>
+<a class="sourceLine" id="cb371-15" data-line-number="15">  </a>
+<a class="sourceLine" id="cb371-16" data-line-number="16">}</a>
+<a class="sourceLine" id="cb371-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb371-18" data-line-number="18">singleloop =<span class="st"> </span><span class="cf">function</span>() {</a>
+<a class="sourceLine" id="cb371-19" data-line-number="19">  </a>
+<a class="sourceLine" id="cb371-20" data-line-number="20">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat_asdf)) {</a>
+<a class="sourceLine" id="cb371-21" data-line-number="21">    x =<span class="st"> </span>mymat_asdf[, i]</a>
+<a class="sourceLine" id="cb371-22" data-line-number="22">    x =<span class="st"> </span>(x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
+<a class="sourceLine" id="cb371-23" data-line-number="23">  }</a>
+<a class="sourceLine" id="cb371-24" data-line-number="24">  </a>
+<a class="sourceLine" id="cb371-25" data-line-number="25">}</a>
+<a class="sourceLine" id="cb371-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb371-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb371-28" data-line-number="28"><span class="kw">library</span>(parallel)</a>
+<a class="sourceLine" id="cb371-29" data-line-number="29">cl =<span class="st"> </span><span class="kw">makeCluster</span>(<span class="dv">8</span>)</a>
+<a class="sourceLine" id="cb371-30" data-line-number="30"><span class="kw">clusterExport</span>(cl, <span class="kw">c</span>(<span class="st">&#39;stdize&#39;</span>, <span class="st">&#39;mymat&#39;</span>))</a>
+<a class="sourceLine" id="cb371-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb371-32" data-line-number="32">test =<span class="st"> </span>microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(</a>
+<a class="sourceLine" id="cb371-33" data-line-number="33">  <span class="dt">doubleloop =</span> <span class="kw">doubleloop</span>(),</a>
+<a class="sourceLine" id="cb371-34" data-line-number="34">  <span class="dt">singleloop =</span> <span class="kw">singleloop</span>(),</a>
+<a class="sourceLine" id="cb371-35" data-line-number="35">  <span class="dt">apply =</span> <span class="kw">apply</span>(mymat, <span class="dv">2</span>, stdize),</a>
+<a class="sourceLine" id="cb371-36" data-line-number="36">  <span class="dt">parApply =</span> <span class="kw">parApply</span>(cl, mymat, <span class="dv">2</span>, stdize),</a>
+<a class="sourceLine" id="cb371-37" data-line-number="37">  <span class="dt">vectorized =</span> <span class="kw">scale</span>(mymat),</a>
+<a class="sourceLine" id="cb371-38" data-line-number="38">  <span class="dt">times =</span> <span class="dv">25</span></a>
+<a class="sourceLine" id="cb371-39" data-line-number="39">)</a>
+<a class="sourceLine" id="cb371-40" data-line-number="40"></a>
+<a class="sourceLine" id="cb371-41" data-line-number="41"><span class="kw">stopCluster</span>(cl)</a>
+<a class="sourceLine" id="cb371-42" data-line-number="42"></a>
+<a class="sourceLine" id="cb371-43" data-line-number="43">test</a></code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/vectorization_timings-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>
@@ -688,9 +695,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="exercise-1-8" class="section level3">
 <h3>Exercise 1</h3>
 <p>For the following model related output, come up with a name for each object.</p>
-<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb375-1" data-line-number="1"><span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">data=</span>mpg)                 <span class="co"># hwy mileage predicted by number of cylinders</span></a>
-<a class="sourceLine" id="cb375-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">data=</span>mpg))        <span class="co"># the summary of that</span></a>
-<a class="sourceLine" id="cb375-3" data-line-number="3"><span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl <span class="op">+</span><span class="st"> </span>displ <span class="op">+</span><span class="st"> </span>year, <span class="dt">data=</span>mpg)  <span class="co"># an extension of that</span></a></code></pre></div>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb375-1" data-line-number="1"><span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">data =</span> mpg)                 <span class="co"># hwy mileage predicted by number of cylinders</span></a>
+<a class="sourceLine" id="cb375-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb375-3" data-line-number="3"><span class="kw">summary</span>(<span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">data =</span> mpg))        <span class="co"># the summary of that</span></a>
+<a class="sourceLine" id="cb375-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb375-5" data-line-number="5"><span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl <span class="op">+</span><span class="st"> </span>displ <span class="op">+</span><span class="st"> </span>year, <span class="dt">data =</span> mpg)  <span class="co"># an extension of that</span></a></code></pre></div>
 </div>
 <div id="exercise-2-9" class="section level3">
 <h3>Exercise 2</h3>
@@ -718,7 +727,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb378-3" data-line-number="3"><span class="kw">apply</span>(x, <span class="dv">2</span>, sum)</a>
 <a class="sourceLine" id="cb378-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb378-5" data-line-number="5">microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(</a>
-<a class="sourceLine" id="cb378-6" data-line-number="6">  <span class="dt">cs =</span> <span class="kw">colSums</span>(x),</a>
+<a class="sourceLine" id="cb378-6" data-line-number="6">  <span class="dt">cs  =</span> <span class="kw">colSums</span>(x),</a>
 <a class="sourceLine" id="cb378-7" data-line-number="7">  <span class="dt">app =</span> <span class="kw">apply</span>(x, <span class="dv">2</span>, sum)</a>
 <a class="sourceLine" id="cb378-8" data-line-number="8">)</a></code></pre></div>
 </div>
@@ -740,8 +749,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="footnotes">
 <hr />
 <ol start="26">
-<li id="fn26"><p>Note how I didn’t say it’s easier to read without qualification (even though I think it’s obviously easier to read, based on how eyes/brains work). Many style guides you encounter will try to come across as definitive. They are not, nor are most of their claims tested.<a href="more.html#fnref26" class="footnote-back">↩</a></p></li>
-<li id="fn27"><p>For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.<a href="more.html#fnref27" class="footnote-back">↩</a></p></li>
+<li id="fn26"><p>I usually reserve arrows for functions and package development.<a href="more.html#fnref26" class="footnote-back">↩</a></p></li>
+<li id="fn27"><p>Note how I didn’t say it’s easier to read without qualification (even though I think it’s obviously easier to read, based on how eyes/brains work). Many style guides you encounter will try to come across as definitive. They are not, nor are most of their claims tested.<a href="more.html#fnref27" class="footnote-back">↩</a></p></li>
+<li id="fn28"><p>For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.<a href="more.html#fnref28" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
             </section>

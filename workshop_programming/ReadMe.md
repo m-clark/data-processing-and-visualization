@@ -1,4 +1,4 @@
-## Workshop Project folder for the Tidyverse
+## Workshop Project folder for the Programming Section
 
 This folder contains an RStudio project. You have access to several things:
 
