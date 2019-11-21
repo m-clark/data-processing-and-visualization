@@ -47,7 +47,7 @@ my_summary(gapminder_2019$lifeExp)
 
 If there are actually missing values, we need to set `na.rm = TRUE` or the <span class="func">mean</span> and <span class="func">sd</span> will return `NA`. Let's try it. We can either hard bake it in as in the initial example, or add an argument to let us control how to handle NAs with our custom function.
 
-```{r func_ex2}
+```{r func_ex3ext}
 my_summary <- function(x) {
   data.frame(
     mean = mean(x, na.rm = TRUE),
@@ -92,14 +92,15 @@ my_summary <- function(x) {
 That was easy! Let's try it.
 
 ```{r func_ex5}
-my_summary(mtcars2$wt)
+my_summary(gapminder_2019$lifeExp)
 ```
 
 
 Now let's do it for every column!  We've used the <span class="func">map</span> function before, now let's use a variant that will return a data frame.
 
 ```{r func_ex6}
-mtcars2 %>% 
+gapminder_2019 %>% 
+  select_if(is.numeric) %>% 
   map_dfr(my_summary, .id = 'variable')
 ```
 
@@ -223,11 +224,14 @@ It was tedious, but that's not much code.  But now consider- what if you want to
 - cls: the class of the vehicle (e.g. compact or suv)
 
 ```{r mpgfunc}
-good_mileage <- function(cylinder = 4,
-                         mpg_cutoff = 30,
-                         displ_fun = mean,
-                         displ_low = TRUE,
-                         cls = 'compact') {
+
+good_mileage <- function(
+  cylinder = 4,
+  mpg_cutoff = 30,
+  displ_fun = mean,
+  displ_low = TRUE,
+  cls = 'compact'
+) {
   
   if (displ_low == TRUE) {              # condition to check, if it holds,
     result <- mpg %>%                   # filter data given the arguments
@@ -235,12 +239,15 @@ good_mileage <- function(cylinder = 4,
              displ <= displ_fun(displ),
              hwy >= mpg_cutoff,
              class == cls)
-  } else {                              # if the condition doesn't hold, filter 
+  } 
+  else {                                # if the condition doesn't hold, filter 
     result <- mpg %>%                   # the data this way instead
-      filter(cyl == cylinder,
-             displ >= displ_fun(displ), # the only change is here
-             hwy >= mpg_cutoff,
-             class == cls)
+      filter(
+        cyl == cylinder,
+        displ >= displ_fun(displ),      # the only change is here
+        hwy >= mpg_cutoff,
+        class == cls
+      )
   }
   
   result                                # return the object
@@ -279,18 +286,25 @@ In any case, with our function at the ready, we can now do the things we want to
 ```{r mpgfunc_demo}
 good_mileage(mpg_cutoff = 40)
 
-good_mileage(cylinder = 8, mpg_cutoff = 15, displ_low = F, cls='suv')
+good_mileage(
+  cylinder = 8,
+  mpg_cutoff = 15,
+  displ_low = F,
+  cls = 'suv'
+)
 ```
 
 Let's extend the functionality by adding a year argument (the only values available are 2008 and 1999).
 
 ```{r mpgfunc_extend, echo=1:6}
-good_mileage <- function(cylinder = 4,
-                         mpg_cutoff = 30,
-                         displ_fun = mean,
-                         displ_low = TRUE,
-                         cls = 'compact',
-                         yr = 2008) {
+good_mileage <- function(
+  cylinder = 4,
+  mpg_cutoff = 30,
+  displ_fun = mean,
+  displ_low = TRUE,
+  cls = 'compact',
+  yr = 2008
+) {
   
   if (displ_low) {
     result = mpg %>%
@@ -299,7 +313,8 @@ good_mileage <- function(cylinder = 4,
            hwy >= mpg_cutoff,
            class == cls,
            year == yr)
-  } else {
+  } 
+  else {
     result = mpg %>%
     filter(cyl == cylinder,
            displ >= displ_fun(displ),
@@ -313,11 +328,13 @@ good_mileage <- function(cylinder = 4,
 ```
 
 ```{r mpgfunc_extend_demo}
-good_mileage(cylinder = 8, 
-             mpg_cutoff = 19, 
-             displ_low = F, 
-             cls='suv', 
-             yr = 2008)
+good_mileage(
+  cylinder = 8,
+  mpg_cutoff = 19,
+  displ_low = F,
+  cls = 'suv',
+  yr = 2008
+)
 ```
 
 So we now have something that is flexible, reusable, and extensible, and it took less code than writing out the individual lines of code
@@ -332,7 +349,7 @@ apply(mtcars, 2, sd)
 apply(mtcars, 2, function(x) x/2)
 ```
 
-The difference between the two is that for the latter, our function didn't have to be a named object already available.  We created a function on the fly just to serve a specific purpose.  A function doesn't exist that just does nothing but divide by two, but since it is simple we just created it as needed.
+The difference between the two is that for the latter, our function didn't have to be a named object already available.  We created a function on the fly just to serve a specific purpose.  A function doesn't exist that just does nothing but divide by two, but since it is simple, we just created it as needed.
 
 To further illustrate this, we'll create a robust standardization function that uses the median and median absolute deviation rather than the mean and standard deviation.
 
@@ -386,7 +403,7 @@ log_sum <- function(a, b) {
     stop('Your message here.')
   } else {
     ?
-    return(your_log_sum_object)
+    return(your_log_sum_results)
   }
 }
 ```

@@ -532,7 +532,7 @@ In addition, transparency can be used to add additional information to a plot. I
 
 <!-- <img src="img/tornados.png" style="display:block; margin: 0 auto;"> -->
 
-```{r transp_tornado, eval=T}
+```{r transp_tornado, eval=T, cache=FALSE}
 # depending on the plot, plotly may confuse opacity with some other quality of the color
 # data(flights, package='threejs') 
 # flights %>% 
@@ -575,7 +575,7 @@ gdat %>%
 
 Here we apply transparency to a density plot to convey a group difference in distributions, while still being able to visualize the whole distribution of each group.
 
-```{r transp_density}
+```{r transp_density, cache=FALSE}
 detach(package:mclust)
 set.seed(123)
 gdat = 1:4 %>% 

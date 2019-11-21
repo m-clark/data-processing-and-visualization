@@ -130,7 +130,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -176,8 +176,8 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<link rel="stylesheet" href="css\book.css" type="text/css" />
-<link rel="stylesheet" href="https:\\use.fontawesome.com\releases\v5.0.13\css\all.css" type="text/css" />
+<link rel="stylesheet" href="css/book.css" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" type="text/css" />
 </head>
 
 <body>
@@ -498,7 +498,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><span class="pack">tibble</span>: tibbles, a modern re-imagining of data frames</li>
 </ul>
 <p>And of course the <span class="pack">tidyverse</span> package itself, which will load all of the above in a way that will avoid naming conflicts.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" title="1"><span class="kw">library</span>(tidyverse)</a></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a></code></pre></div>
 <pre><code>Loading tidyverse: ggplot2
 Loading tidyverse: tibble
 Loading tidyverse: tidyr
@@ -561,33 +561,33 @@ lag():    dplyr, stats</code></pre>
 <li>Any variable with a name that starts with <strong>XYZ</strong></li>
 </ul>
 <p>How might we go about this in a dataset of possibly hundreds or even thousands of columns? There are several base R approaches that we could go with, but often they will be tedious, or require multiple objects to be created just to get the columns you want. Let’s start with the worst choice.</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" title="1">newData =<span class="st"> </span>oldData[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>, etc.)]</a></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">newData =<span class="st"> </span>oldData[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>, etc.)]</a></code></pre></div>
 <p>Using numeric indexes, or rather <span class="emph">magic numbers</span>, is not conducive to readability or reproducibility. If anything changes about the data columns, the numbers may no longer be applicable, and you’d have to redo the line again.</p>
 <p>We could name the variables explicitly.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" title="1">newData =<span class="st"> </span>oldData[,<span class="kw">c</span>(<span class="st">&#39;ID&#39;</span>,<span class="st">&#39;X1&#39;</span>, <span class="st">&#39;X2&#39;</span>, etc.)]</a></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">newData =<span class="st"> </span>oldData[,<span class="kw">c</span>(<span class="st">&#39;ID&#39;</span>,<span class="st">&#39;X1&#39;</span>, <span class="st">&#39;X2&#39;</span>, etc.)]</a></code></pre></div>
 <p>This would be fine if there are only a handful. But if you’re trying to reduce a 1000 column data set to several dozen it’s tedious, and generally not pretty regardless.</p>
 <p>A more advanced alternative regards a two-step approach with <a href="more.html#regular-expressions">regular expressions</a>. This requires that you know something about regex (and you should), but it is difficult to read/understand by those who don’t, and often by even yourself if it’s more complicated. In any case, you first will need to create an object that represents the column names first, otherwise it looks unwieldy if used within brackets or a function like <span class="func">subset</span>.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" title="1">cols =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;ID&#39;</span>, <span class="kw">paste0</span>(<span class="st">&#39;X&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>), <span class="st">&#39;var1&#39;</span>, <span class="st">&#39;var2&#39;</span>, <span class="kw">grep</span>(<span class="kw">colnames</span>(oldData), <span class="st">&#39;^XYZ&#39;</span>, <span class="dt">value=</span>T))</a>
-<a class="sourceLine" id="cb67-2" title="2"></a>
-<a class="sourceLine" id="cb67-3" title="3">newData =<span class="st"> </span>oldData[,cols]</a>
-<a class="sourceLine" id="cb67-4" title="4"></a>
-<a class="sourceLine" id="cb67-5" title="5"><span class="co"># or via subset</span></a>
-<a class="sourceLine" id="cb67-6" title="6">newData =<span class="st"> </span><span class="kw">subset</span>(oldData, <span class="dt">select =</span> cols)</a></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">cols =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;ID&#39;</span>, <span class="kw">paste0</span>(<span class="st">&#39;X&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>), <span class="st">&#39;var1&#39;</span>, <span class="st">&#39;var2&#39;</span>, <span class="kw">grep</span>(<span class="kw">colnames</span>(oldData), <span class="st">&#39;^XYZ&#39;</span>, <span class="dt">value=</span>T))</a>
+<a class="sourceLine" id="cb67-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb67-3" data-line-number="3">newData =<span class="st"> </span>oldData[,cols]</a>
+<a class="sourceLine" id="cb67-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb67-5" data-line-number="5"><span class="co"># or via subset</span></a>
+<a class="sourceLine" id="cb67-6" data-line-number="6">newData =<span class="st"> </span><span class="kw">subset</span>(oldData, <span class="dt">select =</span> cols)</a></code></pre></div>
 <p>Now consider there is even more to do. What if you also want observations where <strong>Z</strong> is <strong>Yes</strong>, Q is <strong>No</strong>, and only the observations with the top 50 values of <strong>var2</strong>, ordered by <strong>var1</strong> (descending)? Probably the more straightforward way in R to do so would be something like the following, where each part is broken out and we continuously write over the object as we modify it.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" title="1"><span class="co"># three operations and overwriting or creating new objects if we want clarity</span></a>
-<a class="sourceLine" id="cb68-2" title="2">newData =<span class="st"> </span>newData[oldData<span class="op">$</span>Z <span class="op">==</span><span class="st"> &#39;Yes&#39;</span> <span class="op">&amp;</span><span class="st"> </span>oldData<span class="op">$</span>Q <span class="op">==</span><span class="st"> &#39;No&#39;</span>,]</a>
-<a class="sourceLine" id="cb68-3" title="3">newData =<span class="st"> </span>newData[<span class="kw">order</span>(newData<span class="op">$</span>var2, <span class="dt">decreasing=</span>T)[<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>],]</a>
-<a class="sourceLine" id="cb68-4" title="4">newData =<span class="st"> </span>newData[<span class="kw">order</span>(newData<span class="op">$</span>var1, <span class="dt">decreasing=</span>T),]</a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="co"># three operations and overwriting or creating new objects if we want clarity</span></a>
+<a class="sourceLine" id="cb68-2" data-line-number="2">newData =<span class="st"> </span>newData[oldData<span class="op">$</span>Z <span class="op">==</span><span class="st"> &#39;Yes&#39;</span> <span class="op">&amp;</span><span class="st"> </span>oldData<span class="op">$</span>Q <span class="op">==</span><span class="st"> &#39;No&#39;</span>,]</a>
+<a class="sourceLine" id="cb68-3" data-line-number="3">newData =<span class="st"> </span>newData[<span class="kw">order</span>(newData<span class="op">$</span>var2, <span class="dt">decreasing=</span>T)[<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>],]</a>
+<a class="sourceLine" id="cb68-4" data-line-number="4">newData =<span class="st"> </span>newData[<span class="kw">order</span>(newData<span class="op">$</span>var1, <span class="dt">decreasing=</span>T),]</a></code></pre></div>
 <p>And this is for fairly straightforward operations.</p>
 <p>Now consider doing all of the previous in one piped operation. The <span class="pack">dplyr</span> package will allow us to do something like the following.</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" title="1">newData =<span class="st"> </span>oldData <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb69-2" title="2"><span class="st">  </span><span class="kw">select</span>(<span class="kw">num_range</span>(<span class="st">&#39;X&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>), </a>
-<a class="sourceLine" id="cb69-3" title="3">         <span class="kw">contains</span>(<span class="st">&#39;var&#39;</span>), </a>
-<a class="sourceLine" id="cb69-4" title="4">         <span class="kw">starts_with</span>(<span class="st">&#39;XYZ&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb69-5" title="5"><span class="st">  </span><span class="kw">filter</span>(Z <span class="op">==</span><span class="st"> &#39;Yes&#39;</span>, </a>
-<a class="sourceLine" id="cb69-6" title="6">         Q <span class="op">==</span><span class="st"> &#39;No&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb69-7" title="7"><span class="st">  </span><span class="kw">top_n</span>(<span class="dt">n=</span><span class="dv">50</span>, var2) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb69-8" title="8"><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(var1))</a></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">newData =<span class="st"> </span>oldData <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb69-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(<span class="kw">num_range</span>(<span class="st">&#39;X&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>), </a>
+<a class="sourceLine" id="cb69-3" data-line-number="3">         <span class="kw">contains</span>(<span class="st">&#39;var&#39;</span>), </a>
+<a class="sourceLine" id="cb69-4" data-line-number="4">         <span class="kw">starts_with</span>(<span class="st">&#39;XYZ&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb69-5" data-line-number="5"><span class="st">  </span><span class="kw">filter</span>(Z <span class="op">==</span><span class="st"> &#39;Yes&#39;</span>, </a>
+<a class="sourceLine" id="cb69-6" data-line-number="6">         Q <span class="op">==</span><span class="st"> &#39;No&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb69-7" data-line-number="7"><span class="st">  </span><span class="kw">top_n</span>(<span class="dt">n=</span><span class="dv">50</span>, var2) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb69-8" data-line-number="8"><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(var1))</a></code></pre></div>
 <p>Even if it hadn’t been explained before, you might have been able to guess a little as to what was going on. The code is fairly succinct, we don’t have to keep referencing objects repeatedly, and no explicit intermediary objects are created.</p>
 <p><span class="pack">dplyr</span> and piping is an <em>alternative</em>. You can do all this sort of stuff with base R, for example, with functions like <span class="func">with</span>, <span class="func">within</span>, <span class="func">subset</span>, <span class="func">transform</span>, etc. Though the initial base R approach depicted is fairly concise, in general, it can potentially be:</p>
 <ul>
@@ -603,30 +603,30 @@ lag():    dplyr, stats</code></pre>
 <div id="running-example" class="section level2">
 <h2>Running example</h2>
 <p>The following data was scraped initially scraped from the web as follows. It is data from the NBA basketball league for the 2017-2018 season with things like player names, position, team name, points per game, field goal percentage, and various other statistics. We’ll use it as an example to demonstrate various functionality found within <span class="pack">dplyr</span>.</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" title="1"><span class="kw">library</span>(rvest)</a>
-<a class="sourceLine" id="cb70-2" title="2">url =<span class="st"> &quot;http://www.basketball-reference.com/leagues/NBA_2018_totals.html&quot;</span></a>
-<a class="sourceLine" id="cb70-3" title="3">bball =<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb70-4" title="4"><span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&quot;#totals_stats&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb70-5" title="5"><span class="st">  </span><span class="kw">html_table</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb70-6" title="6"><span class="st">  </span><span class="kw">data.frame</span>() </a>
-<a class="sourceLine" id="cb70-7" title="7"><span class="kw">save</span>(bball, <span class="dt">file=</span><span class="st">&#39;data/bball.RData&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="kw">library</span>(rvest)</a>
+<a class="sourceLine" id="cb70-2" data-line-number="2">url =<span class="st"> &quot;http://www.basketball-reference.com/leagues/NBA_2018_totals.html&quot;</span></a>
+<a class="sourceLine" id="cb70-3" data-line-number="3">bball =<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb70-4" data-line-number="4"><span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&quot;#totals_stats&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb70-5" data-line-number="5"><span class="st">  </span><span class="kw">html_table</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb70-6" data-line-number="6"><span class="st">  </span><span class="kw">data.frame</span>() </a>
+<a class="sourceLine" id="cb70-7" data-line-number="7"><span class="kw">save</span>(bball, <span class="dt">file=</span><span class="st">&#39;data/bball.RData&#39;</span>)</a></code></pre></div>
 <p>However you can just load it into your workspace. Note that when initially gathered from the website, the data is all character strings. We’ll fix this later. The following shows the data as it will eventually be.</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" title="1"><span class="kw">load</span>(<span class="st">&#39;data/bball.RData&#39;</span>)</a>
-<a class="sourceLine" id="cb71-2" title="2"><span class="kw">glimpse</span>(bball[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])</a></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1"><span class="kw">load</span>(<span class="st">&#39;data/bball.RData&#39;</span>)</a>
+<a class="sourceLine" id="cb71-2" data-line-number="2"><span class="kw">glimpse</span>(bball[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])</a></code></pre></div>
 <pre><code>Observations: 664
 Variables: 5
-$ Rk     &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 23, 23, 24, 25, 25, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 40, 40, 41, 42, 43, 44, 45, 46, 4...
-$ Player &lt;chr&gt; &quot;Alex Abrines&quot;, &quot;Quincy Acy&quot;, &quot;Steven Adams&quot;, &quot;Bam Adebayo&quot;, &quot;Arron Afflalo&quot;, &quot;Cole Aldrich&quot;, &quot;LaMarcus Aldridge&quot;, &quot;Jarrett Allen&quot;, &quot;Kadeem Allen&quot;, &quot;Tony Allen&quot;, &quot;Al-Farouq Aminu&quot;, &quot;Justin Anderson&quot;, ...
-$ Pos    &lt;chr&gt; &quot;SG&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;C&quot;, &quot;SG&quot;, &quot;C&quot;, &quot;C&quot;, &quot;C&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;PF&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;SG&quot;, &quot;C&quot;, &quot;C&quot;, &quot;C&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SG&quot;, &quot;SG&quot;, &quot;PG&quot;, &quot;PG&quot;, &quot;PG&quot;, &quot;PF&quot;,...
-$ Age    &lt;dbl&gt; 24, 27, 24, 20, 32, 29, 32, 19, 25, 36, 27, 24, 24, 29, 19, 23, 33, 20, 23, 32, 29, 25, 31, 31, 31, 30, 28, 28, 28, 22, 24, 21, 20, 33, 25, 27, 29, 29, 31, 28, 24, 21, 29, 31, 31, 31, 23, 23, 20, 25, ...
-$ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MIA&quot;, &quot;ORL&quot;, &quot;MIN&quot;, &quot;SAS&quot;, &quot;BRK&quot;, &quot;BOS&quot;, &quot;NOP&quot;, &quot;POR&quot;, &quot;PHI&quot;, &quot;SAS&quot;, &quot;HOU&quot;, &quot;IND&quot;, &quot;MIL&quot;, &quot;OKC&quot;, &quot;TOR&quot;, &quot;CHI&quot;, &quot;HOU&quot;, &quot;DEN&quot;, &quot;ORL&quot;, &quot;TOT&quot;, &quot;NOP&quot;, &quot;CHI&quot;, &quot;ORL&quot;, &quot;TOT&quot;, &quot;ATL&quot;, &quot;MIA...</code></pre>
+$ Rk     &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 23, 23, 24, 25, 25, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 40, 40, 41, 42, 43, 44, 45, 46, 47,…
+$ Player &lt;chr&gt; &quot;Alex Abrines&quot;, &quot;Quincy Acy&quot;, &quot;Steven Adams&quot;, &quot;Bam Adebayo&quot;, &quot;Arron Afflalo&quot;, &quot;Cole Aldrich&quot;, &quot;LaMarcus Aldridge&quot;, &quot;Jarrett Allen&quot;, &quot;Kadeem Allen&quot;, &quot;Tony Allen&quot;, &quot;Al-Farouq Aminu&quot;, &quot;Justin Anderson&quot;, &quot;K…
+$ Pos    &lt;chr&gt; &quot;SG&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;C&quot;, &quot;SG&quot;, &quot;C&quot;, &quot;C&quot;, &quot;C&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;PF&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;SG&quot;, &quot;C&quot;, &quot;C&quot;, &quot;C&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SG&quot;, &quot;SG&quot;, &quot;PG&quot;, &quot;PG&quot;, &quot;PG&quot;, &quot;PF&quot;, &quot;…
+$ Age    &lt;dbl&gt; 24, 27, 24, 20, 32, 29, 32, 19, 25, 36, 27, 24, 24, 29, 19, 23, 33, 20, 23, 32, 29, 25, 31, 31, 31, 30, 28, 28, 28, 22, 24, 21, 20, 33, 25, 27, 29, 29, 31, 28, 24, 21, 29, 31, 31, 31, 23, 23, 20, 25, 29…
+$ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MIA&quot;, &quot;ORL&quot;, &quot;MIN&quot;, &quot;SAS&quot;, &quot;BRK&quot;, &quot;BOS&quot;, &quot;NOP&quot;, &quot;POR&quot;, &quot;PHI&quot;, &quot;SAS&quot;, &quot;HOU&quot;, &quot;IND&quot;, &quot;MIL&quot;, &quot;OKC&quot;, &quot;TOR&quot;, &quot;CHI&quot;, &quot;HOU&quot;, &quot;DEN&quot;, &quot;ORL&quot;, &quot;TOT&quot;, &quot;NOP&quot;, &quot;CHI&quot;, &quot;ORL&quot;, &quot;TOT&quot;, &quot;ATL&quot;, &quot;MIA&quot;,…</code></pre>
 </div>
 <div id="selecting-columns" class="section level2">
 <h2>Selecting Columns</h2>
 <p>Often you do not need the entire data set. While this is easily handled in base R (as shown earlier), it can be more clear to use <span class="func">select</span> in <span class="pack">dplyr</span>. Now we won’t have to create separate objects, use quotes or $, etc.</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" title="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb73-2" title="2"><span class="st">  </span><span class="kw">select</span>(Player, Tm, Pos) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb73-3" title="3"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb73-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(Player, Tm, Pos) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb73-3" data-line-number="3"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
 <pre><code>         Player  Tm Pos
 1  Alex Abrines OKC  SG
 2    Quincy Acy BRK  PF
@@ -635,9 +635,9 @@ $ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MI
 5 Arron Afflalo ORL  SG
 6  Cole Aldrich MIN   C</code></pre>
 <p>What if we want to drop some variables?</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" title="1">bball <span class="op">%&gt;%</span><span class="st">     </span></a>
-<a class="sourceLine" id="cb75-2" title="2"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Player, <span class="op">-</span>Tm, <span class="op">-</span>Pos)  <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb75-3" title="3"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st">     </span></a>
+<a class="sourceLine" id="cb75-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>Player, <span class="op">-</span>Tm, <span class="op">-</span>Pos)  <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb75-3" data-line-number="3"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
 <pre><code>  Rk Age  G GS   MP  FG FGA   FG. X3P X3PA  X3P. X2P X2PA  X2P.  eFG.  FT FTA   FT. ORB DRB TRB AST STL BLK TOV  PF  PTS
 1  1  24 75  8 1134 115 291 0.395  84  221 0.380  31   70 0.443 0.540  39  46 0.848  26  88 114  28  38   8  25 124  353
 2  2  27 70  8 1359 130 365 0.356 102  292 0.349  28   73 0.384 0.496  49  60 0.817  40 216 256  57  33  29  60 149  411
@@ -648,10 +648,10 @@ $ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MI
 <div id="helper-functions" class="section level3">
 <h3>Helper functions</h3>
 <p>Sometimes, we have a lot of variables to select, and if they have a common naming scheme, this can be very easy.</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" title="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb77-2" title="2"><span class="st">  </span><span class="kw">select</span>(Player, <span class="kw">contains</span>(<span class="st">&quot;3P&quot;</span>), <span class="kw">ends_with</span>(<span class="st">&quot;RB&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb77-3" title="3"><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(TRB)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb77-4" title="4"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb77-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(Player, <span class="kw">contains</span>(<span class="st">&quot;3P&quot;</span>), <span class="kw">ends_with</span>(<span class="st">&quot;RB&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb77-3" data-line-number="3"><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(TRB)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb77-4" data-line-number="4"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
 <pre><code>              Player X3P X3PA  X3P. ORB DRB  TRB
 1     Andre Drummond   0   11 0.000 399 848 1247
 2     DeAndre Jordan   0    0    NA 329 842 1171
@@ -675,16 +675,16 @@ $ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MI
 <h2>Filtering Rows</h2>
 <p>There are repeated header rows in this data<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>, so we need to drop them. This is also why everything was character string when we first scraped it, because having any character strings in a column coerces the entire column to be character, since all elements of a vector <a href="data_structures.html#vectors">need to be of the same type</a>. Character string is chosen over others because anything can be converted to a string, but not everything can be a number.</p>
 <p>Filtering by rows requires the basic indexing knowledge <a href="indexing.html#indexing">we talked about before</a>, especially Boolean indexing. In the following, <code>Rk</code>, or rank, is for all intents and purposes just a row id, but if it equals ‘Rk’ instead of something else, we know we’re dealing with a header row, so we’ll drop it.</p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" title="1">bball =<span class="st"> </span>bball <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb79-2" title="2"><span class="st">  </span><span class="kw">filter</span>(Rk <span class="op">!=</span><span class="st"> &quot;Rk&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1">bball =<span class="st"> </span>bball <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb79-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(Rk <span class="op">!=</span><span class="st"> &quot;Rk&quot;</span>)</a></code></pre></div>
 <ul>
 <li><span class="func">filter</span> returns rows with matching conditions.</li>
 <li><span class="func">slice</span> allows for a numeric indexing approach<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</li>
 </ul>
 <p>Say we want too look at forwards (SF or PF) over the age of 35. The following will do this, and since some players play on multiple teams, we’ll want only the unique information on the variables of interest. The function <span class="func">distinct</span> allows us to do this.</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" title="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb80-2" title="2"><span class="st">  </span><span class="kw">filter</span>(Age <span class="op">&gt;</span><span class="st"> </span><span class="dv">35</span>, Pos <span class="op">==</span><span class="st"> &quot;SF&quot;</span> <span class="op">|</span><span class="st"> </span>Pos <span class="op">==</span><span class="st"> &quot;PF&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb80-3" title="3"><span class="st">  </span><span class="kw">distinct</span>(Player, Pos, Age)              </a></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb80-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(Age <span class="op">&gt;</span><span class="st"> </span><span class="dv">35</span>, Pos <span class="op">==</span><span class="st"> &quot;SF&quot;</span> <span class="op">|</span><span class="st"> </span>Pos <span class="op">==</span><span class="st"> &quot;PF&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb80-3" data-line-number="3"><span class="st">  </span><span class="kw">distinct</span>(Player, Pos, Age)              </a></code></pre></div>
 <pre><code>             Player Pos Age
 1        Tony Allen  SF  36
 2      Vince Carter  SF  41
@@ -694,8 +694,8 @@ $ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MI
 6     Zach Randolph  PF  36
 7    Damien Wilkins  SF  38</code></pre>
 <p>Maybe we want just the first 10 rows. This is often the case when we perform some operation and need to quickly verify that what we’re doing is working in principle.</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" title="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb82-2" title="2"><span class="st">  </span><span class="kw">slice</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb82-2" data-line-number="2"><span class="st">  </span><span class="kw">slice</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</a></code></pre></div>
 <pre><code>   Rk            Player Pos Age  Tm  G GS   MP  FG  FGA   FG. X3P X3PA  X3P. X2P X2PA  X2P.  eFG.  FT FTA   FT. ORB DRB TRB AST STL BLK TOV  PF  PTS
 1   1      Alex Abrines  SG  24 OKC 75  8 1134 115  291 0.395  84  221 0.380  31   70 0.443 0.540  39  46 0.848  26  88 114  28  38   8  25 124  353
 2   2        Quincy Acy  PF  27 BRK 70  8 1359 130  365 0.356 102  292 0.349  28   73 0.384 0.496  49  60 0.817  40 216 256  57  33  29  60 149  411
@@ -708,11 +708,11 @@ $ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MI
 9   9      Kadeem Allen  PG  25 BOS 18  1  107   6   22 0.273   0   11 0.000   6   11 0.545 0.273   7   9 0.778   4   7  11  12   3   2   9  15   19
 10 10        Tony Allen  SF  36 NOP 22  0  273  44   91 0.484   4   12 0.333  40   79 0.506 0.505  11  21 0.524  20  27  47   9  11   3  19  49  103</code></pre>
 <p>We can use filtering even with variables just created.</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" title="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb84-2" title="2"><span class="st">  </span><span class="kw">unite</span>(<span class="st">&quot;posTeam&quot;</span>, Pos, Tm) <span class="op">%&gt;%</span><span class="st">         </span><span class="co"># create a new variable</span></a>
-<a class="sourceLine" id="cb84-3" title="3"><span class="st">  </span><span class="kw">filter</span>(posTeam <span class="op">==</span><span class="st"> &quot;SG_GSW&quot;</span>) <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># use it for filtering</span></a>
-<a class="sourceLine" id="cb84-4" title="4"><span class="st">  </span><span class="kw">select</span>(Player, posTeam, Age) <span class="op">%&gt;%</span><span class="st">      </span><span class="co"># use it for selection</span></a>
-<a class="sourceLine" id="cb84-5" title="5"><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(Age))                    <span class="co"># descending order </span></a></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb84-2" data-line-number="2"><span class="st">  </span><span class="kw">unite</span>(<span class="st">&quot;posTeam&quot;</span>, Pos, Tm) <span class="op">%&gt;%</span><span class="st">         </span><span class="co"># create a new variable</span></a>
+<a class="sourceLine" id="cb84-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(posTeam <span class="op">==</span><span class="st"> &quot;SG_GSW&quot;</span>) <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># use it for filtering</span></a>
+<a class="sourceLine" id="cb84-4" data-line-number="4"><span class="st">  </span><span class="kw">select</span>(Player, posTeam, Age) <span class="op">%&gt;%</span><span class="st">      </span><span class="co"># use it for selection</span></a>
+<a class="sourceLine" id="cb84-5" data-line-number="5"><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(Age))                    <span class="co"># descending order </span></a></code></pre></div>
 <pre><code>         Player posTeam Age
 1    Nick Young  SG_GSW  32
 2 Klay Thompson  SG_GSW  27
@@ -723,26 +723,26 @@ $ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MI
 <h2>Generating New Data</h2>
 <p>One of the most common data processing tasks beyond subsetting the data is generating new variables. The function <span class="func">mutate</span> takes a vector and returns one of the same dimension. In addition, there is <span class="func">mutate_at</span>, <span class="func">mutate_if</span>, and <span class="func">mutate_all</span> to help with specific scenarios.</p>
 <p>To demonstrate, we’ll use <span class="func">mutate_at</span> to make appropriate columns numeric, i.e. everything except <code>Player</code>, <code>Pos</code>, and <code>Tm</code>. It takes two inputs, variables and functions to apply. As there are multiple variables and (potentially) multiple functions, we use the <span class="func">vars</span> and <span class="func">funs</span> functions to denote them<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>.</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" title="1">bball =<span class="st"> </span>bball <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb86-2" title="2"><span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="op">-</span>Player, <span class="op">-</span>Pos, <span class="op">-</span>Tm), <span class="kw">funs</span>(as.numeric))   </a>
-<a class="sourceLine" id="cb86-3" title="3"></a>
-<a class="sourceLine" id="cb86-4" title="4"><span class="kw">glimpse</span>(bball[,<span class="dv">1</span><span class="op">:</span><span class="dv">7</span>])</a></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1">bball =<span class="st"> </span>bball <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb86-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="op">-</span>Player, <span class="op">-</span>Pos, <span class="op">-</span>Tm), <span class="kw">funs</span>(as.numeric))   </a>
+<a class="sourceLine" id="cb86-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb86-4" data-line-number="4"><span class="kw">glimpse</span>(bball[,<span class="dv">1</span><span class="op">:</span><span class="dv">7</span>])</a></code></pre></div>
 <pre><code>Observations: 664
 Variables: 7
-$ Rk     &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 23, 23, 24, 25, 25, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 40, 40, 41, 42, 43, 44, 45, 46, 4...
-$ Player &lt;chr&gt; &quot;Alex Abrines&quot;, &quot;Quincy Acy&quot;, &quot;Steven Adams&quot;, &quot;Bam Adebayo&quot;, &quot;Arron Afflalo&quot;, &quot;Cole Aldrich&quot;, &quot;LaMarcus Aldridge&quot;, &quot;Jarrett Allen&quot;, &quot;Kadeem Allen&quot;, &quot;Tony Allen&quot;, &quot;Al-Farouq Aminu&quot;, &quot;Justin Anderson&quot;, ...
-$ Pos    &lt;chr&gt; &quot;SG&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;C&quot;, &quot;SG&quot;, &quot;C&quot;, &quot;C&quot;, &quot;C&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;PF&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;SG&quot;, &quot;C&quot;, &quot;C&quot;, &quot;C&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SG&quot;, &quot;SG&quot;, &quot;PG&quot;, &quot;PG&quot;, &quot;PG&quot;, &quot;PF&quot;,...
-$ Age    &lt;dbl&gt; 24, 27, 24, 20, 32, 29, 32, 19, 25, 36, 27, 24, 24, 29, 19, 23, 33, 20, 23, 32, 29, 25, 31, 31, 31, 30, 28, 28, 28, 22, 24, 21, 20, 33, 25, 27, 29, 29, 31, 28, 24, 21, 29, 31, 31, 31, 23, 23, 20, 25, ...
-$ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MIA&quot;, &quot;ORL&quot;, &quot;MIN&quot;, &quot;SAS&quot;, &quot;BRK&quot;, &quot;BOS&quot;, &quot;NOP&quot;, &quot;POR&quot;, &quot;PHI&quot;, &quot;SAS&quot;, &quot;HOU&quot;, &quot;IND&quot;, &quot;MIL&quot;, &quot;OKC&quot;, &quot;TOR&quot;, &quot;CHI&quot;, &quot;HOU&quot;, &quot;DEN&quot;, &quot;ORL&quot;, &quot;TOT&quot;, &quot;NOP&quot;, &quot;CHI&quot;, &quot;ORL&quot;, &quot;TOT&quot;, &quot;ATL&quot;, &quot;MIA...
-$ G      &lt;dbl&gt; 75, 70, 76, 69, 53, 21, 75, 72, 18, 22, 69, 38, 74, 66, 11, 75, 78, 74, 24, 67, 19, 15, 18, 14, 4, 75, 50, 37, 13, 53, 29, 7, 52, 69, 77, 81, 64, 39, 81, 65, 82, 62, 74, 80, 52, 28, 57, 26, 82, 77, 11...
-$ GS     &lt;dbl&gt; 8, 8, 76, 19, 3, 0, 75, 31, 1, 0, 67, 0, 67, 50, 0, 75, 78, 62, 0, 67, 1, 1, 0, 0, 0, 36, 14, 9, 5, 6, 1, 0, 50, 10, 77, 40, 64, 11, 67, 65, 82, 0, 30, 2, 1, 1, 13, 3, 37, 10, 11, 0, 1, 25, 21, 2, 0, ...</code></pre>
+$ Rk     &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 23, 23, 24, 25, 25, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 40, 40, 41, 42, 43, 44, 45, 46, 47,…
+$ Player &lt;chr&gt; &quot;Alex Abrines&quot;, &quot;Quincy Acy&quot;, &quot;Steven Adams&quot;, &quot;Bam Adebayo&quot;, &quot;Arron Afflalo&quot;, &quot;Cole Aldrich&quot;, &quot;LaMarcus Aldridge&quot;, &quot;Jarrett Allen&quot;, &quot;Kadeem Allen&quot;, &quot;Tony Allen&quot;, &quot;Al-Farouq Aminu&quot;, &quot;Justin Anderson&quot;, &quot;K…
+$ Pos    &lt;chr&gt; &quot;SG&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;C&quot;, &quot;SG&quot;, &quot;C&quot;, &quot;C&quot;, &quot;C&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;PF&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;SG&quot;, &quot;C&quot;, &quot;C&quot;, &quot;C&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SG&quot;, &quot;SG&quot;, &quot;PG&quot;, &quot;PG&quot;, &quot;PG&quot;, &quot;PF&quot;, &quot;…
+$ Age    &lt;dbl&gt; 24, 27, 24, 20, 32, 29, 32, 19, 25, 36, 27, 24, 24, 29, 19, 23, 33, 20, 23, 32, 29, 25, 31, 31, 31, 30, 28, 28, 28, 22, 24, 21, 20, 33, 25, 27, 29, 29, 31, 28, 24, 21, 29, 31, 31, 31, 23, 23, 20, 25, 29…
+$ Tm     &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MIA&quot;, &quot;ORL&quot;, &quot;MIN&quot;, &quot;SAS&quot;, &quot;BRK&quot;, &quot;BOS&quot;, &quot;NOP&quot;, &quot;POR&quot;, &quot;PHI&quot;, &quot;SAS&quot;, &quot;HOU&quot;, &quot;IND&quot;, &quot;MIL&quot;, &quot;OKC&quot;, &quot;TOR&quot;, &quot;CHI&quot;, &quot;HOU&quot;, &quot;DEN&quot;, &quot;ORL&quot;, &quot;TOT&quot;, &quot;NOP&quot;, &quot;CHI&quot;, &quot;ORL&quot;, &quot;TOT&quot;, &quot;ATL&quot;, &quot;MIA&quot;,…
+$ G      &lt;dbl&gt; 75, 70, 76, 69, 53, 21, 75, 72, 18, 22, 69, 38, 74, 66, 11, 75, 78, 74, 24, 67, 19, 15, 18, 14, 4, 75, 50, 37, 13, 53, 29, 7, 52, 69, 77, 81, 64, 39, 81, 65, 82, 62, 74, 80, 52, 28, 57, 26, 82, 77, 11, …
+$ GS     &lt;dbl&gt; 8, 8, 76, 19, 3, 0, 75, 31, 1, 0, 67, 0, 67, 50, 0, 75, 78, 62, 0, 67, 1, 1, 0, 0, 0, 36, 14, 9, 5, 6, 1, 0, 50, 10, 77, 40, 64, 11, 67, 65, 82, 0, 30, 2, 1, 1, 13, 3, 37, 10, 11, 0, 1, 25, 21, 2, 0, 74…</code></pre>
 <p>Now that the data is correctly specified, the following demonstrates how we can use the standard <span class="func">mutate</span> function to create composites of existing variables.</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" title="1">bball =<span class="st"> </span>bball <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb88-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">trueShooting =</span> PTS <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(FGA <span class="op">+</span><span class="st"> </span>(.<span class="dv">44</span> <span class="op">*</span><span class="st"> </span>FTA))),</a>
-<a class="sourceLine" id="cb88-3" title="3">         <span class="dt">effectiveFG =</span> (FG <span class="op">+</span><span class="st"> </span>(.<span class="dv">5</span> <span class="op">*</span><span class="st"> </span>X3P)) <span class="op">/</span><span class="st"> </span>FGA, </a>
-<a class="sourceLine" id="cb88-4" title="4">         <span class="dt">shootingDif =</span> trueShooting <span class="op">-</span><span class="st"> </span>FG.)</a>
-<a class="sourceLine" id="cb88-5" title="5"></a>
-<a class="sourceLine" id="cb88-6" title="6"><span class="kw">summary</span>(<span class="kw">select</span>(bball, shootingDif))  <span class="co"># select and others don&#39;t have to be piped to use</span></a></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1">bball =<span class="st"> </span>bball <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb88-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">trueShooting =</span> PTS <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(FGA <span class="op">+</span><span class="st"> </span>(.<span class="dv">44</span> <span class="op">*</span><span class="st"> </span>FTA))),</a>
+<a class="sourceLine" id="cb88-3" data-line-number="3">         <span class="dt">effectiveFG =</span> (FG <span class="op">+</span><span class="st"> </span>(.<span class="dv">5</span> <span class="op">*</span><span class="st"> </span>X3P)) <span class="op">/</span><span class="st"> </span>FGA, </a>
+<a class="sourceLine" id="cb88-4" data-line-number="4">         <span class="dt">shootingDif =</span> trueShooting <span class="op">-</span><span class="st"> </span>FG.)</a>
+<a class="sourceLine" id="cb88-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb88-6" data-line-number="6"><span class="kw">summary</span>(<span class="kw">select</span>(bball, shootingDif))  <span class="co"># select and others don&#39;t have to be piped to use</span></a></code></pre></div>
 <pre><code>  shootingDif      
  Min.   :-0.05698  
  1st Qu.: 0.04909  
@@ -756,14 +756,14 @@ $ GS     &lt;dbl&gt; 8, 8, 76, 19, 3, 0, 75, 31, 1, 0, 67, 0, 67, 50, 0, 75, 78,
 <h2>Grouping and Summarizing Data</h2>
 <p>A very common task is to look at group-based statistics, and we can use <span class="func">group_by</span> and <span class="func">summarize</span> to help us in this regard<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>. Base R has things like <span class="func">aggregate</span>, <span class="func">by</span>, and <span class="func">tapply</span> for this, but they should not be used, as this approach is much more straightforward, flexible, and faster.</p>
 <p>For this demonstration, I’m going to start putting together several things we’ve demonstrated thus far. Ultimately we’ll create a variable called <span class="objclass">trueShooting</span>, which represents ‘true shooting percentage’, and get an average for each position, and compare it to the standard field goal percentage.</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" title="1">bball <span class="op">%&gt;%</span><span class="st">   </span></a>
-<a class="sourceLine" id="cb90-2" title="2"><span class="st">  </span><span class="kw">select</span>(Pos, FG, FGA, FG., FTA, X3P, PTS) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb90-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">trueShooting =</span> PTS <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(FGA <span class="op">+</span><span class="st"> </span>(.<span class="dv">44</span> <span class="op">*</span><span class="st"> </span>FTA))),</a>
-<a class="sourceLine" id="cb90-4" title="4">         <span class="dt">effectiveFG =</span> (FG <span class="op">+</span><span class="st"> </span>(.<span class="dv">5</span> <span class="op">*</span><span class="st"> </span>X3P)) <span class="op">/</span><span class="st"> </span>FGA, </a>
-<a class="sourceLine" id="cb90-5" title="5">         <span class="dt">shootingDif =</span> trueShooting <span class="op">-</span><span class="st"> </span>FG.) <span class="op">%&gt;%</span><span class="st">  </span></a>
-<a class="sourceLine" id="cb90-6" title="6"><span class="st">  </span><span class="kw">group_by</span>(Pos) <span class="op">%&gt;%</span><span class="st">                                                 </span></a>
-<a class="sourceLine" id="cb90-7" title="7"><span class="st">  </span><span class="kw">summarize</span>(<span class="st">`</span><span class="dt">meanFG%</span><span class="st">`</span> =<span class="st"> </span><span class="kw">mean</span>(FG., <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb90-8" title="8">            <span class="dt">meanTrueShooting =</span> <span class="kw">mean</span>(trueShooting, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))    </a></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st">   </span></a>
+<a class="sourceLine" id="cb90-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(Pos, FG, FGA, FG., FTA, X3P, PTS) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb90-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">trueShooting =</span> PTS <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(FGA <span class="op">+</span><span class="st"> </span>(.<span class="dv">44</span> <span class="op">*</span><span class="st"> </span>FTA))),</a>
+<a class="sourceLine" id="cb90-4" data-line-number="4">         <span class="dt">effectiveFG =</span> (FG <span class="op">+</span><span class="st"> </span>(.<span class="dv">5</span> <span class="op">*</span><span class="st"> </span>X3P)) <span class="op">/</span><span class="st"> </span>FGA, </a>
+<a class="sourceLine" id="cb90-5" data-line-number="5">         <span class="dt">shootingDif =</span> trueShooting <span class="op">-</span><span class="st"> </span>FG.) <span class="op">%&gt;%</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb90-6" data-line-number="6"><span class="st">  </span><span class="kw">group_by</span>(Pos) <span class="op">%&gt;%</span><span class="st">                                                 </span></a>
+<a class="sourceLine" id="cb90-7" data-line-number="7"><span class="st">  </span><span class="kw">summarize</span>(<span class="st">`</span><span class="dt">meanFG%</span><span class="st">`</span> =<span class="st"> </span><span class="kw">mean</span>(FG., <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb90-8" data-line-number="8">            <span class="dt">meanTrueShooting =</span> <span class="kw">mean</span>(trueShooting, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))    </a></code></pre></div>
 <pre><code># A tibble: 7 x 3
   Pos   `meanFG%` meanTrueShooting
   &lt;chr&gt;     &lt;dbl&gt;            &lt;dbl&gt;
@@ -776,11 +776,11 @@ $ GS     &lt;dbl&gt; 8, 8, 76, 19, 3, 0, 75, 31, 1, 0, 67, 0, 67, 50, 0, 75, 78,
 7 SG        0.404            0.516</code></pre>
 <p>We can use <span class="func">do</span> on grouped data to go further. This function can be used to create a new <span class="emph">list-column</span> in the data, the elements of which can be <em>anything</em>, even the results of an analysis for each group. As such, we can use <span class="pack">tidyr’s</span> <span class="func">unnest</span> to get back to a standard data frame.</p>
 <p>To demonstrate, the following will group data by position, then get the correlation between field-goal percentage and free-throw shooting percentage. For some reason, one individual was labeled as ‘PG-SG’, and only two were labeled ‘SF-SG’, so we’ll change them to just ‘SG’. On your own, I recommend just looking at it to the do line first, and compare to this result.</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" title="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb92-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Pos =</span> <span class="kw">if_else</span>(Pos<span class="op">==</span><span class="st">&#39;PG-SG&#39;</span> <span class="op">|</span><span class="st"> </span>Pos<span class="op">==</span><span class="st">&#39;SF-SG&#39;</span>, <span class="st">&#39;SG&#39;</span>, Pos)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb92-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(Pos) <span class="op">%&gt;%</span><span class="st">     </span></a>
-<a class="sourceLine" id="cb92-4" title="4"><span class="st">  </span><span class="kw">do</span>(<span class="dt">FgFt_Corr=</span><span class="kw">cor</span>(.<span class="op">$</span>FG., .<span class="op">$</span>FT., <span class="dt">use=</span><span class="st">&#39;complete&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb92-5" title="5"><span class="st">  </span><span class="kw">unnest</span>(FgFt_Corr)</a></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb92-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Pos =</span> <span class="kw">if_else</span>(Pos<span class="op">==</span><span class="st">&#39;PG-SG&#39;</span> <span class="op">|</span><span class="st"> </span>Pos<span class="op">==</span><span class="st">&#39;SF-SG&#39;</span>, <span class="st">&#39;SG&#39;</span>, Pos)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb92-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(Pos) <span class="op">%&gt;%</span><span class="st">     </span></a>
+<a class="sourceLine" id="cb92-4" data-line-number="4"><span class="st">  </span><span class="kw">do</span>(<span class="dt">FgFt_Corr=</span><span class="kw">cor</span>(.<span class="op">$</span>FG., .<span class="op">$</span>FT., <span class="dt">use=</span><span class="st">&#39;complete&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb92-5" data-line-number="5"><span class="st">  </span><span class="kw">unnest</span>(FgFt_Corr)</a></code></pre></div>
 <pre><code># A tibble: 5 x 2
   Pos   FgFt_Corr
   &lt;chr&gt;     &lt;dbl&gt;
@@ -790,14 +790,14 @@ $ GS     &lt;dbl&gt; 8, 8, 76, 19, 3, 0, 75, 31, 1, 0, 67, 0, 67, 50, 0, 75, 78,
 4 SF       0.203 
 5 SG       0.242 </code></pre>
 <p>As a reminder, data frames are lists. As such, anything can go into the ‘columns’.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" title="1"><span class="kw">library</span>(nycflights13)</a>
-<a class="sourceLine" id="cb94-2" title="2">carriers =<span class="st"> </span><span class="kw">group_by</span>(flights, carrier)</a>
-<a class="sourceLine" id="cb94-3" title="3"><span class="kw">group_size</span>(carriers)</a></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1"><span class="kw">library</span>(nycflights13)</a>
+<a class="sourceLine" id="cb94-2" data-line-number="2">carriers =<span class="st"> </span><span class="kw">group_by</span>(flights, carrier)</a>
+<a class="sourceLine" id="cb94-3" data-line-number="3"><span class="kw">group_size</span>(carriers)</a></code></pre></div>
 <pre><code> [1] 18460 32729   714 54635 48110 54173   685  3260   342 26397    32 58665 20536  5162 12275   601</code></pre>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" title="1">mods =<span class="st"> </span>carriers <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb96-2" title="2"><span class="st">  </span><span class="kw">do</span>(<span class="dt">model =</span> <span class="kw">lm</span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_time, <span class="dt">data =</span> .)) </a>
-<a class="sourceLine" id="cb96-3" title="3"></a>
-<a class="sourceLine" id="cb96-4" title="4">mods</a></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1">mods =<span class="st"> </span>carriers <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb96-2" data-line-number="2"><span class="st">  </span><span class="kw">do</span>(<span class="dt">model =</span> <span class="kw">lm</span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_time, <span class="dt">data =</span> .)) </a>
+<a class="sourceLine" id="cb96-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb96-4" data-line-number="4">mods</a></code></pre></div>
 <pre><code>Source: local data frame [16 x 2]
 Groups: &lt;by row&gt;
 
@@ -820,10 +820,10 @@ Groups: &lt;by row&gt;
 14 VX      &lt;lm&gt;  
 15 WN      &lt;lm&gt;  
 16 YV      &lt;lm&gt;  </code></pre>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" title="1">mods <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb98-2" title="2"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">carrier =</span> carrier,</a>
-<a class="sourceLine" id="cb98-3" title="3">            <span class="st">`</span><span class="dt">Adjusted Rsq</span><span class="st">`</span> =<span class="st"> </span><span class="kw">summary</span>(model)<span class="op">$</span>adj.r.squared) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb98-4" title="4"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1">mods <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb98-2" data-line-number="2"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">carrier =</span> carrier,</a>
+<a class="sourceLine" id="cb98-3" data-line-number="3">            <span class="st">`</span><span class="dt">Adjusted Rsq</span><span class="st">`</span> =<span class="st"> </span><span class="kw">summary</span>(model)<span class="op">$</span>adj.r.squared) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb98-4" data-line-number="4"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
 <pre><code># A tibble: 6 x 2
   carrier `Adjusted Rsq`
   &lt;chr&gt;            &lt;dbl&gt;
@@ -834,7 +834,7 @@ Groups: &lt;by row&gt;
 5 DL              0.0347
 6 EV              0.0836</code></pre>
 <div class="note">
-<p>You can use <span class="func">group_by</span> on more than one variable, e.g. <code>group_by(var1, var2)</code></p>
+<p>You can use <span class="func">group_by</span> on more than one variable, e.g. <code>group_by(var1, var2)</code></p>
 <p><img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></p>
 </div>
 </div>
@@ -843,49 +843,49 @@ Groups: &lt;by row&gt;
 <p>Tidy data doesn’t really have a problem with variable names starting with numbers or incorporating symbols. I would still suggest it is poor practice, because even if your data set looks fine, you’ll encounter problems with modeling and visualization package using that data. However, as a demonstration, we can ‘fix’ some of the variable names.</p>
 <p>One issue is that when we scraped the data and converted it to a <span class="objclass">data.frame</span>, the names that started with a number, like <code>3P</code> for ‘three point baskets made’, were made into <code>X3P</code>, because that’s the way R works by default. In addition, <code>3P%</code>, i.e. three point percentage made, was made into <code>3P.</code> Same goes for the 2P (two-pointers) and FT (free-throw) variables.</p>
 <p>We can use rename to change column names. A basic example is as follows.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" title="1">data <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb100-2" title="2"><span class="st">  </span><span class="kw">rename</span>(<span class="dt">new_name =</span> old_name,</a>
-<a class="sourceLine" id="cb100-3" title="3">         <span class="dt">new_name2 =</span> old_name2)</a></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1">data <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb100-2" data-line-number="2"><span class="st">  </span><span class="kw">rename</span>(<span class="dt">new_name =</span> old_name,</a>
+<a class="sourceLine" id="cb100-3" data-line-number="3">         <span class="dt">new_name2 =</span> old_name2)</a></code></pre></div>
 <p>Very straightforward. However, oftentimes we’ll need to change <em>patterns</em>, as with our current problem. The following uses <span class="func">str_replace</span> from <span class="pack">stringr</span> to look for a pattern in a name, and replace that pattern with some other pattern. It uses <span class="emph">regular expressions</span> for the patterns.</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" title="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb101-2" title="2"><span class="st">  </span><span class="kw">rename_at</span>(<span class="kw">vars</span>(<span class="kw">contains</span>(<span class="st">&#39;.&#39;</span>)), str_replace, <span class="dt">pattern=</span><span class="st">&#39;</span><span class="ch">\\</span><span class="st">.&#39;</span>, <span class="dt">replacement=</span><span class="st">&#39;%&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb101-3" title="3"><span class="st">  </span><span class="kw">rename_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">&#39;X&#39;</span>)), str_replace, <span class="dt">pattern=</span><span class="st">&#39;X&#39;</span>, <span class="dt">replacement=</span><span class="st">&#39;&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb101-4" title="4"><span class="st">  </span><span class="kw">glimpse</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb101-2" data-line-number="2"><span class="st">  </span><span class="kw">rename_at</span>(<span class="kw">vars</span>(<span class="kw">contains</span>(<span class="st">&#39;.&#39;</span>)), str_replace, <span class="dt">pattern=</span><span class="st">&#39;</span><span class="ch">\\</span><span class="st">.&#39;</span>, <span class="dt">replacement=</span><span class="st">&#39;%&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb101-3" data-line-number="3"><span class="st">  </span><span class="kw">rename_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">&#39;X&#39;</span>)), str_replace, <span class="dt">pattern=</span><span class="st">&#39;X&#39;</span>, <span class="dt">replacement=</span><span class="st">&#39;&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb101-4" data-line-number="4"><span class="st">  </span><span class="kw">glimpse</span>()</a></code></pre></div>
 <pre><code>Observations: 664
 Variables: 33
-$ Rk           &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 23, 23, 24, 25, 25, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 40, 40, 41, 42, 43, 44, 45,...
-$ Player       &lt;chr&gt; &quot;Alex Abrines&quot;, &quot;Quincy Acy&quot;, &quot;Steven Adams&quot;, &quot;Bam Adebayo&quot;, &quot;Arron Afflalo&quot;, &quot;Cole Aldrich&quot;, &quot;LaMarcus Aldridge&quot;, &quot;Jarrett Allen&quot;, &quot;Kadeem Allen&quot;, &quot;Tony Allen&quot;, &quot;Al-Farouq Aminu&quot;, &quot;Justin Ander...
-$ Pos          &lt;chr&gt; &quot;SG&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;C&quot;, &quot;SG&quot;, &quot;C&quot;, &quot;C&quot;, &quot;C&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;PF&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;SG&quot;, &quot;C&quot;, &quot;C&quot;, &quot;C&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SG&quot;, &quot;SG&quot;, &quot;PG&quot;, &quot;PG&quot;, &quot;PG&quot;,...
-$ Age          &lt;dbl&gt; 24, 27, 24, 20, 32, 29, 32, 19, 25, 36, 27, 24, 24, 29, 19, 23, 33, 20, 23, 32, 29, 25, 31, 31, 31, 30, 28, 28, 28, 22, 24, 21, 20, 33, 25, 27, 29, 29, 31, 28, 24, 21, 29, 31, 31, 31, 23, 23, 20...
-$ Tm           &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MIA&quot;, &quot;ORL&quot;, &quot;MIN&quot;, &quot;SAS&quot;, &quot;BRK&quot;, &quot;BOS&quot;, &quot;NOP&quot;, &quot;POR&quot;, &quot;PHI&quot;, &quot;SAS&quot;, &quot;HOU&quot;, &quot;IND&quot;, &quot;MIL&quot;, &quot;OKC&quot;, &quot;TOR&quot;, &quot;CHI&quot;, &quot;HOU&quot;, &quot;DEN&quot;, &quot;ORL&quot;, &quot;TOT&quot;, &quot;NOP&quot;, &quot;CHI&quot;, &quot;ORL&quot;, &quot;TOT&quot;, &quot;ATL&quot;...
-$ G            &lt;dbl&gt; 75, 70, 76, 69, 53, 21, 75, 72, 18, 22, 69, 38, 74, 66, 11, 75, 78, 74, 24, 67, 19, 15, 18, 14, 4, 75, 50, 37, 13, 53, 29, 7, 52, 69, 77, 81, 64, 39, 81, 65, 82, 62, 74, 80, 52, 28, 57, 26, 82, ...
-$ GS           &lt;dbl&gt; 8, 8, 76, 19, 3, 0, 75, 31, 1, 0, 67, 0, 67, 50, 0, 75, 78, 62, 0, 67, 1, 1, 0, 0, 0, 36, 14, 9, 5, 6, 1, 0, 50, 10, 77, 40, 64, 11, 67, 65, 82, 0, 30, 2, 1, 1, 13, 3, 37, 10, 11, 0, 1, 25, 21, ...
-$ MP           &lt;dbl&gt; 1134, 1359, 2487, 1368, 682, 49, 2509, 1441, 107, 273, 2072, 519, 1978, 1725, 30, 2756, 2501, 1481, 304, 2269, 141, 279, 182, 121, 61, 1760, 715, 570, 145, 713, 385, 80, 1780, 1603, 2634, 2683, ...
-$ FG           &lt;dbl&gt; 115, 130, 448, 174, 65, 5, 687, 234, 6, 44, 230, 87, 231, 207, 4, 742, 472, 163, 17, 268, 22, 31, 9, 7, 2, 244, 91, 80, 11, 72, 20, 14, 203, 303, 537, 465, 270, 109, 210, 284, 683, 73, 409, 337,...
-$ FGA          &lt;dbl&gt; 291, 365, 712, 340, 162, 15, 1347, 397, 22, 91, 582, 202, 438, 480, 9, 1402, 1168, 346, 41, 651, 47, 79, 22, 16, 6, 540, 215, 168, 47, 192, 59, 21, 564, 690, 1208, 1028, 650, 262, 446, 676, 1484...
-$ `FG%`        &lt;dbl&gt; 0.395, 0.356, 0.629, 0.512, 0.401, 0.333, 0.510, 0.589, 0.273, 0.484, 0.395, 0.431, 0.527, 0.431, 0.444, 0.529, 0.404, 0.471, 0.415, 0.412, 0.468, 0.392, 0.409, 0.438, 0.333, 0.452, 0.423, 0.476...
-$ `3P`         &lt;dbl&gt; 84, 102, 0, 0, 27, 0, 27, 5, 0, 4, 125, 34, 19, 131, 0, 43, 169, 73, 9, 170, 8, 8, 0, 0, 0, 114, 60, 49, 11, 11, 11, 4, 90, 115, 119, 156, 92, 54, 3, 108, 199, 28, 34, 149, 92, 57, 0, 11, 118, 9...
-$ `3PA`        &lt;dbl&gt; 221, 292, 2, 7, 70, 0, 92, 15, 11, 12, 339, 103, 57, 339, 0, 140, 474, 197, 31, 462, 23, 29, 0, 0, 0, 272, 156, 111, 45, 43, 33, 5, 295, 313, 333, 422, 274, 146, 21, 274, 530, 82, 86, 395, 247, ...
-$ `3P%`        &lt;dbl&gt; 0.380, 0.349, 0.000, 0.000, 0.386, NA, 0.293, 0.333, 0.000, 0.333, 0.369, 0.330, 0.333, 0.386, NA, 0.307, 0.357, 0.371, 0.290, 0.368, 0.348, 0.276, NA, NA, NA, 0.419, 0.385, 0.441, 0.244, 0.256,...
-$ `2P`         &lt;dbl&gt; 31, 28, 448, 174, 38, 5, 660, 229, 6, 40, 105, 53, 212, 76, 4, 699, 303, 90, 8, 98, 14, 23, 9, 7, 2, 130, 31, 31, 0, 61, 9, 10, 113, 188, 418, 309, 178, 55, 207, 176, 484, 45, 375, 188, 107, 81,...
-$ `2PA`        &lt;dbl&gt; 70, 73, 710, 333, 92, 15, 1255, 382, 11, 79, 243, 99, 381, 141, 9, 1262, 694, 149, 10, 189, 24, 50, 22, 16, 6, 268, 59, 57, 2, 149, 26, 16, 269, 377, 875, 606, 376, 116, 425, 402, 954, 96, 721, ...
-$ `2P%`        &lt;dbl&gt; 0.443, 0.384, 0.631, 0.523, 0.413, 0.333, 0.526, 0.599, 0.545, 0.506, 0.432, 0.535, 0.556, 0.539, 0.444, 0.554, 0.437, 0.604, 0.800, 0.519, 0.583, 0.460, 0.409, 0.438, 0.333, 0.485, 0.525, 0.544...
-$ `eFG%`       &lt;dbl&gt; 0.540, 0.496, 0.629, 0.512, 0.485, 0.333, 0.520, 0.596, 0.273, 0.505, 0.503, 0.515, 0.549, 0.568, 0.444, 0.545, 0.476, 0.577, 0.524, 0.542, 0.553, 0.443, 0.409, 0.438, 0.333, 0.557, 0.563, 0.622...
-$ FT           &lt;dbl&gt; 39, 49, 160, 129, 22, 2, 334, 114, 7, 11, 59, 28, 104, 72, 5, 487, 148, 39, 5, 76, 2, 7, 4, 4, 0, 164, 17, 17, 0, 20, 20, 6, 32, 80, 259, 182, 108, 35, 59, 160, 292, 22, 124, 148, 101, 47, 30, 1...
-$ FTA          &lt;dbl&gt; 46, 60, 287, 179, 26, 6, 399, 147, 9, 21, 80, 38, 146, 93, 6, 641, 193, 62, 6, 89, 3, 12, 13, 12, 1, 189, 22, 22, 0, 25, 26, 10, 71, 102, 313, 226, 130, 44, 78, 201, 368, 33, 159, 163, 109, 54, ...
-$ `FT%`        &lt;dbl&gt; 0.848, 0.817, 0.557, 0.721, 0.846, 0.333, 0.837, 0.776, 0.778, 0.524, 0.738, 0.737, 0.712, 0.774, 0.833, 0.760, 0.767, 0.629, 0.833, 0.854, 0.667, 0.583, 0.308, 0.333, 0.000, 0.868, 0.773, 0.773...
-$ ORB          &lt;dbl&gt; 26, 40, 384, 118, 4, 3, 246, 144, 4, 20, 97, 25, 84, 94, 5, 156, 67, 44, 1, 33, 3, 4, 9, 7, 2, 30, 7, 5, 2, 4, 5, 1, 69, 15, 77, 70, 57, 15, 130, 25, 61, 14, 97, 19, 13, 6, 60, 8, 40, 18, 16, 70...
-$ DRB          &lt;dbl&gt; 88, 216, 301, 263, 62, 12, 389, 244, 7, 27, 428, 68, 312, 237, 4, 597, 386, 140, 24, 261, 12, 34, 38, 30, 8, 130, 89, 76, 13, 120, 25, 7, 291, 186, 391, 339, 249, 65, 304, 223, 302, 57, 317, 131...
-$ TRB          &lt;dbl&gt; 114, 256, 685, 381, 66, 15, 635, 388, 11, 47, 525, 93, 396, 331, 9, 753, 453, 184, 25, 294, 15, 38, 47, 37, 10, 160, 96, 81, 15, 124, 30, 8, 360, 201, 468, 409, 306, 80, 434, 248, 363, 71, 414, ...
-$ AST          &lt;dbl&gt; 28, 57, 88, 101, 30, 3, 152, 49, 12, 9, 84, 25, 202, 60, 0, 361, 103, 55, 35, 105, 9, 18, 3, 2, 1, 287, 31, 26, 5, 38, 47, 5, 376, 434, 152, 331, 349, 54, 93, 228, 373, 31, 123, 148, 103, 45, 10...
-$ STL          &lt;dbl&gt; 38, 33, 92, 32, 4, 2, 43, 28, 3, 11, 79, 15, 115, 24, 1, 109, 47, 52, 13, 98, 8, 2, 2, 1, 1, 54, 8, 7, 1, 16, 26, 2, 88, 35, 49, 82, 65, 23, 22, 100, 96, 15, 36, 66, 46, 20, 35, 21, 22, 26, 18, ...
-$ BLK          &lt;dbl&gt; 8, 29, 78, 41, 9, 1, 90, 88, 2, 3, 40, 7, 60, 21, 3, 106, 49, 14, 0, 13, 3, 3, 4, 2, 2, 0, 7, 5, 2, 2, 6, 1, 43, 3, 14, 52, 23, 6, 51, 45, 36, 7, 43, 12, 3, 9, 56, 12, 53, 28, 5, 21, 1, 95, 16, ...
-$ TOV          &lt;dbl&gt; 25, 60, 128, 66, 21, 1, 111, 82, 9, 19, 79, 16, 94, 42, 2, 223, 99, 45, 13, 52, 15, 8, 9, 5, 4, 123, 19, 15, 4, 23, 18, 4, 136, 143, 118, 149, 131, 46, 80, 157, 214, 24, 143, 94, 54, 40, 51, 47,...
-$ PF           &lt;dbl&gt; 124, 149, 215, 138, 56, 11, 162, 147, 15, 49, 136, 54, 114, 126, 1, 231, 197, 130, 18, 132, 22, 11, 20, 14, 6, 94, 54, 47, 7, 46, 33, 12, 117, 83, 94, 168, 72, 91, 200, 147, 160, 36, 145, 91, 41...
-$ PTS          &lt;dbl&gt; 353, 411, 1056, 477, 179, 12, 1735, 587, 19, 103, 644, 236, 585, 617, 13, 2014, 1261, 438, 48, 782, 54, 77, 22, 18, 4, 766, 259, 226, 33, 175, 71, 38, 528, 801, 1452, 1268, 740, 307, 482, 836, 1...
-$ trueShooting &lt;dbl&gt; 0.5670865, 0.5250383, 0.6298611, 0.5695386, 0.5160286, 0.3401361, 0.5697641, 0.6357217, 0.3659476, 0.5137670, 0.5217110, 0.5395026, 0.5823909, 0.5922215, 0.5584192, 0.5979668, 0.5032245, 0.58669...
-$ effectiveFG  &lt;dbl&gt; 0.5395189, 0.4958904, 0.6292135, 0.5117647, 0.4845679, 0.3333333, 0.5200445, 0.5957179, 0.2727273, 0.5054945, 0.5025773, 0.5148515, 0.5490868, 0.5677083, 0.4444444, 0.5445792, 0.4764555, 0.57658...
-$ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.0575386379, 0.1150285978, 0.0071360544, 0.0597640815, 0.0467217120, 0.0929476117, 0.0297669593, 0.1267109527, 0.1085025604, 0.0553908888, 0.1612214543...</code></pre>
+$ Rk           &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 23, 23, 24, 25, 25, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 40, 40, 41, 42, 43, 44, 45, 4…
+$ Player       &lt;chr&gt; &quot;Alex Abrines&quot;, &quot;Quincy Acy&quot;, &quot;Steven Adams&quot;, &quot;Bam Adebayo&quot;, &quot;Arron Afflalo&quot;, &quot;Cole Aldrich&quot;, &quot;LaMarcus Aldridge&quot;, &quot;Jarrett Allen&quot;, &quot;Kadeem Allen&quot;, &quot;Tony Allen&quot;, &quot;Al-Farouq Aminu&quot;, &quot;Justin Anderso…
+$ Pos          &lt;chr&gt; &quot;SG&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;C&quot;, &quot;SG&quot;, &quot;C&quot;, &quot;C&quot;, &quot;C&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;C&quot;, &quot;PF&quot;, &quot;PF&quot;, &quot;SF&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;PF&quot;, &quot;SG&quot;, &quot;C&quot;, &quot;C&quot;, &quot;C&quot;, &quot;PG&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SF&quot;, &quot;SG&quot;, &quot;SG&quot;, &quot;PG&quot;, &quot;PG&quot;, &quot;PG&quot;, &quot;…
+$ Age          &lt;dbl&gt; 24, 27, 24, 20, 32, 29, 32, 19, 25, 36, 27, 24, 24, 29, 19, 23, 33, 20, 23, 32, 29, 25, 31, 31, 31, 30, 28, 28, 28, 22, 24, 21, 20, 33, 25, 27, 29, 29, 31, 28, 24, 21, 29, 31, 31, 31, 23, 23, 20, …
+$ Tm           &lt;chr&gt; &quot;OKC&quot;, &quot;BRK&quot;, &quot;OKC&quot;, &quot;MIA&quot;, &quot;ORL&quot;, &quot;MIN&quot;, &quot;SAS&quot;, &quot;BRK&quot;, &quot;BOS&quot;, &quot;NOP&quot;, &quot;POR&quot;, &quot;PHI&quot;, &quot;SAS&quot;, &quot;HOU&quot;, &quot;IND&quot;, &quot;MIL&quot;, &quot;OKC&quot;, &quot;TOR&quot;, &quot;CHI&quot;, &quot;HOU&quot;, &quot;DEN&quot;, &quot;ORL&quot;, &quot;TOT&quot;, &quot;NOP&quot;, &quot;CHI&quot;, &quot;ORL&quot;, &quot;TOT&quot;, &quot;ATL&quot;, …
+$ G            &lt;dbl&gt; 75, 70, 76, 69, 53, 21, 75, 72, 18, 22, 69, 38, 74, 66, 11, 75, 78, 74, 24, 67, 19, 15, 18, 14, 4, 75, 50, 37, 13, 53, 29, 7, 52, 69, 77, 81, 64, 39, 81, 65, 82, 62, 74, 80, 52, 28, 57, 26, 82, 77…
+$ GS           &lt;dbl&gt; 8, 8, 76, 19, 3, 0, 75, 31, 1, 0, 67, 0, 67, 50, 0, 75, 78, 62, 0, 67, 1, 1, 0, 0, 0, 36, 14, 9, 5, 6, 1, 0, 50, 10, 77, 40, 64, 11, 67, 65, 82, 0, 30, 2, 1, 1, 13, 3, 37, 10, 11, 0, 1, 25, 21, 2,…
+$ MP           &lt;dbl&gt; 1134, 1359, 2487, 1368, 682, 49, 2509, 1441, 107, 273, 2072, 519, 1978, 1725, 30, 2756, 2501, 1481, 304, 2269, 141, 279, 182, 121, 61, 1760, 715, 570, 145, 713, 385, 80, 1780, 1603, 2634, 2683, 19…
+$ FG           &lt;dbl&gt; 115, 130, 448, 174, 65, 5, 687, 234, 6, 44, 230, 87, 231, 207, 4, 742, 472, 163, 17, 268, 22, 31, 9, 7, 2, 244, 91, 80, 11, 72, 20, 14, 203, 303, 537, 465, 270, 109, 210, 284, 683, 73, 409, 337, 1…
+$ FGA          &lt;dbl&gt; 291, 365, 712, 340, 162, 15, 1347, 397, 22, 91, 582, 202, 438, 480, 9, 1402, 1168, 346, 41, 651, 47, 79, 22, 16, 6, 540, 215, 168, 47, 192, 59, 21, 564, 690, 1208, 1028, 650, 262, 446, 676, 1484, …
+$ `FG%`        &lt;dbl&gt; 0.395, 0.356, 0.629, 0.512, 0.401, 0.333, 0.510, 0.589, 0.273, 0.484, 0.395, 0.431, 0.527, 0.431, 0.444, 0.529, 0.404, 0.471, 0.415, 0.412, 0.468, 0.392, 0.409, 0.438, 0.333, 0.452, 0.423, 0.476, …
+$ `3P`         &lt;dbl&gt; 84, 102, 0, 0, 27, 0, 27, 5, 0, 4, 125, 34, 19, 131, 0, 43, 169, 73, 9, 170, 8, 8, 0, 0, 0, 114, 60, 49, 11, 11, 11, 4, 90, 115, 119, 156, 92, 54, 3, 108, 199, 28, 34, 149, 92, 57, 0, 11, 118, 94,…
+$ `3PA`        &lt;dbl&gt; 221, 292, 2, 7, 70, 0, 92, 15, 11, 12, 339, 103, 57, 339, 0, 140, 474, 197, 31, 462, 23, 29, 0, 0, 0, 272, 156, 111, 45, 43, 33, 5, 295, 313, 333, 422, 274, 146, 21, 274, 530, 82, 86, 395, 247, 14…
+$ `3P%`        &lt;dbl&gt; 0.380, 0.349, 0.000, 0.000, 0.386, NA, 0.293, 0.333, 0.000, 0.333, 0.369, 0.330, 0.333, 0.386, NA, 0.307, 0.357, 0.371, 0.290, 0.368, 0.348, 0.276, NA, NA, NA, 0.419, 0.385, 0.441, 0.244, 0.256, 0…
+$ `2P`         &lt;dbl&gt; 31, 28, 448, 174, 38, 5, 660, 229, 6, 40, 105, 53, 212, 76, 4, 699, 303, 90, 8, 98, 14, 23, 9, 7, 2, 130, 31, 31, 0, 61, 9, 10, 113, 188, 418, 309, 178, 55, 207, 176, 484, 45, 375, 188, 107, 81, 1…
+$ `2PA`        &lt;dbl&gt; 70, 73, 710, 333, 92, 15, 1255, 382, 11, 79, 243, 99, 381, 141, 9, 1262, 694, 149, 10, 189, 24, 50, 22, 16, 6, 268, 59, 57, 2, 149, 26, 16, 269, 377, 875, 606, 376, 116, 425, 402, 954, 96, 721, 36…
+$ `2P%`        &lt;dbl&gt; 0.443, 0.384, 0.631, 0.523, 0.413, 0.333, 0.526, 0.599, 0.545, 0.506, 0.432, 0.535, 0.556, 0.539, 0.444, 0.554, 0.437, 0.604, 0.800, 0.519, 0.583, 0.460, 0.409, 0.438, 0.333, 0.485, 0.525, 0.544, …
+$ `eFG%`       &lt;dbl&gt; 0.540, 0.496, 0.629, 0.512, 0.485, 0.333, 0.520, 0.596, 0.273, 0.505, 0.503, 0.515, 0.549, 0.568, 0.444, 0.545, 0.476, 0.577, 0.524, 0.542, 0.553, 0.443, 0.409, 0.438, 0.333, 0.557, 0.563, 0.622, …
+$ FT           &lt;dbl&gt; 39, 49, 160, 129, 22, 2, 334, 114, 7, 11, 59, 28, 104, 72, 5, 487, 148, 39, 5, 76, 2, 7, 4, 4, 0, 164, 17, 17, 0, 20, 20, 6, 32, 80, 259, 182, 108, 35, 59, 160, 292, 22, 124, 148, 101, 47, 30, 19,…
+$ FTA          &lt;dbl&gt; 46, 60, 287, 179, 26, 6, 399, 147, 9, 21, 80, 38, 146, 93, 6, 641, 193, 62, 6, 89, 3, 12, 13, 12, 1, 189, 22, 22, 0, 25, 26, 10, 71, 102, 313, 226, 130, 44, 78, 201, 368, 33, 159, 163, 109, 54, 44…
+$ `FT%`        &lt;dbl&gt; 0.848, 0.817, 0.557, 0.721, 0.846, 0.333, 0.837, 0.776, 0.778, 0.524, 0.738, 0.737, 0.712, 0.774, 0.833, 0.760, 0.767, 0.629, 0.833, 0.854, 0.667, 0.583, 0.308, 0.333, 0.000, 0.868, 0.773, 0.773, …
+$ ORB          &lt;dbl&gt; 26, 40, 384, 118, 4, 3, 246, 144, 4, 20, 97, 25, 84, 94, 5, 156, 67, 44, 1, 33, 3, 4, 9, 7, 2, 30, 7, 5, 2, 4, 5, 1, 69, 15, 77, 70, 57, 15, 130, 25, 61, 14, 97, 19, 13, 6, 60, 8, 40, 18, 16, 70, …
+$ DRB          &lt;dbl&gt; 88, 216, 301, 263, 62, 12, 389, 244, 7, 27, 428, 68, 312, 237, 4, 597, 386, 140, 24, 261, 12, 34, 38, 30, 8, 130, 89, 76, 13, 120, 25, 7, 291, 186, 391, 339, 249, 65, 304, 223, 302, 57, 317, 131, …
+$ TRB          &lt;dbl&gt; 114, 256, 685, 381, 66, 15, 635, 388, 11, 47, 525, 93, 396, 331, 9, 753, 453, 184, 25, 294, 15, 38, 47, 37, 10, 160, 96, 81, 15, 124, 30, 8, 360, 201, 468, 409, 306, 80, 434, 248, 363, 71, 414, 15…
+$ AST          &lt;dbl&gt; 28, 57, 88, 101, 30, 3, 152, 49, 12, 9, 84, 25, 202, 60, 0, 361, 103, 55, 35, 105, 9, 18, 3, 2, 1, 287, 31, 26, 5, 38, 47, 5, 376, 434, 152, 331, 349, 54, 93, 228, 373, 31, 123, 148, 103, 45, 102,…
+$ STL          &lt;dbl&gt; 38, 33, 92, 32, 4, 2, 43, 28, 3, 11, 79, 15, 115, 24, 1, 109, 47, 52, 13, 98, 8, 2, 2, 1, 1, 54, 8, 7, 1, 16, 26, 2, 88, 35, 49, 82, 65, 23, 22, 100, 96, 15, 36, 66, 46, 20, 35, 21, 22, 26, 18, 15…
+$ BLK          &lt;dbl&gt; 8, 29, 78, 41, 9, 1, 90, 88, 2, 3, 40, 7, 60, 21, 3, 106, 49, 14, 0, 13, 3, 3, 4, 2, 2, 0, 7, 5, 2, 2, 6, 1, 43, 3, 14, 52, 23, 6, 51, 45, 36, 7, 43, 12, 3, 9, 56, 12, 53, 28, 5, 21, 1, 95, 16, 30…
+$ TOV          &lt;dbl&gt; 25, 60, 128, 66, 21, 1, 111, 82, 9, 19, 79, 16, 94, 42, 2, 223, 99, 45, 13, 52, 15, 8, 9, 5, 4, 123, 19, 15, 4, 23, 18, 4, 136, 143, 118, 149, 131, 46, 80, 157, 214, 24, 143, 94, 54, 40, 51, 47, 1…
+$ PF           &lt;dbl&gt; 124, 149, 215, 138, 56, 11, 162, 147, 15, 49, 136, 54, 114, 126, 1, 231, 197, 130, 18, 132, 22, 11, 20, 14, 6, 94, 54, 47, 7, 46, 33, 12, 117, 83, 94, 168, 72, 91, 200, 147, 160, 36, 145, 91, 41, …
+$ PTS          &lt;dbl&gt; 353, 411, 1056, 477, 179, 12, 1735, 587, 19, 103, 644, 236, 585, 617, 13, 2014, 1261, 438, 48, 782, 54, 77, 22, 18, 4, 766, 259, 226, 33, 175, 71, 38, 528, 801, 1452, 1268, 740, 307, 482, 836, 185…
+$ trueShooting &lt;dbl&gt; 0.5670865, 0.5250383, 0.6298611, 0.5695386, 0.5160286, 0.3401361, 0.5697641, 0.6357217, 0.3659476, 0.5137670, 0.5217110, 0.5395026, 0.5823909, 0.5922215, 0.5584192, 0.5979668, 0.5032245, 0.5866910…
+$ effectiveFG  &lt;dbl&gt; 0.5395189, 0.4958904, 0.6292135, 0.5117647, 0.4845679, 0.3333333, 0.5200445, 0.5957179, 0.2727273, 0.5054945, 0.5025773, 0.5148515, 0.5490868, 0.5677083, 0.4444444, 0.5445792, 0.4764555, 0.5765896…
+$ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.0575386379, 0.1150285978, 0.0071360544, 0.0597640815, 0.0467217120, 0.0929476117, 0.0297669593, 0.1267109527, 0.1085025604, 0.0553908888, 0.1612214543, …</code></pre>
 </div>
 <div id="merging-data" class="section level2">
 <h2>Merging Data</h2>
@@ -897,21 +897,21 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 <p><span class="func">anti_join</span>: return all rows from x where there are not matching values in y, keeping just columns from x.</p>
 <p><span class="func">full_join</span>: return all rows and all columns from both x and y. Where there are not matching values, returns NA for the one missing.</p>
 <p>Probably the most common is a left join, where we kind of have one primary data set, and are adding data from another source to it. The following is a simple demonstration.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" title="1">band_members</a></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" data-line-number="1">band_members</a></code></pre></div>
 <pre><code># A tibble: 3 x 2
   Name    Band        
   &lt;chr&gt;   &lt;chr&gt;       
 1 Seth    Com Truise  
 2 Francis Pixies      
 3 Bubba   The New Year</code></pre>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" title="1">band_instruments</a></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1">band_instruments</a></code></pre></div>
 <pre><code># A tibble: 3 x 2
   Name    Instrument 
   &lt;chr&gt;   &lt;chr&gt;      
 1 Seth    Synthesizer
 2 Francis Guitar     
 3 Bubba   Guitar     </code></pre>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" title="1"><span class="kw">left_join</span>(band_members, band_instruments)</a></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" data-line-number="1"><span class="kw">left_join</span>(band_members, band_instruments)</a></code></pre></div>
 <pre><code>Joining, by = &quot;Name&quot;</code></pre>
 <pre><code># A tibble: 3 x 3
   Name    Band         Instrument 
@@ -920,7 +920,7 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 2 Francis Pixies       Guitar     
 3 Bubba   The New Year Guitar     </code></pre>
 <p>When we don’t have a one to one match, the result of the different types of join will become more apparent.</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" title="1">band_members</a></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" data-line-number="1">band_members</a></code></pre></div>
 <pre><code># A tibble: 4 x 2
   Name    Band        
   &lt;chr&gt;   &lt;chr&gt;       
@@ -928,7 +928,7 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 2 Francis Pixies      
 3 Bubba   The New Year
 4 Stephen Pavement    </code></pre>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" title="1">band_instruments</a></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" data-line-number="1">band_instruments</a></code></pre></div>
 <pre><code># A tibble: 4 x 2
   Name    Instrument 
   &lt;chr&gt;   &lt;chr&gt;      
@@ -936,7 +936,7 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 2 Francis Guitar     
 3 Bubba   Guitar     
 4 Steve   Rage       </code></pre>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" title="1"><span class="kw">left_join</span>(band_members, band_instruments)  </a></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1"><span class="kw">left_join</span>(band_members, band_instruments)  </a></code></pre></div>
 <pre><code>Joining, by = &quot;Name&quot;</code></pre>
 <pre><code># A tibble: 4 x 3
   Name    Band         Instrument 
@@ -945,7 +945,7 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 2 Francis Pixies       Guitar     
 3 Bubba   The New Year Guitar     
 4 Stephen Pavement     &lt;NA&gt;       </code></pre>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" title="1"><span class="kw">right_join</span>(band_members, band_instruments)</a></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1"><span class="kw">right_join</span>(band_members, band_instruments)</a></code></pre></div>
 <pre><code>Joining, by = &quot;Name&quot;</code></pre>
 <pre><code># A tibble: 4 x 3
   Name    Band         Instrument 
@@ -954,7 +954,7 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 2 Francis Pixies       Guitar     
 3 Bubba   The New Year Guitar     
 4 Steve   &lt;NA&gt;         Rage       </code></pre>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" title="1"><span class="kw">inner_join</span>(band_members, band_instruments)</a></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1"><span class="kw">inner_join</span>(band_members, band_instruments)</a></code></pre></div>
 <pre><code>Joining, by = &quot;Name&quot;</code></pre>
 <pre><code># A tibble: 3 x 3
   Name    Band         Instrument 
@@ -962,7 +962,7 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 1 Seth    Com Truise   Synthesizer
 2 Francis Pixies       Guitar     
 3 Bubba   The New Year Guitar     </code></pre>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" title="1"><span class="kw">full_join</span>(band_members, band_instruments)</a></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1"><span class="kw">full_join</span>(band_members, band_instruments)</a></code></pre></div>
 <pre><code>Joining, by = &quot;Name&quot;</code></pre>
 <pre><code># A tibble: 5 x 3
   Name    Band         Instrument 
@@ -972,13 +972,13 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 3 Bubba   The New Year Guitar     
 4 Stephen Pavement     &lt;NA&gt;       
 5 Steve   &lt;NA&gt;         Rage       </code></pre>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb126-1" title="1"><span class="kw">anti_join</span>(band_members, band_instruments)</a></code></pre></div>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb126-1" data-line-number="1"><span class="kw">anti_join</span>(band_members, band_instruments)</a></code></pre></div>
 <pre><code>Joining, by = &quot;Name&quot;</code></pre>
 <pre><code># A tibble: 1 x 2
   Name    Band    
   &lt;chr&gt;   &lt;chr&gt;   
 1 Stephen Pavement</code></pre>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" title="1"><span class="kw">anti_join</span>(band_instruments, band_members)</a></code></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" data-line-number="1"><span class="kw">anti_join</span>(band_instruments, band_members)</a></code></pre></div>
 <pre><code>Joining, by = &quot;Name&quot;</code></pre>
 <pre><code># A tibble: 1 x 2
   Name  Instrument
@@ -997,83 +997,83 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 <li><span class="func">unnest</span>: unnest ‘list columns’</li>
 </ul>
 <p>The following example shows how we take a ‘wide-form’ data set, where multiple columns represent different stock prices, and turn it into two columns, one representing stock name, and one for the price. We need to know which columns to work on, which is the first entry. It works very much like the select function, where you can use helpers etc. Then we need to give a name to the column(s) representing the indicators of what were multiple columns in the wide format. And finally we need to specify the column(s) of the values.</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" title="1"><span class="kw">library</span>(tidyr)</a>
-<a class="sourceLine" id="cb132-2" title="2"></a>
-<a class="sourceLine" id="cb132-3" title="3">stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb132-4" title="4">  <span class="dt">time =</span> <span class="kw">as.Date</span>(<span class="st">&#39;2009-01-01&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">9</span>,</a>
-<a class="sourceLine" id="cb132-5" title="5">  <span class="dt">X =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb132-6" title="6">  <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb132-7" title="7">  <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb132-8" title="8">)</a>
-<a class="sourceLine" id="cb132-9" title="9"></a>
-<a class="sourceLine" id="cb132-10" title="10">stocks <span class="op">%&gt;%</span><span class="st"> </span>head</a></code></pre></div>
-<pre><code>        time          X          Y            Z
-1 2009-01-01  0.3439504  1.6831477 -14.77885503
-2 2009-01-02  0.4223578  2.0318955  -7.48834808
-3 2009-01-03 -1.0701583 -0.8660359  -1.68339107
-4 2009-01-04 -1.0919582  1.3457063   0.06684257
-5 2009-01-05  0.9606432 -4.3215438   4.01833197
-6 2009-01-06  0.4210564  0.6361616  -2.31725460</code></pre>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" title="1">stocks <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb134-2" title="2"><span class="st">  </span><span class="kw">pivot_longer</span>(</a>
-<a class="sourceLine" id="cb134-3" title="3">    <span class="dt">cols =</span> <span class="op">-</span>time,</a>
-<a class="sourceLine" id="cb134-4" title="4">    <span class="dt">names_to =</span> <span class="st">&#39;stock&#39;</span>,</a>
-<a class="sourceLine" id="cb134-5" title="5">    <span class="dt">values_to =</span> <span class="st">&#39;price&#39;</span></a>
-<a class="sourceLine" id="cb134-6" title="6">  ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb134-7" title="7"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" data-line-number="1"><span class="kw">library</span>(tidyr)</a>
+<a class="sourceLine" id="cb132-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb132-3" data-line-number="3">stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb132-4" data-line-number="4">  <span class="dt">time =</span> <span class="kw">as.Date</span>(<span class="st">&#39;2009-01-01&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">9</span>,</a>
+<a class="sourceLine" id="cb132-5" data-line-number="5">  <span class="dt">X =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb132-6" data-line-number="6">  <span class="dt">Y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb132-7" data-line-number="7">  <span class="dt">Z =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb132-8" data-line-number="8">)</a>
+<a class="sourceLine" id="cb132-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb132-10" data-line-number="10">stocks <span class="op">%&gt;%</span><span class="st"> </span>head</a></code></pre></div>
+<pre><code>        time           X          Y          Z
+1 2009-01-01  0.09487589 -0.9111812 -2.0731695
+2 2009-01-02  0.62004214  3.5152623  2.8534081
+3 2009-01-03  0.06429339 -0.9013008  0.4429289
+4 2009-01-04 -0.87863705 -4.2680697  3.8867010
+5 2009-01-05 -1.98556930 -0.6597394  0.0632592
+6 2009-01-06 -1.12931196 -1.5924186 -1.0171495</code></pre>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" data-line-number="1">stocks <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb134-2" data-line-number="2"><span class="st">  </span><span class="kw">pivot_longer</span>(</a>
+<a class="sourceLine" id="cb134-3" data-line-number="3">    <span class="dt">cols =</span> <span class="op">-</span>time,</a>
+<a class="sourceLine" id="cb134-4" data-line-number="4">    <span class="dt">names_to =</span> <span class="st">&#39;stock&#39;</span>,</a>
+<a class="sourceLine" id="cb134-5" data-line-number="5">    <span class="dt">values_to =</span> <span class="st">&#39;price&#39;</span></a>
+<a class="sourceLine" id="cb134-6" data-line-number="6">  ) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb134-7" data-line-number="7"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
 <pre><code># A tibble: 6 x 3
   time       stock   price
   &lt;date&gt;     &lt;chr&gt;   &lt;dbl&gt;
-1 2009-01-01 X       0.344
-2 2009-01-01 Y       1.68 
-3 2009-01-01 Z     -14.8  
-4 2009-01-02 X       0.422
-5 2009-01-02 Y       2.03 
-6 2009-01-02 Z      -7.49 </code></pre>
+1 2009-01-01 X      0.0949
+2 2009-01-01 Y     -0.911 
+3 2009-01-01 Z     -2.07  
+4 2009-01-02 X      0.620 
+5 2009-01-02 Y      3.52  
+6 2009-01-02 Z      2.85  </code></pre>
 <p>Here is a more complex example where we can handle multiple repeated entries.</p>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" title="1"><span class="kw">library</span>(tidyr)</a>
-<a class="sourceLine" id="cb136-2" title="2"></a>
-<a class="sourceLine" id="cb136-3" title="3">stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb136-4" title="4">  <span class="dt">time =</span> <span class="kw">as.Date</span>(<span class="st">&#39;2009-01-01&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">9</span>,</a>
-<a class="sourceLine" id="cb136-5" title="5">  <span class="dt">X_1 =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb136-6" title="6">  <span class="dt">X_2 =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb136-7" title="7">  <span class="dt">Y_1 =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb136-8" title="8">  <span class="dt">Y_2 =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb136-9" title="9">  <span class="dt">Z_1 =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>),</a>
-<a class="sourceLine" id="cb136-10" title="10">  <span class="dt">Z_2 =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb136-11" title="11">)</a>
-<a class="sourceLine" id="cb136-12" title="12"></a>
-<a class="sourceLine" id="cb136-13" title="13">stocks <span class="op">%&gt;%</span><span class="st"> </span>head</a></code></pre></div>
-<pre><code>        time         X_1         X_2        Y_1        Y_2       Z_1        Z_2
-1 2009-01-01  0.06141307 -0.81284098  2.8819541 -1.0010047  1.174305  1.7266597
-2 2009-01-02  0.07224448  0.87115041  1.1713761  3.6050282 -2.940902 -1.3560361
-3 2009-01-03 -0.08326453  2.10199413  1.0414771  0.3947259 -2.889316  3.1214443
-4 2009-01-04  0.59190871 -0.01060321 -4.6523852  0.4851806 -5.051754 -1.9556623
-5 2009-01-05  1.40306780  1.83387003  0.4707981 -1.2467746  2.616124  1.5527630
-6 2009-01-06 -0.88817889  0.01503399 -0.5874742  3.3440851 -3.973234  0.1804188</code></pre>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" title="1">stocks <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb138-2" title="2"><span class="st">  </span><span class="kw">pivot_longer</span>(</a>
-<a class="sourceLine" id="cb138-3" title="3">    <span class="dt">cols =</span> <span class="op">-</span>time,</a>
-<a class="sourceLine" id="cb138-4" title="4">    <span class="dt">names_to =</span> <span class="kw">c</span>(<span class="st">&#39;stock&#39;</span>, <span class="st">&#39;entry&#39;</span>),</a>
-<a class="sourceLine" id="cb138-5" title="5">    <span class="dt">names_sep =</span> <span class="st">&#39;_&#39;</span>,</a>
-<a class="sourceLine" id="cb138-6" title="6">    <span class="dt">values_to =</span> <span class="st">&#39;price&#39;</span></a>
-<a class="sourceLine" id="cb138-7" title="7">  ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb138-8" title="8"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1"><span class="kw">library</span>(tidyr)</a>
+<a class="sourceLine" id="cb136-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb136-3" data-line-number="3">stocks &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb136-4" data-line-number="4">  <span class="dt">time =</span> <span class="kw">as.Date</span>(<span class="st">&#39;2009-01-01&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">9</span>,</a>
+<a class="sourceLine" id="cb136-5" data-line-number="5">  <span class="dt">X_1 =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb136-6" data-line-number="6">  <span class="dt">X_2 =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb136-7" data-line-number="7">  <span class="dt">Y_1 =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb136-8" data-line-number="8">  <span class="dt">Y_2 =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb136-9" data-line-number="9">  <span class="dt">Z_1 =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>),</a>
+<a class="sourceLine" id="cb136-10" data-line-number="10">  <span class="dt">Z_2 =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb136-11" data-line-number="11">)</a>
+<a class="sourceLine" id="cb136-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb136-13" data-line-number="13">stocks <span class="op">%&gt;%</span><span class="st"> </span>head</a></code></pre></div>
+<pre><code>        time         X_1        X_2         Y_1        Y_2        Z_1        Z_2
+1 2009-01-01  0.02692085 -1.4874443  0.17213873  0.1501965 -0.2583742  2.1543789
+2 2009-01-02  1.43294346 -1.6987470 -4.62178203  2.5641191  3.2337544  5.2981500
+3 2009-01-03 -1.00245996  2.5753386 -0.38430104  4.8664222 -1.0759849 -9.6442890
+4 2009-01-04 -1.19645639  0.3565203  3.62454951 -0.8832352  4.4488998  0.5015805
+5 2009-01-05  1.38952671  0.2809618 -0.08601425 -1.4125850 -0.7322970  0.8470927
+6 2009-01-06  1.69646760  0.1717612  0.31805866  0.4568657 -0.7857920 -2.5862444</code></pre>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1">stocks <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb138-2" data-line-number="2"><span class="st">  </span><span class="kw">pivot_longer</span>(</a>
+<a class="sourceLine" id="cb138-3" data-line-number="3">    <span class="dt">cols =</span> <span class="op">-</span>time,</a>
+<a class="sourceLine" id="cb138-4" data-line-number="4">    <span class="dt">names_to =</span> <span class="kw">c</span>(<span class="st">&#39;stock&#39;</span>, <span class="st">&#39;entry&#39;</span>),</a>
+<a class="sourceLine" id="cb138-5" data-line-number="5">    <span class="dt">names_sep =</span> <span class="st">&#39;_&#39;</span>,</a>
+<a class="sourceLine" id="cb138-6" data-line-number="6">    <span class="dt">values_to =</span> <span class="st">&#39;price&#39;</span></a>
+<a class="sourceLine" id="cb138-7" data-line-number="7">  ) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb138-8" data-line-number="8"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
 <pre><code># A tibble: 6 x 4
   time       stock entry   price
   &lt;date&gt;     &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;
-1 2009-01-01 X     1      0.0614
-2 2009-01-01 X     2     -0.813 
-3 2009-01-01 Y     1      2.88  
-4 2009-01-01 Y     2     -1.00  
-5 2009-01-01 Z     1      1.17  
-6 2009-01-01 Z     2      1.73  </code></pre>
+1 2009-01-01 X     1      0.0269
+2 2009-01-01 X     2     -1.49  
+3 2009-01-01 Y     1      0.172 
+4 2009-01-01 Y     2      0.150 
+5 2009-01-01 Z     1     -0.258 
+6 2009-01-01 Z     2      2.15  </code></pre>
 <p>Note that the latter is an example of <span class="emph">tidy data</span> while the former is not. Why do we generally prefer such data? Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. <em>This is especially the case for visualization</em>.</p>
 <p>The following demonstrates the <span class="func" style="">separate</span> function utilized for a very common data processing task- dealing with names. Here’ we’ll separate <span class="objclass">player</span> into first and last names based on the space.</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" title="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb140-2" title="2"><span class="st">  </span><span class="kw">separate</span>(Player, <span class="dt">into=</span><span class="kw">c</span>(<span class="st">&#39;firstName&#39;</span>, <span class="st">&#39;lastName&#39;</span>), <span class="dt">sep=</span><span class="st">&#39; &#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb140-3" title="3"><span class="st">  </span><span class="kw">select</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb140-4" title="4"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1">bball <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb140-2" data-line-number="2"><span class="st">  </span><span class="kw">separate</span>(Player, <span class="dt">into=</span><span class="kw">c</span>(<span class="st">&#39;firstName&#39;</span>, <span class="st">&#39;lastName&#39;</span>), <span class="dt">sep=</span><span class="st">&#39; &#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb140-3" data-line-number="3"><span class="st">  </span><span class="kw">select</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb140-4" data-line-number="4"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
 <pre><code>  Rk firstName lastName Pos Age
 1  1      Alex  Abrines  SG  24
 2  2    Quincy      Acy  PF  27
@@ -1088,7 +1088,7 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 <ul>
 <li><p>dplyr functions: There are over a hundred functions that perform very common tasks. You really need to be aware of them as their use will come up often.</p></li>
 <li><p>broom: Convert statistical analysis objects from R into tidy data frames, so that they can more easily be combined, reshaped and otherwise processed with tools like dplyr, tidyr and ggplot2.</p></li>
-<li><p>tidy*: a lot of packages out there that are now ‘tidy’, though not a part of the official tidyverse. Some examples of the ones I’ve used:</p>
+<li>tidy*: a lot of packages out there that are now ‘tidy’, though not a part of the official tidyverse. Some examples of the ones I’ve used:
 <ul>
 <li>tidycensus</li>
 <li>tidybayes</li>
@@ -1124,9 +1124,9 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 <div id="exercise-0" class="section level3">
 <h3>Exercise 0</h3>
 <p>Install and load the <span class="pack">dplyr</span> <span class="pack">ggplot2movies</span> packages. Look at the help file for the <code>movies</code> data set, which contains data from IMDB.</p>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" title="1"><span class="kw">install.packages</span>(<span class="st">&#39;ggplot2movies&#39;</span>)</a>
-<a class="sourceLine" id="cb142-2" title="2"><span class="kw">library</span>(ggplot2movies)</a>
-<a class="sourceLine" id="cb142-3" title="3"><span class="kw">data</span>(<span class="st">&#39;movies&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&#39;ggplot2movies&#39;</span>)</a>
+<a class="sourceLine" id="cb142-2" data-line-number="2"><span class="kw">library</span>(ggplot2movies)</a>
+<a class="sourceLine" id="cb142-3" data-line-number="3"><span class="kw">data</span>(<span class="st">&#39;movies&#39;</span>)</a></code></pre></div>
 </div>
 <div id="exercise-1-2" class="section level3">
 <h3>Exercise 1</h3>
@@ -1134,8 +1134,8 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 <div id="exercise-1a" class="section level4">
 <h4>Exercise 1a</h4>
 <p>Use <span class="func">mutate</span> to create a centered version of the rating variable. A centered variable is one whose mean has been subtracted from it. The process will take the following form:</p>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb143-1" title="1">data <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb143-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">new_var_name =</span> <span class="st">&#39;?&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb143-1" data-line-number="1">data <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb143-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">new_var_name =</span> <span class="st">&#39;?&#39;</span>)</a></code></pre></div>
 </div>
 <div id="exercise-1b" class="section level4">
 <h4>Exercise 1b</h4>
@@ -1158,9 +1158,9 @@ $ shootingDif  &lt;dbl&gt; 0.1720864927, 0.1690383240, 0.0008611442, 0.057538637
 <div id="exercise-3-1" class="section level3">
 <h3>Exercise 3</h3>
 <p>Use <span class="func">pivot_longer</span> to create a ‘tidy’ data set from the following.</p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" title="1">dat =<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">id =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb144-2" title="2">             <span class="dt">x =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>),</a>
-<a class="sourceLine" id="cb144-3" title="3">             <span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" data-line-number="1">dat =<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">id =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb144-2" data-line-number="2">             <span class="dt">x =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb144-3" data-line-number="3">             <span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>))</a></code></pre></div>
 </div>
 <div id="exercise-4" class="section level3">
 <h3>Exercise 4</h3>
@@ -1230,6 +1230,7 @@ gitbook.start({
 "instapaper": false,
 "vk": false,
 "all": ["twitter", "facebook", "weibo", "instapaper"],
+"google": false,
 "instapper": false
 },
 "fontsettings": {

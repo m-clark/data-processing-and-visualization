@@ -130,7 +130,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -176,8 +176,8 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<link rel="stylesheet" href="css\book.css" type="text/css" />
-<link rel="stylesheet" href="https:\\use.fontawesome.com\releases\v5.0.13\css\all.css" type="text/css" />
+<link rel="stylesheet" href="css/book.css" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" type="text/css" />
 </head>
 
 <body>
@@ -486,10 +486,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">Data Processing &amp; Visualization</h1>
-<p class="author"><em><p><span class="noem">Michael Clark</span>
+<p class="author"><em><span class="noem">Michael Clark</span>
 <a href="https://m-clark.github.io/" class="uri">https://m-clark.github.io/</a>
 <img src="img/CSCAR_logos/signature-acronym.png" class='arc' alt="University of Michigan: CSCAR">
-<img src="img/ARC_logos/ARC-acronym-signature.png" class='cscar' alt="University of Michigan: Advanced Research Computing"></p></em></p>
+<img src="img/ARC_logos/ARC-acronym-signature.png" class='cscar' alt="University of Michigan: Advanced Research Computing"></em></p>
 <p class="date"><em>2019-11-20</em></p>
 </div>
 <div id="section" class="section level5 unnumbered">
@@ -526,6 +526,7 @@ gitbook.start({
 "instapaper": false,
 "vk": false,
 "all": ["twitter", "facebook", "weibo", "instapaper"],
+"google": false,
 "instapper": false
 },
 "fontsettings": {

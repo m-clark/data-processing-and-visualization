@@ -130,7 +130,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -176,8 +176,8 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<link rel="stylesheet" href="css\book.css" type="text/css" />
-<link rel="stylesheet" href="https:\\use.fontawesome.com\releases\v5.0.13\css\all.css" type="text/css" />
+<link rel="stylesheet" href="css/book.css" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" type="text/css" />
 </head>
 
 <body>
@@ -495,7 +495,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Base R also comes with the <span class="pack">foreign</span> package for reading in other types of files, especially other statistical packages. However, while you may see it still in use, it’s not as useful as what’s found in other packages.</p>
 <div class="note">
 <p>Reading in data is usually a one-off event, such that you’ll never need to use the package again after the data is loaded. In that case, you might use the following approach, so that you don’t need to attach the whole package.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1">readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&#39;fileloc/filename.csv&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&#39;fileloc/filename.csv&#39;</span>)</a></code></pre></div>
 <p>You can use that for any package, which can help avoid naming conflicts by not loading a bunch of different packages. Furthermore, if you need packages that do have a naming conflict, using this approach will ensure the function from the package you want will be used.</p>
 <p><img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></p>
 </div>
@@ -592,6 +592,7 @@ gitbook.start({
 "instapaper": false,
 "vk": false,
 "all": ["twitter", "facebook", "weibo", "instapaper"],
+"google": false,
 "instapper": false
 },
 "fontsettings": {

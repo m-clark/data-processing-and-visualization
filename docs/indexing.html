@@ -130,7 +130,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -176,8 +176,8 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<link rel="stylesheet" href="css\book.css" type="text/css" />
-<link rel="stylesheet" href="https:\\use.fontawesome.com\releases\v5.0.13\css\all.css" type="text/css" />
+<link rel="stylesheet" href="css/book.css" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" type="text/css" />
 </head>
 
 <body>
@@ -491,37 +491,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Base R Indexing Refresher</h2>
 <div id="slicing-vectors" class="section level4">
 <h4>Slicing vectors</h4>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1">letters[<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">letters[<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>]</a></code></pre></div>
 <pre><code>[1] &quot;d&quot; &quot;e&quot; &quot;f&quot;</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">letters[<span class="kw">c</span>(<span class="dv">13</span>,<span class="dv">10</span>,<span class="dv">3</span>)]</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">letters[<span class="kw">c</span>(<span class="dv">13</span>,<span class="dv">10</span>,<span class="dv">3</span>)]</a></code></pre></div>
 <pre><code>[1] &quot;m&quot; &quot;j&quot; &quot;c&quot;</code></pre>
 </div>
 <div id="slicing-matricesdata.frames" class="section level4">
 <h4>Slicing matrices/data.frames</h4>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1">myMatrix[<span class="dv">1</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">myMatrix[<span class="dv">1</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</a></code></pre></div>
 </div>
 <div id="label-based-indexing" class="section level4">
 <h4>Label-based indexing</h4>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1">mydf[<span class="st">&#39;row1&#39;</span>, <span class="st">&#39;b&#39;</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">mydf[<span class="st">&#39;row1&#39;</span>, <span class="st">&#39;b&#39;</span>]</a></code></pre></div>
 </div>
 <div id="position-based-indexing" class="section level4">
 <h4>Position-based indexing</h4>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1">mydf[<span class="dv">1</span>, <span class="dv">2</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">mydf[<span class="dv">1</span>, <span class="dv">2</span>]</a></code></pre></div>
 </div>
 <div id="mixed-indexing" class="section level4">
 <h4>Mixed indexing</h4>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1">mydf[<span class="st">&#39;row1&#39;</span>, <span class="dv">2</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">mydf[<span class="st">&#39;row1&#39;</span>, <span class="dv">2</span>]</a></code></pre></div>
 <p>If the row/column value is empty, all rows/columns are retained.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1">mydf[<span class="st">&#39;row1&#39;</span>,]</a>
-<a class="sourceLine" id="cb47-2" title="2">mydf[,<span class="st">&#39;b&#39;</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">mydf[<span class="st">&#39;row1&#39;</span>,]</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">mydf[,<span class="st">&#39;b&#39;</span>]</a></code></pre></div>
 </div>
 <div id="non-contiguous" class="section level4">
 <h4>Non-contiguous</h4>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1">mydf[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>),]</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">mydf[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>),]</a></code></pre></div>
 </div>
 <div id="boolean" class="section level4">
 <h4>Boolean</h4>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1">mydf[mydf<span class="op">$</span>a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>,]</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">mydf[mydf<span class="op">$</span>a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>,]</a></code></pre></div>
 </div>
 </div>
 <div id="listdata.frame-extraction" class="section level2">
@@ -530,18 +530,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="func">[[</span> : grab specific elements/columns</p>
 <p><span class="func">$</span> : grab specific elements/columns</p>
 <p><span class="func">@</span>: extract slot for S4 objects</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" title="1">my_list_or_df[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>]</a></code></pre></div>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1">my_list_or_df[[<span class="st">&#39;name&#39;</span>]]</a></code></pre></div>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1">my_list_or_df<span class="op">$</span>name</a></code></pre></div>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" title="1">my_list<span class="op">@</span>name</a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">my_list_or_df[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">my_list_or_df[[<span class="st">&#39;name&#39;</span>]]</a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">my_list_or_df<span class="op">$</span>name</a></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">my_list<span class="op">@</span>name</a></code></pre></div>
 </div>
 <div id="indexing-exercises" class="section level2">
 <h2>Indexing Exercises</h2>
 <p>This following is a refresher of base R indexing only.</p>
 <p>Here is a <span class="objclass">matrix</span>, a <span class="objclass">data.frame</span> and a <span class="objclass">list</span>.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb54-2" title="2">mydf =<span class="st"> </span>cars</a>
-<a class="sourceLine" id="cb54-3" title="3">mylist =<span class="st"> </span><span class="kw">list</span>(mymatrix, <span class="dt">thisdf =</span> mydf)</a></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb54-2" data-line-number="2">mydf =<span class="st"> </span>cars</a>
+<a class="sourceLine" id="cb54-3" data-line-number="3">mylist =<span class="st"> </span><span class="kw">list</span>(mymatrix, <span class="dt">thisdf =</span> mydf)</a></code></pre></div>
 <div id="exercise-1-1" class="section level3">
 <h3>Exercise 1</h3>
 <p>For the <span class="objclass">matrix</span>, in separate operations, take a slice of rows, a selection of columns, and a single element.</p>
@@ -586,6 +586,7 @@ gitbook.start({
 "instapaper": false,
 "vk": false,
 "all": ["twitter", "facebook", "weibo", "instapaper"],
+"google": false,
 "instapper": false
 },
 "fontsettings": {

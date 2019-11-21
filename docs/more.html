@@ -130,7 +130,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -176,8 +176,8 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<link rel="stylesheet" href="css\book.css" type="text/css" />
-<link rel="stylesheet" href="https:\\use.fontawesome.com\releases\v5.0.13\css\all.css" type="text/css" />
+<link rel="stylesheet" href="css/book.css" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" type="text/css" />
 </head>
 
 <body>
@@ -504,9 +504,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="spacing" class="section level4">
 <h4>Spacing</h4>
 <p>Don’t be stingy with spaces. As you start out, err on the side of using them. Just note there are exceptions (e.g. no space between function name and parenthesis, unless that function is something like <span class="func">if</span> or <span class="func">else</span>), but you’ll get used to those over time.</p>
-<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb353-1" title="1">x=<span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean=</span><span class="dv">0</span>,<span class="dt">sd=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb353-2" title="2"></a>
-<a class="sourceLine" id="cb353-3" title="3">x =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb357-1" data-line-number="1">x=<span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean=</span><span class="dv">0</span>,<span class="dt">sd=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb357-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb357-3" data-line-number="3">x =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>)</a></code></pre></div>
 </div>
 </div>
 <div id="naming-things" class="section level3">
@@ -514,12 +514,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>You might not think of it as such initially, but one of the more difficult challenges in programming is naming things. Even if we can come up with a name for an object or file, there are different styles we can use for the name.</p>
 <p>Here is a brief list of things to keep in mind.</p>
 <ul>
-<li><p>The name should make sense to you, your future self, and others that will use the code</p></li>
-<li><p>Try to be concise, but see the previous</p></li>
+<li>The name should make sense to you, your future self, and others that will use the code</li>
+<li>Try to be concise, but see the previous</li>
 <li><p>Make liberal use of suffixes/prefixes for naming the same types of things e.g. model_x, model_z</p></li>
-<li><p>Don’t name anything with ‘final’</p></li>
-<li><p>Don’t name something that is already an R function/object (e.g. <code>T</code>, <span class="func">c</span>, <span class="func">data</span>, etc.)</p></li>
-<li><p>Avoid distinguishing names only by number, e.g. <span class="objclass">data1</span> <span class="objclass">data2</span></p></li>
+<li>Don’t name anything with ‘final’</li>
+<li>Don’t name something that is already an R function/object (e.g. <code>T</code>, <span class="func">c</span>, <span class="func">data</span>, etc.)</li>
+<li><p>Avoid distinguishing names only by number, e.g. <span class="objclass">data1</span> <span class="objclass">data2</span></p></li>
 </ul>
 <p>Naming styles include:</p>
 <ul>
@@ -540,93 +540,93 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="boolean-indexing" class="section level3">
 <h3>Boolean Indexing</h3>
 <p>Assume <span class="objclass">x</span> is a vector of numbers. How would we create an index representing any value greater than 2?</p>
-<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb354-1" title="1">x =<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">-5</span>)</a>
-<a class="sourceLine" id="cb354-2" title="2">idx =<span class="st"> </span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb354-3" title="3">idx</a></code></pre></div>
+<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb358-1" data-line-number="1">x =<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">-5</span>)</a>
+<a class="sourceLine" id="cb358-2" data-line-number="2">idx =<span class="st"> </span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb358-3" data-line-number="3">idx</a></code></pre></div>
 <pre><code>[1] FALSE FALSE  TRUE FALSE</code></pre>
-<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb356-1" title="1">x[idx]</a></code></pre></div>
+<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb360-1" data-line-number="1">x[idx]</a></code></pre></div>
 <pre><code>[1] 10</code></pre>
 <p>As mentioned <a href="data_structures.html#logicals">previously</a>, <span class="objclass">logicals</span> are objects with values of <code>TRUE</code> or <code>FALSE</code>, like the <span class="objclass">idx</span> variable above. While sometimes we want to deal with the logical object as an end, it is extremely commonly used as an index in data processing. Note how we don’t have to create an explicit index object first (though often you should), as R indexing is ridiculously flexible. Here are more examples, not necessarily recommended, but just to demonstrate the flexibility of Boolean indexing.</p>
-<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb358-1" title="1">x[x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb358-2" title="2">x[x <span class="op">!=</span><span class="st"> &#39;cat&#39;</span>]</a>
-<a class="sourceLine" id="cb358-3" title="3">x[<span class="kw">ifelse</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span>x <span class="op">!=</span><span class="dv">10</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)]</a>
-<a class="sourceLine" id="cb358-4" title="4">x[{y =<span class="st"> </span>idx; y}]</a>
-<a class="sourceLine" id="cb358-5" title="5">x[<span class="kw">resid</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb362-1" data-line-number="1">x[x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb362-2" data-line-number="2">x[x <span class="op">!=</span><span class="st"> &#39;cat&#39;</span>]</a>
+<a class="sourceLine" id="cb362-3" data-line-number="3">x[<span class="kw">ifelse</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span>x <span class="op">!=</span><span class="dv">10</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)]</a>
+<a class="sourceLine" id="cb362-4" data-line-number="4">x[{y =<span class="st"> </span>idx; y}]</a>
+<a class="sourceLine" id="cb362-5" data-line-number="5">x[<span class="kw">resid</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>]</a></code></pre></div>
 </div>
 <div id="vectorized-operations" class="section level3">
 <h3>Vectorized operations</h3>
 <p>Boolean indexing allows us to take <span class="emph">vectorized</span> approaches to dealing with data. Consider the following unfortunately coded loop, where we create a variable <code>y</code>, which takes on the value of <strong>Yes</strong> if the variable <code>x</code> is greater than 2, and <strong>No</strong> if otherwise.</p>
-<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb359-1" title="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mydf)) {</a>
-<a class="sourceLine" id="cb359-2" title="2">  check =<span class="st"> </span>mydf<span class="op">$</span>x[i] <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb359-3" title="3">  <span class="cf">if</span> (check<span class="op">==</span><span class="ot">TRUE</span>) {</a>
-<a class="sourceLine" id="cb359-4" title="4">    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;Yes&#39;</span></a>
-<a class="sourceLine" id="cb359-5" title="5">  } </a>
-<a class="sourceLine" id="cb359-6" title="6">  <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb359-7" title="7">    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;No&#39;</span></a>
-<a class="sourceLine" id="cb359-8" title="8">  }</a>
-<a class="sourceLine" id="cb359-9" title="9">}</a></code></pre></div>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb363-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mydf)) {</a>
+<a class="sourceLine" id="cb363-2" data-line-number="2">  check =<span class="st"> </span>mydf<span class="op">$</span>x[i] <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb363-3" data-line-number="3">  <span class="cf">if</span> (check<span class="op">==</span><span class="ot">TRUE</span>) {</a>
+<a class="sourceLine" id="cb363-4" data-line-number="4">    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;Yes&#39;</span></a>
+<a class="sourceLine" id="cb363-5" data-line-number="5">  } </a>
+<a class="sourceLine" id="cb363-6" data-line-number="6">  <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb363-7" data-line-number="7">    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;No&#39;</span></a>
+<a class="sourceLine" id="cb363-8" data-line-number="8">  }</a>
+<a class="sourceLine" id="cb363-9" data-line-number="9">}</a></code></pre></div>
 <p>Compare<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a>:</p>
-<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb360-1" title="1">mydf<span class="op">$</span>y =<span class="st"> &#39;No&#39;</span></a>
-<a class="sourceLine" id="cb360-2" title="2">mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>] =<span class="st"> &#39;Yes&#39;</span></a></code></pre></div>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb364-1" data-line-number="1">mydf<span class="op">$</span>y =<span class="st"> &#39;No&#39;</span></a>
+<a class="sourceLine" id="cb364-2" data-line-number="2">mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>] =<span class="st"> &#39;Yes&#39;</span></a></code></pre></div>
 <p>This gets us the same thing, and would be much faster than the looped approach. Boolean indexing is an example of a vectorized operation. The whole vector is considered, rather than each element individually. The result is that any preprocessing is done once rather than the <code>n</code> iterations of the loop. In R, this will always faster.</p>
 <p>Example: Log all values in a matrix.</p>
-<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb361-1" title="1">mymatrix_log =<span class="st"> </span><span class="kw">log</span>(mymatrix)</a></code></pre></div>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb365-1" data-line-number="1">mymatrix_log =<span class="st"> </span><span class="kw">log</span>(mymatrix)</a></code></pre></div>
 <p>This is way faster than looping over elements, rows or columns. Here we’ll let the <span class="func">apply</span> function stand in for our loop, logging the elements of each column.</p>
-<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb362-1" title="1">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb362-2" title="2"><span class="kw">identical</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</a></code></pre></div>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb366-1" data-line-number="1">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb366-2" data-line-number="2"><span class="kw">identical</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</a></code></pre></div>
 <pre><code>[1] TRUE</code></pre>
-<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb364-1" title="1"><span class="kw">library</span>(microbenchmark)</a>
-<a class="sourceLine" id="cb364-2" title="2"><span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log),</a>
-<a class="sourceLine" id="cb364-3" title="3">               <span class="kw">log</span>(mymatrix))</a></code></pre></div>
-<pre><code>Unit: microseconds
-                    expr    min     lq     mean median     uq     max neval cld
- apply(mymatrix, 2, log) 37.243 38.709 40.70869 39.295 40.175 148.090   100   b
-           log(mymatrix)  2.932  3.226  3.24651  3.226  3.519   4.106   100  a </code></pre>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb368-1" data-line-number="1"><span class="kw">library</span>(microbenchmark)</a>
+<a class="sourceLine" id="cb368-2" data-line-number="2"><span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log),</a>
+<a class="sourceLine" id="cb368-3" data-line-number="3">               <span class="kw">log</span>(mymatrix))</a></code></pre></div>
+<pre><code>Unit: nanoseconds
+                    expr   min      lq     mean  median      uq   max neval cld
+ apply(mymatrix, 2, log) 20910 21537.0 22854.94 21896.5 22261.5 72868   100   b
+           log(mymatrix)   603   628.5   705.12   711.5   750.5  1288   100  a </code></pre>
 <p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
 <div id="timings" class="section level4">
 <h4>Timings</h4>
 <p>We made our own function before, however, there is a <span class="func">scale</span> function in base R that uses a more vectorized approach under the hood to standardize variables. The following demonstrates various approaches to standardizing the columns of the matrix, even using a parallelized approach. As you’ll see, the base R function requires very little code and beats the others.</p>
-<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb366-1" title="1">mymat =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100000</span>), <span class="dt">ncol=</span><span class="dv">1000</span>)</a>
-<a class="sourceLine" id="cb366-2" title="2"></a>
-<a class="sourceLine" id="cb366-3" title="3">stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb366-4" title="4">  (x<span class="op">-</span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
-<a class="sourceLine" id="cb366-5" title="5">}</a>
-<a class="sourceLine" id="cb366-6" title="6"></a>
-<a class="sourceLine" id="cb366-7" title="7">doubleloop =<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb366-8" title="8">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat)) {</a>
-<a class="sourceLine" id="cb366-9" title="9">    x =<span class="st"> </span>mymat[, i]</a>
-<a class="sourceLine" id="cb366-10" title="10">    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) {</a>
-<a class="sourceLine" id="cb366-11" title="11">      x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
-<a class="sourceLine" id="cb366-12" title="12">    }</a>
-<a class="sourceLine" id="cb366-13" title="13">  }</a>
-<a class="sourceLine" id="cb366-14" title="14">}</a>
-<a class="sourceLine" id="cb366-15" title="15"></a>
-<a class="sourceLine" id="cb366-16" title="16"></a>
-<a class="sourceLine" id="cb366-17" title="17">singleloop =<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb366-18" title="18">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat)) {</a>
-<a class="sourceLine" id="cb366-19" title="19">    x =<span class="st"> </span>mymat[, i]</a>
-<a class="sourceLine" id="cb366-20" title="20">    x =<span class="st"> </span>(x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
-<a class="sourceLine" id="cb366-21" title="21">  }</a>
-<a class="sourceLine" id="cb366-22" title="22">}</a>
-<a class="sourceLine" id="cb366-23" title="23"></a>
-<a class="sourceLine" id="cb366-24" title="24"></a>
-<a class="sourceLine" id="cb366-25" title="25"><span class="kw">library</span>(parallel)</a>
-<a class="sourceLine" id="cb366-26" title="26">cl =<span class="st"> </span><span class="kw">makeCluster</span>(<span class="dv">8</span>)</a>
-<a class="sourceLine" id="cb366-27" title="27"><span class="kw">clusterExport</span>(cl, <span class="kw">c</span>(<span class="st">&#39;stdize&#39;</span>, <span class="st">&#39;mymat&#39;</span>))</a>
-<a class="sourceLine" id="cb366-28" title="28">doParallel<span class="op">::</span><span class="kw">registerDoParallel</span>(cl)</a>
-<a class="sourceLine" id="cb366-29" title="29"></a>
-<a class="sourceLine" id="cb366-30" title="30"></a>
-<a class="sourceLine" id="cb366-31" title="31">test =<span class="st"> </span>microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(</a>
-<a class="sourceLine" id="cb366-32" title="32">  <span class="dt">doubleloop =</span> <span class="kw">doubleloop</span>(),</a>
-<a class="sourceLine" id="cb366-33" title="33">  <span class="dt">singleloop =</span> <span class="kw">singleloop</span>(),</a>
-<a class="sourceLine" id="cb366-34" title="34">  <span class="dt">apply =</span> <span class="kw">apply</span>(mymat, <span class="dv">2</span>, stdize),</a>
-<a class="sourceLine" id="cb366-35" title="35">  <span class="dt">parApply =</span> <span class="kw">parApply</span>(cl, mymat, <span class="dv">2</span>, stdize),</a>
-<a class="sourceLine" id="cb366-36" title="36">  <span class="dt">vectorized =</span> <span class="kw">scale</span>(mymat),</a>
-<a class="sourceLine" id="cb366-37" title="37">  <span class="dt">times =</span> <span class="dv">25</span></a>
-<a class="sourceLine" id="cb366-38" title="38">)</a>
-<a class="sourceLine" id="cb366-39" title="39"></a>
-<a class="sourceLine" id="cb366-40" title="40"><span class="kw">stopCluster</span>(cl)</a>
-<a class="sourceLine" id="cb366-41" title="41">test</a></code></pre></div>
+<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb370-1" data-line-number="1">mymat =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100000</span>), <span class="dt">ncol=</span><span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb370-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb370-3" data-line-number="3">stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb370-4" data-line-number="4">  (x<span class="op">-</span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
+<a class="sourceLine" id="cb370-5" data-line-number="5">}</a>
+<a class="sourceLine" id="cb370-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb370-7" data-line-number="7">doubleloop =<span class="st"> </span><span class="cf">function</span>() {</a>
+<a class="sourceLine" id="cb370-8" data-line-number="8">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat)) {</a>
+<a class="sourceLine" id="cb370-9" data-line-number="9">    x =<span class="st"> </span>mymat[, i]</a>
+<a class="sourceLine" id="cb370-10" data-line-number="10">    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) {</a>
+<a class="sourceLine" id="cb370-11" data-line-number="11">      x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
+<a class="sourceLine" id="cb370-12" data-line-number="12">    }</a>
+<a class="sourceLine" id="cb370-13" data-line-number="13">  }</a>
+<a class="sourceLine" id="cb370-14" data-line-number="14">}</a>
+<a class="sourceLine" id="cb370-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb370-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb370-17" data-line-number="17">singleloop =<span class="st"> </span><span class="cf">function</span>() {</a>
+<a class="sourceLine" id="cb370-18" data-line-number="18">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat)) {</a>
+<a class="sourceLine" id="cb370-19" data-line-number="19">    x =<span class="st"> </span>mymat[, i]</a>
+<a class="sourceLine" id="cb370-20" data-line-number="20">    x =<span class="st"> </span>(x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
+<a class="sourceLine" id="cb370-21" data-line-number="21">  }</a>
+<a class="sourceLine" id="cb370-22" data-line-number="22">}</a>
+<a class="sourceLine" id="cb370-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb370-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb370-25" data-line-number="25"><span class="kw">library</span>(parallel)</a>
+<a class="sourceLine" id="cb370-26" data-line-number="26">cl =<span class="st"> </span><span class="kw">makeCluster</span>(<span class="dv">8</span>)</a>
+<a class="sourceLine" id="cb370-27" data-line-number="27"><span class="kw">clusterExport</span>(cl, <span class="kw">c</span>(<span class="st">&#39;stdize&#39;</span>, <span class="st">&#39;mymat&#39;</span>))</a>
+<a class="sourceLine" id="cb370-28" data-line-number="28">doParallel<span class="op">::</span><span class="kw">registerDoParallel</span>(cl)</a>
+<a class="sourceLine" id="cb370-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb370-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb370-31" data-line-number="31">test =<span class="st"> </span>microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(</a>
+<a class="sourceLine" id="cb370-32" data-line-number="32">  <span class="dt">doubleloop =</span> <span class="kw">doubleloop</span>(),</a>
+<a class="sourceLine" id="cb370-33" data-line-number="33">  <span class="dt">singleloop =</span> <span class="kw">singleloop</span>(),</a>
+<a class="sourceLine" id="cb370-34" data-line-number="34">  <span class="dt">apply =</span> <span class="kw">apply</span>(mymat, <span class="dv">2</span>, stdize),</a>
+<a class="sourceLine" id="cb370-35" data-line-number="35">  <span class="dt">parApply =</span> <span class="kw">parApply</span>(cl, mymat, <span class="dv">2</span>, stdize),</a>
+<a class="sourceLine" id="cb370-36" data-line-number="36">  <span class="dt">vectorized =</span> <span class="kw">scale</span>(mymat),</a>
+<a class="sourceLine" id="cb370-37" data-line-number="37">  <span class="dt">times =</span> <span class="dv">25</span></a>
+<a class="sourceLine" id="cb370-38" data-line-number="38">)</a>
+<a class="sourceLine" id="cb370-39" data-line-number="39"></a>
+<a class="sourceLine" id="cb370-40" data-line-number="40"><span class="kw">stopCluster</span>(cl)</a>
+<a class="sourceLine" id="cb370-41" data-line-number="41">test</a></code></pre></div>
 <pre><code>Unit: milliseconds
        expr         min          lq       mean     median         uq        max neval cld
  doubleloop 2882.148089 2904.739076 2938.21281 2946.57065 2952.25532 3013.29805    25   c
@@ -643,9 +643,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To be clear, not only is regex another language, it’s nigh on indecipherable. You will not learn much regex, but what you do learn will save a potentially enormous amount of time you’d otherwise spend trying to do things in a more haphazard fashion. Furthermore, practically every situation that will come up has already been asked and answered on <a href="https://stackoverflow.com/questions/tagged/regex">Stack Overflow</a>, so you’ll almost always be able to search for what you need.</p>
 <p>Here is an example of a pattern we might be interested in:</p>
 <p><code>^r.*shiny[0-9]$</code></p>
-<p>What is <em>that</em> you may ask? Well here is an example of strings it would and wouldn’t match. We’re using <span class="func">grepl</span> to return a logical (i.e. <code>TRUE</code> or <code>FALSE</code>) if any of the strings match the pattern in some way.</p>
-<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb368-1" title="1">string =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;r is the shiny&#39;</span>, <span class="st">&#39;r is the shiny1&#39;</span>, <span class="st">&#39;r shines brightly&#39;</span>)</a>
-<a class="sourceLine" id="cb368-2" title="2"><span class="kw">grepl</span>(string, <span class="dt">pattern=</span><span class="st">&#39;^r.*shiny[0-9]$&#39;</span>)</a></code></pre></div>
+<p>What is <em>that</em> you may ask? Well here is an example of strings it would and wouldn’t match. We’re using <span class="func">grepl</span> to return a logical (i.e. <code>TRUE</code> or <code>FALSE</code>) if any of the strings match the pattern in some way.</p>
+<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb372-1" data-line-number="1">string =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;r is the shiny&#39;</span>, <span class="st">&#39;r is the shiny1&#39;</span>, <span class="st">&#39;r shines brightly&#39;</span>)</a>
+<a class="sourceLine" id="cb372-2" data-line-number="2"><span class="kw">grepl</span>(string, <span class="dt">pattern=</span><span class="st">&#39;^r.*shiny[0-9]$&#39;</span>)</a></code></pre></div>
 <pre><code>[1] FALSE  TRUE FALSE</code></pre>
 <p>What the regex is esoterically attempting to match is any string that starts with ‘r’ and ends with ‘shiny_’ where _ is some single digit. Specifically it breaks down as follows:</p>
 <ul>
@@ -665,7 +665,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong>[A-Z]</strong> : capital letters</li>
 <li><strong>+</strong> : match the preceding one or more times</li>
 <li><strong>()</strong> : groupings</li>
-<li><strong>|</strong> : logical or e.g. [a-z]|[0-9] (a lower case letter or a number)</li>
+<li><strong>|</strong> : logical or e.g. [a-z]|[0-9] (a lower case letter or a number)</li>
 <li><strong>?</strong> : preceding item is optional, and will be matched at most once. Typically used for ‘look ahead’ and ‘look behind’</li>
 <li><strong>\</strong> : escape a character, like if you actually wanted to search for a period instead of using it as a regex pattern, you’d use \., though in R you need \\, i.e. double slashes, for escape.</li>
 </ul>
@@ -677,9 +677,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>Those are just a few. The key functions can be found by looking at the help file for the <span class="func">grep</span> function (<code>?grep</code>). However, the <span class="pack">stringr</span> package has the same functionality with perhaps a slightly faster processing (though that’s due to the underlying <span class="pack">stringi</span> package).</p>
 <p>See if you can guess which of the following will turn up <code>TRUE</code>.</p>
-<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb370-1" title="1"><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;a&#39;</span>)</a>
-<a class="sourceLine" id="cb370-2" title="2"><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;^a&#39;</span>)</a>
-<a class="sourceLine" id="cb370-3" title="3"><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;^a|a$&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb374-1" data-line-number="1"><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;a&#39;</span>)</a>
+<a class="sourceLine" id="cb374-2" data-line-number="2"><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;^a&#39;</span>)</a>
+<a class="sourceLine" id="cb374-3" data-line-number="3"><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;^a|a$&#39;</span>)</a></code></pre></div>
 <p>Scraping the web, munging data, just finding things in your scripts … you can potentially use this all the time, and not only with text analysis, as we’ll now see.</p>
 </div>
 </div>
@@ -688,18 +688,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="exercise-1-8" class="section level3">
 <h3>Exercise 1</h3>
 <p>For the following model related output, come up with a name for each object.</p>
-<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb371-1" title="1"><span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">data=</span>mpg)                 <span class="co"># hwy mileage predicted by number of cylinders</span></a>
-<a class="sourceLine" id="cb371-2" title="2"><span class="kw">summary</span>(<span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">data=</span>mpg))        <span class="co"># the summary of that</span></a>
-<a class="sourceLine" id="cb371-3" title="3"><span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl <span class="op">+</span><span class="st"> </span>displ <span class="op">+</span><span class="st"> </span>year, <span class="dt">data=</span>mpg)  <span class="co"># an extension of that</span></a></code></pre></div>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb375-1" data-line-number="1"><span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">data=</span>mpg)                 <span class="co"># hwy mileage predicted by number of cylinders</span></a>
+<a class="sourceLine" id="cb375-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">data=</span>mpg))        <span class="co"># the summary of that</span></a>
+<a class="sourceLine" id="cb375-3" data-line-number="3"><span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl <span class="op">+</span><span class="st"> </span>displ <span class="op">+</span><span class="st"> </span>year, <span class="dt">data=</span>mpg)  <span class="co"># an extension of that</span></a></code></pre></div>
 </div>
 <div id="exercise-2-9" class="section level3">
 <h3>Exercise 2</h3>
 <p>Fix this code.</p>
-<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb372-1" title="1">x=<span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">10</span>, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb372-2" title="2">y=.<span class="dv">2</span><span class="op">*</span><span class="st"> </span>x<span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb372-3" title="3">data =<span class="st"> </span><span class="kw">data.frame</span>(x,y)</a>
-<a class="sourceLine" id="cb372-4" title="4">q =<span class="st"> </span><span class="kw">lm</span>(y<span class="op">~</span>x, <span class="dt">data=</span>data)</a>
-<a class="sourceLine" id="cb372-5" title="5"><span class="kw">summary</span>(q)</a></code></pre></div>
+<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb376-1" data-line-number="1">x=<span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">10</span>, <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb376-2" data-line-number="2">y=.<span class="dv">2</span><span class="op">*</span><span class="st"> </span>x<span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb376-3" data-line-number="3">data =<span class="st"> </span><span class="kw">data.frame</span>(x,y)</a>
+<a class="sourceLine" id="cb376-4" data-line-number="4">q =<span class="st"> </span><span class="kw">lm</span>(y<span class="op">~</span>x, <span class="dt">data=</span>data)</a>
+<a class="sourceLine" id="cb376-5" data-line-number="5"><span class="kw">summary</span>(q)</a></code></pre></div>
 </div>
 </div>
 <div id="vectorization-exercises" class="section level2">
@@ -708,19 +708,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="exercise-1-9" class="section level3">
 <h3>Exercise 1</h3>
 <p>Show a non-vectorized and a vectorized way to add a two to the numbers 1 through 3.</p>
-<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb373-1" title="1">?</a></code></pre></div>
+<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb377-1" data-line-number="1">?</a></code></pre></div>
 </div>
 <div id="exercise-2-10" class="section level3">
 <h3>Exercise 2</h3>
 <p>Of the following, which do you think is faster? Test it with the <span class="pack">microbenchmark</span> package.</p>
-<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb374-1" title="1">x =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rpois</span>(<span class="dv">100000</span>, <span class="dt">lambda =</span> <span class="dv">5</span>), <span class="dt">ncol =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb374-2" title="2"><span class="kw">colSums</span>(x)</a>
-<a class="sourceLine" id="cb374-3" title="3"><span class="kw">apply</span>(x, <span class="dv">2</span>, sum)</a>
-<a class="sourceLine" id="cb374-4" title="4"></a>
-<a class="sourceLine" id="cb374-5" title="5">microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(</a>
-<a class="sourceLine" id="cb374-6" title="6">  <span class="dt">cs =</span> <span class="kw">colSums</span>(x),</a>
-<a class="sourceLine" id="cb374-7" title="7">  <span class="dt">app =</span> <span class="kw">apply</span>(x, <span class="dv">2</span>, sum)</a>
-<a class="sourceLine" id="cb374-8" title="8">)</a></code></pre></div>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb378-1" data-line-number="1">x =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rpois</span>(<span class="dv">100000</span>, <span class="dt">lambda =</span> <span class="dv">5</span>), <span class="dt">ncol =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb378-2" data-line-number="2"><span class="kw">colSums</span>(x)</a>
+<a class="sourceLine" id="cb378-3" data-line-number="3"><span class="kw">apply</span>(x, <span class="dv">2</span>, sum)</a>
+<a class="sourceLine" id="cb378-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb378-5" data-line-number="5">microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(</a>
+<a class="sourceLine" id="cb378-6" data-line-number="6">  <span class="dt">cs =</span> <span class="kw">colSums</span>(x),</a>
+<a class="sourceLine" id="cb378-7" data-line-number="7">  <span class="dt">app =</span> <span class="kw">apply</span>(x, <span class="dv">2</span>, sum)</a>
+<a class="sourceLine" id="cb378-8" data-line-number="8">)</a></code></pre></div>
 </div>
 </div>
 <div id="regex-exercises" class="section level2">
@@ -728,8 +728,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="exercise-1-10" class="section level3">
 <h3>Exercise 1</h3>
 <p>Using <span class="pack">stringr</span> and <span class="func">str_replace</span>, replace all the states a’s with nothing.</p>
-<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb375-1" title="1"><span class="kw">library</span>(stringr)</a>
-<a class="sourceLine" id="cb375-2" title="2"><span class="kw">str_replace</span>(state.name, <span class="dt">pattern =</span> ?, <span class="dt">replacement =</span> ?)</a></code></pre></div>
+<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb379-1" data-line-number="1"><span class="kw">library</span>(stringr)</a>
+<a class="sourceLine" id="cb379-2" data-line-number="2"><span class="kw">str_replace</span>(state.name, <span class="dt">pattern =</span> ?, <span class="dt">replacement =</span> ?)</a></code></pre></div>
 
 </div>
 </div>
@@ -773,6 +773,7 @@ gitbook.start({
 "instapaper": false,
 "vk": false,
 "all": ["twitter", "facebook", "weibo", "instapaper"],
+"google": false,
 "instapper": false
 },
 "fontsettings": {
