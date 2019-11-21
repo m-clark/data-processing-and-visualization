@@ -8,11 +8,11 @@ A lot has been written about coding <span class="emph" style="font-family:'Alex 
 
 ### Why does your code exist?
 
-Either use text in an R Markdown file or comment your R script.  Explain *why*, not *what*, the code is doing.  Think of it as leaving your future self a note (they will thank you!).  Be clear and don't assume you'll remember why you were doing what you did.
+Either use text in an R Markdown file or comment your R script.  Explain *why*, not *what*, the code is doing.  Think of it as leaving your future self a note (they will thank you!).  Be clear, and don't assume you'll remember why you were doing what you did.
 
 ### Assignment
 
-You see some using `<-` or `=` for assignment.  While there is a slight difference, if you're writing decent code it shouldn't matter. Far more programming languages use `=`, so that's reason to prefer it.  However, if you like being snobby about things, go with `<-`.  Whichever you use, do so consistently.
+You see some using `<-` or `=` for assignment.  While there is a slight difference, if you're writing decent code it shouldn't matter. Far more programming languages use `=`, so that's reason to prefer it.  However, if you like being snobby about things, go with `<-`.  Whichever you use, do so consistently[^ass].
 
 ### Code length
 
@@ -23,9 +23,9 @@ If your script is becoming hundreds of lines long, you probably need to compartm
 Don't be stingy with spaces. As you start out, err on the side of using them.  Just note there are exceptions (e.g. no space between function name and parenthesis, unless that function is something like <span class="func">if</span> or <span class="func">else</span>), but you'll get used to those over time.
 
 ```{r space, eval=FALSE}
-x=rnorm(10, mean=0,sd=1)
-
-x = rnorm(10, mean = 0, sd = 1)
+x=rnorm(10, mean=0,sd=1)              # harder to read
+                                      # space between lines too!
+x = rnorm(10, mean = 0, sd = 1)       # easier to read
 ```
 
 ### Naming things
@@ -37,6 +37,7 @@ Here is a brief list of things to keep in mind.
 - The name should make sense to you, your future self, and others that will use the code
 - Try to be concise, but see the previous
 - Make liberal use of suffixes/prefixes for naming the same types of things e.g. model_x, model_z
+- For function names, try for verbs that describe what they do
 
 - Don't name anything with 'final'
 - Don't name something that is already an R function/object (e.g. `T`, <span class="func">c</span>, <span class="func">data</span>, etc.)
@@ -54,7 +55,7 @@ For objects and functions, I find snake case easier to read and less prone to is
 
 ### Other
 
-Use tools like the built-in RStudio code cleanup shortcut like `Ctrl/Cmd + Shft + A`. It's not perfect, in the sense I disagree with some of its the style choice, but it will be better than you will do on your own starting out.
+Use tools like the built-in RStudio code cleanup shortcut like `Ctrl/Cmd + Shft + A`. It's not perfect, in the sense I disagree with some of its the style choice, but it will definitely be better than you will do on your own starting out.
 
 
 ## Vectorization 
@@ -79,11 +80,23 @@ As mentioned [previously][logicals], <span class="objclass">logicals</span> are 
 
 ```{r flexindex}
 x[x > 2]
+
 x[x != 'cat']
+
 x[ifelse(x > 2 & x !=10, TRUE, FALSE)]
+
 x[{y = idx; y}]
+
 x[resid(lm(y ~ x)) > 0]
 ```
+
+All of these will transfer to the tidyverse <span class="func" style = "">filter</span> function.
+
+```{r filter-bool, eval=FALSE}
+df %>% 
+  filter(x > 2, z == 'a')  # commas are like &
+```
+
 
 ### Vectorized operations
 
@@ -91,10 +104,12 @@ Boolean indexing allows us to take <span class="emph">vectorized</span> approach
 
 ```{r loop}
 for (i in 1:nrow(mydf)) {
+  
   check = mydf$x[i] > 2
-  if (check==TRUE) {
+  
+  if (check == TRUE) {
     mydf$y[i] = 'Yes'
-  } 
+  }
   else {
     mydf$y[i] = 'No'
   }
@@ -105,6 +120,7 @@ Compare[^ifelse]:
 
 ```{r boolnoloop}
 mydf$y = 'No'
+
 mydf$y[mydf$x > 2] = 'Yes'
 ```
 
@@ -120,11 +136,11 @@ This is way faster than looping over elements, rows or columns. Here we'll let t
 
 ```{r loopvsvec, eval=T}
 mymatrix = matrix(runif(100), 10, 10)
+
 identical(apply(mymatrix, 2, log), log(mymatrix))
 
 library(microbenchmark)
-microbenchmark(apply(mymatrix, 2, log),
-               log(mymatrix))
+microbenchmark(apply(mymatrix, 2, log), log(mymatrix))
 ```
 
 
@@ -145,28 +161,29 @@ stdize <- function(x) {
 }
 
 doubleloop = function() {
-  for (i in 1:ncol(mymat)) {
-    x = mymat[, i]
+  
+  for (i in 1:ncol(mymat_asdf)) {
+    x = mymat_asdf[, i]
     for (j in 1:length(x)) {
       x[j] = (x[j] - mean(x)) / sd(x)
     }
   }
+  
 }
 
-
 singleloop = function() {
-  for (i in 1:ncol(mymat)) {
-    x = mymat[, i]
+  
+  for (i in 1:ncol(mymat_asdf)) {
+    x = mymat_asdf[, i]
     x = (x - mean(x)) / sd(x)
   }
+  
 }
 
 
 library(parallel)
 cl = makeCluster(8)
 clusterExport(cl, c('stdize', 'mymat'))
-doParallel::registerDoParallel(cl)
-
 
 test = microbenchmark::microbenchmark(
   doubleloop = doubleloop(),
@@ -178,10 +195,11 @@ test = microbenchmark::microbenchmark(
 )
 
 stopCluster(cl)
+
 test
 ```
 ```{r vectorization_timings, echo=FALSE, eval=TRUE, cache=FALSE}
-load('data/vectorization.RData'); library(microbenchmark); test
+load('data/vectorization.RData'); library(microbenchmark); autoplot(test)
 ```
 
 
@@ -253,10 +271,13 @@ Scraping the web, munging data, just finding things in your scripts ... you can 
 For the following model related output, come up with a name for each object.
 
 ```{r name_ex, eval=FALSE}
-lm(hwy ~ cyl, data=mpg)                 # hwy mileage predicted by number of cylinders
-summary(lm(hwy ~ cyl, data=mpg))        # the summary of that
-lm(hwy ~ cyl + displ + year, data=mpg)  # an extension of that
+lm(hwy ~ cyl, data = mpg)                 # hwy mileage predicted by number of cylinders
+
+summary(lm(hwy ~ cyl, data = mpg))        # the summary of that
+
+lm(hwy ~ cyl + displ + year, data = mpg)  # an extension of that
 ```
+
 
 ### Exercise 2
 
@@ -296,7 +317,7 @@ colSums(x)
 apply(x, 2, sum)
 
 microbenchmark::microbenchmark(
-  cs = colSums(x),
+  cs  = colSums(x),
   app = apply(x, 2, sum)
 )
 ```
@@ -313,6 +334,8 @@ library(stringr)
 str_replace(state.name, pattern = ?, replacement = ?)
 ```
 
+
+[^ass]: I usually reserve arrows for functions and package development.
 
 
 [^ifelse]: For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.

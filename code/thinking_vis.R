@@ -1,8 +1,9 @@
-## ----vissetup, include=FALSE, eval=TRUE, cache=FALSE---------------------
+## ----vissetup, include=FALSE, eval=TRUE, cache=FALSE------------------------------------
 knitr::opts_chunk$set(eval=T, echo=F)
 library(viridisLite); library(scico)
 
-## ----problems------------------------------------------------------------
+
+## ----problems---------------------------------------------------------------------------
 library(plotly)
 sw_height = starwars %>% 
   filter(gender %in% c('male', 'female')) %>% 
@@ -17,7 +18,8 @@ sw_height %>%
   labs(title='Height of Some Star Wars Characters') +
   theme_bw()
 
-## ----problems2-----------------------------------------------------------
+
+## ----problems2--------------------------------------------------------------------------
 sw_height %>% 
   ggplot(aes(x=gender, y=Height)) +
   geom_errorbar(aes(ymin=Height-2*se, ymax=Height+2*se),
@@ -29,7 +31,8 @@ sw_height %>%
   labs(title='Height of Some Star Wars Characters') +
   theme_bw()
 
-## ----ugly----------------------------------------------------------------
+
+## ----ugly-------------------------------------------------------------------------------
 starwars %>% 
   filter(gender %in% c('male', 'female')) %>% 
   ggplot(aes(x=mass, y=height)) +
@@ -43,7 +46,8 @@ starwars %>%
         panel.grid.major.x=element_line(size=2)
         )
 
-## ----badbw---------------------------------------------------------------
+
+## ----badbw------------------------------------------------------------------------------
 starwars %>% 
   filter(gender %in% c('male', 'female')) %>% 
   ggplot(aes(x=mass, y=height)) +
@@ -57,7 +61,8 @@ starwars %>%
         panel.grid.major.x=element_line(size=2)
         )
 
-## ----better--------------------------------------------------------------
+
+## ----better-----------------------------------------------------------------------------
 sw2 = starwars %>% 
   filter(gender %in% c('male', 'female')) %>% 
   mutate(homeworld2 = ifelse(homeworld=='Tatooine', 'Tatooine', 'Naboo'),
@@ -78,7 +83,7 @@ g = sw2 %>%
   scale_color_manual(values=pal[2:3]) +
   # geom_text(aes(label=name)) +
   scale_size_continuous(range=c(2,10)) +
-  theme_trueMinimal()+ 
+  theme_clean()+ 
   theme(legend.position="none")  # only way to keep plotly from putting a legend
 
 ggplotly()%>% 
@@ -88,30 +93,33 @@ ggplotly()%>%
          yaxis=list(title='Height')) %>% 
   theme_plotly()
 
-## ----contrast, echo=TRUE-------------------------------------------------
+
+## ----contrast, echo=TRUE----------------------------------------------------------------
 # default ggplot2 discrete color against the default ggplot2 gray background
 visibly::color_contrast_checker(foreground = '#F8766D', background = 'gray92')
 
 # the dark viridis would work 
 visibly::color_contrast_checker(foreground = '#21908C', background = 'gray92')
 
-## ----scale_size, out.width='50%'-----------------------------------------
+
+## ----scale_size, out.width='50%'--------------------------------------------------------
 sw2 %>% 
   mutate(bmi = mass/((height/100)^2)) %>% 
   ggplot(aes(x=mass, y=height)) +
   geom_point(aes(label=name,  size=bmi), color=palettes$orange$orange, alpha=.25, show.legend=F) +
   scale_size_continuous(range=c(2,10)) +
-  theme_trueMinimal()+ 
+  theme_clean()+ 
   theme(legend.position="none")  # only way to keep plotly from putting a legend
 sw2 %>%
   mutate(bmi = mass/((height/100)^2)) %>% 
   ggplot(aes(x=mass, y=height)) +
   geom_point(aes(label=name, size=bmi), color=palettes$orange$orange, alpha=.25, show.legend=F) +
   scale_radius(range=c(2,10)) + 
-  theme_trueMinimal()+ 
+  theme_clean()+ 
   theme(legend.position="none")  # only way to keep plotly from putting a legend
 
-## ----transp_old, eval=FALSE----------------------------------------------
+
+## ----transp_old, eval=FALSE-------------------------------------------------------------
 ## N = 100
 ## obs = 10
 ## 
@@ -130,13 +138,13 @@ sw2 %>%
 ## # lm(y~poly(x,2)) %>% summary()
 ## 
 ## #
-## # gg = data_frame(g, x, y) %>%
+## # gg = tibble(g, x, y) %>%
 ## #   mutate(y = scale(y)) %>%
 ## #   ggplot(aes(x,y)) +
 ## #   geom_smooth(aes(group=g), se=F, color=alpha(palettes$orange$orange, .2), lwd=.5)
 ## # ggplotly() %>%
 ## #   theme_plotly()
-## data_frame(g, f=factor(f, labels=c('g1','g2')), x, y) %>%
+## tibble(g, f=factor(f, labels=c('g1','g2')), x, y) %>%
 ##   group_by(g) %>%
 ##   mutate(updown = if_else(last(y) > first(y), 'up', 'down')) %>%
 ##   # ungroup() %>%
@@ -145,7 +153,8 @@ sw2 %>%
 ##   add_markers(x=~x, y=~y, color=~f, opacity=.75) %>%
 ##   theme_plotly()
 
-## ----transp, out.width='75%', fig.asp=.5---------------------------------
+
+## ----transp, out.width='75%', fig.asp=.5------------------------------------------------
 ########################################################################################
 ### 'Noisy' gaussian process demo.  The matrix labeling is in keeping with Murphy    ###
 ### 2012 and Rasmussen and Williams 2006.  See those sources for more detail.        ###
@@ -208,19 +217,23 @@ yg1 = mvtnorm::rmvnorm(nprior,
 # pal = viridis::plasma(4)
 # scico::scico_palette_show()
 pal = scico::scico(4, end = .75, palette = 'turku')
-gdat1 = gather(data.frame(x=xg1, 
-                          y=t(yg1), 
-                          sd=apply(yg1, 2, sd)),
-               key=variable,
-               value=value,
-               -x, -sd)
+gdat1 = data.frame(
+  x = xg1,
+  y = t(yg1),
+  sd = apply(yg1, 2, sd)
+) %>% 
+  pivot_longer(
+    starts_with('y'),
+    names_to = 'variable',
+    values_to = 'value')
 
-
-g1 = ggplot(aes(x=x, y=value), data=gdat1) + 
-  geom_line(aes(group=variable, alpha=abs(value)), color=pal[2], show.legend = F) +
-  scale_alpha_continuous(range=c(.15,.25)) +
-  labs(title='Prior') +
-  theme_trueMinimal() +
+g1 = ggplot(aes(x = x, y = value), data = gdat1) +
+  geom_line(aes(group = variable, alpha = abs(value)),
+            color = pal[2],
+            show.legend = F) +
+  scale_alpha_continuous(range = c(.15, .25)) +
+  labs(title = 'Prior') +
+  theme_clean() +
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),
         axis.line = element_blank(),
@@ -270,23 +283,18 @@ y2 = data.frame(t(mvtnorm::rmvnorm(npostpred, mean=postMu, sigma=postCov)))
 #################################
 
 # reshape data for plotting
-gdat2 = gather(data.frame(x=Xtest, 
-                         y=y2, 
-                         fmean=postMu, 
-                         selower=postMu-2*sqrt(s2), 
-                         seupper=postMu+2*sqrt(s2)),
-              key=variable,
-              value=value, 
-              -x, -fmean, -selower, -seupper)
-
-
-# g2 = ggplot(aes(x=x, y=value), data=gdat) + 
-#   geom_ribbon(aes(ymin=selower, ymax=seupper,group=variable), fill='#00aaff', alpha=.01) +
-#   geom_line(aes(group=variable), color='#FF5500', alpha=.5) +
-#   geom_line(aes(group=variable, y=fmean), color='#5500ff', size=1, alpha=.5) +
-#   geom_point(aes(x=Xtrain, y=ytrain), color='#aaff00', alpha=.5, data=data.frame(Xtrain, ytrain)) +
-#   labs(title='Posterior Predictive') +
-#   theme_trueMinimal()
+gdat2 = data.frame(
+  x = Xtest,
+  y = y2,
+  fmean = postMu,
+  selower = postMu - 2 * sqrt(s2),
+  seupper = postMu + 2 * sqrt(s2)
+) %>%
+  pivot_longer(
+    starts_with('y'),
+    names_to = 'variable',
+    values_to = 'value'
+  )
 
 g2 = ggplot(aes(x=x, y=value), data=gdat2) + 
   geom_ribbon(aes(ymin=selower, ymax=seupper,group=variable), fill=pal[1], alpha=.01) +
@@ -294,7 +302,7 @@ g2 = ggplot(aes(x=x, y=value), data=gdat2) +
   geom_line(aes(group=variable, y=fmean), color=pal[3], size=1, alpha=.5) +
   geom_point(aes(x=Xtrain, y=ytrain), color=pal[4], alpha=1, size=2, data=data.frame(Xtrain, ytrain)) +
   labs(title='Posterior Predictive') +
-  theme_trueMinimal() +
+  theme_clean() +
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),
         axis.line = element_blank(),
@@ -313,48 +321,43 @@ g2 = ggplot(aes(x=x, y=value), data=gdat2) +
 # logical fashion. The bookdown notes on figures did not work even remotely as
 # described. The only success was found with out.width + fig.asp, so that was
 # set as a default knitr setting
-library(gridExtra)
-grid.arrange(g1, g2, ncol=2)
+library(patchwork)
+g1 + g2
 
-## ----transp2_old, eval=FALSE---------------------------------------------
-## data_frame(g, x, y) %>%
-##   group_by(g) %>%
-##   mutate(updown = if_else(last(y) > first(y), 'up', 'down')) %>%
-##   # ungroup() %>%
-##   plot_ly() %>%
-##   add_lines(x=~x, y=~y,  color=~updown, showlegend=F) %>%
-##   add_markers(x=~x, y=~y, color=~updown) %>%
-##   theme_plotly()
 
-## ----transp2, out.width='75%', fig.asp=.5--------------------------------
-g1 = ggplot(aes(x=x, y=value), data=gdat1) + 
-  geom_line(aes(group=variable), color=pal[2], alpha=1) +
-  labs(title='Prior') +
-  theme_trueMinimal() +
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.line = element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.ticks.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank())
-g2 = ggplot(aes(x=x, y=value), data=gdat2) + 
-  geom_ribbon(aes(ymin=selower, ymax=seupper,group=variable), fill=pal[1], alpha=1) +
-  geom_line(aes(group=variable), color=pal[2], alpha=1) +
-  geom_line(aes(group=variable, y=fmean), color=pal[3], size=1, alpha=1) +
-  geom_point(aes(x=Xtrain, y=ytrain), color=pal[4], alpha=1, size=2, data=data.frame(Xtrain, ytrain)) +
-  labs(title='Posterior Predictive') +
-  theme_trueMinimal() +
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.line = element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.ticks.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank())
-grid.arrange(g1, g2, ncol=2)
+## ----transp2, out.width='75%', fig.asp=.5-----------------------------------------------
+g1 = ggplot(aes(x = x, y = value), data = gdat1) +
+  geom_line(aes(group = variable), color = pal[2], alpha = 1) +
+  labs(title = 'Prior') +
+  theme_void()
 
-## ----transp_tornado, eval=T----------------------------------------------
+g2 = ggplot(aes(x = x, y = value), data = gdat2) +
+  geom_ribbon(
+    aes(ymin = selower, ymax = seupper, group = variable),
+    fill = pal[1],
+    alpha = 1
+  ) +
+  geom_line(aes(group = variable), color = pal[2], alpha = 1) +
+  geom_line(
+    aes(group = variable, y = fmean),
+    color = pal[3],
+    size = 1,
+    alpha = 1
+  ) +
+  geom_point(
+    aes(x = Xtrain, y = ytrain),
+    color = pal[4],
+    alpha = 1,
+    size = 2,
+    data = data.frame(Xtrain, ytrain)
+  ) +
+  labs(title = 'Posterior Predictive') +
+  theme_void()
+
+g1 + g2
+
+
+## ----transp_tornado, eval=T, cache=FALSE------------------------------------------------
 # depending on the plot, plotly may confuse opacity with some other quality of the color
 # data(flights, package='threejs') 
 # flights %>% 
@@ -392,23 +395,24 @@ gdat = data.frame(rbind(g1, g2), group=rep(0:1, e=nsim))
 gdat %>%
   ggplot(aes(x=waiting, y=eruptions)) +
   geom_point(size = 3, alpha=.10, color='#ff5500') +
-  theme_trueMinimal()
+  theme_clean()
 
-## ----transp_density------------------------------------------------------
+
+## ----transp_density, cache=FALSE--------------------------------------------------------
 detach(package:mclust)
 set.seed(123)
 gdat = 1:4 %>% 
   map(~rnorm(20, mean=.x, sd=.x/2)) %>% 
   data.frame() %>% 
   rename_all(function(x) paste0('x', 1:4)) %>% 
-  gather(key=g) %>% 
+  pivot_longer(everything(), names_to = 'g', values_to = 'value') %>% 
   mutate(g = fct_relevel(g, 'x1', after=2))
 
 gdat %>% 
   ggplot(aes(x=value, group=g)) +
   geom_density(aes(color=g, fill=g), alpha=.2, show.legend=F) +
   xlim(-3,10) +
-  theme_trueMinimal() +
+  theme_clean() +
   theme(axis.text.x=element_blank(),
         axis.text.y=element_blank(),
         axis.ticks.x=element_blank(),
@@ -416,32 +420,38 @@ gdat %>%
         axis.title.x=element_blank(),
         axis.title.y=element_blank())
 
-## ----transp_density2-----------------------------------------------------
-gdat %>% 
-  ggplot(aes(x=value, group=g)) +
-  geom_density(aes(color=g, fill=g), show.legend=F) +
-  xlim(-3,10) +
-  theme_trueMinimal() +
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.ticks.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank())
 
-## ----thinkingvis_ex1, echo=T, eval=FALSE, cache=FALSE--------------------
+## ----transp_density2--------------------------------------------------------------------
+gdat %>%
+  ggplot(aes(x = value, group = g)) +
+  geom_density(aes(color = g, fill = g), show.legend = F) +
+  xlim(-3, 10) +
+  theme_clean() +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  )
+
+
+## ----thinkingvis_ex1, echo=T, eval=FALSE, cache=FALSE-----------------------------------
 ## library(ggplot2); library(viridis)
 ## ggplot(aes(x=carat, y=price), data=diamonds) +
 ##   geom_point(aes(color=price)) +
 ##   ????
 
-## ----thinkingvis_ex1b, eval=F, out.width='50%'---------------------------
+
+## ----thinkingvis_ex1b, eval=F, out.width='50%'------------------------------------------
 ## library(ggplot2); library(viridis)
 ## ggplot(aes(x=carat, y=price), data=diamonds) +
 ##   geom_point(aes(color=price)) +
 ##   scale_color_viridis()
 
-## ----thinkingvis_ex2, eval=FALSE, out.width='50%'------------------------
+
+## ----thinkingvis_ex2, eval=FALSE, out.width='50%'---------------------------------------
 ## ggplot(aes(x=carat, y=price), data=diamonds) +
 ##   geom_point(aes(color=cut)) +
 ##   scale_color_viridis(discrete=T)

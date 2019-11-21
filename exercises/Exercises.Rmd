@@ -6,21 +6,32 @@ output:
   html_document:
     theme: paper
     highlight: pygments
-    code_folding: hide
+    # code_folding: hide
     css: [../css/standard_html.css]
     toc: true
     toc_depth: 2
     toc_float: true
-  radix::radix_article:
-    code_folding: hide  
-    css: [../css/radix.css]
-    toc: true
-    toc_depth: 2
+  # distill::distill_article:
+  #   code_folding: hide  
+  #   css: [../css/radix.css]
+  #   toc: true
+  #   toc_depth: 2
 ---
 
 ```{r setup, include=FALSE, eval=TRUE, cache=FALSE}
-knitr::opts_chunk$set(echo = T, message=F, warning=F, comment=NA, autodep=T, eval=FALSE, cache.rebuild=F, cache=F,
-                      R.options=list(width=120), fig.width=8, fig.align = 'center')
+knitr::opts_chunk$set(
+  echo = T,
+  message = F,
+  warning = F,
+  comment = NA,
+  autodep = T,
+  eval = FALSE,
+  cache.rebuild = F,
+  cache = F,
+  R.options = list(width = 120),
+  fig.width = 8,
+  fig.align = 'center'
+)
 ```
 
 Note that in each exercise, the code is hidden by default, allowing you to test your skills first.  On some occasions you need the code to get started, and that will be noted.  Otherwise, disclose the code if you get stuck, but try on your own or work together first. Make sure you load the packages you need for the exercise.
@@ -325,9 +336,10 @@ Themes to play with:
 - <span class="func">theme_linedraw</span>
 - <span class="func">theme_minimal</span>
 
-```{r}
+```{r gg-ex1}
 library(ggplot2)
-ggplot(aes(x=waiting, y=eruptions), data=faithful) +
+
+ggplot(aes(x = waiting, y = eruptions), data = faithful) +
   geom_point()
 ```
 
@@ -336,19 +348,32 @@ ggplot(aes(x=waiting, y=eruptions), data=faithful) +
 
 Play around and change the arguments to the following.
 
-```{r}
+```{r gg-ex2}
 library(maps)
-mi <- map_data("county", "michigan")
-seats = mi %>% 
-  group_by(subregion) %>% 
-  summarise_at(vars(lat, long), function(x) median(range(x)))
+
+mi = map_data("county", "michigan")
+
+seats = mi %>%
+  group_by(subregion) %>%
+  summarise_at(vars(lat, long), function(x)
+    median(range(x)))
 
 ggplot(mi, aes(long, lat)) +
   geom_polygon(aes(group = group), fill = NA, colour = "grey60") +
-  geom_text(aes(label = subregion), data = seats, size = 1, angle = 45) +
-  geom_point(y=42.281389, x=-83.748333, color='#1e90ff', size=3) +
+  geom_text(
+    aes(label = subregion),
+    data = seats,
+    size = 1,
+    angle = 45
+  ) +
+  geom_point(
+    y = 42.281389,
+    x = -83.748333,
+    color = '#1e90ff',
+    size = 3
+  ) +
   theme_minimal() +
-  theme(panel.grid=element_blank())
+  theme(panel.grid = element_blank())
 ```
 
 
@@ -374,12 +399,12 @@ data %>%
   add_markers()
 ```
 
-```{r, echo=FALSE}
-movies %>% 
-  group_by(year) %>% 
-  summarise(Avg_Rating=mean(rating)) %>% 
-  plot_ly() %>% 
-  add_markers(x=~year, y=~Avg_Rating)
+```{r plotly-ex1, echo=FALSE}
+movies %>%
+  group_by(year) %>%
+  summarise(Avg_Rating = mean(rating)) %>%
+  plot_ly() %>%
+  add_markers(x =  ~ year, y =  ~ Avg_Rating)
 ```
 
 
@@ -387,13 +412,19 @@ movies %>%
 
 This time group by year and Drama. In the <span class="func">summarize</span> create average rating again, but also a variable representing the average number of votes. In your plotly line, use the size and color arguments to represent whether the average number of votes and whether it was drama or not respectively. Use <span class="func">add_markers.</span>
 
-```{r, echo=FALSE}
-movies %>% 
-  group_by(year, Drama) %>% 
-  summarise(Avg_Rating=mean(rating),
-            Avg_Votes = mean(votes)) %>% 
-  plot_ly() %>% 
-  add_markers(x=~year, y=~Avg_Rating, size=~Avg_Votes, color=~Drama, mode='markers')
+```{r plotly-ex2, echo=FALSE}
+movies %>%
+  group_by(year, Drama) %>%
+  summarise(Avg_Rating = mean(rating),
+            Avg_Votes = mean(votes)) %>%
+  plot_ly() %>%
+  add_markers(
+    x =  ~ year,
+    y =  ~ Avg_Rating,
+    size =  ~ Avg_Votes,
+    color =  ~ Drama,
+    mode = 'markers'
+  )
 ```
 
 
@@ -412,7 +443,7 @@ Create a ggplot of your design and then use <span class="func">ggplotly</span> t
 
 With one function, find out what the class, number of rows, number of columns are of the following object, including what kind of object the last three columns are.
 
-```{r tibble_inspect}
+```{r tibble_inspect, eval=FALSE}
 library(dplyr)
 ?starwars
 ```
@@ -457,7 +488,7 @@ d %>% map_df(mean)
 
 ## Writing Functions Exercises
 
-### Excercise 1
+### Exercise 1
 
 Write a function that takes the log of the sum of two values (i.e. just two single numbers) using the <span class="func">log</span> function.  Just remember that within a function, you can write R code just like you normally would.
 
@@ -468,7 +499,7 @@ log_sum <- function(a, b) {
 ```
 
 
-### Excercise 1b
+### Exercise 1b
 
 What happens if the sum of the two numbers is negative?  You can't take a log of a negative value, so it's an error.  How might we deal with this?  Try using a conditional to provide an error message using the <span class="func">stop</span> function.  Make the message whatever you want.
 
@@ -509,7 +540,33 @@ pos_neg <- function(?) {
 ```
 
 
+## Code Style Exercises
 
+### Exercise 1 
+
+For the following model related output, come up with a name for each object.
+
+```{r name_ex, eval=FALSE}
+lm(hwy ~ cyl, data = mpg)                 # hwy mileage predicted by number of cylinders
+
+summary(lm(hwy ~ cyl, data = mpg))        # the summary of that
+
+lm(hwy ~ cyl + displ + year, data = mpg)  # an extension of that
+```
+
+
+### Exercise 2
+
+
+Fix this code.
+
+```{r fix_code, eval=FALSE}
+x=rnorm(100, 10, 2)
+y=.2* x+ rnorm(100)
+data = data.frame(x,y)
+q = lm(y~x, data=data)
+summary(q)
+```
 
 ## Vector Exercises
 

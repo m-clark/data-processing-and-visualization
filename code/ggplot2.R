@@ -1,74 +1,89 @@
-## ----ggplot2setup, include=FALSE, eval=TRUE, cache=FALSE-----------------
+## ----ggplot2setup, include=FALSE, eval=TRUE, cache=FALSE--------------------------------
 knitr::opts_chunk$set(eval=T, echo=T)
 
-## ----layer, eval=FALSE---------------------------------------------------
+
+## ----layer, eval=FALSE------------------------------------------------------------------
 ## # recall that starwars is in the dplyr package
 ## ggplot(aes(x=height, y=mass), data=starwars)
 
-## ----layer2--------------------------------------------------------------
+
+## ----layer2-----------------------------------------------------------------------------
 ggplot(aes(x=height, y=mass), data=starwars) +
   geom_point()
 
-## ----layer3--------------------------------------------------------------
+
+## ----layer3-----------------------------------------------------------------------------
 ggplot(aes(x=height, y=mass), data=starwars) +
   geom_point(color='white') +
   labs(x='Height in cm', y='Weight in kg') +
   theme_dark()
 
-## ----pipeplus, eval=FALSE------------------------------------------------
+
+## ----pipeplus, eval=FALSE---------------------------------------------------------------
 ## ggplot(aes(x=myvar, y=myvar2), data=mydata) +
 ##   geom_point()
 
-## ----aes, eval=F---------------------------------------------------------
+
+## ----aes, eval=F------------------------------------------------------------------------
 ## aes(x=myvar, y=myvar2, color=myvar3, group=g)
 
-## ----aes_vs_not1, eval=FALSE---------------------------------------------
+
+## ----aes_vs_not1, eval=FALSE------------------------------------------------------------
 ## ... +
 ##   geom_point(..., size=4)
 
-## ----aes_vs_not2, eval=FALSE---------------------------------------------
+
+## ----aes_vs_not2, eval=FALSE------------------------------------------------------------
 ## ... +
 ##   geom_point(aes(size=myvar))
 
-## ----ggscatter, dev='png'------------------------------------------------
+
+## ----ggscatter, dev='png'---------------------------------------------------------------
 library(ggplot2)
 data("diamonds"); data('economics')
 ggplot(aes(x=carat, y=price), data=diamonds) +
   geom_point(size=.5, color='peru')
 
-## ----ggline--------------------------------------------------------------
+
+## ----ggline-----------------------------------------------------------------------------
 ggplot(aes(x=date, y=unemploy), data=economics) +
   geom_line() +
   geom_text(aes(label=unemploy), 
             vjust=-.5, 
             data=filter(economics, date=='2009-10-01'))
 
-## ----ggalpha, fig.width=6, fig.height=4, dev='png'-----------------------
+
+## ----ggalpha, fig.width=6, fig.height=4, dev='png'--------------------------------------
 ggplot(aes(x=carat, y=price), data=diamonds) +
   geom_point(aes(size=carat, color=clarity), alpha=.05) 
 
-## ----ggquant-------------------------------------------------------------
+
+## ----ggquant----------------------------------------------------------------------------
 ggplot(mpg, aes(displ, hwy)) + 
   geom_point() +
   geom_quantile()
 
-## ----ggsmooth------------------------------------------------------------
+
+## ----ggsmooth---------------------------------------------------------------------------
 data(mcycle, package='MASS')
 ggplot(aes(x=times, y=accel), data=mcycle) +
   geom_point() +
   geom_smooth(formula=y ~ s(x, bs='ad'), method='gam')
 
-## ----ggstatsum-----------------------------------------------------------
+
+## ----ggstatsum--------------------------------------------------------------------------
 ggplot(mtcars, aes(cyl, mpg)) + 
   geom_point() +
   stat_summary(fun.data = "mean_cl_boot", colour = "orange", alpha=.75, size = 1)
 
-## ----scale_labs----------------------------------------------------------
+
+## ----scale_labs-------------------------------------------------------------------------
 ggplot(aes(x=times, y=accel), data=mcycle) +
   geom_smooth(se=F) +
   labs(x='milliseconds after impact', y='head acceleration', title='Motorcycle Accident')
 
-## ----scale_lims----------------------------------------------------------
+
+## ----scale_lims-------------------------------------------------------------------------
 ggplot(mpg, aes(displ, hwy, size=cyl)) + 
   geom_point() + 
   ylim(c(0,60))
@@ -79,12 +94,14 @@ ggplot(mpg, aes(displ, hwy, size=cyl)) +
                      breaks=seq(0,60,by=12), 
                      minor_breaks=seq(6,60,by=6))
 
-## ----scale_size2---------------------------------------------------------
+
+## ----scale_size2------------------------------------------------------------------------
 ggplot(mpg, aes(displ, hwy, size=cyl)) + 
   geom_point() +
   scale_size(range=c(1,3))
 
-## ----scale_color---------------------------------------------------------
+
+## ----scale_color------------------------------------------------------------------------
 ggplot(mpg, aes(displ, hwy, color=cyl)) + 
   geom_point() +
   scale_color_gradient2()
@@ -93,12 +110,14 @@ ggplot(mpg, aes(displ, hwy, color=factor(cyl))) +
   geom_point() +
   scale_color_manual(values=c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"))
 
-## ----scale_scale---------------------------------------------------------
+
+## ----scale_scale------------------------------------------------------------------------
 ggplot(mpg, aes(displ, hwy)) + 
   geom_point() +
   scale_x_log10()
 
-## ----facetgrid, eval=1, echo=1-------------------------------------------
+
+## ----facetgrid, eval=1, echo=1----------------------------------------------------------
 ggplot(mtcars, aes(wt, mpg)) + 
   geom_point() +
   facet_grid(~ cyl)
@@ -109,17 +128,20 @@ ggplot(midwest, aes(popdensity, percbelowpoverty)) +
   geom_point() +
   facet_grid(~ state, labeller = label_both)
 
-## ----facetgrid2----------------------------------------------------------
+
+## ----facetgrid2-------------------------------------------------------------------------
 ggplot(mtcars, aes(wt, mpg)) + 
   geom_point() +
   facet_grid(vs ~ cyl, labeller = label_both)
 
-## ----facetwrap-----------------------------------------------------------
+
+## ----facetwrap--------------------------------------------------------------------------
 ggplot(mtcars, aes(wt, mpg)) + 
   geom_point() +
   facet_wrap(vs ~ cyl, labeller = label_both, ncol=2)
 
-## ----patchwork-----------------------------------------------------------
+
+## ----patchwork--------------------------------------------------------------------------
 library(patchwork)
 g1 = ggplot(mtcars, aes(wt, mpg)) + 
   geom_point()
@@ -133,7 +155,8 @@ g3 = ggplot(mtcars, aes(mpg)) +
 g1 /                       # initial plot place next part underneath
   (g2 | g3)                # groups g2 and g3 side by side
 
-## ----patchwork2----------------------------------------------------------
+
+## ----patchwork2-------------------------------------------------------------------------
 p1 <- ggplot(mtcars) + geom_point(aes(mpg, disp))
 p2 <- ggplot(mtcars) + geom_boxplot(aes(gear, disp, group = gear))
 p3 <- ggplot(mtcars) + geom_smooth(aes(disp, qsec))
@@ -149,7 +172,8 @@ p1 +
   p5 +
   plot_layout(widths = c(2, 1))
 
-## ----finecontrol, fig.height=6, fig.width=8, echo=-c(1:5, 7), dev='png'----
+
+## ----finecontrol, fig.height=6, fig.width=8, echo=-c(1:5, 7), dev='png'-----------------
 library(grid); library(caTools)
 img = caTools::read.gif('img/lamb.gif')
 lambosun = img$col[img$image+1]
@@ -176,24 +200,14 @@ ggplot(aes(x=carat, y=price), data=diamonds) +
         legend.key=element_rect(linetype=4),
         legend.position='bottom')
 
-## ----mullerplot, eval=FALSE, echo=FALSE----------------------------------
-## # library(ggmuller)
-## # Muller_df <- get_Muller_df(example_edges, example_pop_df, cutoff = 0.005)
-## #
-## # # generate pretty plot
-## # Muller_plot(Muller_df, palette=c(NineteenEightyR::sonny(), NineteenEightyR::malibu()[4:5]), xlab='', ylab='') +
-## #   theme_trueMinimal() +
-## #   theme(axis.ticks.x=element_blank(),
-## #         axis.ticks.y=element_blank(),
-## #         axis.text.x=element_blank(),
-## #         axis.text.y=element_blank())
 
-## ----ggplot_ex1, echo=FALSE----------------------------------------------
+## ----ggplot_ex1, echo=FALSE-------------------------------------------------------------
 library(ggplot2)
 ggplot(aes(x=waiting, y=eruptions), data=faithful) +
   geom_point()
 
-## ----ggplot_ex2----------------------------------------------------------
+
+## ----ggplot_ex2-------------------------------------------------------------------------
 library(maps)
 mi = map_data("county", "michigan")
 seats = mi %>% 

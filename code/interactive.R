@@ -1,7 +1,8 @@
-## ----interactivesetup, include=FALSE, eval=TRUE, cache=FALSE-------------
+## ----interactivesetup, include=FALSE, eval=TRUE, cache=FALSE----------------------------
 knitr::opts_chunk$set(cache.rebuild=F)
 
-## ----title, echo=F-------------------------------------------------------
+
+## ----title, echo=F----------------------------------------------------------------------
 # saveWidget(vn, file='vntitle.html')
 library(visNetwork)
 nodes = data.frame(id=1:2, label=c('Interactive', 'Visualization'))
@@ -24,14 +25,16 @@ visNetwork(nodes, edges, height=400, width='100%') %>%
            shadow = T) %>% 
   visOptions(highlightNearest=F) 
 
-## ----plotly1-------------------------------------------------------------
+
+## ----plotly1----------------------------------------------------------------------------
 library(plotly)
 midwest %>% 
   filter(inmetro==T) %>% 
   plot_ly(x=~percbelowpoverty, y=~percollege) %>% 
   add_markers()
 
-## ----plotly2-------------------------------------------------------------
+
+## ----plotly2----------------------------------------------------------------------------
 library(mgcv); library(modelr); library(glue)
 
 mtcars %>% 
@@ -51,10 +54,12 @@ mtcars %>%
             color=~amFactor, 
             name='gam prediction')
 
-## ----plotly_1line--------------------------------------------------------
+
+## ----plotly_1line-----------------------------------------------------------------------
 plot_ly(midwest, x = ~percollege, color = ~state, type = "box")
 
-## ----ggplotly------------------------------------------------------------
+
+## ----ggplotly---------------------------------------------------------------------------
 gp = mtcars %>% 
   mutate(amFactor = factor(am, labels=c('auto', 'manual')),
          hovertext = paste(wt, mpg, amFactor)) %>% 
@@ -64,13 +69,16 @@ gp = mtcars %>%
   geom_point(aes(color=amFactor))
 ggplotly()
 
-## ----highcharts----------------------------------------------------------
-library(highcharter); library(quantmod)
+
+## ----highcharts-------------------------------------------------------------------------
+library(highcharter)
+library(quantmod)
 
 google_price = getSymbols("GOOG", auto.assign = FALSE)
 hchart(google_price)
 
-## ----visNetworkinitial---------------------------------------------------
+
+## ----visNetworkinitial------------------------------------------------------------------
 set.seed(1352)
 nodes = data.frame(id = 0:5,
                    label = c('Bobby', 'Janie','Timmie', 'Mary', 'Johnny', 'Billy'),
@@ -88,7 +96,8 @@ visNetwork(nodes, edges, height=300, width=800) %>%
            scaling=list(min=10, max=50, label=list(enable=T))) %>% 
   visLegend()
 
-## ----visNetwork, eval=F, echo=F------------------------------------------
+
+## ----visNetwork, eval=F, echo=F---------------------------------------------------------
 ## # saveWidget(vn, file='visnetwork.html')
 ## # library(visNetwork)
 ## # visNetwork(nodes, edges) %>% #, height=600, width=800
@@ -99,7 +108,8 @@ visNetwork(nodes, edges, height=300, width=800) %>%
 ## # <iframe src='../img/visnetwork.html', width=1000, height=600, scrolling="no", frameBorder="0"></iframe>
 ## 
 
-## ----leaflet-------------------------------------------------------------
+
+## ----leaflet----------------------------------------------------------------------------
 hovertext <- paste(sep = "<br/>",
   "<b><a href='http://umich.edu/'>University of Michigan</a></b>",
   "Ann Arbor, MI"
@@ -111,14 +121,16 @@ leaflet() %>%
   addTiles() %>%
   addPopups(lng=-83.738222, lat=42.277030, popup=hovertext)
 
-## ----datatable-----------------------------------------------------------
+
+## ----datatable--------------------------------------------------------------------------
 library(DT)
 ggplot2movies::movies %>% 
   select(1:6) %>% 
   filter(rating>8, !is.na(budget), votes > 1000) %>% 
   datatable()
 
-## ----datatable_options---------------------------------------------------
+
+## ----datatable_options------------------------------------------------------------------
 iris %>% 
   # arrange(desc(Petal.Length)) %>% 
   datatable(rownames=F,
@@ -148,7 +160,8 @@ iris %>%
     )
   )
 
-## ----shiny, eval=FALSE---------------------------------------------------
+
+## ----shiny, eval=FALSE------------------------------------------------------------------
 ## library(shiny)
 ## 
 ## # Running a Shiny app object
@@ -166,7 +179,8 @@ iris %>%
 ## 
 ## runApp(app)
 
-## ----interactive_ex1, eval=FALSE-----------------------------------------
+
+## ----interactive_ex1, eval=FALSE--------------------------------------------------------
 ## library(ggplot2movies)
 ## 
 ## movies %>%
@@ -175,14 +189,16 @@ iris %>%
 ##   plot_ly() %>%
 ##   add_markers()
 
-## ----interactive_ex1-hint, echo=FALSE------------------------------------
+
+## ----interactive_ex1-hint, echo=FALSE---------------------------------------------------
 movies %>% 
   group_by(year) %>% 
   summarise(Avg_Rating=mean(rating)) %>% 
   plot_ly() %>% 
   add_markers(x=~year, y=~Avg_Rating)
 
-## ----interactive_ex2, echo=FALSE-----------------------------------------
+
+## ----interactive_ex2, echo=FALSE--------------------------------------------------------
 movies %>% 
   group_by(year, Drama) %>% 
   summarise(Avg_Rating=mean(rating),
