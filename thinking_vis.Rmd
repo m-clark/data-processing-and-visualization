@@ -3,7 +3,10 @@
 
 ```{r vissetup, include=FALSE, eval=TRUE, cache=FALSE}
 knitr::opts_chunk$set(eval=T, echo=F)
-library(viridisLite); library(scico)
+library(viridisLite)
+library(scico)
+library(patchwork)
+library(visibly)
 ```
 
 # Thinking Visually
@@ -110,24 +113,44 @@ sw2 = starwars %>%
 
 # adding label=name will add name to plotly tooltip; ggplot will ignore
 pal = viridis(3, begin = 0, end = .75, direction = 1, option = 'plasma') # direction evidently doesn't work
-linecol = scales::alpha(pal[1], .5)# because plotly doesn't know what alpha is.
-g = sw2 %>% 
-  select(-homeworld) %>% 
-  rename(homeworld=homeworld2) %>% 
-  ggplot(aes(x=mass, y=height)) +
-  geom_smooth(color=linecol, se=F, size=.5, alpha=.5) +
-  geom_point(aes(label=name, color=gender, shape=homeworld, size=birth_year), alpha=.5, show.legend=F) +
-  scale_color_manual(values=pal[2:3]) +
-  # geom_text(aes(label=name)) +
-  scale_size_continuous(range=c(2,10)) +
-  theme_clean()+ 
-  theme(legend.position="none")  # only way to keep plotly from putting a legend
 
-ggplotly()%>% 
-  layout(title='Star Wars Characters',
-         font=list(family='Roboto'),
-         xaxis=list(title='Mass'),
-         yaxis=list(title='Height')) %>% 
+pal = scico(3, begin = 0, end = .75, palette = 'batlow')
+
+linecol = scales::alpha(pal[1], .5)# because plotly doesn't know what alpha is.
+
+g = sw2 %>%
+  select(-homeworld) %>%
+  rename(homeworld = homeworld2) %>%
+  ggplot(aes(x = mass, y = height)) +
+  geom_smooth(
+    color = linecol,
+    se = F,
+    size = .5,
+    alpha = .5
+  ) +
+  geom_point(
+    aes(
+      label = name,
+      color = gender,
+      shape = homeworld,
+      size = birth_year
+    ),
+    alpha = .5,
+    show.legend = F
+  ) +
+  scale_color_manual(values = pal[2:3]) +
+  # geom_text(aes(label=name)) +
+  scale_size_continuous(range = c(2, 10)) +
+  theme_clean() +
+  theme(legend.position = "none")  # only way to keep plotly from putting a legend
+
+ggplotly() %>%
+  layout(
+    title = 'Star Wars Characters',
+    font  = list(family = 'Roboto'),
+    xaxis = list(title  = 'Mass'),
+    yaxis = list(title  = 'Height')
+  ) %>%
   theme_plotly()
 ```
 
@@ -188,29 +211,13 @@ These color schemes might seem a bit odd from what you're used to.  But recall t
 
 For more, see the [vignette](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html). I also invite you to watch the [introduction of the original module in Python](https://www.youtube.com/watch?v=xAoljeRJ3lU), where you can learn more about the issues in color selection, and why viridis works.
 
-### RColorBrewer
+You can use the following functions for with <span class="pack" style = "">ggplot2</span>:
 
-Color Brewer offers another collection of palettes that will generally work well in a variety of situations.  While there are print and color-blind friendly palettes, not all adhere to those restrictions.  Specifically though, you have palettes for the following data situations:
+- <span class="func" style = "">scale_color_viridis_c</span>
+- <span class="func" style = "">scale_color_viridis_d</span>
+- <span class="func" style = "">scale_fill_viridis_c</span>
+- <span class="func" style = "">scale_fill_viridis_d</span>
 
-- Qualitative (e.g. Dark2[^Dark1])
-- Sequential (e.g. Reds)
-- Diverging (e.g. RdBu)
-
-<img class='zoom' src="img/colorbrewer.svg" style="display:block; margin: 0 auto;" width=50%>
-
-There is a <span class="pack">ggplot2</span> function, <span class="func">scale_color_brewer</span>, you can use as well. For more, see [colorbrewer.org](http://colorbrewer2.org/).  There you can play around with the palettes to help make your decision.
-
-<div class='note'>
-In R, you have three schemes that work well right out of the box:
-
-- ggplot2 default palette
-- viridis
-- RColorBrewer
-
-Furthermore, they'll work well with discrete or continuous data.  You will have to do some work to come up with better, so they should be your default.  Sometimes though, [one can't help oneself](https://github.com/m-clark/NineteenEightyR).
-
-<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
-</div>
 
 ### Scientific colors
 
@@ -222,8 +229,49 @@ Yet another set of palettes are available via the <span class="pack">scico</span
 - Color-vision-deficiency friendly     
 - Readable as black-and-white print
 
+You can use the following functions for with <span class="pack" style = "">ggplot2</span>:
+
+- <span class="func" style = "">scale_color_scico</span>
+- <span class="func" style = "">scale_color_scico_d</span>
+- <span class="func" style = "">scale_fill_scico</span>
+- <span class="func" style = "">scale_fill_scico_d</span>
+
+
 
 <img class='zoom' src="img/scico.png" width=50%> 
+
+
+### RColorBrewer
+
+Color Brewer offers a collection of palettes that will generally work well in a variety of situations, especially for discrete data.  While there are print and color-blind friendly palettes, not all adhere to those restrictions.  Specifically though, you have palettes for the following data situations:
+
+- Qualitative (e.g. Dark2[^Dark1])
+- Sequential (e.g. Reds)
+- Diverging (e.g. RdBu)
+
+<img class='zoom' src="img/colorbrewer.svg" style="display:block; margin: 0 auto;" width=50%>
+
+There is a <span class="pack">ggplot2</span> function, <span class="func">scale_color_brewer</span>, you can use as well. For more, see [colorbrewer.org](http://colorbrewer2.org/).  There you can play around with the palettes to help make your decision.
+
+You can use the following functions for with <span class="pack" style = "">ggplot2</span>:
+
+- <span class="func" style = "">scale_color_brewer</span>
+- <span class="func" style = "">scale_fill_brewer/span>
+
+<div class='note'>
+In R, you have several schemes that work well right out of the box:
+
+- ggplot2 default palette
+- viridis
+- scico
+- RColorBrewer
+
+Furthermore, they'll work well with discrete or continuous data.  You will have to do some work to come up with better, so they should be your default.  Sometimes though, [one can't help oneself](https://github.com/m-clark/NineteenEightyR).
+
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
+
+
 
 ## Contrast
 
@@ -242,17 +290,17 @@ So contrast comes into play with text as well as color.  In general, you should 
 
 I personally don't like stark black, and find it visually irritating, but obviously that would be fine to use for most people.
 
-Contrast concerns regard color as well.  When considering color, one should consider the background for plots, or perhaps the surrounding text.  The following function will check for this. Ideally one would pass AAA.
+Contrast concerns regard color as well.  When considering color, one should also think about the background for plots, or perhaps the surrounding text.  The following function will check for this. Ideally one would pass AAA.
 
 ```{r contrast, echo=TRUE}
 # default ggplot2 discrete color against the default ggplot2 gray background
 visibly::color_contrast_checker(foreground = '#F8766D', background = 'gray92')
 
 # the dark viridis would work 
-visibly::color_contrast_checker(foreground = '#21908C', background = 'gray92')
+visibly::color_contrast_checker(foreground = '#440154', background = 'gray92')
 ```
 
-You can't win all battles however.  It will be difficult to choose colors that are perceptually even, avoid color-blindness issues, have good contrast, and work to convey the information you need.  The main thing is to make the attempt.
+You can't win all battles however.  It will be difficult to choose colors that are perceptually even, avoid color-blindness issues, have good contrast,  work to convey the information you need, and are aesthetically pleasing.  The main thing to do is simply make the attempt.
 
 
 ## Scaling Size
@@ -261,20 +309,23 @@ You might not be aware, but there is more than one way to scale the size of obje
 
 
 ```{r scale_size, out.width='50%'}
-sw2 %>% 
+ss1 <- sw2 %>% 
   mutate(bmi = mass/((height/100)^2)) %>% 
   ggplot(aes(x=mass, y=height)) +
   geom_point(aes(label=name,  size=bmi), color=palettes$orange$orange, alpha=.25, show.legend=F) +
   scale_size_continuous(range=c(2,10)) +
   theme_clean()+ 
   theme(legend.position="none")  # only way to keep plotly from putting a legend
-sw2 %>%
+
+ss2 <- sw2 %>%
   mutate(bmi = mass/((height/100)^2)) %>% 
   ggplot(aes(x=mass, y=height)) +
   geom_point(aes(label=name, size=bmi), color=palettes$orange$orange, alpha=.25, show.legend=F) +
   scale_radius(range=c(2,10)) + 
   theme_clean()+ 
   theme(legend.position="none")  # only way to keep plotly from putting a legend
+
+ss1 + ss2
 ```
 
 
@@ -284,41 +335,6 @@ What's the difference? The first plot scales the dots by their area, while the s
 ## Transparency
 
 Using transparency is a great way to keep detailed information available to the audience without being overwhelming. Consider the following.  Fifty individual trajectories are shown on the left, but it doesn't cause any issue graphically.  The right has 10 lines plus a fitted line, 20 points and a ribbon to provide a sense of variance.  Using transparency and a viridis color scheme allows it to be perceived cleanly.
-
-```{r transp_old, eval=FALSE}
-N = 100
-obs = 10
-
-g = rep(1:N, e=obs)
-x = rep(1:obs, N)
-f = rep(c(-.5, .5), e=N/2)[g]
-# sig = createCorr(c(-.75,-.25,.25))
-# re = mvtnorm::rmvnorm(N, sigma=sig)
-re = mvtnorm::rmvnorm(N, sigma=diag(c(.5,.05,.025)))
-y = re[,1][g] + (.25+re[,2][g])*x + (re[,3][g]*f)*(x^2) + rnorm(N*obs, sd=.2)
-library(lme4)
-xsq = x^2
-lmer(y ~ x + xsq + (1+x+xsq |g))
-# y = scale(y)[,1]
-
-# lm(y~poly(x,2)) %>% summary()
-
-# 
-# gg = tibble(g, x, y) %>% 
-#   mutate(y = scale(y)) %>% 
-#   ggplot(aes(x,y)) + 
-#   geom_smooth(aes(group=g), se=F, color=alpha(palettes$orange$orange, .2), lwd=.5)
-# ggplotly() %>% 
-#   theme_plotly()
-tibble(g, f=factor(f, labels=c('g1','g2')), x, y) %>% 
-  group_by(g) %>% 
-  mutate(updown = if_else(last(y) > first(y), 'up', 'down')) %>% 
-  # ungroup() %>%
-  plot_ly() %>% 
-  add_lines(x=~x, y=~y,  color=~f, opacity=.25, showlegend=F) %>%
-  add_markers(x=~x, y=~y, color=~f, opacity=.75) %>% 
-  theme_plotly()
-```
 
 ```{r transp, out.width='75%', fig.asp=.5}
 ########################################################################################
@@ -487,7 +503,7 @@ g2 = ggplot(aes(x=x, y=value), data=gdat2) +
 # logical fashion. The bookdown notes on figures did not work even remotely as
 # described. The only success was found with out.width + fig.asp, so that was
 # set as a default knitr setting
-library(patchwork)
+
 g1 + g2
 ```
 
@@ -559,56 +575,67 @@ In addition, transparency can be used to add additional information to a plot. I
 #   layout(title = 'U.S. Tornados 1990-2015', geo = g) %>% 
 #   theme_plotly()
 
-library(mclust)
-sim_faithful = Mclust(faithful, G=2) %>% summary()
+# mclust will cause issues loading directly, and can't use the function without
+# doing so due to internal use of other functions even if not technically needed
+# library(mclust)
+# sim_faithful = mclust::Mclust(faithful, G=2) %>% summary()
+# save(sim_faithful, file = 'data/faithful_cluster.RData')
+load('data/faithful_cluster.RData')
 
-nsim = 500
-g1 = mvtnorm::rmvnorm(nsim, sim_faithful$mean[,1], sigma=sim_faithful$variance[,,1])
-g2 = mvtnorm::rmvnorm(nsim, sim_faithful$mean[,2], sigma=sim_faithful$variance[,,2])
-gdat = data.frame(rbind(g1, g2), group=rep(0:1, e=nsim)) 
+nsim = 1000
+g1 = mvtnorm::rmvnorm(nsim, sim_faithful$mean[, 1], 
+                      sigma = sim_faithful$variance[, , 1])
+g2 = mvtnorm::rmvnorm(nsim, sim_faithful$mean[, 2], 
+                      sigma = sim_faithful$variance[, , 2])
+gdat = data.frame(rbind(g1, g2), group = rep(0:1, e = nsim)) 
 
 gdat %>%
   ggplot(aes(x=waiting, y=eruptions)) +
-  geom_point(size = 3, alpha=.10, color='#ff5500') +
+  geom_point(size = 3, alpha=.05, color='#ff5500') +
   theme_clean()
 ```
 
 Here we apply transparency to a density plot to convey a group difference in distributions, while still being able to visualize the whole distribution of each group.
 
 ```{r transp_density, cache=FALSE}
-detach(package:mclust)
 set.seed(123)
-gdat = 1:4 %>% 
-  map(~rnorm(20, mean=.x, sd=.x/2)) %>% 
-  data.frame() %>% 
-  rename_all(function(x) paste0('x', 1:4)) %>% 
-  pivot_longer(everything(), names_to = 'g', values_to = 'value') %>% 
-  mutate(g = fct_relevel(g, 'x1', after=2))
 
-gdat %>% 
-  ggplot(aes(x=value, group=g)) +
-  geom_density(aes(color=g, fill=g), alpha=.2, show.legend=F) +
-  xlim(-3,10) +
+gdat = 1:4 %>%
+  map( ~ rnorm(20, mean = .x, sd = .x / 2)) %>%
+  data.frame() %>%
+  rename_all(function(x)
+    paste0('x', 1:4)) %>%
+  pivot_longer(everything(), names_to = 'g', values_to = 'value') %>%
+  mutate(g = fct_relevel(g, 'x1', after = 2))
+
+gdat %>%
+  ggplot(aes(x = value, group = g)) +
+  geom_density(aes(color = g, fill = g),
+               alpha = .2,
+               show.legend = F) +
+  xlim(-3, 10) +
   theme_clean() +
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.ticks.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank())
+  theme(
+    axis.text.x  = element_blank(),
+    axis.text.y  = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  )
 ```
 
 Had we not done so, we might not be able to tell what's going on with some of the groups at all.
 
-```{r transp_density2}
+```{r transp_density2, cache=FALSE}
 gdat %>%
   ggplot(aes(x = value, group = g)) +
   geom_density(aes(color = g, fill = g), show.legend = F) +
   xlim(-3, 10) +
   theme_clean() +
   theme(
-    axis.text.x = element_blank(),
-    axis.text.y = element_blank(),
+    axis.text.x  = element_blank(),
+    axis.text.y  = element_blank(),
     axis.ticks.x = element_blank(),
     axis.ticks.y = element_blank(),
     axis.title.x = element_blank(),
@@ -642,13 +669,18 @@ As I don't know what screen will see my visualizations, I generally opt for svg.
 
 Here is a [discussion on stackexchange](https://stackoverflow.com/questions/2336522/png-vs-gif-vs-jpeg-vs-svg-when-best-to-use) that summarizes some of the above. The initial question is old but there have been recent updates to the responses.
 
-Note also, you can import files directly into your documents with R, HTML tags, or $\LaTeX$.  See `?png` for a starting point.  The following demonstrates an image insert for HTML output, with a couple options for centering and size.
+Note also, you can import files directly into your documents with R, markdown, HTML tags, or $\LaTeX$.  See `?png` for a starting point.  The following demonstrates an image insert for HTML output, with a couple options for centering and size.
 
 `<img src="file.jpg" style="display:block; margin: 0 auto;" width=50%>`
 
 <img src="img/future.jpg" style="display:block; margin: 0 auto;" width=50%>
 
+This uses markdown to get the same result
 
+```
+![](img/future.jpg){width=50%}
+```
+![](img/future.jpg){width=50%}
 
 ## Summary
 
@@ -661,60 +693,116 @@ I'm just putting things that come to mind here as I return to this document. Mos
 
 ### Pie
 
-Pie charts and their cousins, e.g. bar charts (and stacked versions), wind rose plots, radar plots etc., either convey too little information or make otherwise simple information more difficult to process perceptually.
+Pie charts and their cousins, e.g. bar charts (and stacked versions), wind rose plots, radar plots etc., either convey too little information, or make otherwise simple information more difficult to process perceptually.  The basic pie chart is really only able to convey proportional data.  Beyond that, anything done with a pie chart can almost always be done better, at the very least with a bar chart, but you should really consider better ways to convey your data. 
+
+Alternatives:
+- bar
+- densities/stacked densities
+- parallel sets/sankey
 
 ### Histograms
 
-Anyone that's used R's <span class="func">hist</span> function knows the frustration here.  Use density plots instead.  They convey the same information but better, and typical defaults are usually fine.
+Anyone that's used R's <span class="func">hist</span> function knows the frustration here.  Use density plots instead.  They convey the same information but better, and typical defaults are usually fine. However, you should really consider the information and audience- is a histogram or density plot really displaying what you want to show?
+
+Alternatives:
+- density
 
 ### Using 3D without adding any communicative value
 
 You will often come across use of 3D in scientific communication which is fairly poor and makes the data harder to interpret.  In general, when going beyond two dimensions, your first thought should be to use color, size, etc. and finally, prefer interactivity to 3D.  Where it is useful is in things like showing structure (e.g. molecular, geographical), or continuous multi-way interactions.
 
+Alternatives:
+- multiple 2d/faceting
+
 ### Using too many colors 
 
 Some put a completely non-scientifically based number on this, but the idea holds. For example, if you're trying to show U.S. state grouping by using a different color for all 50 states, no one's going to be able to tell the yellow for Alabama vs. the slightly different yellow for Idaho.  Alternatives would be to show the information via a map or use a hover over display.
 
+### Using valenced colors when data isn't applicable
+
+Often we have data that can be thought of as having a positive/negative or valenced nuance.  For example, we might want to show values relative to some cut point, or they might naturally have positive and negative values (e.g. sentiment, standardized scores). Oftentimes though, doing so would mean possibly arbitrarily picking a cut point and unnaturally discretizing the data.
+
+The following shows a plot of water risk for many countries. The first plots the color along a continuum, which is appropriate for this score of 0-5. We can clearly see problematic ones while still getting a sense of where other countries lie along that score.  The plot on the left arbitrarily codes a different color scheme, which might suggest some countries are fundamentally different than others.  However, if the goal is to show values relative to the median, then it accurately conveys countries above and below that value. If the median is not a useful value (e.g. to take some action upon), then the former plot would likely be preferred.
+
+```{r valenced-plot, eval = FALSE}
+wr = noiris::water_risk %>% 
+  mutate(name_0 = ifelse(name_0 == 'United States', 'USA', name_0)) %>% 
+  drop_na()
+  
+world = map_data("world")
+wr$name_0 %in% world$region
+
+
+p1 = ggplot(wr, aes(map_id = name_0)) +
+  geom_map(aes(fill = score), map = world) +
+  expand_limits(x = world$long, y = world$lat) +
+  scale_fill_scico(palette = 'lajolla') +
+  theme_void()
+
+p2 =  ggplot(wr, aes(map_id = name_0)) +
+  geom_map(aes(fill = score), map = world) +
+  expand_limits(x = world$long, y = world$lat) +
+  scale_fill_gradient2(
+    low = muted("#001260"), # based on vik extremes
+    mid = "white",
+    high = muted("#601200"),
+    midpoint = median(wr$score)
+  ) +
+  theme_void()
+
+p1 + p2
+```
+
+![](img/water_risk.svg){width=150%}
+
+
+
+
+
 ### Showing maps that just display population
 
-Most of the maps I see on the web cover a wide range of data and can be very visually appealing, but pretty much just tell me where the most populated areas are, which is utterly uninteresting.  Make sure that your geographical depiction is more informative than this.
+Many of the maps I see on the web cover a wide range of data and can be very visually appealing, but pretty much just tell me where the most populated areas are, because the value conveyed is highly correlated with it.  Such maps are not very interesting, so make sure that your geographical depiction is more informative than this.
 
 
 ### Biplots
 
-A lot of folks doing PCA resort to biplots for interpretation, where a graphical model would be much more straightforward.  See [this chapter](http://m-clark.github.io/sem/latent-variables-1.html) for example.
+A lot of folks doing PCA resort to biplots for interpretation, where a graphical model would be much more straightforward.  See [this chapter](http://m-clark.github.io/sem/latent-variables.html) for example.
 
 
 ## Thinking Visually Exercises
 
 ### Exercise 1
 
-The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>.  Use the <span class="func">scale_color_viridis</span> function to add a more accessible palette.
+The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>.  Use the <span class="func">scale_color_viridis</span> or <span class="func">scale_color_scico</span> function to add a more accessible palette.
 
 ```{r thinkingvis_ex1, echo=T, eval=FALSE, cache=FALSE}
-library(ggplot2); library(viridis)
-ggplot(aes(x=carat, y=price), data=diamonds) +
-  geom_point(aes(color=price)) +
+# devtools::install_github("thomasp85/scico") # to use scientific colors
+library(ggplot2)
+
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  geom_point(aes(color = price)) +
   ????
 ```
 
 ```{r thinkingvis_ex1b, eval=F, out.width='50%'}
-library(ggplot2); library(viridis)
-ggplot(aes(x=carat, y=price), data=diamonds) +
-  geom_point(aes(color=price)) +
-  scale_color_viridis()
+library(ggplot2)
+
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  geom_point(aes(color = price), alpha = .05) +
+  scale_color_scico(palette = 'acton')
 ```
 
 <img class='zoom' src="img/visex_diamonds.png" style="display:block; margin: 0 auto;" width=50% title='scatterplot of diamond data'>
 
+
 ### Exercise 2
 
-Now color it by the `cut`.  To use the scale_color_viridis approach, you'll have to change one of the arguments to the function (set `discrete=T`).  Reproduce this but using one of the other viridis palettes.  See the helpfile via `?scale_color_viridis` to see how to change the palette.
+Now color it by the `cut` instead of `price`.  Use <span class="func">scale_color_viridis/scioc_d</span>.   See the helpfile via `?scale_color_*` to see how to change the palette.
 
 ```{r thinkingvis_ex2, eval=FALSE, out.width='50%'}
-ggplot(aes(x=carat, y=price), data=diamonds) +
-  geom_point(aes(color=cut)) +
-  scale_color_viridis(discrete=T)
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  geom_point(aes(color = cut)) +
+  scale_color_scico_d(palette = 'batlow')
 ```
 
 <img class='zoom' src="img/visex_diamonds2.png" style="display:block; margin: 0 auto;" width=50% title='scatterplot of diamond data with options'>

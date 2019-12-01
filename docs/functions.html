@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Writing Functions | Data Processing &amp; Visualization</title>
   <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
-  <meta name="generator" content="bookdown 0.15 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Writing Functions | Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2019-11-21" />
+<meta name="date" content="2019-12-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -311,8 +311,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#color"><i class="fa fa-check"></i>Color</a><ul>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#viridis"><i class="fa fa-check"></i>Viridis</a></li>
-<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#rcolorbrewer"><i class="fa fa-check"></i>RColorBrewer</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#scientific-colors"><i class="fa fa-check"></i>Scientific colors</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#rcolorbrewer"><i class="fa fa-check"></i>RColorBrewer</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#scaling-size"><i class="fa fa-check"></i>Scaling Size</a></li>
@@ -325,6 +325,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#histograms"><i class="fa fa-check"></i>Histograms</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#using-3d-without-adding-any-communicative-value"><i class="fa fa-check"></i>Using 3D without adding any communicative value</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#using-too-many-colors"><i class="fa fa-check"></i>Using too many colors</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#using-valenced-colors-when-data-isnt-applicable"><i class="fa fa-check"></i>Using valenced colors when data isn’t applicable</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#showing-maps-that-just-display-population"><i class="fa fa-check"></i>Showing maps that just display population</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#biplots"><i class="fa fa-check"></i>Biplots</a></li>
 </ul></li>
@@ -497,71 +498,71 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="a-starting-point" class="section level2">
 <h2>A starting point</h2>
 <p>Let’s assume you want to calculate the mean, standard deviation, and number of missing values for a variable, called <code>myvar</code>. We could do something like the following</p>
-<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb311-1" data-line-number="1"><span class="kw">mean</span>(myvar)</a>
-<a class="sourceLine" id="cb311-2" data-line-number="2"><span class="kw">sd</span>(myvar)</a>
-<a class="sourceLine" id="cb311-3" data-line-number="3"><span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</a></code></pre></div>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb313-1" data-line-number="1"><span class="kw">mean</span>(myvar)</a>
+<a class="sourceLine" id="cb313-2" data-line-number="2"><span class="kw">sd</span>(myvar)</a>
+<a class="sourceLine" id="cb313-3" data-line-number="3"><span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</a></code></pre></div>
 <p>Now let’s say you need to do it for several variables. Here’s what your custom function could look like. It takes a single input, the variable you want information about, and returns a data frame with that info.</p>
-<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb312-1" data-line-number="1">my_summary &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb312-2" data-line-number="2">  <span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb312-3" data-line-number="3">    <span class="dt">mean =</span> <span class="kw">mean</span>(x),</a>
-<a class="sourceLine" id="cb312-4" data-line-number="4">    <span class="dt">sd =</span> <span class="kw">sd</span>(x),</a>
-<a class="sourceLine" id="cb312-5" data-line-number="5">    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</a>
-<a class="sourceLine" id="cb312-6" data-line-number="6">  )</a>
-<a class="sourceLine" id="cb312-7" data-line-number="7">}</a></code></pre></div>
-<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb313-1" data-line-number="1"><span class="kw">my_summary</span>(mtcars<span class="op">$</span>mpg)</a></code></pre></div>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb314-1" data-line-number="1">my_summary &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb314-2" data-line-number="2">  <span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb314-3" data-line-number="3">    <span class="dt">mean =</span> <span class="kw">mean</span>(x),</a>
+<a class="sourceLine" id="cb314-4" data-line-number="4">    <span class="dt">sd =</span> <span class="kw">sd</span>(x),</a>
+<a class="sourceLine" id="cb314-5" data-line-number="5">    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</a>
+<a class="sourceLine" id="cb314-6" data-line-number="6">  )</a>
+<a class="sourceLine" id="cb314-7" data-line-number="7">}</a></code></pre></div>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb315-1" data-line-number="1"><span class="kw">my_summary</span>(mtcars<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>      mean       sd N_missing
 1 20.09062 6.026948         0</code></pre>
 <p>Works fine. However, data typically isn’t that pretty. It often has missing values.</p>
-<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb315-1" data-line-number="1"><span class="kw">load</span>(<span class="st">&#39;data/gapminder.RData&#39;</span>)</a>
-<a class="sourceLine" id="cb315-2" data-line-number="2"><span class="kw">my_summary</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp)</a></code></pre></div>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb317-1" data-line-number="1"><span class="kw">load</span>(<span class="st">&#39;data/gapminder.RData&#39;</span>)</a>
+<a class="sourceLine" id="cb317-2" data-line-number="2"><span class="kw">my_summary</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp)</a></code></pre></div>
 <pre><code>  mean sd N_missing
 1   NA NA       516</code></pre>
 <p>If there are actually missing values, we need to set <code>na.rm = TRUE</code> or the <span class="func">mean</span> and <span class="func">sd</span> will return <code>NA</code>. Let’s try it. We can either hard bake it in as in the initial example, or add an argument to let us control how to handle NAs with our custom function.</p>
-<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb317-1" data-line-number="1">my_summary &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb317-2" data-line-number="2">  <span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb317-3" data-line-number="3">    <span class="dt">mean =</span> <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb317-4" data-line-number="4">    <span class="dt">sd =</span> <span class="kw">sd</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb317-5" data-line-number="5">    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</a>
-<a class="sourceLine" id="cb317-6" data-line-number="6">  )</a>
-<a class="sourceLine" id="cb317-7" data-line-number="7">}</a>
-<a class="sourceLine" id="cb317-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb317-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb317-10" data-line-number="10">my_summary_na &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">remove_na =</span> <span class="ot">TRUE</span>) {</a>
-<a class="sourceLine" id="cb317-11" data-line-number="11">  <span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb317-12" data-line-number="12">    <span class="dt">mean =</span> <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> remove_na),</a>
-<a class="sourceLine" id="cb317-13" data-line-number="13">    <span class="dt">sd =</span> <span class="kw">sd</span>(x, <span class="dt">na.rm =</span> remove_na),</a>
-<a class="sourceLine" id="cb317-14" data-line-number="14">    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</a>
-<a class="sourceLine" id="cb317-15" data-line-number="15">  )</a>
-<a class="sourceLine" id="cb317-16" data-line-number="16">}</a>
-<a class="sourceLine" id="cb317-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb317-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb317-19" data-line-number="19"><span class="kw">my_summary</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp)</a></code></pre></div>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb319-1" data-line-number="1">my_summary &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb319-2" data-line-number="2">  <span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb319-3" data-line-number="3">    <span class="dt">mean =</span> <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb319-4" data-line-number="4">    <span class="dt">sd =</span> <span class="kw">sd</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb319-5" data-line-number="5">    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</a>
+<a class="sourceLine" id="cb319-6" data-line-number="6">  )</a>
+<a class="sourceLine" id="cb319-7" data-line-number="7">}</a>
+<a class="sourceLine" id="cb319-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb319-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb319-10" data-line-number="10">my_summary_na &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">remove_na =</span> <span class="ot">TRUE</span>) {</a>
+<a class="sourceLine" id="cb319-11" data-line-number="11">  <span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb319-12" data-line-number="12">    <span class="dt">mean =</span> <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> remove_na),</a>
+<a class="sourceLine" id="cb319-13" data-line-number="13">    <span class="dt">sd =</span> <span class="kw">sd</span>(x, <span class="dt">na.rm =</span> remove_na),</a>
+<a class="sourceLine" id="cb319-14" data-line-number="14">    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</a>
+<a class="sourceLine" id="cb319-15" data-line-number="15">  )</a>
+<a class="sourceLine" id="cb319-16" data-line-number="16">}</a>
+<a class="sourceLine" id="cb319-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb319-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb319-19" data-line-number="19"><span class="kw">my_summary</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp)</a></code></pre></div>
 <pre><code>      mean       sd N_missing
 1 43.13218 16.31355       516</code></pre>
-<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb319-1" data-line-number="1"><span class="kw">my_summary_na</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp, <span class="dt">remove_na =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb321-1" data-line-number="1"><span class="kw">my_summary_na</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp, <span class="dt">remove_na =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>  mean sd N_missing
 1   NA NA       516</code></pre>
 <p>Seems to work fine. Let’s add how many total observations there are.</p>
-<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb321-1" data-line-number="1">my_summary &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb321-2" data-line-number="2">  <span class="co"># create an arbitrarily named object with the summary information</span></a>
-<a class="sourceLine" id="cb321-3" data-line-number="3">  summary_data =<span class="st"> </span><span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb321-4" data-line-number="4">    <span class="dt">mean =</span> <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb321-5" data-line-number="5">    <span class="dt">sd =</span> <span class="kw">sd</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb321-6" data-line-number="6">    <span class="dt">N_total =</span> <span class="kw">length</span>(x),</a>
-<a class="sourceLine" id="cb321-7" data-line-number="7">    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</a>
-<a class="sourceLine" id="cb321-8" data-line-number="8">  )</a>
-<a class="sourceLine" id="cb321-9" data-line-number="9">  </a>
-<a class="sourceLine" id="cb321-10" data-line-number="10">  <span class="co"># return the result!</span></a>
-<a class="sourceLine" id="cb321-11" data-line-number="11">  summary_data       </a>
-<a class="sourceLine" id="cb321-12" data-line-number="12">}</a></code></pre></div>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb323-1" data-line-number="1">my_summary &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb323-2" data-line-number="2">  <span class="co"># create an arbitrarily named object with the summary information</span></a>
+<a class="sourceLine" id="cb323-3" data-line-number="3">  summary_data =<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb323-4" data-line-number="4">    <span class="dt">mean =</span> <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb323-5" data-line-number="5">    <span class="dt">sd =</span> <span class="kw">sd</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb323-6" data-line-number="6">    <span class="dt">N_total =</span> <span class="kw">length</span>(x),</a>
+<a class="sourceLine" id="cb323-7" data-line-number="7">    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</a>
+<a class="sourceLine" id="cb323-8" data-line-number="8">  )</a>
+<a class="sourceLine" id="cb323-9" data-line-number="9">  </a>
+<a class="sourceLine" id="cb323-10" data-line-number="10">  <span class="co"># return the result!</span></a>
+<a class="sourceLine" id="cb323-11" data-line-number="11">  summary_data       </a>
+<a class="sourceLine" id="cb323-12" data-line-number="12">}</a></code></pre></div>
 <p>That was easy! Let’s try it.</p>
-<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb322-1" data-line-number="1"><span class="kw">my_summary</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp)</a></code></pre></div>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb324-1" data-line-number="1"><span class="kw">my_summary</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp)</a></code></pre></div>
 <pre><code>      mean       sd N_total N_missing
 1 43.13218 16.31355   40953       516</code></pre>
 <p>Now let’s do it for every column! We’ve used the <span class="func">map</span> function before, now let’s use a variant that will return a data frame.</p>
-<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb324-1" data-line-number="1">gapminder_<span class="dv">2019</span> <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb324-2" data-line-number="2"><span class="st">  </span><span class="kw">select_if</span>(is.numeric) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb324-3" data-line-number="3"><span class="st">  </span><span class="kw">map_dfr</span>(my_summary, <span class="dt">.id =</span> <span class="st">&#39;variable&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb326-1" data-line-number="1">gapminder_<span class="dv">2019</span> <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb326-2" data-line-number="2"><span class="st">  </span><span class="kw">select_if</span>(is.numeric) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb326-3" data-line-number="3"><span class="st">  </span><span class="kw">map_dfr</span>(my_summary, <span class="dt">.id =</span> <span class="st">&#39;variable&#39;</span>)</a></code></pre></div>
 <pre><code>    variable         mean           sd N_total N_missing
 1       year 1.909000e+03 6.321997e+01   40953         0
 2    lifeExp 4.313218e+01 1.631355e+01   40953       516
@@ -576,52 +577,52 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>What is the <span class="emph">value</span> to be returned?</li>
 </ul>
 <p>When you think about writing a function, just write the code that can do it first. The goal is then to generalize beyond that single use case. RStudio even has a shortcut to help you get started. Consider our starting point. Highlight the code, hit Ctrl/Cmd + Shft + X, then give it a name.</p>
-<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb326-1" data-line-number="1"><span class="kw">mean</span>(myvar)</a>
-<a class="sourceLine" id="cb326-2" data-line-number="2"><span class="kw">sd</span>(myvar)</a>
-<a class="sourceLine" id="cb326-3" data-line-number="3"><span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</a></code></pre></div>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb328-1" data-line-number="1"><span class="kw">mean</span>(myvar)</a>
+<a class="sourceLine" id="cb328-2" data-line-number="2"><span class="kw">sd</span>(myvar)</a>
+<a class="sourceLine" id="cb328-3" data-line-number="3"><span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</a></code></pre></div>
 <p>It should look something like this.</p>
-<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb327-1" data-line-number="1">test_fun &lt;-<span class="st"> </span><span class="cf">function</span>(myvar) {</a>
-<a class="sourceLine" id="cb327-2" data-line-number="2">  <span class="kw">mean</span>(myvar)</a>
-<a class="sourceLine" id="cb327-3" data-line-number="3">  <span class="kw">sd</span>(myvar)</a>
-<a class="sourceLine" id="cb327-4" data-line-number="4">  <span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</a>
-<a class="sourceLine" id="cb327-5" data-line-number="5">}</a></code></pre></div>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb329-1" data-line-number="1">test_fun &lt;-<span class="st"> </span><span class="cf">function</span>(myvar) {</a>
+<a class="sourceLine" id="cb329-2" data-line-number="2">  <span class="kw">mean</span>(myvar)</a>
+<a class="sourceLine" id="cb329-3" data-line-number="3">  <span class="kw">sd</span>(myvar)</a>
+<a class="sourceLine" id="cb329-4" data-line-number="4">  <span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</a>
+<a class="sourceLine" id="cb329-5" data-line-number="5">}</a></code></pre></div>
 <p>RStudio could tell that you would need at least one input <code>myvar</code>, but beyond that, you’re now on your way to tweaking the function as you see fit.</p>
 <p>Note that what goes in and what comes out could be anything, even nothing!</p>
-<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb328-1" data-line-number="1">two &lt;-<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb328-2" data-line-number="2">  <span class="dv">2</span></a>
-<a class="sourceLine" id="cb328-3" data-line-number="3">}</a>
-<a class="sourceLine" id="cb328-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb328-5" data-line-number="5"><span class="kw">two</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb330-1" data-line-number="1">two &lt;-<span class="st"> </span><span class="cf">function</span>() {</a>
+<a class="sourceLine" id="cb330-2" data-line-number="2">  <span class="dv">2</span></a>
+<a class="sourceLine" id="cb330-3" data-line-number="3">}</a>
+<a class="sourceLine" id="cb330-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb330-5" data-line-number="5"><span class="kw">two</span>()</a></code></pre></div>
 <pre><code>[1] 2</code></pre>
 <p>Or even another function!</p>
-<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb330-1" data-line-number="1">center &lt;-<span class="st"> </span><span class="cf">function</span>(type) {</a>
-<a class="sourceLine" id="cb330-2" data-line-number="2">  <span class="cf">if</span> (type <span class="op">==</span><span class="st"> &#39;mean&#39;</span>) {</a>
-<a class="sourceLine" id="cb330-3" data-line-number="3">    mean</a>
-<a class="sourceLine" id="cb330-4" data-line-number="4">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb330-5" data-line-number="5">    median</a>
-<a class="sourceLine" id="cb330-6" data-line-number="6">  }</a>
-<a class="sourceLine" id="cb330-7" data-line-number="7">}</a>
-<a class="sourceLine" id="cb330-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb330-9" data-line-number="9"><span class="kw">center</span>(<span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb332-1" data-line-number="1">center &lt;-<span class="st"> </span><span class="cf">function</span>(type) {</a>
+<a class="sourceLine" id="cb332-2" data-line-number="2">  <span class="cf">if</span> (type <span class="op">==</span><span class="st"> &#39;mean&#39;</span>) {</a>
+<a class="sourceLine" id="cb332-3" data-line-number="3">    mean</a>
+<a class="sourceLine" id="cb332-4" data-line-number="4">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb332-5" data-line-number="5">    median</a>
+<a class="sourceLine" id="cb332-6" data-line-number="6">  }</a>
+<a class="sourceLine" id="cb332-7" data-line-number="7">}</a>
+<a class="sourceLine" id="cb332-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb332-9" data-line-number="9"><span class="kw">center</span>(<span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</a></code></pre></div>
 <pre><code>function (x, ...) 
 UseMethod(&quot;mean&quot;)
 &lt;bytecode: 0x7fbf622fbc40&gt;
 &lt;environment: namespace:base&gt;</code></pre>
-<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb332-1" data-line-number="1">myfun =<span class="st"> </span><span class="kw">center</span>(<span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</a>
-<a class="sourceLine" id="cb332-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb332-3" data-line-number="3"><span class="kw">myfun</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb334-1" data-line-number="1">myfun =<span class="st"> </span><span class="kw">center</span>(<span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</a>
+<a class="sourceLine" id="cb334-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb334-3" data-line-number="3"><span class="kw">myfun</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</a></code></pre></div>
 <pre><code>[1] 2</code></pre>
 <p>We can also set default values for the inputs.</p>
-<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb334-1" data-line-number="1">hi &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">name =</span> <span class="st">&#39;Beyoncé&#39;</span>) {</a>
-<a class="sourceLine" id="cb334-2" data-line-number="2">  <span class="kw">paste0</span>(<span class="st">&#39;Hi &#39;</span>, name, <span class="st">&#39;!&#39;</span>)</a>
-<a class="sourceLine" id="cb334-3" data-line-number="3">}</a>
-<a class="sourceLine" id="cb334-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb334-5" data-line-number="5"><span class="kw">hi</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb336-1" data-line-number="1">hi &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">name =</span> <span class="st">&#39;Beyoncé&#39;</span>) {</a>
+<a class="sourceLine" id="cb336-2" data-line-number="2">  <span class="kw">paste0</span>(<span class="st">&#39;Hi &#39;</span>, name, <span class="st">&#39;!&#39;</span>)</a>
+<a class="sourceLine" id="cb336-3" data-line-number="3">}</a>
+<a class="sourceLine" id="cb336-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb336-5" data-line-number="5"><span class="kw">hi</span>()</a></code></pre></div>
 <pre><code>[1] &quot;Hi Beyoncé!&quot;</code></pre>
-<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb336-1" data-line-number="1"><span class="kw">hi</span>(<span class="dt">name =</span> <span class="st">&#39;Jay-Z&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb338-1" data-line-number="1"><span class="kw">hi</span>(<span class="dt">name =</span> <span class="st">&#39;Jay-Z&#39;</span>)</a></code></pre></div>
 <pre><code>[1] &quot;Hi Jay-Z!&quot;</code></pre>
 <p>If you are working within an RStudio project, it would be a good idea to create a folder for your functions and save each as their own script. When you need the function just use the following:</p>
-<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb338-1" data-line-number="1"><span class="kw">source</span>(<span class="st">&#39;my_functions/awesome_func.R&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb340-1" data-line-number="1"><span class="kw">source</span>(<span class="st">&#39;my_functions/awesome_func.R&#39;</span>)</a></code></pre></div>
 <p>This would make it easy to even create your own personal package with the functions you create.</p>
 <p>However you go about creating a function and for whatever purpose, try to make a clear decision at the beginning</p>
 <ul>
@@ -643,12 +644,12 @@ Cmd/Ctrl + Option/Alt + Shift + R
 <h2>DRY</h2>
 <p>An oft-quoted mantra in programming is <em><strong>D</strong>on’t <strong>R</strong>epeat <strong>Y</strong>ourself</em>. One context regards iterative programming, where we would rather write one line of code than one-hundred. More generally though, we would like to gain efficiency where possible. A good rule of thumb is, if you are writing the same set of code more than twice, you should write a function to do it instead.</p>
 <p>Consider the following example, where we want to subset the data given a set of conditions. Given the cylinder, engine displacement, and mileage, we’ll get different parts of the data.</p>
-<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb339-1" data-line-number="1">good_mileage_displ_low_cyl_<span class="dv">4</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
-<a class="sourceLine" id="cb339-2" data-line-number="2">good_mileage_displ_low_cyl_<span class="dv">6</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">6</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
-<a class="sourceLine" id="cb339-3" data-line-number="3">good_mileage_displ_low_cyl_<span class="dv">8</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">8</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
-<a class="sourceLine" id="cb339-4" data-line-number="4">good_mileage_displ_high_cyl_<span class="dv">4</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
-<a class="sourceLine" id="cb339-5" data-line-number="5">good_mileage_displ_high_cyl_<span class="dv">6</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">6</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
-<a class="sourceLine" id="cb339-6" data-line-number="6">good_mileage_displ_high_cyl_<span class="dv">8</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">8</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb341-1" data-line-number="1">good_mileage_displ_low_cyl_<span class="dv">4</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
+<a class="sourceLine" id="cb341-2" data-line-number="2">good_mileage_displ_low_cyl_<span class="dv">6</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">6</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
+<a class="sourceLine" id="cb341-3" data-line-number="3">good_mileage_displ_low_cyl_<span class="dv">8</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">8</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
+<a class="sourceLine" id="cb341-4" data-line-number="4">good_mileage_displ_high_cyl_<span class="dv">4</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
+<a class="sourceLine" id="cb341-5" data-line-number="5">good_mileage_displ_high_cyl_<span class="dv">6</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">6</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a>
+<a class="sourceLine" id="cb341-6" data-line-number="6">good_mileage_displ_high_cyl_<span class="dv">8</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">8</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</a></code></pre></div>
 <p>It was tedious, but that’s not much code. But now consider- what if you want to change the mpg cutoff? The mean to median? Something else? You have to change all of it. Let’s write a function instead! What kinds of inputs will we need?</p>
 <ul>
 <li>cyl: Which cylinder type we want</li>
@@ -657,61 +658,61 @@ Cmd/Ctrl + Option/Alt + Shift + R
 <li>displ_low: Whether we are interested in low or high displacement vehicles</li>
 <li>cls: the class of the vehicle (e.g. compact or suv)</li>
 </ul>
-<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb340-1" data-line-number="1">good_mileage &lt;-<span class="st"> </span><span class="cf">function</span>(</a>
-<a class="sourceLine" id="cb340-2" data-line-number="2">  <span class="dt">cylinder =</span> <span class="dv">4</span>,</a>
-<a class="sourceLine" id="cb340-3" data-line-number="3">  <span class="dt">mpg_cutoff =</span> <span class="dv">30</span>,</a>
-<a class="sourceLine" id="cb340-4" data-line-number="4">  <span class="dt">displ_fun =</span> mean,</a>
-<a class="sourceLine" id="cb340-5" data-line-number="5">  <span class="dt">displ_low =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb340-6" data-line-number="6">  <span class="dt">cls =</span> <span class="st">&#39;compact&#39;</span></a>
-<a class="sourceLine" id="cb340-7" data-line-number="7">) {</a>
-<a class="sourceLine" id="cb340-8" data-line-number="8">  </a>
-<a class="sourceLine" id="cb340-9" data-line-number="9">  <span class="cf">if</span> (displ_low <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) {              <span class="co"># condition to check, if it holds,</span></a>
-<a class="sourceLine" id="cb340-10" data-line-number="10">    result &lt;-<span class="st"> </span>mpg <span class="op">%&gt;%</span><span class="st">                   </span><span class="co"># filter data given the arguments</span></a>
-<a class="sourceLine" id="cb340-11" data-line-number="11"><span class="st">      </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder,</a>
-<a class="sourceLine" id="cb340-12" data-line-number="12">             displ <span class="op">&lt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),</a>
-<a class="sourceLine" id="cb340-13" data-line-number="13">             hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</a>
-<a class="sourceLine" id="cb340-14" data-line-number="14">             class <span class="op">==</span><span class="st"> </span>cls)</a>
-<a class="sourceLine" id="cb340-15" data-line-number="15">  } </a>
-<a class="sourceLine" id="cb340-16" data-line-number="16">  <span class="cf">else</span> {                                <span class="co"># if the condition doesn&#39;t hold, filter </span></a>
-<a class="sourceLine" id="cb340-17" data-line-number="17">    result &lt;-<span class="st"> </span>mpg <span class="op">%&gt;%</span><span class="st">                   </span><span class="co"># the data this way instead</span></a>
-<a class="sourceLine" id="cb340-18" data-line-number="18"><span class="st">      </span><span class="kw">filter</span>(</a>
-<a class="sourceLine" id="cb340-19" data-line-number="19">        cyl <span class="op">==</span><span class="st"> </span>cylinder,</a>
-<a class="sourceLine" id="cb340-20" data-line-number="20">        displ <span class="op">&gt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),      <span class="co"># the only change is here</span></a>
-<a class="sourceLine" id="cb340-21" data-line-number="21">        hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</a>
-<a class="sourceLine" id="cb340-22" data-line-number="22">        class <span class="op">==</span><span class="st"> </span>cls</a>
-<a class="sourceLine" id="cb340-23" data-line-number="23">      )</a>
-<a class="sourceLine" id="cb340-24" data-line-number="24">  }</a>
-<a class="sourceLine" id="cb340-25" data-line-number="25">  </a>
-<a class="sourceLine" id="cb340-26" data-line-number="26">  result                                <span class="co"># return the object</span></a>
-<a class="sourceLine" id="cb340-27" data-line-number="27">}</a></code></pre></div>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb342-1" data-line-number="1">good_mileage &lt;-<span class="st"> </span><span class="cf">function</span>(</a>
+<a class="sourceLine" id="cb342-2" data-line-number="2">  <span class="dt">cylinder =</span> <span class="dv">4</span>,</a>
+<a class="sourceLine" id="cb342-3" data-line-number="3">  <span class="dt">mpg_cutoff =</span> <span class="dv">30</span>,</a>
+<a class="sourceLine" id="cb342-4" data-line-number="4">  <span class="dt">displ_fun =</span> mean,</a>
+<a class="sourceLine" id="cb342-5" data-line-number="5">  <span class="dt">displ_low =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb342-6" data-line-number="6">  <span class="dt">cls =</span> <span class="st">&#39;compact&#39;</span></a>
+<a class="sourceLine" id="cb342-7" data-line-number="7">) {</a>
+<a class="sourceLine" id="cb342-8" data-line-number="8">  </a>
+<a class="sourceLine" id="cb342-9" data-line-number="9">  <span class="cf">if</span> (displ_low <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) {              <span class="co"># condition to check, if it holds,</span></a>
+<a class="sourceLine" id="cb342-10" data-line-number="10">    result &lt;-<span class="st"> </span>mpg <span class="op">%&gt;%</span><span class="st">                   </span><span class="co"># filter data given the arguments</span></a>
+<a class="sourceLine" id="cb342-11" data-line-number="11"><span class="st">      </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder,</a>
+<a class="sourceLine" id="cb342-12" data-line-number="12">             displ <span class="op">&lt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),</a>
+<a class="sourceLine" id="cb342-13" data-line-number="13">             hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</a>
+<a class="sourceLine" id="cb342-14" data-line-number="14">             class <span class="op">==</span><span class="st"> </span>cls)</a>
+<a class="sourceLine" id="cb342-15" data-line-number="15">  } </a>
+<a class="sourceLine" id="cb342-16" data-line-number="16">  <span class="cf">else</span> {                                <span class="co"># if the condition doesn&#39;t hold, filter </span></a>
+<a class="sourceLine" id="cb342-17" data-line-number="17">    result &lt;-<span class="st"> </span>mpg <span class="op">%&gt;%</span><span class="st">                   </span><span class="co"># the data this way instead</span></a>
+<a class="sourceLine" id="cb342-18" data-line-number="18"><span class="st">      </span><span class="kw">filter</span>(</a>
+<a class="sourceLine" id="cb342-19" data-line-number="19">        cyl <span class="op">==</span><span class="st"> </span>cylinder,</a>
+<a class="sourceLine" id="cb342-20" data-line-number="20">        displ <span class="op">&gt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),      <span class="co"># the only change is here</span></a>
+<a class="sourceLine" id="cb342-21" data-line-number="21">        hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</a>
+<a class="sourceLine" id="cb342-22" data-line-number="22">        class <span class="op">==</span><span class="st"> </span>cls</a>
+<a class="sourceLine" id="cb342-23" data-line-number="23">      )</a>
+<a class="sourceLine" id="cb342-24" data-line-number="24">  }</a>
+<a class="sourceLine" id="cb342-25" data-line-number="25">  </a>
+<a class="sourceLine" id="cb342-26" data-line-number="26">  result                                <span class="co"># return the object</span></a>
+<a class="sourceLine" id="cb342-27" data-line-number="27">}</a></code></pre></div>
 <p>So what’s going on here? The function filters the data to observations that match the input criteria, and returns that result at the end. We also put <span class="emph">default values</span> to the arguments, which can be done to your discretion.</p>
 </div>
 <div id="conditionals" class="section level2">
 <h2>Conditionals</h2>
 <p>The core of the above function uses a <span class="emph">conditional statement</span> using standard <span class="func">if</span>…<span class="func">else</span> structure. The <span class="func">if</span> part determines whether some condition holds. If it does, then proceed to the next step in the brackets. If not, skip to the <span class="func">else</span> part. You may have used the <span class="func">ifelse</span> function in base R, or <span class="pack">dplyr</span>’s <span class="func">if_else</span> as above, which are a short cuts for this approach. We can also add conditional else statements (<span class="func">else if</span>), drop the <span class="func">else</span> part entirely, nest conditionals within other conditionals, etc. Like loops, conditional statements look very similar across all programming languages.</p>
 <p>JavaScript:</p>
-<div class="sourceCode" id="cb341"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb341-1" data-line-number="1"><span class="cf">if</span> (<span class="va">Math</span>.<span class="at">random</span>() <span class="op">&lt;</span> <span class="fl">0.5</span>) <span class="op">{</span></a>
-<a class="sourceLine" id="cb341-2" data-line-number="2"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;You got Heads!&quot;</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb341-3" data-line-number="3"><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
-<a class="sourceLine" id="cb341-4" data-line-number="4"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;You got Tails!&quot;</span>)<span class="op">;</span></a>
-<a class="sourceLine" id="cb341-5" data-line-number="5"><span class="op">}</span></a></code></pre></div>
+<div class="sourceCode" id="cb343"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb343-1" data-line-number="1"><span class="cf">if</span> (<span class="va">Math</span>.<span class="at">random</span>() <span class="op">&lt;</span> <span class="fl">0.5</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb343-2" data-line-number="2"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;You got Heads!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb343-3" data-line-number="3"><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb343-4" data-line-number="4"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;You got Tails!&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb343-5" data-line-number="5"><span class="op">}</span></a></code></pre></div>
 <p>Python:</p>
-<div class="sourceCode" id="cb342"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb342-1" data-line-number="1"><span class="cf">if</span> x <span class="op">==</span> <span class="dv">2</span>:</a>
-<a class="sourceLine" id="cb342-2" data-line-number="2">  <span class="bu">print</span>(x)</a>
-<a class="sourceLine" id="cb342-3" data-line-number="3"><span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb342-4" data-line-number="4">  <span class="bu">print</span>(x<span class="op">*</span>x)</a></code></pre></div>
+<div class="sourceCode" id="cb344"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb344-1" data-line-number="1"><span class="cf">if</span> x <span class="op">==</span> <span class="dv">2</span>:</a>
+<a class="sourceLine" id="cb344-2" data-line-number="2">  <span class="bu">print</span>(x)</a>
+<a class="sourceLine" id="cb344-3" data-line-number="3"><span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb344-4" data-line-number="4">  <span class="bu">print</span>(x<span class="op">*</span>x)</a></code></pre></div>
 <p>In any case, with our function at the ready, we can now do the things we want to as needed:</p>
-<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb343-1" data-line-number="1"><span class="kw">good_mileage</span>(<span class="dt">mpg_cutoff =</span> <span class="dv">40</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb345-1" data-line-number="1"><span class="kw">good_mileage</span>(<span class="dt">mpg_cutoff =</span> <span class="dv">40</span>)</a></code></pre></div>
 <pre><code># A tibble: 1 x 11
   manufacturer model displ  year   cyl trans      drv     cty   hwy fl    class  
   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  
 1 volkswagen   jetta   1.9  1999     4 manual(m5) f        33    44 d     compact</code></pre>
-<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb345-1" data-line-number="1"><span class="kw">good_mileage</span>(</a>
-<a class="sourceLine" id="cb345-2" data-line-number="2">  <span class="dt">cylinder =</span> <span class="dv">8</span>,</a>
-<a class="sourceLine" id="cb345-3" data-line-number="3">  <span class="dt">mpg_cutoff =</span> <span class="dv">15</span>,</a>
-<a class="sourceLine" id="cb345-4" data-line-number="4">  <span class="dt">displ_low =</span> F,</a>
-<a class="sourceLine" id="cb345-5" data-line-number="5">  <span class="dt">cls =</span> <span class="st">&#39;suv&#39;</span></a>
-<a class="sourceLine" id="cb345-6" data-line-number="6">)</a></code></pre></div>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb347-1" data-line-number="1"><span class="kw">good_mileage</span>(</a>
+<a class="sourceLine" id="cb347-2" data-line-number="2">  <span class="dt">cylinder =</span> <span class="dv">8</span>,</a>
+<a class="sourceLine" id="cb347-3" data-line-number="3">  <span class="dt">mpg_cutoff =</span> <span class="dv">15</span>,</a>
+<a class="sourceLine" id="cb347-4" data-line-number="4">  <span class="dt">displ_low =</span> F,</a>
+<a class="sourceLine" id="cb347-5" data-line-number="5">  <span class="dt">cls =</span> <span class="st">&#39;suv&#39;</span></a>
+<a class="sourceLine" id="cb347-6" data-line-number="6">)</a></code></pre></div>
 <pre><code># A tibble: 34 x 11
    manufacturer model              displ  year   cyl trans    drv     cty   hwy fl    class
    &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
@@ -727,41 +728,41 @@ Cmd/Ctrl + Option/Alt + Shift + R
 10 dodge        durango 4wd          4.7  2008     8 auto(l5) 4        13    17 r     suv  
 # … with 24 more rows</code></pre>
 <p>Let’s extend the functionality by adding a year argument (the only values available are 2008 and 1999).</p>
-<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb347-1" data-line-number="1">good_mileage &lt;-<span class="st"> </span><span class="cf">function</span>(</a>
-<a class="sourceLine" id="cb347-2" data-line-number="2">  <span class="dt">cylinder =</span> <span class="dv">4</span>,</a>
-<a class="sourceLine" id="cb347-3" data-line-number="3">  <span class="dt">mpg_cutoff =</span> <span class="dv">30</span>,</a>
-<a class="sourceLine" id="cb347-4" data-line-number="4">  <span class="dt">displ_fun =</span> mean,</a>
-<a class="sourceLine" id="cb347-5" data-line-number="5">  <span class="dt">displ_low =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb347-6" data-line-number="6">  <span class="dt">cls =</span> <span class="st">&#39;compact&#39;</span>,</a>
-<a class="sourceLine" id="cb347-7" data-line-number="7">  <span class="dt">yr =</span> <span class="dv">2008</span></a>
-<a class="sourceLine" id="cb347-8" data-line-number="8">) {</a>
-<a class="sourceLine" id="cb347-9" data-line-number="9">  </a>
-<a class="sourceLine" id="cb347-10" data-line-number="10">  <span class="cf">if</span> (displ_low) {</a>
-<a class="sourceLine" id="cb347-11" data-line-number="11">    result =<span class="st"> </span>mpg <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb347-12" data-line-number="12"><span class="st">    </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder,</a>
-<a class="sourceLine" id="cb347-13" data-line-number="13">           displ <span class="op">&lt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),</a>
-<a class="sourceLine" id="cb347-14" data-line-number="14">           hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</a>
-<a class="sourceLine" id="cb347-15" data-line-number="15">           class <span class="op">==</span><span class="st"> </span>cls,</a>
-<a class="sourceLine" id="cb347-16" data-line-number="16">           year <span class="op">==</span><span class="st"> </span>yr)</a>
-<a class="sourceLine" id="cb347-17" data-line-number="17">  } </a>
-<a class="sourceLine" id="cb347-18" data-line-number="18">  <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb347-19" data-line-number="19">    result =<span class="st"> </span>mpg <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb347-20" data-line-number="20"><span class="st">    </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder,</a>
-<a class="sourceLine" id="cb347-21" data-line-number="21">           displ <span class="op">&gt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),</a>
-<a class="sourceLine" id="cb347-22" data-line-number="22">           hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</a>
-<a class="sourceLine" id="cb347-23" data-line-number="23">           class <span class="op">==</span><span class="st"> </span>cls,</a>
-<a class="sourceLine" id="cb347-24" data-line-number="24">           year <span class="op">==</span><span class="st"> </span>yr)</a>
-<a class="sourceLine" id="cb347-25" data-line-number="25">  }</a>
-<a class="sourceLine" id="cb347-26" data-line-number="26">  </a>
-<a class="sourceLine" id="cb347-27" data-line-number="27">  result</a>
-<a class="sourceLine" id="cb347-28" data-line-number="28">}</a></code></pre></div>
-<div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb348-1" data-line-number="1"><span class="kw">good_mileage</span>(</a>
-<a class="sourceLine" id="cb348-2" data-line-number="2">  <span class="dt">cylinder =</span> <span class="dv">8</span>,</a>
-<a class="sourceLine" id="cb348-3" data-line-number="3">  <span class="dt">mpg_cutoff =</span> <span class="dv">19</span>,</a>
-<a class="sourceLine" id="cb348-4" data-line-number="4">  <span class="dt">displ_low =</span> F,</a>
-<a class="sourceLine" id="cb348-5" data-line-number="5">  <span class="dt">cls =</span> <span class="st">&#39;suv&#39;</span>,</a>
-<a class="sourceLine" id="cb348-6" data-line-number="6">  <span class="dt">yr =</span> <span class="dv">2008</span></a>
-<a class="sourceLine" id="cb348-7" data-line-number="7">)</a></code></pre></div>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb349-1" data-line-number="1">good_mileage &lt;-<span class="st"> </span><span class="cf">function</span>(</a>
+<a class="sourceLine" id="cb349-2" data-line-number="2">  <span class="dt">cylinder =</span> <span class="dv">4</span>,</a>
+<a class="sourceLine" id="cb349-3" data-line-number="3">  <span class="dt">mpg_cutoff =</span> <span class="dv">30</span>,</a>
+<a class="sourceLine" id="cb349-4" data-line-number="4">  <span class="dt">displ_fun =</span> mean,</a>
+<a class="sourceLine" id="cb349-5" data-line-number="5">  <span class="dt">displ_low =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb349-6" data-line-number="6">  <span class="dt">cls =</span> <span class="st">&#39;compact&#39;</span>,</a>
+<a class="sourceLine" id="cb349-7" data-line-number="7">  <span class="dt">yr =</span> <span class="dv">2008</span></a>
+<a class="sourceLine" id="cb349-8" data-line-number="8">) {</a>
+<a class="sourceLine" id="cb349-9" data-line-number="9">  </a>
+<a class="sourceLine" id="cb349-10" data-line-number="10">  <span class="cf">if</span> (displ_low) {</a>
+<a class="sourceLine" id="cb349-11" data-line-number="11">    result =<span class="st"> </span>mpg <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb349-12" data-line-number="12"><span class="st">    </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder,</a>
+<a class="sourceLine" id="cb349-13" data-line-number="13">           displ <span class="op">&lt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),</a>
+<a class="sourceLine" id="cb349-14" data-line-number="14">           hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</a>
+<a class="sourceLine" id="cb349-15" data-line-number="15">           class <span class="op">==</span><span class="st"> </span>cls,</a>
+<a class="sourceLine" id="cb349-16" data-line-number="16">           year <span class="op">==</span><span class="st"> </span>yr)</a>
+<a class="sourceLine" id="cb349-17" data-line-number="17">  } </a>
+<a class="sourceLine" id="cb349-18" data-line-number="18">  <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb349-19" data-line-number="19">    result =<span class="st"> </span>mpg <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb349-20" data-line-number="20"><span class="st">    </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder,</a>
+<a class="sourceLine" id="cb349-21" data-line-number="21">           displ <span class="op">&gt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),</a>
+<a class="sourceLine" id="cb349-22" data-line-number="22">           hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</a>
+<a class="sourceLine" id="cb349-23" data-line-number="23">           class <span class="op">==</span><span class="st"> </span>cls,</a>
+<a class="sourceLine" id="cb349-24" data-line-number="24">           year <span class="op">==</span><span class="st"> </span>yr)</a>
+<a class="sourceLine" id="cb349-25" data-line-number="25">  }</a>
+<a class="sourceLine" id="cb349-26" data-line-number="26">  </a>
+<a class="sourceLine" id="cb349-27" data-line-number="27">  result</a>
+<a class="sourceLine" id="cb349-28" data-line-number="28">}</a></code></pre></div>
+<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb350-1" data-line-number="1"><span class="kw">good_mileage</span>(</a>
+<a class="sourceLine" id="cb350-2" data-line-number="2">  <span class="dt">cylinder =</span> <span class="dv">8</span>,</a>
+<a class="sourceLine" id="cb350-3" data-line-number="3">  <span class="dt">mpg_cutoff =</span> <span class="dv">19</span>,</a>
+<a class="sourceLine" id="cb350-4" data-line-number="4">  <span class="dt">displ_low =</span> F,</a>
+<a class="sourceLine" id="cb350-5" data-line-number="5">  <span class="dt">cls =</span> <span class="st">&#39;suv&#39;</span>,</a>
+<a class="sourceLine" id="cb350-6" data-line-number="6">  <span class="dt">yr =</span> <span class="dv">2008</span></a>
+<a class="sourceLine" id="cb350-7" data-line-number="7">)</a></code></pre></div>
 <pre><code># A tibble: 6 x 11
   manufacturer model              displ  year   cyl trans    drv     cty   hwy fl    class
   &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
@@ -776,16 +777,16 @@ Cmd/Ctrl + Option/Alt + Shift + R
 <div id="anonymous-functions" class="section level2">
 <h2>Anonymous functions</h2>
 <p>Oftentimes we just need a quick and easy function for a one-off application, especially when using apply/map functions. For example, both the following would calculate standard deviations of columns.</p>
-<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb350-1" data-line-number="1"><span class="kw">apply</span>(mtcars, <span class="dv">2</span>, sd)</a>
-<a class="sourceLine" id="cb350-2" data-line-number="2"><span class="kw">apply</span>(mtcars, <span class="dv">2</span>, <span class="cf">function</span>(x) x<span class="op">/</span><span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb352-1" data-line-number="1"><span class="kw">apply</span>(mtcars, <span class="dv">2</span>, sd)</a>
+<a class="sourceLine" id="cb352-2" data-line-number="2"><span class="kw">apply</span>(mtcars, <span class="dv">2</span>, <span class="cf">function</span>(x) x<span class="op">/</span><span class="dv">2</span>)</a></code></pre></div>
 <p>The difference between the two is that for the latter, our function didn’t have to be a named object already available. We created a function on the fly just to serve a specific purpose. A function doesn’t exist that just does nothing but divide by two, but since it is simple, we just created it as needed.</p>
 <p>To further illustrate this, we’ll create a robust standardization function that uses the median and median absolute deviation rather than the mean and standard deviation.</p>
-<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb351-1" data-line-number="1"><span class="co"># some variables have a mad = 0, and so return Inf (x/0) or NaN (0/0)</span></a>
-<a class="sourceLine" id="cb351-2" data-line-number="2"><span class="co"># apply(mtcars, 2, function(x) (x - median(x))/mad(x)) %&gt;% </span></a>
-<a class="sourceLine" id="cb351-3" data-line-number="3"><span class="co">#   head()</span></a>
-<a class="sourceLine" id="cb351-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb351-5" data-line-number="5">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb351-6" data-line-number="6"><span class="st">  </span><span class="kw">map_df</span>(<span class="cf">function</span>(x) (x <span class="op">-</span><span class="st"> </span><span class="kw">median</span>(x))<span class="op">/</span><span class="kw">mad</span>(x))</a></code></pre></div>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb353-1" data-line-number="1"><span class="co"># some variables have a mad = 0, and so return Inf (x/0) or NaN (0/0)</span></a>
+<a class="sourceLine" id="cb353-2" data-line-number="2"><span class="co"># apply(mtcars, 2, function(x) (x - median(x))/mad(x)) %&gt;% </span></a>
+<a class="sourceLine" id="cb353-3" data-line-number="3"><span class="co">#   head()</span></a>
+<a class="sourceLine" id="cb353-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb353-5" data-line-number="5">mtcars <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb353-6" data-line-number="6"><span class="st">  </span><span class="kw">map_df</span>(<span class="cf">function</span>(x) (x <span class="op">-</span><span class="st"> </span><span class="kw">median</span>(x))<span class="op">/</span><span class="kw">mad</span>(x))</a></code></pre></div>
 <pre><code># A tibble: 32 x 11
        mpg    cyl   disp     hp     drat     wt   qsec    vs    am   gear   carb
      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -813,36 +814,36 @@ Cmd/Ctrl + Option/Alt + Shift + R
 <div id="excercise-1-1" class="section level3">
 <h3>Excercise 1</h3>
 <p>Write a function that takes the log of the sum of two values (i.e. just two single numbers) using the <span class="func">log</span> function. Just remember that within a function, you can write R code just like you normally would.</p>
-<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb353-1" data-line-number="1">log_sum &lt;-<span class="st"> </span><span class="cf">function</span>(a, b) {</a>
-<a class="sourceLine" id="cb353-2" data-line-number="2">  ?</a>
-<a class="sourceLine" id="cb353-3" data-line-number="3">}</a></code></pre></div>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb355-1" data-line-number="1">log_sum &lt;-<span class="st"> </span><span class="cf">function</span>(a, b) {</a>
+<a class="sourceLine" id="cb355-2" data-line-number="2">  ?</a>
+<a class="sourceLine" id="cb355-3" data-line-number="3">}</a></code></pre></div>
 </div>
 <div id="excercise-1b" class="section level3">
 <h3>Excercise 1b</h3>
 <p>What happens if the sum of the two numbers is negative? You can’t take a log of a negative value, so it’s an error. How might we deal with this? Try using a conditional to provide an error message using the <span class="func">stop</span> function. Make the message whatever you want.</p>
-<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb354-1" data-line-number="1">log_sum &lt;-<span class="st"> </span><span class="cf">function</span>(a, b) {</a>
-<a class="sourceLine" id="cb354-2" data-line-number="2">  <span class="co">#</span></a>
-<a class="sourceLine" id="cb354-3" data-line-number="3">  <span class="co">#</span></a>
-<a class="sourceLine" id="cb354-4" data-line-number="4">  <span class="co">#</span></a>
-<a class="sourceLine" id="cb354-5" data-line-number="5">  </a>
-<a class="sourceLine" id="cb354-6" data-line-number="6">  <span class="cf">if</span> (?) {</a>
-<a class="sourceLine" id="cb354-7" data-line-number="7">    <span class="kw">stop</span>(<span class="st">&#39;Your message here.&#39;</span>)</a>
-<a class="sourceLine" id="cb354-8" data-line-number="8">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb354-9" data-line-number="9">    ?</a>
-<a class="sourceLine" id="cb354-10" data-line-number="10">    <span class="kw">return</span>(your_log_sum_results)</a>
-<a class="sourceLine" id="cb354-11" data-line-number="11">  }</a>
-<a class="sourceLine" id="cb354-12" data-line-number="12">}</a></code></pre></div>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb356-1" data-line-number="1">log_sum &lt;-<span class="st"> </span><span class="cf">function</span>(a, b) {</a>
+<a class="sourceLine" id="cb356-2" data-line-number="2">  <span class="co">#</span></a>
+<a class="sourceLine" id="cb356-3" data-line-number="3">  <span class="co">#</span></a>
+<a class="sourceLine" id="cb356-4" data-line-number="4">  <span class="co">#</span></a>
+<a class="sourceLine" id="cb356-5" data-line-number="5">  </a>
+<a class="sourceLine" id="cb356-6" data-line-number="6">  <span class="cf">if</span> (?) {</a>
+<a class="sourceLine" id="cb356-7" data-line-number="7">    <span class="kw">stop</span>(<span class="st">&#39;Your message here.&#39;</span>)</a>
+<a class="sourceLine" id="cb356-8" data-line-number="8">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb356-9" data-line-number="9">    ?</a>
+<a class="sourceLine" id="cb356-10" data-line-number="10">    <span class="kw">return</span>(your_log_sum_results)</a>
+<a class="sourceLine" id="cb356-11" data-line-number="11">  }</a>
+<a class="sourceLine" id="cb356-12" data-line-number="12">}</a></code></pre></div>
 </div>
 <div id="exercise-2-8" class="section level3">
 <h3>Exercise 2</h3>
 <p>Let’s write a function that will take a numeric variable and convert it to a character string of ‘positive’ vs. ‘negative’. We can use <code>if {}... else {}</code> structure, <span class="func">ifelse</span>, or <span class="pack">dplyr</span>::<span class="func">if_else</span>- they all would accomplish this. In this case, the input is a single vector of numbers, and the output will recode any negative value to ‘negative’ and positive values to ‘positive’ (or whatever you want). Here is an example of how we would just do it as a one-off.</p>
-<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb355-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)  <span class="co"># so you get the exact same &#39;random&#39; result</span></a>
-<a class="sourceLine" id="cb355-2" data-line-number="2">x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb355-3" data-line-number="3"><span class="kw">if_else</span>(x <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>, <span class="st">&quot;negative&quot;</span>, <span class="st">&quot;positive&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb357-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)  <span class="co"># so you get the exact same &#39;random&#39; result</span></a>
+<a class="sourceLine" id="cb357-2" data-line-number="2">x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb357-3" data-line-number="3"><span class="kw">if_else</span>(x <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>, <span class="st">&quot;negative&quot;</span>, <span class="st">&quot;positive&quot;</span>)</a></code></pre></div>
 <p>Now try your hand at writing a function for that.</p>
-<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb356-1" data-line-number="1">pos_neg &lt;-<span class="st"> </span><span class="cf">function</span>(?) {</a>
-<a class="sourceLine" id="cb356-2" data-line-number="2">  ?</a>
-<a class="sourceLine" id="cb356-3" data-line-number="3">}</a></code></pre></div>
+<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb358-1" data-line-number="1">pos_neg &lt;-<span class="st"> </span><span class="cf">function</span>(?) {</a>
+<a class="sourceLine" id="cb358-2" data-line-number="2">  ?</a>
+<a class="sourceLine" id="cb358-3" data-line-number="3">}</a></code></pre></div>
 
 </div>
 </div>
@@ -869,6 +870,7 @@ Cmd/Ctrl + Option/Alt + Shift + R
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
+"github": false,
 "facebook": false,
 "twitter": false,
 "linkedin": false,
@@ -886,6 +888,10 @@ gitbook.start({
 },
 "edit": null,
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },

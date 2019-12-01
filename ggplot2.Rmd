@@ -35,22 +35,22 @@ In general, we start with a base layer and add to it. In most cases you'll start
 
 ```{r layer, eval=FALSE}
 # recall that starwars is in the dplyr package
-ggplot(aes(x=height, y=mass), data=starwars)
+ggplot(aes(x = height, y = mass), data = starwars)
 ```
 
 This would just produce a plot background, but nothing else.  However, with the foundation in place, we're now ready to add something to it. Let's add some points (the outlier is Jabba the Hut).
 
 ```{r layer2}
-ggplot(aes(x=height, y=mass), data=starwars) +
+ggplot(aes(x = height, y = mass), data = starwars) +
   geom_point()
 ```
 
 Perhaps we want to change labels or theme. These would be additional layers to the plot.
 
 ```{r layer3}
-ggplot(aes(x=height, y=mass), data=starwars) +
-  geom_point(color='white') +
-  labs(x='Height in cm', y='Weight in kg') +
+ggplot(aes(x = height, y = mass), data = starwars) +
+  geom_point(color = 'white') +
+  labs(x = 'Height in cm', y = 'Weight in kg') +
   theme_dark()
 ```
 
@@ -69,7 +69,7 @@ As we saw, <span class="emph">layers</span> are added via piping (<span class="e
 In case you're wondering why ggplot doesn't use `%>%` as in the tidyverse and other visualization packages, it's because <span class="pack">ggplot2</span> was using pipes before it was cool, well before those came along. Otherwise, the concept is the same as we saw in the data processing section.
 
 ```{r pipeplus, eval=FALSE}
-ggplot(aes(x=myvar, y=myvar2), data=mydata) +
+ggplot(aes(x = myvar, y = myvar2), data = mydata) +
   geom_point()
 ```
 
@@ -83,21 +83,26 @@ The <span class="func">geom_point</span> function adds a layer of points, and no
 <span class="emph">Aesthetics</span> map data to various visual aspects of the plot, including size, color etc. The function used in ggplot to do this is <span class="func">aes</span>.
 
 ```{r aes, eval=F}
-aes(x=myvar, y=myvar2, color=myvar3, group=g)
+aes(
+  x = myvar,
+  y = myvar2,
+  color = myvar3,
+  group = g
+)
 ```
 
 The best way to understand what goes into the <span class="func">aes</span> function is if the value is varying.  For example, if I want the size of points to be a certain value, I would code the following.
 
 ```{r aes_vs_not1, eval=FALSE}
 ... +
-  geom_point(..., size=4)
+  geom_point(..., size = 4)
 ```
 
 However, if I want the size to be associated with the data in some way, I use it as an aesthetic.
 
 ```{r aes_vs_not2, eval=FALSE}
 ... +
-  geom_point(aes(size=myvar))
+  geom_point(aes(size = myvar))
 ```
 
 The same goes for practically any aspect of a geom- size, color, fill, etc. If it is a fixed value, set it outside the aesthetic. If it varies based on the data, put it within an aesthetic.
@@ -162,26 +167,32 @@ To begin, after setting the base aesthetic, we'll set some explicit values for t
 
 ```{r ggscatter, dev='png'}
 library(ggplot2)
-data("diamonds"); data('economics')
-ggplot(aes(x=carat, y=price), data=diamonds) +
-  geom_point(size=.5, color='peru')
+
+data("diamonds")
+
+data('economics')
+
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  geom_point(size = .5, color = 'peru')
 ```
 
 Next we use two different geoms, one using a different data source.  Note that geoms often have arguments specific to them, as `label` is for <span class="func">geom_text</span>. It would be ignored by <span class="func">geom_line</span>.
 
 ```{r ggline}
-ggplot(aes(x=date, y=unemploy), data=economics) +
+ggplot(aes(x = date, y = unemploy), data = economics) +
   geom_line() +
-  geom_text(aes(label=unemploy), 
-            vjust=-.5, 
-            data=filter(economics, date=='2009-10-01'))
+  geom_text(
+    aes(label = unemploy),
+    vjust = -.5,
+    data = filter(economics, date == '2009-10-01')
+  )
 ```
 
 In the following, one setting, alpha (transparency), is not mapped to the data, while size and color are[^legendproblem].
 
 ```{r ggalpha, fig.width=6, fig.height=4, dev='png'}
-ggplot(aes(x=carat, y=price), data=diamonds) +
-  geom_point(aes(size=carat, color=clarity), alpha=.05) 
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  geom_point(aes(size = carat, color = clarity), alpha = .05) 
 ```
 
 ## Stats
@@ -191,7 +202,7 @@ There are many statistical functions built in, and it is a key strength of ggplo
 Quantile regression lines:
 
 ```{r ggquant}
-ggplot(mpg, aes(displ, hwy)) + 
+ggplot(mpg, aes(displ, hwy)) +
   geom_point() +
   geom_quantile()
 ```
@@ -199,18 +210,23 @@ ggplot(mpg, aes(displ, hwy)) +
 Loess (or additive model) smooth. This shows how we can do some fine-tuning and use model-based approaches for visualization.
 
 ```{r ggsmooth}
-data(mcycle, package='MASS')
-ggplot(aes(x=times, y=accel), data=mcycle) +
+data(mcycle, package = 'MASS')
+ggplot(aes(x = times, y = accel), data = mcycle) +
   geom_point() +
-  geom_smooth(formula=y ~ s(x, bs='ad'), method='gam')
+  geom_smooth(formula = y ~ s(x, bs = 'ad'), method = 'gam')
 ```
 
 Bootstrapped confidence intervals:
 
 ```{r ggstatsum}
-ggplot(mtcars, aes(cyl, mpg)) + 
+ggplot(mtcars, aes(cyl, mpg)) +
   geom_point() +
-  stat_summary(fun.data = "mean_cl_boot", colour = "orange", alpha=.75, size = 1)
+  stat_summary(
+    fun.data = "mean_cl_boot",
+    colour = "orange",
+    alpha = .75,
+    size = 1
+  )
 ```
 
 The take-home message here is to always let ggplot do the work for you if at all possible.  However, I will say that I find it easier to create the summary data I want to visualize with tidyverse tools, rather than use <span class="func">stat_summary</span>, and you may have a similar experience.
@@ -224,51 +240,57 @@ Often there are many things we want to change about the plot, for example, the s
 A very common thing you'll do is change the labels for the axes. You definitely don't have to go and change the variable name itself to do this, just use the <span class="func">labs</span> function.  There are also functions for individual parts, e.g. <span class="func">xlab</span>, <span class="func">ylab</span> and <span class="func">ggtitle</span>.
 
 ```{r scale_labs}
-ggplot(aes(x=times, y=accel), data=mcycle) +
-  geom_smooth(se=F) +
-  labs(x='milliseconds after impact', y='head acceleration', title='Motorcycle Accident')
+ggplot(aes(x = times, y = accel), data = mcycle) +
+  geom_smooth(se = F) +
+  labs(
+    x     = 'milliseconds after impact', 
+    y     = 'head acceleration', 
+    title = 'Motorcycle Accident'
+  )
 ```
 
 A frequent operation is changing the x and y look in the form of limits and tick marks.  Like <span class="func">labs</span>, there is a general <span class="func">lims</span> function and specific functions for just the specific parts.  In addition, we may want to get really detailed using <span class="func">scale_x_\*</span> or <span class="func">scale_y_\*</span>.
 
 ```{r scale_lims}
-ggplot(mpg, aes(displ, hwy, size=cyl)) + 
-  geom_point() + 
-  ylim(c(0,60))
+ggplot(mpg, aes(displ, hwy, size = cyl)) +
+  geom_point() +
+  ylim(c(0, 60))
 
-ggplot(mpg, aes(displ, hwy, size=cyl)) + 
-  geom_point() + 
-  scale_y_continuous(limits=c(0,60), 
-                     breaks=seq(0,60,by=12), 
-                     minor_breaks=seq(6,60,by=6))
+ggplot(mpg, aes(displ, hwy, size = cyl)) +
+  geom_point() +
+  scale_y_continuous(
+    limits = c(0, 60),
+    breaks = seq(0, 60, by = 12),
+    minor_breaks = seq(6, 60, by = 6)
+  )
 ```
 
 
 Another common option is to change the size of points in some way.  While we assign the aesthetic as before, it comes with defaults that might not work for a given situation.  Play around with the range values.
 
 ```{r scale_size2}
-ggplot(mpg, aes(displ, hwy, size=cyl)) + 
+ggplot(mpg, aes(displ, hwy, size = cyl)) +
   geom_point() +
-  scale_size(range=c(1,3))
+  scale_size(range = c(1, 3))
 ```
 
 
 Now that you know more about color issues, you may want to apply something besides the default options.  The following shows a built-in color scale for a color aesthetic that is treated as continuous, and one that is discrete and which we want to supply our own colors (these actually come from plotly's default color scheme).
 
 ```{r scale_color}
-ggplot(mpg, aes(displ, hwy, color=cyl)) + 
+ggplot(mpg, aes(displ, hwy, color = cyl)) +
   geom_point() +
   scale_color_gradient2()
 
-ggplot(mpg, aes(displ, hwy, color=factor(cyl))) + 
+ggplot(mpg, aes(displ, hwy, color = factor(cyl))) +
   geom_point() +
-  scale_color_manual(values=c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"))
+  scale_color_manual(values = c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"))
 ```
 
 We can even change the scale of the data itself.
 
 ```{r scale_scale}
-ggplot(mpg, aes(displ, hwy)) + 
+ggplot(mpg, aes(displ, hwy)) +
   geom_point() +
   scale_x_log10()
 ```
@@ -352,7 +374,7 @@ g2 = ggplot(mtcars, aes(wt)) +
 g3 = ggplot(mtcars, aes(mpg)) + 
   geom_density()
 
-g1 /                       # initial plot place next part underneath
+g1 /                       # initial plot, place next part underneath
   (g2 | g3)                # groups g2 and g3 side by side
 ```
 
@@ -376,7 +398,7 @@ p1 +
 ```
 
 
-
+You'll typically want to use facets to show subsets of the same data, and tools like <span class="pack" style = "">patchwork</span> to show different kinds of plots together.
 
 ## Fine control
 
@@ -438,6 +460,50 @@ Note that the base theme of ggplot, and I would say every plotting package, is p
 - time series
 - aligning multiple ggplot visualizations, possibly of different types
 
+Here's an example with gganimate.
+
+```{r gganimate, eval=FALSE}
+library(gganimate)
+
+load('data/gapminder.RData')
+
+gap_plot = gapminder_2019 %>% 
+  filter(giniPercap != 40) 
+
+gap_plot_filter = gap_plot %>% 
+  filter(country %in% c('United States', 'Mexico', 'Canada'))
+
+initial_plot = ggplot(gap_plot, aes(x = year, y = giniPercap, group = country)) +
+  geom_line(alpha = .05) +
+  geom_path(
+    aes(color = country),
+    lwd = 2,
+    arrow = arrow(
+      length = unit(0.25, "cm")
+    ), 
+    alpha = .5,
+    data = gap_plot_filter,
+    show.legend = FALSE
+  ) +
+  geom_text(
+    aes(color = country, label = country),
+    nudge_x = 5, 
+    nudge_y = 2, 
+    size = 2,
+    data = gap_plot_filter,
+    show.legend = FALSE
+  ) +
+  theme_clean() +
+  transition_reveal(year)
+
+animate(initial_plot, end_pause = 50, nframes = 150, rewind = TRUE)
+```
+
+```{r anim-save, echo=FALSE, eval=FALSE}
+anim_save('img/gini_animate.gif')
+```
+
+![](img/gini_animate.gif){}
 
 As one can see, <span class="pack">ggplot2</span> is only the beginning. You'll have a lot of tools at your disposal. Furthermore, many modeling and other packages will produce ggplot graphics to which you can add your own layers and tweak like you would any other ggplot.
 

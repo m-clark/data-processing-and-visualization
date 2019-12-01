@@ -284,15 +284,18 @@ library(shiny)
 
 # Running a Shiny app object
 app <- shinyApp(
+  
   ui = bootstrapPage(
     numericInput('n', 'Number of obs', 10),
     plotOutput('plot')
   ),
+  
   server = function(input, output) {
     output$plot <- renderPlot({ 
       ggplot2::qplot(rnorm(input$n), xlab='Is this normal?!') 
       })
   }
+  
 )
 
 runApp(app)
