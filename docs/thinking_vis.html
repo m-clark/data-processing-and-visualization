@@ -99,6 +99,22 @@
 <script src="libs/highcharts-7.0.1/custom/symbols-extra.js"></script>
 <script src="libs/highcharts-7.0.1/custom/text-symbols.js"></script>
 <script src="libs/highchart-binding-0.7.0/highchart.js"></script>
+<script src="libs/sigma-1.2.1/sigma.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.layout.forceAtlas2.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.layout.noverlap.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.parallelEdges.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.animate.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.customShapes.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.dragNodes.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.customEdgeShapes.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.relativeSize.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.edgeLabels.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.parsers.gexf.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.exporters.svg.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.neighborhoods.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.filter.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.snapshot.min.js"></script>
+<script src="libs/sigmajs-binding-0.1.3/sigmajs.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
@@ -363,7 +379,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#ggplotly"><i class="fa fa-check"></i>ggplotly</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#highcharter"><i class="fa fa-check"></i>Highcharter</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#graph-networks"><i class="fa fa-check"></i>Graph networks</a><ul>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#visnetwork"><i class="fa fa-check"></i>visNetwork</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#sigmajs"><i class="fa fa-check"></i>sigmajs</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#leaflet"><i class="fa fa-check"></i>leaflet</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#dt"><i class="fa fa-check"></i>DT</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#shiny"><i class="fa fa-check"></i>Shiny</a></li>
@@ -694,7 +713,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3>Histograms</h3>
 <p>Anyone that’s used R’s <span class="func">hist</span> function knows the frustration here. Use density plots instead. They convey the same information but better, and typical defaults are usually fine. However, you should really consider the information and audience- is a histogram or density plot really displaying what you want to show?</p>
 <p>Alternatives:
-- density</p>
+- density
+- quantile dotplot</p>
+<p><img src="data-processing-and-visualization_files/figure-html/hist-dens-dot-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="using-3d-without-adding-any-communicative-value" class="section level3">
 <h3>Using 3D without adding any communicative value</h3>

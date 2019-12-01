@@ -706,6 +706,48 @@ Anyone that's used R's <span class="func">hist</span> function knows the frustra
 
 Alternatives:
 - density
+- quantile dotplot
+
+```{r hist-dens-dot, echo=FALSE}
+N = 150
+n = N/2
+random_normal_deviates_a = rnorm(n)
+random_normal_deviates_b = rnorm(n, mean = 3, sd = 2)
+random_normal_deviates   = data.frame(
+  group = rep(c('a','b'), e = n),
+  value = c(random_normal_deviates_a, random_normal_deviates_b)
+)
+
+p_hist = ggplot(random_normal_deviates) +
+  geom_histogram(aes(x = value, fill = group),
+                 alpha = .5,
+                 show.legend = FALSE) +
+  labs(x = '', y = '', subtitle = 'Histogram') +
+  theme_clean()
+
+p_dens = ggplot(random_normal_deviates) +
+  geom_density(aes(x = value, color = group, fill = group),
+               alpha = .5,
+               show.legend = FALSE) +
+  
+  lims(x = c(
+    min(random_normal_deviates$value) - .5,
+    max(random_normal_deviates$value) + .5
+  )) +
+  labs(x = '', y = '', subtitle = 'Density') +
+  theme_clean()
+
+p_dot = ggplot(random_normal_deviates) +
+  geom_dotplot(aes(x = value, color = group, fill = group),
+               alpha = .5,
+               show.legend = FALSE) +
+  labs(x = '', y = '', subtitle = 'Dotplot') +
+  theme_clean()
+
+p_hist + p_dens + p_dot
+
+```
+
 
 ### Using 3D without adding any communicative value
 
