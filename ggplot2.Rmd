@@ -202,7 +202,7 @@ There are many statistical functions built in, and it is a key strength of ggplo
 Quantile regression lines:
 
 ```{r ggquant}
-ggplot(mpg, aes(displ, hwy)) +
+ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_point() +
   geom_quantile()
 ```
@@ -241,7 +241,7 @@ A very common thing you'll do is change the labels for the axes. You definitely 
 
 ```{r scale_labs}
 ggplot(aes(x = times, y = accel), data = mcycle) +
-  geom_smooth(se = F) +
+  geom_smooth(se = FALSE) +
   labs(
     x     = 'milliseconds after impact', 
     y     = 'head acceleration', 
@@ -252,11 +252,11 @@ ggplot(aes(x = times, y = accel), data = mcycle) +
 A frequent operation is changing the x and y look in the form of limits and tick marks.  Like <span class="func">labs</span>, there is a general <span class="func">lims</span> function and specific functions for just the specific parts.  In addition, we may want to get really detailed using <span class="func">scale_x_\*</span> or <span class="func">scale_y_\*</span>.
 
 ```{r scale_lims}
-ggplot(mpg, aes(displ, hwy, size = cyl)) +
+ggplot(mpg, aes(x = displ, y = hwy, size = cyl)) +
   geom_point() +
   ylim(c(0, 60))
 
-ggplot(mpg, aes(displ, hwy, size = cyl)) +
+ggplot(mpg, aes(x = displ, y = hwy, size = cyl)) +
   geom_point() +
   scale_y_continuous(
     limits = c(0, 60),
@@ -269,7 +269,7 @@ ggplot(mpg, aes(displ, hwy, size = cyl)) +
 Another common option is to change the size of points in some way.  While we assign the aesthetic as before, it comes with defaults that might not work for a given situation.  Play around with the range values.
 
 ```{r scale_size2}
-ggplot(mpg, aes(displ, hwy, size = cyl)) +
+ggplot(mpg, aes(x = displ, y = hwy, size = cyl)) +
   geom_point() +
   scale_size(range = c(1, 3))
 ```
@@ -278,11 +278,11 @@ ggplot(mpg, aes(displ, hwy, size = cyl)) +
 Now that you know more about color issues, you may want to apply something besides the default options.  The following shows a built-in color scale for a color aesthetic that is treated as continuous, and one that is discrete and which we want to supply our own colors (these actually come from plotly's default color scheme).
 
 ```{r scale_color}
-ggplot(mpg, aes(displ, hwy, color = cyl)) +
+ggplot(mpg, aes(x = displ, y = hwy, color = cyl)) +
   geom_point() +
   scale_color_gradient2()
 
-ggplot(mpg, aes(displ, hwy, color = factor(cyl))) +
+ggplot(mpg, aes(x = displ, y = hwy, color = factor(cyl))) +
   geom_point() +
   scale_color_manual(values = c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"))
 ```
@@ -290,7 +290,7 @@ ggplot(mpg, aes(displ, hwy, color = factor(cyl))) +
 We can even change the scale of the data itself.
 
 ```{r scale_scale}
-ggplot(mpg, aes(displ, hwy)) +
+ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_point() +
   scale_x_log10()
 ```
@@ -329,7 +329,7 @@ In short, scale alterations are really useful for getting just the plot you want
 Facet by cylinder.
 
 ```{r facetgrid, eval=1, echo=1}
-ggplot(mtcars, aes(wt, mpg)) + 
+ggplot(mtcars, aes(x = wt, y = mpg)) + 
   geom_point() +
   facet_grid(~ cyl)
 ggplot(mpg, aes(displ, cty)) + 
@@ -343,7 +343,7 @@ ggplot(midwest, aes(popdensity, percbelowpoverty)) +
 Facet by vs and cylinder.
 
 ```{r facetgrid2}
-ggplot(mtcars, aes(wt, mpg)) + 
+ggplot(mtcars, aes(x = wt, y = mpg)) + 
   geom_point() +
   facet_grid(vs ~ cyl, labeller = label_both)
 ```
@@ -354,7 +354,7 @@ ggplot(mtcars, aes(wt, mpg)) +
 Specify the number of columns or rows with <span class="func">facet_wrap</span>.
 
 ```{r facetwrap}
-ggplot(mtcars, aes(wt, mpg)) + 
+ggplot(mtcars, aes(x = wt, y = mpg)) + 
   geom_point() +
   facet_wrap(vs ~ cyl, labeller = label_both, ncol=2)
 ```
@@ -365,7 +365,7 @@ Often we want distinct visualizations to come together in one plot.  There are s
 
 ```{r patchwork}
 library(patchwork)
-g1 = ggplot(mtcars, aes(wt, mpg)) + 
+g1 = ggplot(mtcars, aes(x = wt, y = mpg)) + 
   geom_point()
 
 g2 = ggplot(mtcars, aes(wt)) + 
@@ -410,26 +410,34 @@ img = caTools::read.gif('img/lamb.gif')
 lambosun = img$col[img$image+1]
 dim(lambosun) = dim(img$image)
 
-ggplot(aes(x=carat, y=price), data=diamonds) +
-  annotation_custom(rasterGrob(lambosun, 
-                               width=unit(1,"npc"), 
-                               height=unit(1,"npc"), 
-                               interpolate = FALSE), 
-                    -Inf, Inf, -Inf, Inf) +
-  geom_point(aes(color=clarity), alpha=.5) + 
-  scale_y_log10(breaks=c(1000,5000,10000)) +
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  annotation_custom(
+    rasterGrob(
+      lambosun,
+      width = unit(1, "npc"),
+      height = unit(1, "npc"),
+      interpolate = FALSE
+    ),-Inf,
+    Inf,
+    -Inf,
+    Inf
+  ) +
+  geom_point(aes(color = clarity), alpha = .5) +
+  scale_y_log10(breaks = c(1000, 5000, 10000)) +
   xlim(0, 10) +
-  scale_color_brewer(type='div') +
-  facet_wrap(~cut, ncol=3) +
+  scale_color_brewer(type = 'div') +
+  facet_wrap( ~ cut, ncol = 3) +
   theme_minimal() +
-  theme(axis.ticks.x=element_line(color='darkred'),
-        axis.text.x=element_text(angle=-45),
-        axis.text.y=element_text(size=20),
-        strip.text=element_text(color='forestgreen'),
-        strip.background=element_blank(),
-        panel.grid.minor=element_line(color='lightblue'),
-        legend.key=element_rect(linetype=4),
-        legend.position='bottom')
+  theme(
+    axis.ticks.x = element_line(color = 'darkred'),
+    axis.text.x = element_text(angle = -45),
+    axis.text.y = element_text(size = 20),
+    strip.text = element_text(color = 'forestgreen'),
+    strip.background = element_blank(),
+    panel.grid.minor = element_line(color = 'lightblue'),
+    legend.key = element_rect(linetype = 4),
+    legend.position = 'bottom'
+  )
 ```
 
 
@@ -512,17 +520,19 @@ As one can see, <span class="pack">ggplot2</span> is only the beginning. You'll 
 
 The R community really lucked out with ggplot, and the basic philosophy behind it is missing from practically every other static plotting packages or tools.  Python's version of base R plotting is <span class="pack" style = "">matplotlib</span>, which continues to serve people well.  But like R base plots, it can take a lot of work to get anything remotely visually appealing. <span class="pack" style = "">Seaborn</span> is another option, but still, just isn't in the same league.
 
-If using Python though, you're in luck!  You get most of the basic functionality of ggplot2 via the <span class="pack" style = "">plotnine</span> module.  Just remember to put your `+` on the other side.
+If using Python though, you're in luck!  You get most of the basic functionality of ggplot2 via the <span class="pack" style = "">plotnine</span> module. A jupyter notebook demonstrating most of the previous is available [here](https://github.com/m-clark/data-processing-and-visualization/blob/master/code/ggplot.ipynb).
 
 ```{python ggplot, dev = 'png', message = FALSE}
 import pandas as pd
 from plotnine import *
 from plotnine.data import mtcars
 
-(ggplot(mtcars, aes(x = 'wt', y = 'mpg'))
- + geom_point(aes(color = 'factor(gear)'))
- + stat_smooth(method = 'lm')
- + facet_wrap('~ cyl'))
+(
+ggplot(mtcars, aes(x = 'wt', y = 'mpg')) + 
+  geom_point(aes(color = 'factor(gear)')) + 
+  stat_smooth(method = 'lm') + 
+  facet_wrap('~ cyl')
+)
 ```
 
 

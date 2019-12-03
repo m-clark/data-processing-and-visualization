@@ -300,11 +300,52 @@ mydt_grpsum = mydt[,list(sumz=sum(z)), by=x]
 
 # Visualization
 
+## Thinking Visually Exercises
+
+### Exercise 1
+
+The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>.  Use the <span class="func">scale_color_viridis</span> or <span class="func">scale_color_scico</span> function to add a more accessible palette. Use `?` to examine your options.
+
+```{r thinkingvis_ex1, echo=T, eval=FALSE, cache=FALSE}
+# devtools::install_github("thomasp85/scico") # to use scientific colors
+library(ggplot2)
+
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  geom_point(aes(color = price)) +
+  ????
+```
+
+```{r thinkingvis_ex1b, eval=F, out.width='50%'}
+library(ggplot2)
+
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  geom_point(aes(color = price), alpha = .05) +
+  scale_color_scico(palette = 'acton')
+```
+
+
+
+### Exercise 2
+
+Now color it by the `cut` instead of `price`.  Use <span class="func">scale_color_viridis/scioc_d</span>.   See the helpfile via `?scale_color_*` to see how to change the palette.
+
+```{r thinkingvis_ex2, eval=FALSE, out.width='50%'}
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  geom_point(aes(color = cut)) +
+  scale_color_scico_d(palette = 'batlow')
+```
+
+
+### Thinking exercises
+
+For your upcoming presentation, *who* is your audience?
+
+
 ## ggplot2 Exercises
 
 ### Exercise 0
 
-Install and load the <span class="pack">ggplot2</span> package.
+Load the <span class="pack">ggplot2</span> package if you haven’t already.
 
 ### Exercise 1
 

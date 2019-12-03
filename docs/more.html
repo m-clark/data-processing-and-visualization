@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2019-12-02" />
+<meta name="date" content="2019-12-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -616,8 +616,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb379-2" data-line-number="2"><span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</a></code></pre></div>
 <pre><code>Unit: nanoseconds
                     expr   min      lq     mean  median      uq   max neval cld
- apply(mymatrix, 2, log) 21285 21653.5 24384.35 21854.0 22256.5 79445   100   b
-           log(mymatrix)   615   639.5   724.62   725.5   787.0  1164   100  a </code></pre>
+ apply(mymatrix, 2, log) 21825 22343.5 29163.35 22660.5 26391.5 95918   100   b
+           log(mymatrix)   631   658.0   783.41   735.0   803.5  2698   100  a </code></pre>
 <p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
 <div id="timings" class="section level4">
 <h4>Timings</h4>
