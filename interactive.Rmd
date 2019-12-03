@@ -2,7 +2,7 @@
 
 
 ```{r interactivesetup, include=FALSE, eval=TRUE, cache=FALSE}
-knitr::opts_chunk$set(cache.rebuild=F)
+knitr::opts_chunk$set(cache.rebuild=T)
 ```
 
 ```{r title, echo=F}
@@ -69,12 +69,17 @@ One of the advantages to piping is that it's not limited to <span class="pack">d
 The <span class='pack'>htmlwidgets</span> package makes it easy to create visualizations based on JavaScript libraries.  If you're not familiar with JavaScript, you actually are very familiar with its products, as it's basically the language of the web, visual or otherwise.  The R packages using it typically are pipe-oriented and produce interactive plots.  In addition, you can use the <span class='pack'>htmlwidgets</span> package to create your own functions that use a particular JavaScript library (but someone probably already has, so look first).
 
 
-## Plotly
+## Plotly {.tabset}
 
 We'll begin our foray into the interactive world with a couple demonstrations of <span class="pack">plotly</span>.  To give some background, you can think of plotly similar to RStudio, in that it has both enterprise (i.e. pay for) aspects and open source aspects.  Just like RStudio, you have full access to what it has to offer via the open source R package.  You may see old help suggestions referring to needing an account, but this is no longer necessary.  
 
 
 When using <span class="pack">plotly</span>, you'll note the layering approach similar to what we had with <span class="pack">ggplot2</span>.  Piping is used before plotting to do some data manipulation, after which we seamlessly move to the plot itself.  The `=~` is essentially the way we denote aesthetics[^plotlyaes].  
+
+
+Plotly is able to be used in both R and Python.
+
+#### R
 
 ```{r plotly1}
 library(plotly)
@@ -85,7 +90,30 @@ midwest %>%
   add_markers()
 ```
 
+#### Python
+
+The following does the same plot in Python
+
+```{python basic-plotly, eval=FALSE}
+import pandas as pd
+
+import plotly.express as px
+
+midwest = pd.DataFrame(r.midwest)  # from previous chunk using reticulate
+
+plt = px.scatter(midwest, x = 'percbelowpoverty', y = 'percollege')
+
+plt.show() # opens in browser
+```
+
+
+```{r basic-plotly-show,  echo=FALSE}
+knitr::include_graphics('img/plotly-basic-python.png')
+```
+
 <br>
+
+### Modes
 
 <span class="pack">plotly</span> has <span class="emph">modes</span>, which allow for points, lines, text and combinations. <span class="emph">Traces</span>, `add_*`, work similar to geoms.
 
@@ -126,6 +154,32 @@ While you can use plotly as a one-liner[^qplot], this would only be good for qui
 plot_ly(midwest, x = ~percollege, color = ~state, type = "box")
 ```
 
+And here is a Python example or two using plotly express.
+
+```{python express, eval=FALSE}
+plt = px.box(midwest, x = 'state', y = 'percollege', color = 'state', notched=True)
+
+plt.show() # opens in browser
+
+tips = px.data.tips()  # built-in dataset
+
+px.violin(
+  tips, 
+  y      = "tip", 
+  x      = "smoker", 
+  color  = "sex", 
+  box    = True, 
+  points = "all", 
+  hover_data = tips.columns
+).show()
+```
+
+
+```{r express-show, out.width='75%', echo=FALSE}
+knitr::include_graphics('img/plotly-box-python.png')
+knitr::include_graphics('img/plotly-violin-python.png')
+```
+
 
 ### ggplotly
 
@@ -133,13 +187,14 @@ One of the strengths of  <span class="pack">plotly</span> is that we can feed a 
 
 
 ```{r ggplotly}
-gp = mtcars %>% 
-  mutate(amFactor = factor(am, labels=c('auto', 'manual')),
-         hovertext = paste(wt, mpg, amFactor)) %>% 
-  arrange(wt) %>% 
-  ggplot(aes(x=wt, y=mpg, color=amFactor)) +
-  geom_smooth(se=F) +
-  geom_point(aes(color=amFactor))
+gp = mtcars %>%
+  mutate(amFactor = factor(am, labels = c('auto', 'manual')),
+         hovertext = paste(wt, mpg, amFactor)) %>%
+  arrange(wt) %>%
+  ggplot(aes(x = wt, y = mpg, color = amFactor)) +
+  geom_smooth(se = F) +
+  geom_point(aes(color = amFactor))
+
 ggplotly()
 ```
 
@@ -230,6 +285,91 @@ sigmajs() %>%
             class = "btn btn-warning")
 ```
 
+### Plotly
+
+I mention plotly capabilities here as again, it may be useful to stick to one tool that you can learn well, and again, could allow you to bounce to python as well.
+
+```{python network, eval = FALSE}
+import plotly.graph_objects as go
+import networkx as nx
+
+G = nx.random_geometric_graph(50, 0.125)
+
+edge_x = []
+edge_y = []
+for edge in G.edges():
+    x0, y0 = G.nodes[edge[0]]['pos']
+    x1, y1 = G.nodes[edge[1]]['pos']
+    edge_x.append(x0)
+    edge_x.append(x1)
+    edge_x.append(None)
+    edge_y.append(y0)
+    edge_y.append(y1)
+    edge_y.append(None)
+
+edge_trace = go.Scatter(
+    x=edge_x,
+    y=edge_y,
+    line=dict(width=0.5, color='#888'),
+    hoverinfo='none',
+    mode='lines')
+
+node_x = []
+node_y = []
+for node in G.nodes():
+    x, y = G.nodes[node]['pos']
+    node_x.append(x)
+    node_y.append(y)
+
+node_trace = go.Scatter(
+    x=node_x, y=node_y,
+    mode='markers',
+    hoverinfo='text',
+    marker=dict(
+        showscale=True,
+        colorscale='Blackbody',
+        reversescale=True,
+        color=[],
+        size=10,
+        colorbar=dict(
+            thickness=15,
+            title='Node Connections',
+            xanchor='left',
+            titleside='right'
+        ),
+        line_width=2))
+
+node_adjacencies = []
+node_text = []
+for node, adjacencies in enumerate(G.adjacency()):
+    node_adjacencies.append(len(adjacencies[1]))
+    node_text.append('# of connections: '+str(len(adjacencies[1])))
+
+node_trace.marker.color = node_adjacencies
+node_trace.text = node_text
+
+fig = go.Figure(data=[edge_trace, node_trace],
+             layout=go.Layout(
+                title='<br>Network graph made with Python',
+                titlefont_size=16,
+                showlegend=False,
+                hovermode='closest',
+                margin=dict(b=20,l=5,r=5,t=40),
+                annotations=[ dict(
+                    text="Python code: <a href='https://plot.ly/ipython-notebooks/network-graphs/'> https://plot.ly/ipython-notebooks/network-graphs/</a>",
+                    showarrow=False,
+                    xref="paper", yref="paper",
+                    x=0.005, y=-0.002 ) ],
+                xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
+                )
+fig.show()
+```
+
+```{r network-show, echo=FALSE}
+knitr::include_graphics('img/plotly-network-python.png')
+```
+
 
 ## leaflet
 
@@ -242,11 +382,13 @@ hovertext <- paste(sep = "<br/>",
   "Ann Arbor, MI"
 )
 
-
 library(leaflet)
-leaflet() %>% 
+
+leaflet() %>%
   addTiles() %>%
-  addPopups(lng=-83.738222, lat=42.277030, popup=hovertext)
+  addPopups(lng = -83.738222,
+            lat = 42.277030,
+            popup = hovertext)
 ```
 
 
@@ -257,9 +399,10 @@ It might be a bit odd to think of data frames visually, but they can be interact
 
 ```{r datatable}
 library(DT)
-ggplot2movies::movies %>% 
-  select(1:6) %>% 
-  filter(rating>8, !is.na(budget), votes > 1000) %>% 
+
+ggplot2movies::movies %>%
+  select(1:6) %>%
+  filter(rating > 8, !is.na(budget), votes > 1000) %>% 
   datatable()
 ```
 
@@ -268,33 +411,29 @@ ggplot2movies::movies %>%
 The other thing to be aware of is that tables *can* be visual, it's just that many academic outlets waste this opportunity.  Simple bolding, italics, and even sizing, can make results pop more easily for the audience.  The <span class="pack">DT</span> package allows for coloring and even simple things like bars that connotes values.  The following gives some idea of its flexibility.
 
 ```{r datatable_options}
-iris %>% 
-  # arrange(desc(Petal.Length)) %>% 
-  datatable(rownames=F,
-            options=list(dom='firtp'), 
-            class = 'row-border') %>% 
-  formatStyle('Sepal.Length', 
+iris %>%
+  # arrange(desc(Petal.Length)) %>%
+  datatable(rownames = F,
+            options = list(dom = 'firtp'),
+            class = 'row-border') %>%
+  formatStyle('Sepal.Length',
               fontWeight = styleInterval(5, c('normal', 'bold'))) %>%
-  formatStyle(
-    'Sepal.Width',
-    color = styleInterval(c(3.4, 3.8), c('#7f7f7f', '#00aaff', '#ff5500')),
-    backgroundColor = styleInterval(3.4, c('#ebebeb', 'aliceblue'))
-  ) %>%
+  formatStyle('Sepal.Width',
+              color = styleInterval(c(3.4, 3.8), c('#7f7f7f', '#00aaff', '#ff5500')),
+              backgroundColor = styleInterval(3.4, c('#ebebeb', 'aliceblue'))) %>%
   formatStyle(
     'Petal.Length',
     # color = 'transparent',
-    background = styleColorBar(iris$Petal.Length, '#5500ff'),
-    backgroundSize = '100% 90%',
-    backgroundRepeat = 'no-repeat',
+    background         = styleColorBar(iris$Petal.Length, '#5500ff'),
+    backgroundSize     = '100% 90%',
+    backgroundRepeat   = 'no-repeat',
     backgroundPosition = 'center'
   ) %>%
   formatStyle(
     'Species',
-    color='white',
+    color = 'white',
     transform = 'rotateX(45deg) rotateY(20deg) rotateZ(30deg)',
-    backgroundColor = styleEqual(
-      unique(iris$Species), c('#1f65b7', '#66b71f', '#b71f66')
-    )
+    backgroundColor = styleEqual(unique(iris$Species), c('#1f65b7', '#66b71f', '#b71f66'))
   )
 ```
 
@@ -327,9 +466,9 @@ app <- shinyApp(
   ),
   
   server = function(input, output) {
-    output$plot <- renderPlot({ 
-      ggplot2::qplot(rnorm(input$n), xlab='Is this normal?!') 
-      })
+    output$plot <- renderPlot({
+      ggplot2::qplot(rnorm(input$n), xlab = 'Is this normal?!')
+    })
   }
   
 )
@@ -339,8 +478,121 @@ runApp(app)
 
 You can share your app code/directory with anyone and they'll be able to run it also.  However, this is great mostly just for teaching someone how to do shiny, which most people aren't going to do.  Typically you'll want someone to use the app itself, not run code.  In that case you'll need a web server. You can get up to 5 free 'running' applications at [shinyapps.io](http://shinyapps.io). However, you will notably be limited in the amount of computing resources that can be used to run the apps in a given month. Even minor usage of those could easily overtake the free settings. For personal use it's plenty though.
 
+### Dash{.tabset}
+
+Dash is a similar approach to interactivity as Shiny brought to you by the plotly gang.  The nice thing about it is crossplatform support for R and Python.
 
 
+#### R
+
+```{r dash-example, eval=FALSE}
+library(dash)
+library(dashCoreComponents)
+library(dashHtmlComponents)
+
+app <- Dash$new()
+
+df <- readr::read_csv(file = "data/gapminder_small.csv") %>% 
+  drop_na()
+
+continents <- unique(df$continent)
+
+data_gdp_life <- with(df,
+  lapply(continents,
+         function(cont) {
+           list(
+             x = gdpPercap[continent == cont],
+             y = lifeExp[continent == cont],
+             opacity=0.7,
+             text = country[continent == cont],
+             mode = 'markers',
+             name = cont,
+             marker = list(size = 15,
+                           line = list(width = 0.5, color = 'white'))
+           )
+         }
+  )
+)
+
+app$layout(
+  htmlDiv(
+    list(
+      dccGraph(
+        id = 'life-exp-vs-gdp',
+        figure = list(
+          data =  data_gdp_life,
+          layout = list(
+            xaxis  = list('type' = 'log', 'title' = 'GDP Per Capita'),
+            yaxis  = list('title' = 'Life Expectancy'),
+            margin = list('l' = 40, 'b' = 40, 't' = 10, 'r' = 10),
+            legend = list('x' = 0, 'y' = 1),
+            hovermode = 'closest'
+          )
+        )
+      )
+    )
+  )
+)
+
+app$run_server()
+```
+
+#### Python
+
+Here is a python example. Save as app.py then at the terminal run `python app.py`.
+
+```{python dash-example-py, eval=FALSE}
+# -*- coding: utf-8 -*-
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import pandas as pd
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+df = pd.read_csv('data/gapminder_small.csv')
+
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='life-exp-vs-gdp',
+        figure={
+            'data': [
+                dict(
+                    x=df[df['continent'] == i]['gdpPercap'],
+                    y=df[df['continent'] == i]['lifeExp'],
+                    text=df[df['continent'] == i]['country'],
+                    mode='markers',
+                    opacity=0.7,
+                    marker={
+                        'size': 15,
+                        'line': {'width': 0.5, 'color': 'white'}
+                    },
+                    name=i
+                ) for i in df.continent.unique()
+            ],
+            'layout': dict(
+                xaxis={'type': 'log', 'title': 'GDP Per Capita'},
+                yaxis={'title': 'Life Expectancy'},
+                margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
+                legend={'x': 0, 'y': 1},
+                hovermode='closest'
+            )
+        }
+    )
+])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+    
+
+```
+
+```{r dash-python-show, echo=FALSE}
+knitr::include_graphics('img/plotly-dash-python.png')
+```
 
 ## Interactive and Visual Data Exploration
 
@@ -368,19 +620,19 @@ Using <span class="pack">dplyr</span>, group by year, and summarize to create a 
 ```{r interactive_ex1, eval=FALSE}
 library(ggplot2movies)
 
-movies %>% 
-  group_by(year) %>% 
-  summarise(Avg_Rating=mean(rating))
-  plot_ly() %>% 
+movies %>%
+  group_by(year) %>%
+  summarise(Avg_Rating = mean(rating))
+plot_ly() %>%
   add_markers()
 ```
 
 ```{r interactive_ex1-hint, echo=FALSE}
-movies %>% 
-  group_by(year) %>% 
-  summarise(Avg_Rating=mean(rating)) %>% 
-  plot_ly() %>% 
-  add_markers(x=~year, y=~Avg_Rating)
+movies %>%
+  group_by(year) %>%
+  summarise(Avg_Rating = mean(rating)) %>%
+  plot_ly() %>%
+  add_markers(x =  ~ year, y =  ~ Avg_Rating)
 ```
 
 
@@ -389,15 +641,17 @@ movies %>%
 This time group by year *and* Drama. In the <span class="func">summarize</span> create average rating again, but also a variable representing the average number of votes. In your plotly line, use the size and color arguments to represent whether the average number of votes and whether it was drama or not respectively. Use <span class="func">add_markers</span>.  Note that Drama will be treated as numeric since it's a 0-1 indicator. This won't affect the plot, but if you want, you might use <span class="func">mutate</span> to change it to a factor with labels 'Drama' and 'Other'.
 
 ```{r interactive_ex2, echo=FALSE}
-movies %>% 
-  group_by(year, Drama) %>% 
-  summarise(Avg_Rating=mean(rating),
-            Avg_Votes = mean(votes)) %>% 
-  plot_ly() %>% 
-  add_markers(x=~year, 
-              y=~Avg_Rating, 
-              size=~Avg_Votes, 
-              color=~Drama)
+movies %>%
+  group_by(year, Drama) %>%
+  summarise(Avg_Rating = mean(rating),
+            Avg_Votes = mean(votes)) %>%
+  plot_ly() %>%
+  add_markers(
+    x =  ~ year,
+    y =  ~ Avg_Rating,
+    size =  ~ Avg_Votes,
+    color =  ~ Drama
+  )
 ```
 
 

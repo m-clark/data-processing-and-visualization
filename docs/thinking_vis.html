@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2019-12-01" />
+<meta name="date" content="2019-12-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -364,6 +364,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#themes"><i class="fa fa-check"></i>Themes</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#python-1"><i class="fa fa-check"></i>Python</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-exercises"><i class="fa fa-check"></i>ggplot2 Exercises</a><ul>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-0-2"><i class="fa fa-check"></i>Exercise 0</a></li>
@@ -376,16 +377,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#piping-for-visualization"><i class="fa fa-check"></i>Piping for Visualization</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#htmlwidgets"><i class="fa fa-check"></i>htmlwidgets</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#plotly"><i class="fa fa-check"></i>Plotly</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#modes"><i class="fa fa-check"></i>Modes</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#ggplotly"><i class="fa fa-check"></i>ggplotly</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#highcharter"><i class="fa fa-check"></i>Highcharter</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#graph-networks"><i class="fa fa-check"></i>Graph networks</a><ul>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#visnetwork"><i class="fa fa-check"></i>visNetwork</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#sigmajs"><i class="fa fa-check"></i>sigmajs</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#plotly-1"><i class="fa fa-check"></i>Plotly</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#leaflet"><i class="fa fa-check"></i>leaflet</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#dt"><i class="fa fa-check"></i>DT</a></li>
-<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#shiny"><i class="fa fa-check"></i>Shiny</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#shiny"><i class="fa fa-check"></i>Shiny</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#dash"><i class="fa fa-check"></i>Dash</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-visualization-exercises"><i class="fa fa-check"></i>Interactive Visualization Exercises</a><ul>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-0-3"><i class="fa fa-check"></i>Exercise 0</a></li>
@@ -649,7 +654,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="scaling-size" class="section level2">
 <h2>Scaling Size</h2>
 <p>You might not be aware, but there is more than one way to scale the size of objects, e.g. in a scatterplot. Consider the following, where in both cases dots are scaled by the person’s body-mass index (BMI).</p>
-<p><img src="data-processing-and-visualization_files/figure-html/scale_size-1.svg" width="50%" style="display: block; margin: auto;" /></p>
+<p><img src="data-processing-and-visualization_files/figure-html/scale_size-1.svg" width="100%" style="display: block; margin: auto;" /></p>
 <p>What’s the difference? The first plot scales the dots by their area, while the second scales the radius, but otherwise they are identical. It’s not generally recommended to scale the radius, as our perceptual system is more attuned to the area. Packages like <span class="pack">ggplot2</span> and <span class="pack">plotly</span> will automatically do this, but some might not, so you should check.</p>
 </div>
 <div id="transparency" class="section level2">
@@ -704,24 +709,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="pie" class="section level3">
 <h3>Pie</h3>
 <p>Pie charts and their cousins, e.g. bar charts (and stacked versions), wind rose plots, radar plots etc., either convey too little information, or make otherwise simple information more difficult to process perceptually. The basic pie chart is really only able to convey proportional data. Beyond that, anything done with a pie chart can almost always be done better, at the very least with a bar chart, but you should really consider better ways to convey your data.</p>
-<p>Alternatives:
-- bar
-- densities/stacked densities
-- parallel sets/sankey</p>
+<p>Alternatives:</p>
+<ul>
+<li>bar</li>
+<li>densities/stacked densities</li>
+<li>parallel sets/sankey</li>
+</ul>
 </div>
 <div id="histograms" class="section level3">
 <h3>Histograms</h3>
 <p>Anyone that’s used R’s <span class="func">hist</span> function knows the frustration here. Use density plots instead. They convey the same information but better, and typical defaults are usually fine. However, you should really consider the information and audience- is a histogram or density plot really displaying what you want to show?</p>
-<p>Alternatives:
-- density
-- quantile dotplot</p>
-<p><img src="data-processing-and-visualization_files/figure-html/hist-dens-dot-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p>Alternatives:</p>
+<ul>
+<li>density</li>
+<li>quantile dotplot</li>
+</ul>
+<p><img src="data-processing-and-visualization_files/figure-html/hist-dens-dot-1.svg" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="using-3d-without-adding-any-communicative-value" class="section level3">
 <h3>Using 3D without adding any communicative value</h3>
 <p>You will often come across use of 3D in scientific communication which is fairly poor and makes the data harder to interpret. In general, when going beyond two dimensions, your first thought should be to use color, size, etc. and finally, prefer interactivity to 3D. Where it is useful is in things like showing structure (e.g. molecular, geographical), or continuous multi-way interactions.</p>
-<p>Alternatives:
-- multiple 2d/faceting</p>
+<p>Alternatives:</p>
+<ul>
+<li>multiple 2d/faceting</li>
+</ul>
 </div>
 <div id="using-too-many-colors" class="section level3">
 <h3>Using too many colors</h3>
@@ -730,8 +741,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="using-valenced-colors-when-data-isnt-applicable" class="section level3">
 <h3>Using valenced colors when data isn’t applicable</h3>
 <p>Often we have data that can be thought of as having a positive/negative or valenced nuance. For example, we might want to show values relative to some cut point, or they might naturally have positive and negative values (e.g. sentiment, standardized scores). Oftentimes though, doing so would mean possibly arbitrarily picking a cut point and unnaturally discretizing the data.</p>
-<p>The following shows a plot of water risk for many countries. The first plots the color along a continuum, which is appropriate for this score of 0-5. We can clearly see problematic ones while still getting a sense of where other countries lie along that score. The plot on the left arbitrarily codes a different color scheme, which might suggest some countries are fundamentally different than others. However, if the goal is to show values relative to the median, then it accurately conveys countries above and below that value. If the median is not a useful value (e.g. to take some action upon), then the former plot would likely be preferred.</p>
-<p><img src="img/water_risk.svg" style="width:150.0%" /></p>
+<p>The following shows a plot of water risk for many countries. The first plots the color along a continuum with increasing darkness as one goes along, which is appropriate for this score of positive numeric values from 0-5. We can clearly see problematic ones while still getting a sense of where other countries lie along that score. The other plot arbitrarily codes a different color scheme, which might suggest some countries are fundamentally different than others. However, if the goal is to show values relative to the median, then it accurately conveys countries above and below that value. If the median is not a useful value (e.g. to take some action upon), then the former plot would likely be preferred.</p>
+<p><img src="data-processing-and-visualization_files/figure-html/valenced-plot-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<!-- ![](img/water_risk.svg){width=150%} -->
 </div>
 <div id="showing-maps-that-just-display-population" class="section level3">
 <h3>Showing maps that just display population</h3>
@@ -746,7 +758,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Thinking Visually Exercises</h2>
 <div id="exercise-1-4" class="section level3">
 <h3>Exercise 1</h3>
-<p>The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>. Use the <span class="func">scale_color_viridis</span> or <span class="func">scale_color_scico</span> function to add a more accessible palette.</p>
+<p>The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>. Use the <span class="func">scale_color_viridis</span> or <span class="func">scale_color_scico</span> function to add a more accessible palette. Use <code>?</code> to examine your options.</p>
 <div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb186-1" data-line-number="1"><span class="co"># devtools::install_github(&quot;thomasp85/scico&quot;) # to use scientific colors</span></a>
 <a class="sourceLine" id="cb186-2" data-line-number="2"><span class="kw">library</span>(ggplot2)</a>
 <a class="sourceLine" id="cb186-3" data-line-number="3"></a>

@@ -308,7 +308,7 @@ You can't win all battles however.  It will be difficult to choose colors that a
 You might not be aware, but there is more than one way to scale the size of objects, e.g. in a scatterplot. Consider the following, where in both cases dots are scaled by the person's body-mass index (BMI).
 
 
-```{r scale_size, out.width='50%'}
+```{r scale_size, out.width='100%'}
 ss1 <- sw2 %>% 
   mutate(bmi = mass/((height/100)^2)) %>% 
   ggplot(aes(x=mass, y=height)) +
@@ -696,6 +696,7 @@ I'm just putting things that come to mind here as I return to this document. Mos
 Pie charts and their cousins, e.g. bar charts (and stacked versions), wind rose plots, radar plots etc., either convey too little information, or make otherwise simple information more difficult to process perceptually.  The basic pie chart is really only able to convey proportional data.  Beyond that, anything done with a pie chart can almost always be done better, at the very least with a bar chart, but you should really consider better ways to convey your data. 
 
 Alternatives:
+
 - bar
 - densities/stacked densities
 - parallel sets/sankey
@@ -705,10 +706,11 @@ Alternatives:
 Anyone that's used R's <span class="func">hist</span> function knows the frustration here.  Use density plots instead.  They convey the same information but better, and typical defaults are usually fine. However, you should really consider the information and audience- is a histogram or density plot really displaying what you want to show?
 
 Alternatives:
+
 - density
 - quantile dotplot
 
-```{r hist-dens-dot, echo=FALSE}
+```{r hist-dens-dot, echo=FALSE, out.width='100%', fig.asp=.5}
 N = 150
 n = N/2
 random_normal_deviates_a = rnorm(n)
@@ -742,6 +744,7 @@ p_dot = ggplot(random_normal_deviates) +
                alpha = .5,
                show.legend = FALSE) +
   labs(x = '', y = '', subtitle = 'Dotplot') +
+  lims(y = c(0, .35)) +
   theme_clean()
 
 p_hist + p_dens + p_dot
@@ -754,6 +757,7 @@ p_hist + p_dens + p_dot
 You will often come across use of 3D in scientific communication which is fairly poor and makes the data harder to interpret.  In general, when going beyond two dimensions, your first thought should be to use color, size, etc. and finally, prefer interactivity to 3D.  Where it is useful is in things like showing structure (e.g. molecular, geographical), or continuous multi-way interactions.
 
 Alternatives:
+
 - multiple 2d/faceting
 
 ### Using too many colors 
@@ -764,16 +768,15 @@ Some put a completely non-scientifically based number on this, but the idea hold
 
 Often we have data that can be thought of as having a positive/negative or valenced nuance.  For example, we might want to show values relative to some cut point, or they might naturally have positive and negative values (e.g. sentiment, standardized scores). Oftentimes though, doing so would mean possibly arbitrarily picking a cut point and unnaturally discretizing the data.
 
-The following shows a plot of water risk for many countries. The first plots the color along a continuum, which is appropriate for this score of 0-5. We can clearly see problematic ones while still getting a sense of where other countries lie along that score.  The plot on the left arbitrarily codes a different color scheme, which might suggest some countries are fundamentally different than others.  However, if the goal is to show values relative to the median, then it accurately conveys countries above and below that value. If the median is not a useful value (e.g. to take some action upon), then the former plot would likely be preferred.
+The following shows a plot of water risk for many countries. The first plots the color along a continuum with increasing darkness as one goes along, which is appropriate for this score of positive numeric values from 0-5. We can clearly see problematic ones while still getting a sense of where other countries lie along that score.  The other plot  arbitrarily codes a different color scheme, which might suggest some countries are fundamentally different than others.  However, if the goal is to show values relative to the median, then it accurately conveys countries above and below that value. If the median is not a useful value (e.g. to take some action upon), then the former plot would likely be preferred.
 
-```{r valenced-plot, eval = FALSE}
+```{r valenced-plot, eval = TRUE}
 wr = noiris::water_risk %>% 
   mutate(name_0 = ifelse(name_0 == 'United States', 'USA', name_0)) %>% 
   drop_na()
   
 world = map_data("world")
-wr$name_0 %in% world$region
-
+# wr$name_0 %in% world$region
 
 p1 = ggplot(wr, aes(map_id = name_0)) +
   geom_map(aes(fill = score), map = world) +
@@ -785,17 +788,22 @@ p2 =  ggplot(wr, aes(map_id = name_0)) +
   geom_map(aes(fill = score), map = world) +
   expand_limits(x = world$long, y = world$lat) +
   scale_fill_gradient2(
-    low = muted("#001260"), # based on vik extremes
+    low = scales::muted("#001260"), # based on vik extremes
     mid = "white",
-    high = muted("#601200"),
+    high = scales::muted("#601200"),
     midpoint = median(wr$score)
   ) +
   theme_void()
 
-p1 + p2
+p1 / p2
 ```
 
-![](img/water_risk.svg){width=150%}
+```{r valenced-plot-show, fig.asp=.5}
+# knitr::include_graphics('img/water_risk.svg')
+```
+
+
+<!-- ![](img/water_risk.svg){width=150%} -->
 
 
 
@@ -815,7 +823,7 @@ A lot of folks doing PCA resort to biplots for interpretation, where a graphical
 
 ### Exercise 1
 
-The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>.  Use the <span class="func">scale_color_viridis</span> or <span class="func">scale_color_scico</span> function to add a more accessible palette.
+The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>.  Use the <span class="func">scale_color_viridis</span> or <span class="func">scale_color_scico</span> function to add a more accessible palette. Use `?` to examine your options.
 
 ```{r thinkingvis_ex1, echo=T, eval=FALSE, cache=FALSE}
 # devtools::install_github("thomasp85/scico") # to use scientific colors
