@@ -2,6 +2,21 @@
 
 ```{r progsetup, include=FALSE, eval=TRUE, cache=FALSE}
 knitr::opts_chunk$set(eval=T, echo=T)
+
+kable_df = function(data, digits=3, ...) {
+  kableExtra::kable(
+    data,
+    digits = digits,
+    format = 'html',
+    booktabs = T,
+    # longtable = F,
+    linesep = "",
+    ...,
+  ) %>% 
+    kableExtra::kable_styling(full_width = F)
+}
+
+perc = function(x, digits = 1) paste(rnd(x*100, digits = digits), '%')
 ```
 
 # Model Exploration
@@ -45,31 +60,85 @@ brms::brm(
 )
 ```
 
-Let's run an example. We'll use the world happiness dataset[^happy]. This is country level data based on surveys taken at various years, and the scores are averages or proportions, along with other values like GDP.
+Let's run an example. We'll use the world happiness dataset[^happy]. This is country level data based on surveys taken at various years, and the scores are averages or proportions, along with other values like GDP.  
 
-```{r model}
+```{r model-prep, echo=1:5}
+library(tidyverse)  # load if you haven't already
+
 load('data/world_happiness.RData')
 
+# glimpse(happy)
+
+tidyext::describe_all_num(happy) %>% 
+  kable_df()
+
+happy_score = tidyext::num_summary(happy$happiness_score)
+```
+
+
+The happiness score itself ranges from `r happy_score$Min` to `r happy_score$Max`, with a mean of `r happy_score$Mean` and standard deviation of `r happy_score$SD`.
+
+
+Fitting a model with R is trivial, and at a minimum requires the two key ingredients mentioned before, the formula and data.
+
+```{r model-fit}
 happy_model_0 = lm(
   happiness_score ~ democratic_quality + generosity + log_gdp_per_capita,
   data = happy
 )
-
-summary(happy_model_0)
 ```
 
 
 ### Matrix
 
-Many packages still allow for or even require (but shouldn't) matrices instead of specifying a model formula.  This requires separating data into a model or design matrix, and the vector or matrix of target(s)
+Many packages still allow for, or even require (but shouldn't), matrices instead of specifying a model formula.  This requires separating data into a model or design matrix, and the vector or matrix of the target variable(s).  For example, if we needed a speed boost and weren't concerned about some typical output we could use <span class="func" style = "">lm.fit</span>.
 
+First we need to create the required components.
+
+```{r model-matrix}
+X = model.matrix(
+  happiness_score ~ democratic_quality + generosity + log_gdp_per_capita, 
+  data = happy
+)
+
+head(X)
+```
+
+Note the column of ones in the model matrix `X`.  This represents our intercept, but won't mean much to you unless you understant matrix multiplication.  The other columns are just as they are in the data.  Note also that the missing values have been removed.
+
+
+```{r na-omit}
+nrow(happy)
+nrow(X)
+```
+
+
+We can now fit the model as follows.  The response variable must contain the same values as in the model matrix.
+
+```{r model-fit-model-matrix}
+y = happy$happiness_score[as.integer(rownames(X))]
+happy_model_matrix = lm.fit(X, y)
+summary(happy_model_matrix)
+```
+
+In my experience, it is generally a bad sign if a package requires that you create the model matrix rather than doing so itself.  Such packages tend to skip out on many other things like using typical methods and so forth, making them even more difficult to work with.  In general, the only real time you should need to use model matrices is when you are creating your own modeling package, doing simulations, or otherwise know why you need them.
 
 
 ## Summarizing Models
 
+```{r}
+summary(happy_model_0)
+```
+
+The summary tells us that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point.  For example, moving one unit on 
+
+## Scaling 
+
 ## Variable Importance
 
 ## Extracting Output
+
+## Factor Variables
 
 ## Visualization
 
