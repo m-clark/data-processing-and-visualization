@@ -1,0 +1,77 @@
+# (PART\*) Part IV: Modeling {-}
+
+```{r progsetup, include=FALSE, eval=TRUE, cache=FALSE}
+knitr::opts_chunk$set(eval=T, echo=T)
+```
+
+# Model Exploration
+
+The following shows how to get started with modeling in R generally, with a focus on concepts, tools, and syntax, rather than trying to understand the specifics of a given model.
+
+## Model Taxonomy
+
+We can broadly describe two classes of models
+
+- *Supervised*
+- *Unsupervised*
+- Some combination
+
+For supervised settings, there is a target or set of target variables which we aim to predict with a set of predictor variables or covariates.  This is far and away the most common case, and the one we will focus on here.
+
+In the case of unsupervised models, the data is the target, and includes techniques such as principal components analyis, factor analysis, cluster analytic approaches, topic modeling, and many others. The key notion is dimension reduction, either of the columns or rows.  For example, we may have many items of a survey we wish to group together into a few key concepts, or cluster thousands of observations into a few simple categories.
+
+
+Most statistical modeling techniques use maximum likelihood in some form or fashion, including 
+
+
+## Fitting Models
+
+The two components required to fit a model in R with practically every modern package are the model formula and a data frame.  Consider the following models, in general the syntax is the same or identical, with special considerations for the type of model. The data argument is not included.
+
+```{r model-syntax, eval=FALSE}
+lm(y ~ x + z)                                        # standard linear model/OLS
+glm(y ~ x + z, family = 'binomial')                  # logistic regression with binary response
+glm(y ~ x + z + offset(log(q)), family = 'poisson')  # count/rate model
+pscl::hurdle(y ~ x + z, dist = "negbin")             # hurdle model with negative binomial response
+lme4::glmer(y ~ x + (1|group), family = 'binomial')  # generalized linear mixed model
+mgcv::gam(y ~ s(x))                                  # generalized additive model
+survival::coxph(Surv(time = t, event = q) ~ x)       # Cox Proportional Hazards Regression
+
+# Bayesian
+brms::brm(
+  y ~ x + (1 + x | group), 
+  family = 'zero_one_inflated_beta', 
+  prior = priors
+)
+```
+
+Let's run an example. We'll use the world happiness dataset[^happy]. This is country level data based on surveys taken at various years, and the scores are averages or proportions, along with other values like GDP.
+
+```{r model}
+load('data/world_happiness.RData')
+
+happy_model_0 = lm(
+  happiness_score ~ democratic_quality + generosity + log_gdp_per_capita,
+  data = happy
+)
+
+summary(happy_model_0)
+```
+
+
+### Matrix
+
+Many packages still allow for or even require (but shouldn't) matrices instead of specifying a model formula.  This requires separating data into a model or design matrix, and the vector or matrix of target(s)
+
+
+
+## Summarizing Models
+
+## Variable Importance
+
+## Extracting Output
+
+## Visualization
+
+
+[^happy]: The World Happiness Report is a survey of the state of global happiness that ranks countries by how happy their citizens perceive themselves to be. Almost all the information here is gleaned from the report and appendices. This regards the report data from 2008-2018 included in the 2019 report.
