@@ -1,12 +1,16 @@
 # data.table
 
-
+```{r dtsetup, include=FALSE, eval=TRUE, cache=FALSE}
+knitr::opts_chunk$set(eval=T, echo=F, cache = T)
+```
 Another package for data processing that has been useful to many is <span class="pack">data.table</span>. It works in a notably different way than <span class="pack">dplyr</span>. However, you'd use it for the same reasons, e.g. subset, grouping, update, ordered joins etc., but with key advantages in speed and memory efficiency. Like <span class="pack">dplyr</span>, the data objects are both <span class="objclass">data.frames</span> and a package specific class.
 
 
 ```{r dterror, eval=TRUE}
 library(data.table)
-dt = data.table(x=sample(1:10, 6), g=1:3, y=runif(6))
+dt = data.table(x = sample(1:10, 6),
+                g = 1:3,
+                y = runif(6))
 class(dt)
 ```
 
@@ -110,7 +114,7 @@ left_join(dt1, dt2, by='x')
 
 ```{r dtjoin_timing, cache=FALSE, echo=FALSE}
 load('data/timing.RData')
-timing_join %>% pander::pander(justify='lr')
+timing_join %>% kable_df(justify='lr')
 # timing_join =
 #   microbenchmark::microbenchmark(dt_join = dt1[dt2],
 #                                  dplyr_join = left_join(dt1, dt2, by='x')) %>%
@@ -124,7 +128,8 @@ timing_join %>% pander::pander(justify='lr')
 
 We can use the <span class="func">setkey</span> function to order a data set by a certain column(s).  This ordering is done by reference; again, no copy is made.  Doing this will allow for faster grouped operations, though you likely will only see the speed gain with very large data. The timing regards creating a new variable
 
-```{r dtsetkey, echo=1:10, eval=1:12}
+
+```{r dtsetkey, cache=FALSE, eval=FALSE}
 test_dt0 = data.table(x=rnorm(10000000), g = sample(letters, 10000000, replace=T))
 test_dt1 = copy(test_dt0)
 test_dt2 = setkey(test_dt1, g)
@@ -135,20 +140,22 @@ identical(test_dt1, test_dt2)
 test_dt0 = test_dt0[,mean:=mean(x),by=g]
 test_dt1 = test_dt1[,mean:=mean(x),by=g]
 test_dt2 = test_dt2[,mean:=mean(x),by=g]
+```
 
-timing_group_by_1 %>% pander::pander(justify='lr')
+```{r dt-group-timings, echo=FALSE, eval=FALSE}
+timing_group_by_1 =
+  microbenchmark::microbenchmark(
+    test_dt0 = test_dt0[, mean := mean(x), by = g],
+    test_dt1 = test_dt1[, mean := mean(x), by = g],
+    test_dt2 = test_dt2[, mean := mean(x), by = g]
+  ) 
 
-
-# timing_group_by_1 = 
-#   microbenchmark::microbenchmark(test_dt0 = test_dt0[,mean:=mean(x),by=g],
-#                                  test_dt1 = test_dt1[,mean:=mean(x),by=g],
-#                                  test_dt2 = test_dt2[,mean:=mean(x),by=g]) %>% 
-#   summary() %>% 
-#   select(expr, mean) %>% 
-#   mutate(mean=round(mean, 2)) %>% 
-#   rename(func=expr, `mean (milliseconds)`=mean)
-
-
+timing_group_by_1 %>%
+  summary() %>%
+  select(expr, mean) %>%
+  mutate(mean=round(mean, 2)) %>%
+  rename(func=expr, `mean (milliseconds)`=mean) %>% 
+  kable_df(justify='lr')
 ```
 
 ### String matching
@@ -166,7 +173,7 @@ lets_1 %chin% letters[13:26] %>% head(10)
 # stri_detect_regex(lets_1, paste(letters[13:26], collapse='|'))
 # str_detect(lets_1, paste(letters[13:26], collapse='|'))
 
-timing_chmatch %>% pander::pander(justify='lr')
+timing_chmatch %>% kable_df(justify='lr')
 
 # library(stringr); library(stringi)
 # timing_chmatch =
@@ -206,7 +213,7 @@ fread('data/cars.csv')
 #   mutate(mean=round(mean, 2)) %>%
 #   rename(func=expr, `mean (microseconds)`=mean)
 
-timing_read %>% pander::pander(justify='lr')
+timing_read %>% kable_df(justify='lr')
 ```
 
 
@@ -219,7 +226,9 @@ The following demonstrates some timings from [here](http://stackoverflow.com/que
 By the way, never, ever use <span class="func">aggregate</span>. For anything.
 
 ```{r dttimings, eval=TRUE, echo=FALSE}
-as.data.table(sapply(timing_group_by_big, `[[`, "elapsed"), keep.rownames = TRUE)[,.(fun = V1, elapsed = V2)][order(-elapsed)]
+as.data.table(
+  sapply(timing_group_by_big, `[[`, "elapsed"), keep.rownames = TRUE
+  )[, .(fun = V1, elapsed = V2)][order(-elapsed)]
 ```
 
 Ever.
@@ -294,7 +303,7 @@ load('data/timingsdtplyr.RData')
 tibble(package=names(timingsdtplyr)) %>% 
   mutate(timing = sapply(timingsdtplyr, `[[`, "elapsed")) %>% 
   arrange(desc(timing)) %>% 
-  pander::pander()
+  kable_df()
 ```
 
 Just for giggles I did the same in Python with a <span class="pack">pandas</span> <span class="objclass">DataFrame</span> and group-by operation, and it took over seven seconds.  But remember, R is slow!
