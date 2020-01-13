@@ -36,7 +36,25 @@ For supervised settings, there is a target or set of target variables which we a
 In the case of unsupervised models, the data is the target, and includes techniques such as principal components analyis, factor analysis, cluster analytic approaches, topic modeling, and many others. The key notion is dimension reduction, either of the columns or rows.  For example, we may have many items of a survey we wish to group together into a few key concepts, or cluster thousands of observations into a few simple categories.
 
 
-Most statistical modeling techniques use maximum likelihood in some form or fashion, including 
+
+
+### Linear models
+
+By far most models are linear models, even when they incorporate nonlinear relationships.  For example, in the following, we can add a quadratic term or an interaction, yet the model is still linear in the parameters.
+
+```{r linear-quad-inter}
+lm(y ~ x + z + x:z)
+lm(y ~ x + x^2)
+```
+
+In both of the models above, `x` has a potentially nonlinear relationship with `y`, either by varying its relationship depending on values of z (the first case) or itself (the second). In general, the manner in which nonlinear relationships may be explored in linear models is quite flexible.
+
+An example of a nonlinear model would be population growth models like exponential or logistic growth curves.  You can use functions like <span class="pack" style = "">nls</span> or <span class="pack" style = "">nlme</span> for such models, but should have a specific theoretical reason to do so, and even then flexible models such as GAMs might be better than assuming a functional form.
+
+
+### Estimation
+
+Most statistical modeling techniques use *maximum likelihood* in some form or fashion, including Bayesian approaches. A basic linear model may use ordinary least squares, others generalized estimating equations, but far and away the most common approach in statistical modeling is maximum likelihood, so you would do well to understand the basics.
 
 
 ## Fitting Models
@@ -113,7 +131,7 @@ nrow(X)
 ```
 
 
-We can now fit the model as follows.  The response variable must contain the same values as in the model matrix.
+We can now fit the model as follows.  The response variable must contain the same observations as in the model matrix.
 
 ```{r model-fit-model-matrix}
 y = happy$happiness_score[as.integer(rownames(X))]
@@ -126,13 +144,119 @@ In my experience, it is generally a bad sign if a package requires that you crea
 
 ## Summarizing Models
 
-```{r}
+Once we have a model, we'll want to summarize the results of it.
+
+```{r model-summarize, echo=1}
 summary(happy_model_0)
+
+happy_model_0_sum = summary(happy_model_0)
 ```
 
-The summary tells us that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point.  For example, moving one unit on 
+The summary tells us that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point.  For example, moving one unit on log GDP means moving, one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_0)['log_gdp_per_capita'], 1)`
 
-## Scaling 
+
+
+## Variable Transformations 
+
+Transforming the target, covariates or both provides a few benefits, and should regularly be used for most models. Some of these include[^notfornormal]:
+
+- Interpretable intercepts
+- More comparable covariate effects
+- Faster estimation
+- Easier convergence
+- Help with heteroscedasticity
+
+For example, merely centering predictor variables, i.e. subtracting the mean, provides a more interpretable intercept that will fall within the actual range of the target variable, telling us what the value of the target variable is when the covariates are at their means (or reference value if categorical).  The following table shows the interpretation of two extremely common transformations, logging and scaling (i.e. standardizing to mean zero, standard deviation one).
+
+```{r coefficient-interpretation, echo=FALSE}
+tibble(
+  target = c('y', 'y', 'log(y)', 'log(y)', 'y', 'scale(y)', 'scale(y)'), 
+  predictor = c('x', 'log(x)', 'x', 'log(x)', 'scale(x)', 'x', 'scale(x)'), 
+  interpretation = c(
+    '$\\Delta y = \\beta\\Delta x$',
+    '$\\Delta y \\approx (\\beta/100)\\%\\Delta x$',
+    '$\\%\\Delta y \\approx 100\\cdot \\beta\\%\\Delta x$',
+    '$\\%\\Delta y = \\beta\\%\\Delta x$',
+    '$\\Delta y =  \\beta\\sigma\\Delta x$',
+    '$\\sigma\\Delta y =  \\beta\\Delta x$',
+    '$\\sigma\\Delta y =  \\beta\\sigma\\Delta x$'
+  ), 
+) %>%
+  kable_df(booktabs = T, escape = FALSE)
+```
+
+For example, to start with the normal situation, a one-unit change in $x$, i.e. $\Delta x =1$ leads to $\beta$ unit change in $y$. If we log the target variable $y$, the interpreation of the coefficient for $x$ is that a one-unit change in $x$ leads to an (approximately) 100$\cdot$$\beta$% change in $y$. The 100 changes from a proportion to percentage change. More concretely, if $\beta$ was .5, a unit change in $x$ leads to (roughly) a 50% change in $y$. If both were logged, a percentage change in $x$ leads to a $\beta$ percentage change in y[^logtransform].  These percentage change interpretations are called [elasticities](https://en.wikipedia.org/wiki/Elasticity_(economics)) in econometrics and areas trained similarly.
+
+It is very common to use *standardized* variables as well, also called normalizing, or simply scaling. If $y$ and $x$ are both standardized, a one unit (i.e. one standard deviation) change in $x$ leads to a $\beta$ standard deviation change in $y$.  Again, if $\beta$ was .5, a standard deviation change in $x$ leads to a half standard deviation change in $y$.
+
+Another common transformation, particularly in machine learning, is the *min-max normalization*, changing variables to range from some minimum to some maximum, usually zero to one.
+
+### Categorical Variables
+
+For categorical variables, we can employ what is called *effects coding* to test for specific types of group differences.  Far and away the most common approach is called *dummy coding* or *one-hot encoding*[^onehotvsdummy].  For example:
+
+```{r dummy-coding}
+library(recipes)
+
+nafta = happy %>% 
+  filter(country %in% c('United States', 'Canada', 'Mexico'))
+
+dummy = nafta  %>% 
+  recipe(~ country) %>% 
+  step_dummy(country, one_hot = TRUE) # make variables for all factor levels
+
+prep(dummy) %>% 
+  bake(nafta) %>% 
+  print(n = 20)
+```
+
+We see that the first few observations are Canada, and the next few Mexico.  This is almost never required for R modeling packages, but sometimes can be useful to do explicitly.  If your modeling package cannot handle factor variables, and thus requires explicit coding, you'll know very quickly.
+
+Let's run a regression as follows:
+
+```{r dummy-reg}
+model_dummy = lm(happiness_score ~ country, data = nafta)
+
+summary(model_dummy)
+```
+
+
+In this case, the coefficient represents the difference in means on the target variable between the reference group and the group in question.  In this case, the U.S. is `r rnd(coef(model_dummy)[3], 2)` less on the happy score than the reference country (Canada).
+
+Other codings are possible, and these would allow for specific group comparisons or types of comparisons.  This is sometimes called *contrast coding*.  For example, we could compare Canada vs. both the U.S. and Mexico. By giving Canada twice the weight of the other two we can get this result.  I also add a coding that will just compare Mexico vs. the U.S.  The actual weights used are aribtrary but in this case should sum to zero.
+
+```{r contrast-coding, echo=FALSE}
+tibble(
+  group = c('Canada', 'Mexico', 'United States'),
+  canada_vs_other = c(-2/3,1/3,1/3),
+  mexico_vs_us = c(0,-.5,.5)
+) %>% 
+  kable_df() %>% 
+  kableExtra::add_footnote(notation = 'none', 'weights sum to zero, but are arbitrary')
+
+```
+
+Adding such coding to a factor variable allows the corresonding models to use it in constructing the model matrix, rather than dummy coding. See the group means and calculate the results by hand for yourself.
+
+```{r contrast-coding-lm}
+nafta = nafta %>% 
+  mutate(country_fac = factor(country))
+
+contrasts(nafta$country_fac) = matrix(c(-2/3,1/3,1/3, c(0,-.5,.5)), ncol = 2)
+
+summary(lm(happiness_score ~ country_fac, data = nafta))
+
+nafta %>% 
+  group_by(country) %>% 
+  summarise(happy = mean(happiness_score, na.rm = TRUE))
+```
+
+For example, we can see that for this balanced data set, the corresponding coefficient is the halfway point, i.e. average, of the U.S. and Mexico coefficients from dummy coding: `r rnd(coef(model_dummy)[2])` + `r rnd(coef(model_dummy)[3])` / 2 = `r rnd(mean(coef(model_dummy)[2:3]))`.
+
+## Misc
+
+Ordinal outcomes
+Nominal outcomes
 
 ## Variable Importance
 
@@ -144,3 +268,10 @@ The summary tells us that all these covariates are statistically significant, wh
 
 
 [^happy]: The World Happiness Report is a survey of the state of global happiness that ranks countries by how happy their citizens perceive themselves to be. Almost all the information here is gleaned from the report and appendices. This regards the report data from 2008-2018 included in the 2019 report.
+
+[^notfornormal]: Note that none of the benefits regard normality.  Transforming variables is not done to meet the normality assumption regarding residuals, and would rarely help in that regard.
+
+[^logtransform]: The log transformations in the table are approximations that allow an eyeballable interpretation.  Typically we use exponentiated coefficients for a more exact interpretation.  For example, if y is logged, a one-unit change in x leads to a $100*(e^B-1)$% change in y. See [this link](https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faqhow-do-i-interpret-a-regression-model-when-some-variables-are-log-transformed/) for more on interpreting logged variables.  
+
+[^onehotvsdummy]: Some distinguish one-hot from dummy coding in that the former creates a binary variable for all $C$ categorical levels while dummy coding only creates $C-1$ variables, leaving the reference group out.  However, the reference group is only left out at model fitting, there's no reason not to create all C variables, as it requires no additional effort and you might want to change the reference group.
+
