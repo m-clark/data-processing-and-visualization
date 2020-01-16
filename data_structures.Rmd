@@ -118,7 +118,10 @@ The most common type of data structure you'll deal with are integer and numeric 
 ```{r int_num}
 class(1:3)
 
-rnorm(5)
+x = rnorm(5)
+x
+
+class(x)
 ```
 
 
@@ -126,7 +129,7 @@ rnorm(5)
 
 ## Matrices
 
-With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing[^tidynomatrix]. The vectors making up a matrix *must all be of the same type*.  For example, all values in a matrix might be <span class="objclass">numeric</span>, or all <span class="objclass">character strings</span>.
+With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing. The vectors making up a matrix *must all be of the same type*.  For example, all values in a matrix might be <span class="objclass">numeric</span>, or all <span class="objclass">character strings</span>.
 
 
 
@@ -167,7 +170,7 @@ Lists can, and often do, have named elements.
 
 ```{r namedlist}
 x = list("a" = 25, "b" = -1, "c" = 0)
-x["b"]
+x[["b"]]
 ```
 
 Almost all standard models in base R and other packages return an object that is a list.  Knowing how to work with a list will allow you to easily access the contents of the model object for further processing.
@@ -202,14 +205,14 @@ rownames(mydf) = paste0('row', 1:3)
 mydf
 ```
 
-Everything about lists applies to data.frames, so we can add, select, and remove elements of a data frame just like lists. However, we'll visit this later, because we'll have much more flexibility with data frames than we would lists for common data analysis and visualization.
+Everything about lists applies to data.frames, so we can add, select, and remove elements of a data frame just like lists. However we'll visit this more in depth later, and see that we'll have much more flexibility with data frames than we would lists for common data analysis and visualization.
 
 
 ## Data Structure Exercises
 
 ### Excercise #1
 
-Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span> (use the <span class="func">class</span> or <span class="func">str</span> functions) on the object you just created.
+Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span> (use the <span class="func">class</span> or <span class="func">str</span> functions on the object you just created).
 
 ```{r dsex1, echo=F}
 mydf = data.frame(A=1:3, B=letters[1:3])
@@ -234,5 +237,3 @@ mylist = list(c('a', 'b'), 1:3, mydf)
 
 - How is a <span class="objclass">data.frame</span> the same as and different from a <span class="objclass">list</span>?
 
-
-[^tidynomatrix]: Despite what the tidyverse would have you believe.
