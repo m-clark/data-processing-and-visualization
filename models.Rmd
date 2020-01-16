@@ -152,13 +152,13 @@ summary(happy_model_0)
 happy_model_0_sum = summary(happy_model_0)
 ```
 
-The summary tells us that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point.  For example, moving one unit on log GDP means moving, one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_0)['log_gdp_per_capita'], 1)`
+The summary tells us that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point.  For example, moving one unit on log GDP means moving, one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_0)['log_gdp_per_capita'], 1)` units of happiness.
 
 
 
 ## Variable Transformations 
 
-Transforming the target, covariates or both provides a few benefits, and should regularly be used for most models. Some of these include[^notfornormal]:
+Transforming the target, covariates, or both provides a few benefits, and should regularly be used for most models. Some of these include[^notfornormal]:
 
 - Interpretable intercepts
 - More comparable covariate effects
@@ -185,7 +185,7 @@ tibble(
   kable_df(booktabs = T, escape = FALSE)
 ```
 
-For example, to start with the normal situation, a one-unit change in $x$, i.e. $\Delta x =1$ leads to $\beta$ unit change in $y$. If we log the target variable $y$, the interpreation of the coefficient for $x$ is that a one-unit change in $x$ leads to an (approximately) 100$\cdot$$\beta$% change in $y$. The 100 changes from a proportion to percentage change. More concretely, if $\beta$ was .5, a unit change in $x$ leads to (roughly) a 50% change in $y$. If both were logged, a percentage change in $x$ leads to a $\beta$ percentage change in y[^logtransform].  These percentage change interpretations are called [elasticities](https://en.wikipedia.org/wiki/Elasticity_(economics)) in econometrics and areas trained similarly.
+For example, to start with the normal situation, a one-unit change in $x$, i.e. $\Delta x =1$, leads to $\beta$ unit change in $y$. If we log the target variable $y$, the interpreation of the coefficient for $x$ is that a one-unit change in $x$ leads to an (approximately) 100$\cdot$$\beta$% change in $y$. The 100 changes from a proportion to percentage change. More concretely, if $\beta$ was .5, a unit change in $x$ leads to (roughly) a 50% change in $y$. If both were logged, a percentage change in $x$ leads to a $\beta$ percentage change in y[^logtransform].  These percentage change interpretations are called [elasticities](https://en.wikipedia.org/wiki/Elasticity_(economics)) in econometrics and areas trained similarly.
 
 It is very common to use *standardized* variables as well, also called normalizing, or simply scaling. If $y$ and $x$ are both standardized, a one unit (i.e. one standard deviation) change in $x$ leads to a $\beta$ standard deviation change in $y$.  Again, if $\beta$ was .5, a standard deviation change in $x$ leads to a half standard deviation change in $y$.
 
@@ -233,7 +233,6 @@ tibble(
 ) %>% 
   kable_df() %>% 
   kableExtra::add_footnote(notation = 'none', 'weights sum to zero, but are arbitrary')
-
 ```
 
 Adding such coding to a factor variable allows the corresonding models to use it in constructing the model matrix, rather than dummy coding. See the group means and calculate the results by hand for yourself.
@@ -253,6 +252,9 @@ nafta %>%
 
 For example, we can see that for this balanced data set, the corresponding coefficient is the halfway point, i.e. average, of the U.S. and Mexico coefficients from dummy coding: `r rnd(coef(model_dummy)[2])` + `r rnd(coef(model_dummy)[3])` / 2 = `r rnd(mean(coef(model_dummy)[2:3]))`.
 
+In other circumstances, we can use *categorical embeddings* to reduce a very large number of categorical levels to a smaller number of numeric variables.  This very commonly employed in deep learning.
+
+
 ## Misc
 
 Ordinal outcomes
@@ -262,7 +264,6 @@ Nominal outcomes
 
 ## Extracting Output
 
-## Factor Variables
 
 ## Visualization
 
