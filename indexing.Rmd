@@ -11,14 +11,14 @@ What follows is a refresher.  Presumably you've had enough R exposure to be awar
 #### Slicing vectors
 
 ```{r vectorSlice, eval=TRUE}
-letters[4:6]
+letters[4:6]  # lower case letters a-z
 letters[c(13, 10, 3)]
 ```
 
 #### Slicing matrices/data.frames
 
 ```{r matrixSlice}
-myMatrix[1, 2:3]
+myMatrix[1, 2:3]  # matrix[rows, columns]
 ```
 
 
@@ -89,6 +89,11 @@ my_list_or_df$name
 my_list@name
 ```
 
+
+<div class='note'>
+In general, position-based indexing should be avoided, except in the case of iterative programming of the sort that will be covered later.  The reason is that these become *magic numbers* when not commented, such that no one will know what they refer to.  In addition, any change to the rows/columns of data will render the numbers incorrect, where labels would still be applicable.
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
 
 ## Indexing Exercises
 

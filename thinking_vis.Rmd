@@ -597,7 +597,7 @@ gdat %>%
 
 Here we apply transparency to a density plot to convey a group difference in distributions, while still being able to visualize the whole distribution of each group.
 
-```{r transp_density, cache=FALSE}
+```{r transp_density}
 set.seed(123)
 
 gdat = 1:4 %>%
@@ -627,7 +627,7 @@ gdat %>%
 
 Had we not done so, we might not be able to tell what's going on with some of the groups at all.
 
-```{r transp_density2, cache=FALSE}
+```{r transp_density2}
 gdat %>%
   ggplot(aes(x = value, group = g)) +
   geom_density(aes(color = g, fill = g), show.legend = F) +
