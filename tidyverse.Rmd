@@ -282,7 +282,7 @@ bball = bball %>%
 glimpse(bball[,1:7])
 ```
 
-Now that the data columsn are of the correct type, the following demonstrates how we can use the standard <span class="func">mutate</span> function to create composites of existing variables.
+Now that the data columns are of the correct type, the following demonstrates how we can use the standard <span class="func">mutate</span> function to create composites of existing variables.
 
 ```{r mutate}
 bball = bball %>% 
@@ -455,11 +455,11 @@ Merges can get quite complex, and involve multiple data sources. In many cases y
 
 The <span class="pack">tidyr</span> package can be thought of as a specialized subset of <span class="pack">dplyr's</span> functionality, as well as an update to the previous <span class="pack">reshape</span> and <span class="pack">reshape2</span> packages[^reshape]. Some of its functions for manipulating data you'll want to be familiar with are:
 
-- <span class="func">pivot_longer</span>: wide to long
-- <span class="func">pivot_wider</span>: long to wide
+- <span class="func">pivot_longer</span>: convert data from a wider format to longer one
+- <span class="func">pivot_wider</span>:  convert data from a longer format to wider one
 - <span class="func">unite</span>: paste together multiple columns into one
-- <span class="func">separate</span>: complement of unite
-- <span class="func">unnest</span>: unnest 'list columns'
+- <span class="func">separate</span>: complement of <span class="func" style = "">unite</span>
+- <span class="func">unnest</span>: expand 'list columns'
 
 The following example shows how we take a 'wide-form' data set, where multiple columns represent different stock prices, and turn it into two columns, one representing stock name, and one for the price.  We need to know which columns to work on, which is the first entry.  It works very much like the select function, where you can use helpers etc. Then we need to give a name to the column(s) representing the indicators of what were multiple columns in the wide format. And finally we need to specify the column(s) of the values.
 
@@ -477,14 +477,14 @@ stocks %>% head
 
 stocks %>% 
   pivot_longer(
-    cols = -time,
-    names_to = 'stock',
-    values_to = 'price'
+    cols = -time,        # works similar to using select()
+    names_to = 'stock',  # the name of the column that will have column names as labels
+    values_to = 'price'  # the name of the column for the values
   ) %>% 
   head()
 ```
 
-Here is a more complex example where we can handle multiple repeated entries.
+Here is a more complex example where we can handle multiple repeated entries. We additionally add another column for labeling, and posit the separator for the column names.
 
 ```{r pivot2}
 library(tidyr)
@@ -499,7 +499,7 @@ stocks <- data.frame(
   Z_2 = rnorm(10, 0, 4)
 )
 
-stocks %>% head
+head(stocks)
 
 stocks %>% 
   pivot_longer(
@@ -512,31 +512,31 @@ stocks %>%
 ```
 
 
-Note that the latter is an example of <span class="emph">tidy data</span> while the former is not.  Why do we generally prefer such data?  Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data.  *This is especially the case for visualization*.
+Note that the latter is an example of <span class="emph">tidy data</span> while the former is not.  Why do we generally prefer such data?  Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. This is especially the case for visualization.
 
 The following demonstrates the <span class="func" style = "">separate</span> function utilized for a very common data processing task- dealing with names. Here' we'll separate <span class="objclass">player</span> into first and last names based on the space.
 
 ```{r tidyrSpread}
 bball %>% 
-  separate(Player, into=c('firstName', 'lastName'), sep=' ') %>% 
+  separate(Player, into=c('first_name', 'last_name'), sep=' ') %>% 
   select(1:5) %>% 
   head()
 ```
 
-Note that this won't necessarily apply to every name.  So further processing may be required.
+Note that this won't necessarily apply to every name, so further processing may be required.
 
 
 ## More Tidyverse
 
-- dplyr functions: There are over a hundred functions that perform very common tasks.  You really need to be aware of them as their use will come up often.
+- dplyr functions: There are over a hundred utility functions that perform very common tasks.  You really need to be aware of them, as their use will come up often.
 
-- broom: Convert statistical analysis objects from R into tidy data frames, so that they can more easily be combined, reshaped and otherwise processed with tools like dplyr, tidyr and ggplot2.
+- <span class="pack" style = "">broom</span>: Convert statistical analysis objects from R into tidy data frames, so that they can more easily be combined, reshaped and otherwise processed with tools like dplyr, tidyr and ggplot2.
 
-- tidy*: a lot of packages out there that are now 'tidy', though not a part of the official tidyverse. Some examples of the ones I've used:
-    - tidycensus
-    - tidybayes
-    - tidytext
-    - modelr
+- tidy*: a lot of packages out there are now 'tidy', though not a part of the official tidyverse. Some examples of the ones I've used:
+    - <span class="pack" style = "">tidycensus</span>
+    - <span class="pack" style = "">tidybayes</span>
+    - <span class="pack" style = "">tidytext</span>
+    - <span class="pack" style = "">modelr</span>
     
 Seriously, there are [a lot](https://www.r-pkg.org/search.html?q=tidy).
 
@@ -678,10 +678,12 @@ movies %>%
 
 [^summarise]: As Hadley Wickham is from New Zealand, and his examples use <span class="func">summarise</span>, you'll probably see it about as much as you do the other spelling, especially since it will come up first in autocomplete.
 
-[^multidplyr]: There is <span class="pack">multidplyr</span>, but it doesn't appear to have been updated since well before <span class="pack">dplyr</span> itself underwent major changes.
+
 
 [^noslice]: If you're following good programming practices, you'll likely never use <span class="func">slice</span>.
 
 [^funs]: For more than one function, you could have supplied `funs(function1, function2, ...).
 
 [^reshape]: Some still use <span class="pack">reshape2</span> but there is no reason to and it is no longer developed.
+
+[^multidplyr]: There is <span class="pack">multidplyr</span>, <span class="pack" style = "">dtplyr</span>, and now <span class="pack" style = "">tidyfast</span> to help get as fast as possible for large data processing.

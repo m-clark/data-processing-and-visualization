@@ -6,7 +6,9 @@ Another package for data processing that has been useful to many is <span class=
 
 ```{r dterror, eval=TRUE}
 library(data.table)
-dt = data.table(x=sample(1:10, 6), g=1:3, y=runif(6))
+dt = data.table(x = sample(1:10, 6),
+                g = 1:3,
+                y = runif(6))
 class(dt)
 ```
 
@@ -24,7 +26,7 @@ Importantly: *you don't use the brackets as you would with data.frames*. What **
 In general, you use **i** for filtering by rows.
  
 ```{r dtrows, results='hold'}
-dt[2]
+dt[2]    # rows! not columns as with standard data.frame
 dt[2,]
 ```
 
@@ -35,16 +37,16 @@ You use **j** to select (by name!) or create new columns.  We can define a new c
 dt[,x]
 dt[,z := x+y]  # dt now has a new column
 dt[,z]
-dt[g>1, mean(z), by=g]
+dt[g > 1, mean(z), by = g]
 dt
 ```
 
 Because **j** is an argument, dropping columns is awkward.
 
 ```{r dtdropcol, eval=1:2, results='hold'}
-dt[,-y]             # creates negative values of y
-dt[,-'y', with=F]   # drops y, but now needs quotes
-dt[,y := NULL]      # drops y, but this is just a base R approach
+dt[, -y]             # creates negative values of y
+dt[, -'y', with = F] # drops y, but now needs quotes
+dt[, y := NULL]      # drops y, but this is just a base R approach
 dt$y = NULL
 ```
 
@@ -52,7 +54,7 @@ dt$y = NULL
 Data table does not make unnecessary copies.  For example if we do the following...
 
 ```{r dtmemory}
-DT = data.table(A=5:1,B=letters[5:1])
+DT = data.table(A = 5:1, B = letters[5:1])
 DT2 = DT
 DT3 = copy(DT)  
 ```
@@ -77,18 +79,20 @@ We can now attempt a 'group-by' operation, along with creation of a new variable
 
 ```{r dtgroup}
 dt1 = dt2 = dt
-dt[,sum(x,y), by=g]                  # sum of all x and y values
-dt1[,newvar := sum(x), by=g]         # add new variable to the original data 
+dt[, sum(x, y), by = g]                # sum of all x and y values
+dt1[, mysum := sum(x), by = g]         # add new variable to the original data
 dt1
 ```
 
 
 
-We can also create groupings on the fly. For a new summary data set, we'll take the following approach- we create a grouping based on whether g is a value of one or not, then get the mean and sum of x for those two categories.  The corresponding dplyr approach is also shown (but not evaluated) for comparison.
+We can also create groupings on the fly. For a new summary data set, we'll take the following approach- we create a grouping based on whether `g` is a value of one or not, then get the mean and sum of `x` for those two categories.  The corresponding <span class="pack" style = "">dplyr</span> approach is also shown (but not evaluated) for comparison.
 
 ```{r dtgroup2, eval=1}
-dt2[, list(mean_x = mean(x), sum_x = sum(x)), by = g==1]
-dt2 %>% group_by(g==1) %>% summarise(mean_x=mean(x), sum_x=sum(x))
+dt2[, list(mean_x = mean(x), sum_x = sum(x)), by = g == 1]
+dt2 %>% 
+  group_by(g == 1) %>% 
+  summarise(mean_x = mean(x), sum_x = sum(x))
 ```
 
 
@@ -100,62 +104,74 @@ As mentioned, the reason to use <span class="pack">data.table</span> is speed.  
 
 ### Joins
 
-Joins can not only be faster but and easy to do. Note that the `i` argument can be a <span class="objclass">data.table</span> object itself.  I compare its speed to the comparable <span class="pack">dplyr's</span> <span class="func">left_join</span> function.
+Joins can not only be faster but also easy to do. Note that the `i` argument can be a <span class="objclass">data.table</span> object itself.  I compare its speed to the comparable <span class="pack">dplyr's</span> <span class="func">left_join</span> function.
 
 ```{r dtjoin, eval=FALSE}
 dt1 = setkey(dt1, x)
 dt1[dt2]
-left_join(dt1, dt2, by='x')
+
+dt1_df = dt2_df = as.data.frame(dt1)
+left_join(dt1_df, dt2_df, by = 'x')
 ```
 
-```{r dtjoin_timing, cache=FALSE, echo=FALSE}
-load('data/timing.RData')
-timing_join %>% pander::pander(justify='lr')
+```{r dtjoin_timing, echo=FALSE}
+# load('data/timing.RData')
+# timing_join %>% 
+#   kable_df(justify='lr')
+dt1 = setkey(dt1, x)
+dt1_df = dt2_df = as.data.frame(dt1)
+# dt1[dt2]
 # timing_join =
-#   microbenchmark::microbenchmark(dt_join = dt1[dt2],
-#                                  dplyr_join = left_join(dt1, dt2, by='x')) %>%
-#   summary() %>%
-#   select(expr, mean) %>%
-#   mutate(mean=round(mean, 2)) %>%
-#   rename(func=expr, `mean (microseconds)`=mean)
+  microbenchmark::microbenchmark(dt_join = dt1[dt2],
+                                 dplyr_join = left_join(dt1_df, dt2_df, by='x')) %>%
+  summary() %>%
+  select(expr, mean) %>%
+  mutate(mean = round(mean, 2)) %>%
+  rename(func = expr, `mean (microseconds)` = mean) %>%
+  kable_df(justify = 'lr')
 ```
 
 ### Group by
 
 We can use the <span class="func">setkey</span> function to order a data set by a certain column(s).  This ordering is done by reference; again, no copy is made.  Doing this will allow for faster grouped operations, though you likely will only see the speed gain with very large data. The timing regards creating a new variable
 
-```{r dtsetkey, echo=1:10, eval=1:12}
-test_dt0 = data.table(x=rnorm(10000000), g = sample(letters, 10000000, replace=T))
+```{r dtsetkey, echo=1:10}
+test_dt0 = data.table(x = rnorm(10000000),
+                      g = sample(letters, 10000000, replace = T))
 test_dt1 = copy(test_dt0)
 test_dt2 = setkey(test_dt1, g)
 
 identical(test_dt0, test_dt1)
 identical(test_dt1, test_dt2)
 
-test_dt0 = test_dt0[,mean:=mean(x),by=g]
-test_dt1 = test_dt1[,mean:=mean(x),by=g]
-test_dt2 = test_dt2[,mean:=mean(x),by=g]
+test_dt0 = test_dt0[, mean := mean(x), by = g]
+test_dt1 = test_dt1[, mean := mean(x), by = g]
+test_dt2 = test_dt2[, mean := mean(x), by = g]
 
-timing_group_by_1 %>% pander::pander(justify='lr')
-
-
-# timing_group_by_1 = 
-#   microbenchmark::microbenchmark(test_dt0 = test_dt0[,mean:=mean(x),by=g],
-#                                  test_dt1 = test_dt1[,mean:=mean(x),by=g],
-#                                  test_dt2 = test_dt2[,mean:=mean(x),by=g]) %>% 
-#   summary() %>% 
-#   select(expr, mean) %>% 
-#   mutate(mean=round(mean, 2)) %>% 
-#   rename(func=expr, `mean (milliseconds)`=mean)
+# timing_group_by_1 %>% kable_df(justify='lr')
 
 
+timing_group_by_1 =
+  microbenchmark::microbenchmark(
+    test_dt0 = test_dt0[, mean := mean(x), by = g],
+    test_dt1 = test_dt1[, mean := mean(x), by = g],
+    test_dt2 = test_dt2[, mean := mean(x), by = g],
+    times = 25
+  ) %>%
+  summary() %>%
+  select(expr, mean) %>%
+  mutate(mean = round(mean, 2)) %>%
+  rename(func = expr, `mean (milliseconds)` = mean)
+
+timing_group_by_1 %>% 
+  kable_df(justify = 'lr')
 ```
 
 ### String matching
 
 The <span class="func">chin</span> function returns a vector of the *positions* of (first) matches of its first argument in its second, where both arguments are character vectors.  Essentially it's just like the <span class="func">%in%</span> function for character vectors. 
 
-Consider the following. We sample the first 14 letters 1000 times with replacement and see which ones match in a subset of another subset of letters.  I compare the same operation to <span class="pack">stringr</span> and the <span class="pack">stringi</span> package whose functionality <span class="pack">stringr</span> using.
+Consider the following. We sample the first 14 letters 1000 times with replacement and see which ones match in a subset of another subset of letters.  I compare the same operation to <span class="pack">stringr</span> and the <span class="pack">stringi</span> package whose functionality <span class="pack">stringr</span> using.  They are both far slower than <span class="func" style = "">chin</span>.
 
 ```{r dtcharacters, echo=2:6, eval=2:8}
 set.seed(1234)
@@ -166,8 +182,8 @@ lets_1 %chin% letters[13:26] %>% head(10)
 # stri_detect_regex(lets_1, paste(letters[13:26], collapse='|'))
 # str_detect(lets_1, paste(letters[13:26], collapse='|'))
 
-timing_chmatch %>% pander::pander(justify='lr')
-
+# timing_chmatch %>% kable_df(justify='lr')
+# 
 # library(stringr); library(stringi)
 # timing_chmatch =
 #   microbenchmark::microbenchmark(
@@ -195,18 +211,18 @@ fread('data/cars.csv')
 ```
 
 ```{r dtfread_timing, echo=FALSE}
-# library(readr)
-# timing_read =
-#   microbenchmark::microbenchmark(
-#   dt = fread('data/cars.csv'),
-#   readr = read_csv('data/cars.csv')
-# ) %>%
-#   summary() %>%
-#   select(expr, mean) %>%
-#   mutate(mean=round(mean, 2)) %>%
-#   rename(func=expr, `mean (microseconds)`=mean)
+library(readr)
+timing_read =
+  microbenchmark::microbenchmark(
+  dt = fread('data/cars.csv'),
+  readr = read_csv('data/cars.csv')
+) %>%
+  summary() %>%
+  select(expr, mean) %>%
+  mutate(mean=round(mean, 2)) %>%
+  rename(func=expr, `mean (microseconds)`=mean)
 
-timing_read %>% pander::pander(justify='lr')
+timing_read %>% kable_df(justify='lr')
 ```
 
 
@@ -218,8 +234,65 @@ The following demonstrates some timings from [here](http://stackoverflow.com/que
 
 By the way, never, ever use <span class="func">aggregate</span>. For anything.
 
+
+```{r dttimings_big, eval=FALSE, echo=FALSE}
+library(dplyr)
+library(data.table)
+set.seed(123)
+n = 5e7
+k = 5e5
+x = runif(n)
+grp = sample(k, n, TRUE)
+
+timing_group_by_big = list()
+
+# sapply
+timing_group_by_big[["sapply"]] = system.time({
+    lt = split(x, grp)
+    r.sapply = sapply(lt, function(x) list(sum(x), length(x)), simplify = FALSE)
+})
+
+# lapply
+timing_group_by_big[["lapply"]] = system.time({
+    lt = split(x, grp)
+    r.lapply = lapply(lt, function(x) list(sum(x), length(x)))
+})
+
+# tapply
+timing_group_by_big[["tapply"]] = system.time(
+    r.tapply <- tapply(x, list(grp), function(x) list(sum(x), length(x)))
+)
+
+# by
+timing_group_by_big[["by"]] = system.time(
+    r.by <- by(x, list(grp), function(x) list(sum(x), length(x)), simplify = FALSE)
+)
+
+# aggregate
+timing_group_by_big[["aggregate"]] = system.time(
+    r.aggregate <- aggregate(x, list(grp), function(x) list(sum(x), length(x)), simplify = FALSE)
+)
+
+# dplyr
+timing_group_by_big[["dplyr"]] = system.time({
+    df = data_frame(x, grp)
+    r.dplyr = summarise(group_by(df, grp), sum(x), n())
+})
+
+# data.table
+timing_group_by_big[["data.table"]] = system.time({
+    dt = setnames(setDT(list(x, grp)), c("x","grp"))
+    r.data.table = dt[, .(sum(x), .N), grp]
+})
+
+save(timing_group_by_big, file = 'data/timing_group_by_big.RData')
+```
+
+
 ```{r dttimings, eval=TRUE, echo=FALSE}
-as.data.table(sapply(timing_group_by_big, `[[`, "elapsed"), keep.rownames = TRUE)[,.(fun = V1, elapsed = V2)][order(-elapsed)]
+load('data/timing_group_by_big.RData')
+as.data.table(sapply(timing_group_by_big, `[[`, "elapsed"), keep.rownames = TRUE)[, .(fun = V1, elapsed = V2)][order(-elapsed)] %>% 
+  kable_df()
 ```
 
 Ever.
@@ -230,28 +303,28 @@ Another thing to note is that the tidy approach is more about clarity and code e
 
 ## Pipe with data.table
 
-Piping can be done with data.table objects too, using the brackets, but it's awkward at best.
+Piping can be done with <span class="objclass" style = "">data.table</span> objects too, using the brackets, but it's awkward at best.
 
 ```{r dtpipebad, eval=F}
-mydt[,newvar:=mean(x),][,newvar2:=sum(newvar), by=group][,-'y', with=FALSE]
-mydt[,newvar:=mean(x), 
-  ][,newvar2:=sum(newvar), by=group
-  ][,-'y', with=FALSE
-  ]
+mydt[, newvar := mean(x), ][, newvar2 := sum(newvar), by = group][, -'y', with = FALSE]
+mydt[, newvar := mean(x),
+     ][, newvar2 := sum(newvar), by = group
+       ][,-'y', with=FALSE]
 ```
 
 Probably better to just use a standard pipe and dot approach if you really need it.
 
 ```{r dtpipebad2, eval=F}
-mydt[,newvar:=mean(x),] %>% 
-  .[,newvar2:=sum(newvar), by=group] %>% 
-  .[,-'y', with=FALSE]
+mydt[, newvar := mean(x), ] %>%
+  .[, newvar2 := sum(newvar), by = group] %>%
+  .[, -'y', with = FALSE]
 ```
 
 ## Summary
 
 Faster and more memory-efficient methods are great to have. If you have large data this is one package that can help.
 
+  - For reading data
   - Especially for group-by and joins.
 
 Drawbacks:
@@ -271,11 +344,11 @@ Piping allows one to use both, so no need to choose.
 
 And on the horizon...
 
-## dtplyr
+## Faster dplyr alternatives
 
-Coming soon to an R near you, or possibly abandonware, only time will tell.  However, what the <span class="pack">dtplyr</span> package purports to do is implement the <span class="pack">data.table</span> back-end for <span class="pack">dplyr</span> so that you can seamlessly use them together.  The following shows times for a grouped operation of a data frame of two variables, a random uniform draw of 5e7 values, and a grouping variable of 500k groups.
+So we have <span class="pack" style = "">data.table</span> as a starting point for faster data processing operations, but there are others. The <span class="pack">dtplyr</span> package implements the <span class="pack">data.table</span> back-end for <span class="pack">dplyr</span>, so that you can seamlessly use them together.  The newer package <span class="pack" style = "">tidyfast</span> works directly with a <span class="objclass" style = "">data.table</span> object, but uses dplyr-esque functions. The following shows times for a counting unique arrival times in the <span class="pack" style = "">nycflights13</span> <span class="objclass" style = "">flights</span> data (`r nrow(nycflights13::flights)` rows).
 
-```{r dtplyr, echo=FALSE, eval=TRUE, cache=F}
+```{r dtplyr, echo=FALSE, eval=TRUE}
 # something weird with n() function in chunk; saved out
 # detach(package:data.table); library(dplyr); library(dtplyr)
 # set.seed(123)
@@ -290,20 +363,75 @@ Coming soon to an R near you, or possibly abandonware, only time will tell.  How
 # })
 # timingsdtplyr = append(timing[6:7], list(dtplyr=dtplyrtest))
 # save(timingsdtplyr, 'data/timingsdtplyr.RData')
+
+
+# data(flights, 'nycflights13')
+# head(flights)
+# 
+# library(tidyverse)
+# library(dtplyr)
+# library(data.table)
+# library(tidyfast)
+# 
+# 
+# flights_dtp = lazy_dt(flights)
+# 
+# flights_dt = data.table(flights)
+# 
+# library(microbenchmark)
+# 
+# test = microbenchmark::microbenchmark(
+#   dplyr      = count(flights, arr_time),
+#   dtplyr     = as_tibble(count(flights_dtp, arr_time)),
+#   tidyfast   = dt_count(flights_dt, arr_time),
+#   data.table = flights_dt[, .(n = .N), by = arr_time],
+#   times = 500
+# )
+# 
+# test_table = as.data.frame(print(test))
+# colnames(test_table)[c(1, 5)] = c('package', 'timing')  # knitr was having issues with the names as they expr and median are functions
+# test_table = test_table[c('package', 'timing')]
+# save(test, test_table, file = 'data/timingsdtplyr.RData')
+
+
 load('data/timingsdtplyr.RData')
-tibble(package=names(timingsdtplyr)) %>% 
-  mutate(timing = sapply(timingsdtplyr, `[[`, "elapsed")) %>% 
-  arrange(desc(timing)) %>% 
-  pander::pander()
+
+test_table %>%
+  arrange(desc(timing)) %>%
+  kable_df() %>% 
+  kableExtra::add_footnote('Median time in milliseconds to do a count of arr_time on nycflights::flights')
+
+ggplot(test, aes(expr, time, color = expr, fill = expr)) +
+  geom_violin(alpha = .6)  +
+  # ggbeeswarm::geom_beeswarm(dodge.width = 5, alpha = .6)  +
+  visibly::theme_clean()
 ```
 
-Just for giggles I did the same in Python with a <span class="pack">pandas</span> <span class="objclass">DataFrame</span> and group-by operation, and it took over seven seconds.  But remember, R is slow!
+Just for giggles I did the same in Python with a <span class="pack">pandas</span> <span class="objclass">DataFrame</span>, and it was notably slower than all of these options (almost 10x slower than standard dplyr).  A lot of folks that use Python primarily think R is slow, but that is mostly because they don't know how to effectively program with R for data science.
 
-<div class='note'>
-As of this writing, <span class="pack">dplyr</span> went through a notable update that changed some core functionality. Unfortunately, <span class="pack">dtplyr</span> has not been updated since then, so it will likely only work for the most standard of operations at present.
+```{python timing, engine = '~/anaconda3/bin/python', eval = FALSE, echo = FALSE}
+import pandas as pd
 
-<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
-</div>
+flights = r.flights
+
+flights.set_index(["arr_time", 'year']).count(level="arr_time")
+
+def test():
+  flights.set_index(["arr_time", 'year']).count(level="arr_time")
+
+test()
+import timeit
+
+timeit.Timer.timeit() # see documentation
+
+test_result = timeit.timeit(stmt="test()", setup="from __main__ import test", number=100)
+
+# result is in seconds for the total number of runs
+test_result/100  # per run
+test_result/100*1000  # in milliseconds
+```
+
+
 
 ## data.table Exercises
 
@@ -314,8 +442,12 @@ Install and load the <span class="pack">data.table</span> package.
 
 Create the following data table.
 
-```
-mydt = data.table(expand.grid(x=1:3, y=c('a','b','c')), z=sample(1:20, 9))
+```{r dt-ex0, eval=FALSE}
+mydt = data.table(
+  expand.grid(x = 1:3, 
+              y = c('a', 'b', 'c')), 
+  z = sample(1:20, 9)
+)
 ```
 
 ### Exercise 1
@@ -323,7 +455,7 @@ mydt = data.table(expand.grid(x=1:3, y=c('a','b','c')), z=sample(1:20, 9))
 Create a new object that contains only the 'a' group. Think back to how you use a logical to select rows.
 
 ```{r, echo=FALSE, eval=FALSE}
-mydt_a = mydt[y=='a',]
+mydt_a = mydt[y == 'a', ]
 ```
 
 
@@ -333,6 +465,6 @@ Create a new object that is the sum of z grouped by x. You don't need to name th
 
 
 ```{r, echo=FALSE, eval=FALSE}
-mydt_grpsum = mydt[,sum(z), by=x]
-mydt_grpsum = mydt[,list(sumz=sum(z)), by=x]
+mydt_grpsum = mydt[, sum(z), by = x]
+mydt_grpsum = mydt[, list(sumz = sum(z)), by = x]
 ```
