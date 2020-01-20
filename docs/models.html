@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Data Structures | Data Processing &amp; Visualization</title>
+  <title>Model Exploration | Data Processing &amp; Visualization</title>
   <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
   <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Data Structures | Data Processing &amp; Visualization" />
+  <meta property="og:title" content="Model Exploration | Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://m-clark.github.io/data-processing-and-visualization/" />
   <meta property="og:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
@@ -16,22 +16,22 @@
   <meta name="github-repo" content="m-clark/data-processing-and-visualization/" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Data Structures | Data Processing &amp; Visualization" />
+  <meta name="twitter:title" content="Model Exploration | Data Processing &amp; Visualization" />
   
   <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
   <meta name="twitter:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
 
 
 
-<meta name="date" content="2020-01-19" />
+<meta name="date" content="2020-01-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="img/R.ico" type="image/x-icon" />
-<link rel="prev" href="intro.html"/>
-<link rel="next" href="io.html"/>
+<link rel="prev" href="more.html"/>
+<link rel="next" href="summary.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -310,7 +310,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#summary-1"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster-dplyr-alternatives"><i class="fa fa-check"></i>Faster dplyr alternatives</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#dtplyr"><i class="fa fa-check"></i>dtplyr</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-exercises"><i class="fa fa-check"></i>data.table Exercises</a><ul>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-0-1"><i class="fa fa-check"></i>Exercise 0</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-1-3"><i class="fa fa-check"></i>Exercise 1</a></li>
@@ -467,25 +467,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-10"><i class="fa fa-check"></i>Exercise 1</a></li>
 </ul></li>
 </ul></li>
+<li class="part"><span><b>Part IV: Modeling</b></span></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i>Model Exploration</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-taxonomy"><i class="fa fa-check"></i>Model Taxonomy</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#linear-models"><i class="fa fa-check"></i>Linear models</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#estimation"><i class="fa fa-check"></i>Estimation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#fitting-models"><i class="fa fa-check"></i>Fitting Models</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#matrix"><i class="fa fa-check"></i>Matrix</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#summarizing-models"><i class="fa fa-check"></i>Summarizing Models</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#variable-transformations"><i class="fa fa-check"></i>Variable Transformations</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#categorical-variables"><i class="fa fa-check"></i>Categorical Variables</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#misc"><i class="fa fa-check"></i>Misc</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#variable-importance"><i class="fa fa-check"></i>Variable Importance</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#extracting-output"><i class="fa fa-check"></i>Extracting Output</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#factor-variables"><i class="fa fa-check"></i>Factor Variables</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#visualization"><i class="fa fa-check"></i>Visualization</a></li>
+</ul></li>
 <li class="part"><span><b>Wrap-up</b></span></li>
 <li class="chapter" data-level="" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i>Summary</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li class='after'">
-   <a href="https://m-clark.github.io/" aria-label='Author Website Link'>
+   <a href="https://m-clark.github.io/">
       <img src="img/mc_logo.png" style="width:25%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo">
    </a>
 </li>
 <li class='after'">
    <div style='text-align:center'>
-      <a href="https://github.com/m-clark/" aria-label='GitHub Link'>
+      <a href="https://github.com/m-clark/">
          <i class="fab fa-github fa-2x" aria-hidden="true"></i>
       </a>
    </div>
 </li>
 <li class='after'">
    <div style='text-align:center'>
-      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" aria-label="Creative commons CCBYSA link">
+      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
          <i class="fab fa-creative-commons fa-lg"></i> 
          <i class="fab fa-creative-commons-by fa-lg"></i> 
          <i class="fab fa-creative-commons-sa fa-lg"></i>
@@ -510,215 +529,999 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="data-structures" class="section level1">
-<h1>Data Structures</h1>
-<p>R has several core data structures, and we’ll take a look at each.</p>
+<div id="model-exploration" class="section level1">
+<h1>Model Exploration</h1>
+<p>The following shows how to get started with modeling in R generally, with a focus on concepts, tools, and syntax, rather than trying to understand the specifics of a given model.</p>
+<div id="model-taxonomy" class="section level2">
+<h2>Model Taxonomy</h2>
+<p>We can broadly describe two classes of models</p>
 <ul>
-<li>Vectors</li>
-<li>Factors</li>
-<li>Lists</li>
-<li>Matrices/arrays</li>
-<li>Data frames</li>
+<li><em>Supervised</em></li>
+<li><em>Unsupervised</em></li>
+<li>Some combination</li>
 </ul>
-<p>The more you know about R data structures, the more you’ll know how to use them, the more you’ll know <em>why</em> things go wrong if they do, and the further you’ll be able to go with your data.</p>
-<div id="vectors" class="section level2">
-<h2>Vectors</h2>
-<p><span class="objclass">Vectors</span> form the basis of R data structures. Two main types are <span class="objclass">atomic</span> and <span class="objclass">lists</span>, but we’ll talk about lists separately.</p>
-<p>Here is an R <span class="objclass">vector</span>. The <span class="emph">elements</span> of the vector are numeric values.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">x =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">x</a></code></pre></div>
-<pre><code>[1] 1 3 2 5 4</code></pre>
-<p>All elements of an atomic vector are the same <span class="emph">type</span>. Example types include:</p>
+<p>For supervised settings, there is a target or set of target variables which we aim to predict with a set of predictor variables or covariates. This is far and away the most common case, and the one we will focus on here.</p>
+<p>In the case of unsupervised models, the data is the target, and includes techniques such as principal components analyis, factor analysis, cluster analytic approaches, topic modeling, and many others. The key notion is dimension reduction, either of the columns or rows. For example, we may have many items of a survey we wish to group together into a few key concepts, or cluster thousands of observations into a few simple categories.</p>
+<div id="linear-models" class="section level3">
+<h3>Linear models</h3>
+<p>By far most models are linear models, even when they incorporate nonlinear relationships. For example, in the following, we can add a quadratic term or an interaction, yet the model is still linear in the parameters.</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb369-1" data-line-number="1"><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z <span class="op">+</span><span class="st"> </span>x<span class="op">:</span>z)</a></code></pre></div>
+<pre><code>
+Call:
+lm(formula = y ~ x + z + x:z)
+
+Coefficients:
+(Intercept)            x            z          x:z  
+ -4.000e+00    3.545e-15    1.000e+00   -3.171e-16  </code></pre>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb371-1" data-line-number="1"><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>x<span class="op">^</span><span class="dv">2</span>)</a></code></pre></div>
+<pre><code>
+Call:
+lm(formula = y ~ x + x^2)
+
+Coefficients:
+(Intercept)            x  
+    6.52479     -0.01653  </code></pre>
+<p>In both of the models above, <code>x</code> has a potentially nonlinear relationship with <code>y</code>, either by varying its relationship depending on values of z (the first case) or itself (the second). In general, the manner in which nonlinear relationships may be explored in linear models is quite flexible.</p>
+<p>An example of a nonlinear model would be population growth models like exponential or logistic growth curves. You can use functions like <span class="pack" style="">nls</span> or <span class="pack" style="">nlme</span> for such models, but should have a specific theoretical reason to do so, and even then flexible models such as GAMs might be better than assuming a functional form.</p>
+</div>
+<div id="estimation" class="section level3">
+<h3>Estimation</h3>
+<p>Most statistical modeling techniques use <em>maximum likelihood</em> in some form or fashion, including Bayesian approaches. A basic linear model may use ordinary least squares, others generalized estimating equations, but far and away the most common approach in statistical modeling is maximum likelihood, so you would do well to understand the basics.</p>
+</div>
+</div>
+<div id="fitting-models" class="section level2">
+<h2>Fitting Models</h2>
+<p>The two components required to fit a model in R with practically every modern package are the model formula and a data frame. Consider the following models, in general the syntax is the same or identical, with special considerations for the type of model. The data argument is not included.</p>
+<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb373-1" data-line-number="1"><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z)                                        <span class="co"># standard linear model/OLS</span></a>
+<a class="sourceLine" id="cb373-2" data-line-number="2"><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z, <span class="dt">family =</span> <span class="st">&#39;binomial&#39;</span>)                  <span class="co"># logistic regression with binary response</span></a>
+<a class="sourceLine" id="cb373-3" data-line-number="3"><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z <span class="op">+</span><span class="st"> </span><span class="kw">offset</span>(<span class="kw">log</span>(q)), <span class="dt">family =</span> <span class="st">&#39;poisson&#39;</span>)  <span class="co"># count/rate model</span></a>
+<a class="sourceLine" id="cb373-4" data-line-number="4">pscl<span class="op">::</span><span class="kw">hurdle</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z, <span class="dt">dist =</span> <span class="st">&quot;negbin&quot;</span>)             <span class="co"># hurdle model with negative binomial response</span></a>
+<a class="sourceLine" id="cb373-5" data-line-number="5">lme4<span class="op">::</span><span class="kw">glmer</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>group), <span class="dt">family =</span> <span class="st">&#39;binomial&#39;</span>)  <span class="co"># generalized linear mixed model</span></a>
+<a class="sourceLine" id="cb373-6" data-line-number="6">mgcv<span class="op">::</span><span class="kw">gam</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(x))                                  <span class="co"># generalized additive model</span></a>
+<a class="sourceLine" id="cb373-7" data-line-number="7">survival<span class="op">::</span><span class="kw">coxph</span>(<span class="kw">Surv</span>(<span class="dt">time =</span> t, <span class="dt">event =</span> q) <span class="op">~</span><span class="st"> </span>x)       <span class="co"># Cox Proportional Hazards Regression</span></a>
+<a class="sourceLine" id="cb373-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb373-9" data-line-number="9"><span class="co"># Bayesian</span></a>
+<a class="sourceLine" id="cb373-10" data-line-number="10">brms<span class="op">::</span><span class="kw">brm</span>(</a>
+<a class="sourceLine" id="cb373-11" data-line-number="11">  y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x <span class="op">|</span><span class="st"> </span>group), </a>
+<a class="sourceLine" id="cb373-12" data-line-number="12">  <span class="dt">family =</span> <span class="st">&#39;zero_one_inflated_beta&#39;</span>, </a>
+<a class="sourceLine" id="cb373-13" data-line-number="13">  <span class="dt">prior =</span> priors</a>
+<a class="sourceLine" id="cb373-14" data-line-number="14">)</a></code></pre></div>
+<p>Let’s run an example. We’ll use the world happiness dataset<a href="#fn29" class="footnote-ref" id="fnref29"><sup>29</sup></a>. This is country level data based on surveys taken at various years, and the scores are averages or proportions, along with other values like GDP.</p>
+<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb374-1" data-line-number="1"><span class="kw">library</span>(tidyverse)  <span class="co"># load if you haven&#39;t already</span></a>
+<a class="sourceLine" id="cb374-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb374-3" data-line-number="3"><span class="kw">load</span>(<span class="st">&#39;data/world_happiness.RData&#39;</span>)</a>
+<a class="sourceLine" id="cb374-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb374-5" data-line-number="5"><span class="co"># glimpse(happy)</span></a></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Variable
+</th>
+<th style="text-align:right;">
+N
+</th>
+<th style="text-align:right;">
+Mean
+</th>
+<th style="text-align:right;">
+SD
+</th>
+<th style="text-align:right;">
+Min
+</th>
+<th style="text-align:right;">
+Q1
+</th>
+<th style="text-align:right;">
+Median
+</th>
+<th style="text-align:right;">
+Q3
+</th>
+<th style="text-align:right;">
+Max
+</th>
+<th style="text-align:right;">
+Missing
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+year
+</td>
+<td style="text-align:right;">
+1704
+</td>
+<td style="text-align:right;">
+2012.33
+</td>
+<td style="text-align:right;">
+3.69
+</td>
+<td style="text-align:right;">
+2005.00
+</td>
+<td style="text-align:right;">
+2009.00
+</td>
+<td style="text-align:right;">
+2012.00
+</td>
+<td style="text-align:right;">
+2015.00
+</td>
+<td style="text-align:right;">
+2018.00
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+life_ladder
+</td>
+<td style="text-align:right;">
+1704
+</td>
+<td style="text-align:right;">
+5.44
+</td>
+<td style="text-align:right;">
+1.12
+</td>
+<td style="text-align:right;">
+2.66
+</td>
+<td style="text-align:right;">
+4.61
+</td>
+<td style="text-align:right;">
+5.34
+</td>
+<td style="text-align:right;">
+6.27
+</td>
+<td style="text-align:right;">
+8.02
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+log_gdp_per_capita
+</td>
+<td style="text-align:right;">
+1676
+</td>
+<td style="text-align:right;">
+9.22
+</td>
+<td style="text-align:right;">
+1.19
+</td>
+<td style="text-align:right;">
+6.46
+</td>
+<td style="text-align:right;">
+8.30
+</td>
+<td style="text-align:right;">
+9.41
+</td>
+<td style="text-align:right;">
+10.19
+</td>
+<td style="text-align:right;">
+11.77
+</td>
+<td style="text-align:right;">
+28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+social_support
+</td>
+<td style="text-align:right;">
+1691
+</td>
+<td style="text-align:right;">
+0.81
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+<td style="text-align:right;">
+0.29
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+<td style="text-align:right;">
+0.83
+</td>
+<td style="text-align:right;">
+0.90
+</td>
+<td style="text-align:right;">
+0.99
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+healthy_life_expectancy_at_birth
+</td>
+<td style="text-align:right;">
+1676
+</td>
+<td style="text-align:right;">
+63.11
+</td>
+<td style="text-align:right;">
+7.58
+</td>
+<td style="text-align:right;">
+32.30
+</td>
+<td style="text-align:right;">
+58.30
+</td>
+<td style="text-align:right;">
+65.00
+</td>
+<td style="text-align:right;">
+68.30
+</td>
+<td style="text-align:right;">
+76.80
+</td>
+<td style="text-align:right;">
+28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+freedom_to_make_life_choices
+</td>
+<td style="text-align:right;">
+1675
+</td>
+<td style="text-align:right;">
+0.73
+</td>
+<td style="text-align:right;">
+0.14
+</td>
+<td style="text-align:right;">
+0.26
+</td>
+<td style="text-align:right;">
+0.64
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+<td style="text-align:right;">
+0.85
+</td>
+<td style="text-align:right;">
+0.99
+</td>
+<td style="text-align:right;">
+29
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+generosity
+</td>
+<td style="text-align:right;">
+1622
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.16
+</td>
+<td style="text-align:right;">
+-0.34
+</td>
+<td style="text-align:right;">
+-0.12
+</td>
+<td style="text-align:right;">
+-0.02
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:right;">
+0.68
+</td>
+<td style="text-align:right;">
+82
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+perceptions_of_corruption
+</td>
+<td style="text-align:right;">
+1608
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+<td style="text-align:right;">
+0.19
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:right;">
+0.70
+</td>
+<td style="text-align:right;">
+0.81
+</td>
+<td style="text-align:right;">
+0.88
+</td>
+<td style="text-align:right;">
+0.98
+</td>
+<td style="text-align:right;">
+96
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+positive_affect
+</td>
+<td style="text-align:right;">
+1685
+</td>
+<td style="text-align:right;">
+0.71
+</td>
+<td style="text-align:right;">
+0.11
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+<td style="text-align:right;">
+0.62
+</td>
+<td style="text-align:right;">
+0.72
+</td>
+<td style="text-align:right;">
+0.80
+</td>
+<td style="text-align:right;">
+0.94
+</td>
+<td style="text-align:right;">
+19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+negative_affect
+</td>
+<td style="text-align:right;">
+1691
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:right;">
+0.21
+</td>
+<td style="text-align:right;">
+0.25
+</td>
+<td style="text-align:right;">
+0.31
+</td>
+<td style="text-align:right;">
+0.70
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+confidence_in_national_government
+</td>
+<td style="text-align:right;">
+1530
+</td>
+<td style="text-align:right;">
+0.48
+</td>
+<td style="text-align:right;">
+0.19
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:right;">
+0.33
+</td>
+<td style="text-align:right;">
+0.46
+</td>
+<td style="text-align:right;">
+0.61
+</td>
+<td style="text-align:right;">
+0.99
+</td>
+<td style="text-align:right;">
+174
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+democratic_quality
+</td>
+<td style="text-align:right;">
+1558
+</td>
+<td style="text-align:right;">
+-0.14
+</td>
+<td style="text-align:right;">
+0.88
+</td>
+<td style="text-align:right;">
+-2.45
+</td>
+<td style="text-align:right;">
+-0.79
+</td>
+<td style="text-align:right;">
+-0.23
+</td>
+<td style="text-align:right;">
+0.65
+</td>
+<td style="text-align:right;">
+1.58
+</td>
+<td style="text-align:right;">
+146
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+delivery_quality
+</td>
+<td style="text-align:right;">
+1559
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.98
+</td>
+<td style="text-align:right;">
+-2.14
+</td>
+<td style="text-align:right;">
+-0.71
+</td>
+<td style="text-align:right;">
+-0.22
+</td>
+<td style="text-align:right;">
+0.70
+</td>
+<td style="text-align:right;">
+2.18
+</td>
+<td style="text-align:right;">
+145
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gini_index_world_bank_estimate
+</td>
+<td style="text-align:right;">
+643
+</td>
+<td style="text-align:right;">
+0.37
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:right;">
+0.24
+</td>
+<td style="text-align:right;">
+0.30
+</td>
+<td style="text-align:right;">
+0.35
+</td>
+<td style="text-align:right;">
+0.43
+</td>
+<td style="text-align:right;">
+0.63
+</td>
+<td style="text-align:right;">
+1061
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+happiness_score
+</td>
+<td style="text-align:right;">
+554
+</td>
+<td style="text-align:right;">
+5.41
+</td>
+<td style="text-align:right;">
+1.13
+</td>
+<td style="text-align:right;">
+2.69
+</td>
+<td style="text-align:right;">
+4.51
+</td>
+<td style="text-align:right;">
+5.31
+</td>
+<td style="text-align:right;">
+6.32
+</td>
+<td style="text-align:right;">
+7.63
+</td>
+<td style="text-align:right;">
+1150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dystopia_residual
+</td>
+<td style="text-align:right;">
+554
+</td>
+<td style="text-align:right;">
+2.06
+</td>
+<td style="text-align:right;">
+0.55
+</td>
+<td style="text-align:right;">
+0.29
+</td>
+<td style="text-align:right;">
+1.72
+</td>
+<td style="text-align:right;">
+2.06
+</td>
+<td style="text-align:right;">
+2.44
+</td>
+<td style="text-align:right;">
+3.84
+</td>
+<td style="text-align:right;">
+1150
+</td>
+</tr>
+</tbody>
+</table>
+<p>The happiness score itself ranges from 2.7 to 7.6, with a mean of 5.4 and standard deviation of 1.1.</p>
+<p>Fitting a model with R is trivial, and at a minimum requires the two key ingredients mentioned before, the formula and data.</p>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb375-1" data-line-number="1">happy_model_<span class="dv">0</span> =<span class="st"> </span><span class="kw">lm</span>(</a>
+<a class="sourceLine" id="cb375-2" data-line-number="2">  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita,</a>
+<a class="sourceLine" id="cb375-3" data-line-number="3">  <span class="dt">data =</span> happy</a>
+<a class="sourceLine" id="cb375-4" data-line-number="4">)</a></code></pre></div>
+<div id="matrix" class="section level3">
+<h3>Matrix</h3>
+<p>Many packages still allow for, or even require (but shouldn’t), matrices instead of specifying a model formula. This requires separating data into a model or design matrix, and the vector or matrix of the target variable(s). For example, if we needed a speed boost and weren’t concerned about some typical output we could use <span class="func" style="">lm.fit</span>.</p>
+<p>First we need to create the required components.</p>
+<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb376-1" data-line-number="1">X =<span class="st"> </span><span class="kw">model.matrix</span>(</a>
+<a class="sourceLine" id="cb376-2" data-line-number="2">  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita, </a>
+<a class="sourceLine" id="cb376-3" data-line-number="3">  <span class="dt">data =</span> happy</a>
+<a class="sourceLine" id="cb376-4" data-line-number="4">)</a>
+<a class="sourceLine" id="cb376-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb376-6" data-line-number="6"><span class="kw">head</span>(X)</a></code></pre></div>
+<pre><code>   (Intercept) democratic_quality  generosity log_gdp_per_capita
+8            1         -1.8443636  0.08909068           7.500539
+9            1         -1.8554263  0.05136492           7.497038
+10           1         -1.8865659 -0.11219829           7.497755
+19           1          0.2516293 -0.08441135           9.302960
+20           1          0.2572919 -0.02068741           9.337532
+21           1          0.2999450 -0.03264282           9.376145</code></pre>
+<p>Note the column of ones in the model matrix <code>X</code>. This represents our intercept, but won’t mean much to you unless you understant matrix multiplication. The other columns are just as they are in the data. Note also that the missing values have been removed.</p>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb378-1" data-line-number="1"><span class="kw">nrow</span>(happy)</a></code></pre></div>
+<pre><code>[1] 1704</code></pre>
+<div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb380-1" data-line-number="1"><span class="kw">nrow</span>(X)</a></code></pre></div>
+<pre><code>[1] 411</code></pre>
+<p>We can now fit the model as follows. The response variable must contain the same observations as in the model matrix.</p>
+<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb382-1" data-line-number="1">y =<span class="st"> </span>happy<span class="op">$</span>happiness_score[<span class="kw">as.integer</span>(<span class="kw">rownames</span>(X))]</a>
+<a class="sourceLine" id="cb382-2" data-line-number="2">happy_model_matrix =<span class="st"> </span><span class="kw">lm.fit</span>(X, y)</a>
+<a class="sourceLine" id="cb382-3" data-line-number="3"><span class="kw">summary</span>(happy_model_matrix)</a></code></pre></div>
+<pre><code>              Length Class  Mode   
+coefficients    4    -none- numeric
+residuals     411    -none- numeric
+effects       411    -none- numeric
+rank            1    -none- numeric
+fitted.values 411    -none- numeric
+assign          4    -none- numeric
+qr              5    qr     list   
+df.residual     1    -none- numeric</code></pre>
+<p>In my experience, it is generally a bad sign if a package requires that you create the model matrix rather than doing so itself. Such packages tend to skip out on many other things like using typical methods and so forth, making them even more difficult to work with. In general, the only real time you should need to use model matrices is when you are creating your own modeling package, doing simulations, or otherwise know why you need them.</p>
+</div>
+</div>
+<div id="summarizing-models" class="section level2">
+<h2>Summarizing Models</h2>
+<p>Once we have a model, we’ll want to summarize the results of it.</p>
+<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb384-1" data-line-number="1"><span class="kw">summary</span>(happy_model_<span class="dv">0</span>)</a></code></pre></div>
+<pre><code>
+Call:
+lm(formula = happiness_score ~ democratic_quality + generosity + 
+    log_gdp_per_capita, data = happy)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.75376 -0.45585 -0.00307  0.46013  1.69925 
+
+Coefficients:
+                   Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)        -1.01048    0.31436  -3.214 0.001412 ** 
+democratic_quality  0.17037    0.04588   3.714 0.000233 ***
+generosity          1.16085    0.19548   5.938 6.18e-09 ***
+log_gdp_per_capita  0.69342    0.03335  20.792  &lt; 2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.6283 on 407 degrees of freedom
+  (1293 observations deleted due to missingness)
+Multiple R-squared:  0.6953,    Adjusted R-squared:  0.6931 
+F-statistic: 309.6 on 3 and 407 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>The summary tells us that all these covariates are statistically significant, which doesn’t tell us much, but serves as a starting point. For example, moving one unit on log GDP means moving, one percentage point on GDP[^elasticity] results in roughly 0.7</p>
+</div>
+<div id="variable-transformations" class="section level2">
+<h2>Variable Transformations</h2>
+<p>Transforming the target, covariates or both provides a few benefits, and should regularly be used for most models. Some of these include<a href="#fn30" class="footnote-ref" id="fnref30"><sup>30</sup></a>:</p>
 <ul>
-<li><span class="objclass">character</span></li>
-<li><span class="objclass">numeric</span> (double)</li>
-<li><span class="objclass">integer</span></li>
-<li><span class="objclass">logical</span></li>
+<li>Interpretable intercepts</li>
+<li>More comparable covariate effects</li>
+<li>Faster estimation</li>
+<li>Easier convergence</li>
+<li>Help with heteroscedasticity</li>
 </ul>
-<p>In addition, there are special kinds of values like <span class="objclass">NA</span> (‘not available’ i.e. missing), <span class="objclass">NULL</span>, <span class="objclass">NaN</span> (not a number), <span class="objclass">Inf</span> (infinite) and so forth.</p>
-<div class="note">
-<p>You can use <span class="func">typeof</span> to examine an object’s type, or use an <code>is</code> function, e.g. <span class="func">is.logical</span>, to check if an object is a specific type.</p>
-<p><img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></p>
-</div>
-<div id="character-strings" class="section level3">
-<h3>Character strings</h3>
-<p>When dealing with text, objects of class character are what you’d typically be dealing with.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">x =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;... Of Your Fake Dimension&#39;</span>, <span class="st">&#39;Ephemeron&#39;</span>, <span class="st">&#39;Dryswch&#39;</span>, <span class="st">&#39;Isotasy&#39;</span>, <span class="st">&#39;Memory&#39;</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">x</a></code></pre></div>
-<p>Not much to it, but be aware there is no real limit to what is represented as a character vector. For example, in a data frame, you could have a column where each entry is one of the works of Shakespeare.</p>
-</div>
-<div id="factors" class="section level3">
-<h3>Factors</h3>
-<p>An important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures. Although not exactly precise, one can think of factors as integers with labels. So the underlying representation of a variable for <span class="objclass">sex</span> is 1:2 with labels ‘Male’ and ‘Female’. They are a special class with attributes, or metadata, that contains the information about the <span class="objclass">levels</span>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">x =<span class="st"> </span><span class="kw">factor</span>(<span class="kw">rep</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">e =</span> <span class="dv">10</span>))</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">x</a></code></pre></div>
-<pre><code> [1] a a a a a a a a a a b b b b b b b b b b c c c c c c c c c c
-Levels: a b c</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">attributes</span>(x)</a></code></pre></div>
-<pre><code>$levels
-[1] &quot;a&quot; &quot;b&quot; &quot;c&quot;
+<p>For example, merely centering predictor variables, i.e. subtracting the mean, provides a more interpretable intercept that will fall within the actual range of the target variable, telling us what the value of the target variable is when the covariates are at their means (or reference value if categorical). The following table shows the interpretation of two extremely common transformations, logging and scaling (i.e. standardizing to mean zero, standard deviation one).</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+target
+</th>
+<th style="text-align:left;">
+predictor
+</th>
+<th style="text-align:left;">
+interpretation
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+y
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\Delta y = \beta\Delta x\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+y
+</td>
+<td style="text-align:left;">
+log(x)
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\Delta y \approx (\beta/100)\%\Delta x\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+log(y)
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\%\Delta y \approx 100\cdot \beta\%\Delta x\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+log(y)
+</td>
+<td style="text-align:left;">
+log(x)
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\%\Delta y = \beta\%\Delta x\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+y
+</td>
+<td style="text-align:left;">
+scale(x)
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\Delta y = \beta\sigma\Delta x\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+scale(y)
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\sigma\Delta y = \beta\Delta x\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+scale(y)
+</td>
+<td style="text-align:left;">
+scale(x)
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\sigma\Delta y = \beta\sigma\Delta x\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p>For example, to start with the normal situation, a one-unit change in <span class="math inline">\(x\)</span>, i.e. <span class="math inline">\(\Delta x =1\)</span> leads to <span class="math inline">\(\beta\)</span> unit change in <span class="math inline">\(y\)</span>. If we log the target variable <span class="math inline">\(y\)</span>, the interpreation of the coefficient for <span class="math inline">\(x\)</span> is that a one-unit change in <span class="math inline">\(x\)</span> leads to an (approximately) 100<span class="math inline">\(\cdot\)</span><span class="math inline">\(\beta\)</span>% change in <span class="math inline">\(y\)</span>. The 100 changes from a proportion to percentage change. More concretely, if <span class="math inline">\(\beta\)</span> was .5, a unit change in <span class="math inline">\(x\)</span> leads to (roughly) a 50% change in <span class="math inline">\(y\)</span>. If both were logged, a percentage change in <span class="math inline">\(x\)</span> leads to a <span class="math inline">\(\beta\)</span> percentage change in y<a href="#fn31" class="footnote-ref" id="fnref31"><sup>31</sup></a>. These percentage change interpretations are called <a href="https://en.wikipedia.org/wiki/Elasticity_(economics)">elasticities</a> in econometrics and areas trained similarly.</p>
+<p>It is very common to use <em>standardized</em> variables as well, also called normalizing, or simply scaling. If <span class="math inline">\(y\)</span> and <span class="math inline">\(x\)</span> are both standardized, a one unit (i.e. one standard deviation) change in <span class="math inline">\(x\)</span> leads to a <span class="math inline">\(\beta\)</span> standard deviation change in <span class="math inline">\(y\)</span>. Again, if <span class="math inline">\(\beta\)</span> was .5, a standard deviation change in <span class="math inline">\(x\)</span> leads to a half standard deviation change in <span class="math inline">\(y\)</span>.</p>
+<p>Another common transformation, particularly in machine learning, is the <em>min-max normalization</em>, changing variables to range from some minimum to some maximum, usually zero to one.</p>
+<div id="categorical-variables" class="section level3">
+<h3>Categorical Variables</h3>
+<p>For categorical variables, we can employ what is called <em>effects coding</em> to test for specific types of group differences. Far and away the most common approach is called <em>dummy coding</em> or <em>one-hot encoding</em><a href="#fn32" class="footnote-ref" id="fnref32"><sup>32</sup></a>. For example:</p>
+<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb386-1" data-line-number="1"><span class="kw">library</span>(recipes)</a>
+<a class="sourceLine" id="cb386-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb386-3" data-line-number="3">nafta =<span class="st"> </span>happy <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb386-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(country <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;United States&#39;</span>, <span class="st">&#39;Canada&#39;</span>, <span class="st">&#39;Mexico&#39;</span>))</a>
+<a class="sourceLine" id="cb386-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb386-6" data-line-number="6">dummy =<span class="st"> </span>nafta  <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb386-7" data-line-number="7"><span class="st">  </span><span class="kw">recipe</span>(<span class="op">~</span><span class="st"> </span>country) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb386-8" data-line-number="8"><span class="st">  </span><span class="kw">step_dummy</span>(country, <span class="dt">one_hot =</span> <span class="ot">TRUE</span>) <span class="co"># make variables for all factor levels</span></a>
+<a class="sourceLine" id="cb386-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb386-10" data-line-number="10"><span class="kw">prep</span>(dummy) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb386-11" data-line-number="11"><span class="st">  </span><span class="kw">bake</span>(nafta) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb386-12" data-line-number="12"><span class="st">  </span><span class="kw">print</span>(<span class="dt">n =</span> <span class="dv">20</span>)</a></code></pre></div>
+<pre><code># A tibble: 39 x 3
+   country_Canada country_Mexico country_United.States
+            &lt;dbl&gt;          &lt;dbl&gt;                 &lt;dbl&gt;
+ 1              1              0                     0
+ 2              1              0                     0
+ 3              1              0                     0
+ 4              1              0                     0
+ 5              1              0                     0
+ 6              1              0                     0
+ 7              1              0                     0
+ 8              1              0                     0
+ 9              1              0                     0
+10              1              0                     0
+11              1              0                     0
+12              1              0                     0
+13              1              0                     0
+14              0              1                     0
+15              0              1                     0
+16              0              1                     0
+17              0              1                     0
+18              0              1                     0
+19              0              1                     0
+20              0              1                     0
+# … with 19 more rows</code></pre>
+<p>We see that the first few observations are Canada, and the next few Mexico. This is almost never required for R modeling packages, but sometimes can be useful to do explicitly. If your modeling package cannot handle factor variables, and thus requires explicit coding, you’ll know very quickly.</p>
+<p>Let’s run a regression as follows:</p>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb388-1" data-line-number="1">model_dummy =<span class="st"> </span><span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>country, <span class="dt">data =</span> nafta)</a>
+<a class="sourceLine" id="cb388-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb388-3" data-line-number="3"><span class="kw">summary</span>(model_dummy)</a></code></pre></div>
+<pre><code>
+Call:
+lm(formula = happiness_score ~ country, data = nafta)
 
-$class
-[1] &quot;factor&quot;</code></pre>
-<p>The underlying representation is numeric, but it is important to remember that factors are <em>categorical</em>. Thus, they can’t be used as numbers would be, as the following demonstrates.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">x_num =<span class="st"> </span><span class="kw">as.numeric</span>(x)  <span class="co"># convert to a numeric object</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">sum</span>(x_num)</a></code></pre></div>
-<pre><code>[1] 60</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">sum</span>(x)</a></code></pre></div>
-<pre><code>Error in Summary.factor(structure(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, : &#39;sum&#39; not meaningful for factors</code></pre>
-<div id="strings-vs.factors" class="section level4">
-<h4>Strings vs. Factors</h4>
-<p>The main thing to note is that factors are generally a statistical phenomenon, and are required to do statistical things with data that would otherwise be a simple character string. If you know the relatively few levels the data can take, you’ll generally want to use factors, or at least know that statistical packages and methods may require them. In addition, factors allow you to easily overcome the silly default alphabetical ordering of category levels in some very popular visualization packages.</p>
-<p>For other things, such as text analysis, you’ll almost certainly want character strings instead, and in many cases it will be required. It’s also worth noting that a lot of base R and other behavior will coerce strings to factors. This made a lot more sense in the early days of R, but is not really necessary these days.</p>
-<div class="note">
-<p>Some packages to note to help you with processing strings and factors:</p>
-<ul>
-<li><span class="pack">forcats</span></li>
-<li><span class="pack">stringr</span>
-<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></li>
-</ul>
-</div>
-</div>
-</div>
-<div id="logicals" class="section level3">
-<h3>Logicals</h3>
-<p>Logical scalar/vectors are those that take on one of two values TRUE or FALSE. They are especially useful in flagging whether to run certain parts of code, and indexing certain parts of data structures (e.g. taking rows that correspond to TRUE). We’ll talk about the latter usage more later in the document.</p>
-<p>Here is a logical vector.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">my_logic =<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">TRUE</span>)</a></code></pre></div>
-<p>Note also that logicals are also treated as binary 0:1, and so, for example, taking the mean will provide the proportion of <code>TRUE</code> values.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="op">!</span>my_logic</a></code></pre></div>
-<pre><code>[1] FALSE  TRUE FALSE  TRUE FALSE FALSE</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">as.numeric</span>(my_logic)</a></code></pre></div>
-<pre><code>[1] 1 0 1 0 1 1</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">mean</span>(my_logic)</a></code></pre></div>
-<pre><code>[1] 0.6666667</code></pre>
-</div>
-<div id="numeric-and-integer" class="section level3">
-<h3>Numeric and integer</h3>
-<p>The most common type of data structure you’ll deal with are integer and numeric vectors.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">class</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</a></code></pre></div>
-<pre><code>[1] &quot;integer&quot;</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">x =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb21-2" data-line-number="2">x</a></code></pre></div>
-<pre><code>[1] -0.3402132  0.3057510 -1.8277154  1.6629834  1.0439351</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">class</span>(x)</a></code></pre></div>
-<pre><code>[1] &quot;numeric&quot;</code></pre>
-</div>
-</div>
-<div id="matrices" class="section level2">
-<h2>Matrices</h2>
-<p>With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing. The vectors making up a matrix <em>must all be of the same type</em>. For example, all values in a matrix might be <span class="objclass">numeric</span>, or all <span class="objclass">character strings</span>.</p>
-<div id="creating-a-matrix" class="section level3">
-<h3>Creating a matrix</h3>
-<p>Creating a matrix can be done in a variety of ways.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="co"># create vectors</span></a>
-<a class="sourceLine" id="cb25-2" data-line-number="2">x =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span></a>
-<a class="sourceLine" id="cb25-3" data-line-number="3">y =<span class="st"> </span><span class="dv">5</span><span class="op">:</span><span class="dv">8</span></a>
-<a class="sourceLine" id="cb25-4" data-line-number="4">z =<span class="st"> </span><span class="dv">9</span><span class="op">:</span><span class="dv">12</span></a>
-<a class="sourceLine" id="cb25-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb25-6" data-line-number="6"><span class="kw">rbind</span>(x, y, z)   <span class="co"># row bind</span></a></code></pre></div>
-<pre><code>  [,1] [,2] [,3] [,4]
-x    1    2    3    4
-y    5    6    7    8
-z    9   10   11   12</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">cbind</span>(x, y, z)   <span class="co"># column bind</span></a></code></pre></div>
-<pre><code>     x y  z
-[1,] 1 5  9
-[2,] 2 6 10
-[3,] 3 7 11
-[4,] 4 8 12</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">matrix</span>(</a>
-<a class="sourceLine" id="cb29-2" data-line-number="2">  <span class="kw">c</span>(x, y, z),</a>
-<a class="sourceLine" id="cb29-3" data-line-number="3">  <span class="dt">nrow =</span> <span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb29-4" data-line-number="4">  <span class="dt">ncol =</span> <span class="dv">4</span>,</a>
-<a class="sourceLine" id="cb29-5" data-line-number="5">  <span class="dt">byrow =</span> <span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb29-6" data-line-number="6">)</a></code></pre></div>
-<pre><code>     [,1] [,2] [,3] [,4]
-[1,]    1    2    3    4
-[2,]    5    6    7    8
-[3,]    9   10   11   12</code></pre>
-</div>
-</div>
-<div id="lists" class="section level2">
-<h2>Lists</h2>
-<p><span class="objclass">Lists</span> in R are highly flexible objects, and probably the most commonly used for applied data science. Unlike vectors, whose elements must be of the same type, lists can contain anything as their elements, even other lists.</p>
-<p>Here is a list. We use the <span class="func">list</span> function to create it.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span>, <span class="st">&quot;apple&quot;</span>, <span class="kw">list</span>(<span class="dv">3</span>, <span class="st">&quot;cat&quot;</span>))</a>
-<a class="sourceLine" id="cb31-2" data-line-number="2">x</a></code></pre></div>
-<pre><code>[[1]]
-[1] 1
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.26960 -0.07453 -0.00615  0.06322  0.42920 
 
-[[2]]
-[1] &quot;apple&quot;
+Coefficients:
+                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           7.36887    0.09633  76.493 5.64e-14 ***
+countryMexico        -0.61107    0.13624  -4.485  0.00152 ** 
+countryUnited States -0.34337    0.13624  -2.520  0.03275 *  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
-[[3]]
-[[3]][[1]]
-[1] 3
+Residual standard error: 0.1927 on 9 degrees of freedom
+  (27 observations deleted due to missingness)
+Multiple R-squared:  0.692, Adjusted R-squared:  0.6236 
+F-statistic: 10.11 on 2 and 9 DF,  p-value: 0.004994</code></pre>
+<p>In this case, the coefficient represents the difference in means on the target variable between the reference group and the group in question. In this case, the U.S. is -0.34 less on the happy score than the reference country (Canada).</p>
+<p>Other codings are possible, and these would allow for specific group comparisons or types of comparisons. This is sometimes called <em>contrast coding</em>. For example, we could compare Canada vs. both the U.S. and Mexico. By giving Canada twice the weight of the other two we can get this result. I also add a coding that will just compare Mexico vs. the U.S. The actual weights used are aribtrary but in this case should sum to zero.</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+group
+</th>
+<th style="text-align:right;">
+canada_vs_other
+</th>
+<th style="text-align:right;">
+mexico_vs_us
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Canada
+</td>
+<td style="text-align:right;">
+-0.667
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mexico
+</td>
+<td style="text-align:right;">
+0.333
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+United States
+</td>
+<td style="text-align:right;">
+0.333
+</td>
+<td style="text-align:right;">
+0.5
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; border:0;" colspan="100%">
+<sup></sup> weights sum to zero, but are arbitrary
+</td>
+</tr>
+</tfoot>
+</table>
+<p>Adding such coding to a factor variable allows the corresonding models to use it in constructing the model matrix, rather than dummy coding. See the group means and calculate the results by hand for yourself.</p>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb390-1" data-line-number="1">nafta =<span class="st"> </span>nafta <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb390-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">country_fac =</span> <span class="kw">factor</span>(country))</a>
+<a class="sourceLine" id="cb390-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb390-4" data-line-number="4"><span class="kw">contrasts</span>(nafta<span class="op">$</span>country_fac) =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span><span class="op">/</span><span class="dv">3</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="kw">c</span>(<span class="dv">0</span>,<span class="op">-</span>.<span class="dv">5</span>,.<span class="dv">5</span>)), <span class="dt">ncol =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb390-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb390-6" data-line-number="6"><span class="kw">summary</span>(<span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>country_fac, <span class="dt">data =</span> nafta))</a></code></pre></div>
+<pre><code>
+Call:
+lm(formula = happiness_score ~ country_fac, data = nafta)
 
-[[3]][[2]]
-[1] &quot;cat&quot;</code></pre>
-<p>We often want to loop some function over a list.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="cf">for</span> (elem <span class="cf">in</span> x) <span class="kw">print</span>(<span class="kw">class</span>(elem))</a></code></pre></div>
-<pre><code>[1] &quot;numeric&quot;
-[1] &quot;character&quot;
-[1] &quot;list&quot;</code></pre>
-<p>Lists can, and often do, have named elements.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">x =<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;a&quot;</span> =<span class="st"> </span><span class="dv">25</span>, <span class="st">&quot;b&quot;</span> =<span class="st"> </span><span class="dv">-1</span>, <span class="st">&quot;c&quot;</span> =<span class="st"> </span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb35-2" data-line-number="2">x[[<span class="st">&quot;b&quot;</span>]]</a></code></pre></div>
-<pre><code>[1] -1</code></pre>
-<p>Almost all standard models in base R and other packages return an object that is a list. Knowing how to work with a list will allow you to easily access the contents of the model object for further processing.</p>
-<div class="note">
-<p>Python has similar structures, <span class="objclass">lists</span> and <span class="objclass">dictionaries</span>, where the latter works similarly to R’s named list.</p>
-<p><img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></p>
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.26960 -0.07453 -0.00615  0.06322  0.42920 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   7.05072    0.05562 126.769 6.01e-16 ***
+country_fac1 -0.47722    0.11799  -4.045  0.00291 ** 
+country_fac2  0.26770    0.13624   1.965  0.08100 .  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.1927 on 9 degrees of freedom
+  (27 observations deleted due to missingness)
+Multiple R-squared:  0.692, Adjusted R-squared:  0.6236 
+F-statistic: 10.11 on 2 and 9 DF,  p-value: 0.004994</code></pre>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb392-1" data-line-number="1">nafta <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb392-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(country) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb392-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">happy =</span> <span class="kw">mean</span>(happiness_score, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
+<pre><code># A tibble: 3 x 2
+  country       happy
+  &lt;chr&gt;         &lt;dbl&gt;
+1 Canada         7.37
+2 Mexico         6.76
+3 United States  7.03</code></pre>
+<p>For example, we can see that for this balanced data set, the corresponding coefficient is the halfway point, i.e. average, of the U.S. and Mexico coefficients from dummy coding: -0.611 + -0.343 / 2 = -0.477.</p>
 </div>
 </div>
-<div id="data-frames" class="section level2">
-<h2>Data Frames</h2>
-<p>Data frames are a very commonly used data structure. Elements of a data frame can be different types, and this is because the <span class="objclass">data.frame</span> class is actually just a list. As such, everything about lists applies to them. But they can also be indexed by row or column as well, just like matrices. There are other very common types of object classes associated with packages that are both a <span class="objclass">data.frame</span> and some other type of structure (e.g. <span class="objclass">tibbles</span> in the tidyverse).</p>
-<p>Usually your data frame will come directly from import or manipulation of other R objects (e.g. matrices). However, you should know how to create one from scratch.</p>
-<div id="creating-a-data-frame" class="section level3">
-<h3>Creating a data frame</h3>
-<p>The following will create a data frame with two columns, <code>a</code> and <code>b</code>.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">mydf =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">a =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">2</span>), </a>
-<a class="sourceLine" id="cb37-2" data-line-number="2">                  <span class="dt">b =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">1</span>))</a></code></pre></div>
-<p>Much to the disdain of the tidyverse, we can add row names also.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">rownames</span>(mydf) =<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&#39;row&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb38-2" data-line-number="2">mydf</a></code></pre></div>
-<pre><code>     a b
-row1 1 3
-row2 5 8
-row3 2 1</code></pre>
-<p>Everything about lists applies to data.frames, so we can add, select, and remove elements of a data frame just like lists. However we’ll visit this more in depth later, and see that we’ll have much more flexibility with data frames than we would lists for common data analysis and visualization.</p>
+<div id="misc" class="section level2">
+<h2>Misc</h2>
+<p>Ordinal outcomes
+Nominal outcomes</p>
 </div>
+<div id="variable-importance" class="section level2">
+<h2>Variable Importance</h2>
 </div>
-<div id="data-structure-exercises" class="section level2">
-<h2>Data Structure Exercises</h2>
-<div id="excercise-1" class="section level3">
-<h3>Excercise #1</h3>
-<p>Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span> (use the <span class="func">class</span> or <span class="func">str</span> functions on the object you just created).</p>
+<div id="extracting-output" class="section level2">
+<h2>Extracting Output</h2>
 </div>
-<div id="exercise-2" class="section level3">
-<h3>Exercise #2</h3>
-<p>Create a <span class="objclass">list</span> of 3 elements, the first of which contains character strings, the second numbers, and the third, the <span class="objclass">data.frame</span> or <span class="objclass">matrix</span> you just created.</p>
+<div id="factor-variables" class="section level2">
+<h2>Factor Variables</h2>
 </div>
-<div id="thinking-exercises" class="section level3">
-<h3>Thinking Exercises</h3>
-<ul>
-<li><p>How is a <span class="objclass">factor</span> different from a character vector?</p></li>
-<li><p>How is a <span class="objclass">data.frame</span> the same as and different from a <span class="objclass">matrix</span>?</p></li>
-<li><p>How is a <span class="objclass">data.frame</span> the same as and different from a <span class="objclass">list</span>?</p></li>
-</ul>
+<div id="visualization" class="section level2">
+<h2>Visualization</h2>
 
 </div>
 </div>
+
+
+
+<div class="footnotes">
+<hr />
+<ol start="29">
+<li id="fn29"><p>The World Happiness Report is a survey of the state of global happiness that ranks countries by how happy their citizens perceive themselves to be. Almost all the information here is gleaned from the report and appendices. This regards the report data from 2008-2018 included in the 2019 report.<a href="models.html#fnref29" class="footnote-back">↩</a></p></li>
+<li id="fn30"><p>Note that none of the benefits regard normality. Transforming variables is not done to meet the normality assumption regarding residuals, and would rarely help in that regard.<a href="models.html#fnref30" class="footnote-back">↩</a></p></li>
+<li id="fn31"><p>The log transformations in the table are approximations that allow an eyeballable interpretation. Typically we use exponentiated coefficients for a more exact interpretation. For example, if y is logged, a one-unit change in x leads to a <span class="math inline">\(100*(e^B-1)\)</span>% change in y. See <a href="https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faqhow-do-i-interpret-a-regression-model-when-some-variables-are-log-transformed/">this link</a> for more on interpreting logged variables.<a href="models.html#fnref31" class="footnote-back">↩</a></p></li>
+<li id="fn32"><p>Some distinguish one-hot from dummy coding in that the former creates a binary variable for all <span class="math inline">\(C\)</span> categorical levels while dummy coding only creates <span class="math inline">\(C-1\)</span> variables, leaving the reference group out. However, the reference group is only left out at model fitting, there’s no reason not to create all C variables, as it requires no additional effort and you might want to change the reference group.<a href="models.html#fnref32" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="io.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="more.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="summary.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -18,6 +18,9 @@
   font-family: 'Roboto Condensed', 'Fira Sans', Roboto, 'Open Sans', sans;
 }
 
+.noem {
+  color: #990024;
+}
 
 .book .book-body .page-wrapper .page-inner section.normal a.uri {
   display: block;
@@ -32,6 +35,11 @@
   font-style: normal;
   font-size:  100%;
   font-family: 'Open Sans', sans;
+}
+
+.date, .author {
+  color: #990024;  
+  font-style: normal;
 }
 
 /* main */
@@ -222,6 +230,7 @@ i {
     direction: ltr;
     border: none;
     color: inherit;
+    background: #fbfbfb;
 }
 
 .book .book-body .page-wrapper .page-inner section.normal .note {
@@ -262,6 +271,17 @@ h1, h2, h3, h4, h5 {
 /* logical NA */
 .ot {
  color: #337ab7;
+}
+
+code span.kw {
+ color: #007020;
+ font-weight: 500;
+}
+
+/* control flow */
+code span.cf {
+ color: #007020;
+ font-weight: 500;
 }
 
 /* char/string */
@@ -327,9 +347,10 @@ img {
 }
 
 /* text highlights */
-.emph {
-  color: #E32D00 ;  /*#ff5500 #D14300*/
+.book .book-body .page-wrapper .page-inner section.normal em, .emph {
+  color: #990024BF;  /*#E32D00 #ff5500 #D14300*/
   font-weight: 500;
+  font-style: normal;
 }
 
 /* pack func and objclass colors initially come from hcl(seq(90,360, length.out=4), c=80, l=80); redone for contrast*/
@@ -340,7 +361,7 @@ img {
 
 .func {
   color: #007020;   /*#007199 #00CBB6; #984ea3; can just use `` instead*/
-  font-weight: bold;
+  font-weight: 500;
 }
 
 .objclass {
@@ -363,7 +384,6 @@ img {
 }
 
 .plotly {
-+
   margin-left: 5%;
   margin-right: 5%;
 }
