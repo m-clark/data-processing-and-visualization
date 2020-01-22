@@ -18,11 +18,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Data Processing
+## Data Structures
 
-### Data Structures
-
-#### Exercise 1
+### Exercise 1
 
 Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span>.
 
@@ -38,7 +36,7 @@ str(mydf)
 ```
 
 
-#### Exercise 2
+### Exercise 2
 
 Create a <span class="objclass">list</span> of 3 elements, the first of which contains character strings, the second numbers, and the third, the <span class="objclass">data.frame</span> or <span class="objclass">matrix</span> you just created.  You'll have to recreate the data.frame/matrix here.
 
@@ -53,7 +51,7 @@ mylist = list(c('a', 'b'), 1:3, mydf)
 
 
 
-##### Thinking Exercises
+#### Thinking Exercises
 
 - How is a <span class="objclass">factor</span> different from a character vector?
 
@@ -64,10 +62,10 @@ mylist = list(c('a', 'b'), 1:3, mydf)
 
 
 
-### I/O
+## I/O
 
 
-#### Exercise 1
+### Exercise 1
 
 Use <span class="">readr</span> and <span class="">haven</span> to read the following files. Use the url just like you would any filename.  The latter is a Stata file.  You can use the RStudio's menu approach to import the file if you want.
 
@@ -83,7 +81,7 @@ readr::read_csv()
 ```
 
 
-#### Thinking Exercises
+### Thinking Exercises
 
 Why might you use <span class="func">read_csv</span> from the <span class="pack">readr</span> package rather than <span class="func">read.csv</span> in base R?
 
@@ -92,7 +90,7 @@ What is your definition of 'big' data?
 
 
 
-### Indexing Exercises
+## Indexing Exercises
 
 This following is a refresher of base R indexing only.
 
@@ -104,7 +102,7 @@ mydf = cars
 mylist = list(mymatrix, thisdf = mydf)
 ```
 
-#### Exercise 1
+### Exercise 1
 
 For the <span class="objclass">matrix</span>, in separate operations, take a slice of rows, a selection of columns, and a single element.
 
@@ -119,7 +117,7 @@ mymatrix[, 1:5]
 mymatrix[1, 2]
 ```
 
-#### Exercise 2
+### Exercise 2
 
 For the <span class="objclass">data.frame</span>, grab a column in 3 different ways.
 
@@ -133,7 +131,7 @@ mydf[, 2]
 mydf['disp']
 ```
 
-#### Exercise 3
+### Exercise 3
 
 For the <span class="objclass">list</span> grab an element by number and by name.
 
@@ -149,9 +147,9 @@ mylist$thisdf
 
 
 
-### tidyverse Exercises
+## tidyverse Exercises
 
-#### Exercise 0
+### Exercise 0
 
 Install and load the <span class="pack">dplyr</span> <span class="pack">ggplot2movies</span> packages. Look at the help file for the `movies` data set, which contains data from IMDB.
 
@@ -163,11 +161,11 @@ data('movies')
 ```
 
 
-#### Exercise 1
+### Exercise 1
 
 Using the movies data set, perform each of the following actions separately.
 
-##### Exercise 1a
+#### Exercise 1a
 
 Use <span class="func">mutate</span> to create a centered version of the rating variable.  A centered variable is one whose mean has been subtracted from it. The process will take the following form:
 
@@ -181,7 +179,7 @@ movies %>%
   mutate(ratingCen = rating - mean(rating)) 
 ```
 
-##### Exercise 1b
+#### Exercise 1b
 
 Use <span class="func">filter</span> to create a new data frame that has only movies from the years 2000 and beyond. Use the greater than or equal operator `>=`.
 
@@ -195,7 +193,7 @@ movies %>%
   filter(year >= 2000) 
 ```
 
-##### Exercise 1c
+#### Exercise 1c
 
 Use <span class="func">select</span> to create a new data frame that only has the `title`, `year`, `budget`, `length`, `rating` and `votes` variables.  There are at least 3 ways to do this.
 
@@ -223,7 +221,7 @@ movies %>%
   )
 ```
 
-##### Exercise 1d
+#### Exercise 1d
 
 Rename the `length` column to `length_in_min` (i.e. length in minutes).
 
@@ -232,7 +230,7 @@ movies %>%
   rename(?) 
 ```
 
-#### Exercise 2
+### Exercise 2
 
 Use <span class="func">group_by</span> to group the data by year, and <span class="func">summarize</span> to create a new variable that is the average budget. The <span class="func">summarize</span> function works just like <span class="func">mutate</span> in this case.
 
@@ -254,7 +252,7 @@ movies %>%
 ```
 
 
-#### Exercise 3
+### Exercise 3
 
 Use <span class="func">pivot_longer</span> to create a 'tidy' data set from the following.  Try to create a data frame of three columns of `id`, `group`, and `value`.
 
@@ -279,7 +277,7 @@ dat %>%
 
 
 
-#### Exercise 4
+### Exercise 4
 
 Now put several actions together in one set of piped operations. 
 
@@ -323,10 +321,10 @@ movies %>%
 
 
 
-### data.table Exercises
+## data.table Exercises
 
 
-#### Exercise 0
+### Exercise 0
 
 Install and load the <span class="pack">data.table</span> package.
 
@@ -339,7 +337,7 @@ install.packages('data.table')
 
 
 
-#### Exercise 1
+### Exercise 1
 
 Create the following data table. Then, create a new object that contains only the 'a' group. Think back to how you use a logical to select rows.
 
@@ -361,7 +359,7 @@ mydt_a
 ```
 
 
-#### Exercise 2
+### Exercise 2
 
 Create a new object that is the sum of z grouped by x. You don't need to name the sum variable.
 
