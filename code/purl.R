@@ -7,4 +7,4 @@ files_to = paste0('code/', str_sub(files_from, end = -4), 'R')
 
 library(knitr); library(purrr)
 
-files_from %>% map2(.y = files_to, ~ purl(input = .x, output = .y))
+map2(.x = files_from, .y = files_to, ~ purl(input = .x, output = .y))
