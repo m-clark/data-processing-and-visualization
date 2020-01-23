@@ -3,8 +3,6 @@ title: Data Processing & Visualization
 author:  |
   <span class="noem">Michael Clark</span>
   https://m-clark.github.io/
-  <img src="img/CSCAR_logos/signature-acronym.png" class='arc' alt="University of Michigan: CSCAR"> 
-  <img src="img/ARC_logos/ARC-acronym-signature.png" class='cscar' alt="University of Michigan: Advanced Research Computing"> 
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output:
@@ -24,10 +22,23 @@ github-repo:  'm-clark/data-processing-and-visualization/'
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T, message=F, warning=F, error=F, comment=NA, R.options=list(width=220),   # code 
-                      dev.args=list(bg = 'transparent'), dev='svglite',                                 # viz
-                      fig.align='center', out.width='75%', fig.asp=.75,                 
-                      cache.rebuild=F, cache=T)                                                         # cache
+knitr::opts_chunk$set(
+  echo = T,
+  message = F,
+  warning = F,
+  error = F,
+  cache.rebuild = F,
+  cache = T,
+  # code
+  comment = NA,
+  R.options = list(width = 220),
+  # viz
+  dev.args = list(bg = 'transparent'),
+  dev = 'svglite',
+  fig.align = 'center',
+  out.width = '75%',
+  fig.asp = .75
+)                                                         # cache
 ```
 
 
@@ -49,6 +60,6 @@ knitr::include_graphics('img/198R.png', dpi = NA)
 ```
 
 ```{r ccimg, fig.align='center', out.width=0, fig.show='hide', echo=FALSE}
-knitr::include_graphics('img/ccbysa.png', dpi = NA)
-knitr::include_graphics('img/mc_logo.png', dpi = NA)
+# knitr::include_graphics('img/ccbysa.png', dpi = NA)
+# knitr::include_graphics('img/mc_logo.png', dpi = NA)
 ```
