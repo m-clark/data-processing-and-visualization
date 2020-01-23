@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-01-22" />
+<meta name="date" content="2020-01-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -950,27 +950,28 @@ cov.unscaled  121    -none- numeric</code></pre>
 <p><img class='zoom' src="img/summary_method.png" style="display:block; margin: 0 auto;" width=50%></p>
 <p>When you load additional packages, you’ll see even more <span class="emph">methods</span> for the summary function. When you call <span class="func" style="">summary</span> on an object, the appropriate type of summary method will be used depending on the class of the object. If there is no specific type, e.g. when we called summary on something that already had summary called on it, it will just use a default version listing the contents. To see all the methods for summary, type the following, and you’ll see all that is currently available for your R session.</p>
 <div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb262-1" data-line-number="1"><span class="kw">methods</span>(<span class="st">&#39;summary&#39;</span>)</a></code></pre></div>
-<pre><code>  [1] summary,ANY-method                   summary,DBIObject-method             summary,diagonalMatrix-method        summary,mle-method                   summary,quantmod-method             
-  [6] summary,sparseMatrix-method          summary,stanfit-method               summary.aov                          summary.aovlist*                     summary.aspell*                     
- [11] summary.bridge*                      summary.bridge_list*                 summary.brmsfit*                     summary.check_packages_in_dir*       summary.cohesiveBlocks*             
- [16] summary.connection                   summary.corAR1*                      summary.corARMA*                     summary.corCAR1*                     summary.corCompSymm*                
- [21] summary.corExp*                      summary.corGaus*                     summary.corIdent*                    summary.corLin*                      summary.corNatural*                 
- [26] summary.corRatio*                    summary.corSpher*                    summary.corStruct*                   summary.corSymm*                     summary.customfamily*               
- [31] summary.data.frame                   summary.Date                         summary.default                      summary.Duration*                    summary.ecdf*                       
- [36] summary.factor                       summary.family*                      summary.gam                          summary.ggplot*                      summary.glm                         
- [41] summary.gls*                         summary.hcl_palettes*                summary.igraph*                      summary.infl*                        summary.Interval*                   
- [46] summary.List*                        summary.lm                           summary.lme*                         summary.lmList*                      summary.loess*                      
- [51] summary.manova                       summary.matrix                       summary.mcmc*                        summary.mcmc.list*                   summary.microbenchmark*             
- [56] summary.mixfamily*                   summary.mlm*                         summary.modelStruct*                 summary.nls*                         summary.nlsList*                    
- [61] summary.packageStatus*               summary.pandas.core.frame.DataFrame* summary.pandas.core.series.Series*   summary.pdBlocked*                   summary.pdCompSymm*                 
- [66] summary.pdDiag*                      summary.pdIdent*                     summary.pdIdnot*                     summary.pdLogChol*                   summary.pdMat*                      
- [71] summary.pdNatural*                   summary.pdSymm*                      summary.pdTens*                      summary.Period*                      summary.POSIXct                     
- [76] summary.POSIXlt                      summary.ppr*                         summary.prcomp*                      summary.princomp*                    summary.proc_time                   
- [81] summary.python.builtin.object*       summary.reStruct*                    summary.rlang_error*                 summary.rlang_trace*                 summary.shingle*                    
- [86] summary.srcfile                      summary.srcref                       summary.stepfun                      summary.stl*                         summary.table                       
- [91] summary.trellis*                     summary.tukeysmooth*                 summary.varComb*                     summary.varConstPower*               summary.varExp*                     
- [96] summary.varFixed*                    summary.varFunc*                     summary.varIdent*                    summary.varPower*                    summary.vctrs_sclr*                 
-[101] summary.vctrs_vctr*                  summary.warnings                     summary.yearmon*                     summary.yearqtr*                     summary.zoo*                        
+<pre><code>  [1] summary,ANY-method                   summary,DBIObject-method             summary,diagonalMatrix-method        summary,hexbin-method                summary,mle-method                  
+  [6] summary,quantmod-method              summary,sparseMatrix-method          summary,stanfit-method               summary.aov                          summary.aovlist*                    
+ [11] summary.aspell*                      summary.bridge*                      summary.bridge_list*                 summary.brmsfit*                     summary.check_packages_in_dir*      
+ [16] summary.cohesiveBlocks*              summary.connection                   summary.corAR1*                      summary.corARMA*                     summary.corCAR1*                    
+ [21] summary.corCompSymm*                 summary.corExp*                      summary.corGaus*                     summary.corIdent*                    summary.corLin*                     
+ [26] summary.corNatural*                  summary.corRatio*                    summary.corSpher*                    summary.corStruct*                   summary.corSymm*                    
+ [31] summary.customfamily*                summary.data.frame                   summary.Date                         summary.default                      summary.Duration*                   
+ [36] summary.ecdf*                        summary.factor                       summary.family*                      summary.gam                          summary.ggplot*                     
+ [41] summary.glm                          summary.gls*                         summary.hcl_palettes*                summary.igraph*                      summary.infl*                       
+ [46] summary.Interval*                    summary.List*                        summary.lm                           summary.lme*                         summary.lmList*                     
+ [51] summary.loess*                       summary.manova                       summary.matrix                       summary.mcmc*                        summary.mcmc.list*                  
+ [56] summary.microbenchmark*              summary.mixfamily*                   summary.mlm*                         summary.modelStruct*                 summary.nls*                        
+ [61] summary.nlsList*                     summary.packageStatus*               summary.pandas.core.frame.DataFrame* summary.pandas.core.series.Series*   summary.pdBlocked*                  
+ [66] summary.pdCompSymm*                  summary.pdDiag*                      summary.pdIdent*                     summary.pdIdnot*                     summary.pdLogChol*                  
+ [71] summary.pdMat*                       summary.pdNatural*                   summary.pdSymm*                      summary.pdTens*                      summary.Period*                     
+ [76] summary.POSIXct                      summary.POSIXlt                      summary.ppr*                         summary.prcomp*                      summary.princomp*                   
+ [81] summary.proc_time                    summary.python.builtin.object*       summary.reStruct*                    summary.rlang_error*                 summary.rlang_trace*                
+ [86] summary.shingle*                     summary.srcfile                      summary.srcref                       summary.stepfun                      summary.stl*                        
+ [91] summary.table                        summary.trellis*                     summary.tukeysmooth*                 summary.varComb*                     summary.varConstPower*              
+ [96] summary.varExp*                      summary.varFixed*                    summary.varFunc*                     summary.varIdent*                    summary.varPower*                   
+[101] summary.vctrs_sclr*                  summary.vctrs_vctr*                  summary.warnings                     summary.yearmon*                     summary.yearqtr*                    
+[106] summary.zoo*                        
 see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>Say you are new to a modeling package, and as such, you might want to see what all you can do with the resulting object. Once you’ve discerned the class of the model object, you can then list all the functions that can be used on that object.</p>
 <div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb264-1" data-line-number="1"><span class="kw">library</span>(brms)</a>

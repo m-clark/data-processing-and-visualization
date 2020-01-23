@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-01-22" />
+<meta name="date" content="2020-01-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -512,9 +512,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="data.table" class="section level1">
 <h1>data.table</h1>
-<div style="text-align: center;">
-<p><i class="fas fa-table fa-5x" style = 'color:#990024CC'></i></p>
-</div>
+<p><img src="img/hex_datatable.png" style="display:block; margin: 0 auto; width: 25%" ></p>
 <p><br></p>
 <p>Another package for data processing that has been useful to many is <span class="pack">data.table</span>. It works in a notably different way than <span class="pack">dplyr</span>. However, you’d use it for the same reasons, e.g. subset, grouping, update, ordered joins etc., but with key advantages in speed and memory efficiency. Like <span class="pack">dplyr</span>, the data objects are both <span class="objclass">data.frames</span> and a package specific class.</p>
 <div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb148-1" data-line-number="1"><span class="kw">library</span>(data.table)</a>
@@ -532,40 +530,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb151-1" data-line-number="1">dt[<span class="dv">2</span>]    <span class="co"># rows! not columns as with standard data.frame</span></a>
 <a class="sourceLine" id="cb151-2" data-line-number="2">dt[<span class="dv">2</span>,]</a></code></pre></div>
 <pre><code>   x g         y
-1: 9 2 0.9550507
+1: 1 2 0.4267702
    x g         y
-1: 9 2 0.9550507</code></pre>
+1: 1 2 0.4267702</code></pre>
 <p>You use <strong>j</strong> to select (by name!) or create new columns. We can define a new column with the <span class="func">:=</span> operator.</p>
 <div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb153-1" data-line-number="1">dt[,x]</a>
 <a class="sourceLine" id="cb153-2" data-line-number="2">dt[,z <span class="op">:</span><span class="er">=</span><span class="st"> </span>x<span class="op">+</span>y]  <span class="co"># dt now has a new column</span></a>
 <a class="sourceLine" id="cb153-3" data-line-number="3">dt[,z]</a>
 <a class="sourceLine" id="cb153-4" data-line-number="4">dt[g <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>, <span class="kw">mean</span>(z), by =<span class="st"> </span>g]</a>
 <a class="sourceLine" id="cb153-5" data-line-number="5">dt</a></code></pre></div>
-<pre><code>[1]  5  9  2  7 10  1
-[1]  5.115001  9.955051  2.015497  7.338585 10.074225  1.147088
-   g        V1
-1: 2 10.014638
-2: 3  1.581292
-    x g          y         z
-1:  5 1 0.11500113  5.115001
-2:  9 2 0.95505065  9.955051
-3:  2 3 0.01549702  2.015497
-4:  7 1 0.33858453  7.338585
-5: 10 2 0.07422520 10.074225
-6:  1 3 0.14708793  1.147088</code></pre>
+<pre><code>[1] 7 1 5 4 9 8
+[1] 7.517419 1.426770 5.337316 4.138632 9.435768 8.572588
+   g       V1
+1: 2 5.431269
+2: 3 6.954952
+   x g         y        z
+1: 7 1 0.5174194 7.517419
+2: 1 2 0.4267702 1.426770
+3: 5 3 0.3373160 5.337316
+4: 4 1 0.1386318 4.138632
+5: 9 2 0.4357678 9.435768
+6: 8 3 0.5725882 8.572588</code></pre>
 <p>Because <strong>j</strong> is an argument, dropping columns is awkward.</p>
 <div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb155-1" data-line-number="1">dt[, <span class="op">-</span>y]             <span class="co"># creates negative values of y</span></a>
 <a class="sourceLine" id="cb155-2" data-line-number="2">dt[, <span class="op">-</span><span class="st">&#39;y&#39;</span>, with =<span class="st"> </span>F] <span class="co"># drops y, but now needs quotes</span></a>
 <a class="sourceLine" id="cb155-3" data-line-number="3"><span class="co">## dt[, y := NULL]      # drops y, but this is just a base R approach</span></a>
 <a class="sourceLine" id="cb155-4" data-line-number="4"><span class="co">## dt$y = NULL</span></a></code></pre></div>
-<pre><code>[1] -0.11500113 -0.95505065 -0.01549702 -0.33858453 -0.07422520 -0.14708793
-    x g         z
-1:  5 1  5.115001
-2:  9 2  9.955051
-3:  2 3  2.015497
-4:  7 1  7.338585
-5: 10 2 10.074225
-6:  1 3  1.147088</code></pre>
+<pre><code>[1] -0.5174194 -0.4267702 -0.3373160 -0.1386318 -0.4357678 -0.5725882
+   x g        z
+1: 7 1 7.517419
+2: 1 2 1.426770
+3: 5 3 5.337316
+4: 4 1 4.138632
+5: 9 2 9.435768
+6: 8 3 8.572588</code></pre>
 <p>Data table does not make unnecessary copies. For example if we do the following…</p>
 <div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb157-1" data-line-number="1">DT =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">A =</span> <span class="dv">5</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">B =</span> letters[<span class="dv">5</span><span class="op">:</span><span class="dv">1</span>])</a>
 <a class="sourceLine" id="cb157-2" data-line-number="2">DT2 =<span class="st"> </span>DT</a>
@@ -592,24 +590,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We can now attempt a ‘group-by’ operation, along with creation of a new variable. Note that these operations actually modify the <span class="objclass">dt</span> object <em>in place</em>, a key distinction with <span class="pack">dplyr</span>. Fewer copies means less of a memory hit.</p>
 <div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb162-1" data-line-number="1">dt1 =<span class="st"> </span>dt2 =<span class="st"> </span>dt</a>
 <a class="sourceLine" id="cb162-2" data-line-number="2">dt[, <span class="kw">sum</span>(x, y), by =<span class="st"> </span>g]                <span class="co"># sum of all x and y values</span></a></code></pre></div>
-<pre><code>   g        V1
-1: 1 12.453586
-2: 2 20.029276
-3: 3  3.162585</code></pre>
+<pre><code>   g       V1
+1: 1 11.65605
+2: 2 10.86254
+3: 3 13.90990</code></pre>
 <div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" data-line-number="1">dt1[, mysum <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(x), by =<span class="st"> </span>g]         <span class="co"># add new variable to the original data</span></a>
 <a class="sourceLine" id="cb164-2" data-line-number="2">dt1</a></code></pre></div>
-<pre><code>    x g          y         z mysum
-1:  5 1 0.11500113  5.115001    12
-2:  9 2 0.95505065  9.955051    19
-3:  2 3 0.01549702  2.015497     3
-4:  7 1 0.33858453  7.338585    12
-5: 10 2 0.07422520 10.074225    19
-6:  1 3 0.14708793  1.147088     3</code></pre>
+<pre><code>   x g         y        z mysum
+1: 7 1 0.5174194 7.517419    11
+2: 1 2 0.4267702 1.426770    10
+3: 5 3 0.3373160 5.337316    13
+4: 4 1 0.1386318 4.138632    11
+5: 9 2 0.4357678 9.435768    10
+6: 8 3 0.5725882 8.572588    13</code></pre>
 <p>We can also create groupings on the fly. For a new summary data set, we’ll take the following approach- we create a grouping based on whether <code>g</code> is a value of one or not, then get the mean and sum of <code>x</code> for those two categories. The corresponding <span class="pack" style="">dplyr</span> approach is also shown (but not evaluated) for comparison.</p>
 <div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb166-1" data-line-number="1">dt2[, <span class="kw">list</span>(<span class="dt">mean_x =</span> <span class="kw">mean</span>(x), <span class="dt">sum_x =</span> <span class="kw">sum</span>(x)), by =<span class="st"> </span>g <span class="op">==</span><span class="st"> </span><span class="dv">1</span>]</a></code></pre></div>
 <pre><code>       g mean_x sum_x
-1:  TRUE    6.0    12
-2: FALSE    5.5    22</code></pre>
+1:  TRUE   5.50    11
+2: FALSE   5.75    23</code></pre>
 <div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb168-1" data-line-number="1"><span class="co">## dt2 %&gt;% </span></a>
 <a class="sourceLine" id="cb168-2" data-line-number="2"><span class="co">##   group_by(g == 1) %&gt;% </span></a>
 <a class="sourceLine" id="cb168-3" data-line-number="3"><span class="co">##   summarise(mean_x = mean(x), sum_x = sum(x))</span></a></code></pre></div>
