@@ -512,6 +512,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="more" class="section level1">
 <h1>More</h1>
+<div style="text-align: center;">
+<p><i class="fab fa-r-project fa-5x" style = 'color:#1f65b7'></i></p>
+</div>
+<p><br></p>
 <p>This section is kind of a grab bag of miscellaneous things related to programming. If you’ve made it this far, feel free to keep going!</p>
 <div id="code-style" class="section level2">
 <h2>Code Style</h2>
@@ -616,9 +620,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb380-1" data-line-number="1"><span class="kw">library</span>(microbenchmark)</a>
 <a class="sourceLine" id="cb380-2" data-line-number="2"><span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</a></code></pre></div>
 <pre><code>Unit: nanoseconds
-                    expr   min      lq     mean  median    uq    max neval
- apply(mymatrix, 2, log) 23256 23658.0 26116.63 23849.5 24193 100048   100
-           log(mymatrix)   641   672.5   821.39   793.5   846   3210   100</code></pre>
+                    expr   min      lq     mean  median      uq   max neval
+ apply(mymatrix, 2, log) 22758 23075.5 24214.30 23236.0 23484.5 95817   100
+           log(mymatrix)   631   646.0   736.33   734.5   801.0  1285   100</code></pre>
 <p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
 <div id="timings" class="section level4">
 <h4>Timings</h4>
