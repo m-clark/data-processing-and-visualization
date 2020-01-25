@@ -36,26 +36,107 @@ For supervised settings, there is a target or set of target variables which we a
 In the case of unsupervised models, the data is the target, and includes techniques such as principal components analyis, factor analysis, cluster analytic approaches, topic modeling, and many others. The key notion is dimension reduction, either of the columns or rows.  For example, we may have many items of a survey we wish to group together into a few key concepts, or cluster thousands of observations into a few simple categories.
 
 
+We can also describe two primary goals of modeling:
 
+- *Prediction*
+- *Explanation*
 
-### Linear models
+Different models will provide varying amounts of predictive and explanatory power.  In some settings, prediction is almost entirely the goal, with little need to understand the underlying details of the relation of inputs to outputs.  For example, in a model that predicts words to suggest when typing, we don't really need to know nor much care about the details except to be able to improve those suggestions. In scientific studies however, we may be much more interested in the (potentially causal) relations among the variables under study.
 
-By far most models are linear models, even when they incorporate nonlinear relationships.  For example, in the following, we can add a quadratic term or an interaction, yet the model is still linear in the parameters.
+While these are sometimes competing goals, it is definitely not the case that they are mutually exclusive. For example, a fully interpretable model (statistically speaking) with no predictive capability is fairly useless in practical terms.
 
-```{r linear-quad-inter}
+## Linear models
+
+By far most models you see in published reports are linear models, even when they incorporate nonlinear relationships.  For example, in the following, we can add a quadratic term or an interaction, yet the model is still linear in the parameters.  All of the following are standard linear regression models.
+
+```{r linear-quad-inter, eval=FALSE}
+lm(y ~ x + z)
 lm(y ~ x + z + x:z)
-lm(y ~ x + x^2)
+lm(y ~ x + x_squared)
 ```
 
-In both of the models above, `x` has a potentially nonlinear relationship with `y`, either by varying its relationship depending on values of z (the first case) or itself (the second). In general, the manner in which nonlinear relationships may be explored in linear models is quite flexible.
+In two of the models above, `x` has a potentially nonlinear relationship with `y`, either by varying its relationship depending on values of z (the first case) or itself (the second). In general, the manner in which nonlinear relationships may be explored in linear models is quite flexible.
 
 An example of a nonlinear model would be population growth models like exponential or logistic growth curves.  You can use functions like <span class="pack" style = "">nls</span> or <span class="pack" style = "">nlme</span> for such models, but should have a specific theoretical reason to do so, and even then flexible models such as GAMs might be better than assuming a functional form.
 
 
 ### Estimation
 
-Most statistical modeling techniques use *maximum likelihood* in some form or fashion, including Bayesian approaches. A basic linear model may use ordinary least squares, others generalized estimating equations, but far and away the most common approach in statistical modeling is maximum likelihood, so you would do well to understand the basics.
+In a basic statistics course, most are introduced to ordinary least squares as a means to estimate the coefficients for a linear regression model.  We are seeking to come up with estimates of the coefficients that minimzed the (squared) difference between the target value and the estimated value based on the parameter estimates.  We can see this clearly with some simple conceptual code.
 
+```{r ls-loss}
+set.seed(123)
+
+ls_loss <- function(X, y, beta) {
+  
+  # initialize the objects
+  loss = rep(0, nrow(X))
+  y_hat = rep(0, nrow(X))
+  
+  for (n in 1:nrow(X)) {
+    y_hat[n] <- sum(X[n, ] * beta)
+    loss[n] = (y[n] - y_hat[n]) ^ 2
+  }
+  
+  sum(loss)  
+}
+
+N = 100
+X = cbind(1, rnorm(N))  # a model matrix; first column represents the intercept
+y = 5 * X[, 1] + .5 * X[, 2] + rnorm(N)  # a target with some noise; truth is y = 5 +.5*x
+
+df = data.frame(y = y, x = X[, 2])
+
+ls_loss(X, y, beta = c(0, 1))    # guess 1
+ls_loss(X, y, beta = c(1, 2))    # guess 2
+ls_loss(X, y, beta = c(4, .25))  # guess 3
+
+model = lm(y ~ x, df)
+coef(model)                      # best guess given the data
+sum(residuals(model)^2)          # least squares loss
+```
+
+We see that in our third guess, we reduce the sum of the squared errors, i.e. the *loss*, quite a bit. However, we can also see that they are not the best we could have done.  
+
+In some rare cases, a known approach is available and we do not have to search for the best estimates, but simply have to perform the correct steps that will result in them.  For example the following matrix operations will produce the best estimates for linear regression, which also happen to be the maximum likelihood estimates.
+
+```{r normal-eq}
+solve(crossprod(X)) %*% crossprod(X, y)  # 'normal equations'
+
+coef(model)
+```
+
+Most of the time we don't have such luxury, or even if we did, the computations might be too great for the size of our data.  In practice we use  *optimization* methods to search for the best estimates. Some are very general, some are better for certain types of modeling problems. 
+
+Most statistical modeling techniques use *maximum likelihood* in some form or fashion, including Bayesian approaches. In this case, instead of minimizing the loss, we use an approach to maximize the probability of the observations of the target variable given the estimates of the parameters of the model (e.g. the coefficients in a regression).  A basic linear model may use ordinary least squares, others generalized estimating equations, but far and away the most common approach in statistical modeling is maximum likelihood, so you would do well to understand the basics.  Again, some simple conceptual code can help us. In the following I fix the estimated variance, but in practice we'd need to estimate that parameter as well.  As probabilities are typically very small, we work with them on the log scale.
+
+```{r max-like}
+max_like <- function(X, y, beta, sigma = 1) {
+  
+   # initialize the objects
+  likelihood = rep(0, nrow(X))
+  y_hat = rep(0, nrow(X))
+  
+  for (n in 1:nrow(X)) {
+    y_hat[n] <- sum(X[n, ] * beta)
+    likelihood[n] = dnorm(y[n],  y_hat[n], sd = sigma, log = TRUE)
+  }
+  
+  sum(likelihood)  
+}
+
+max_like(X, y, beta = c(0, 1))    # guess 1
+max_like(X, y, beta = c(1, 2))    # guess 2
+max_like(X, y, beta = c(4, .25))  # guess 3 best
+
+logLik(model)
+```
+
+
+Whatever the goal, to maximize the likelihood of the target data or to minimize a loss function, an optimizing function will typically be used to find the estimates that reach our goal. 
+
+
+In the more predictive models previously discussed
 
 ## Fitting Models
 
@@ -109,7 +190,7 @@ happy_model_0 = lm(
 
 ### Matrix
 
-Many packages still allow for, or even require (but shouldn't), matrices instead of specifying a model formula.  This requires separating data into a model or design matrix, and the vector or matrix of the target variable(s).  For example, if we needed a speed boost and weren't concerned about some typical output we could use <span class="func" style = "">lm.fit</span>.
+Many packages still allow for matrix input instead of specifying a model formula, or even require it (but shouldn't).  This means separating data into a model (or design) matrix, and the vector or matrix of the target variable(s).  For example, if we needed a speed boost and weren't concerned about some typical output we could use <span class="func" style = "">lm.fit</span>.
 
 First we need to create the required components.
 
@@ -122,8 +203,7 @@ X = model.matrix(
 head(X)
 ```
 
-Note the column of ones in the model matrix `X`.  This represents our intercept, but won't mean much to you unless you understant matrix multiplication.  The other columns are just as they are in the data.  Note also that the missing values have been removed.
-
+Note the column of ones in the model matrix `X`.  This represents our intercept, but may not mean much to you unless you understant [matrix multiplication](http://matrixmultiplication.xyz/).  The other columns are just as they are in the data.  Note also that the missing values have been removed.
 
 ```{r na-omit}
 nrow(happy)
@@ -131,12 +211,13 @@ nrow(X)
 ```
 
 
-We can now fit the model as follows.  The response variable must contain the same observations as in the model matrix.
+We can now fit the model as follows.  The response variable must contain the same number of observations as in the model matrix.
 
 ```{r model-fit-model-matrix}
 y = happy$happiness_score[as.integer(rownames(X))]
 happy_model_matrix = lm.fit(X, y)
 summary(happy_model_matrix)
+coef(happy_model_matrix)
 ```
 
 In my experience, it is generally a bad sign if a package requires that you create the model matrix rather than doing so itself.  Such packages tend to skip out on many other things like using typical methods and so forth, making them even more difficult to work with.  In general, the only real time you should need to use model matrices is when you are creating your own modeling package, doing simulations, or otherwise know why you need them.
@@ -144,7 +225,7 @@ In my experience, it is generally a bad sign if a package requires that you crea
 
 ## Summarizing Models
 
-Once we have a model, we'll want to summarize the results of it.
+Once we have a model, we'll want to summarize the results of it. Most modeling packages have a summary method we can apply, which will provide parameter estimates, some notion of model fit, inferential statistics, and other output.
 
 ```{r model-summarize, echo=1}
 summary(happy_model_0)
@@ -152,7 +233,14 @@ summary(happy_model_0)
 happy_model_0_sum = summary(happy_model_0)
 ```
 
-The summary tells us that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point.  For example, moving one unit on log GDP means moving, one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_0)['log_gdp_per_capita'], 1)` units of happiness.
+The summary tells us that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point.  For example, with regard to the effect of log GDP, moving one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_0)['log_gdp_per_capita'], 1)` units of happiness.
+
+A better approach is to get a sense of the uncertainty 
+
+```{r}
+confint(happy_model_0)
+```
+
 
 
 
@@ -255,20 +343,38 @@ For example, we can see that for this balanced data set, the corresponding coeff
 In other circumstances, we can use *categorical embeddings* to reduce a very large number of categorical levels to a smaller number of numeric variables.  This very commonly employed in deep learning.
 
 
-## Misc
+## Different Types of Targets
 
 Ordinal outcomes
 Nominal outcomes
+Counts
 
 ## Variable Importance
 
+Determining relative variable importance is at best an approximation with some methods and a fairly hopeless endeavor with others.  For just basic linear regression there are many methods that would not necessarily come to the same conclusions.  Some believe that standardizing variables, i.e. putting them on the same scale (e.g. mean 0 sd 1), is enough, but it is not, and doesn't help with categorical inputs.
+
+The other reason that 'importance' is a problematic endeavor is that a statistical result doesn't speak to practical action, nor does it speak to the fact that small effects may be very important.  Sex may be an important driver in social science model, but we cannot do anything about a person's sex for many outcomes that may be of interest. With health outcomes, any effects might be worthy of attention, however small, if they could practically increase the likelihood of survival.
+
+Even if you can come up with a metric you like, you would still need some measure of uncertainty around that to make a claim that one predictor is statistically better than another, and the only real approach to do that is some computationally expensive procedure that you will likely have to put together by hand.
+
+As an example, for standard linear regression there are many methods that decompose $R^2$ into relative contributions by the covariates.  The tools to do so have to re-run the model in many ways to produce these estimates (see the <span class="pack" style = "">relaimpo</span> package for example) but you would have to use bootstrapping or similar to get interval estimates for those measures of importance. Certain techniques like random forests have a natural way to provide variable importance metrics, but providing inference on them would similarly be very computationally expensive.
+
+In the end though, I think it is probably best to assume that any effect that seems statistically distinct from zero might be worthy of attention, and can be regarded for its own sake.  You can reduce 
+
+
 ## Extracting Output
+
+
+
+broom
 
 
 ## Visualization
 
 
 [^happy]: The World Happiness Report is a survey of the state of global happiness that ranks countries by how happy their citizens perceive themselves to be. Almost all the information here is gleaned from the report and appendices. This regards the report data from 2008-2018 included in the 2019 report.
+
+[^elasticity]: In econometrics, if both target and predictor variable are logged, the coefficient is referred to as an [elasticity](https://stats.idre.ucla.edu/sas/faq/how-can-i-interpret-log-transformed-variables-in-terms-of-percent-change-in-linear-regression/).
 
 [^notfornormal]: Note that none of the benefits regard normality.  Transforming variables is not done to meet the normality assumption regarding residuals, and would rarely help in that regard.
 
