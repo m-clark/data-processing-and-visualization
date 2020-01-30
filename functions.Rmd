@@ -296,7 +296,7 @@ good_mileage(mpg_cutoff = 40)
 good_mileage(
   cylinder = 8,
   mpg_cutoff = 15,
-  displ_low = F,
+  displ_low = FALSE,
   cls = 'suv'
 )
 ```
@@ -338,7 +338,7 @@ good_mileage <- function(
 good_mileage(
   cylinder = 8,
   mpg_cutoff = 19,
-  displ_low = F,
+  displ_low = FALSE,
   cls = 'suv',
   yr = 2008
 )
@@ -349,11 +349,11 @@ So we now have something that is flexible, reusable, and extensible, and it took
 
 ## Anonymous functions
 
-Oftentimes we just need a quick and easy function for a one-off application, especially when using apply/map functions.  For example, both the following would calculate standard deviations of columns.
+Oftentimes we just need a quick and easy function for a one-off application, especially when using apply/map functions.  Consider the following two lines of code.
 
 ```{r lambda, eval=FALSE}
 apply(mtcars, 2, sd)
-apply(mtcars, 2, function(x) x/2)
+apply(mtcars, 2, function(x) x / 2 )
 ```
 
 The difference between the two is that for the latter, our function didn't have to be a named object already available.  We created a function on the fly just to serve a specific purpose.  A function doesn't exist that just does nothing but divide by two, but since it is simple, we just created it as needed.
@@ -370,7 +370,7 @@ mtcars %>%
 ```
 
 
-Even if you don't use [anonymous functions](https://en.wikipedia.org/wiki/Anonymous_function) (sometimes called lambda functions), it's important to understand them, because you'll often see other people's code using them.
+Even if you don't use [anonymous functions](https://en.wikipedia.org/wiki/Anonymous_function) (sometimes called <span class="emph" style = "">lambda</span> functions), it's important to understand them, because you'll often see other people's code using them.
 
 
 <br>
