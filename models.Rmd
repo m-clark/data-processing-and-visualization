@@ -25,7 +25,7 @@ The following shows how to get started with modeling in R generally, with a focu
 
 ## Model Taxonomy
 
-We can broadly describe two classes of models
+We can begin with a taxonomy that broadly describes two classes of models:
 
 - *Supervised*
 - *Unsupervised*
@@ -33,21 +33,21 @@ We can broadly describe two classes of models
 
 For supervised settings, there is a target or set of target variables which we aim to predict with a set of predictor variables or covariates.  This is far and away the most common case, and the one we will focus on here.
 
-In the case of unsupervised models, the data is the target, and includes techniques such as principal components analyis, factor analysis, cluster analytic approaches, topic modeling, and many others. The key notion is dimension reduction, either of the columns or rows.  For example, we may have many items of a survey we wish to group together into a few key concepts, or cluster thousands of observations into a few simple categories.
+In the case of unsupervised models, the data is the target, and includes techniques such as principal components analysis, factor analysis, cluster analytic approaches, topic modeling, and many others. A key notion is *dimension reduction*, either of the columns or rows.  For example, we may have many items of a survey we wish to group together into a few key concepts, or cluster thousands of observations into a few simple categories.
 
 
-We can also describe two primary goals of modeling:
+We can also broadly describe two primary goals of modeling:
 
 - *Prediction*
 - *Explanation*
 
 Different models will provide varying amounts of predictive and explanatory power.  In some settings, prediction is almost entirely the goal, with little need to understand the underlying details of the relation of inputs to outputs.  For example, in a model that predicts words to suggest when typing, we don't really need to know nor much care about the details except to be able to improve those suggestions. In scientific studies however, we may be much more interested in the (potentially causal) relations among the variables under study.
 
-While these are sometimes competing goals, it is definitely not the case that they are mutually exclusive. For example, a fully interpretable model (statistically speaking) with no predictive capability is fairly useless in practical terms.
+While these are sometimes competing goals, it is definitely not the case that they are mutually exclusive. For example, a fully interpretable model (statistically speaking) with no predictive capability is fairly useless in practical terms, and a highly predictive model may also be highly interpretable,
 
 ## Linear models
 
-By far most models you see in published reports are linear models, even when they incorporate nonlinear relationships.  For example, in the following, we can add a quadratic term or an interaction, yet the model is still linear in the parameters.  All of the following are standard linear regression models.
+Most models you see in published reports are linear models, even when they incorporate nonlinear relationships.  For example, in the following, we can add a quadratic term or an interaction, yet the model is still linear in the parameters.  All of the following are standard linear regression models.
 
 ```{r linear-quad-inter, eval=FALSE}
 lm(y ~ x + z)
@@ -55,14 +55,14 @@ lm(y ~ x + z + x:z)
 lm(y ~ x + x_squared)
 ```
 
-In two of the models above, `x` has a potentially nonlinear relationship with `y`, either by varying its relationship depending on values of z (the first case) or itself (the second). In general, the manner in which nonlinear relationships may be explored in linear models is quite flexible.
+In second and third models above, `x` has a potentially nonlinear relationship with `y`, either by varying its (linear) relationship depending on values of z (the first case) or itself (the second). In general, the manner in which nonlinear relationships may be explored in linear models is quite flexible.
 
-An example of a nonlinear model would be population growth models like exponential or logistic growth curves.  You can use functions like <span class="pack" style = "">nls</span> or <span class="pack" style = "">nlme</span> for such models, but should have a specific theoretical reason to do so, and even then flexible models such as GAMs might be better than assuming a functional form.
+An example of a nonlinear model would be population growth models like exponential or logistic growth curves.  You can use functions like <span class="pack" style = "">nls</span> or <span class="pack" style = "">nlme</span> for such models, but should have a specific theoretical reason to do so, and even then, flexible models such as GAMs might be better than assuming a functional form.
 
 
-### Estimation
+## Estimation
 
-In a basic statistics course, most are introduced to ordinary least squares as a means to estimate the coefficients for a linear regression model.  We are seeking to come up with estimates of the coefficients that minimzed the (squared) difference between the target value and the estimated value based on the parameter estimates.  We can see this clearly with some simple conceptual code.
+In a basic statistics course, most are introduced to ordinary least squares as a means to estimate the coefficients for a linear regression model.  In this scenario, we are seeking to come up with estimates of the coefficients that minimized the (squared) difference between the target value and the estimated value based on the parameter estimates.  We can see this clearly with some simple conceptual code.
 
 ```{r ls-loss}
 set.seed(123)
@@ -98,7 +98,7 @@ sum(residuals(model)^2)          # least squares loss
 
 We see that in our third guess, we reduce the sum of the squared errors, i.e. the *loss*, quite a bit. However, we can also see that they are not the best we could have done.  
 
-In some rare cases, a known approach is available and we do not have to search for the best estimates, but simply have to perform the correct steps that will result in them.  For example the following matrix operations will produce the best estimates for linear regression, which also happen to be the maximum likelihood estimates.
+In some relatively rare cases, a known approach is available and we do not have to search for the best estimates, but simply have to perform the correct steps that will result in them.  For example the following matrix operations will produce the best estimates for linear regression, which also happen to be the maximum likelihood estimates.
 
 ```{r normal-eq}
 solve(crossprod(X)) %*% crossprod(X, y)  # 'normal equations'
@@ -106,9 +106,11 @@ solve(crossprod(X)) %*% crossprod(X, y)  # 'normal equations'
 coef(model)
 ```
 
-Most of the time we don't have such luxury, or even if we did, the computations might be too great for the size of our data.  In practice we use  *optimization* methods to search for the best estimates. Some are very general, some are better for certain types of modeling problems. 
+Most of the time we don't have such luxury, or even if we did, the computations might be too great for the size of our data.  
 
-Most statistical modeling techniques use *maximum likelihood* in some form or fashion, including Bayesian approaches. In this case, instead of minimizing the loss, we use an approach to maximize the probability of the observations of the target variable given the estimates of the parameters of the model (e.g. the coefficients in a regression).  A basic linear model may use ordinary least squares, others generalized estimating equations, but far and away the most common approach in statistical modeling is maximum likelihood, so you would do well to understand the basics.  Again, some simple conceptual code can help us. In the following I fix the estimated variance, but in practice we'd need to estimate that parameter as well.  As probabilities are typically very small, we work with them on the log scale.
+Many statistical modeling techniques use *maximum likelihood* in some form or fashion, including Bayesian approaches, so you would do well to understand the basics. In this case, instead of minimizing the loss, we use an approach to maximize the probability of the observations of the target variable given the estimates of the parameters of the model (e.g. the coefficients in a regression).  Again, some simple conceptual code can help us. 
+
+In the following I fix the estimated variance, but in practice we'd need to estimate that parameter as well.  As probabilities are typically very small, we work with them on the log scale.
 
 ```{r max-like}
 max_like <- function(X, y, beta, sigma = 1) {
@@ -132,11 +134,19 @@ max_like(X, y, beta = c(4, .25))  # guess 3 best
 logLik(model)
 ```
 
+To better understand maximum likelihood, it might help to think of our model from a data generating perspective.  In the standard regression setting, we think of a single observation as follows:
 
-Whatever the goal, to maximize the likelihood of the target data or to minimize a loss function, an optimizing function will typically be used to find the estimates that reach our goal. 
+$$\mu = b_0 + b_1*x_1 + ... + b_p*x_p$$
+Or with matrix notation:
+$$\mu = X\beta$$
+$$y \sim \mathcal{N}(\mathrm{mean} = \mu, \mathrm{sd} = \sigma)$$
+In words, this means that are target observation $y$ is assumed to be normally distributed with some mean and some standard deviation/variance.  The mean $\mu$ is a function (or simply weighted sum) of our covariates $X$. The unknown parameters we have to estimate are the $\beta$ and $\sigma$.
 
+## Optimization
 
-In the more predictive models previously discussed
+In practice we use  *optimization* methods to iteratively search for the best estimates.  The functions we explored above provide a goal- to minimize loss (however defined- least squares, classification, etc.) or maximize the likelihood (or posterior probability in the Bayesian context). Whatever the goal, an optimizing *algorithm* will typically be used to find the estimates that reach our goal. Some approaches are very general, some are better for certain types of modeling problems.  These algorithms continue to make guesses until some criterion has been reached[^optimizing].
+
+In any case, in practice you generally don't need to know the details to use these algorithms to fit models, but knowing a little bit may be useful to deal with more complex data scenarios, where *convergence* can be difficult.  In the more predictive models previously discussed, it may be more important to know more to speedup the time it takes to train the model, or smooth out the variability in the process.
 
 ## Fitting Models
 
@@ -188,7 +198,7 @@ happy_model_0 = lm(
 ```
 
 
-### Matrix
+### Using Matrices
 
 Many packages still allow for matrix input instead of specifying a model formula, or even require it (but shouldn't).  This means separating data into a model (or design) matrix, and the vector or matrix of the target variable(s).  For example, if we needed a speed boost and weren't concerned about some typical output we could use <span class="func" style = "">lm.fit</span>.
 
@@ -203,7 +213,7 @@ X = model.matrix(
 head(X)
 ```
 
-Note the column of ones in the model matrix `X`.  This represents our intercept, but may not mean much to you unless you understant [matrix multiplication](http://matrixmultiplication.xyz/).  The other columns are just as they are in the data.  Note also that the missing values have been removed.
+Note the column of ones in the model matrix `X`.  This represents our intercept, but may not mean much to you unless you understand [matrix multiplication](http://matrixmultiplication.xyz/).  The other columns are just as they are in the data.  Note also that the missing values have been removed.
 
 ```{r na-omit}
 nrow(happy)
@@ -342,12 +352,70 @@ For example, we can see that for this balanced data set, the corresponding coeff
 
 In other circumstances, we can use *categorical embeddings* to reduce a very large number of categorical levels to a smaller number of numeric variables.  This very commonly employed in deep learning.
 
+## Extensions
 
-## Different Types of Targets
+### Different Types of Targets
 
-Ordinal outcomes
-Nominal outcomes
-Counts
+In many data situations, we do not have a continuous target variable, or may want to use a different distribution to get a better fit, or adhere to some theoretical perspective.  For example, count data is not continuous and often notably skewed, so assuming a normal symmetric distribution may not work as well. From a data generating perspective we can use the Poisson distribution[^poislambda] for the target variable instead.
+
+$$\ln{\mu} =  X\beta$$
+$$\mu = e^{X\beta}$$
+$$y \sim \mathcal{Pois}(\mu)$$
+Conceptually nothing has really changed from what we were doing with the standard linear model, except for the distribution.  We still have a mean function determined by our predictors, and this is what we're typically mainly interested in from a theoretical perspective.  We do have an added step, a transformation of the mean (now usually called the *linear predictor*).  Poisson naturally works with the log of the target, but rather than do that explicitly, we instead exponentiate the linear predictor.  The *link function*, which links is the natural log, with the *inverse link/mean function* exponentiation.
+
+In code we can demonstrate this as follows.
+
+```{r poisson}
+set.seed(123)
+N = 1000
+beta = c(2, 1)
+x = rnorm(N)
+mu = exp(beta[1] + beta[2]*x)
+y = rpois(N, mu)
+
+glm(y ~ x, family = poisson)
+```
+
+
+
+$$\ln{\frac{\mu}{1-\mu}} =  X\beta$$
+$$\mu = \frac{1}{1+e^{-X\beta}}$$
+$$y \sim \mathcal{Binom}(\mathrm{prob}=\mu, \mathrm{size} = 1)$$
+Here are link function is called the *logit*, and it's inverse takes our linear predictor and puts it on the probability scale.
+
+Again, some code can help drive this home.
+
+
+
+```{r binom}
+mu = plogis(beta[1] + beta[2]*x)
+y = rbinom(N, size = 1, mu)
+
+glm(y ~ x, family = binomial)
+
+# extension to count/proportional model
+# mu = plogis(beta[1] + beta[2]*x)
+# total = rpois(N, lambda = 5)
+# events = rbinom(N, size = total, mu)
+# nonevents = total - events
+# 
+# glm(cbind(events, nonevents) ~ x, family = binomial)
+```
+
+You'll have noticed that when we fit these models we used <span class="func" style = "">glm</span> instead of <span class="func" style = "">lm</span>. The normal linear model is a special case of *generalized linear models*, which includes a specific class of distributions- normal, poisson, binomial, gamma, beta and more- collectively referred to as the [exponential family](https://en.wikipedia.org/wiki/Exponential_family).  While this can cover a lot of ground, you do not have to restrict yourself to that family.  The main point is that you have tools to deal with continuous, binary, count, ordinal, and other types of data.
+
+### Correlated Data
+
+Often we have data that is correlated, like when we observe multiple observations for individuals (i.e. longitudinal studies), or observations are clustered within geographic units.  There are many ways to analyze all kinds of correlated data in the form of clustered data, time series, spatial data and similar. In terms of understanding the mean function and data generating distribution for our target variable as in our previous models, not much changes.  However, we will want to utilize estimation techniques that take this correlation into account.
+
+
+- Mixed models (e.g. random intercepts, 'multilevel' models)
+- Time series models (autoregressive)
+- Spatial models (e.g. conditional autoregressive)
+
+Again, the main point here is awareness.
+
+
 
 ## Variable Importance
 
@@ -372,6 +440,9 @@ broom
 ## Visualization
 
 
+
+[^optimizing]: For example, if the next best guess for a regression coefficient results in only a difference to many decimal places from the previous one, you probably don't care and can stop your search. Reaching your desired stopping point is known as *convergence*. In other cases, you may simply set a maximum number of iterations.  
+
 [^happy]: The World Happiness Report is a survey of the state of global happiness that ranks countries by how happy their citizens perceive themselves to be. Almost all the information here is gleaned from the report and appendices. This regards the report data from 2008-2018 included in the 2019 report.
 
 [^elasticity]: In econometrics, if both target and predictor variable are logged, the coefficient is referred to as an [elasticity](https://stats.idre.ucla.edu/sas/faq/how-can-i-interpret-log-transformed-variables-in-terms-of-percent-change-in-linear-regression/).
@@ -382,3 +453,4 @@ broom
 
 [^onehotvsdummy]: Some distinguish one-hot from dummy coding in that the former creates a binary variable for all $C$ categorical levels while dummy coding only creates $C-1$ variables, leaving the reference group out.  However, the reference group is only left out at model fitting, there's no reason not to create all C variables, as it requires no additional effort and you might want to change the reference group.
 
+[^poislambda]: For historical reasons, Poisson is usually denoted with mean $\lambda$, and with the binomial the probability is often denoted with $\pi$, but consistency is desired here.
