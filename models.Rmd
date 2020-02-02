@@ -47,22 +47,42 @@ While these are sometimes competing goals, it is definitely not the case that th
 
 ## Linear models
 
-Most models you see in published reports are linear models, even when they incorporate nonlinear relationships.  For example, in the following, we can add a quadratic term or an interaction, yet the model is still linear in the parameters.  All of the following are standard linear regression models.
+Most models you see in published reports are linear models, and form the basis on which to build more complex forms.  We distinguish a target variable we want to understand from the variables which we will use to understand it, and we typically want to distinguish the relationships these variables have with the target variable. Note that these come with different names depending on the goal of the study, discipline, and other factors. 
+
+<br>
+```{r model-names, echo=FALSE}
+tibble(
+  Type = rep(c('Target', 'Prediction'), each = 4),
+  Names = c('Dependent variable', 'Response', 'Outcome', 'Y',
+            'Independent variable', 'Predictor', 'Covariate', 'X')
+) %>% 
+  kable_df() %>% 
+  collapse_rows()
+```
+<br>
+
+In R, we specify a linear model as follows.  The target variable is first, followed by the predictor variables, separated by a tilde.
+
+```{r linear-model, eval=FALSE}
+lm(y ~ x + z)
+```
+
+
+We can still use linear models to investigate nonlinear relationships.  For example, in the following, we can add a quadratic term or an interaction, yet the model is still linear in the parameters.  All of the following are standard linear regression models.
 
 ```{r linear-quad-inter, eval=FALSE}
-lm(y ~ x + z)
 lm(y ~ x + z + x:z)
 lm(y ~ x + x_squared)
 ```
 
-In second and third models above, `x` has a potentially nonlinear relationship with `y`, either by varying its (linear) relationship depending on values of z (the first case) or itself (the second). In general, the manner in which nonlinear relationships may be explored in linear models is quite flexible.
+In the models above, `x` has a potentially nonlinear relationship with `y`, either by varying its (linear) relationship depending on values of z (the first case) or itself (the second). In general, the manner in which nonlinear relationships may be explored in linear models is quite flexible.
 
-An example of a nonlinear model would be population growth models like exponential or logistic growth curves.  You can use functions like <span class="pack" style = "">nls</span> or <span class="pack" style = "">nlme</span> for such models, but should have a specific theoretical reason to do so, and even then, flexible models such as GAMs might be better than assuming a functional form.
+An example of a nonlinear model would be population growth models like exponential or logistic growth curves.  You can use functions like <span class="func" style = "">nls</span> or <span class="func" style = "">nlme</span> for such models, but should have a specific theoretical reason to do so, and even then, flexible models such as [GAMs](https://m-clark.github.io/generalized-additive-models/) might be better than assuming a functional form.
 
 
 ## Estimation
 
-In a basic statistics course, most are introduced to ordinary least squares as a means to estimate the coefficients for a linear regression model.  In this scenario, we are seeking to come up with estimates of the coefficients that minimized the (squared) difference between the target value and the estimated value based on the parameter estimates.  We can see this clearly with some simple conceptual code.
+In a basic statistics course, most are introduced to ordinary least squares as a means to estimate the coefficients for a linear regression model.  In this scenario, we are seeking to come up with estimates of the coefficients that minimize the (squared) difference between the observed target value and the fitted value based on the parameter estimates.  We can see this clearly with some simple conceptual code.
 
 ```{r ls-loss}
 set.seed(123)
@@ -73,6 +93,7 @@ ls_loss <- function(X, y, beta) {
   loss = rep(0, nrow(X))
   y_hat = rep(0, nrow(X))
   
+  # for each row, calculate y_hat and square the difference with y
   for (n in 1:nrow(X)) {
     y_hat[n] <- sum(X[n, ] * beta)
     loss[n] = (y[n] - y_hat[n]) ^ 2
@@ -91,12 +112,12 @@ ls_loss(X, y, beta = c(0, 1))    # guess 1
 ls_loss(X, y, beta = c(1, 2))    # guess 2
 ls_loss(X, y, beta = c(4, .25))  # guess 3
 
-model = lm(y ~ x, df)
-coef(model)                      # best guess given the data
+model = lm(y ~ x, df)            # fit the model and obtain parameter estimates using OLS
+coef(model)                      # best guess given the data 
 sum(residuals(model)^2)          # least squares loss
 ```
 
-We see that in our third guess, we reduce the sum of the squared errors, i.e. the *loss*, quite a bit. However, we can also see that they are not the best we could have done.  
+We see that in our third guess, we reduce the sum of the squared errors, i.e. the *loss*, quite a bit. However, we can also see that they are not the best we could have done.  With more data, our estimated coefficients would get closer to true values.
 
 In some relatively rare cases, a known approach is available and we do not have to search for the best estimates, but simply have to perform the correct steps that will result in them.  For example the following matrix operations will produce the best estimates for linear regression, which also happen to be the maximum likelihood estimates.
 
@@ -115,7 +136,6 @@ In the following I fix the estimated variance, but in practice we'd need to esti
 ```{r max-like}
 max_like <- function(X, y, beta, sigma = 1) {
   
-   # initialize the objects
   likelihood = rep(0, nrow(X))
   y_hat = rep(0, nrow(X))
   
@@ -129,28 +149,56 @@ max_like <- function(X, y, beta, sigma = 1) {
 
 max_like(X, y, beta = c(0, 1))    # guess 1
 max_like(X, y, beta = c(1, 2))    # guess 2
-max_like(X, y, beta = c(4, .25))  # guess 3 best
+max_like(X, y, beta = c(4, .25))  # guess 3
 
 logLik(model)
 ```
 
-To better understand maximum likelihood, it might help to think of our model from a data generating perspective.  In the standard regression setting, we think of a single observation as follows:
+To better understand maximum likelihood, it might help to think of our model from a data generating perspective, rather than in terms of 'errors'.  In the standard regression setting, we think of a single observation as follows:
 
 $$\mu = b_0 + b_1*x_1 + ... + b_p*x_p$$
 Or with matrix notation:
 $$\mu = X\beta$$
+
+Now we display how $y$ is generated:
 $$y \sim \mathcal{N}(\mathrm{mean} = \mu, \mathrm{sd} = \sigma)$$
-In words, this means that are target observation $y$ is assumed to be normally distributed with some mean and some standard deviation/variance.  The mean $\mu$ is a function (or simply weighted sum) of our covariates $X$. The unknown parameters we have to estimate are the $\beta$ and $\sigma$.
+In words, this means that our target observation $y$ is assumed to be normally distributed with some mean and some standard deviation/variance.  The mean $\mu$ is a function (or simply weighted sum) of our covariates $X$. The unknown parameters we have to estimate are the $\beta$ and $\sigma$.
+
+One more note, it is good to distinguish models from estimation procedures. The following shows the more specific to the more general.
+
+```{r models-graph, caption = 'Models', eval=TRUE, echo=FALSE}
+tags$div(
+  style = "width:500px; margin:0 auto; font-family:Roboto; ",
+  DiagrammeR::DiagrammeR(
+    "scripts/models.gv",
+    type = 'grViz',
+    width = 500,
+    height = 250
+  )
+)
+```
+
+```{r estimation-graph, caption = 'Estimation Procedures', eval=TRUE, echo=FALSE}
+tags$div(
+  style = "width:500px; margin:0 auto; font-family:Roboto; ",
+  DiagrammeR::DiagrammeR(
+    "scripts/estimation.gv",
+    type = 'grViz',
+    width = 500,
+    height = 250
+  )
+)
+```
 
 ## Optimization
 
-In practice we use  *optimization* methods to iteratively search for the best estimates.  The functions we explored above provide a goal- to minimize loss (however defined- least squares, classification, etc.) or maximize the likelihood (or posterior probability in the Bayesian context). Whatever the goal, an optimizing *algorithm* will typically be used to find the estimates that reach our goal. Some approaches are very general, some are better for certain types of modeling problems.  These algorithms continue to make guesses until some criterion has been reached[^optimizing].
+In practice we use  *optimization* methods to iteratively search for the best estimates.  The functions we explored above provide a goal- to minimize loss (however defined- least squares, classification, etc.) or maximize the likelihood (or posterior probability in the Bayesian context). Whatever the goal, an optimizing *algorithm* will typically be used to find the estimates that reach that goal. Some approaches are very general, some are better for certain types of modeling problems.  These algorithms continue to make guesses until some criterion has been reached[^optimizing].
 
-In any case, in practice you generally don't need to know the details to use these algorithms to fit models, but knowing a little bit may be useful to deal with more complex data scenarios, where *convergence* can be difficult.  In the more predictive models previously discussed, it may be more important to know more to speedup the time it takes to train the model, or smooth out the variability in the process.
+In practice, you generally don't need to know the details to use these algorithms to fit models, but knowing a little bit may be useful to deal with more complex data scenarios, where *convergence* can be difficult.  In the more predictive models previously discussed, it may be more important to know more to speedup the time it takes to train the model, or smooth out the variability in the process.
 
 ## Fitting Models
 
-The two components required to fit a model in R with practically every modern package are the model formula and a data frame.  Consider the following models, in general the syntax is the same or identical, with special considerations for the type of model. The data argument is not included.
+The two components required to fit a model in R with practically every modern package are the model formula, and a data frame that contains the variables specified in that formula.  Consider the following models, in general the syntax is the same or identical, with special considerations for the type of model. The data argument is not included.
 
 ```{r model-syntax, eval=FALSE}
 lm(y ~ x + z)                                        # standard linear model/OLS
@@ -245,13 +293,13 @@ happy_model_0_sum = summary(happy_model_0)
 
 The summary tells us that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point.  For example, with regard to the effect of log GDP, moving one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_0)['log_gdp_per_capita'], 1)` units of happiness.
 
-A better approach is to get a sense of the uncertainty 
+A better approach is to get a sense of the uncertainty.
 
-```{r}
+```{r model-confint}
 confint(happy_model_0)
 ```
 
-
+Now we understand the range of plausible values for the coefficients.
 
 
 ## Variable Transformations 
@@ -361,7 +409,7 @@ In many data situations, we do not have a continuous target variable, or may wan
 $$\ln{\mu} =  X\beta$$
 $$\mu = e^{X\beta}$$
 $$y \sim \mathcal{Pois}(\mu)$$
-Conceptually nothing has really changed from what we were doing with the standard linear model, except for the distribution.  We still have a mean function determined by our predictors, and this is what we're typically mainly interested in from a theoretical perspective.  We do have an added step, a transformation of the mean (now usually called the *linear predictor*).  Poisson naturally works with the log of the target, but rather than do that explicitly, we instead exponentiate the linear predictor.  The *link function*, which links is the natural log, with the *inverse link/mean function* exponentiation.
+Conceptually nothing has really changed from what we were doing with the standard linear model, except for the distribution.  We still have a mean function determined by our predictors, and this is what we're typically mainly interested in from a theoretical perspective.  We do have an added step, a transformation of the mean (now usually called the *linear predictor*).  Poisson naturally works with the log of the target, but rather than do that explicitly, we instead exponentiate the linear predictor.  The *link function*[^linknotmodel], which links is the natural log, with the *inverse link/mean function* exponentiation.
 
 In code we can demonstrate this as follows.
 
@@ -454,3 +502,5 @@ broom
 [^onehotvsdummy]: Some distinguish one-hot from dummy coding in that the former creates a binary variable for all $C$ categorical levels while dummy coding only creates $C-1$ variables, leaving the reference group out.  However, the reference group is only left out at model fitting, there's no reason not to create all C variables, as it requires no additional effort and you might want to change the reference group.
 
 [^poislambda]: For historical reasons, Poisson is usually denoted with mean $\lambda$, and with the binomial the probability is often denoted with $\pi$, but consistency is desired here.
+
+[^linknotmodel]: Before we distinguished models from [estimation procedures][estimation], and it's also important to distinguish models from link functions. In some disciplines (mostly one and those trained in its methods), you'll see some refer to a 'logit model', for example.  However that wouldn't tell you if the model regards a target that is binary, categorical, ordered categorical, count or has values between zero and one, which cover several types of possible distributions. 
