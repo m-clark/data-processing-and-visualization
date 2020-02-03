@@ -61,7 +61,12 @@ tibble(
 ```
 <br>
 
-In R, we specify a linear model as follows.  The target variable is first, followed by the predictor variables, separated by a tilde.
+A typical way to depict a linear regression model is as follows:
+
+$$y = b_0 + b_1\cdot x_1 + b_2\cdot x_2 + ... +  + b_p\cdot x_p + \epsilon$$
+In the above, $b_0$ is the intercept, and the other $b_*$ are the regression coefficients that represent the relationship of the predictors $x$ to the target variable $y$.  The $\epsilon$ represents the *error* or *residual*.  We don't have perfect prediction, and that represents the difference between what we can guess with our predictor relationships to the target and what we actually observe with it.
+
+In R, we specify a linear model as follows.  The target variable is first, followed by the predictor variables, separated by a tilde (`~`). Additional predictor variables are added with a plus sign (`+`)
 
 ```{r linear-model, eval=FALSE}
 lm(y ~ x + z)
@@ -72,7 +77,7 @@ We can still use linear models to investigate nonlinear relationships.  For exam
 
 ```{r linear-quad-inter, eval=FALSE}
 lm(y ~ x + z + x:z)
-lm(y ~ x + x_squared)
+lm(y ~ x + x_squared)     # a better way: lm(y ~ poly(x, degree = 2))
 ```
 
 In the models above, `x` has a potentially nonlinear relationship with `y`, either by varying its (linear) relationship depending on values of z (the first case) or itself (the second). In general, the manner in which nonlinear relationships may be explored in linear models is quite flexible.
@@ -117,7 +122,7 @@ coef(model)                      # best guess given the data
 sum(residuals(model)^2)          # least squares loss
 ```
 
-We see that in our third guess, we reduce the sum of the squared errors, i.e. the *loss*, quite a bit. However, we can also see that they are not the best we could have done.  With more data, our estimated coefficients would get closer to true values.
+We see that in our third guess, we reduce the sum of the squared errors, i.e. the *loss*, quite a bit. However, we can also see that they are not the best we could have done.  In addition, with more data, our estimated coefficients would get closer to true values.
 
 In some relatively rare cases, a known approach is available and we do not have to search for the best estimates, but simply have to perform the correct steps that will result in them.  For example the following matrix operations will produce the best estimates for linear regression, which also happen to be the maximum likelihood estimates.
 
