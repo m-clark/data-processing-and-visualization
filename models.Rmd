@@ -87,7 +87,9 @@ An example of a nonlinear model would be population growth models like exponenti
 
 ## Estimation
 
-In a basic statistics course, most are introduced to ordinary least squares as a means to estimate the coefficients for a linear regression model.  In this scenario, we are seeking to come up with estimates of the coefficients that minimize the (squared) difference between the observed target value and the fitted value based on the parameter estimates.  We can see this clearly with some simple conceptual code.
+In a introductory course, many are introduced to ordinary least squares as a means to estimate the coefficients for a linear regression model.  In this scenario, we are seeking to come up with estimates of the coefficients that minimize the (squared) difference between the observed target value and the fitted value based on the parameter estimates.  
+
+We can see this clearly with some simple conceptual code.  In what follows is we move row by row, calculating both our prediction based on the model $\hat{y}$ and the difference between that and our target variable $y$.  We sum these squared differences to get a total.
 
 ```{r ls-loss}
 set.seed(123)
@@ -106,13 +108,21 @@ ls_loss <- function(X, y, beta) {
   
   sum(loss)  
 }
+```
 
+Now we need some data. Let's construct some data so that we know the true underlying values for the regression coefficients. Feel free to change the sample size `N` or the coefficient values.
+
+```{r ls-loss-data-gen}
 N = 100
 X = cbind(1, rnorm(N))  # a model matrix; first column represents the intercept
 y = 5 * X[, 1] + .5 * X[, 2] + rnorm(N)  # a target with some noise; truth is y = 5 +.5*x
 
 df = data.frame(y = y, x = X[, 2])
+```
 
+Now let's make some guesses for the coefficients, and see what the corresponding sum of the squared errors, i.e. the *loss*, would be.
+
+```{r ls-loss-estimate}
 ls_loss(X, y, beta = c(0, 1))    # guess 1
 ls_loss(X, y, beta = c(1, 2))    # guess 2
 ls_loss(X, y, beta = c(4, .25))  # guess 3
@@ -122,9 +132,10 @@ coef(model)                      # best guess given the data
 sum(residuals(model)^2)          # least squares loss
 ```
 
-We see that in our third guess, we reduce the sum of the squared errors, i.e. the *loss*, quite a bit. However, we can also see that they are not the best we could have done.  In addition, with more data, our estimated coefficients would get closer to true values.
 
-In some relatively rare cases, a known approach is available and we do not have to search for the best estimates, but simply have to perform the correct steps that will result in them.  For example the following matrix operations will produce the best estimates for linear regression, which also happen to be the maximum likelihood estimates.
+We see that in our third guess  we reduce the loss quite a bit relative to our first guess. This makes sense because a value of 4 for the intercept and .25 for the coefficient for `x` are not as relatively far from the true values.  However, we can also see that they are not the best we could have done.  In addition, with more data, our estimated coefficients would get closer to true values.
+
+In some relatively rare cases, a known approach is available and we do not have to search for the best estimates, but simply have to perform the correct steps that will result in them.  For example, the following matrix operations will produce the best estimates for linear regression, which also happen to be the maximum likelihood estimates.
 
 ```{r normal-eq}
 solve(crossprod(X)) %*% crossprod(X, y)  # 'normal equations'
@@ -134,9 +145,54 @@ coef(model)
 
 Most of the time we don't have such luxury, or even if we did, the computations might be too great for the size of our data.  
 
-Many statistical modeling techniques use *maximum likelihood* in some form or fashion, including Bayesian approaches, so you would do well to understand the basics. In this case, instead of minimizing the loss, we use an approach to maximize the probability of the observations of the target variable given the estimates of the parameters of the model (e.g. the coefficients in a regression).  Again, some simple conceptual code can help us. 
+Many statistical modeling techniques use *maximum likelihood* in some form or fashion, including Bayesian approaches, so you would do well to understand the basics. In this case, instead of minimizing the loss, we use an approach to maximize the probability of the observations of the target variable given the estimates of the parameters of the model (e.g. the coefficients in a regression)[^negloglik].  
 
-In the following I fix the estimated variance, but in practice we'd need to estimate that parameter as well.  As probabilities are typically very small, we work with them on the log scale.
+
+The following shows how this would look for estimating a single value like a mean for a set of observations from a specific distribution[^pois].  In this case, the true underlying value that maximizes the likelihood is 5, but we typically don't know this.  We see that as our guesses for the mean would get closer to 5, the likelihood of the observed values increases.  Our final guess based on the observed data won't be exactly 5, but with enough data and an appropriate model for that data, we should get close.
+
+```{r maximum-likelihood, echo=FALSE}
+set.seed(1234)
+y = rpois(100000, lambda = 5)
+mus = seq(3, 8, l = 100)
+L = sapply(mus, function(mu) sum(dpois(y, lambda = mu, log = T)))
+plot_dat = data.frame(mus, L, Max = ifelse(L == max(L), 'Maximum', ''))
+
+# ggplot() + 
+#   geom_bar(aes(x = y)) +
+#   labs(x = '', y = '', subtitle = 'Observed Data') +
+#   theme_clean(center_axis_labels = TRUE) +
+#   theme(
+#     # axis.ticks.y = element_blank(),
+#     axis.ticks.y = element_blank(),
+#     axis.text.y = element_blank(),
+#     axis.title.y = element_blank(),
+#     axis.title.x = element_text(size = 12, vjust = -1.5),
+#     axis.text.x = element_text( size = 14),
+#     plot.background = element_rect(fill = "transparent", colour = NA)
+#   )
+
+ggplot(plot_dat) + 
+  geom_vline(aes(xintercept = 5), alpha = .25, lty = 3) +
+  geom_hline(aes(yintercept = max(L)), alpha = .25) +
+  geom_path(aes(x = mus, y = L), color = '#ff5500', alpha=.75, lwd = 2) +
+  geom_point(aes(x = 5, y = max(L)), color = '#ff5500',  size = 3) +
+  # labs(x = expression(theta), y = 'Likelihood') +
+  labs(x = 'Potential Estimates', y = 'More Probable ↑') +
+  scale_y_continuous(breaks = L, labels = plot_dat$Max) +
+  theme_clean(center_axis_labels = TRUE) +
+  theme(
+    # axis.ticks.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.text.y = element_text(size = 8),
+    axis.title.y = element_text(size = 12),
+    axis.title.x = element_text(size = 12, vjust = -1.5),
+    axis.text.x = element_text( size = 14),
+    plot.background = element_rect(fill = "transparent", colour = NA)
+  )
+```
+
+
+Again, some simple conceptual code can help us. The next bit of code follows a similar approach to what we had with least squares, but the goal is instead to maximize the likelihood of the observed data. In this example, I fix the estimated variance, but in practice we'd need to estimate that parameter as well.  As probabilities are typically very small, we work with them on the log scale.
 
 ```{r max-like}
 max_like <- function(X, y, beta, sigma = 1) {
@@ -146,18 +202,22 @@ max_like <- function(X, y, beta, sigma = 1) {
   
   for (n in 1:nrow(X)) {
     y_hat[n] <- sum(X[n, ] * beta)
-    likelihood[n] = dnorm(y[n],  y_hat[n], sd = sigma, log = TRUE)
+    likelihood[n] = dnorm(y[n],  mean = y_hat[n], sd = sigma, log = TRUE)
   }
   
   sum(likelihood)  
 }
+```
 
+
+```{r maximum-likelihood-estimate}
 max_like(X, y, beta = c(0, 1))    # guess 1
 max_like(X, y, beta = c(1, 2))    # guess 2
 max_like(X, y, beta = c(4, .25))  # guess 3
 
 logLik(model)
 ```
+
 
 To better understand maximum likelihood, it might help to think of our model from a data generating perspective, rather than in terms of 'errors'.  In the standard regression setting, we think of a single observation as follows:
 
@@ -169,7 +229,7 @@ Now we display how $y$ is generated:
 $$y \sim \mathcal{N}(\mathrm{mean} = \mu, \mathrm{sd} = \sigma)$$
 In words, this means that our target observation $y$ is assumed to be normally distributed with some mean and some standard deviation/variance.  The mean $\mu$ is a function (or simply weighted sum) of our covariates $X$. The unknown parameters we have to estimate are the $\beta$ and $\sigma$.
 
-One more note, it is good to distinguish models from estimation procedures. The following shows the more specific to the more general.
+One more note regarding estimation, it is good to distinguish models from estimation procedures. The following shows the more specific to the more general.
 
 ```{r models-graph, caption = 'Models', eval=TRUE, echo=FALSE}
 tags$div(
@@ -197,13 +257,13 @@ tags$div(
 
 ## Optimization
 
-In practice we use  *optimization* methods to iteratively search for the best estimates.  The functions we explored above provide a goal- to minimize loss (however defined- least squares, classification, etc.) or maximize the likelihood (or posterior probability in the Bayesian context). Whatever the goal, an optimizing *algorithm* will typically be used to find the estimates that reach that goal. Some approaches are very general, some are better for certain types of modeling problems.  These algorithms continue to make guesses until some criterion has been reached[^optimizing].
+In practice, we use  *optimization* methods to iteratively search for the best estimates for the parameters of a given model.  The functions we explored above provide a goal- to minimize loss (however defined- least squares for continuous, classification error for binary, etc.) or maximize the likelihood (or posterior probability in the Bayesian context). Whatever the goal, an optimizing *algorithm* will typically be used to find the estimates that reach that goal. Some approaches are very general, some are better for certain types of modeling problems.  These algorithms continue to make guesses until some criterion has been reached[^optimizing].
 
-In practice, you generally don't need to know the details to use these algorithms to fit models, but knowing a little bit may be useful to deal with more complex data scenarios, where *convergence* can be difficult.  In the more predictive models previously discussed, it may be more important to know more to speedup the time it takes to train the model, or smooth out the variability in the process.
+You generally don't need to know the details to use these algorithms to fit models, but knowing a little bit may prove useful to deal with more complex data scenarios, where *convergence* can be difficult.  Some packages will even have documentation specifically dealing with convergence issues. In the more predictive models previously discussed, knowing more about the optimization algorithm may speedup the time it takes to train the model, or smooth out the variability in the process.
 
 ## Fitting Models
 
-The two components required to fit a model in R with practically every modern package are the model formula, and a data frame that contains the variables specified in that formula.  Consider the following models, in general the syntax is the same or identical, with special considerations for the type of model. The data argument is not included.
+With practically every modern package in R, the two components are required to fit a model are the model formula, and a data frame that contains the variables specified in that formula.  Consider the following models. In general the syntax is the same or identical, with special considerations for the type of model. The data argument is not included.
 
 ```{r model-syntax, eval=FALSE}
 lm(y ~ x + z)                                        # standard linear model/OLS
@@ -509,3 +569,7 @@ broom
 [^poislambda]: For historical reasons, Poisson is usually denoted with mean $\lambda$, and with the binomial the probability is often denoted with $\pi$, but consistency is desired here.
 
 [^linknotmodel]: Before we distinguished models from [estimation procedures][estimation], and it's also important to distinguish models from link functions. In some disciplines (mostly one and those trained in its methods), you'll see some refer to a 'logit model', for example.  However that wouldn't tell you if the model regards a target that is binary, categorical, ordered categorical, count or has values between zero and one, which cover several types of possible distributions. 
+
+[^negloglik]: To be consistent with the many tools that minimize different types of losses, we usually minimize the negative log likelihood, rather than maximize the raw likelihood.
+
+[^pois]: In this case, a Poisson distribution.
