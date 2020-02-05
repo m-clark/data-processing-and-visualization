@@ -192,7 +192,7 @@ ggplot(plot_dat) +
 ```
 
 
-Again, some simple conceptual code can help us. The next bit of code follows a similar approach to what we had with least squares, but the goal is instead to maximize the likelihood of the observed data. In this example, I fix the estimated variance, but in practice we'd need to estimate that parameter as well.  As probabilities are typically very small, we work with them on the log scale.
+Again, some simple conceptual code can help us. The next bit of code follows a similar approach to what we had with least squares regression, but the goal is instead to maximize the likelihood of the observed data. In this example, I fix the estimated variance, but in practice we'd need to estimate that parameter as well.  As probabilities are typically very small, we work with them on the log scale.
 
 ```{r max-like}
 max_like <- function(X, y, beta, sigma = 1) {
@@ -222,12 +222,12 @@ logLik(model)
 To better understand maximum likelihood, it might help to think of our model from a data generating perspective, rather than in terms of 'errors'.  In the standard regression setting, we think of a single observation as follows:
 
 $$\mu = b_0 + b_1*x_1 + ... + b_p*x_p$$
-Or with matrix notation:
+Or with matrix notation (consider it shorthand if not familiar):
 $$\mu = X\beta$$
 
 Now we display how $y$ is generated:
 $$y \sim \mathcal{N}(\mathrm{mean} = \mu, \mathrm{sd} = \sigma)$$
-In words, this means that our target observation $y$ is assumed to be normally distributed with some mean and some standard deviation/variance.  The mean $\mu$ is a function (or simply weighted sum) of our covariates $X$. The unknown parameters we have to estimate are the $\beta$ and $\sigma$.
+In words, this means that our target observation $y$ is assumed to be normally distributed with some mean and some standard deviation/variance.  The mean $\mu$ is a function, or simply weighted sum, of our covariates $X$. The unknown parameters we have to estimate are the $\beta$, i.e. weights, and standard deviation $\sigma$ (or variance $\sigma^2$).
 
 One more note regarding estimation, it is good to distinguish models from estimation procedures. The following shows the more specific to the more general.
 
@@ -255,6 +255,28 @@ tags$div(
 )
 ```
 
+
+
+```{r abb, echo=FALSE}
+data.frame(
+  Label = c('LM', 'GLM', 'GLMM', 'GAMM', 'OLS', 'WLS', 'GLS', 'GEE', 'GMM'),
+  Name = c(
+    'Linear Model',
+    'Generalized Linear Model',
+    'Generalized Linear Mixed Model',
+    'Generalized Linear Mixed Model',
+    'Ordinary Least Squares',
+    'Weighted Least Squares',
+    'Generalized Least Squares',
+    'Generalized Estimating Equations',
+    'Generalized Method of Moments'
+  )
+) %>%
+  kable_df() %>% 
+  kable_styling(font_size = 6)
+```
+
+
 ## Optimization
 
 In practice, we use  *optimization* methods to iteratively search for the best estimates for the parameters of a given model.  The functions we explored above provide a goal- to minimize loss (however defined- least squares for continuous, classification error for binary, etc.) or maximize the likelihood (or posterior probability in the Bayesian context). Whatever the goal, an optimizing *algorithm* will typically be used to find the estimates that reach that goal. Some approaches are very general, some are better for certain types of modeling problems.  These algorithms continue to make guesses until some criterion has been reached[^optimizing].
@@ -263,7 +285,7 @@ You generally don't need to know the details to use these algorithms to fit mode
 
 ## Fitting Models
 
-With practically every modern package in R, the two components are required to fit a model are the model formula, and a data frame that contains the variables specified in that formula.  Consider the following models. In general the syntax is the same or identical, with special considerations for the type of model. The data argument is not included.
+With practically every modern modeling package in R, the two components are required to fit a model are the model formula, and a data frame that contains the variables specified in that formula.  Consider the following models. In general the syntax is the same or identical, with special considerations for the type of model. The data argument is not included.
 
 ```{r model-syntax, eval=FALSE}
 lm(y ~ x + z)                                        # standard linear model/OLS
@@ -356,15 +378,15 @@ summary(happy_model_0)
 happy_model_0_sum = summary(happy_model_0)
 ```
 
-The summary tells us that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point.  For example, with regard to the effect of log GDP, moving one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_0)['log_gdp_per_capita'], 1)` units of happiness.
+The summary tells us that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point. The main thing to look at are the actual coefficients. For example, with regard to the effect of log GDP, moving one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_0)['log_gdp_per_capita'], 1)` units of happiness. Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense.  Before we showed that the standard deviation of the happiness scale was `r rnd(sd(happy$happiness_score, na.rm = TRUE), 1)`, so this would typically represent a notable effect in terms of standard deviation units- `r rnd(coef(happy_model_0)['log_gdp_per_capita']/sd(happy$happiness_score, na.rm = TRUE), 1)`.
 
-A better approach is to get a sense of the uncertainty.
+One thing we must also have in order to understand our results is to get a sense of the uncertainty in the effects.  The following provides confidence intervals for each of the coefficients.
 
 ```{r model-confint}
 confint(happy_model_0)
 ```
 
-Now we understand the range of plausible values for the coefficients.
+Now we have a sense of the range of plausible values for the coefficients.  The value we actually estimate is the best guess given our circumstances, but slight changes in the data, the way we collect it, the time we collect it, etc., all would result in a slightly different result. The confidence interval provides a range of what we could expect given the uncertainty.
 
 
 ## Variable Transformations 
@@ -377,7 +399,11 @@ Transforming the target, covariates, or both provides a few benefits, and should
 - Easier convergence
 - Help with heteroscedasticity
 
-For example, merely centering predictor variables, i.e. subtracting the mean, provides a more interpretable intercept that will fall within the actual range of the target variable, telling us what the value of the target variable is when the covariates are at their means (or reference value if categorical).  The following table shows the interpretation of two extremely common transformations, logging and scaling (i.e. standardizing to mean zero, standard deviation one).
+For example, merely centering predictor variables, i.e. subtracting the mean, provides a more interpretable intercept that will fall within the actual range of the target variable, telling us what the value of the target variable is when the covariates are at their means (or reference value if categorical).  
+
+### Numeric Variables
+
+The following table shows the interpretation of two extremely common transformations, logging and scaling (i.e. standardizing to mean zero, standard deviation one).
 
 ```{r coefficient-interpretation, echo=FALSE}
 tibble(
@@ -396,7 +422,7 @@ tibble(
   kable_df(booktabs = T, escape = FALSE)
 ```
 
-For example, to start with the normal situation, a one-unit change in $x$, i.e. $\Delta x =1$, leads to $\beta$ unit change in $y$. If we log the target variable $y$, the interpreation of the coefficient for $x$ is that a one-unit change in $x$ leads to an (approximately) 100$\cdot$$\beta$% change in $y$. The 100 changes from a proportion to percentage change. More concretely, if $\beta$ was .5, a unit change in $x$ leads to (roughly) a 50% change in $y$. If both were logged, a percentage change in $x$ leads to a $\beta$ percentage change in y[^logtransform].  These percentage change interpretations are called [elasticities](https://en.wikipedia.org/wiki/Elasticity_(economics)) in econometrics and areas trained similarly.
+For example, to start with the normal situation, a one-unit change in $x$, i.e. $\Delta x =1$, leads to $\beta$ unit change in $y$. If we log the target variable $y$, the interpreation of the coefficient for $x$ is that a one-unit change in $x$ leads to an (approximately) 100$\cdot$$\beta$% change in $y$. The 100 changes the result from a proportion to percentage change. More concretely, if $\beta$ was .5, a unit change in $x$ leads to (roughly) a 50% change in $y$. If both were logged, a percentage change in $x$ leads to a $\beta$ percentage change in y[^logtransform].  These percentage change interpretations are called [elasticities](https://en.wikipedia.org/wiki/Elasticity_(economics)) in econometrics and areas trained similarly.
 
 It is very common to use *standardized* variables as well, also called normalizing, or simply scaling. If $y$ and $x$ are both standardized, a one unit (i.e. one standard deviation) change in $x$ leads to a $\beta$ standard deviation change in $y$.  Again, if $\beta$ was .5, a standard deviation change in $x$ leads to a half standard deviation change in $y$.
 
@@ -465,7 +491,7 @@ For example, we can see that for this balanced data set, the corresponding coeff
 
 In other circumstances, we can use *categorical embeddings* to reduce a very large number of categorical levels to a smaller number of numeric variables.  This very commonly employed in deep learning.
 
-## Extensions
+## Extensions to the Standard Linear Model
 
 ### Different Types of Targets
 
@@ -494,7 +520,7 @@ glm(y ~ x, family = poisson)
 $$\ln{\frac{\mu}{1-\mu}} =  X\beta$$
 $$\mu = \frac{1}{1+e^{-X\beta}}$$
 $$y \sim \mathcal{Binom}(\mathrm{prob}=\mu, \mathrm{size} = 1)$$
-Here are link function is called the *logit*, and it's inverse takes our linear predictor and puts it on the probability scale.
+Here our link function is called the *logit*, and it's inverse takes our linear predictor and puts it on the probability scale.
 
 Again, some code can help drive this home.
 
