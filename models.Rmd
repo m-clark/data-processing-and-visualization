@@ -279,22 +279,22 @@ data.frame(
 
 ## Optimization
 
-In practice, we use  *optimization* methods to iteratively search for the best estimates for the parameters of a given model.  The functions we explored above provide a goal- to minimize loss (however defined- least squares for continuous, classification error for binary, etc.) or maximize the likelihood (or posterior probability in the Bayesian context). Whatever the goal, an optimizing *algorithm* will typically be used to find the estimates that reach that goal. Some approaches are very general, some are better for certain types of modeling problems.  These algorithms continue to make guesses until some criterion has been reached[^optimizing].
+In practice, we use  *optimization* methods to iteratively search for the best estimates for the parameters of a given model.  The functions we explored above provide a goal- to minimize loss (however defined- least squares for continuous, classification error for binary, etc.) or maximize the likelihood (or posterior probability in the Bayesian context). Whatever the goal, an optimizing *algorithm* will typically be used to find the estimates that reach that goal. Some approaches are very general, some are better for certain types of modeling problems.  These algorithms continue to make guesses until some criterion has been reached (*convergence*)[^optimizing].
 
-You generally don't need to know the details to use these algorithms to fit models, but knowing a little bit may prove useful to deal with more complex data scenarios, where *convergence* can be difficult.  Some packages will even have documentation specifically dealing with convergence issues. In the more predictive models previously discussed, knowing more about the optimization algorithm may speedup the time it takes to train the model, or smooth out the variability in the process.
+You generally don't need to know the details to use these algorithms to fit models, but knowing a little bit about the optimization process and available options may prove useful to deal with more complex data scenarios, where convergence can be difficult.  Some packages will even have documentation specifically dealing with convergence issues. In the more predictive models previously discussed, knowing more about the optimization algorithm may speedup the time it takes to train the model, or smooth out the variability in the process.
 
 ## Fitting Models
 
-With practically every modern modeling package in R, the two components are required to fit a model are the model formula, and a data frame that contains the variables specified in that formula.  Consider the following models. In general the syntax is the same or identical, with special considerations for the type of model. The data argument is not included.
+With practically every modern modeling package in R, the two components required to fit a model are the model formula, and a data frame that contains the variables specified in that formula.  Consider the following models. In general the syntax is the same or identical, with special considerations for the type of model. The data argument is not included.
 
 ```{r model-syntax, eval=FALSE}
-lm(y ~ x + z)                                        # standard linear model/OLS
-glm(y ~ x + z, family = 'binomial')                  # logistic regression with binary response
-glm(y ~ x + z + offset(log(q)), family = 'poisson')  # count/rate model
-pscl::hurdle(y ~ x + z, dist = "negbin")             # hurdle model with negative binomial response
-lme4::glmer(y ~ x + (1|group), family = 'binomial')  # generalized linear mixed model
-mgcv::gam(y ~ s(x))                                  # generalized additive model
-survival::coxph(Surv(time = t, event = q) ~ x)       # Cox Proportional Hazards Regression
+lm(y ~ x + z)                                          # standard linear model/OLS
+glm(y ~ x + z, family = 'binomial')                    # logistic regression with binary response
+glm(y ~ x + z + offset(log(q)), family = 'poisson')    # count/rate model
+pscl::hurdle(y ~ x + z, dist = "negbin")               # hurdle model with negative binomial response
+lme4::glmer(y ~ x + (1 | group), family = 'binomial')  # generalized linear mixed model
+mgcv::gam(y ~ s(x))                                    # generalized additive model
+survival::coxph(Surv(time = t, event = q) ~ x)         # Cox Proportional Hazards Regression
 
 # Bayesian
 brms::brm(
@@ -333,7 +333,7 @@ happy_model_0 = lm(
 ```
 
 
-### Using Matrices
+### Using matrices
 
 Many packages still allow for matrix input instead of specifying a model formula, or even require it (but shouldn't).  This means separating data into a model (or design) matrix, and the vector or matrix of the target variable(s).  For example, if we needed a speed boost and weren't concerned about some typical output we could use <span class="func" style = "">lm.fit</span>.
 
@@ -356,7 +356,7 @@ nrow(X)
 ```
 
 
-We can now fit the model as follows.  The response variable must contain the same number of observations as in the model matrix.
+We can now fit the model as follows.  The target variable must contain the same number of observations as in the model matrix.
 
 ```{r model-fit-model-matrix}
 y = happy$happiness_score[as.integer(rownames(X))]
@@ -365,7 +365,7 @@ summary(happy_model_matrix)
 coef(happy_model_matrix)
 ```
 
-In my experience, it is generally a bad sign if a package requires that you create the model matrix rather than doing so itself.  Such packages tend to skip out on many other things like using typical methods and so forth, making them even more difficult to work with.  In general, the only real time you should need to use model matrices is when you are creating your own modeling package, doing simulations, or otherwise know why you need them.
+In my experience, it is generally a bad sign if a package requires that you create the model matrix rather than doing so itself.  I typically find that such packages tend to skip out on many other things like using typical methods like <span class="func" style = "">predict</span>, <span class="func" style = "">coef</span>, etc., making them even more difficult to work with.  In general, the only real time you should need to use model matrices is when you are creating your own modeling package, doing simulations, utilizing model speed-ups, or otherwise know why you need them.
 
 
 ## Summarizing Models
@@ -378,7 +378,7 @@ summary(happy_model_0)
 happy_model_0_sum = summary(happy_model_0)
 ```
 
-The summary tells us that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point. The main thing to look at are the actual coefficients. For example, with regard to the effect of log GDP, moving one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_0)['log_gdp_per_capita'], 1)` units of happiness. Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense.  Before we showed that the standard deviation of the happiness scale was `r rnd(sd(happy$happiness_score, na.rm = TRUE), 1)`, so this would typically represent a notable effect in terms of standard deviation units- `r rnd(coef(happy_model_0)['log_gdp_per_capita']/sd(happy$happiness_score, na.rm = TRUE), 1)`.
+The summary tells us that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point. The main thing to look at are the actual coefficients. For example, with regard to the effect of log GDP, moving one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_0)['log_gdp_per_capita'], 1)` units of happiness. Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense.  Before we showed that the standard deviation of the happiness scale was `r rnd(sd(happy$happiness_score, na.rm = TRUE), 1)`. So this would typically represent a notable effect in terms of standard deviation units- moving a percentage point on GDP would result in a `r rnd(coef(happy_model_0)['log_gdp_per_capita']/sd(happy$happiness_score, na.rm = TRUE), 1)` standard deviation increase in state-level happiness.
 
 One thing we must also have in order to understand our results is to get a sense of the uncertainty in the effects.  The following provides confidence intervals for each of the coefficients.
 
@@ -391,7 +391,7 @@ Now we have a sense of the range of plausible values for the coefficients.  The 
 
 ## Variable Transformations 
 
-Transforming the target, covariates, or both provides a few benefits, and should regularly be used for most models. Some of these include[^notfornormal]:
+Transforming variables can provide a few benefits, whether applied to the target, covariates, or both, and should regularly be used for most models. Some of these benefits include[^notfornormal]:
 
 - Interpretable intercepts
 - More comparable covariate effects
@@ -401,9 +401,9 @@ Transforming the target, covariates, or both provides a few benefits, and should
 
 For example, merely centering predictor variables, i.e. subtracting the mean, provides a more interpretable intercept that will fall within the actual range of the target variable, telling us what the value of the target variable is when the covariates are at their means (or reference value if categorical).  
 
-### Numeric Variables
+### Numeric variables
 
-The following table shows the interpretation of two extremely common transformations, logging and scaling (i.e. standardizing to mean zero, standard deviation one).
+The following table shows the interpretation of two extremely common transformations applied to numeric variables- logging and scaling (i.e. standardizing to mean zero, standard deviation one).
 
 ```{r coefficient-interpretation, echo=FALSE}
 tibble(
@@ -428,7 +428,7 @@ It is very common to use *standardized* variables as well, also called normalizi
 
 Another common transformation, particularly in machine learning, is the *min-max normalization*, changing variables to range from some minimum to some maximum, usually zero to one.
 
-### Categorical Variables
+### Categorical variables
 
 For categorical variables, we can employ what is called *effects coding* to test for specific types of group differences.  Far and away the most common approach is called *dummy coding* or *one-hot encoding*[^onehotvsdummy].  For example:
 
@@ -491,9 +491,17 @@ For example, we can see that for this balanced data set, the corresponding coeff
 
 In other circumstances, we can use *categorical embeddings* to reduce a very large number of categorical levels to a smaller number of numeric variables.  This very commonly employed in deep learning.
 
+### Scales, indices, and dimension reduction
+
+It is often the case that we have several correlated items for which all do not need to go into the model.  For example, instead of using all items in a psychological scale, we can take the scale score however defined, which is often just a *sum score*. Often people will create an index by using a *principal components analysis*, which can be thought of as a means to create a weighted sum score, or set of scores.  Some (especially binary) items may tend toward the creation of a single variable that simply notes whether any of those items was present or not.
+
+#### Two-step approaches
+
+Some might do a preliminary analysis such as a cluster analysis or factor analysis. In the former we reduce several variables to a single categorical label. Factor analysis does the same but results in a more expressive continuous metric. While fine to use, the corresponding results are measured with error, so treating the categories or factor scores as you would observed variables will typically result in optimistic results when you later include them in a subsequent analysis like a linear regression.  Though this difference is probably slight in most applications, keen reviewers would probably point out the model shortcoming.
+
 ## Extensions to the Standard Linear Model
 
-### Different Types of Targets
+### Different types of targets
 
 In many data situations, we do not have a continuous target variable, or may want to use a different distribution to get a better fit, or adhere to some theoretical perspective.  For example, count data is not continuous and often notably skewed, so assuming a normal symmetric distribution may not work as well. From a data generating perspective we can use the Poisson distribution[^poislambda] for the target variable instead.
 
@@ -543,7 +551,7 @@ glm(y ~ x, family = binomial)
 
 You'll have noticed that when we fit these models we used <span class="func" style = "">glm</span> instead of <span class="func" style = "">lm</span>. The normal linear model is a special case of *generalized linear models*, which includes a specific class of distributions- normal, poisson, binomial, gamma, beta and more- collectively referred to as the [exponential family](https://en.wikipedia.org/wiki/Exponential_family).  While this can cover a lot of ground, you do not have to restrict yourself to that family.  The main point is that you have tools to deal with continuous, binary, count, ordinal, and other types of data.
 
-### Correlated Data
+### Correlated data
 
 Often we have data that is correlated, like when we observe multiple observations for individuals (i.e. longitudinal studies), or observations are clustered within geographic units.  There are many ways to analyze all kinds of correlated data in the form of clustered data, time series, spatial data and similar. In terms of understanding the mean function and data generating distribution for our target variable as in our previous models, not much changes.  However, we will want to utilize estimation techniques that take this correlation into account.
 
