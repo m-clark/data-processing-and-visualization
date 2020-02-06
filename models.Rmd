@@ -53,8 +53,8 @@ Most models you see in published reports are linear models, and form the basis o
 ```{r model-names, echo=FALSE}
 tibble(
   Type = rep(c('Target', 'Prediction'), each = 4),
-  Names = c('Dependent variable', 'Response', 'Outcome', 'Y',
-            'Independent variable', 'Predictor', 'Covariate', 'X')
+  Names = c('Dependent variable', 'Response', 'Outcome', 'Output', 'Y',
+            'Independent variable', 'Predictor', 'Covariate', 'Input', 'X')
 ) %>% 
   kable_df() %>% 
   collapse_rows()
@@ -489,15 +489,17 @@ nafta %>%
 
 For example, we can see that for this balanced data set, the corresponding coefficient is the halfway point, i.e. average, of the U.S. and Mexico coefficients from dummy coding: `r rnd(coef(model_dummy)[2])` + `r rnd(coef(model_dummy)[3])` / 2 = `r rnd(mean(coef(model_dummy)[2:3]))`.
 
-In other circumstances, we can use *categorical embeddings* to reduce a very large number of categorical levels to a smaller number of numeric variables.  This very commonly employed in deep learning.
+In other circumstances, we can use *categorical embeddings* to reduce a very large number of categorical levels to a smaller number of numeric variables.  This is very commonly employed in deep learning.
+
+
 
 ### Scales, indices, and dimension reduction
 
-It is often the case that we have several correlated items for which all do not need to go into the model.  For example, instead of using all items in a psychological scale, we can take the scale score however defined, which is often just a *sum score*. Often people will create an index by using a *principal components analysis*, which can be thought of as a means to create a weighted sum score, or set of scores.  Some (especially binary) items may tend toward the creation of a single variable that simply notes whether any of those items was present or not.
+It is often the case that we have several correlated variables/items which do not all need to go into the model.  For example, instead of using all items in a psychological scale, we can use the scale score, however defined, which is often just a *sum score* of the underlying items. Often people will create an index by using a *principal components analysis*, which can be thought of as a means to create a weighted sum score, or set of scores.  Some (especially binary) items may tend toward the creation of a single variable that simply notes whether any of those collection of variables was present or not.
 
 #### Two-step approaches
 
-Some might do a preliminary analysis such as a cluster analysis or factor analysis. In the former we reduce several variables to a single categorical label. Factor analysis does the same but results in a more expressive continuous metric. While fine to use, the corresponding results are measured with error, so treating the categories or factor scores as you would observed variables will typically result in optimistic results when you later include them in a subsequent analysis like a linear regression.  Though this difference is probably slight in most applications, keen reviewers would probably point out the model shortcoming.
+Some might do a preliminary analysis, such as a *cluster analysis* or *factor analysis*, to create new target or predictor variables. In the former we reduce several variables to a single categorical label. Factor analysis does the same but results in a more expressive continuous metric. While fine to use, the corresponding results are measured with error, so treating the categories or factor scores as you would observed variables will typically result in optimistic results when you later include them in a subsequent analysis like a linear regression.  Though this difference is probably slight in most applications, keen reviewers would probably point out the model shortcoming.
 
 ## Extensions to the Standard Linear Model
 
@@ -549,26 +551,29 @@ glm(y ~ x, family = binomial)
 # glm(cbind(events, nonevents) ~ x, family = binomial)
 ```
 
-You'll have noticed that when we fit these models we used <span class="func" style = "">glm</span> instead of <span class="func" style = "">lm</span>. The normal linear model is a special case of *generalized linear models*, which includes a specific class of distributions- normal, poisson, binomial, gamma, beta and more- collectively referred to as the [exponential family](https://en.wikipedia.org/wiki/Exponential_family).  While this can cover a lot of ground, you do not have to restrict yourself to that family.  The main point is that you have tools to deal with continuous, binary, count, ordinal, and other types of data.
+You'll have noticed that when we fit these models we used <span class="func" style = "">glm</span> instead of <span class="func" style = "">lm</span>. The normal linear model is a special case of *generalized linear models*, which includes a specific class of distributions- normal, poisson, binomial, gamma, beta and more- collectively referred to as the [exponential family](https://en.wikipedia.org/wiki/Exponential_family).  While this family can cover a lot of ground, you do not have to restrict yourself to it, and many R modeling packages will provide easy access to more.  The main point is that you have tools to deal with continuous, binary, count, ordinal, and other types of data.
 
 ### Correlated data
 
-Often we have data that is correlated, like when we observe multiple observations for individuals (i.e. longitudinal studies), or observations are clustered within geographic units.  There are many ways to analyze all kinds of correlated data in the form of clustered data, time series, spatial data and similar. In terms of understanding the mean function and data generating distribution for our target variable as in our previous models, not much changes.  However, we will want to utilize estimation techniques that take this correlation into account.
-
+Often in standard regression modeling situations we have data that is correlated, like when we observe multiple observations for individuals (i.e. longitudinal studies), or observations are clustered within geographic units.  There are many ways to analyze all kinds of correlated data in the form of clustered data, time series, spatial data and similar. In terms of understanding the mean function and data generating distribution for our target variable, as we did in our previous models, not much changes.  However, we will want to utilize estimation techniques that take this correlation into account.  Examples of such models include:
 
 - Mixed models (e.g. random intercepts, 'multilevel' models)
 - Time series models (autoregressive)
 - Spatial models (e.g. conditional autoregressive)
 
-Again, the main point here is awareness.
+As demonstration is beyond the scope of this document, the main point here is awareness. But see these on [mixed models](https://m-clark.github.io/mixed-models-with-R/) and [generalized additive models](https://m-clark.github.io/generalized-additive-models/).
+
+### Other extensions
+
+There are many types of models that will take one well beyond the standard linear model.  In some cases, the focus is multivariate, trying to model many targets at once. Many models will even be domain-specific, tailored to a very narrow type of problem. Whatever the scenario, having a good understanding of the models we've been discussing will likely help you navigate these new waters much more easily.
 
 
 
 ## Variable Importance
 
-Determining relative variable importance is at best an approximation with some methods and a fairly hopeless endeavor with others.  For just basic linear regression there are many methods that would not necessarily come to the same conclusions.  Some believe that standardizing variables, i.e. putting them on the same scale (e.g. mean 0 sd 1), is enough, but it is not, and doesn't help with categorical inputs.
+In many circumstances, one of the modeling goals is to determine which predictor variable is most important out of the collection used in the model.  However, determining relative variable importance is at best an approximation with some methods, and a fairly hopeless endeavor with others.  For just basic linear regression there are many methods that would not necessarily come to the same conclusions.  Some believe that standardizing variables, i.e. putting them on the same scale (e.g. mean 0 sd 1), is enough, but it is not, and doesn't help with comparison to categorical inputs.  If you're model is not strong, it doesn't make much sense to even worry about which is the best of a bad lot.
 
-The other reason that 'importance' is a problematic endeavor is that a statistical result doesn't speak to practical action, nor does it speak to the fact that small effects may be very important.  Sex may be an important driver in social science model, but we cannot do anything about a person's sex for many outcomes that may be of interest. With health outcomes, any effects might be worthy of attention, however small, if they could practically increase the likelihood of survival.
+Another reason that 'importance' is a problematic endeavor is that a statistical result doesn't speak to practical action, nor does it speak to the fact that small effects may be very important.  Sex may be an important driver in social science model, but we cannot do anything about a person's sex for many outcomes that may be of interest. With health outcomes, any effects might be worthy of attention, however small, if they could practically increase the likelihood of survival.
 
 Even if you can come up with a metric you like, you would still need some measure of uncertainty around that to make a claim that one predictor is statistically better than another, and the only real approach to do that is some computationally expensive procedure that you will likely have to put together by hand.
 
