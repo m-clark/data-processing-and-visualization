@@ -33,7 +33,7 @@ We can begin with a taxonomy that broadly describes two classes of models:
 
 For supervised settings, there is a target or set of target variables which we aim to predict with a set of predictor variables or covariates.  This is far and away the most common case, and the one we will focus on here.
 
-In the case of unsupervised models, the data is the target, and includes techniques such as principal components analysis, factor analysis, cluster analytic approaches, topic modeling, and many others. A key notion is *dimension reduction*, either of the columns or rows.  For example, we may have many items of a survey we wish to group together into a few key concepts, or cluster thousands of observations into a few simple categories.
+In the case of unsupervised models, the data is the target, and this setting includes techniques such as principal components analysis, factor analysis, cluster analytic approaches, topic modeling, and many others. A key notion is *dimension reduction*, either of the columns or rows.  For example, we may have many items of a survey we wish to group together into a few key concepts, or cluster thousands of observations into a few simple categories.
 
 
 We can also broadly describe two primary goals of modeling:
@@ -43,7 +43,7 @@ We can also broadly describe two primary goals of modeling:
 
 Different models will provide varying amounts of predictive and explanatory power.  In some settings, prediction is almost entirely the goal, with little need to understand the underlying details of the relation of inputs to outputs.  For example, in a model that predicts words to suggest when typing, we don't really need to know nor much care about the details except to be able to improve those suggestions. In scientific studies however, we may be much more interested in the (potentially causal) relations among the variables under study.
 
-While these are sometimes competing goals, it is definitely not the case that they are mutually exclusive. For example, a fully interpretable model (statistically speaking) with no predictive capability is fairly useless in practical terms, and a highly predictive model may also be highly interpretable,
+While these are sometimes competing goals, it is definitely not the case that they are mutually exclusive. For example, a fully interpretable model, statistically speaking, may have no predictive capability, and so is fairly useless in practical terms.  Often very predictive models offer little understanding.  But sometimes we can luck out and have  a highly predictive model that is also highly interpretable.
 
 ## Linear models
 
@@ -304,6 +304,8 @@ brms::brm(
 )
 ```
 
+For examples of many other types of models, see this [document](https://m-clark.github.io/R-models/).
+
 Let's run an example. We'll use the world happiness dataset[^happy]. This is country level data based on surveys taken at various years, and the scores are averages or proportions, along with other values like GDP.  
 
 ```{r model-prep, echo=1:5}
@@ -501,6 +503,118 @@ It is often the case that we have several correlated variables/items which do no
 
 Some might do a preliminary analysis, such as a *cluster analysis* or *factor analysis*, to create new target or predictor variables. In the former we reduce several variables to a single categorical label. Factor analysis does the same but results in a more expressive continuous metric. While fine to use, the corresponding results are measured with error, so treating the categories or factor scores as you would observed variables will typically result in optimistic results when you later include them in a subsequent analysis like a linear regression.  Though this difference is probably slight in most applications, keen reviewers would probably point out the model shortcoming.
 
+
+
+
+### Don't discretize
+
+Little pains advanced modelers more than seeing results where a nice expressive continuous metric butchered into two categories.  There is almost never a reason to do this.  There are reasons to collapse rare labels of a categorical variable, so that the new variable has fewer but more frequent categories, but even that can cause problems, and doesn't really overcome the fact that you simply didn't have enough data to begin with.
+
+## Variable Importance
+
+In many circumstances, one of the modeling goals is to determine which predictor variable is most important out of the collection used in the model.  However, determining relative variable importance is at best an approximation with some methods, and a fairly hopeless endeavor with others.  For just basic linear regression there are many methods that would not necessarily come to the same conclusions.  Some believe that standardizing variables, i.e. putting them on the same scale (e.g. mean 0 sd 1), is enough, but it is not, and doesn't help with comparison to categorical inputs.  If you're model is not strong, it doesn't make much sense to even worry about which is the best of a bad lot.
+
+Another reason that 'importance' is a problematic endeavor is that a statistical result doesn't speak to practical action, nor does it speak to the fact that small effects may be very important.  Sex may be an important driver in social science model, but we cannot do anything about a person's sex for many outcomes that may be of interest. With health outcomes, any effects might be worthy of attention, however small, if they could practically increase the likelihood of survival.
+
+Even if you can come up with a metric you like, you would still need some measure of uncertainty around that to make a claim that one predictor is statistically better than another, and the only real approach to do that is some computationally expensive procedure that you will likely have to put together by hand.
+
+As an example, for standard linear regression there are many methods that decompose $R^2$ into relative contributions by the covariates.  The tools to do so have to re-run the model in many ways to produce these estimates (see the <span class="pack" style = "">relaimpo</span> package for example) but you would have to use bootstrapping or similar to get interval estimates for those measures of importance. Certain techniques like random forests have a natural way to provide variable importance metrics, but providing inference on them would similarly be very computationally expensive.
+
+In the end though, I think it is probably best to assume that any effect that seems statistically distinct from zero might be worthy of attention, and can be regarded for its own sake.  You can reduce 
+
+## Extracting Output
+
+The better you get at modeling, the more often you are going to need to get at certain parts of the model output easily.  For example, we can extract t
+
+
+Why would you want to do this?  A simple example would be to compare effects across different settings. We can collect the values, put them in a data frame, and then to a table or visualization.
+
+Typical modeling methods you might want to use:
+
+- <span class="func" style = "">summary</span>: print results in a legible way
+- <span class="func" style = "">plot</span>: plot something about the model (e.g. diagnostic plots)
+- <span class="func" style = "">predict</span>: make predictions, possibly on new data
+- <span class="func" style = "">confint</span>: get confidence intervals for parameters
+- <span class="func" style = "">coef</span>: extract coefficients
+- <span class="func" style = "">fitted</span>: extract fitted values
+- <span class="func" style = "">residuals</span>: extract residuals
+- <span class="func" style = "">AIC</span>: extract AIC
+
+Here is an example of using the <span class="func" style = "">predict</span> and <span class="func" style = "">coef</span> methods.
+
+```{r model-methods}
+predict(happy_model_0, newdata = happy %>% slice(1:5))
+coef(happy_model_0)
+```
+
+Also, it's useful to assign the summary results to an object, so that you can extract things that are also useful but would not be in the model object.  We did this before, so now let's take a look.
+
+```{r model-summary}
+str(happy_model_0_sum, 1)
+```
+
+If we want the adjusted $R^2$ or RMSE, they aren't readily available in the model object, but in the summary object, we can pluck them as we would any other [list object][lists].
+
+```{r extract-from-model}
+happy_model_0_sum$adj.r.squared
+happy_model_0_sum[['sigma']]
+```
+
+### Package support
+
+There are many packages available to get at model results.  One of the most widely used is broom, which has tidy and other functions that can apply in different ways to different models.
+
+```{r broom-demo}
+library(broom)
+tidy(happy_model_0)
+```
+
+Some packages will produce tables for a model object that are more or less ready for publication.  However, unless you know it's in the exact style you need, you're probably better off dealing with it yourself.  For example, you can use tidy and do minor cleanup to get the table ready for publication.
+
+
+
+## Visualization
+
+> Models require visualization to be understood.
+
+If you aren't using visualization as a fundamental part of your model exploration, you're likely leaving a lot of that exploration behind, and not communicating the results as well as you could to the broadest audience possible.  When adding nonlinear effects, interactions, and more, visualization is a must. Thankfully there are many packages to help you get data you need to visualize effects.
+
+
+We start with the <span class="pack" style = "">emmeans</span> package.  In the following example we have a country effect and which to get the mean happiness scores per country.  We then visualize the results.  Here we can see that Mexico is lowest on average.
+
+```{r emmeans}
+happy_model_nafta = lm(happiness_score ~ country + year, data = nafta)
+
+library(emmeans)
+country_means = emmeans(happy_model_nafta, ~ country)
+country_means
+
+plot(country_means)
+```
+
+We can also test for pairwise differences between the countries, and there's no reason not to visualize that also.  In the following,  after adjustment Mexico and U.S. might not differ on mean happiness, but the other comparisons are statistically notable.
+
+```{r emmeans-pairwise}
+pw_comparisons = contrast(country_means, method = 'pairwise', adjust = 'bonferroni')
+pw_comparisons
+plot(pw_comparisons)
+```
+
+
+The following example uses <span class="pack" style = "">ggeffects</span>.  First, we run a model with an interaction of country and year (we'll talk more about interactions later). Then we get predictions for the year by country, and subsequently visualize.  We can see that the trend, while negative for all countries, is more pronounced as we move south.
+
+```{r ggeffects}
+happy_model_nafta = lm(happiness_score ~ country*year, data = nafta)
+
+library(ggeffects)
+preds = ggpredict(happy_model_nafta, terms = c('year', 'country'))
+
+plot(preds)
+```
+
+Whenever you move to generalized linear models or other more complicated settings, visualization is even more required, so it's best to have some tools at your disposal.
+
+
 ## Extensions to the Standard Linear Model
 
 ### Different types of targets
@@ -565,35 +679,15 @@ As demonstration is beyond the scope of this document, the main point here is aw
 
 ### Other extensions
 
-There are many types of models that will take one well beyond the standard linear model.  In some cases, the focus is multivariate, trying to model many targets at once. Many models will even be domain-specific, tailored to a very narrow type of problem. Whatever the scenario, having a good understanding of the models we've been discussing will likely help you navigate these new waters much more easily.
+There are many types of models that will take one well beyond the standard linear model.  In some cases, the focus is multivariate, trying to model many targets at once. Other models will even be domain-specific, tailored to a very narrow type of problem. Whatever the scenario, having a good understanding of the models we've been discussing will likely help you navigate these new waters much more easily.
 
 
+## Model Exploration Summary
 
-## Variable Importance
-
-In many circumstances, one of the modeling goals is to determine which predictor variable is most important out of the collection used in the model.  However, determining relative variable importance is at best an approximation with some methods, and a fairly hopeless endeavor with others.  For just basic linear regression there are many methods that would not necessarily come to the same conclusions.  Some believe that standardizing variables, i.e. putting them on the same scale (e.g. mean 0 sd 1), is enough, but it is not, and doesn't help with comparison to categorical inputs.  If you're model is not strong, it doesn't make much sense to even worry about which is the best of a bad lot.
-
-Another reason that 'importance' is a problematic endeavor is that a statistical result doesn't speak to practical action, nor does it speak to the fact that small effects may be very important.  Sex may be an important driver in social science model, but we cannot do anything about a person's sex for many outcomes that may be of interest. With health outcomes, any effects might be worthy of attention, however small, if they could practically increase the likelihood of survival.
-
-Even if you can come up with a metric you like, you would still need some measure of uncertainty around that to make a claim that one predictor is statistically better than another, and the only real approach to do that is some computationally expensive procedure that you will likely have to put together by hand.
-
-As an example, for standard linear regression there are many methods that decompose $R^2$ into relative contributions by the covariates.  The tools to do so have to re-run the model in many ways to produce these estimates (see the <span class="pack" style = "">relaimpo</span> package for example) but you would have to use bootstrapping or similar to get interval estimates for those measures of importance. Certain techniques like random forests have a natural way to provide variable importance metrics, but providing inference on them would similarly be very computationally expensive.
-
-In the end though, I think it is probably best to assume that any effect that seems statistically distinct from zero might be worthy of attention, and can be regarded for its own sake.  You can reduce 
+At this point you should have a good idea of how to get started exploring models with R.  Generally what you will explore will be based on theory, or merely curiosity. Specific packages while make certain types of models easy to pull off, without much change to the syntax.  Almost invariably, you will need to process the data to make it more amenable to analysis and/or more interpretable.  After model fitting, summaries and visualizations go a long way toward understanding the part of the world you are exploring.
 
 
-## Extracting Output
-
-
-
-broom
-
-
-## Visualization
-
-
-
-[^optimizing]: For example, if the next best guess for a regression coefficient results in only a difference to many decimal places from the previous one, you probably don't care and can stop your search. Reaching your desired stopping point is known as *convergence*. In other cases, you may simply set a maximum number of iterations.  
+[^optimizing]: For example, if the next best guess for a regression coefficient results in only a difference to many decimal places from the previous one, you probably don't care and can stop your search. Reaching your desired stopping point is known as *convergence*. In other cases, you may simply set a maximum number of iterations.
 
 [^happy]: The World Happiness Report is a survey of the state of global happiness that ranks countries by how happy their citizens perceive themselves to be. Almost all the information here is gleaned from the report and appendices. This regards the report data from 2008-2018 included in the 2019 report.
 
