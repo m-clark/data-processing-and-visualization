@@ -279,9 +279,11 @@ data.frame(
 
 ## Optimization
 
-In practice, we use  *optimization* methods to iteratively search for the best estimates for the parameters of a given model.  The functions we explored above provide a goal- to minimize loss (however defined- least squares for continuous, classification error for binary, etc.) or maximize the likelihood (or posterior probability in the Bayesian context). Whatever the goal, an optimizing *algorithm* will typically be used to find the estimates that reach that goal. Some approaches are very general, some are better for certain types of modeling problems.  These algorithms continue to make guesses until some criterion has been reached (*convergence*)[^optimizing].
+In practice, we typically use *optimization* methods to iteratively search for the best estimates for the parameters of a given model.  The functions we explored above provide a goal- to minimize loss (however defined- least squares for continuous, classification error for binary, etc.) or maximize the likelihood (or posterior probability in the Bayesian context). Whatever the goal, an optimizing *algorithm* will typically be used to find the estimates that reach that goal. Some approaches are very general, some are better for certain types of modeling problems.  These algorithms continue to make guesses until some criterion has been reached (*convergence*)[^optimizing].
 
 You generally don't need to know the details to use these algorithms to fit models, but knowing a little bit about the optimization process and available options may prove useful to deal with more complex data scenarios, where convergence can be difficult.  Some packages will even have documentation specifically dealing with convergence issues. In the more predictive models previously discussed, knowing more about the optimization algorithm may speedup the time it takes to train the model, or smooth out the variability in the process.
+
+**Blurb about MCMC**
 
 ## Fitting Models
 
@@ -375,12 +377,12 @@ In my experience, it is generally a bad sign if a package requires that you crea
 Once we have a model, we'll want to summarize the results of it. Most modeling packages have a summary method we can apply, which will provide parameter estimates, some notion of model fit, inferential statistics, and other output.
 
 ```{r model-summarize, echo=1}
-summary(happy_model_0)
-
 happy_model_0_sum = summary(happy_model_0)
+
+happy_model_0_sum
 ```
 
-The summary tells us that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point. The main thing to look at are the actual coefficients. For example, with regard to the effect of log GDP, moving one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_0)['log_gdp_per_capita'], 1)` units of happiness. Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense.  Before we showed that the standard deviation of the happiness scale was `r rnd(sd(happy$happiness_score, na.rm = TRUE), 1)`. So this would typically represent a notable effect in terms of standard deviation units- moving a percentage point on GDP would result in a `r rnd(coef(happy_model_0)['log_gdp_per_capita']/sd(happy$happiness_score, na.rm = TRUE), 1)` standard deviation increase in state-level happiness.
+The summary provides several pieces of information: the coefficients or weights (`Estimate`), the standard errors, the t-statistic (which is just the coefficient divided by the standard error), and the corresponding p-value. While we can see  that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point. The main thing to look at are the actual coefficients. For example, with regard to the effect of log GDP, moving one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_0)['log_gdp_per_capita'], 1)` units of happiness. Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense.  Before we showed that the standard deviation of the happiness scale was `r rnd(sd(happy$happiness_score, na.rm = TRUE), 1)`. So this would typically represent a notable effect in terms of standard deviation units- moving a percentage point on GDP would result in a `r rnd(coef(happy_model_0)['log_gdp_per_capita']/sd(happy$happiness_score, na.rm = TRUE), 1)` standard deviation increase in state-level happiness.
 
 One thing we must also have in order to understand our results is to get a sense of the uncertainty in the effects.  The following provides confidence intervals for each of the coefficients.
 
@@ -553,7 +555,7 @@ Also, it's useful to assign the summary results to an object, so that you can ex
 str(happy_model_0_sum, 1)
 ```
 
-If we want the adjusted $R^2$ or RMSE, they aren't readily available in the model object, but in the summary object, we can pluck them as we would any other [list object][lists].
+If we want the adjusted $R^2$ or root mean squared error (RMSE, i.e. average error[^rmse]), they aren't readily available in the model object, but in the summary object, we can pluck them as we would any other [list object][lists].
 
 ```{r extract-from-model}
 happy_model_0_sum$adj.r.squared
@@ -706,3 +708,5 @@ At this point you should have a good idea of how to get started exploring models
 [^negloglik]: To be consistent with the many tools that minimize different types of losses, we usually minimize the negative log likelihood, rather than maximize the raw likelihood.
 
 [^pois]: In this case, a Poisson distribution.
+
+[^rmse]: For standard regression models, the divisor for calculating the RMSE is the residual degrees of freedom, but more generally it is just N, the sample size, as many modern models may have more parameters than observations.
