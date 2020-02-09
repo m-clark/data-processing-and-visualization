@@ -1,5 +1,5 @@
 
-```{r model-setup, include=FALSE, eval=TRUE, cache=FALSE}
+```{r model-criticism-setup, include=FALSE, eval=TRUE, cache=FALSE}
 knitr::opts_chunk$set(eval=T, echo=T)
 
 kable_df = function(data, digits=3, ...) {
@@ -20,13 +20,239 @@ perc = function(x, digits = 1) paste(rnd(x*100, digits = digits), '%')
 
 # Model Criticism
 
-How well is the model doing?
+It isn't enough to simply fit a particular model, we must also ask how well it matches the data under study, if it can predict well on new data, where it fails, and more.
 
-Predictive performance
+## Model Fit
+### Standard linear model
 
-Test set
+In the basic regression setting we and think of model fit in terms of a statistical result, or in terms of the match between our model predictions and the observed target values.
 
-Diagnostics
+#### Statistical
+
+In a standard linear model we can compare a model where there are no covariates to the model we care about, which may have many.  This is an almost useless test, but the results are typically reported.  Let's think about it conceptually.
+
+$$\textrm{Total Variance} = \textrm{Model Explained Variance} + \textrm{Residual Variance}$$
+
+So the variability in our target (TV) can be decomposed into that which we can explain with the predictor variables (MEV), and everything else that is not in our model (RV). If we have nothing in the model, then TV = RV.
+
+Let's revisit the summary of our model.  Note the *F-statistic*.
+
+```{r model-summary-rev}
+happy_model_0_sum
+```
+
+
+The standard F statistic can be calculated as follows, where $p$ is the number of predictors[^ftest]:
+
+$$F = \frac{MV/p}{RV/(N-p-1)}$$
+Conceptually it is a ratio of average squared variance to average unexplained variance. We can see this more explicitly as follows, where each predictor's contribution to the total variance is provided in the `Sum Sq` column. 
+
+```{r happy-anova}
+anova(happy_model_0)
+```
+
+If we add those together and use our formula above we get:
+
+$$F = \frac{366.62/3}{160.653/407} = 309.6$$
+Which is what is reported in the summary of the model. And the p-value is just `pf(309.6, 3, 407, lower = FALSE)`, whose values can be extracted from the summary object.
+
+```{r f-stat}
+happy_model_0_sum$fstatistic
+pf(309.6, 3, 407, lower.tail = FALSE)
+```
+
+Because the F-value is so large and p-value so small, the printed result doesn't give us the actual p-value. So let's demonstrate again with a worse model.
+
+```{r f-stat-redux}
+f_test = lm(happiness_score ~ generosity, happy)
+summary(f_test)
+summary(f_test)$fstatistic
+pf(8.78, 1, 533, lower.tail = FALSE)
+```
+
+
+We can make this F-test more explicit by actually fitting a null model and making the comparison.  The following will provide the same result as before. We make sure to use the same data as in the original model, since there are missing values for some covariates.
+
+```{r null-vs-realistic}
+happy_model_null = lm(happiness_score ~ 1, data = model.frame(happy_model_0)) 
+anova(happy_model_null, happy_model_0)
+```
+
+In this case our F statistic generalizes to the following, where $Model\_1$ is the simpler model and $p$ now refers to the total number of parameters estimated (i.e. same as before + 1 for the intercept)
+
+$$F = \frac{(Model_2\ RV - Model_1\ RV)/(p_2 - p_1)}{Model_2\ RV/(N-p_2-1)}$$
+```{r happy-anova-rev}
+anova(happy_model_null, happy_model_0)
+((527.27 - 160.65)/3) / (160.65/407)
+```
+
+#### R2
+
+A statistical result is mostly a straw man result.  Who actually cares if our model does statistically better than a model with nothing in it?  Let's turn instead to a different concept- the amount of variance of the target explained by our predictors.  For the standard linear model setting, this statistic is called *R-squared* (R2).
+
+Going back to our previous notions, R2 is just:
+
+$$R^2 =\textrm{Model Explained Variance}/\textrm{Total Variance}$$
+
+This too is reported by default in our summary printout.
+
+```{r happy-r2}
+happy_model_0_sum
+```
+
+With our values from before, we can calculate it ourselves.
+
+```{r r2-calc}
+366.62 / 527.27
+```
+
+Here is another way.  Let's get the model predictions, and see how well they correlate with the target.
+
+```{r r2-as-cor}
+predictions = predict(happy_model_0)
+target = happy_model_0$model$happiness_score
+rho = cor(predictions, target)
+rho
+rho^2
+```
+
+Now you can see why it's called R2.  It is the squared Pearson $r$ of the model expected value and the observed target variable.
+
+
+##### Adjustment
+
+One problem with R2 is that it always goes up, no matter what nonsense you add to a model.  This is why we have an *adjusted R2* that attempts to balance the sample size and model complexity.  For very large data as in this example, the difference is negligible. But you should always report the adjusted R2, as the default R2 is actually upwardly biased.
+
+
+### Beyond OLS
+
+People love R2, so much that they will report it wherever they can, even coming up with things like 'Pseudo-R2' when it proves difficult. However, outside of the OLS setting where we assume a normal distribution as the underlying data-generating mechanism, R2 has little application, and so is not very useful. In some sense, for any numeric target variable we can ask how well our predictions correlate with the observed target values, but the notion of 'variance explained' doesn't easily follow us. For example, for other distributions the estimated variance is a function of the mean (e.g. our Poisson example), and so isn't constant. In other settings we have multiple sources of residual variance, and some sources  where it's not clear whether the variance should be considered as part of the model explained variance or residual variance.  For categorical targets it becomes even doesn't apply
+
+At least for GLM for non-normal distributions, we can work with *deviance*, which is similar to the residual sum of squares in the OLS setting.  We can get a 'deviance explained' using the following approach:
+
+1. Fit a null model, i.e. intercept only. This gives the total deviance (`tot_dev`).
+2. Fit the desired model. This provides the model deviance, which will be reduced (`model_dev`)
+3. Calculate $\frac{\textrm{tot_dev} -\textrm{model_dev}}{\textrm{tot_dev}}$
+
+But this value doesn't really behave in the same manner as R2.  For one, it can actually go down for a more complex model, and there is no standard adjustment, neither of which is the case with R2 for the standard linear model.  At most this can serve as an approximation
+
+For more complicated settings
+
+#### Accuracy and other metrics
+
+## Model Assumptions
+
+There are quite a few assumptions for the standard linear model that we could talk about, but I'll focus on just a handful, ordered roughly in terms of the severity of violation
+
+- Correct model
+- Heteroscedasticity
+- Independence of observations
+- Normality
+
+These concern bias (the first), accurate inference (most of the rest), or other statistical concepts (efficiency, consistency).  The issue with most of the assumptions you learn about is that they mostly just apply to the OLS setting.  Moreover, you can meet all the assumptions you want and still have a crappy model. Practically speaking, the effects on inference usually aren't large enough to matter, as most shouldn't be making any important decision based on a p-value, or slight differences in the boundaries of an interval.  Even then, at least for OLS settings, the solutions are often easy, for example, to obtain standard errors, or are mostly overcome by having a large amount of data.
+
+Still, the diagnostic tools can provide clues to model failure.  As before, visualization will aid us here. 
+```{r diag-plot-code, eval=F}
+library(ggfortify)
+
+autoplot(happy_model_0)
+```
+
+```{r diag-plot-show, echo=FALSE, fig.height=4}
+library(ggfortify)
+
+autoplot(
+  happy_model_0,
+  which = 1:2,
+  colour = '#ff550040',
+  smooth.colour = '#00aaff80',
+  label.colour = 'gray50'
+) +
+  theme_clean()
+```
+
+
+The first plot shows the spread of the residuals vs. the model estimated values. By default, the three most extreme observations are noted.  In this plot we are looking for a lack of any conspicuous pattern, e.g. a fanning out to one side or butterfly shape.  If the variance was dependent on some of the model estimated values, we have a couple options: 
+- Use a model that does not assume constant variance
+- Add complexity to the model to better capture more extreme observations
+- Change the assumed distribution
+
+In this case we have it about as good as it gets.  The second plot regards the normality of the residuals.  If they are normally distributed, they would fall along the dotted line. Again, in practical application this is about as good as you're going to get.   
+
+
+Another plot we can use is to note the predictions vs. the observed values, and this sort of plot would be appropriate for any model. Here I show this both as a scatterplot and a density plot.  With the first, the closer the result is to a line the better, with the latter, we can more adequately see what the model is predicting in relation to the observed values.
+
+```{r pp_check_base, echo=F, fig.width=10, fig.height=2}
+init = data.frame(
+  predictions = predict(happy_model_0),
+  target = happy_model_0$model$happiness_score
+) 
+
+p_dense = init %>% 
+  pivot_longer(everything(), names_to = 'result') %>% 
+  ggplot() +
+  geom_density(aes(x = value, color = result, fill = result), alpha = .25) +
+  scico::scale_color_scico_d(end = .5, aesthetics = c('color', 'fill')) +
+  guides(fill = guide_legend(title = ""), color = 'none') +
+  theme_clean() +
+  theme(
+    legend.title = element_text(size = 4),
+    legend.key.size = unit(2, 'mm')
+  )
+
+p_scatter = init %>% 
+  ggplot() +
+  geom_point(aes(x = predictions, y = target), alpha = .25) +
+  theme_clean()
+
+p_scatter + 
+  p_dense +
+  plot_layout(widths = c(2,1))
+```
+
+
+
+
+
+## Predictive Performance
+
+While we can gauge predictive performance to some extent with a metric like R2 in the standard linear model case, even then it almost certainly an optimistic viewpoint, and adjusted R2 doesn't really deal with the underlying issue.  What is the problem?  The concern is that we are judging model performance on the very data it was fit to. Any potential deviation to the underlying data would certainly result in a different result for R2, accuracy, or any metric we choose to look at.
+
+So the better estimate of how the model is doing is to observe performance on data it hasn't seen.  This data goes by different names- *test set*, *validation set*, *holdout sample*, etc., but the basic idea is that we use some data that wasn't used in model fitting to assess performance.  We can do this in any data situation by randomly splitting into a data set for training the model, and one used for testing the model's performance.
+
+```{r train-test}
+library(tidymodels)
+
+set.seed(1212)
+
+happy_split = initial_split(happy, prop = 0.75)
+
+happy_train = training(happy_split)
+happy_test  = testing(happy_split) %>% drop_na()
+
+happy_model_train = lm(
+  happiness_score ~ democratic_quality + generosity + log_gdp_per_capita,
+  data = happy_train
+)
+
+predictions = predict(happy_model_train, newdata = happy_test)
+```
+
+Comparing our loss on training and test (i.e. RMSE), we can see the loss is greater on the test set.  
+
+```{r train-test-loss, echo=FALSE}
+tibble(
+  RMSE_train = sqrt(crossprod(residuals(happy_model_train))/nrow(happy_train)),
+  RMSE_test  = sqrt(crossprod(predictions - happy_test$happiness_score)/nrow(happy_test))[,1],
+  `% increase` = rnd(100*(RMSE_test/RMSE_train - 1), 1)
+  ) %>% 
+  kable_df()
+```
+
+For a more accurate assessment of test error, we'd need to take an average over several test sets, an approach known as *cross-validation*, something we'll talk more about later.
+
+In general, we may do okay in scenarios where the model is simple and uses a lot of data, but even then we may find a notable increase in test error relative to training error.  For more complex models and/or with less data, the difference in training vs. test could be quite significant.  
+
 
 ## Model Comparison
 
@@ -34,3 +260,6 @@ Performance vs. complexity
 
 
 ## Model averaging
+
+
+[^ftest]: This is often depicted in different ways depending on the text and context. In our depiction, the focus is on the F statistic as a ratio of explained variance to unexplained variance, which naturally relates to the R2 statistic.
