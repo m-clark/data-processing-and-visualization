@@ -65,8 +65,9 @@ Because the F-value is so large and p-value so small, the printed result doesn't
 
 ```{r f-stat-redux}
 f_test = lm(happiness_score ~ generosity, happy)
+
 summary(f_test)
-summary(f_test)$fstatistic
+
 pf(8.78, 1, 533, lower.tail = FALSE)
 ```
 
@@ -78,21 +79,21 @@ happy_model_null = lm(happiness_score ~ 1, data = model.frame(happy_model_base))
 anova(happy_model_null, happy_model_base)
 ```
 
-In this case our F statistic generalizes to the following, where $Model\_1$ is the simpler model and $p$ now refers to the total number of parameters estimated (i.e. same as before + 1 for the intercept)
+In this case our F statistic generalizes to the following, where $\textrm{Model}_1$ is the simpler model and $p$ now refers to the total number of parameters estimated (i.e. same as before + 1 for the intercept)
 
-$$F = \frac{(Model_2\ RV - Model_1\ RV)/(p_2 - p_1)}{Model_2\ RV/(N-p_2-1)}$$
+$$F = \frac{(\textrm{Model}_2\ RV - \textrm{Model}_1\ RV)/(p_2 - p_1)}{\textrm{Model}_2\ RV/(N-p_2-1)}$$
 
+From the previous results, we can perform the necessary arithmetic based on this formula to get the F statistic.
 
 ```{r happy-anova-rev}
-anova(happy_model_null, happy_model_base)
 ((527.27 - 160.65)/3) / (160.65/407)
 ```
 
-#### R2
+#### $R^2$
 
-A statistical result is mostly a straw man result.  Who actually cares if our model does statistically better than a model with nothing in it?  Let's turn instead to a different concept- the amount of variance of the target explained by our predictors.  For the standard linear model setting, this statistic is called *R-squared* (R2).
+This statistical result is mostly a straw man type of test- who actually cares if our model does statistically better than a model with nothing in it?  Let's turn instead to a different concept- the amount of variance of the target variable that is explained by our predictors.  For the standard linear model setting, this statistic is called *R-squared* ($R^2$).
 
-Going back to our previous notions, R2 is just:
+Going back to our previous notions, $R^2$ is just:
 
 $$R^2 =\textrm{Model Explained Variance}/\textrm{Total Variance}$$
 
@@ -102,7 +103,7 @@ This too is reported by default in our summary printout.
 happy_model_base_sum
 ```
 
-With our values from before, we can calculate it ourselves.
+With our values from before for model and total variance, we can calculate it ourselves.
 
 ```{r r2-calc}
 366.62 / 527.27
@@ -118,17 +119,17 @@ rho
 rho^2
 ```
 
-Now you can see why it's called R2.  It is the squared Pearson $r$ of the model expected value and the observed target variable.
+Now you can see why it's called $R^2$.  It is the squared Pearson $r$ of the model expected value and the observed target variable.
 
 
 ##### Adjustment
 
-One problem with R2 is that it always goes up, no matter what nonsense you add to a model.  This is why we have an *adjusted R2* that attempts to balance the sample size and model complexity.  For very large data as in this example, the difference is negligible. But you should always report the adjusted R2, as the default R2 is actually upwardly biased and doesn't account for additional model complexity[^biasR2].
+One problem with $R^2$ is that it always goes up, no matter what nonsense you add to a model.  This is why we have an *adjusted $R^2$* that attempts to balance the sample size and model complexity.  For very large data and/or simpler models, the difference is negligible. But you should always report the adjusted $R^2$, as the default $R^2$ is actually upwardly biased and doesn't account for additional model complexity[^biasR2].
 
 
 ### Beyond OLS
 
-People love R2, so much that they will report it wherever they can, even coming up with things like 'Pseudo-R2' when it proves difficult. However, outside of the OLS setting where we assume a normal distribution as the underlying data-generating mechanism, R2 has little application, and so is not very useful. In some sense, for any numeric target variable we can ask how well our predictions correlate with the observed target values, but the notion of 'variance explained' doesn't easily follow us. For example, for other distributions the estimated variance is a function of the mean (e.g. our Poisson example), and so isn't constant. In other settings we have multiple sources of residual variance, and some sources  where it's not clear whether the variance should be considered as part of the model explained variance or residual variance.  For categorical targets it becomes even doesn't apply
+People love $R^2$, so much that they will report it wherever they can, even coming up with things like 'Pseudo-$R^2$' when it proves difficult. However, outside of the OLS setting where we assume a normal distribution as the underlying data-generating mechanism, $R^2$ has little application, and so is not very useful. In some sense, for any numeric target variable we can ask how well our predictions correlate with the observed target values, but the notion of 'variance explained' doesn't easily follow us. For example, for other distributions the estimated variance is a function of the mean (e.g. our Poisson example), and so isn't constant. In other settings we have multiple sources of residual variance, and some sources  where it's not clear whether the variance should be considered as part of the model explained variance or residual variance.  For categorical targets it becomes even doesn't apply
 
 At least for GLM for non-normal distributions, we can work with *deviance*, which is similar to the residual sum of squares in the OLS setting.  We can get a 'deviance explained' using the following approach:
 
@@ -136,10 +137,9 @@ At least for GLM for non-normal distributions, we can work with *deviance*, whic
 2. Fit the desired model. This provides the model deviance, which will be reduced (`model_dev`)
 3. Calculate $\frac{\textrm{tot_dev} -\textrm{model_dev}}{\textrm{tot_dev}}$
 
-But this value doesn't really behave in the same manner as R2.  For one, it can actually go down for a more complex model, and there is no standard adjustment, neither of which is the case with R2 for the standard linear model.  At most this can serve as an approximation
+But this value doesn't really behave in the same manner as $R^2$.  For one, it can actually go down for a more complex model, and there is no standard adjustment, neither of which is the case with $R^2$ for the standard linear model.  At most this can serve as an approximation.  For more complicated settings you will have to rely on other means to determine model fit.
 
-For more complicated settings
-
+### Classification
 #### Accuracy and other metrics
 
 ## Model Assumptions
@@ -154,6 +154,7 @@ There are quite a few assumptions for the standard linear model that we could ta
 These concern bias (the first), accurate inference (most of the rest), or other statistical concepts (efficiency, consistency).  The issue with most of the assumptions you learn about is that they mostly just apply to the OLS setting.  Moreover, you can meet all the assumptions you want and still have a crappy model. Practically speaking, the effects on inference usually aren't large enough to matter, as most shouldn't be making any important decision based on a p-value, or slight differences in the boundaries of an interval.  Even then, at least for OLS settings, the solutions are often easy, for example, to obtain standard errors, or are mostly overcome by having a large amount of data.
 
 Still, the diagnostic tools can provide clues to model failure.  As before, visualization will aid us here. 
+
 ```{r diag-plot-code, eval=F}
 library(ggfortify)
 
@@ -182,9 +183,9 @@ The first plot shows the spread of the residuals vs. the model estimated values.
 In this case we have it about as good as it gets.  The second plot regards the normality of the residuals.  If they are normally distributed, they would fall along the dotted line. Again, in practical application this is about as good as you're going to get.   
 
 
-Another plot we can use is to note the predictions vs. the observed values, and this sort of plot would be appropriate for any model. Here I show this both as a scatterplot and a density plot.  With the first, the closer the result is to a line the better, with the latter, we can more adequately see what the model is predicting in relation to the observed values.
+Another plot we can use is to note the predictions vs. the observed values, and this sort of plot would be appropriate for any model. Here I show this both as a scatterplot and a density plot.  With the first, the closer the result is to a line the better, with the latter, we can more adequately see what the model is predicting in relation to the observed values. In this case, while we're doing well, one limitation of the model is that it does not have as much spread as target, and so is not capturing the more extreme values.
 
-```{r pp_check_base, echo=F, fig.width=10, fig.height=2}
+```{r pp_check_base, echo=F, out.width='1200px', out.height='400px'}
 init = data.frame(
   predictions = predict(happy_model_base),
   target = happy_model_base$model$happiness_score
@@ -205,20 +206,23 @@ p_dense = init %>%
 p_scatter = init %>% 
   ggplot() +
   geom_point(aes(x = predictions, y = target), alpha = .25) +
+  lims(x = c(2, 8), y = c(2, 8)) +
   theme_clean()
 
-p_scatter + 
+# still an issue with lack 
+p_scatter +
   p_dense +
-  plot_layout(widths = c(2,1))
+  plot_layout(widths = c(3, 1)) * theme_clean()
+# gridExtra::grid.arrange(p_scatter, p_dense, layout_matrix = matrix(c(1,1,1,2,2), nrow = 1 ))
 ```
 
-
+Beyond OLS, assumptions may change, are more difficult to check, and guarantees are harder to come by.  The primary one- that you have an adequate and sufficiently complex model- still remains the most vital. Statistical tests, which many of the other assumptions regard, are of less importance, as there often may not even be an obvious test to use.  Typically we will still have some means to get the crucial interval estimates though.
 
 
 
 ## Predictive Performance
 
-While we can gauge predictive performance to some extent with a metric like R2 in the standard linear model case, even then it almost certainly an optimistic viewpoint, and adjusted R2 doesn't really deal with the underlying issue.  What is the problem?  The concern is that we are judging model performance on the very data it was fit to. Any potential deviation to the underlying data would certainly result in a different result for R2, accuracy, or any metric we choose to look at.
+While we can gauge predictive performance to some extent with a metric like $R^2$ in the standard linear model case, even then it almost certainly an optimistic viewpoint, and adjusted $R^2$ doesn't really deal with the underlying issue.  What is the problem?  The concern is that we are judging model performance on the very data it was fit to. Any potential deviation to the underlying data would certainly result in a different result for $R^2$, accuracy, or any metric we choose to look at.
 
 So the better estimate of how the model is doing is to observe performance on data it hasn't seen.  This data goes by different names- *test set*, *validation set*, *holdout sample*, etc., but the basic idea is that we use some data that wasn't used in model fitting to assess performance.  We can do this in any data situation by randomly splitting into a data set for training the model, and one used for testing the model's performance.
 
@@ -310,22 +314,30 @@ summary(happy_model_more)
 
 Here it would seem that life expectancy has a notable effect on happiness (shocker), but the yearly trend, while negative, is not statistically notable.  In addition, the democratic effect is no longer significant, as it would seem that it's contribution was more due to it's correlation with life expectancy. But the key question is- is this model better?  
 
-The adjusted R2 seems to indicate that we are doing slightly better with this model, but not much.  We can test if the increase is a statistically notable one. [Recall previously][Statistical] when we compared our model versus a null model to obtain a statistical test of model fit.  Since these models are *nested*, i.e. one is a simpler form of the other, we can use the more general approach we depicted to compare these models.  This ANOVA, or analysis of variance test, is essentially comparing whether the residual sum of squares (i.e. the loss) is less for one model vs. the other. In many settings it is often called a *likelihood ratio test*.
+The adjusted $R^2$ seems to indicate that we are doing slightly better with this model, but not much.  We can test if the increase is a statistically notable one. [Recall previously][Statistical] when we compared our model versus a null model to obtain a statistical test of model fit.  Since these models are *nested*, i.e. one is a simpler form of the other, we can use the more general approach we depicted to compare these models.  This ANOVA, or analysis of variance test, is essentially comparing whether the residual sum of squares (i.e. the loss) is less for one model vs. the other. In many settings it is often called a *likelihood ratio test*.
 
 ```{r anova-comparison}
 anova(happy_model_base, happy_model_more)
 ```
 
+The `Df` from the test denotes that we have two additional parameters, i.e. coefficients, in the more complex model. But the main thing to note is whether the model statistically reduces the RSS. So we see that this is a statistically notable improvement as well.  
 
-So in fact it is a statistically notable increase as well.  I actually do not like this test though. It requires nested models, which is either not the case or can be hard to determine, and ignores various aspects of uncertainty in parameter estimates.  An approach that works in many settings is to compare AIC.  We don't have to have nested models, and while the value itself is meaningless, the lower value is the better model. It is basically comparing the likelihoods for each model fit, but adds a penalty for complexity, since any more complex model would result in a larger likelihood (or in this case, smaller negative likelihood).
+I actually do not like this test though. It requires nested models, which is either not the case or can be hard to determine, and ignores various aspects of uncertainty in parameter estimates.  An approach that works in many settings is to compare AIC. AIC is a value based on the likelihood for a given model, but which adds a penalty for complexity, since otherwise any more complex model would result in a larger likelihood (or in this case, smaller negative likelihood).  In the following, $\mathcal{L}$ is the likelihood, and $\mathcal{P}$ is the number of parameters estimated for the model.
 
+$$AIC = -2 ( \ln (\mathcal{L})) + 2 \mathcal{P}$$
 ```{r AIC}
+AIC(happy_model_base)
+```
+
+The value itself is meaningless until we compare models, in which case the lower value is the better model.  With AIC, we don't have to have nested models, so that's a plus over the statistical test.
+
+```{r AIC-compare}
 AIC(happy_model_base, happy_model_more)
 ```
 
-Again, our new model works better.  However, this still may miss out on some uncertainty in the models. To try and capture this, I will calculate interval estimates for the adjusted R2 via *bootstrapping*, and then calculate an interval for their difference.  The details are beyond what I want to delve into here, but the gist is we just want a confidence interval for the difference in adjusted R2.
+Again, our new model works better.  However, this still may miss out on some uncertainty in the models. To try and capture this, I will calculate interval estimates for the adjusted $R^2$ via *bootstrapping*, and then calculate an interval for their difference.  The details are beyond what I want to delve into here, but the gist is we just want a confidence interval for the difference in adjusted $R^2$.
 
-```{r boot-R2, echo=FALSE}
+```{r boot-$R^2$, echo=FALSE}
 library(boot)
 
 f_base = happiness_score ~ democratic_quality + generosity + log_gdp_per_capita
@@ -347,7 +359,6 @@ r2_more <- boot(
   R = 1000
 )
 
-
 ci = rbind(
   quantile(r2_base$t, c(0.025,0.975)),
   quantile(r2_more$t, c(0.025,0.975))
@@ -361,9 +372,10 @@ tibble(
   kable_df()
 ```
 
-```{r boot-R2-diff, echo=FALSE}
+```{r boot-$R^2$-diff, echo=FALSE}
 diff_in_r2 = data.matrix(quantile(r2_more$t0 - r2_base$t, c(0.025,0.975)))
-colnames(diff_in_r2) = 'Difference in R2'
+
+colnames(diff_in_r2) = 'Difference in $R^2$'
 
 diff_in_r2 %>% 
   t() %>% 
@@ -372,7 +384,7 @@ diff_in_r2 %>%
 ```
 
 
-The `Df` from the test denotes that we have two additional parameters, i.e. coefficients, in the more complex model.
+
 
 
 ### Example: Interactions
@@ -489,7 +501,7 @@ Here is a brief summary of interpretation.  We generally don't have to worry abo
 - `life_expectancy`: Effect is positive, but only if the country is around the mean or higher.
 - `log GDP per capita`: Effect is mostly positive, but may depend on other factors not included in the model.
 
-In terms of general model fit, the `Scale est.` is the same as the residual standard error (squared) in the other models, and is a notably lower than even the model with the interaction (`r happy_model_gam$sig2` vs. `r summary(happy_model_interact)$sig^2`). We can also see that the adjusted R2 is higher as well (`r summary(happy_model_gam)$r.sq` vs. `r summary(happy_model_interact)$adj`.
+In terms of general model fit, the `Scale est.` is the same as the residual standard error (squared) in the other models, and is a notably lower than even the model with the interaction (`r happy_model_gam$sig2` vs. `r summary(happy_model_interact)$sig^2`). We can also see that the adjusted $R^2$ is higher as well (`r summary(happy_model_gam)$r.sq` vs. `r summary(happy_model_interact)$adj`.
 
 Let's check our AIC now to see which model wins. It's pretty clear our wiggly model is the winner, even with the added complexity.  Note that even though we used a different function for the GAM model, the AIC is still comparable.
 
@@ -509,9 +521,16 @@ Performance vs. complexity
 
 Have you ever suffered from choice overload?  Many folks who seek to understand some phenomenon via modeling do so. There are plenty of choices due to data processing, but then there may be many models to consider as well, and should be if you're doing things correctly.  But you know what? You don't have to pick a best.
 
-Model averaging is a common technique in the Bayesian world, but not widely applied elsewhere, even though it could be. As an example if we (inversely) weight model predictions by the AIC, we can get an average that favors the better models.
+Model averaging is a common technique in the Bayesian world and also with some applications of machine learning, but not as widely applied elsewhere, even though it could be. As an example if we (inversely) weight models by the AIC, we can get an average parameter that favors the better models, while not ignoring the lesser models if they aren't notably poorer.  People will use such an approach to get model averaged effects (i.e. coefficients) or predictions.  In our setting, the GAM is doing so much better, that it's weight would basically be 1.0 and zero for the others. So the model averaged predictions would be almost identical to the GAM predictions.
 
 ```{r aic-average, echo=FALSE}
+model_list = list(
+  happy_model_base,
+  happy_model_more,
+  happy_model_interact,
+  happy_model_gam
+)
+
 aic_weights = AIC(
   happy_model_base,
   happy_model_more,
@@ -520,34 +539,39 @@ aic_weights = AIC(
 ) %>% 
   as_tibble(rownames = 'model') %>% 
   mutate(
-    weight = 1 / (AIC / sum(AIC)),
-    weight = weight / sum(weight)
+    AICc = map_dbl(model_list, AICcmodavg::AICc),
+    deltaAICc = AICc - min(AICc),
+    `Rel. Like.` = exp(-.5*deltaAICc),
+    weight = `Rel. Like.` / sum(`Rel. Like.`)
   )
 
-# aic_weights
+aic_weights %>% 
+  kable_df(digits = 3)
+# 
+# model_avg = list(
+#   base = happy_model_base,
+#   more = happy_model_more,
+#   interact = happy_model_interact,
+#   gam = happy_model_gam
+# ) %>% 
+#   map_df(fitted) %>%
+#   mutate(avg = rowSums(. * aic_weights$weight))
 
-model_avg = list(
-  base = happy_model_base,
-  more = happy_model_more,
-  interact = happy_model_interact,
-  gam = happy_model_gam
-) %>% 
-  map_df(fitted) %>%
-  mutate(avg = rowSums(. * aic_weights$weight))
-
-model_avg %>% 
-  head() %>% 
-  kable_df()
+# model_avg %>% 
+#   head() %>% 
+#   kable_df()
 ```
 
 ```{r avgr2, echo=FALSE}
-avg_r2 = cor(model_avg$avg, happy_model_base$model$happiness_score)^2
+# avg_r2 = cor(model_avg$avg, happy_model_base$model$happiness_score)^2
 ```
 
-The R2 for this model is `r rnd(avg_r2, 2)`, suggesting it'd do better than all but the gam model. Perhaps the tempered fit would do better on new data. This will be left as an exercise.
+
+## Model Criticism Summary
+
+## Exercises
 
 
+[^ftest]: This is often depicted in different ways depending on the text and context. In our depiction, the focus is on the F statistic as a ratio of explained variance to unexplained variance, which naturally relates to the $R^2$ statistic.
 
-[^ftest]: This is often depicted in different ways depending on the text and context. In our depiction, the focus is on the F statistic as a ratio of explained variance to unexplained variance, which naturally relates to the R2 statistic.
-
-[^biasR2]: The adjusted R2 does not correct the bias.  It only accounts for complexity.
+[^biasR2]: The adjusted $R^2$ does not correct the bias.  It only accounts for complexity.
