@@ -330,7 +330,7 @@ The happiness score itself ranges from `r happy_score$Min` to `r happy_score$Max
 Fitting a model with R is trivial, and at a minimum requires the two key ingredients mentioned before, the formula and data.
 
 ```{r model-fit}
-happy_model_0 = lm(
+happy_model_base = lm(
   happiness_score ~ democratic_quality + generosity + log_gdp_per_capita,
   data = happy
 )
@@ -377,17 +377,17 @@ In my experience, it is generally a bad sign if a package requires that you crea
 Once we have a model, we'll want to summarize the results of it. Most modeling packages have a summary method we can apply, which will provide parameter estimates, some notion of model fit, inferential statistics, and other output.
 
 ```{r model-summarize, echo=1}
-happy_model_0_sum = summary(happy_model_0)
+happy_model_base_sum = summary(happy_model_base)
 
-happy_model_0_sum
+happy_model_base_sum
 ```
 
-The summary provides several pieces of information: the coefficients or weights (`Estimate`), the standard errors, the t-statistic (which is just the coefficient divided by the standard error), and the corresponding p-value. While we can see  that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point. The main thing to look at are the actual coefficients. For example, with regard to the effect of log GDP, moving one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_0)['log_gdp_per_capita'], 1)` units of happiness. Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense.  Before we showed that the standard deviation of the happiness scale was `r rnd(sd(happy$happiness_score, na.rm = TRUE), 1)`. So this would typically represent a notable effect in terms of standard deviation units- moving a percentage point on GDP would result in a `r rnd(coef(happy_model_0)['log_gdp_per_capita']/sd(happy$happiness_score, na.rm = TRUE), 1)` standard deviation increase in state-level happiness.
+The summary provides several pieces of information: the coefficients or weights (`Estimate`), the standard errors, the t-statistic (which is just the coefficient divided by the standard error), and the corresponding p-value. While we can see  that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point. The main thing to look at are the actual coefficients. For example, with regard to the effect of log GDP, moving one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_base)['log_gdp_per_capita'], 1)` units of happiness. Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense.  Before we showed that the standard deviation of the happiness scale was `r rnd(sd(happy$happiness_score, na.rm = TRUE), 1)`. So this would typically represent a notable effect in terms of standard deviation units- moving a percentage point on GDP would result in a `r rnd(coef(happy_model_base)['log_gdp_per_capita']/sd(happy$happiness_score, na.rm = TRUE), 1)` standard deviation increase in state-level happiness.
 
 One thing we must also have in order to understand our results is to get a sense of the uncertainty in the effects.  The following provides confidence intervals for each of the coefficients.
 
 ```{r model-confint}
-confint(happy_model_0)
+confint(happy_model_base)
 ```
 
 Now we have a sense of the range of plausible values for the coefficients.  The value we actually estimate is the best guess given our circumstances, but slight changes in the data, the way we collect it, the time we collect it, etc., all would result in a slightly different result. The confidence interval provides a range of what we could expect given the uncertainty.
@@ -426,7 +426,7 @@ tibble(
   kable_df(booktabs = T, escape = FALSE)
 ```
 
-For example, to start with the normal situation, a one-unit change in $x$, i.e. $\Delta x =1$, leads to $\beta$ unit change in $y$. If we log the target variable $y$, the interpreation of the coefficient for $x$ is that a one-unit change in $x$ leads to an (approximately) 100$\cdot$$\beta$% change in $y$. The 100 changes the result from a proportion to percentage change. More concretely, if $\beta$ was .5, a unit change in $x$ leads to (roughly) a 50% change in $y$. If both were logged, a percentage change in $x$ leads to a $\beta$ percentage change in y[^logtransform].  These percentage change interpretations are called [elasticities](https://en.wikipedia.org/wiki/Elasticity_(economics)) in econometrics and areas trained similarly.
+For example, to start with the normal situation, a one-unit change in $x$, i.e. $\Delta x =1$, leads to $\beta$ unit change in $y$. If we log the target variable $y$, the interpretation of the coefficient for $x$ is that a one-unit change in $x$ leads to an (approximately) 100$\cdot$$\beta$% change in $y$. The 100 changes the result from a proportion to percentage change. More concretely, if $\beta$ was .5, a unit change in $x$ leads to (roughly) a 50% change in $y$. If both were logged, a percentage change in $x$ leads to a $\beta$ percentage change in y[^logtransform].  These percentage change interpretations are called [elasticities](https://en.wikipedia.org/wiki/Elasticity_(economics)) in econometrics and areas trained similarly.
 
 It is very common to use *standardized* variables as well, also called normalizing, or simply scaling. If $y$ and $x$ are both standardized, a one unit (i.e. one standard deviation) change in $x$ leads to a $\beta$ standard deviation change in $y$.  Again, if $\beta$ was .5, a standard deviation change in $x$ leads to a half standard deviation change in $y$.
 
@@ -545,21 +545,21 @@ Typical modeling methods you might want to use:
 Here is an example of using the <span class="func" style = "">predict</span> and <span class="func" style = "">coef</span> methods.
 
 ```{r model-methods}
-predict(happy_model_0, newdata = happy %>% slice(1:5))
-coef(happy_model_0)
+predict(happy_model_base, newdata = happy %>% slice(1:5))
+coef(happy_model_base)
 ```
 
 Also, it's useful to assign the summary results to an object, so that you can extract things that are also useful but would not be in the model object.  We did this before, so now let's take a look.
 
 ```{r model-summary}
-str(happy_model_0_sum, 1)
+str(happy_model_base_sum, 1)
 ```
 
 If we want the adjusted $R^2$ or root mean squared error (RMSE, i.e. average error[^rmse]), they aren't readily available in the model object, but in the summary object, we can pluck them as we would any other [list object][lists].
 
 ```{r extract-from-model}
-happy_model_0_sum$adj.r.squared
-happy_model_0_sum[['sigma']]
+happy_model_base_sum$adj.r.squared
+happy_model_base_sum[['sigma']]
 ```
 
 ### Package support
@@ -568,7 +568,7 @@ There are many packages available to get at model results.  One of the most wide
 
 ```{r broom-demo}
 library(broom)
-tidy(happy_model_0)
+tidy(happy_model_base)
 ```
 
 Some packages will produce tables for a model object that are more or less ready for publication.  However, unless you know it's in the exact style you need, you're probably better off dealing with it yourself.  For example, you can use tidy and do minor cleanup to get the table ready for publication.

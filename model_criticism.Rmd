@@ -38,7 +38,7 @@ So the variability in our target (TV) can be decomposed into that which we can e
 Let's revisit the summary of our model.  Note the *F-statistic*.
 
 ```{r model-summary-rev}
-happy_model_0_sum
+happy_model_base_sum
 ```
 
 
@@ -48,7 +48,7 @@ $$F = \frac{MV/p}{RV/(N-p-1)}$$
 Conceptually it is a ratio of average squared variance to average unexplained variance. We can see this more explicitly as follows, where each predictor's contribution to the total variance is provided in the `Sum Sq` column. 
 
 ```{r happy-anova}
-anova(happy_model_0)
+anova(happy_model_base)
 ```
 
 If we add those together and use our formula above we get:
@@ -57,7 +57,7 @@ $$F = \frac{366.62/3}{160.653/407} = 309.6$$
 Which is what is reported in the summary of the model. And the p-value is just `pf(309.6, 3, 407, lower = FALSE)`, whose values can be extracted from the summary object.
 
 ```{r f-stat}
-happy_model_0_sum$fstatistic
+happy_model_base_sum$fstatistic
 pf(309.6, 3, 407, lower.tail = FALSE)
 ```
 
@@ -74,15 +74,17 @@ pf(8.78, 1, 533, lower.tail = FALSE)
 We can make this F-test more explicit by actually fitting a null model and making the comparison.  The following will provide the same result as before. We make sure to use the same data as in the original model, since there are missing values for some covariates.
 
 ```{r null-vs-realistic}
-happy_model_null = lm(happiness_score ~ 1, data = model.frame(happy_model_0)) 
-anova(happy_model_null, happy_model_0)
+happy_model_null = lm(happiness_score ~ 1, data = model.frame(happy_model_base)) 
+anova(happy_model_null, happy_model_base)
 ```
 
 In this case our F statistic generalizes to the following, where $Model\_1$ is the simpler model and $p$ now refers to the total number of parameters estimated (i.e. same as before + 1 for the intercept)
 
 $$F = \frac{(Model_2\ RV - Model_1\ RV)/(p_2 - p_1)}{Model_2\ RV/(N-p_2-1)}$$
+
+
 ```{r happy-anova-rev}
-anova(happy_model_null, happy_model_0)
+anova(happy_model_null, happy_model_base)
 ((527.27 - 160.65)/3) / (160.65/407)
 ```
 
@@ -97,7 +99,7 @@ $$R^2 =\textrm{Model Explained Variance}/\textrm{Total Variance}$$
 This too is reported by default in our summary printout.
 
 ```{r happy-r2}
-happy_model_0_sum
+happy_model_base_sum
 ```
 
 With our values from before, we can calculate it ourselves.
@@ -109,8 +111,8 @@ With our values from before, we can calculate it ourselves.
 Here is another way.  Let's get the model predictions, and see how well they correlate with the target.
 
 ```{r r2-as-cor}
-predictions = predict(happy_model_0)
-target = happy_model_0$model$happiness_score
+predictions = predict(happy_model_base)
+target = happy_model_base$model$happiness_score
 rho = cor(predictions, target)
 rho
 rho^2
@@ -121,7 +123,7 @@ Now you can see why it's called R2.  It is the squared Pearson $r$ of the model 
 
 ##### Adjustment
 
-One problem with R2 is that it always goes up, no matter what nonsense you add to a model.  This is why we have an *adjusted R2* that attempts to balance the sample size and model complexity.  For very large data as in this example, the difference is negligible. But you should always report the adjusted R2, as the default R2 is actually upwardly biased.
+One problem with R2 is that it always goes up, no matter what nonsense you add to a model.  This is why we have an *adjusted R2* that attempts to balance the sample size and model complexity.  For very large data as in this example, the difference is negligible. But you should always report the adjusted R2, as the default R2 is actually upwardly biased and doesn't account for additional model complexity[^biasR2].
 
 
 ### Beyond OLS
@@ -155,14 +157,14 @@ Still, the diagnostic tools can provide clues to model failure.  As before, visu
 ```{r diag-plot-code, eval=F}
 library(ggfortify)
 
-autoplot(happy_model_0)
+autoplot(happy_model_base)
 ```
 
 ```{r diag-plot-show, echo=FALSE, fig.height=4}
 library(ggfortify)
 
 autoplot(
-  happy_model_0,
+  happy_model_base,
   which = 1:2,
   colour = '#ff550040',
   smooth.colour = '#00aaff80',
@@ -184,8 +186,8 @@ Another plot we can use is to note the predictions vs. the observed values, and 
 
 ```{r pp_check_base, echo=F, fig.width=10, fig.height=2}
 init = data.frame(
-  predictions = predict(happy_model_0),
-  target = happy_model_0$model$happiness_score
+  predictions = predict(happy_model_base),
+  target = happy_model_base$model$happiness_score
 ) 
 
 p_dense = init %>% 
@@ -256,10 +258,296 @@ In general, we may do okay in scenarios where the model is simple and uses a lot
 
 ## Model Comparison
 
+Up until now the focus has been entirely on one model.  However, if you're trying to learn something new, you'll almost always want to have multiple plausible models to explore, rather than just confirming what you think you already know.  This can be as simple as starting with a base model and adding complexity to it, but it could also be pitting fundamentally different models against one another.  
+
+A notable problem is that complex models should always do better than simple ones.  The question then becomes if they are doing notably better given the additional complexity.
+
+### Example: Additional covariates
+
+A starting point for adding model complexity is simply adding more covariates.  Let's add life expectancy and a yearly trend.  To make this model comparable to our baseline model, they need to be fit to the same data, and life expectancy has a couple missing values the others do not.  So we'll start with some data processing. I will start by standardizing some of the variables, and making year start at zero, which will represent 2008, and finally dropping missing values.  Refer to our previous section on [transforming variables][numeric variables] if you want to.
+
+```{r happy-data-proc}
+happy_processed = happy %>% 
+  select(
+    country,
+    year,
+    happiness_score,
+    democratic_quality,
+    generosity,
+    healthy_life_expectancy_at_birth,
+    log_gdp_per_capita
+  ) %>% 
+  mutate_at(vars(happiness_score:healthy_life_expectancy_at_birth),
+            function(x) scale(x)[, 1]) %>% 
+  mutate(year = year - min(year)) %>% 
+  drop_na()
+```
+
+
+Now let's start with our baseline model again.
+
+```{r happy-model-base}
+happy_model_base = lm(
+  happiness_score ~ democratic_quality + generosity + log_gdp_per_capita, 
+  data = happy_processed
+)
+
+summary(happy_model_base)
+```
+
+We can see that moving one standard deviation on democratic quality and generosity leads to similar standard deviation increases in happiness.  Moving 10 percentage points in GDP would lead to less than .1 standard deviation increase in happiness.
+
+Now we add our life expectancy and yearly trend.
+
+```{r happy_model_more}
+happy_model_more = lm(
+  happiness_score ~ democratic_quality + generosity + log_gdp_per_capita + healthy_life_expectancy_at_birth + year,
+  data = happy_processed
+)
+
+summary(happy_model_more)
+```
+
+Here it would seem that life expectancy has a notable effect on happiness (shocker), but the yearly trend, while negative, is not statistically notable.  In addition, the democratic effect is no longer significant, as it would seem that it's contribution was more due to it's correlation with life expectancy. But the key question is- is this model better?  
+
+The adjusted R2 seems to indicate that we are doing slightly better with this model, but not much.  We can test if the increase is a statistically notable one. [Recall previously][Statistical] when we compared our model versus a null model to obtain a statistical test of model fit.  Since these models are *nested*, i.e. one is a simpler form of the other, we can use the more general approach we depicted to compare these models.  This ANOVA, or analysis of variance test, is essentially comparing whether the residual sum of squares (i.e. the loss) is less for one model vs. the other. In many settings it is often called a *likelihood ratio test*.
+
+```{r anova-comparison}
+anova(happy_model_base, happy_model_more)
+```
+
+
+So in fact it is a statistically notable increase as well.  I actually do not like this test though. It requires nested models, which is either not the case or can be hard to determine, and ignores various aspects of uncertainty in parameter estimates.  An approach that works in many settings is to compare AIC.  We don't have to have nested models, and while the value itself is meaningless, the lower value is the better model. It is basically comparing the likelihoods for each model fit, but adds a penalty for complexity, since any more complex model would result in a larger likelihood (or in this case, smaller negative likelihood).
+
+```{r AIC}
+AIC(happy_model_base, happy_model_more)
+```
+
+Again, our new model works better.  However, this still may miss out on some uncertainty in the models. To try and capture this, I will calculate interval estimates for the adjusted R2 via *bootstrapping*, and then calculate an interval for their difference.  The details are beyond what I want to delve into here, but the gist is we just want a confidence interval for the difference in adjusted R2.
+
+```{r boot-R2, echo=FALSE}
+library(boot)
+
+f_base = happiness_score ~ democratic_quality + generosity + log_gdp_per_capita
+f_more = happiness_score ~ democratic_quality + generosity + log_gdp_per_capita + healthy_life_expectancy_at_birth + year
+
+r2_base <- boot(
+  happy_processed,
+  function(data, indices)
+    summary(lm(f_base, data[indices, ])
+    )$adj.r.squared, 
+  R = 1000
+)
+
+r2_more <- boot(
+  happy_processed,
+  function(data, indices)
+    summary(lm(f_more, data[indices, ])
+    )$adj.r.squared, 
+  R = 1000
+)
+
+
+ci = rbind(
+  quantile(r2_base$t, c(0.025,0.975)),
+  quantile(r2_more$t, c(0.025,0.975))
+)
+
+tibble(
+  model = c('base', 'more'), 
+  r2 = c(r2_base$t0, r2_more$t0),
+) %>% 
+  bind_cols(as_tibble(ci)) %>% 
+  kable_df()
+```
+
+```{r boot-R2-diff, echo=FALSE}
+diff_in_r2 = data.matrix(quantile(r2_more$t0 - r2_base$t, c(0.025,0.975)))
+colnames(diff_in_r2) = 'Difference in R2'
+
+diff_in_r2 %>% 
+  t() %>% 
+  as_tibble(rownames = NA) %>% 
+  kable_df()
+```
+
+
+The `Df` from the test denotes that we have two additional parameters, i.e. coefficients, in the more complex model.
+
+
+### Example: Interactions
+
+Let's start by adding interactions to our model.  Interactions allow the relationship of a predictor variable and target to vary depending on the values of another covariate.  To keep things simple, we'll add a single interaction to start- I will interact democratic quality with life expectancy.
+
+```{r happy-interact}
+happy_model_interact = lm(
+  happiness_score ~ democratic_quality + generosity + log_gdp_per_capita + 
+    healthy_life_expectancy_at_birth +
+    democratic_quality:healthy_life_expectancy_at_birth,
+  data = happy_processed
+  )
+
+summary(happy_model_interact)
+```
+
+The coefficient interpretation for variables in the interaction change.  They now only describe the effect when the variable they interact with is zero (or the reference group if it's categorical). So democratic quality has a slight positive but not statistically notable effect at the mean of life expectancy.  However, this effect increases by `r rnd(coef(happy_model_interact)['democratic_quality:healthy_life_expectancy_at_birth'], 2)` when life expectancy increases by 1 (i.e. 1 standard deviation).  The same interpretation goes for life expectancy.  It's coefficient is when democratic quality is at it's mean, and the interaction term is interpreted identically.
+
+It seems most people (including journal reviewers) seem to have trouble understanding interactions if you just report them in a table. Furthermore, beyond the standard linear model with non-normal distributions, the coefficient for the interaction term doesn't even have the same meaning. But you know what works in every setting? Visualization!
+
+Let's use ggeffects again. We'll plot the effect of democratic quality at the mean of life expectancy, and at one standard deviation below and above.  Since we already standardized it, this is even easier.
+
+```{r vis-interact}
+library(ggeffects)
+
+plot(
+  ggpredict(
+    happy_model_interact,
+    terms = c('democratic_quality', 'healthy_life_expectancy_at_birth[-1, 0, 1]')
+  )
+)
+```
+
+We seem to have discovered something interesting here!  Democratic quality only has a positive effect for those countries with a high life expectancy, i.e. that are already in a good place in general.  It may even be negative in countries in the contrary case. While this has to be taken with a lot of caution, it shows how exploring interactions can be fun and surprising!
+
+Another way to plot interactions in which the variables are continuous is with a contour plot similar to this.  Here we don't have to pick arbitrary values to plot against, just note the predictions at all values of the covariates in question.
+
+```{r contour-plot, echo=FALSE, fig.retina=5}
+# library(mgcv)
+# 
+# happy_model_interact_ = gam(
+#   happiness_score ~ democratic_quality + generosity + log_gdp_per_capita + 
+#     healthy_life_expectancy_at_birth +
+#     democratic_quality:healthy_life_expectancy_at_birth,
+#   data = happy_processed
+#   )
+# 
+# plot_gam_2d(
+#   happy_model_interact_,
+#   democratic_quality,
+#   healthy_life_expectancy_at_birth,
+#   n = 500,
+#   palette = 'acton'
+# ) +
+#   guides(fill = guide_legend(title = "Expected Happiness")) +
+#   theme(
+#     axis.title.x = element_text(hjust = .5),
+#     axis.title.y = element_text(vjust = .5),
+#     legend.title = element_text(size = 8)
+#   )
+# 
+# ggsave('img/interaction_2d.png') # svg was 55mb
+
+# plot_gam_3d(happy_model_interact_, democratic_quality, healthy_life_expectancy_at_birth)
+
+knitr::include_graphics('img/interaction_2d.png')
+```
+
+We see the the lowest expected happiness based on the model is with high democratic quality and low life expectancy. The best case scenario is to be high on both.
+
+
+Here is our model comparison for all three models with AIC.
+
+```{r anova-3}
+AIC(happy_model_base, happy_model_more, happy_model_interact)
+```
+
+Looks like our interaction model is winning.
+
+
+### Example: Additive Models
+
+*Generalized additive models* allow our predictors to have a *wiggly* relationship with the target variable.  For more information, see [this document](https://m-clark.github.io/generalized-additive-models/), but for our purposes, that's all you really need to know. We will use the base R mgcv package because it is awesome and you don't need to install anything.  In this case, we'll allow all the covariates to have a nonlinear relationship, and we denote this with the `s()` syntax.
+
+```{r happy-gam}
+library(mgcv)
+
+happy_model_gam = gam(
+  happiness_score ~ s(democratic_quality) + s(generosity) + s(log_gdp_per_capita) + 
+    s(healthy_life_expectancy_at_birth),
+  data = happy_processed
+)
+
+summary(happy_model_gam)
+```
+
+The first thing you may notice is that there are no regression coefficients. This is because the effect of any of these predictors depends on their value, so trying to assess it by a single value would be problematic at best. You can guess what will help us interpret this...
+
+```{r happy-gam-vis, eval=FALSE}
+library(mgcViz)
+
+plot.gamViz(happy_model_gam, allTerms = T)
+```
+
+```{r happy-gam-vis-show, echo=FALSE}
+visibly::plot_gam(happy_model_gam)
+```
+
+Here is a brief summary of interpretation.  We generally don't have to worry about small wiggles.
+
+- `democratic_quality`: Effect is most notable (positive and strong) for higher values. Negligible otherwise.
+- `generosity`: Effect seems seems strongly positive, but only for lower values of generosity.
+- `life_expectancy`: Effect is positive, but only if the country is around the mean or higher.
+- `log GDP per capita`: Effect is mostly positive, but may depend on other factors not included in the model.
+
+In terms of general model fit, the `Scale est.` is the same as the residual standard error (squared) in the other models, and is a notably lower than even the model with the interaction (`r happy_model_gam$sig2` vs. `r summary(happy_model_interact)$sig^2`). We can also see that the adjusted R2 is higher as well (`r summary(happy_model_gam)$r.sq` vs. `r summary(happy_model_interact)$adj`.
+
+Let's check our AIC now to see which model wins. It's pretty clear our wiggly model is the winner, even with the added complexity.  Note that even though we used a different function for the GAM model, the AIC is still comparable.
+
+```{r AIC-all}
+AIC(
+  happy_model_base,
+  happy_model_more,
+  happy_model_interact,
+  happy_model_gam
+)
+```
+
 Performance vs. complexity
 
 
-## Model averaging
+## Model Averaging
+
+Have you ever suffered from choice overload?  Many folks who seek to understand some phenomenon via modeling do so. There are plenty of choices due to data processing, but then there may be many models to consider as well, and should be if you're doing things correctly.  But you know what? You don't have to pick a best.
+
+Model averaging is a common technique in the Bayesian world, but not widely applied elsewhere, even though it could be. As an example if we (inversely) weight model predictions by the AIC, we can get an average that favors the better models.
+
+```{r aic-average, echo=FALSE}
+aic_weights = AIC(
+  happy_model_base,
+  happy_model_more,
+  happy_model_interact,
+  happy_model_gam
+) %>% 
+  as_tibble(rownames = 'model') %>% 
+  mutate(
+    weight = 1 / (AIC / sum(AIC)),
+    weight = weight / sum(weight)
+  )
+
+# aic_weights
+
+model_avg = list(
+  base = happy_model_base,
+  more = happy_model_more,
+  interact = happy_model_interact,
+  gam = happy_model_gam
+) %>% 
+  map_df(fitted) %>%
+  mutate(avg = rowSums(. * aic_weights$weight))
+
+model_avg %>% 
+  head() %>% 
+  kable_df()
+```
+
+```{r avgr2, echo=FALSE}
+avg_r2 = cor(model_avg$avg, happy_model_base$model$happiness_score)^2
+```
+
+The R2 for this model is `r rnd(avg_r2, 2)`, suggesting it'd do better than all but the gam model. Perhaps the tempered fit would do better on new data. This will be left as an exercise.
+
 
 
 [^ftest]: This is often depicted in different ways depending on the text and context. In our depiction, the focus is on the F statistic as a ratio of explained variance to unexplained variance, which naturally relates to the R2 statistic.
+
+[^biasR2]: The adjusted R2 does not correct the bias.  It only accounts for complexity.
