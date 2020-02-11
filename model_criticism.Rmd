@@ -144,7 +144,7 @@ But this value doesn't really behave in the same manner as $R^2$.  For one, it c
 
 ## Model Assumptions
 
-There are quite a few assumptions for the standard linear model that we could talk about, but I'll focus on just a handful, ordered roughly in terms of the severity of violation
+There are quite a few assumptions for the standard linear model that we could talk about, but I'll focus on just a handful, ordered roughly in terms of the severity of violation. 
 
 - Correct model
 - Heteroscedasticity
@@ -216,7 +216,7 @@ p_scatter +
 # gridExtra::grid.arrange(p_scatter, p_dense, layout_matrix = matrix(c(1,1,1,2,2), nrow = 1 ))
 ```
 
-Beyond OLS, assumptions may change, are more difficult to check, and guarantees are harder to come by.  The primary one- that you have an adequate and sufficiently complex model- still remains the most vital. Statistical tests, which many of the other assumptions regard, are of less importance, as there often may not even be an obvious test to use.  Typically we will still have some means to get the crucial interval estimates though.
+Beyond OLS, assumptions may change, are more difficult to check, and guarantees are harder to come by.  The primary one- that you have an adequate and sufficiently complex model- still remains the most vital.  It is important to note that these assumptions regard inference, not predictive capabilities.  In addition, in many modeling scenarios we will actually induce bias to have more predictive capacity. In such settings statistical tests are of less importance, and there often may not even be an obvious test to use.  Typically we will still have some means to get the interval estimates for weights or predictions though.  
 
 
 
