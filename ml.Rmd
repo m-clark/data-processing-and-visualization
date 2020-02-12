@@ -1,20 +1,68 @@
 # Machine Learning
 
-### Concepts
+*Machine learning* (ML) encompasses a wide variety of techniques from standard regression to almost impenetrably complex models.  The main thing that distinguishes it from standard statistical methods discussed thus far is an approach that heavily favors prediction over inference and explanatory power, and which takes the necessary steps to gain any predictive advantage.  
 
-Loss function
+ML could potentially be applied in any setting, but typically works best with data sets much larger than classical statistical methods are usually applied to.  However, nowadays even complex regression models can be applied to extremely large data sets, and properly applied ML may even work in simpler data settings, so this distinction is muddier than it used to be.  The main distinguishing factor is mostly one of focus.
 
-Optimization
+## Concepts
 
-Cross-validation
+### Loss 
 
-### Techniques
+We discussed loss [before][estimation], and there was a reason I went more in depth there, mainly because I feel it's not focused on enough in applied research as it should be. In ML, we are explicitly concerned with loss functions and, more specifically, evaluating loss on test data. This loss is evaluated over successive iterations of a particular technique, or averaged over several test sets via cross-validation.
 
-- Regularized regression
-- RF
-- NN
+#### Cross-validation
 
-### Deep Learning
+*Cross-validation* offers nothing new beyond what was discussed regarding holding out data for testing before, we just do more of it. Let's say we split our data into three parts.  We use two parts (combined) as our training data, then the third part as test.  At this point this is identical to our demonstration [before][Predictive performance]. But then, we switch which part is test and which two are training, and do the whole thing over again.  And finally once more, so that each of our three parts has taken a turn as a test set.  Our estimated error is the average loss across the three times.
+
+Typically we do it more than three times, usually 10, and there are fancier methods of *k-fold cross-validation*, though they typically don't serve to add much value.  In any case, let's try it with our previous example.  The following is making use of some relatively new R packages, but the gist
+
+```{r kfoldcv}
+library(tidymodels)
+
+set.seed(1212)
+
+happy_base_spec = linear_reg() %>%
+  set_engine(engine = "lm")
+
+happy_folds = vfold_cv(happy)  # yay for non-standard naming!
+
+library(tune)
+
+happy_base_results = fit_resamples(
+  happiness_score ~ democratic_quality + generosity + log_gdp_per_capita,
+  happy_base_spec,
+  happy_folds,
+  control = control_resamples(save_pred = TRUE)
+)
+
+cv_res = happy_base_results %>%
+  collect_metrics()
+```
+
+```{r kfoldres-print, echo = F}
+cv_res %>% 
+  kable_df()
+```
+
+We now that our average test error is `r rnd(cv_res$mean[1])`.  It also gives the average R2.
+
+### Optimization
+
+### Hyper-parameters
+
+
+
+
+## Techniques
+
+### Regularized regression
+### RF
+### NN
+
+## Interpretation
+
+
+## Deep Learning
 
 - AI
 
