@@ -405,19 +405,18 @@ log_sum <- function(a, b) {
 
 ### Excercise 1b
 
-What happens if the sum of the two numbers is negative?  You can't take a log of a negative value, so it's an error.  How might we deal with this?  Try using a conditional to provide an error message using the <span class="func">stop</span> function.  Make the message whatever you want.
+What happens if the sum of the two numbers is negative?  You can't take a log of a negative value, so it's an error.  How might we deal with this?  Try using a conditional to provide an error message using the <span class="func">stop</span> function.  The first part is basically identical to the function you just did.  But given that result, you will need to check for whether it is negative or not.  The message can be whatever you want.
 
 ```{r wf_ex1b, eval=FALSE}
 log_sum <- function(a, b) {
-  #
-  #
-  #
   
-  if (?) {
+  ?
+  
+  if (? < 0) {
     stop('Your message here.')
   } else {
     ?
-    return(your_log_sum_results)
+    return(your_log_sum_results)    # this is an arbitrary name, change accordingly
   }
 }
 ```

@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>data.table | Data Processing &amp; Visualization</title>
-  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
-  <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
+  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="data.table | Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://m-clark.github.io/data-processing-and-visualization/" />
   <meta property="og:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
-  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
   <meta name="github-repo" content="m-clark/data-processing-and-visualization/" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="data.table | Data Processing &amp; Visualization" />
   
-  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
   <meta name="twitter:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
 
 
 
-<meta name="date" content="2020-02-13" />
+<meta name="date" content="2020-02-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -533,41 +533,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In general, you use <strong>i</strong> for filtering by rows.</p>
 <div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="data_table.html#cb151-1"></a>dt[<span class="dv">2</span>]    <span class="co"># rows! not columns as with standard data.frame</span></span>
 <span id="cb151-2"><a href="data_table.html#cb151-2"></a>dt[<span class="dv">2</span>,]</span></code></pre></div>
-<pre><code>    x g         y
-1: 10 2 0.7923313
-    x g         y
-1: 10 2 0.7923313</code></pre>
+<pre><code>   x g         y
+1: 5 2 0.6973671
+   x g         y
+1: 5 2 0.6973671</code></pre>
 <p>You use <strong>j</strong> to select (by name!) or create new columns. We can define a new column with the <span class="func">:=</span> operator.</p>
 <div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="data_table.html#cb153-1"></a>dt[,x]</span>
 <span id="cb153-2"><a href="data_table.html#cb153-2"></a>dt[,z <span class="op">:</span><span class="er">=</span><span class="st"> </span>x<span class="op">+</span>y]  <span class="co"># dt now has a new column</span></span>
 <span id="cb153-3"><a href="data_table.html#cb153-3"></a>dt[,z]</span>
 <span id="cb153-4"><a href="data_table.html#cb153-4"></a>dt[g <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>, <span class="kw">mean</span>(z), by =<span class="st"> </span>g]</span>
 <span id="cb153-5"><a href="data_table.html#cb153-5"></a>dt</span></code></pre></div>
-<pre><code>[1]  3 10  8  5  9  2
-[1]  3.167151 10.792331  8.284141  5.373530  9.719212  2.636985
-   g        V1
-1: 2 10.255772
-2: 3  5.460563
-    x g         y         z
-1:  3 1 0.1671507  3.167151
-2: 10 2 0.7923313 10.792331
-3:  8 3 0.2841407  8.284141
-4:  5 1 0.3735298  5.373530
-5:  9 2 0.7192119  9.719212
-6:  2 3 0.6369851  2.636985</code></pre>
+<pre><code>[1] 10  5  1  9  4  7
+[1] 10.388745  5.697367  1.412473  9.499729  4.067042  7.079353
+   g       V1
+1: 2 4.882204
+2: 3 4.245913
+    x g          y         z
+1: 10 1 0.38874545 10.388745
+2:  5 2 0.69736710  5.697367
+3:  1 3 0.41247250  1.412473
+4:  9 1 0.49972907  9.499729
+5:  4 2 0.06704176  4.067042
+6:  7 3 0.07935295  7.079353</code></pre>
 <p>Because <strong>j</strong> is an argument, dropping columns is awkward.</p>
 <div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="data_table.html#cb155-1"></a>dt[, <span class="op">-</span>y]             <span class="co"># creates negative values of y</span></span>
 <span id="cb155-2"><a href="data_table.html#cb155-2"></a>dt[, <span class="op">-</span><span class="st">&#39;y&#39;</span>, with =<span class="st"> </span>F] <span class="co"># drops y, but now needs quotes</span></span>
 <span id="cb155-3"><a href="data_table.html#cb155-3"></a><span class="co">## dt[, y := NULL]      # drops y, but this is just a base R approach</span></span>
 <span id="cb155-4"><a href="data_table.html#cb155-4"></a><span class="co">## dt$y = NULL</span></span></code></pre></div>
-<pre><code>[1] -0.1671507 -0.7923313 -0.2841407 -0.3735298 -0.7192119 -0.6369851
+<pre><code>[1] -0.38874545 -0.69736710 -0.41247250 -0.49972907 -0.06704176 -0.07935295
     x g         z
-1:  3 1  3.167151
-2: 10 2 10.792331
-3:  8 3  8.284141
-4:  5 1  5.373530
-5:  9 2  9.719212
-6:  2 3  2.636985</code></pre>
+1: 10 1 10.388745
+2:  5 2  5.697367
+3:  1 3  1.412473
+4:  9 1  9.499729
+5:  4 2  4.067042
+6:  7 3  7.079353</code></pre>
 <p>Data table does not make unnecessary copies. For example if we do the following…</p>
 <div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="data_table.html#cb157-1"></a>DT =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">A =</span> <span class="dv">5</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">B =</span> letters[<span class="dv">5</span><span class="op">:</span><span class="dv">1</span>])</span>
 <span id="cb157-2"><a href="data_table.html#cb157-2"></a>DT2 =<span class="st"> </span>DT</span>
@@ -594,24 +594,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We can now attempt a ‘group-by’ operation, along with creation of a new variable. Note that these operations actually modify the <span class="objclass">dt</span> object <em>in place</em>, a key distinction with <span class="pack">dplyr</span>. Fewer copies means less of a memory hit.</p>
 <div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="data_table.html#cb162-1"></a>dt1 =<span class="st"> </span>dt2 =<span class="st"> </span>dt</span>
 <span id="cb162-2"><a href="data_table.html#cb162-2"></a>dt[, <span class="kw">sum</span>(x, y), by =<span class="st"> </span>g]                <span class="co"># sum of all x and y values</span></span></code></pre></div>
-<pre><code>   g       V1
-1: 1  8.54068
-2: 2 20.51154
-3: 3 10.92113</code></pre>
+<pre><code>   g        V1
+1: 1 19.888475
+2: 2  9.764409
+3: 3  8.491825</code></pre>
 <div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="data_table.html#cb164-1"></a>dt1[, mysum <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(x), by =<span class="st"> </span>g]         <span class="co"># add new variable to the original data</span></span>
 <span id="cb164-2"><a href="data_table.html#cb164-2"></a>dt1</span></code></pre></div>
-<pre><code>    x g         y         z mysum
-1:  3 1 0.1671507  3.167151     8
-2: 10 2 0.7923313 10.792331    19
-3:  8 3 0.2841407  8.284141    10
-4:  5 1 0.3735298  5.373530     8
-5:  9 2 0.7192119  9.719212    19
-6:  2 3 0.6369851  2.636985    10</code></pre>
+<pre><code>    x g          y         z mysum
+1: 10 1 0.38874545 10.388745    19
+2:  5 2 0.69736710  5.697367     9
+3:  1 3 0.41247250  1.412473     8
+4:  9 1 0.49972907  9.499729    19
+5:  4 2 0.06704176  4.067042     9
+6:  7 3 0.07935295  7.079353     8</code></pre>
 <p>We can also create groupings on the fly. For a new summary data set, we’ll take the following approach- we create a grouping based on whether <code>g</code> is a value of one or not, then get the mean and sum of <code>x</code> for those two categories. The corresponding <span class="pack" style="">dplyr</span> approach is also shown (but not evaluated) for comparison.</p>
 <div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="data_table.html#cb166-1"></a>dt2[, <span class="kw">list</span>(<span class="dt">mean_x =</span> <span class="kw">mean</span>(x), <span class="dt">sum_x =</span> <span class="kw">sum</span>(x)), by =<span class="st"> </span>g <span class="op">==</span><span class="st"> </span><span class="dv">1</span>]</span></code></pre></div>
 <pre><code>       g mean_x sum_x
-1:  TRUE   4.00     8
-2: FALSE   7.25    29</code></pre>
+1:  TRUE   9.50    19
+2: FALSE   4.25    17</code></pre>
 <div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="data_table.html#cb168-1"></a><span class="co">## dt2 %&gt;% </span></span>
 <span id="cb168-2"><a href="data_table.html#cb168-2"></a><span class="co">##   group_by(g == 1) %&gt;% </span></span>
 <span id="cb168-3"><a href="data_table.html#cb168-3"></a><span class="co">##   summarise(mean_x = mean(x), sum_x = sum(x))</span></span></code></pre></div>
@@ -644,7 +644,7 @@ mean (microseconds)
 dt_join
 </td>
 <td style="text-align:right;">
-476.46
+1417.26
 </td>
 </tr>
 <tr>
@@ -652,7 +652,7 @@ dt_join
 dplyr_join
 </td>
 <td style="text-align:right;">
-691.43
+742.00
 </td>
 </tr>
 </tbody>
@@ -690,7 +690,7 @@ mean (milliseconds)
 test_dt0
 </td>
 <td style="text-align:right;">
-341.66
+313.55
 </td>
 </tr>
 <tr>
@@ -698,7 +698,7 @@ test_dt0
 test_dt1
 </td>
 <td style="text-align:right;">
-118.58
+110.55
 </td>
 </tr>
 <tr>
@@ -706,7 +706,7 @@ test_dt1
 test_dt2
 </td>
 <td style="text-align:right;">
-115.38
+116.72
 </td>
 </tr>
 </tbody>
@@ -719,7 +719,7 @@ test_dt2
 <div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="data_table.html#cb175-1"></a>lets_<span class="dv">1</span> =<span class="st"> </span><span class="kw">sample</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">14</span>], <span class="dv">1000</span>, <span class="dt">replace=</span>T)</span>
 <span id="cb175-2"><a href="data_table.html#cb175-2"></a></span>
 <span id="cb175-3"><a href="data_table.html#cb175-3"></a>lets_<span class="dv">1</span> <span class="op">%chin%</span><span class="st"> </span>letters[<span class="dv">13</span><span class="op">:</span><span class="dv">26</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code> [1] FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE</code></pre>
+<pre><code> [1] FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE</code></pre>
 <div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="data_table.html#cb177-1"></a><span class="co"># stri_detect_regex(lets_1, paste(letters[13:26], collapse=&#39;|&#39;))</span></span></code></pre></div>
 </div>
 <div id="reading-files" class="section level3">
@@ -743,7 +743,7 @@ mean (microseconds)
 dt
 </td>
 <td style="text-align:right;">
-425.34
+486.77
 </td>
 </tr>
 <tr>
@@ -751,7 +751,7 @@ dt
 readr
 </td>
 <td style="text-align:right;">
-2784.49
+2412.32
 </td>
 </tr>
 </tbody>

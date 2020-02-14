@@ -514,7 +514,7 @@ sapply()
 
 ### Exercise 3
 
-As in the previous example, use a map function to create a data frame of the column means.
+As in the previous example, use a <span class="func" style = "">map</span> function to create a data frame of the column means. See `?map` to see all your options.
 
 ```{r purrr_ex3, echo=1:5, eval=FALSE}
 d = data_frame(
@@ -529,7 +529,7 @@ d %>% map_df(mean)
 
 ## Writing Functions Exercises
 
-### Exercise 1
+### Excercise 1
 
 Write a function that takes the log of the sum of two values (i.e. just two single numbers) using the <span class="func">log</span> function.  Just remember that within a function, you can write R code just like you normally would.
 
@@ -540,22 +540,20 @@ log_sum <- function(a, b) {
 ```
 
 
-### Exercise 1b
+### Excercise 1b
 
-What happens if the sum of the two numbers is negative?  You can't take a log of a negative value, so it's an error.  How might we deal with this?  Try using a conditional to provide an error message using the <span class="func">stop</span> function.  Make the message whatever you want.
+What happens if the sum of the two numbers is negative?  You can't take a log of a negative value, so it's an error.  How might we deal with this?  Try using a conditional to provide an error message using the <span class="func">stop</span> function.  The first part is basically identical to the function you just did.  But given that result, you will need to check for whether it is negative or not.  The message can be whatever you want.
 
 ```{r wf_ex1b, eval=FALSE}
 log_sum <- function(a, b) {
-  #
-  #
-  #
   
-  if (?) {
+  ?
+  
+  if (? < 0) {
     stop('Your message here.')
-  } 
-  else {
+  } else {
     ?
-    return(your_log_sum_object)
+    return(your_log_sum_results)    # this is an arbitrary name, change accordingly
   }
 }
 ```
@@ -580,10 +578,10 @@ pos_neg <- function(?) {
 }
 ```
 
+## More
+### Code Style Exercises
 
-## Code Style Exercises
-
-### Exercise 1 
+#### Exercise 1 
 
 For the following model related output, come up with a name for each object.
 
@@ -596,7 +594,7 @@ lm(hwy ~ cyl + displ + year, data = mpg)  # an extension of that
 ```
 
 
-### Exercise 2
+#### Exercise 2
 
 
 Fix this code.
@@ -609,18 +607,20 @@ q = lm(y~x, data=data)
 summary(q)
 ```
 
-## Vector Exercises
+### Vectorization Exercises
 
-### Exercise 1
+Before we do this, did you remember to fix the names in the previous exercise?
 
-Show a non-vectorized and a vectorized way to add a two to the numbers 1 through 3.
+#### Exercise 1
+
+Show a non-vectorized (e.g. a loop) and a vectorized way to add a two to the numbers 1 through 3.
 
 ```{r vector_ex1, eval=FALSE}
 ?
 ```
 
 
-### Exercise 2
+#### Exercise 2
 
 Of the following <span class="objclass">matrix</span>, which do you think is faster?  Test it.
 
@@ -635,9 +635,9 @@ microbenchmark::microbenchmark(
 )
 ```
 
-## Regex Exercises
+### Regex Exercises
 
-### Exercise 1
+#### Exercise 1
 
 Using stringr and str_replace, replace all the states a's with nothing.
 
