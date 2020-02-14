@@ -24,9 +24,9 @@ You see some using `<-` or `=` for assignment.  While there is a slight differen
 
 If your script is becoming hundreds of lines long, you probably need to compartmentalize your operations into separate scripts.  For example, separate your data processing from your model scripts.
 
-#### Spacing
+### Spacing
 
-Don't be stingy with spaces. As you start out, err on the side of using them.  Just note there are exceptions (e.g. no space between function name and parenthesis, unless that function is something like <span class="func">if</span> or <span class="func">else</span>), but you'll get used to those over time.
+Don't be stingy with spaces. As you start out, err on the side of using them.  Just note there are exceptions (e.g. no space between function name and parenthesis, unless that function is something like <span class="func">if</span> or <span class="func">else</span>), but you'll get used to the exceptions over time.
 
 ```{r space, eval=FALSE}
 x=rnorm(10, mean=0,sd=1)              # harder to read
@@ -43,7 +43,7 @@ Here is a brief list of things to keep in mind.
 - The name should make sense to you, your future self, and others that will use the code
 - Try to be concise, but see the previous
 - Make liberal use of suffixes/prefixes for naming the same types of things e.g. model_x, model_z
-- For function names, try for verbs that describe what they do
+- For function names, try for verbs that describe what they do (e.g. add_two vs. two_more or plus2)
 
 - Don't name anything with 'final'
 - Don't name something that is already an R function/object (e.g. `T`, <span class="func">c</span>, <span class="func">data</span>, etc.)
@@ -61,7 +61,7 @@ For objects and functions, I find snake case easier to read and less prone to is
 
 ### Other
 
-Use tools like the built-in RStudio code cleanup shortcut like `Ctrl/Cmd + Shft + A`. It's not perfect, in the sense I disagree with some of its the style choice, but it will definitely be better than you will do on your own starting out.
+Use tools like the built-in RStudio code cleanup shortcut like `Ctrl/Cmd + Shft + A`. It's not perfect, in the sense I disagree with some of its style choice, but it will definitely be better than you will do on your own starting out.
 
 
 ## Vectorization 

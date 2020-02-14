@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-01-23" />
+<meta name="date" content="2020-02-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -131,9 +131,9 @@
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
@@ -142,14 +142,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -158,9 +160,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -415,14 +417,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#a-slight-speed-gain"><i class="fa fa-check"></i>A slight speed gain</a></li>
-</ul></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#loops-summary"><i class="fa fa-check"></i>Loops summary</a></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a><ul>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#implicit-loops"><i class="fa fa-check"></i>Implicit Loops</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#working-with-lists"><i class="fa fa-check"></i>Working with lists</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#looping-with-lists"><i class="fa fa-check"></i>Looping with lists</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#iterative-programming-exercises"><i class="fa fa-check"></i>Iterative Programming Exercises</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-1-7"><i class="fa fa-check"></i>Exercise 1</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-2-7"><i class="fa fa-check"></i>Exercise 2</a></li>
@@ -445,6 +448,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#why-does-your-code-exist"><i class="fa fa-check"></i>Why does your code exist?</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#assignment"><i class="fa fa-check"></i>Assignment</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-length"><i class="fa fa-check"></i>Code length</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#spacing"><i class="fa fa-check"></i>Spacing</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#naming-things"><i class="fa fa-check"></i>Naming things</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#other-1"><i class="fa fa-check"></i>Other</a></li>
 </ul></li>
@@ -583,24 +587,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="part-4-presentation" class="section level3">
 <h3>Part 4: Presentation</h3>
-<p>Possible future addition</p>
+<p>Possible future addition. <a href="https://m-clark.github.io/Introduction-to-Rmarkdown/">See this for now</a>.</p>
 </div>
 <div id="part-5-modeling" class="section level3">
 <h3>Part 5: Modeling</h3>
-<p>Possible future addition</p>
+<p>In progress.</p>
 </div>
 </div>
 <div id="preparation" class="section level2">
 <h2>Preparation</h2>
-<p>To follow along with the examples, complete the following steps:</p>
+<p>To follow along with the examples, clone/download the related section repos. Downloading any one of them will have an R project and associated data, such that the code from any section should run.</p>
+<p>(in progress as document is being revamped and extended)</p>
 <ul>
-<li>Download the zip file at <a href="https://github.com/m-clark/data-processing-and-visualization/raw/master/workshop_project.zip" class="uri">https://github.com/m-clark/data-processing-and-visualization/raw/master/workshop_project.zip</a>. Be mindful of where you put it.</li>
-<li>Unzip it. Be mindful of where you put the resulting folder.</li>
-<li>Open RStudio.</li>
-<li>File/Open Project and click on the blue icon (workshop_project.Rproj) in the folder you just created.</li>
-<li>File/Open Click on the ReadMe file, and, well, read it.</li>
+<li><a href="https://github.com/m-clark/R-I-Basics">R I: Information Processing</a></li>
+<li><a href="https://github.com/m-clark/R-II-Programming">R II: Programming</a></li>
+<li>R III: Modeling</li>
+<li>R IV: Visualization</li>
+<li>R V: Presentation</li>
 </ul>
-<p>You will then have easy access to much of the data, code, etc. used in the examples.</p>
 </div>
 <div id="other" class="section level2">
 <h2>Other</h2>
@@ -621,7 +625,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="r" class="section level3">
 <h3>R</h3>
 <p>Many other packages are also used, so feel free to install as we come across them. Here are a few.</p>
-<p><span class="pack">DT</span>, <span class="pack">highcharter</span>, <span class="pack">magrittr</span>, <span class="pack">maps</span>, <span class="pack">mgcv</span> (already comes with base R), <span class="pack">plotly</span>, <span class="pack">quantmod</span>, <span class="pack">readr</span>, <span class="pack">visNetwork</span></p>
+<p><span class="pack">nycflights13</span>, <span class="pack">DT</span>, <span class="pack">highcharter</span>, <span class="pack">magrittr</span>, <span class="pack">maps</span>, <span class="pack">mgcv</span> (already comes with base R), <span class="pack">plotly</span>, <span class="pack">quantmod</span>, <span class="pack">readr</span>, <span class="pack">visNetwork</span></p>
 
 </div>
 </div>

@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-01-23" />
+<meta name="date" content="2020-02-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -131,9 +131,9 @@
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
@@ -142,14 +142,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -158,9 +160,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -415,14 +417,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#a-slight-speed-gain"><i class="fa fa-check"></i>A slight speed gain</a></li>
-</ul></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#loops-summary"><i class="fa fa-check"></i>Loops summary</a></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a><ul>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#implicit-loops"><i class="fa fa-check"></i>Implicit Loops</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#working-with-lists"><i class="fa fa-check"></i>Working with lists</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#looping-with-lists"><i class="fa fa-check"></i>Looping with lists</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#iterative-programming-exercises"><i class="fa fa-check"></i>Iterative Programming Exercises</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-1-7"><i class="fa fa-check"></i>Exercise 1</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-2-7"><i class="fa fa-check"></i>Exercise 2</a></li>
@@ -445,6 +448,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#why-does-your-code-exist"><i class="fa fa-check"></i>Why does your code exist?</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#assignment"><i class="fa fa-check"></i>Assignment</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-length"><i class="fa fa-check"></i>Code length</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#spacing"><i class="fa fa-check"></i>Spacing</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#naming-things"><i class="fa fa-check"></i>Naming things</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#other-1"><i class="fa fa-check"></i>Other</a></li>
 </ul></li>
@@ -518,10 +522,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Here, we’ll focus on their use with the <span class="pack">dplyr</span> package, and the tidyverse more generally. Pipes are also utilized heavily in visualization.</p>
 <p>Example:</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">mydf <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb57-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(var1, var2) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb57-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(var1 <span class="op">==</span><span class="st"> &#39;Yes&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb57-4" data-line-number="4"><span class="st">  </span><span class="kw">summary</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="pipes.html#cb57-1"></a>mydf <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb57-2"><a href="pipes.html#cb57-2"></a><span class="st">  </span><span class="kw">select</span>(var1, var2) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb57-3"><a href="pipes.html#cb57-3"></a><span class="st">  </span><span class="kw">filter</span>(var1 <span class="op">==</span><span class="st"> &#39;Yes&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb57-4"><a href="pipes.html#cb57-4"></a><span class="st">  </span><span class="kw">summary</span>()</span></code></pre></div>
 <pre><code>Start with a data.frame %&gt;% 
     select columns from it %&gt;% 
     filter/subset it %&gt;% 
@@ -529,27 +533,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="using-variables-as-they-are-created" class="section level2">
 <h2>Using variables as they are created</h2>
 <p>One nice thing about pipelines is that we can use variables as soon as they are created, without having to break out separate objects/steps.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1">mydf <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb59-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">newvar1 =</span> var1 <span class="op">+</span><span class="st"> </span>var2,</a>
-<a class="sourceLine" id="cb59-3" data-line-number="3">         <span class="dt">newvar2 =</span> newvar1 <span class="op">/</span><span class="st"> </span>var3) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb59-4" data-line-number="4"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">newvar2avg =</span> <span class="kw">mean</span>(newvar2))</a></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="pipes.html#cb59-1"></a>mydf <span class="op">%&gt;%</span></span>
+<span id="cb59-2"><a href="pipes.html#cb59-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">newvar1 =</span> var1 <span class="op">+</span><span class="st"> </span>var2,</span>
+<span id="cb59-3"><a href="pipes.html#cb59-3"></a>         <span class="dt">newvar2 =</span> newvar1 <span class="op">/</span><span class="st"> </span>var3) <span class="op">%&gt;%</span></span>
+<span id="cb59-4"><a href="pipes.html#cb59-4"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">newvar2avg =</span> <span class="kw">mean</span>(newvar2))</span></code></pre></div>
 </div>
 <div id="pipes-for-visualization-more-later" class="section level2">
 <h2>Pipes for Visualization (more later)</h2>
 <p>The following provides a means to think about pipes for visualization. It’s just a generic example for now, but we’ll see more later.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">basegraph <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb60-2" data-line-number="2"><span class="st">  </span>points <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb60-3" data-line-number="3"><span class="st">  </span>lines <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb60-4" data-line-number="4"><span class="st">  </span>layout</a></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="pipes.html#cb60-1"></a>basegraph <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb60-2"><a href="pipes.html#cb60-2"></a><span class="st">  </span>points <span class="op">%&gt;%</span></span>
+<span id="cb60-3"><a href="pipes.html#cb60-3"></a><span class="st">  </span>lines <span class="op">%&gt;%</span></span>
+<span id="cb60-4"><a href="pipes.html#cb60-4"></a><span class="st">  </span>layout</span></code></pre></div>
 </div>
 <div id="the-dot" class="section level2">
 <h2>The dot</h2>
 <p>Most functions are not ‘pipe-aware’ by default, or at least, do not have <code>data</code> as their first argument as most functions in the tidyverse do, as well as others using tidystyle. In the following we try to send our data frame to <span class="func">lm</span> for a regression.</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1">mydf <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb61-2" data-line-number="2"><span class="st">  </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)  <span class="co"># error</span></a></code></pre></div>
-<p>Other pipes could potentially work in this situation, e.g. <span class="func">%$%</span> in <span class="pack">magrittr</span>. But generally, when you come upon this, you can use a dot to represent the object before the pipe.</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">mydf <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb62-2" data-line-number="2"><span class="st">  </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>.)  <span class="co"># . == mydf</span></a></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="pipes.html#cb61-1"></a>mydf <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb61-2"><a href="pipes.html#cb61-2"></a><span class="st">  </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)  <span class="co"># error</span></span></code></pre></div>
+<p>Other pipes could potentially work in this situation, e.g. <span class="func">%$%</span> in <span class="pack">magrittr</span>. But generally, when you come upon this, you can use a dot to represent the object before the pipe.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="pipes.html#cb62-1"></a>mydf <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb62-2"><a href="pipes.html#cb62-2"></a><span class="st">  </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>.)  <span class="co"># . == mydf</span></span></code></pre></div>
 </div>
 <div id="flexibility" class="section level2">
 <h2>Flexibility</h2>
@@ -564,13 +568,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>After the function is created, it’s used on ., which represents the string before the pipe.</li>
 <li>Result: pipes between the words<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</li>
 </ul>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1"><span class="kw">c</span>(<span class="st">&#39;Ceci&#39;</span>, <span class="st">&quot;n&#39;est&quot;</span>, <span class="st">&#39;pas&#39;</span>, <span class="st">&#39;une&#39;</span>, <span class="st">&#39;pipe!&#39;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb63-2" data-line-number="2">{</a>
-<a class="sourceLine" id="cb63-3" data-line-number="3">  .. &lt;-<span class="st">  </span>. <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb63-4" data-line-number="4"><span class="st">    </span><span class="cf">if</span> (<span class="kw">length</span>(.) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)  .</a>
-<a class="sourceLine" id="cb63-5" data-line-number="5">    <span class="cf">else</span> <span class="kw">paste</span>(.[<span class="dv">1</span>], <span class="st">&#39;%&gt;%&#39;</span>, <span class="kw">..</span>(.[<span class="op">-</span><span class="dv">1</span>]))</a>
-<a class="sourceLine" id="cb63-6" data-line-number="6">  <span class="kw">..</span>(.)</a>
-<a class="sourceLine" id="cb63-7" data-line-number="7">} </a></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="pipes.html#cb63-1"></a><span class="kw">c</span>(<span class="st">&#39;Ceci&#39;</span>, <span class="st">&quot;n&#39;est&quot;</span>, <span class="st">&#39;pas&#39;</span>, <span class="st">&#39;une&#39;</span>, <span class="st">&#39;pipe!&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb63-2"><a href="pipes.html#cb63-2"></a>{</span>
+<span id="cb63-3"><a href="pipes.html#cb63-3"></a>  .. &lt;-<span class="st">  </span>. <span class="op">%&gt;%</span></span>
+<span id="cb63-4"><a href="pipes.html#cb63-4"></a><span class="st">    </span><span class="cf">if</span> (<span class="kw">length</span>(.) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)  .</span>
+<span id="cb63-5"><a href="pipes.html#cb63-5"></a>    <span class="cf">else</span> <span class="kw">paste</span>(.[<span class="dv">1</span>], <span class="st">&#39;%&gt;%&#39;</span>, <span class="kw">..</span>(.[<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="cb63-6"><a href="pipes.html#cb63-6"></a>  <span class="kw">..</span>(.)</span>
+<span id="cb63-7"><a href="pipes.html#cb63-7"></a>} </span></code></pre></div>
 <pre><code>[1] &quot;Ceci %&gt;% n&#39;est %&gt;% pas %&gt;% une %&gt;% pipe!&quot;</code></pre>
 <blockquote>
 <p>Put that in your pipe and smoke it René Magritte!</p>
@@ -589,7 +593,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="footnotes">
 <hr />
 <ol start="1">
-<li id="fn1"><p>That was a very complicated way to do this <code>paste(c('Ceci', &quot;n'est&quot;, 'pas', 'une', 'pipe!'), collapse=' %&gt;% ')</code>.<a href="pipes.html#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>That was a very complicated way to do this <code>paste(c('Ceci', "n'est", 'pas', 'une', 'pipe!'), collapse=' %&gt;% ')</code>.<a href="pipes.html#fnref1" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

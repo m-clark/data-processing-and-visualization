@@ -116,7 +116,7 @@ lapply(x, str_remove, pattern = 'ab')
 sapply(x, str_remove, pattern = 'ab')
 
 
-## ----purr_example, eval=TRUE, echo=-(1:2)-----------------------------------------------------
+## ----purr_example, eval=TRUE, echo=-(1:3)-----------------------------------------------------
 detach(package:maps)
 
 map = purrr::map  # could not remove conflict with something, nor able to debug

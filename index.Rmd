@@ -51,6 +51,14 @@ library(visibly)
 library(viridis)
 ```
 
+```{r misc-functions, echo=FALSE}
+kable_df <- function(..., digits=2) {
+  kableExtra::kable(...,digits = digits) %>% 
+    kableExtra::kable_styling(full_width = F)
+}
+```
+
+
 ##### {-}
 
 

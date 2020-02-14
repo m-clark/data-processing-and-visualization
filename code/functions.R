@@ -99,7 +99,8 @@ two()
 center <- function(type) {
   if (type == 'mean') {
     mean
-  } else {
+  } 
+  else {
     median
   }
 }
@@ -108,7 +109,11 @@ center(type = 'mean')
 
 myfun = center(type = 'mean')
 
-myfun(1:3)
+myfun(1:5)
+
+myfun = center(type = 'median')
+
+myfun(1:4)
 
 
 ## ----default_arg------------------------------------------------------------------------------
@@ -166,11 +171,11 @@ good_mileage <- function(
 
 ## if (Math.random() < 0.5) {
 
-## console.log("You got Heads!");
+##   console.log("You got Heads!")
 
 ## } else {
 
-## console.log("You got Tails!");
+##   console.log("You got Tails!")
 
 ## }
 
@@ -190,7 +195,7 @@ good_mileage(mpg_cutoff = 40)
 good_mileage(
   cylinder = 8,
   mpg_cutoff = 15,
-  displ_low = F,
+  displ_low = FALSE,
   cls = 'suv'
 )
 
@@ -230,7 +235,7 @@ good_mileage <- function(
 good_mileage(
   cylinder = 8,
   mpg_cutoff = 19,
-  displ_low = F,
+  displ_low = FALSE,
   cls = 'suv',
   yr = 2008
 )
@@ -238,7 +243,7 @@ good_mileage(
 
 ## ----lambda, eval=FALSE-----------------------------------------------------------------------
 ## apply(mtcars, 2, sd)
-## apply(mtcars, 2, function(x) x/2)
+## apply(mtcars, 2, function(x) x / 2 )
 
 
 ## ----lambda_ex--------------------------------------------------------------------------------
