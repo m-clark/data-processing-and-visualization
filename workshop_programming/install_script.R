@@ -1,10 +1,13 @@
 # Install libraries -------------------------------------------------------
 
+# If you already have some of these (e.g. tidyverse), there is no need to install them again
+
 install.packages(
   c(
     'tidyverse',
     'haven',       # not required for workshop but potentially useful
-    'data.table'
+    'data.table',
+    'nycflights13'
   )
 )
 
