@@ -8,13 +8,23 @@ ML could potentially be applied in any setting, but typically works best with da
 
 ### Loss 
 
-We discussed loss [before][estimation], and there was a reason I went more in depth there, mainly because I feel it's not focused on enough in applied research as it should be. In ML, we are explicitly concerned with loss functions and, more specifically, evaluating loss on test data. This loss is evaluated over successive iterations of a particular technique, or averaged over several test sets via cross-validation.
+We discussed loss [before][estimation], and there was a reason I went more in depth there, mainly because I feel, unlike with ML, loss is not explicitly focused on as much in applied research. In ML however, we are explicitly concerned with loss functions and, more specifically, evaluating loss on test data. This loss is evaluated over successive iterations of a particular technique, or averaged over several test sets via cross-validation.  Typical loss functions are *Root Mean Squared Error* for numeric targets (essentially the same as for a standard linear model), and *cross-entropy* for categorical outcomes.  There are robust alternatives, such as mean absolute error and hinge loss functions respectively, and many other options besides.  You will come across others that might be used for specific scenarios.
 
-#### Cross-validation
 
-*Cross-validation* offers nothing new beyond what was discussed regarding holding out data for testing before, we just do more of it. Let's say we split our data into three parts.  We use two parts (combined) as our training data, then the third part as test.  At this point this is identical to our demonstration [before][Predictive performance]. But then, we switch which part is test and which two are training, and do the whole thing over again.  And finally once more, so that each of our three parts has taken a turn as a test set.  Our estimated error is the average loss across the three times.
+### Bias-variance Tradeoff
 
-Typically we do it more than three times, usually 10, and there are fancier methods of *k-fold cross-validation*, though they typically don't serve to add much value.  In any case, let's try it with our previous example.  The following is making use of some relatively new R packages, but the gist
+Prediction error, i.e. loss, is one part *measurement error*, which we can't do anything about, and two components we can do something about: *bias*, the difference in the observed value and our average predicted value, and *variance* how much that prediction would change had we trained on different data.   ML techniques trade some increased bias for even greater reduced variance, which often means less *overfitting* to the training data, leading to increased performance on new data.
+
+### Regularization
+
+As we have noted, a model fit to a single data set might do very well with the data at hand, but then suffer when predicting independent data. Also, oftentimes we are interested in a ‘best’ subset of predictors among a great many, and in this scenario the estimated coefficients are overly optimistic unless dealing with sufficiently large sample sizes. This general issue can be improved by shrinking estimates toward zero, such that some of the performance in the initial fit is sacrificed for improvement with regard to prediction.  The basic idea in terms of the tradeoff is that we are trading some bias for notably reduced variance.
+
+
+### Cross-validation
+
+*Cross-validation* is widely used for validation and/or testing.  Conceptually there is nothing new beyond what was [discussed previously][Predictive performance] regarding holding out data for assessing predictve performance, we just do more of it. Let's say we split our data into three parts.  We use two parts (combined) as our training data, then the third part as test.  At this point this is identical to our demonstration before.  But then, we switch which part is test and which two are training, and do the whole thing over again.  And finally once more, so that each of our three parts has taken a turn as a test set.  Our estimated error is the average loss across the three times.
+
+Typically we do it more than three times, usually 10, and there are fancier methods of *k-fold cross-validation*, though they typically don't serve to add much value.  In any case, let's try it with our previous example.  The following is making use of some relatively new R packages, but the gist is that they allow us to use k-fold cross validation to evaluate the loss.
 
 ```{r kfoldcv}
 library(tidymodels)
@@ -48,21 +58,34 @@ We now that our average test error is `r rnd(cv_res$mean[1])`.  It also gives th
 
 ### Optimization
 
+With ML, much more attention is paid to different optimizers, but the vast majority are some flavor of *stochastic gradient descent*.  Often due to the sheer volume of data/parameters, this optimization is done on part of the data and in parallel.  In general, some optimization may work better in some situations or for some models, where better means quicker convergence, or perhaps a smoother ride toward convergence.  It is not the case that you would come to incorrect conclusions using one method vs. another per se, 
+
 ### Hyper-parameters
 
-
+Learning rate, dropout, decay etc.
 
 
 ## Techniques
 
 ### Regularized regression
+
+A starting point for getting into ML from the more inferential methods is to use *regularized regression*.  These are conceptually no different than standard LM/GLM types of approaches, but they add something to the loss function.
+
+$$\mathcal{Loss} = \Sigma(y - \hat{y})^2 + \lambda\cdot\Sigma\beta^2$$
+In the above, this is the same squared error loss function as before, but we add a penalty that is based on the size of the coefficients.  This has the effect of shrinking the estimates toward zero. Well, why would we want that?  This introduces bias in the coefficients, but the end result is a model that will do better on test set prediction, which is the goal of the ML approach. The way this works regards the *bias-variance tradeoff* we discussed previously.  
+
+https://stats.stackexchange.com/questions/179864/why-does-shrinkage-work
+
 ### RF
 ### NN
 
 ## Interpretation
 
+LIME, Shap etc.
 
 ## Deep Learning
+
+Deep learning can be summarized succinctly as 'very complicated neural nets'.  Really, that's about it.  The compl
 
 - AI
 
