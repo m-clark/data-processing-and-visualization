@@ -19,7 +19,15 @@ kable_df = function(data, digits=3, ...) {
 perc = function(x, digits = 1) paste(rnd(x*100, digits = digits), '%')
 ```
 
+
+
 # Model Exploration
+
+
+`r icon::fa_chart_line(size = 5, color = '#99002440')`
+
+
+IN PROGRESS
 
 The following shows how to get started with modeling in R generally, with a focus on concepts, tools, and syntax, rather than trying to understand the specifics of a given model.
 
@@ -87,9 +95,13 @@ An example of a nonlinear model would be population growth models like exponenti
 
 ## Estimation
 
-In a introductory course, many are introduced to ordinary least squares as a means to estimate the coefficients for a linear regression model.  In this scenario, we are seeking to come up with estimates of the coefficients that minimize the (squared) difference between the observed target value and the fitted value based on the parameter estimates.  
+One thing to understand with predictive models of any kind is how we estimate the parameters of interest, e.g. coefficients/weights, variance, and more.  To start with, we must have some sort of goal that choosing a set of parameters achieves, and then find some way to reach that goal efficiently.
 
-We can see this clearly with some simple conceptual code.  In what follows is we move row by row, calculating both our prediction based on the model $\hat{y}$ and the difference between that and our target variable $y$.  We sum these squared differences to get a total.
+### Loss
+
+The goal of many estimation approaches is the reduction of *loss*, conceptually defined as the difference between the model predictions and the observed data, i.e. prediction error. In an introductory methods course, many are introduced to ordinary least squares as a means to estimate the coefficients for a linear regression model.  In this scenario, we are seeking to come up with estimates of the coefficients that minimize the (squared) difference between the observed target value and the fitted value based on the parameter estimates.  The loss in this case is defined as the sum of the squared errors.
+
+We can see how this works more clearly with some simple conceptual code.  In what follows, we create a function, allows us to move row by row through the data, calculating both our prediction based on the model $\hat{y}$, and the difference between that and our target variable $y$.  We sum these squared differences to get a total. In practice such a function is called the loss function, cost function, or objective function.
 
 ```{r ls-loss}
 set.seed(123)
@@ -97,13 +109,13 @@ set.seed(123)
 ls_loss <- function(X, y, beta) {
   
   # initialize the objects
-  loss = rep(0, nrow(X))
+  loss  = rep(0, nrow(X))
   y_hat = rep(0, nrow(X))
   
   # for each row, calculate y_hat and square the difference with y
   for (n in 1:nrow(X)) {
-    y_hat[n] <- sum(X[n, ] * beta)
-    loss[n] = (y[n] - y_hat[n]) ^ 2
+    y_hat[n] = sum(X[n, ] * beta)
+    loss[n]  = (y[n] - y_hat[n]) ^ 2
   }
   
   sum(loss)  
@@ -277,9 +289,9 @@ data.frame(
 ```
 
 
-## Optimization
+### Optimization
 
-In practice, we typically use *optimization* methods to iteratively search for the best estimates for the parameters of a given model.  The functions we explored above provide a goal- to minimize loss (however defined- least squares for continuous, classification error for binary, etc.) or maximize the likelihood (or posterior probability in the Bayesian context). Whatever the goal, an optimizing *algorithm* will typically be used to find the estimates that reach that goal. Some approaches are very general, some are better for certain types of modeling problems.  These algorithms continue to make guesses until some criterion has been reached (*convergence*)[^optimizing].
+So we know the goal, but how do we get to it? In practice, we typically use *optimization* methods to iteratively search for the best estimates for the parameters of a given model.  The functions we explored above provide a goal- to minimize loss (however defined- least squares for continuous, classification error for binary, etc.) or maximize the likelihood (or posterior probability in the Bayesian context). Whatever the goal, an optimizing *algorithm* will typically be used to find the estimates that reach that goal. Some approaches are very general, some are better for certain types of modeling problems.  These algorithms continue to make guesses until some criterion has been reached (*convergence*)[^optimizing].
 
 You generally don't need to know the details to use these algorithms to fit models, but knowing a little bit about the optimization process and available options may prove useful to deal with more complex data scenarios, where convergence can be difficult.  Some packages will even have documentation specifically dealing with convergence issues. In the more predictive models previously discussed, knowing more about the optimization algorithm may speedup the time it takes to train the model, or smooth out the variability in the process.
 

@@ -20,18 +20,20 @@ perc = function(x, digits = 1) paste(rnd(x*100, digits = digits), '%')
 
 # Model Criticism
 
-It isn't enough to simply fit a particular model, we must also ask how well it matches the data under study, if it can predict well on new data, where it fails, and more.
+It isn't enough to simply fit a particular model, we must also ask how well it matches the data under study, if it can predict well on new data, where it fails, and more.  In the following we will discuss how we can better understand our model and its limitations.
 
 ## Model Fit
 ### Standard linear model
 
-In the basic regression setting we and think of model fit in terms of a statistical result, or in terms of the match between our model predictions and the observed target values.
+In the basic regression setting we can think of model fit in terms of a statistical result, or in terms of the match between our model predictions and the observed target values.  The former provides an inferential result, but as we will see, is limited. The latter regards a more practical result, and may provide a more nuanced or different conclusion.
 
 #### Statistical
 
 In a standard linear model we can compare a model where there are no covariates to the model we care about, which may have many.  This is an almost useless test, but the results are typically reported.  Let's think about it conceptually.
 
+<br>
 $$\textrm{Total Variance} = \textrm{Model Explained Variance} + \textrm{Residual Variance}$$
+<br>
 
 So the variability in our target (TV) can be decomposed into that which we can explain with the predictor variables (MEV), and everything else that is not in our model (RV). If we have nothing in the model, then TV = RV.
 
