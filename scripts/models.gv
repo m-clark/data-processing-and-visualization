@@ -1,0 +1,20 @@
+digraph models {
+graph [rankdir = LR  bgcolor=transparent]
+
+node [shape = rectangle style=filled fillcolor='#990024BF' color=gray80 width=.75]
+
+node [fontcolor=white fontname=Roboto fixedsize=true fontsize='10%']
+LM; GLM; GLMM; GAMM;
+
+edge [color=gray50 style=filled]
+LM -> GLM; 
+GLM -> GLMM; 
+GLMM -> GAMM;
+
+// title
+labelloc="t";
+label="Models\n\n";
+fontname=Roboto;
+fontcolor=gray50;
+fontsize='15%'
+}

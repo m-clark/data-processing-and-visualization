@@ -1,0 +1,22 @@
+digraph models {
+graph [rankdir = LR  bgcolor=transparent]
+
+node [shape = rectangle style=filled fillcolor='#990024BF' color=gray80 width=.75]
+
+node [fontcolor=white fontname=Roboto fixedsize=true fontsize='10%']
+OLS; WLS; GLS; GEE; GMM;
+
+edge [color=gray50 style=filled]
+OLS -> WLS; 
+WLS -> GLS; 
+GLS -> GEE;
+GEE -> GMM;
+
+// title
+labelloc="t";
+label="Estimation Procedures\n\n";
+fontname=Roboto;
+fontcolor=gray50;
+fontsize='20%'
+
+}

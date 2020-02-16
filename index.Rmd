@@ -27,24 +27,38 @@ knitr::opts_chunk$set(
   message = F,
   warning = F,
   error = F,
-  cache.rebuild = F,
-  cache = T,
-  # code
   comment = NA,
   R.options = list(width = 220),
-  # viz
+  # code
   dev.args = list(bg = 'transparent'),
   dev = 'svglite',
+  # viz
   fig.align = 'center',
   out.width = '75%',
-  fig.asp = .75
+  fig.asp = .75,
+  cache.rebuild = F,
+  cache = T
 )                                                         # cache
+
+kable_df = function(data, digits=3, ...) {
+  kableExtra::kable(
+    data,
+    digits = digits,
+    format = 'html',
+    booktabs = T,
+    # longtable = F,
+    linesep = "",
+    ...,
+  ) %>% 
+    kableExtra::kable_styling(full_width = F)
+}
 ```
 
 
 ```{r load_common_packages, echo=FALSE, cache=FALSE, eval=TRUE, cache=FALSE}
 library(tidyverse)
 library(ggplot2movies) 
+library(kableExtra)
 library(tibble)
 library(tidyext)
 library(visibly)
