@@ -1,21 +1,21 @@
-## ----space, eval=FALSE------------------------------------------------------------------------------
+## ----space, eval=FALSE------------------------------------------------------------------------
 ## x=rnorm(10, mean=0,sd=1)              # harder to read
 ##                                       # space between lines too!
 ## x = rnorm(10, mean = 0, sd = 1)       # easier to read
 
 
-## ----vasetup, include=FALSE, eval=TRUE, cache=FALSE-------------------------------------------------
+## ----vasetup, include=FALSE, eval=TRUE, cache=FALSE-------------------------------------------
 knitr::opts_chunk$set(eval=FALSE)
 
 
-## ----boolindex, eval=T------------------------------------------------------------------------------
+## ----boolindex, eval=T------------------------------------------------------------------------
 x = c(-1, 2, 10, -5)
 idx = x > 2
 idx
 x[idx]
 
 
-## ----flexindex--------------------------------------------------------------------------------------
+## ----flexindex--------------------------------------------------------------------------------
 x[x > 2]
 
 x[x != 'cat']
@@ -27,12 +27,12 @@ x[{y = idx; y}]
 x[resid(lm(y ~ x)) > 0]
 
 
-## ----filter-bool, eval=FALSE------------------------------------------------------------------------
+## ----filter-bool, eval=FALSE------------------------------------------------------------------
 ## df %>%
 ##   filter(x > 2, z == 'a')  # commas are like &
 
 
-## ----loop-------------------------------------------------------------------------------------------
+## ----loop-------------------------------------------------------------------------------------
 for (i in 1:nrow(mydf)) {
   
   check = mydf$x[i] > 2
@@ -46,17 +46,17 @@ for (i in 1:nrow(mydf)) {
 }
 
 
-## ----boolnoloop-------------------------------------------------------------------------------------
+## ----boolnoloop-------------------------------------------------------------------------------
 mydf$y = 'No'
 
 mydf$y[mydf$x > 2] = 'Yes'
 
 
-## ----vecmatrixop------------------------------------------------------------------------------------
+## ----vecmatrixop------------------------------------------------------------------------------
 mymatrix_log = log(mymatrix)
 
 
-## ----loopvsvec, eval=T------------------------------------------------------------------------------
+## ----loopvsvec, eval=T------------------------------------------------------------------------
 mymatrix = matrix(runif(100), 10, 10)
 
 identical(apply(mymatrix, 2, log), log(mymatrix))
@@ -65,7 +65,7 @@ library(microbenchmark)
 microbenchmark(apply(mymatrix, 2, log), log(mymatrix))
 
 
-## ----timings, echo=T--------------------------------------------------------------------------------
+## ----timings, echo=T--------------------------------------------------------------------------
 mymat = matrix(rnorm(100000), ncol=1000)
 
 stdize <- function(x) {
@@ -110,22 +110,22 @@ stopCluster(cl)
 
 test
 
-## ----vectorization_timings, echo=FALSE, eval=TRUE, cache=FALSE--------------------------------------
+## ----vectorization_timings, echo=FALSE, eval=TRUE, cache=FALSE--------------------------------
 load('data/vectorization.RData'); library(microbenchmark); autoplot(test)
 
 
-## ----regex_intro_ex, eval=TRUE----------------------------------------------------------------------
+## ----regex_intro_ex, eval=TRUE----------------------------------------------------------------
 string = c('r is the shiny', 'r is the shiny1', 'r shines brightly')
 grepl(string, pattern='^r.*shiny[0-9]$')
 
 
-## ----quick_regex_exercise, eval=FALSE---------------------------------------------------------------
+## ----quick_regex_exercise, eval=FALSE---------------------------------------------------------
 ## grepl(c('apple', 'pear', 'banana'), pattern='a')
 ## grepl(c('apple', 'pear', 'banana'), pattern='^a')
 ## grepl(c('apple', 'pear', 'banana'), pattern='^a|a$')
 
 
-## ----name_ex, eval=FALSE----------------------------------------------------------------------------
+## ----name_ex, eval=FALSE----------------------------------------------------------------------
 ## lm(hwy ~ cyl, data = mpg)                 # hwy mileage predicted by number of cylinders
 ## 
 ## summary(lm(hwy ~ cyl, data = mpg))        # the summary of that
@@ -133,7 +133,7 @@ grepl(string, pattern='^r.*shiny[0-9]$')
 ## lm(hwy ~ cyl + displ + year, data = mpg)  # an extension of that
 
 
-## ----fix_code, eval=FALSE---------------------------------------------------------------------------
+## ----fix_code, eval=FALSE---------------------------------------------------------------------
 ## x=rnorm(100, 10, 2)
 ## y=.2* x+ rnorm(100)
 ## data = data.frame(x,y)
@@ -141,11 +141,11 @@ grepl(string, pattern='^r.*shiny[0-9]$')
 ## summary(q)
 
 
-## ----vector_ex1, eval=FALSE-------------------------------------------------------------------------
+## ----vector_ex1, eval=FALSE-------------------------------------------------------------------
 ## ?
 
 
-## ----vector_ex2, eval=FALSE-------------------------------------------------------------------------
+## ----vector_ex2, eval=FALSE-------------------------------------------------------------------
 ## x = matrix(rpois(100000, lambda = 5), ncol = 100)
 ## colSums(x)
 ## apply(x, 2, sum)
@@ -156,7 +156,7 @@ grepl(string, pattern='^r.*shiny[0-9]$')
 ## )
 
 
-## ----regex_ex, eval=FALSE---------------------------------------------------------------------------
+## ----regex_ex, eval=FALSE---------------------------------------------------------------------
 ## library(stringr)
 ## str_replace(state.name, pattern = ?, replacement = ?)
 

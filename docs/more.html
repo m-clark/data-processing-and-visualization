@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>More | Data Processing &amp; Visualization</title>
-  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
-  <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
+  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="More | Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://m-clark.github.io/data-processing-and-visualization/" />
   <meta property="og:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
-  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
   <meta name="github-repo" content="m-clark/data-processing-and-visualization/" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="More | Data Processing &amp; Visualization" />
   
-  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
   <meta name="twitter:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
 
 
 
-<meta name="date" content="2019-12-03" />
+<meta name="date" content="2020-02-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -49,6 +49,7 @@
 
 
 
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.9.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
@@ -58,7 +59,7 @@
 <script src="libs/plotly-main-1.49.4/plotly-latest.min.js"></script>
 <link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
 <script src="libs/vis-4.20.1/vis.min.js"></script>
-<script src="libs/visNetwork-binding-2.0.8/visNetwork.js"></script>
+<script src="libs/visNetwork-binding-2.0.9/visNetwork.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
 <link href="libs/highcharts-7.0.1/css/motion.css" rel="stylesheet" />
 <link href="libs/highcharts-7.0.1/css/htmlwdgtgrid.css" rel="stylesheet" />
@@ -123,16 +124,16 @@
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.10/datatables.js"></script>
+<script src="libs/datatables-binding-0.11/datatables.js"></script>
 <link href="libs/dt-core-1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.19/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.19/js/jquery.dataTables.min.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
@@ -141,14 +142,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -157,9 +160,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -193,7 +196,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <link rel="stylesheet" href="css/book.css" type="text/css" />
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css" type="text/css" />
 </head>
 
 <body>
@@ -223,7 +226,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#r"><i class="fa fa-check"></i>R</a></li>
 </ul></li>
 </ul></li>
-<li class="part"><span><b>Part I: Data Processing</b></span></li>
+<li class="part"><span><b>Part I: Information Processing</b></span></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html"><i class="fa fa-check"></i>Data Structures</a><ul>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#vectors"><i class="fa fa-check"></i>Vectors</a><ul>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#character-strings"><i class="fa fa-check"></i>Character strings</a></li>
@@ -309,7 +312,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#summary-1"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#dtplyr"><i class="fa fa-check"></i>dtplyr</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster-dplyr-alternatives"><i class="fa fa-check"></i>Faster dplyr alternatives</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-exercises"><i class="fa fa-check"></i>data.table Exercises</a><ul>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-0-1"><i class="fa fa-check"></i>Exercise 0</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-1-3"><i class="fa fa-check"></i>Exercise 1</a></li>
@@ -414,14 +417,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#a-slight-speed-gain"><i class="fa fa-check"></i>A slight speed gain</a></li>
-</ul></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#loops-summary"><i class="fa fa-check"></i>Loops summary</a></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a><ul>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#implicit-loops"><i class="fa fa-check"></i>Implicit Loops</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#working-with-lists"><i class="fa fa-check"></i>Working with lists</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#looping-with-lists"><i class="fa fa-check"></i>Looping with lists</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#iterative-programming-exercises"><i class="fa fa-check"></i>Iterative Programming Exercises</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-1-7"><i class="fa fa-check"></i>Exercise 1</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-2-7"><i class="fa fa-check"></i>Exercise 2</a></li>
@@ -444,6 +448,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#why-does-your-code-exist"><i class="fa fa-check"></i>Why does your code exist?</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#assignment"><i class="fa fa-check"></i>Assignment</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-length"><i class="fa fa-check"></i>Code length</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#spacing"><i class="fa fa-check"></i>Spacing</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#naming-things"><i class="fa fa-check"></i>Naming things</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#other-1"><i class="fa fa-check"></i>Other</a></li>
 </ul></li>
@@ -471,20 +476,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li class='after'">
-   <a href="https://m-clark.github.io/">
+   <a href="https://m-clark.github.io/" aria-label='Author Website Link'>
       <img src="img/mc_logo.png" style="width:25%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo">
    </a>
 </li>
 <li class='after'">
    <div style='text-align:center'>
-      <a href="https://github.com/m-clark/">
+      <a href="https://github.com/m-clark/" aria-label='GitHub Link'>
          <i class="fab fa-github fa-2x" aria-hidden="true"></i>
       </a>
    </div>
 </li>
 <li class='after'">
    <div style='text-align:center'>
-      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" aria-label="Creative commons CCBYSA link">
          <i class="fab fa-creative-commons fa-lg"></i> 
          <i class="fab fa-creative-commons-by fa-lg"></i> 
          <i class="fab fa-creative-commons-sa fa-lg"></i>
@@ -511,6 +516,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="more" class="section level1">
 <h1>More</h1>
+<div style="text-align: center;">
+<p><i class="fab fa-r-project fa-5x" style = 'color:#1f65b7'></i></p>
+</div>
+<p><br></p>
 <p>This section is kind of a grab bag of miscellaneous things related to programming. If you’ve made it this far, feel free to keep going!</p>
 <div id="code-style" class="section level2">
 <h2>Code Style</h2>
@@ -521,44 +530,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="assignment" class="section level3">
 <h3>Assignment</h3>
-<p>You see some using <code>&lt;-</code> or <code>=</code> for assignment. While there is a slight difference, if you’re writing decent code it shouldn’t matter. Far more programming languages use <code>=</code>, so that’s reason to prefer it. However, if you like being snobby about things, go with <code>&lt;-</code>. Whichever you use, do so consistently<a href="#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a>.</p>
+<p>You see some using <code>&lt;-</code> or <code>=</code> for assignment. While there is a slight difference, if you’re writing decent code it shouldn’t matter. Far more programming languages use <code>=</code>, so that’s reason to prefer it. However, if you like being snobby about things, go with <code>&lt;-</code>. Whichever you use, do so consistently<a href="#fn25" class="footnote-ref" id="fnref25"><sup>25</sup></a>.</p>
 </div>
 <div id="code-length" class="section level3">
 <h3>Code length</h3>
 <p>If your script is becoming hundreds of lines long, you probably need to compartmentalize your operations into separate scripts. For example, separate your data processing from your model scripts.</p>
-<div id="spacing" class="section level4">
-<h4>Spacing</h4>
-<p>Don’t be stingy with spaces. As you start out, err on the side of using them. Just note there are exceptions (e.g. no space between function name and parenthesis, unless that function is something like <span class="func">if</span> or <span class="func">else</span>), but you’ll get used to those over time.</p>
-<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb367-1" data-line-number="1">x=<span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean=</span><span class="dv">0</span>,<span class="dt">sd=</span><span class="dv">1</span>)              <span class="co"># harder to read</span></a>
-<a class="sourceLine" id="cb367-2" data-line-number="2">                                      <span class="co"># space between lines too!</span></a>
-<a class="sourceLine" id="cb367-3" data-line-number="3">x =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>)       <span class="co"># easier to read</span></a></code></pre></div>
 </div>
+<div id="spacing" class="section level3">
+<h3>Spacing</h3>
+<p>Don’t be stingy with spaces. As you start out, err on the side of using them. Just note there are exceptions (e.g. no space between function name and parenthesis, unless that function is something like <span class="func">if</span> or <span class="func">else</span>), but you’ll get used to the exceptions over time.</p>
+<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb370-1"><a href="more.html#cb370-1"></a>x=<span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean=</span><span class="dv">0</span>,<span class="dt">sd=</span><span class="dv">1</span>)              <span class="co"># harder to read</span></span>
+<span id="cb370-2"><a href="more.html#cb370-2"></a>                                      <span class="co"># space between lines too!</span></span>
+<span id="cb370-3"><a href="more.html#cb370-3"></a>x =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>)       <span class="co"># easier to read</span></span></code></pre></div>
 </div>
 <div id="naming-things" class="section level3">
 <h3>Naming things</h3>
 <p>You might not think of it as such initially, but one of the more difficult challenges in programming is naming things. Even if we can come up with a name for an object or file, there are different styles we can use for the name.</p>
 <p>Here is a brief list of things to keep in mind.</p>
 <ul>
-<li>The name should make sense to you, your future self, and others that will use the code</li>
-<li>Try to be concise, but see the previous</li>
-<li>Make liberal use of suffixes/prefixes for naming the same types of things e.g. model_x, model_z</li>
-<li><p>For function names, try for verbs that describe what they do</p></li>
-<li>Don’t name anything with ‘final’</li>
-<li>Don’t name something that is already an R function/object (e.g. <code>T</code>, <span class="func">c</span>, <span class="func">data</span>, etc.)</li>
-<li><p>Avoid distinguishing names only by number, e.g. <span class="objclass">data1</span> <span class="objclass">data2</span></p></li>
+<li><p>The name should make sense to you, your future self, and others that will use the code</p></li>
+<li><p>Try to be concise, but see the previous</p></li>
+<li><p>Make liberal use of suffixes/prefixes for naming the same types of things e.g. model_x, model_z</p></li>
+<li><p>For function names, try for verbs that describe what they do (e.g. add_two vs. two_more or plus2)</p></li>
+<li><p>Don’t name anything with ‘final’</p></li>
+<li><p>Don’t name something that is already an R function/object (e.g. <code>T</code>, <span class="func">c</span>, <span class="func">data</span>, etc.)</p></li>
+<li><p>Avoid distinguishing names only by number, e.g. <span class="objclass">data1</span> <span class="objclass">data2</span></p></li>
 </ul>
-<p>Naming styles include:</p>
+<p>Common naming styles include:</p>
 <ul>
 <li>snake_case</li>
 <li>CamelCase or camelCase</li>
 <li>spinal-case (e.g. for file names)</li>
 <li>dot.case</li>
 </ul>
-<p>For objects and functions, I find snake case easier to read and less prone to issues<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a>. For example, camel case can fail miserably when acronyms are involved. Dots already have specific uses (file name extensions, function methods, etc.), so probably should be avoided unless you’re using them for that specific purpose (they can also make selecting the whole name difficult depending on the context).</p>
+<p>For objects and functions, I find snake case easier to read and less prone to issues<a href="#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a>. For example, camel case can fail miserably when acronyms are involved. Dots already have specific uses (file name extensions, function methods, etc.), so probably should be avoided unless you’re using them for that specific purpose (they can also make selecting the whole name difficult depending on the context).</p>
 </div>
 <div id="other-1" class="section level3">
 <h3>Other</h3>
-<p>Use tools like the built-in RStudio code cleanup shortcut like <code>Ctrl/Cmd + Shft + A</code>. It’s not perfect, in the sense I disagree with some of its the style choice, but it will definitely be better than you will do on your own starting out.</p>
+<p>Use tools like the built-in RStudio code cleanup shortcut like <code>Ctrl/Cmd + Shft + A</code>. It’s not perfect, in the sense I disagree with some of its style choice, but it will definitely be better than you will do on your own starting out.</p>
 </div>
 </div>
 <div id="vectorization" class="section level2">
@@ -566,105 +575,105 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="boolean-indexing" class="section level3">
 <h3>Boolean Indexing</h3>
 <p>Assume <span class="objclass">x</span> is a vector of numbers. How would we create an index representing any value greater than 2?</p>
-<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb368-1" data-line-number="1">x =<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">-5</span>)</a>
-<a class="sourceLine" id="cb368-2" data-line-number="2">idx =<span class="st"> </span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb368-3" data-line-number="3">idx</a></code></pre></div>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="more.html#cb371-1"></a>x =<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">-5</span>)</span>
+<span id="cb371-2"><a href="more.html#cb371-2"></a>idx =<span class="st"> </span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb371-3"><a href="more.html#cb371-3"></a>idx</span></code></pre></div>
 <pre><code>[1] FALSE FALSE  TRUE FALSE</code></pre>
-<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb370-1" data-line-number="1">x[idx]</a></code></pre></div>
+<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb373-1"><a href="more.html#cb373-1"></a>x[idx]</span></code></pre></div>
 <pre><code>[1] 10</code></pre>
 <p>As mentioned <a href="data_structures.html#logicals">previously</a>, <span class="objclass">logicals</span> are objects with values of <code>TRUE</code> or <code>FALSE</code>, like the <span class="objclass">idx</span> variable above. While sometimes we want to deal with the logical object as an end, it is extremely commonly used as an index in data processing. Note how we don’t have to create an explicit index object first (though often you should), as R indexing is ridiculously flexible. Here are more examples, not necessarily recommended, but just to demonstrate the flexibility of Boolean indexing.</p>
-<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb372-1" data-line-number="1">x[x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb372-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb372-3" data-line-number="3">x[x <span class="op">!=</span><span class="st"> &#39;cat&#39;</span>]</a>
-<a class="sourceLine" id="cb372-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb372-5" data-line-number="5">x[<span class="kw">ifelse</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span>x <span class="op">!=</span><span class="dv">10</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)]</a>
-<a class="sourceLine" id="cb372-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb372-7" data-line-number="7">x[{y =<span class="st"> </span>idx; y}]</a>
-<a class="sourceLine" id="cb372-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb372-9" data-line-number="9">x[<span class="kw">resid</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="more.html#cb375-1"></a>x[x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>]</span>
+<span id="cb375-2"><a href="more.html#cb375-2"></a></span>
+<span id="cb375-3"><a href="more.html#cb375-3"></a>x[x <span class="op">!=</span><span class="st"> &#39;cat&#39;</span>]</span>
+<span id="cb375-4"><a href="more.html#cb375-4"></a></span>
+<span id="cb375-5"><a href="more.html#cb375-5"></a>x[<span class="kw">ifelse</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span>x <span class="op">!=</span><span class="dv">10</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)]</span>
+<span id="cb375-6"><a href="more.html#cb375-6"></a></span>
+<span id="cb375-7"><a href="more.html#cb375-7"></a>x[{y =<span class="st"> </span>idx; y}]</span>
+<span id="cb375-8"><a href="more.html#cb375-8"></a></span>
+<span id="cb375-9"><a href="more.html#cb375-9"></a>x[<span class="kw">resid</span>(<span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>]</span></code></pre></div>
 <p>All of these will transfer to the tidyverse <span class="func" style="">filter</span> function.</p>
-<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb373-1" data-line-number="1">df <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb373-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>, z <span class="op">==</span><span class="st"> &#39;a&#39;</span>)  <span class="co"># commas are like &amp;</span></a></code></pre></div>
+<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb376-1"><a href="more.html#cb376-1"></a>df <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb376-2"><a href="more.html#cb376-2"></a><span class="st">  </span><span class="kw">filter</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>, z <span class="op">==</span><span class="st"> &#39;a&#39;</span>)  <span class="co"># commas are like &amp;</span></span></code></pre></div>
 </div>
 <div id="vectorized-operations" class="section level3">
 <h3>Vectorized operations</h3>
 <p>Boolean indexing allows us to take <span class="emph">vectorized</span> approaches to dealing with data. Consider the following unfortunately coded loop, where we create a variable <code>y</code>, which takes on the value of <strong>Yes</strong> if the variable <code>x</code> is greater than 2, and <strong>No</strong> if otherwise.</p>
-<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb374-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mydf)) {</a>
-<a class="sourceLine" id="cb374-2" data-line-number="2">  </a>
-<a class="sourceLine" id="cb374-3" data-line-number="3">  check =<span class="st"> </span>mydf<span class="op">$</span>x[i] <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb374-4" data-line-number="4">  </a>
-<a class="sourceLine" id="cb374-5" data-line-number="5">  <span class="cf">if</span> (check <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) {</a>
-<a class="sourceLine" id="cb374-6" data-line-number="6">    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;Yes&#39;</span></a>
-<a class="sourceLine" id="cb374-7" data-line-number="7">  }</a>
-<a class="sourceLine" id="cb374-8" data-line-number="8">  <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb374-9" data-line-number="9">    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;No&#39;</span></a>
-<a class="sourceLine" id="cb374-10" data-line-number="10">  }</a>
-<a class="sourceLine" id="cb374-11" data-line-number="11">}</a></code></pre></div>
-<p>Compare<a href="#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a>:</p>
-<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb375-1" data-line-number="1">mydf<span class="op">$</span>y =<span class="st"> &#39;No&#39;</span></a>
-<a class="sourceLine" id="cb375-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb375-3" data-line-number="3">mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>] =<span class="st"> &#39;Yes&#39;</span></a></code></pre></div>
+<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="more.html#cb377-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mydf)) {</span>
+<span id="cb377-2"><a href="more.html#cb377-2"></a>  </span>
+<span id="cb377-3"><a href="more.html#cb377-3"></a>  check =<span class="st"> </span>mydf<span class="op">$</span>x[i] <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb377-4"><a href="more.html#cb377-4"></a>  </span>
+<span id="cb377-5"><a href="more.html#cb377-5"></a>  <span class="cf">if</span> (check <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) {</span>
+<span id="cb377-6"><a href="more.html#cb377-6"></a>    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;Yes&#39;</span></span>
+<span id="cb377-7"><a href="more.html#cb377-7"></a>  }</span>
+<span id="cb377-8"><a href="more.html#cb377-8"></a>  <span class="cf">else</span> {</span>
+<span id="cb377-9"><a href="more.html#cb377-9"></a>    mydf<span class="op">$</span>y[i] =<span class="st"> &#39;No&#39;</span></span>
+<span id="cb377-10"><a href="more.html#cb377-10"></a>  }</span>
+<span id="cb377-11"><a href="more.html#cb377-11"></a>}</span></code></pre></div>
+<p>Compare<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a>:</p>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb378-1"><a href="more.html#cb378-1"></a>mydf<span class="op">$</span>y =<span class="st"> &#39;No&#39;</span></span>
+<span id="cb378-2"><a href="more.html#cb378-2"></a></span>
+<span id="cb378-3"><a href="more.html#cb378-3"></a>mydf<span class="op">$</span>y[mydf<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>] =<span class="st"> &#39;Yes&#39;</span></span></code></pre></div>
 <p>This gets us the same thing, and would be much faster than the looped approach. Boolean indexing is an example of a vectorized operation. The whole vector is considered, rather than each element individually. The result is that any preprocessing is done once rather than the <code>n</code> iterations of the loop. In R, this will always faster.</p>
 <p>Example: Log all values in a matrix.</p>
-<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb376-1" data-line-number="1">mymatrix_log =<span class="st"> </span><span class="kw">log</span>(mymatrix)</a></code></pre></div>
+<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="more.html#cb379-1"></a>mymatrix_log =<span class="st"> </span><span class="kw">log</span>(mymatrix)</span></code></pre></div>
 <p>This is way faster than looping over elements, rows or columns. Here we’ll let the <span class="func">apply</span> function stand in for our loop, logging the elements of each column.</p>
-<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb377-1" data-line-number="1">mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb377-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb377-3" data-line-number="3"><span class="kw">identical</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</a></code></pre></div>
+<div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb380-1"><a href="more.html#cb380-1"></a>mymatrix =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">100</span>), <span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb380-2"><a href="more.html#cb380-2"></a></span>
+<span id="cb380-3"><a href="more.html#cb380-3"></a><span class="kw">identical</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</span></code></pre></div>
 <pre><code>[1] TRUE</code></pre>
-<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb379-1" data-line-number="1"><span class="kw">library</span>(microbenchmark)</a>
-<a class="sourceLine" id="cb379-2" data-line-number="2"><span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</a></code></pre></div>
+<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb382-1"><a href="more.html#cb382-1"></a><span class="kw">library</span>(microbenchmark)</span>
+<span id="cb382-2"><a href="more.html#cb382-2"></a><span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</span></code></pre></div>
 <pre><code>Unit: nanoseconds
-                    expr   min      lq     mean  median      uq   max neval cld
- apply(mymatrix, 2, log) 21825 22343.5 29163.35 22660.5 26391.5 95918   100   b
-           log(mymatrix)   631   658.0   783.41   735.0   803.5  2698   100  a </code></pre>
+                    expr   min      lq     mean  median    uq    max neval
+ apply(mymatrix, 2, log) 25567 26187.5 27571.36 26554.5 26917 108706   100
+           log(mymatrix)   735   800.5   887.75   896.0   939   1407   100</code></pre>
 <p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
 <div id="timings" class="section level4">
 <h4>Timings</h4>
 <p>We made our own function before, however, there is a <span class="func">scale</span> function in base R that uses a more vectorized approach under the hood to standardize variables. The following demonstrates various approaches to standardizing the columns of the matrix, even using a parallelized approach. As you’ll see, the base R function requires very little code and beats the others.</p>
-<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb381-1" data-line-number="1">mymat =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100000</span>), <span class="dt">ncol=</span><span class="dv">1000</span>)</a>
-<a class="sourceLine" id="cb381-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb381-3" data-line-number="3">stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb381-4" data-line-number="4">  (x<span class="op">-</span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
-<a class="sourceLine" id="cb381-5" data-line-number="5">}</a>
-<a class="sourceLine" id="cb381-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb381-7" data-line-number="7">doubleloop =<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb381-8" data-line-number="8">  </a>
-<a class="sourceLine" id="cb381-9" data-line-number="9">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat_asdf)) {</a>
-<a class="sourceLine" id="cb381-10" data-line-number="10">    x =<span class="st"> </span>mymat_asdf[, i]</a>
-<a class="sourceLine" id="cb381-11" data-line-number="11">    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) {</a>
-<a class="sourceLine" id="cb381-12" data-line-number="12">      x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
-<a class="sourceLine" id="cb381-13" data-line-number="13">    }</a>
-<a class="sourceLine" id="cb381-14" data-line-number="14">  }</a>
-<a class="sourceLine" id="cb381-15" data-line-number="15">  </a>
-<a class="sourceLine" id="cb381-16" data-line-number="16">}</a>
-<a class="sourceLine" id="cb381-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb381-18" data-line-number="18">singleloop =<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb381-19" data-line-number="19">  </a>
-<a class="sourceLine" id="cb381-20" data-line-number="20">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat_asdf)) {</a>
-<a class="sourceLine" id="cb381-21" data-line-number="21">    x =<span class="st"> </span>mymat_asdf[, i]</a>
-<a class="sourceLine" id="cb381-22" data-line-number="22">    x =<span class="st"> </span>(x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</a>
-<a class="sourceLine" id="cb381-23" data-line-number="23">  }</a>
-<a class="sourceLine" id="cb381-24" data-line-number="24">  </a>
-<a class="sourceLine" id="cb381-25" data-line-number="25">}</a>
-<a class="sourceLine" id="cb381-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb381-27" data-line-number="27"></a>
-<a class="sourceLine" id="cb381-28" data-line-number="28"><span class="kw">library</span>(parallel)</a>
-<a class="sourceLine" id="cb381-29" data-line-number="29">cl =<span class="st"> </span><span class="kw">makeCluster</span>(<span class="dv">8</span>)</a>
-<a class="sourceLine" id="cb381-30" data-line-number="30"><span class="kw">clusterExport</span>(cl, <span class="kw">c</span>(<span class="st">&#39;stdize&#39;</span>, <span class="st">&#39;mymat&#39;</span>))</a>
-<a class="sourceLine" id="cb381-31" data-line-number="31"></a>
-<a class="sourceLine" id="cb381-32" data-line-number="32">test =<span class="st"> </span>microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(</a>
-<a class="sourceLine" id="cb381-33" data-line-number="33">  <span class="dt">doubleloop =</span> <span class="kw">doubleloop</span>(),</a>
-<a class="sourceLine" id="cb381-34" data-line-number="34">  <span class="dt">singleloop =</span> <span class="kw">singleloop</span>(),</a>
-<a class="sourceLine" id="cb381-35" data-line-number="35">  <span class="dt">apply =</span> <span class="kw">apply</span>(mymat, <span class="dv">2</span>, stdize),</a>
-<a class="sourceLine" id="cb381-36" data-line-number="36">  <span class="dt">parApply =</span> <span class="kw">parApply</span>(cl, mymat, <span class="dv">2</span>, stdize),</a>
-<a class="sourceLine" id="cb381-37" data-line-number="37">  <span class="dt">vectorized =</span> <span class="kw">scale</span>(mymat),</a>
-<a class="sourceLine" id="cb381-38" data-line-number="38">  <span class="dt">times =</span> <span class="dv">25</span></a>
-<a class="sourceLine" id="cb381-39" data-line-number="39">)</a>
-<a class="sourceLine" id="cb381-40" data-line-number="40"></a>
-<a class="sourceLine" id="cb381-41" data-line-number="41"><span class="kw">stopCluster</span>(cl)</a>
-<a class="sourceLine" id="cb381-42" data-line-number="42"></a>
-<a class="sourceLine" id="cb381-43" data-line-number="43">test</a></code></pre></div>
+<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb384-1"><a href="more.html#cb384-1"></a>mymat =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100000</span>), <span class="dt">ncol=</span><span class="dv">1000</span>)</span>
+<span id="cb384-2"><a href="more.html#cb384-2"></a></span>
+<span id="cb384-3"><a href="more.html#cb384-3"></a>stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb384-4"><a href="more.html#cb384-4"></a>  (x<span class="op">-</span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</span>
+<span id="cb384-5"><a href="more.html#cb384-5"></a>}</span>
+<span id="cb384-6"><a href="more.html#cb384-6"></a></span>
+<span id="cb384-7"><a href="more.html#cb384-7"></a>doubleloop =<span class="st"> </span><span class="cf">function</span>() {</span>
+<span id="cb384-8"><a href="more.html#cb384-8"></a>  </span>
+<span id="cb384-9"><a href="more.html#cb384-9"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat_asdf)) {</span>
+<span id="cb384-10"><a href="more.html#cb384-10"></a>    x =<span class="st"> </span>mymat_asdf[, i]</span>
+<span id="cb384-11"><a href="more.html#cb384-11"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) {</span>
+<span id="cb384-12"><a href="more.html#cb384-12"></a>      x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</span>
+<span id="cb384-13"><a href="more.html#cb384-13"></a>    }</span>
+<span id="cb384-14"><a href="more.html#cb384-14"></a>  }</span>
+<span id="cb384-15"><a href="more.html#cb384-15"></a>  </span>
+<span id="cb384-16"><a href="more.html#cb384-16"></a>}</span>
+<span id="cb384-17"><a href="more.html#cb384-17"></a></span>
+<span id="cb384-18"><a href="more.html#cb384-18"></a>singleloop =<span class="st"> </span><span class="cf">function</span>() {</span>
+<span id="cb384-19"><a href="more.html#cb384-19"></a>  </span>
+<span id="cb384-20"><a href="more.html#cb384-20"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mymat_asdf)) {</span>
+<span id="cb384-21"><a href="more.html#cb384-21"></a>    x =<span class="st"> </span>mymat_asdf[, i]</span>
+<span id="cb384-22"><a href="more.html#cb384-22"></a>    x =<span class="st"> </span>(x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</span>
+<span id="cb384-23"><a href="more.html#cb384-23"></a>  }</span>
+<span id="cb384-24"><a href="more.html#cb384-24"></a>  </span>
+<span id="cb384-25"><a href="more.html#cb384-25"></a>}</span>
+<span id="cb384-26"><a href="more.html#cb384-26"></a></span>
+<span id="cb384-27"><a href="more.html#cb384-27"></a></span>
+<span id="cb384-28"><a href="more.html#cb384-28"></a><span class="kw">library</span>(parallel)</span>
+<span id="cb384-29"><a href="more.html#cb384-29"></a>cl =<span class="st"> </span><span class="kw">makeCluster</span>(<span class="dv">8</span>)</span>
+<span id="cb384-30"><a href="more.html#cb384-30"></a><span class="kw">clusterExport</span>(cl, <span class="kw">c</span>(<span class="st">&#39;stdize&#39;</span>, <span class="st">&#39;mymat&#39;</span>))</span>
+<span id="cb384-31"><a href="more.html#cb384-31"></a></span>
+<span id="cb384-32"><a href="more.html#cb384-32"></a>test =<span class="st"> </span>microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(</span>
+<span id="cb384-33"><a href="more.html#cb384-33"></a>  <span class="dt">doubleloop =</span> <span class="kw">doubleloop</span>(),</span>
+<span id="cb384-34"><a href="more.html#cb384-34"></a>  <span class="dt">singleloop =</span> <span class="kw">singleloop</span>(),</span>
+<span id="cb384-35"><a href="more.html#cb384-35"></a>  <span class="dt">apply =</span> <span class="kw">apply</span>(mymat, <span class="dv">2</span>, stdize),</span>
+<span id="cb384-36"><a href="more.html#cb384-36"></a>  <span class="dt">parApply =</span> <span class="kw">parApply</span>(cl, mymat, <span class="dv">2</span>, stdize),</span>
+<span id="cb384-37"><a href="more.html#cb384-37"></a>  <span class="dt">vectorized =</span> <span class="kw">scale</span>(mymat),</span>
+<span id="cb384-38"><a href="more.html#cb384-38"></a>  <span class="dt">times =</span> <span class="dv">25</span></span>
+<span id="cb384-39"><a href="more.html#cb384-39"></a>)</span>
+<span id="cb384-40"><a href="more.html#cb384-40"></a></span>
+<span id="cb384-41"><a href="more.html#cb384-41"></a><span class="kw">stopCluster</span>(cl)</span>
+<span id="cb384-42"><a href="more.html#cb384-42"></a></span>
+<span id="cb384-43"><a href="more.html#cb384-43"></a>test</span></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/vectorization_timings-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -675,9 +684,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To be clear, not only is regex another language, it’s nigh on indecipherable. You will not learn much regex, but what you do learn will save a potentially enormous amount of time you’d otherwise spend trying to do things in a more haphazard fashion. Furthermore, practically every situation that will come up has already been asked and answered on <a href="https://stackoverflow.com/questions/tagged/regex">Stack Overflow</a>, so you’ll almost always be able to search for what you need.</p>
 <p>Here is an example of a pattern we might be interested in:</p>
 <p><code>^r.*shiny[0-9]$</code></p>
-<p>What is <em>that</em> you may ask? Well here is an example of strings it would and wouldn’t match. We’re using <span class="func">grepl</span> to return a logical (i.e. <code>TRUE</code> or <code>FALSE</code>) if any of the strings match the pattern in some way.</p>
-<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb382-1" data-line-number="1">string =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;r is the shiny&#39;</span>, <span class="st">&#39;r is the shiny1&#39;</span>, <span class="st">&#39;r shines brightly&#39;</span>)</a>
-<a class="sourceLine" id="cb382-2" data-line-number="2"><span class="kw">grepl</span>(string, <span class="dt">pattern=</span><span class="st">&#39;^r.*shiny[0-9]$&#39;</span>)</a></code></pre></div>
+<p>What is <em>that</em> you may ask? Well here is an example of strings it would and wouldn’t match. We’re using <span class="func">grepl</span> to return a logical (i.e. <code>TRUE</code> or <code>FALSE</code>) if any of the strings match the pattern in some way.</p>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="more.html#cb385-1"></a>string =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;r is the shiny&#39;</span>, <span class="st">&#39;r is the shiny1&#39;</span>, <span class="st">&#39;r shines brightly&#39;</span>)</span>
+<span id="cb385-2"><a href="more.html#cb385-2"></a><span class="kw">grepl</span>(string, <span class="dt">pattern=</span><span class="st">&#39;^r.*shiny[0-9]$&#39;</span>)</span></code></pre></div>
 <pre><code>[1] FALSE  TRUE FALSE</code></pre>
 <p>What the regex is esoterically attempting to match is any string that starts with ‘r’ and ends with ‘shiny_’ where _ is some single digit. Specifically it breaks down as follows:</p>
 <ul>
@@ -697,7 +706,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong>[A-Z]</strong> : capital letters</li>
 <li><strong>+</strong> : match the preceding one or more times</li>
 <li><strong>()</strong> : groupings</li>
-<li><strong>|</strong> : logical or e.g. [a-z]|[0-9] (a lower case letter or a number)</li>
+<li><strong>|</strong> : logical or e.g. [a-z]|[0-9] (a lower case letter or a number)</li>
 <li><strong>?</strong> : preceding item is optional, and will be matched at most once. Typically used for ‘look ahead’ and ‘look behind’</li>
 <li><strong>\</strong> : escape a character, like if you actually wanted to search for a period instead of using it as a regex pattern, you’d use \., though in R you need \\, i.e. double slashes, for escape.</li>
 </ul>
@@ -709,9 +718,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>Those are just a few. The key functions can be found by looking at the help file for the <span class="func">grep</span> function (<code>?grep</code>). However, the <span class="pack">stringr</span> package has the same functionality with perhaps a slightly faster processing (though that’s due to the underlying <span class="pack">stringi</span> package).</p>
 <p>See if you can guess which of the following will turn up <code>TRUE</code>.</p>
-<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb384-1" data-line-number="1"><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;a&#39;</span>)</a>
-<a class="sourceLine" id="cb384-2" data-line-number="2"><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;^a&#39;</span>)</a>
-<a class="sourceLine" id="cb384-3" data-line-number="3"><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;^a|a$&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="more.html#cb387-1"></a><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;a&#39;</span>)</span>
+<span id="cb387-2"><a href="more.html#cb387-2"></a><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;^a&#39;</span>)</span>
+<span id="cb387-3"><a href="more.html#cb387-3"></a><span class="kw">grepl</span>(<span class="kw">c</span>(<span class="st">&#39;apple&#39;</span>, <span class="st">&#39;pear&#39;</span>, <span class="st">&#39;banana&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;^a|a$&#39;</span>)</span></code></pre></div>
 <p>Scraping the web, munging data, just finding things in your scripts … you can potentially use this all the time, and not only with text analysis, as we’ll now see.</p>
 </div>
 </div>
@@ -720,41 +729,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="exercise-1-8" class="section level3">
 <h3>Exercise 1</h3>
 <p>For the following model related output, come up with a name for each object.</p>
-<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb385-1" data-line-number="1"><span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">data =</span> mpg)                 <span class="co"># hwy mileage predicted by number of cylinders</span></a>
-<a class="sourceLine" id="cb385-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb385-3" data-line-number="3"><span class="kw">summary</span>(<span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">data =</span> mpg))        <span class="co"># the summary of that</span></a>
-<a class="sourceLine" id="cb385-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb385-5" data-line-number="5"><span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl <span class="op">+</span><span class="st"> </span>displ <span class="op">+</span><span class="st"> </span>year, <span class="dt">data =</span> mpg)  <span class="co"># an extension of that</span></a></code></pre></div>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="more.html#cb388-1"></a><span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">data =</span> mpg)                 <span class="co"># hwy mileage predicted by number of cylinders</span></span>
+<span id="cb388-2"><a href="more.html#cb388-2"></a></span>
+<span id="cb388-3"><a href="more.html#cb388-3"></a><span class="kw">summary</span>(<span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">data =</span> mpg))        <span class="co"># the summary of that</span></span>
+<span id="cb388-4"><a href="more.html#cb388-4"></a></span>
+<span id="cb388-5"><a href="more.html#cb388-5"></a><span class="kw">lm</span>(hwy <span class="op">~</span><span class="st"> </span>cyl <span class="op">+</span><span class="st"> </span>displ <span class="op">+</span><span class="st"> </span>year, <span class="dt">data =</span> mpg)  <span class="co"># an extension of that</span></span></code></pre></div>
 </div>
 <div id="exercise-2-9" class="section level3">
 <h3>Exercise 2</h3>
 <p>Fix this code.</p>
-<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb386-1" data-line-number="1">x=<span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">10</span>, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb386-2" data-line-number="2">y=.<span class="dv">2</span><span class="op">*</span><span class="st"> </span>x<span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb386-3" data-line-number="3">data =<span class="st"> </span><span class="kw">data.frame</span>(x,y)</a>
-<a class="sourceLine" id="cb386-4" data-line-number="4">q =<span class="st"> </span><span class="kw">lm</span>(y<span class="op">~</span>x, <span class="dt">data=</span>data)</a>
-<a class="sourceLine" id="cb386-5" data-line-number="5"><span class="kw">summary</span>(q)</a></code></pre></div>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="more.html#cb389-1"></a>x=<span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">10</span>, <span class="dv">2</span>)</span>
+<span id="cb389-2"><a href="more.html#cb389-2"></a>y=.<span class="dv">2</span><span class="op">*</span><span class="st"> </span>x<span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb389-3"><a href="more.html#cb389-3"></a>data =<span class="st"> </span><span class="kw">data.frame</span>(x,y)</span>
+<span id="cb389-4"><a href="more.html#cb389-4"></a>q =<span class="st"> </span><span class="kw">lm</span>(y<span class="op">~</span>x, <span class="dt">data=</span>data)</span>
+<span id="cb389-5"><a href="more.html#cb389-5"></a><span class="kw">summary</span>(q)</span></code></pre></div>
 </div>
 </div>
 <div id="vectorization-exercises" class="section level2">
 <h2>Vectorization Exercises</h2>
-<p>Did you remember to fix the names in the previous exercise?</p>
+<p>Before we do this, did you remember to fix the names in the previous exercise?</p>
 <div id="exercise-1-9" class="section level3">
 <h3>Exercise 1</h3>
-<p>Show a non-vectorized and a vectorized way to add a two to the numbers 1 through 3.</p>
-<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb387-1" data-line-number="1">?</a></code></pre></div>
+<p>Show a non-vectorized (e.g. a loop) and a vectorized way to add a two to the numbers 1 through 3.</p>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="more.html#cb390-1"></a>?</span></code></pre></div>
 </div>
 <div id="exercise-2-10" class="section level3">
 <h3>Exercise 2</h3>
 <p>Of the following, which do you think is faster? Test it with the <span class="pack">microbenchmark</span> package.</p>
-<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb388-1" data-line-number="1">x =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rpois</span>(<span class="dv">100000</span>, <span class="dt">lambda =</span> <span class="dv">5</span>), <span class="dt">ncol =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb388-2" data-line-number="2"><span class="kw">colSums</span>(x)</a>
-<a class="sourceLine" id="cb388-3" data-line-number="3"><span class="kw">apply</span>(x, <span class="dv">2</span>, sum)</a>
-<a class="sourceLine" id="cb388-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb388-5" data-line-number="5">microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(</a>
-<a class="sourceLine" id="cb388-6" data-line-number="6">  <span class="dt">cs  =</span> <span class="kw">colSums</span>(x),</a>
-<a class="sourceLine" id="cb388-7" data-line-number="7">  <span class="dt">app =</span> <span class="kw">apply</span>(x, <span class="dv">2</span>, sum)</a>
-<a class="sourceLine" id="cb388-8" data-line-number="8">)</a></code></pre></div>
+<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="more.html#cb391-1"></a>x =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rpois</span>(<span class="dv">100000</span>, <span class="dt">lambda =</span> <span class="dv">5</span>), <span class="dt">ncol =</span> <span class="dv">100</span>)</span>
+<span id="cb391-2"><a href="more.html#cb391-2"></a><span class="kw">colSums</span>(x)</span>
+<span id="cb391-3"><a href="more.html#cb391-3"></a><span class="kw">apply</span>(x, <span class="dv">2</span>, sum)</span>
+<span id="cb391-4"><a href="more.html#cb391-4"></a></span>
+<span id="cb391-5"><a href="more.html#cb391-5"></a>microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(</span>
+<span id="cb391-6"><a href="more.html#cb391-6"></a>  <span class="dt">cs  =</span> <span class="kw">colSums</span>(x),</span>
+<span id="cb391-7"><a href="more.html#cb391-7"></a>  <span class="dt">app =</span> <span class="kw">apply</span>(x, <span class="dv">2</span>, sum)</span>
+<span id="cb391-8"><a href="more.html#cb391-8"></a>)</span></code></pre></div>
 </div>
 </div>
 <div id="regex-exercises" class="section level2">
@@ -762,8 +771,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="exercise-1-10" class="section level3">
 <h3>Exercise 1</h3>
 <p>Using <span class="pack">stringr</span> and <span class="func">str_replace</span>, replace all the states a’s with nothing.</p>
-<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb389-1" data-line-number="1"><span class="kw">library</span>(stringr)</a>
-<a class="sourceLine" id="cb389-2" data-line-number="2"><span class="kw">str_replace</span>(state.name, <span class="dt">pattern =</span> ?, <span class="dt">replacement =</span> ?)</a></code></pre></div>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="more.html#cb392-1"></a><span class="kw">library</span>(stringr)</span>
+<span id="cb392-2"><a href="more.html#cb392-2"></a><span class="kw">str_replace</span>(state.name, <span class="dt">pattern =</span> ?, <span class="dt">replacement =</span> ?)</span></code></pre></div>
 
 </div>
 </div>
@@ -773,10 +782,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div class="footnotes">
 <hr />
-<ol start="26">
-<li id="fn26"><p>I usually reserve arrows for functions and package development.<a href="more.html#fnref26" class="footnote-back">↩</a></p></li>
-<li id="fn27"><p>Note how I didn’t say it’s easier to read without qualification (even though I think it’s obviously easier to read, based on how eyes/brains work). Many style guides you encounter will try to come across as definitive. They are not, nor are most of their claims tested.<a href="more.html#fnref27" class="footnote-back">↩</a></p></li>
-<li id="fn28"><p>For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.<a href="more.html#fnref28" class="footnote-back">↩</a></p></li>
+<ol start="25">
+<li id="fn25"><p>I usually reserve arrows for functions and package development.<a href="more.html#fnref25" class="footnote-back">↩︎</a></p></li>
+<li id="fn26"><p>Even though I think it’s obviously easier to read, based on how eyes/brains work, this is not necessarily the case for everyone. Many style guides you encounter will try to come across as definitive. They are not, nor are most of their claims tested. Same here.<a href="more.html#fnref26" class="footnote-back">↩︎</a></p></li>
+<li id="fn27"><p>For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.<a href="more.html#fnref27" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

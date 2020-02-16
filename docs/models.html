@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Model Exploration | Data Processing &amp; Visualization</title>
+  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Model Exploration | Data Processing &amp; Visualization" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://m-clark.github.io/data-processing-and-visualization/" />
+  <meta property="og:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
+  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta name="github-repo" content="m-clark/data-processing-and-visualization/" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Model Exploration | Data Processing &amp; Visualization" />
+  
+  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta name="twitter:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
+
+
+
+<meta name="date" content="2020-01-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="img/R.ico" type="image/x-icon" />
+<link rel="prev" href="more.html"/>
+<link rel="next" href="summary.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.49.4/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.49.4/plotly-latest.min.js"></script>
+<link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
+<script src="libs/vis-4.20.1/vis.min.js"></script>
+<script src="libs/visNetwork-binding-2.0.9/visNetwork.js"></script>
+<script src="libs/proj4js-2.3.15/proj4.js"></script>
+<link href="libs/highcharts-7.0.1/css/motion.css" rel="stylesheet" />
+<link href="libs/highcharts-7.0.1/css/htmlwdgtgrid.css" rel="stylesheet" />
+<script src="libs/highcharts-7.0.1/highcharts.js"></script>
+<script src="libs/highcharts-7.0.1/highcharts-3d.js"></script>
+<script src="libs/highcharts-7.0.1/highcharts-more.js"></script>
+<script src="libs/highcharts-7.0.1/modules/stock.js"></script>
+<script src="libs/highcharts-7.0.1/modules/map.js"></script>
+<script src="libs/highcharts-7.0.1/modules/annotations.js"></script>
+<script src="libs/highcharts-7.0.1/modules/boost.js"></script>
+<script src="libs/highcharts-7.0.1/modules/data.js"></script>
+<script src="libs/highcharts-7.0.1/modules/drag-panes.js"></script>
+<script src="libs/highcharts-7.0.1/modules/drilldown.js"></script>
+<script src="libs/highcharts-7.0.1/modules/item-series.js"></script>
+<script src="libs/highcharts-7.0.1/modules/offline-exporting.js"></script>
+<script src="libs/highcharts-7.0.1/modules/overlapping-datalabels.js"></script>
+<script src="libs/highcharts-7.0.1/modules/exporting.js"></script>
+<script src="libs/highcharts-7.0.1/modules/export-data.js"></script>
+<script src="libs/highcharts-7.0.1/modules/funnel.js"></script>
+<script src="libs/highcharts-7.0.1/modules/heatmap.js"></script>
+<script src="libs/highcharts-7.0.1/modules/treemap.js"></script>
+<script src="libs/highcharts-7.0.1/modules/sankey.js"></script>
+<script src="libs/highcharts-7.0.1/modules/solid-gauge.js"></script>
+<script src="libs/highcharts-7.0.1/modules/streamgraph.js"></script>
+<script src="libs/highcharts-7.0.1/modules/sunburst.js"></script>
+<script src="libs/highcharts-7.0.1/modules/vector.js"></script>
+<script src="libs/highcharts-7.0.1/modules/wordcloud.js"></script>
+<script src="libs/highcharts-7.0.1/modules/xrange.js"></script>
+<script src="libs/highcharts-7.0.1/modules/tilemap.js"></script>
+<script src="libs/highcharts-7.0.1/modules/venn.js"></script>
+<script src="libs/highcharts-7.0.1/modules/gantt.js"></script>
+<script src="libs/highcharts-7.0.1/modules/timeline.js"></script>
+<script src="libs/highcharts-7.0.1/modules/parallel-coordinates.js"></script>
+<script src="libs/highcharts-7.0.1/plugins/grouped-categories.js"></script>
+<script src="libs/highcharts-7.0.1/plugins/motion.js"></script>
+<script src="libs/highcharts-7.0.1/plugins/multicolor_series.js"></script>
+<script src="libs/highcharts-7.0.1/custom/reset.js"></script>
+<script src="libs/highcharts-7.0.1/custom/symbols-extra.js"></script>
+<script src="libs/highcharts-7.0.1/custom/text-symbols.js"></script>
+<script src="libs/highchart-binding-0.7.0/highchart.js"></script>
+<script src="libs/sigma-1.2.1/sigma.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.layout.forceAtlas2.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.layout.noverlap.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.parallelEdges.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.animate.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.customShapes.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.dragNodes.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.customEdgeShapes.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.relativeSize.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.edgeLabels.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.parsers.gexf.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.exporters.svg.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.neighborhoods.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.filter.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.snapshot.min.js"></script>
+<script src="libs/sigmajs-binding-0.1.3/sigmajs.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.11/datatables.js"></script>
+<link href="libs/dt-core-1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.19/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.19/js/jquery.dataTables.min.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="css/book.css" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class='before'><a href="./">Data Processing & Visualization</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i>Intro</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#outline"><i class="fa fa-check"></i>Outline</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-1-data-processing"><i class="fa fa-check"></i>Part 1: Data Processing</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-2-visualization"><i class="fa fa-check"></i>Part 2: Visualization</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-3-programming-basics"><i class="fa fa-check"></i>Part 3: Programming Basics</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-4-presentation"><i class="fa fa-check"></i>Part 4: Presentation</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-5-modeling"><i class="fa fa-check"></i>Part 5: Modeling</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#preparation"><i class="fa fa-check"></i>Preparation</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#other"><i class="fa fa-check"></i>Other</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#python"><i class="fa fa-check"></i>Python</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#r"><i class="fa fa-check"></i>R</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Part I: Data Processing</b></span></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html"><i class="fa fa-check"></i>Data Structures</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#vectors"><i class="fa fa-check"></i>Vectors</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#character-strings"><i class="fa fa-check"></i>Character strings</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#factors"><i class="fa fa-check"></i>Factors</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#logicals"><i class="fa fa-check"></i>Logicals</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#numeric-and-integer"><i class="fa fa-check"></i>Numeric and integer</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#matrices"><i class="fa fa-check"></i>Matrices</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#creating-a-matrix"><i class="fa fa-check"></i>Creating a matrix</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#lists"><i class="fa fa-check"></i>Lists</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#data-frames"><i class="fa fa-check"></i>Data Frames</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#creating-a-data-frame"><i class="fa fa-check"></i>Creating a data frame</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#data-structure-exercises"><i class="fa fa-check"></i>Data Structure Exercises</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#excercise-1"><i class="fa fa-check"></i>Excercise #1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise #2</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#thinking-exercises"><i class="fa fa-check"></i>Thinking Exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html"><i class="fa fa-check"></i>Input/Output</a><ul>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#other-approaches"><i class="fa fa-check"></i>Other approaches</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#faster-approaches"><i class="fa fa-check"></i>Faster approaches</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#other-data"><i class="fa fa-check"></i>Other Data</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#on-the-horizon"><i class="fa fa-check"></i>On the horizon</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#big-data"><i class="fa fa-check"></i>Big Data</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#io-exercises"><i class="fa fa-check"></i>I/O Exercises</a><ul>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#thinking-exercises-1"><i class="fa fa-check"></i>Thinking Exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html"><i class="fa fa-check"></i>Indexing</a><ul>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#base-r-indexing-refresher"><i class="fa fa-check"></i>Base R Indexing Refresher</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/Data.frame extraction</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#indexing-exercises"><i class="fa fa-check"></i>Indexing Exercises</a><ul>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-1-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-2-1"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html"><i class="fa fa-check"></i>Pipes</a><ul>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#using-variables-as-they-are-created"><i class="fa fa-check"></i>Using variables as they are created</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#pipes-for-visualization-more-later"><i class="fa fa-check"></i>Pipes for Visualization (more later)</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#the-dot"><i class="fa fa-check"></i>The dot</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#flexibility"><i class="fa fa-check"></i>Flexibility</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html"><i class="fa fa-check"></i>Tidyverse</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-the-tidyverse"><i class="fa fa-check"></i>What is the tidyverse?</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is tidy?</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#dplyr"><i class="fa fa-check"></i>dplyr</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#an-example"><i class="fa fa-check"></i>An example</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#running-example"><i class="fa fa-check"></i>Running example</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#selecting-columns"><i class="fa fa-check"></i>Selecting Columns</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#helper-functions"><i class="fa fa-check"></i>Helper functions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#filtering-rows"><i class="fa fa-check"></i>Filtering Rows</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#generating-new-data"><i class="fa fa-check"></i>Generating New Data</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#grouping-and-summarizing-data"><i class="fa fa-check"></i>Grouping and Summarizing Data</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#renaming-columns"><i class="fa fa-check"></i>Renaming columns</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#merging-data"><i class="fa fa-check"></i>Merging Data</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyr"><i class="fa fa-check"></i>tidyr</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#more-tidyverse"><i class="fa fa-check"></i>More Tidyverse</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyverse-exercises"><i class="fa fa-check"></i>tidyverse Exercises</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-1-2"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-2-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-3-1"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-4"><i class="fa fa-check"></i>Exercise 4</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html"><i class="fa fa-check"></i>data.table</a><ul>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#basics"><i class="fa fa-check"></i>Basics</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#grouped-operations"><i class="fa fa-check"></i>Grouped operations</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster"><i class="fa fa-check"></i>Faster!</a><ul>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#joins"><i class="fa fa-check"></i>Joins</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#group-by"><i class="fa fa-check"></i>Group by</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#string-matching"><i class="fa fa-check"></i>String matching</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#reading-files"><i class="fa fa-check"></i>Reading files</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#more-speed"><i class="fa fa-check"></i>More speed</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#summary-1"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#dtplyr"><i class="fa fa-check"></i>dtplyr</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-exercises"><i class="fa fa-check"></i>data.table Exercises</a><ul>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-0-1"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-1-3"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-2-3"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Part II: Visualization</b></span></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html"><i class="fa fa-check"></i>Thinking Visually</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#information"><i class="fa fa-check"></i>Information</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#your-audience-isnt-dumb"><i class="fa fa-check"></i>Your audience isn’t dumb</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#clarity-is-key"><i class="fa fa-check"></i>Clarity is key</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#avoid-clutter"><i class="fa fa-check"></i>Avoid clutter</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#color-isnt-optional"><i class="fa fa-check"></i>Color isn’t optional</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#think-interactively"><i class="fa fa-check"></i>Think interactively</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#color"><i class="fa fa-check"></i>Color</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#viridis"><i class="fa fa-check"></i>Viridis</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#scientific-colors"><i class="fa fa-check"></i>Scientific colors</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#rcolorbrewer"><i class="fa fa-check"></i>RColorBrewer</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#scaling-size"><i class="fa fa-check"></i>Scaling Size</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#accessibility"><i class="fa fa-check"></i>Accessibility</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#file-types"><i class="fa fa-check"></i>File Types</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#summary-2"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#a-casual-list-of-things-to-avoid"><i class="fa fa-check"></i>A casual list of things to avoid</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#pie"><i class="fa fa-check"></i>Pie</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#histograms"><i class="fa fa-check"></i>Histograms</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#using-3d-without-adding-any-communicative-value"><i class="fa fa-check"></i>Using 3D without adding any communicative value</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#using-too-many-colors"><i class="fa fa-check"></i>Using too many colors</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#using-valenced-colors-when-data-isnt-applicable"><i class="fa fa-check"></i>Using valenced colors when data isn’t applicable</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#showing-maps-that-just-display-population"><i class="fa fa-check"></i>Showing maps that just display population</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#biplots"><i class="fa fa-check"></i>Biplots</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-1-4"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-2-4"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-exercises-2"><i class="fa fa-check"></i>Thinking exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#geoms"><i class="fa fa-check"></i>Geoms</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#examples"><i class="fa fa-check"></i>Examples</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#stats"><i class="fa fa-check"></i>Stats</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#scales"><i class="fa fa-check"></i>Scales</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i>Facets</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#multiple-plots"><i class="fa fa-check"></i>Multiple plots</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#themes"><i class="fa fa-check"></i>Themes</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#python-1"><i class="fa fa-check"></i>Python</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-exercises"><i class="fa fa-check"></i>ggplot2 Exercises</a><ul>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-0-2"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-1-5"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-2-5"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#packages"><i class="fa fa-check"></i>Packages</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#piping-for-visualization"><i class="fa fa-check"></i>Piping for Visualization</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#htmlwidgets"><i class="fa fa-check"></i>htmlwidgets</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#plotly"><i class="fa fa-check"></i>Plotly</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#modes"><i class="fa fa-check"></i>Modes</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#ggplotly"><i class="fa fa-check"></i>ggplotly</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#highcharter"><i class="fa fa-check"></i>Highcharter</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#graph-networks"><i class="fa fa-check"></i>Graph networks</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#visnetwork"><i class="fa fa-check"></i>visNetwork</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#sigmajs"><i class="fa fa-check"></i>sigmajs</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#plotly-1"><i class="fa fa-check"></i>Plotly</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#leaflet"><i class="fa fa-check"></i>leaflet</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#dt"><i class="fa fa-check"></i>DT</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#shiny"><i class="fa fa-check"></i>Shiny</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#dash"><i class="fa fa-check"></i>Dash</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-visualization-exercises"><i class="fa fa-check"></i>Interactive Visualization Exercises</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-0-3"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-1-6"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-2-6"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-3-2"><i class="fa fa-check"></i>Exercise 3</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Part III: Programming</b></span></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html"><i class="fa fa-check"></i>Basics</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#r-objects"><i class="fa fa-check"></i>R Objects</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#object-inspection-exploration"><i class="fa fa-check"></i>Object Inspection &amp; Exploration</a></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#methods"><i class="fa fa-check"></i>Methods</a></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#s4-classes"><i class="fa fa-check"></i>S4 classes</a></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#others"><i class="fa fa-check"></i>Others</a></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#inspecting-functions"><i class="fa fa-check"></i>Inspecting Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#help-files"><i class="fa fa-check"></i>Help Files</a></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#objects-exercises"><i class="fa fa-check"></i>Objects Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#a-slight-speed-gain"><i class="fa fa-check"></i>A slight speed gain</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#loops-summary"><i class="fa fa-check"></i>Loops summary</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#working-with-lists"><i class="fa fa-check"></i>Working with lists</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#iterative-programming-exercises"><i class="fa fa-check"></i>Iterative Programming Exercises</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-1-7"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-2-7"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-3-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i>Writing Functions</a><ul>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#a-starting-point"><i class="fa fa-check"></i>A starting point</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#dry"><i class="fa fa-check"></i>DRY</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#conditionals"><i class="fa fa-check"></i>Conditionals</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#anonymous-functions"><i class="fa fa-check"></i>Anonymous functions</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#writing-functions-exercises"><i class="fa fa-check"></i>Writing Functions Exercises</a><ul>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1-1"><i class="fa fa-check"></i>Excercise 1</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1b"><i class="fa fa-check"></i>Excercise 1b</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#exercise-2-8"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html"><i class="fa fa-check"></i>More</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-style"><i class="fa fa-check"></i>Code Style</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#why-does-your-code-exist"><i class="fa fa-check"></i>Why does your code exist?</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#assignment"><i class="fa fa-check"></i>Assignment</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-length"><i class="fa fa-check"></i>Code length</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#naming-things"><i class="fa fa-check"></i>Naming things</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#other-1"><i class="fa fa-check"></i>Other</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorization"><i class="fa fa-check"></i>Vectorization</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#boolean-indexing"><i class="fa fa-check"></i>Boolean Indexing</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorized-operations"><i class="fa fa-check"></i>Vectorized operations</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#regular-expressions"><i class="fa fa-check"></i>Regular Expressions</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#typical-uses"><i class="fa fa-check"></i>Typical Uses</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-style-exercises"><i class="fa fa-check"></i>Code Style Exercises</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-8"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-9"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorization-exercises"><i class="fa fa-check"></i>Vectorization Exercises</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-9"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-10"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#regex-exercises"><i class="fa fa-check"></i>Regex Exercises</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-10"><i class="fa fa-check"></i>Exercise 1</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Part IV: Modeling</b></span></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i>Model Exploration</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-taxonomy"><i class="fa fa-check"></i>Model Taxonomy</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#linear-models"><i class="fa fa-check"></i>Linear models</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#estimation"><i class="fa fa-check"></i>Estimation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#fitting-models"><i class="fa fa-check"></i>Fitting Models</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#matrix"><i class="fa fa-check"></i>Matrix</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#summarizing-models"><i class="fa fa-check"></i>Summarizing Models</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#variable-transformations"><i class="fa fa-check"></i>Variable Transformations</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#categorical-variables"><i class="fa fa-check"></i>Categorical Variables</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#misc"><i class="fa fa-check"></i>Misc</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#variable-importance"><i class="fa fa-check"></i>Variable Importance</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#extracting-output"><i class="fa fa-check"></i>Extracting Output</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#factor-variables"><i class="fa fa-check"></i>Factor Variables</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#visualization"><i class="fa fa-check"></i>Visualization</a></li>
+</ul></li>
+<li class="part"><span><b>Wrap-up</b></span></li>
+<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li class='after'">
+   <a href="https://m-clark.github.io/">
+      <img src="img/mc_logo.png" style="width:25%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo">
+   </a>
+</li>
+<li class='after'">
+   <div style='text-align:center'>
+      <a href="https://github.com/m-clark/">
+         <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+      </a>
+   </div>
+</li>
+<li class='after'">
+   <div style='text-align:center'>
+      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+         <i class="fab fa-creative-commons fa-lg"></i> 
+         <i class="fab fa-creative-commons-by fa-lg"></i> 
+         <i class="fab fa-creative-commons-sa fa-lg"></i>
+      </a>
+   </div>
+</li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Data Processing &amp; Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="model-exploration" class="section level1">
+<h1>Model Exploration</h1>
+<p>The following shows how to get started with modeling in R generally, with a focus on concepts, tools, and syntax, rather than trying to understand the specifics of a given model.</p>
+<div id="model-taxonomy" class="section level2">
+<h2>Model Taxonomy</h2>
+<p>We can broadly describe two classes of models</p>
+<ul>
+<li><em>Supervised</em></li>
+<li><em>Unsupervised</em></li>
+<li>Some combination</li>
+</ul>
+<p>For supervised settings, there is a target or set of target variables which we aim to predict with a set of predictor variables or covariates. This is far and away the most common case, and the one we will focus on here.</p>
+<p>In the case of unsupervised models, the data is the target, and includes techniques such as principal components analyis, factor analysis, cluster analytic approaches, topic modeling, and many others. The key notion is dimension reduction, either of the columns or rows. For example, we may have many items of a survey we wish to group together into a few key concepts, or cluster thousands of observations into a few simple categories.</p>
+<div id="linear-models" class="section level3">
+<h3>Linear models</h3>
+<p>By far most models are linear models, even when they incorporate nonlinear relationships. For example, in the following, we can add a quadratic term or an interaction, yet the model is still linear in the parameters.</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb369-1" data-line-number="1"><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z <span class="op">+</span><span class="st"> </span>x<span class="op">:</span>z)</a></code></pre></div>
+<pre><code>
+Call:
+lm(formula = y ~ x + z + x:z)
+
+Coefficients:
+(Intercept)            x            z          x:z  
+ -4.000e+00    3.545e-15    1.000e+00   -3.171e-16  </code></pre>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb371-1" data-line-number="1"><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>x<span class="op">^</span><span class="dv">2</span>)</a></code></pre></div>
+<pre><code>
+Call:
+lm(formula = y ~ x + x^2)
+
+Coefficients:
+(Intercept)            x  
+    6.52479     -0.01653  </code></pre>
+<p>In both of the models above, <code>x</code> has a potentially nonlinear relationship with <code>y</code>, either by varying its relationship depending on values of z (the first case) or itself (the second). In general, the manner in which nonlinear relationships may be explored in linear models is quite flexible.</p>
+<p>An example of a nonlinear model would be population growth models like exponential or logistic growth curves. You can use functions like <span class="pack" style="">nls</span> or <span class="pack" style="">nlme</span> for such models, but should have a specific theoretical reason to do so, and even then flexible models such as GAMs might be better than assuming a functional form.</p>
+</div>
+<div id="estimation" class="section level3">
+<h3>Estimation</h3>
+<p>Most statistical modeling techniques use <em>maximum likelihood</em> in some form or fashion, including Bayesian approaches. A basic linear model may use ordinary least squares, others generalized estimating equations, but far and away the most common approach in statistical modeling is maximum likelihood, so you would do well to understand the basics.</p>
+</div>
+</div>
+<div id="fitting-models" class="section level2">
+<h2>Fitting Models</h2>
+<p>The two components required to fit a model in R with practically every modern package are the model formula and a data frame. Consider the following models, in general the syntax is the same or identical, with special considerations for the type of model. The data argument is not included.</p>
+<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb373-1" data-line-number="1"><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z)                                        <span class="co"># standard linear model/OLS</span></a>
+<a class="sourceLine" id="cb373-2" data-line-number="2"><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z, <span class="dt">family =</span> <span class="st">&#39;binomial&#39;</span>)                  <span class="co"># logistic regression with binary response</span></a>
+<a class="sourceLine" id="cb373-3" data-line-number="3"><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z <span class="op">+</span><span class="st"> </span><span class="kw">offset</span>(<span class="kw">log</span>(q)), <span class="dt">family =</span> <span class="st">&#39;poisson&#39;</span>)  <span class="co"># count/rate model</span></a>
+<a class="sourceLine" id="cb373-4" data-line-number="4">pscl<span class="op">::</span><span class="kw">hurdle</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z, <span class="dt">dist =</span> <span class="st">&quot;negbin&quot;</span>)             <span class="co"># hurdle model with negative binomial response</span></a>
+<a class="sourceLine" id="cb373-5" data-line-number="5">lme4<span class="op">::</span><span class="kw">glmer</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>group), <span class="dt">family =</span> <span class="st">&#39;binomial&#39;</span>)  <span class="co"># generalized linear mixed model</span></a>
+<a class="sourceLine" id="cb373-6" data-line-number="6">mgcv<span class="op">::</span><span class="kw">gam</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(x))                                  <span class="co"># generalized additive model</span></a>
+<a class="sourceLine" id="cb373-7" data-line-number="7">survival<span class="op">::</span><span class="kw">coxph</span>(<span class="kw">Surv</span>(<span class="dt">time =</span> t, <span class="dt">event =</span> q) <span class="op">~</span><span class="st"> </span>x)       <span class="co"># Cox Proportional Hazards Regression</span></a>
+<a class="sourceLine" id="cb373-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb373-9" data-line-number="9"><span class="co"># Bayesian</span></a>
+<a class="sourceLine" id="cb373-10" data-line-number="10">brms<span class="op">::</span><span class="kw">brm</span>(</a>
+<a class="sourceLine" id="cb373-11" data-line-number="11">  y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x <span class="op">|</span><span class="st"> </span>group), </a>
+<a class="sourceLine" id="cb373-12" data-line-number="12">  <span class="dt">family =</span> <span class="st">&#39;zero_one_inflated_beta&#39;</span>, </a>
+<a class="sourceLine" id="cb373-13" data-line-number="13">  <span class="dt">prior =</span> priors</a>
+<a class="sourceLine" id="cb373-14" data-line-number="14">)</a></code></pre></div>
+<p>Let’s run an example. We’ll use the world happiness dataset<a href="#fn29" class="footnote-ref" id="fnref29"><sup>29</sup></a>. This is country level data based on surveys taken at various years, and the scores are averages or proportions, along with other values like GDP.</p>
+<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb374-1" data-line-number="1"><span class="kw">library</span>(tidyverse)  <span class="co"># load if you haven&#39;t already</span></a>
+<a class="sourceLine" id="cb374-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb374-3" data-line-number="3"><span class="kw">load</span>(<span class="st">&#39;data/world_happiness.RData&#39;</span>)</a>
+<a class="sourceLine" id="cb374-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb374-5" data-line-number="5"><span class="co"># glimpse(happy)</span></a></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Variable
+</th>
+<th style="text-align:right;">
+N
+</th>
+<th style="text-align:right;">
+Mean
+</th>
+<th style="text-align:right;">
+SD
+</th>
+<th style="text-align:right;">
+Min
+</th>
+<th style="text-align:right;">
+Q1
+</th>
+<th style="text-align:right;">
+Median
+</th>
+<th style="text-align:right;">
+Q3
+</th>
+<th style="text-align:right;">
+Max
+</th>
+<th style="text-align:right;">
+Missing
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+year
+</td>
+<td style="text-align:right;">
+1704
+</td>
+<td style="text-align:right;">
+2012.33
+</td>
+<td style="text-align:right;">
+3.69
+</td>
+<td style="text-align:right;">
+2005.00
+</td>
+<td style="text-align:right;">
+2009.00
+</td>
+<td style="text-align:right;">
+2012.00
+</td>
+<td style="text-align:right;">
+2015.00
+</td>
+<td style="text-align:right;">
+2018.00
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+life_ladder
+</td>
+<td style="text-align:right;">
+1704
+</td>
+<td style="text-align:right;">
+5.44
+</td>
+<td style="text-align:right;">
+1.12
+</td>
+<td style="text-align:right;">
+2.66
+</td>
+<td style="text-align:right;">
+4.61
+</td>
+<td style="text-align:right;">
+5.34
+</td>
+<td style="text-align:right;">
+6.27
+</td>
+<td style="text-align:right;">
+8.02
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+log_gdp_per_capita
+</td>
+<td style="text-align:right;">
+1676
+</td>
+<td style="text-align:right;">
+9.22
+</td>
+<td style="text-align:right;">
+1.19
+</td>
+<td style="text-align:right;">
+6.46
+</td>
+<td style="text-align:right;">
+8.30
+</td>
+<td style="text-align:right;">
+9.41
+</td>
+<td style="text-align:right;">
+10.19
+</td>
+<td style="text-align:right;">
+11.77
+</td>
+<td style="text-align:right;">
+28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+social_support
+</td>
+<td style="text-align:right;">
+1691
+</td>
+<td style="text-align:right;">
+0.81
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+<td style="text-align:right;">
+0.29
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+<td style="text-align:right;">
+0.83
+</td>
+<td style="text-align:right;">
+0.90
+</td>
+<td style="text-align:right;">
+0.99
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+healthy_life_expectancy_at_birth
+</td>
+<td style="text-align:right;">
+1676
+</td>
+<td style="text-align:right;">
+63.11
+</td>
+<td style="text-align:right;">
+7.58
+</td>
+<td style="text-align:right;">
+32.30
+</td>
+<td style="text-align:right;">
+58.30
+</td>
+<td style="text-align:right;">
+65.00
+</td>
+<td style="text-align:right;">
+68.30
+</td>
+<td style="text-align:right;">
+76.80
+</td>
+<td style="text-align:right;">
+28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+freedom_to_make_life_choices
+</td>
+<td style="text-align:right;">
+1675
+</td>
+<td style="text-align:right;">
+0.73
+</td>
+<td style="text-align:right;">
+0.14
+</td>
+<td style="text-align:right;">
+0.26
+</td>
+<td style="text-align:right;">
+0.64
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+<td style="text-align:right;">
+0.85
+</td>
+<td style="text-align:right;">
+0.99
+</td>
+<td style="text-align:right;">
+29
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+generosity
+</td>
+<td style="text-align:right;">
+1622
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.16
+</td>
+<td style="text-align:right;">
+-0.34
+</td>
+<td style="text-align:right;">
+-0.12
+</td>
+<td style="text-align:right;">
+-0.02
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:right;">
+0.68
+</td>
+<td style="text-align:right;">
+82
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+perceptions_of_corruption
+</td>
+<td style="text-align:right;">
+1608
+</td>
+<td style="text-align:right;">
+0.75
+</td>
+<td style="text-align:right;">
+0.19
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:right;">
+0.70
+</td>
+<td style="text-align:right;">
+0.81
+</td>
+<td style="text-align:right;">
+0.88
+</td>
+<td style="text-align:right;">
+0.98
+</td>
+<td style="text-align:right;">
+96
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+positive_affect
+</td>
+<td style="text-align:right;">
+1685
+</td>
+<td style="text-align:right;">
+0.71
+</td>
+<td style="text-align:right;">
+0.11
+</td>
+<td style="text-align:right;">
+0.36
+</td>
+<td style="text-align:right;">
+0.62
+</td>
+<td style="text-align:right;">
+0.72
+</td>
+<td style="text-align:right;">
+0.80
+</td>
+<td style="text-align:right;">
+0.94
+</td>
+<td style="text-align:right;">
+19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+negative_affect
+</td>
+<td style="text-align:right;">
+1691
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:right;">
+0.21
+</td>
+<td style="text-align:right;">
+0.25
+</td>
+<td style="text-align:right;">
+0.31
+</td>
+<td style="text-align:right;">
+0.70
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+confidence_in_national_government
+</td>
+<td style="text-align:right;">
+1530
+</td>
+<td style="text-align:right;">
+0.48
+</td>
+<td style="text-align:right;">
+0.19
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:right;">
+0.33
+</td>
+<td style="text-align:right;">
+0.46
+</td>
+<td style="text-align:right;">
+0.61
+</td>
+<td style="text-align:right;">
+0.99
+</td>
+<td style="text-align:right;">
+174
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+democratic_quality
+</td>
+<td style="text-align:right;">
+1558
+</td>
+<td style="text-align:right;">
+-0.14
+</td>
+<td style="text-align:right;">
+0.88
+</td>
+<td style="text-align:right;">
+-2.45
+</td>
+<td style="text-align:right;">
+-0.79
+</td>
+<td style="text-align:right;">
+-0.23
+</td>
+<td style="text-align:right;">
+0.65
+</td>
+<td style="text-align:right;">
+1.58
+</td>
+<td style="text-align:right;">
+146
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+delivery_quality
+</td>
+<td style="text-align:right;">
+1559
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.98
+</td>
+<td style="text-align:right;">
+-2.14
+</td>
+<td style="text-align:right;">
+-0.71
+</td>
+<td style="text-align:right;">
+-0.22
+</td>
+<td style="text-align:right;">
+0.70
+</td>
+<td style="text-align:right;">
+2.18
+</td>
+<td style="text-align:right;">
+145
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gini_index_world_bank_estimate
+</td>
+<td style="text-align:right;">
+643
+</td>
+<td style="text-align:right;">
+0.37
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:right;">
+0.24
+</td>
+<td style="text-align:right;">
+0.30
+</td>
+<td style="text-align:right;">
+0.35
+</td>
+<td style="text-align:right;">
+0.43
+</td>
+<td style="text-align:right;">
+0.63
+</td>
+<td style="text-align:right;">
+1061
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+happiness_score
+</td>
+<td style="text-align:right;">
+554
+</td>
+<td style="text-align:right;">
+5.41
+</td>
+<td style="text-align:right;">
+1.13
+</td>
+<td style="text-align:right;">
+2.69
+</td>
+<td style="text-align:right;">
+4.51
+</td>
+<td style="text-align:right;">
+5.31
+</td>
+<td style="text-align:right;">
+6.32
+</td>
+<td style="text-align:right;">
+7.63
+</td>
+<td style="text-align:right;">
+1150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dystopia_residual
+</td>
+<td style="text-align:right;">
+554
+</td>
+<td style="text-align:right;">
+2.06
+</td>
+<td style="text-align:right;">
+0.55
+</td>
+<td style="text-align:right;">
+0.29
+</td>
+<td style="text-align:right;">
+1.72
+</td>
+<td style="text-align:right;">
+2.06
+</td>
+<td style="text-align:right;">
+2.44
+</td>
+<td style="text-align:right;">
+3.84
+</td>
+<td style="text-align:right;">
+1150
+</td>
+</tr>
+</tbody>
+</table>
+<p>The happiness score itself ranges from 2.7 to 7.6, with a mean of 5.4 and standard deviation of 1.1.</p>
+<p>Fitting a model with R is trivial, and at a minimum requires the two key ingredients mentioned before, the formula and data.</p>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb375-1" data-line-number="1">happy_model_<span class="dv">0</span> =<span class="st"> </span><span class="kw">lm</span>(</a>
+<a class="sourceLine" id="cb375-2" data-line-number="2">  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita,</a>
+<a class="sourceLine" id="cb375-3" data-line-number="3">  <span class="dt">data =</span> happy</a>
+<a class="sourceLine" id="cb375-4" data-line-number="4">)</a></code></pre></div>
+<div id="matrix" class="section level3">
+<h3>Matrix</h3>
+<p>Many packages still allow for, or even require (but shouldn’t), matrices instead of specifying a model formula. This requires separating data into a model or design matrix, and the vector or matrix of the target variable(s). For example, if we needed a speed boost and weren’t concerned about some typical output we could use <span class="func" style="">lm.fit</span>.</p>
+<p>First we need to create the required components.</p>
+<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb376-1" data-line-number="1">X =<span class="st"> </span><span class="kw">model.matrix</span>(</a>
+<a class="sourceLine" id="cb376-2" data-line-number="2">  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita, </a>
+<a class="sourceLine" id="cb376-3" data-line-number="3">  <span class="dt">data =</span> happy</a>
+<a class="sourceLine" id="cb376-4" data-line-number="4">)</a>
+<a class="sourceLine" id="cb376-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb376-6" data-line-number="6"><span class="kw">head</span>(X)</a></code></pre></div>
+<pre><code>   (Intercept) democratic_quality  generosity log_gdp_per_capita
+8            1         -1.8443636  0.08909068           7.500539
+9            1         -1.8554263  0.05136492           7.497038
+10           1         -1.8865659 -0.11219829           7.497755
+19           1          0.2516293 -0.08441135           9.302960
+20           1          0.2572919 -0.02068741           9.337532
+21           1          0.2999450 -0.03264282           9.376145</code></pre>
+<p>Note the column of ones in the model matrix <code>X</code>. This represents our intercept, but won’t mean much to you unless you understant matrix multiplication. The other columns are just as they are in the data. Note also that the missing values have been removed.</p>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb378-1" data-line-number="1"><span class="kw">nrow</span>(happy)</a></code></pre></div>
+<pre><code>[1] 1704</code></pre>
+<div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb380-1" data-line-number="1"><span class="kw">nrow</span>(X)</a></code></pre></div>
+<pre><code>[1] 411</code></pre>
+<p>We can now fit the model as follows. The response variable must contain the same observations as in the model matrix.</p>
+<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb382-1" data-line-number="1">y =<span class="st"> </span>happy<span class="op">$</span>happiness_score[<span class="kw">as.integer</span>(<span class="kw">rownames</span>(X))]</a>
+<a class="sourceLine" id="cb382-2" data-line-number="2">happy_model_matrix =<span class="st"> </span><span class="kw">lm.fit</span>(X, y)</a>
+<a class="sourceLine" id="cb382-3" data-line-number="3"><span class="kw">summary</span>(happy_model_matrix)</a></code></pre></div>
+<pre><code>              Length Class  Mode   
+coefficients    4    -none- numeric
+residuals     411    -none- numeric
+effects       411    -none- numeric
+rank            1    -none- numeric
+fitted.values 411    -none- numeric
+assign          4    -none- numeric
+qr              5    qr     list   
+df.residual     1    -none- numeric</code></pre>
+<p>In my experience, it is generally a bad sign if a package requires that you create the model matrix rather than doing so itself. Such packages tend to skip out on many other things like using typical methods and so forth, making them even more difficult to work with. In general, the only real time you should need to use model matrices is when you are creating your own modeling package, doing simulations, or otherwise know why you need them.</p>
+</div>
+</div>
+<div id="summarizing-models" class="section level2">
+<h2>Summarizing Models</h2>
+<p>Once we have a model, we’ll want to summarize the results of it.</p>
+<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb384-1" data-line-number="1"><span class="kw">summary</span>(happy_model_<span class="dv">0</span>)</a></code></pre></div>
+<pre><code>
+Call:
+lm(formula = happiness_score ~ democratic_quality + generosity + 
+    log_gdp_per_capita, data = happy)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.75376 -0.45585 -0.00307  0.46013  1.69925 
+
+Coefficients:
+                   Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)        -1.01048    0.31436  -3.214 0.001412 ** 
+democratic_quality  0.17037    0.04588   3.714 0.000233 ***
+generosity          1.16085    0.19548   5.938 6.18e-09 ***
+log_gdp_per_capita  0.69342    0.03335  20.792  &lt; 2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.6283 on 407 degrees of freedom
+  (1293 observations deleted due to missingness)
+Multiple R-squared:  0.6953,    Adjusted R-squared:  0.6931 
+F-statistic: 309.6 on 3 and 407 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>The summary tells us that all these covariates are statistically significant, which doesn’t tell us much, but serves as a starting point. For example, moving one unit on log GDP means moving, one percentage point on GDP[^elasticity] results in roughly 0.7</p>
+</div>
+<div id="variable-transformations" class="section level2">
+<h2>Variable Transformations</h2>
+<p>Transforming the target, covariates or both provides a few benefits, and should regularly be used for most models. Some of these include<a href="#fn30" class="footnote-ref" id="fnref30"><sup>30</sup></a>:</p>
+<ul>
+<li>Interpretable intercepts</li>
+<li>More comparable covariate effects</li>
+<li>Faster estimation</li>
+<li>Easier convergence</li>
+<li>Help with heteroscedasticity</li>
+</ul>
+<p>For example, merely centering predictor variables, i.e. subtracting the mean, provides a more interpretable intercept that will fall within the actual range of the target variable, telling us what the value of the target variable is when the covariates are at their means (or reference value if categorical). The following table shows the interpretation of two extremely common transformations, logging and scaling (i.e. standardizing to mean zero, standard deviation one).</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+target
+</th>
+<th style="text-align:left;">
+predictor
+</th>
+<th style="text-align:left;">
+interpretation
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+y
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\Delta y = \beta\Delta x\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+y
+</td>
+<td style="text-align:left;">
+log(x)
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\Delta y \approx (\beta/100)\%\Delta x\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+log(y)
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\%\Delta y \approx 100\cdot \beta\%\Delta x\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+log(y)
+</td>
+<td style="text-align:left;">
+log(x)
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\%\Delta y = \beta\%\Delta x\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+y
+</td>
+<td style="text-align:left;">
+scale(x)
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\Delta y = \beta\sigma\Delta x\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+scale(y)
+</td>
+<td style="text-align:left;">
+x
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\sigma\Delta y = \beta\Delta x\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+scale(y)
+</td>
+<td style="text-align:left;">
+scale(x)
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\sigma\Delta y = \beta\sigma\Delta x\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p>For example, to start with the normal situation, a one-unit change in <span class="math inline">\(x\)</span>, i.e. <span class="math inline">\(\Delta x =1\)</span> leads to <span class="math inline">\(\beta\)</span> unit change in <span class="math inline">\(y\)</span>. If we log the target variable <span class="math inline">\(y\)</span>, the interpreation of the coefficient for <span class="math inline">\(x\)</span> is that a one-unit change in <span class="math inline">\(x\)</span> leads to an (approximately) 100<span class="math inline">\(\cdot\)</span><span class="math inline">\(\beta\)</span>% change in <span class="math inline">\(y\)</span>. The 100 changes from a proportion to percentage change. More concretely, if <span class="math inline">\(\beta\)</span> was .5, a unit change in <span class="math inline">\(x\)</span> leads to (roughly) a 50% change in <span class="math inline">\(y\)</span>. If both were logged, a percentage change in <span class="math inline">\(x\)</span> leads to a <span class="math inline">\(\beta\)</span> percentage change in y<a href="#fn31" class="footnote-ref" id="fnref31"><sup>31</sup></a>. These percentage change interpretations are called <a href="https://en.wikipedia.org/wiki/Elasticity_(economics)">elasticities</a> in econometrics and areas trained similarly.</p>
+<p>It is very common to use <em>standardized</em> variables as well, also called normalizing, or simply scaling. If <span class="math inline">\(y\)</span> and <span class="math inline">\(x\)</span> are both standardized, a one unit (i.e. one standard deviation) change in <span class="math inline">\(x\)</span> leads to a <span class="math inline">\(\beta\)</span> standard deviation change in <span class="math inline">\(y\)</span>. Again, if <span class="math inline">\(\beta\)</span> was .5, a standard deviation change in <span class="math inline">\(x\)</span> leads to a half standard deviation change in <span class="math inline">\(y\)</span>.</p>
+<p>Another common transformation, particularly in machine learning, is the <em>min-max normalization</em>, changing variables to range from some minimum to some maximum, usually zero to one.</p>
+<div id="categorical-variables" class="section level3">
+<h3>Categorical Variables</h3>
+<p>For categorical variables, we can employ what is called <em>effects coding</em> to test for specific types of group differences. Far and away the most common approach is called <em>dummy coding</em> or <em>one-hot encoding</em><a href="#fn32" class="footnote-ref" id="fnref32"><sup>32</sup></a>. For example:</p>
+<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb386-1" data-line-number="1"><span class="kw">library</span>(recipes)</a>
+<a class="sourceLine" id="cb386-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb386-3" data-line-number="3">nafta =<span class="st"> </span>happy <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb386-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(country <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;United States&#39;</span>, <span class="st">&#39;Canada&#39;</span>, <span class="st">&#39;Mexico&#39;</span>))</a>
+<a class="sourceLine" id="cb386-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb386-6" data-line-number="6">dummy =<span class="st"> </span>nafta  <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb386-7" data-line-number="7"><span class="st">  </span><span class="kw">recipe</span>(<span class="op">~</span><span class="st"> </span>country) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb386-8" data-line-number="8"><span class="st">  </span><span class="kw">step_dummy</span>(country, <span class="dt">one_hot =</span> <span class="ot">TRUE</span>) <span class="co"># make variables for all factor levels</span></a>
+<a class="sourceLine" id="cb386-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb386-10" data-line-number="10"><span class="kw">prep</span>(dummy) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb386-11" data-line-number="11"><span class="st">  </span><span class="kw">bake</span>(nafta) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb386-12" data-line-number="12"><span class="st">  </span><span class="kw">print</span>(<span class="dt">n =</span> <span class="dv">20</span>)</a></code></pre></div>
+<pre><code># A tibble: 39 x 3
+   country_Canada country_Mexico country_United.States
+            &lt;dbl&gt;          &lt;dbl&gt;                 &lt;dbl&gt;
+ 1              1              0                     0
+ 2              1              0                     0
+ 3              1              0                     0
+ 4              1              0                     0
+ 5              1              0                     0
+ 6              1              0                     0
+ 7              1              0                     0
+ 8              1              0                     0
+ 9              1              0                     0
+10              1              0                     0
+11              1              0                     0
+12              1              0                     0
+13              1              0                     0
+14              0              1                     0
+15              0              1                     0
+16              0              1                     0
+17              0              1                     0
+18              0              1                     0
+19              0              1                     0
+20              0              1                     0
+# … with 19 more rows</code></pre>
+<p>We see that the first few observations are Canada, and the next few Mexico. This is almost never required for R modeling packages, but sometimes can be useful to do explicitly. If your modeling package cannot handle factor variables, and thus requires explicit coding, you’ll know very quickly.</p>
+<p>Let’s run a regression as follows:</p>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb388-1" data-line-number="1">model_dummy =<span class="st"> </span><span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>country, <span class="dt">data =</span> nafta)</a>
+<a class="sourceLine" id="cb388-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb388-3" data-line-number="3"><span class="kw">summary</span>(model_dummy)</a></code></pre></div>
+<pre><code>
+Call:
+lm(formula = happiness_score ~ country, data = nafta)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.26960 -0.07453 -0.00615  0.06322  0.42920 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           7.36887    0.09633  76.493 5.64e-14 ***
+countryMexico        -0.61107    0.13624  -4.485  0.00152 ** 
+countryUnited States -0.34337    0.13624  -2.520  0.03275 *  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.1927 on 9 degrees of freedom
+  (27 observations deleted due to missingness)
+Multiple R-squared:  0.692, Adjusted R-squared:  0.6236 
+F-statistic: 10.11 on 2 and 9 DF,  p-value: 0.004994</code></pre>
+<p>In this case, the coefficient represents the difference in means on the target variable between the reference group and the group in question. In this case, the U.S. is -0.34 less on the happy score than the reference country (Canada).</p>
+<p>Other codings are possible, and these would allow for specific group comparisons or types of comparisons. This is sometimes called <em>contrast coding</em>. For example, we could compare Canada vs. both the U.S. and Mexico. By giving Canada twice the weight of the other two we can get this result. I also add a coding that will just compare Mexico vs. the U.S. The actual weights used are aribtrary but in this case should sum to zero.</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+group
+</th>
+<th style="text-align:right;">
+canada_vs_other
+</th>
+<th style="text-align:right;">
+mexico_vs_us
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Canada
+</td>
+<td style="text-align:right;">
+-0.667
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mexico
+</td>
+<td style="text-align:right;">
+0.333
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+United States
+</td>
+<td style="text-align:right;">
+0.333
+</td>
+<td style="text-align:right;">
+0.5
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; border:0;" colspan="100%">
+<sup></sup> weights sum to zero, but are arbitrary
+</td>
+</tr>
+</tfoot>
+</table>
+<p>Adding such coding to a factor variable allows the corresonding models to use it in constructing the model matrix, rather than dummy coding. See the group means and calculate the results by hand for yourself.</p>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb390-1" data-line-number="1">nafta =<span class="st"> </span>nafta <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb390-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">country_fac =</span> <span class="kw">factor</span>(country))</a>
+<a class="sourceLine" id="cb390-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb390-4" data-line-number="4"><span class="kw">contrasts</span>(nafta<span class="op">$</span>country_fac) =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span><span class="op">/</span><span class="dv">3</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="kw">c</span>(<span class="dv">0</span>,<span class="op">-</span>.<span class="dv">5</span>,.<span class="dv">5</span>)), <span class="dt">ncol =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb390-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb390-6" data-line-number="6"><span class="kw">summary</span>(<span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>country_fac, <span class="dt">data =</span> nafta))</a></code></pre></div>
+<pre><code>
+Call:
+lm(formula = happiness_score ~ country_fac, data = nafta)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.26960 -0.07453 -0.00615  0.06322  0.42920 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   7.05072    0.05562 126.769 6.01e-16 ***
+country_fac1 -0.47722    0.11799  -4.045  0.00291 ** 
+country_fac2  0.26770    0.13624   1.965  0.08100 .  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.1927 on 9 degrees of freedom
+  (27 observations deleted due to missingness)
+Multiple R-squared:  0.692, Adjusted R-squared:  0.6236 
+F-statistic: 10.11 on 2 and 9 DF,  p-value: 0.004994</code></pre>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb392-1" data-line-number="1">nafta <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb392-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(country) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb392-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">happy =</span> <span class="kw">mean</span>(happiness_score, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
+<pre><code># A tibble: 3 x 2
+  country       happy
+  &lt;chr&gt;         &lt;dbl&gt;
+1 Canada         7.37
+2 Mexico         6.76
+3 United States  7.03</code></pre>
+<p>For example, we can see that for this balanced data set, the corresponding coefficient is the halfway point, i.e. average, of the U.S. and Mexico coefficients from dummy coding: -0.611 + -0.343 / 2 = -0.477.</p>
+</div>
+</div>
+<div id="misc" class="section level2">
+<h2>Misc</h2>
+<p>Ordinal outcomes
+Nominal outcomes</p>
+</div>
+<div id="variable-importance" class="section level2">
+<h2>Variable Importance</h2>
+</div>
+<div id="extracting-output" class="section level2">
+<h2>Extracting Output</h2>
+</div>
+<div id="factor-variables" class="section level2">
+<h2>Factor Variables</h2>
+</div>
+<div id="visualization" class="section level2">
+<h2>Visualization</h2>
+
+</div>
+</div>
+
+
+
+<div class="footnotes">
+<hr />
+<ol start="29">
+<li id="fn29"><p>The World Happiness Report is a survey of the state of global happiness that ranks countries by how happy their citizens perceive themselves to be. Almost all the information here is gleaned from the report and appendices. This regards the report data from 2008-2018 included in the 2019 report.<a href="models.html#fnref29" class="footnote-back">↩</a></p></li>
+<li id="fn30"><p>Note that none of the benefits regard normality. Transforming variables is not done to meet the normality assumption regarding residuals, and would rarely help in that regard.<a href="models.html#fnref30" class="footnote-back">↩</a></p></li>
+<li id="fn31"><p>The log transformations in the table are approximations that allow an eyeballable interpretation. Typically we use exponentiated coefficients for a more exact interpretation. For example, if y is logged, a one-unit change in x leads to a <span class="math inline">\(100*(e^B-1)\)</span>% change in y. See <a href="https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faqhow-do-i-interpret-a-regression-model-when-some-variables-are-log-transformed/">this link</a> for more on interpreting logged variables.<a href="models.html#fnref31" class="footnote-back">↩</a></p></li>
+<li id="fn32"><p>Some distinguish one-hot from dummy coding in that the former creates a binary variable for all <span class="math inline">\(C\)</span> categorical levels while dummy coding only creates <span class="math inline">\(C-1\)</span> variables, leaving the reference group out. However, the reference group is only left out at model fitting, there’s no reason not to create all C variables, as it requires no additional effort and you might want to change the reference group.<a href="models.html#fnref32" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="more.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="summary.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["twitter", "facebook", "weibo", "instapaper"],
+"google": false,
+"instapper": false
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"depth": 2,
+"scroll_highlight": true
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

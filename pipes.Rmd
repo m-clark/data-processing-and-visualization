@@ -5,18 +5,10 @@ knitr::opts_chunk$set(echo = T)
 ```
 
 
-<div class='note'>
-More detail on much of the following is provided [here](https://m-clark.github.io/workshops/dplyr/mainSlides.html).
-
-<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
-</div>
-
-<br>
 
 Pipes are operators that send what comes before the pipe to what comes after. There are many different pipes, and some packages that use their own. However, the vast majority of packages use the same pipe:
 
-
-<div style="text-align:center;font-variant:small-caps; font-size:500%; color:#ff5500">%>%</div>
+<div style="text-align:center;font-variant:small-caps; font-size:500%; color:#990024CC">%>%</div>
 
 
 Here, we'll focus on their use with the <span class="pack">dplyr</span> package, and the tidyverse more generally. Pipes are also utilized heavily in visualization.
@@ -27,7 +19,7 @@ Example:
 mydf %>% 
   select(var1, var2) %>% 
   filter(var1 == 'Yes') %>% 
-  summary
+  summary()
 ```
 
 ```
@@ -40,12 +32,12 @@ Start with a data.frame %>%
 
 ## Using variables as they are created
 
-One nice thing about pipelines is that we can use variables as soon as they are created, with out having to break out separate objects/steps.
+One nice thing about pipelines is that we can use variables as soon as they are created, without having to break out separate objects/steps.
 
 ```{r varfly}
-mydf %>% 
+mydf %>%
   mutate(newvar1 = var1 + var2,
-         newvar2 = newvar1/var3) %>% 
+         newvar2 = newvar1 / var3) %>%
   summarise(newvar2avg = mean(newvar2))
 ```
 
@@ -64,14 +56,14 @@ basegraph %>%
 
 ## The dot
 
-Most functions are not 'pipe-aware' by default. In the following we try to send our data frame to <span class="func">lm</span> for a regression.
+Most functions are not 'pipe-aware' by default, or at least, do not have `data` as their first argument as most functions in the tidyverse do, as well as others using tidystyle. In the following we try to send our data frame to <span class="func">lm</span> for a regression.
 
 ```{r pipeerror}
 mydf %>% 
   lm(y ~ x)  # error
 ```
 
-Other pipes could work in this situation, e.g. <span class="func">%$%</span> in <span class="pack">magrittr</span>. But generally, when you come upon this situation, you can use a dot to represent the object before the pipe.
+Other pipes could potentially work in this situation, e.g. <span class="func">%$%</span> in <span class="pack">magrittr</span>. But generally, when you come upon this, you can use a dot to represent the object before the pipe.
 
 ```{r pipedot}
 mydf %>% 
@@ -81,7 +73,9 @@ mydf %>%
 
 ## Flexibility
 
-Piping is not just for <span class="objclass"></span>, <span class="objclass"></span> and <span class="objclass"></span> can be used as well, and would be the primary object for the <span class="pack"></span> family of functions we'll discuss later.
+Piping is not just for <span class="objclass">data.frames</span>. For example, the more general <span class="objclass">list</span> objects can be used as well, and would be the primary object for the <span class="pack">purrr</span> family of functions we'll discuss later.
+
+As a final example, we'll create a function in an abstract way with pipes.
 
 - The following starts with a character vector.
 - Sends it to a recursive function (named <span class="func">..</span>).
@@ -112,7 +106,7 @@ Pipes are best used interactively, though you can use them within functions as w
 
 
 <div class='note'>
-See the <span class="pack">magrittr</span> package for more pipes.
+See the <span class="pack">magrittr</span> package for more types of pipes, and more detail on pipes is provided in these [slides](https://m-clark.github.io/workshops/dplyr/mainSlides.html).
 
 <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
 </div>

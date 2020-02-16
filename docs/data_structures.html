@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Data Structures | Data Processing &amp; Visualization</title>
-  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
-  <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
+  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Data Structures | Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://m-clark.github.io/data-processing-and-visualization/" />
   <meta property="og:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
-  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
   <meta name="github-repo" content="m-clark/data-processing-and-visualization/" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Data Structures | Data Processing &amp; Visualization" />
   
-  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
   <meta name="twitter:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
 
 
 
-<meta name="date" content="2019-12-03" />
+<meta name="date" content="2020-02-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -49,6 +49,7 @@
 
 
 
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.9.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
@@ -58,7 +59,7 @@
 <script src="libs/plotly-main-1.49.4/plotly-latest.min.js"></script>
 <link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
 <script src="libs/vis-4.20.1/vis.min.js"></script>
-<script src="libs/visNetwork-binding-2.0.8/visNetwork.js"></script>
+<script src="libs/visNetwork-binding-2.0.9/visNetwork.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
 <link href="libs/highcharts-7.0.1/css/motion.css" rel="stylesheet" />
 <link href="libs/highcharts-7.0.1/css/htmlwdgtgrid.css" rel="stylesheet" />
@@ -123,16 +124,16 @@
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.10/datatables.js"></script>
+<script src="libs/datatables-binding-0.11/datatables.js"></script>
 <link href="libs/dt-core-1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.19/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.19/js/jquery.dataTables.min.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
@@ -141,14 +142,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -157,9 +160,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -193,7 +196,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <link rel="stylesheet" href="css/book.css" type="text/css" />
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css" type="text/css" />
 </head>
 
 <body>
@@ -223,7 +226,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#r"><i class="fa fa-check"></i>R</a></li>
 </ul></li>
 </ul></li>
-<li class="part"><span><b>Part I: Data Processing</b></span></li>
+<li class="part"><span><b>Part I: Information Processing</b></span></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html"><i class="fa fa-check"></i>Data Structures</a><ul>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#vectors"><i class="fa fa-check"></i>Vectors</a><ul>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#character-strings"><i class="fa fa-check"></i>Character strings</a></li>
@@ -309,7 +312,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#summary-1"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#dtplyr"><i class="fa fa-check"></i>dtplyr</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster-dplyr-alternatives"><i class="fa fa-check"></i>Faster dplyr alternatives</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-exercises"><i class="fa fa-check"></i>data.table Exercises</a><ul>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-0-1"><i class="fa fa-check"></i>Exercise 0</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-1-3"><i class="fa fa-check"></i>Exercise 1</a></li>
@@ -414,14 +417,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#a-slight-speed-gain"><i class="fa fa-check"></i>A slight speed gain</a></li>
-</ul></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#loops-summary"><i class="fa fa-check"></i>Loops summary</a></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a><ul>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#implicit-loops"><i class="fa fa-check"></i>Implicit Loops</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#working-with-lists"><i class="fa fa-check"></i>Working with lists</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#looping-with-lists"><i class="fa fa-check"></i>Looping with lists</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#iterative-programming-exercises"><i class="fa fa-check"></i>Iterative Programming Exercises</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-1-7"><i class="fa fa-check"></i>Exercise 1</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-2-7"><i class="fa fa-check"></i>Exercise 2</a></li>
@@ -444,6 +448,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#why-does-your-code-exist"><i class="fa fa-check"></i>Why does your code exist?</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#assignment"><i class="fa fa-check"></i>Assignment</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-length"><i class="fa fa-check"></i>Code length</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#spacing"><i class="fa fa-check"></i>Spacing</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#naming-things"><i class="fa fa-check"></i>Naming things</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#other-1"><i class="fa fa-check"></i>Other</a></li>
 </ul></li>
@@ -471,20 +476,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li class='after'">
-   <a href="https://m-clark.github.io/">
+   <a href="https://m-clark.github.io/" aria-label='Author Website Link'>
       <img src="img/mc_logo.png" style="width:25%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo">
    </a>
 </li>
 <li class='after'">
    <div style='text-align:center'>
-      <a href="https://github.com/m-clark/">
+      <a href="https://github.com/m-clark/" aria-label='GitHub Link'>
          <i class="fab fa-github fa-2x" aria-hidden="true"></i>
       </a>
    </div>
 </li>
 <li class='after'">
    <div style='text-align:center'>
-      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" aria-label="Creative commons CCBYSA link">
          <i class="fab fa-creative-commons fa-lg"></i> 
          <i class="fab fa-creative-commons-by fa-lg"></i> 
          <i class="fab fa-creative-commons-sa fa-lg"></i>
@@ -511,6 +516,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="data-structures" class="section level1">
 <h1>Data Structures</h1>
+<div style="text-align: center;">
+<p><i class="fas fa-globe-americas fa-5x" style = 'color:#0077be'></i><span style="margin-right: 25px"></span>
+<i class="far fa-arrow-alt-circle-right fa-3x"></i><span style="margin-right: 25px"></span>
+<i class="fas fa-database fa-5x"   aria-hidden="true"></i><span style="margin-right: 25px"></span>
+<i class="far fa-arrow-alt-circle-right fa-3x"></i><span style="margin-right: 25px;"></span>
+<i class="fab fa-r-project fa-5x" style = 'color:#1f65b7'></i></p>
+</div>
+<p><br></p>
+<p>In order to use R to understand the world around you, you have to know the basics of how R works. Everything in R revolves around information in the form of data, so let’s start with how data exists within R.</p>
 <p>R has several core data structures, and we’ll take a look at each.</p>
 <ul>
 <li>Vectors</li>
@@ -519,13 +533,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Matrices/arrays</li>
 <li>Data frames</li>
 </ul>
-<p>The more you know about R data structures, the more you’ll know how to use them, the more you’ll know <em>why</em> things go wrong if they do, and the further you’ll be able to go with your data.</p>
+<p>The more you know about R data structures, the more you’ll know how to use them, how packages use them, and you’ll also better understand why things go wrong if they do, and the further you’ll be able to go with your data.</p>
 <div id="vectors" class="section level2">
 <h2>Vectors</h2>
-<p><span class="objclass">Vectors</span> form the basis of R data structures. Two main types are <span class="objclass">atomic</span> and <span class="objclass">lists</span>, but we’ll talk about lists separately.</p>
-<p>Here is an R <span class="objclass">vector</span>. The <span class="emph">elements</span> of the vector are numeric values.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">x =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">x</a></code></pre></div>
+<p><em>Vectors</em> form the basis of R data structures. Two main types are <span class="objclass">atomic</span> and <span class="objclass">lists</span>, but we’ll talk about lists separately.</p>
+<p>Here is an R vector. The <span class="emph">elements</span> of the vector are numeric values.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data_structures.html#cb1-1"></a>x =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">4</span>)</span>
+<span id="cb1-2"><a href="data_structures.html#cb1-2"></a>x</span></code></pre></div>
 <pre><code>[1] 1 3 2 5 4</code></pre>
 <p>All elements of an atomic vector are the same <span class="emph">type</span>. Example types include:</p>
 <ul>
@@ -536,36 +550,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>In addition, there are special kinds of values like <span class="objclass">NA</span> (‘not available’ i.e. missing), <span class="objclass">NULL</span>, <span class="objclass">NaN</span> (not a number), <span class="objclass">Inf</span> (infinite) and so forth.</p>
 <div class="note">
-<p>You can use <span class="func">typeof</span> to examine an object’s type, or use an <code>is</code> function, e.g. <span class="func">is.logical</span>, to check if an object is a specific type.</p>
+<p>You can use <span class="func">typeof</span> to examine an object’s type, or use an <code>is</code> function, e.g. <span class="func">is.logical</span>, to check if an object is a specific type.</p>
 <p><img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></p>
 </div>
 <div id="character-strings" class="section level3">
 <h3>Character strings</h3>
 <p>When dealing with text, objects of class character are what you’d typically be dealing with.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">x =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;... Of Your Fake Dimension&#39;</span>, <span class="st">&#39;Ephemeron&#39;</span>, <span class="st">&#39;Dryswch&#39;</span>, <span class="st">&#39;Isotasy&#39;</span>, <span class="st">&#39;Memory&#39;</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">x</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data_structures.html#cb3-1"></a>x =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;... Of Your Fake Dimension&#39;</span>, <span class="st">&#39;Ephemeron&#39;</span>, <span class="st">&#39;Dryswch&#39;</span>, <span class="st">&#39;Isotasy&#39;</span>, <span class="st">&#39;Memory&#39;</span>)</span>
+<span id="cb3-2"><a href="data_structures.html#cb3-2"></a>x</span></code></pre></div>
 <p>Not much to it, but be aware there is no real limit to what is represented as a character vector. For example, in a data frame, you could have a column where each entry is one of the works of Shakespeare.</p>
 </div>
 <div id="factors" class="section level3">
 <h3>Factors</h3>
-<p>An important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures. Although not exactly precise, one can think of factors as integers with labels. So the underlying representation of a variable for <span class="objclass">sex</span> is 1:2 with labels ‘Male’ and ‘Female’. They are a special class with attributes, or metadata, that contains the information about the <span class="objclass">levels</span>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">x =<span class="st"> </span><span class="kw">factor</span>(<span class="kw">rep</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">e=</span><span class="dv">10</span>))</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">x</a></code></pre></div>
+<p>An important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures. Although not exactly precise, one can think of factors as integers with labels. So the underlying representation of a variable for <span class="objclass">sex</span> is 1:2 with labels ‘Male’ and ‘Female’. They are a special class with attributes, or metadata, that contains the information about the <em>levels</em>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="data_structures.html#cb4-1"></a>x =<span class="st"> </span><span class="kw">factor</span>(<span class="kw">rep</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">e =</span> <span class="dv">10</span>))</span>
+<span id="cb4-2"><a href="data_structures.html#cb4-2"></a>x</span></code></pre></div>
 <pre><code> [1] a a a a a a a a a a b b b b b b b b b b c c c c c c c c c c
 Levels: a b c</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">attributes</span>(x)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="data_structures.html#cb6-1"></a><span class="kw">attributes</span>(x)</span></code></pre></div>
 <pre><code>$levels
 [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;
 
 $class
 [1] &quot;factor&quot;</code></pre>
 <p>The underlying representation is numeric, but it is important to remember that factors are <em>categorical</em>. Thus, they can’t be used as numbers would be, as the following demonstrates.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">x_num =<span class="st"> </span><span class="kw">as.numeric</span>(x)  <span class="co"># convert to a numeric object</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">sum</span>(x_num)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data_structures.html#cb8-1"></a>x_num =<span class="st"> </span><span class="kw">as.numeric</span>(x)  <span class="co"># convert to a numeric object</span></span>
+<span id="cb8-2"><a href="data_structures.html#cb8-2"></a><span class="kw">sum</span>(x_num)</span></code></pre></div>
 <pre><code>[1] 60</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">sum</span>(x)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data_structures.html#cb10-1"></a><span class="kw">sum</span>(x)</span></code></pre></div>
 <pre><code>Error in Summary.factor(structure(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, : &#39;sum&#39; not meaningful for factors</code></pre>
-<div id="strings-vs.factors" class="section level4">
+<div id="strings-vs.-factors" class="section level4">
 <h4>Strings vs. Factors</h4>
 <p>The main thing to note is that factors are generally a statistical phenomenon, and are required to do statistical things with data that would otherwise be a simple character string. If you know the relatively few levels the data can take, you’ll generally want to use factors, or at least know that statistical packages and methods may require them. In addition, factors allow you to easily overcome the silly default alphabetical ordering of category levels in some very popular visualization packages.</p>
 <p>For other things, such as text analysis, you’ll almost certainly want character strings instead, and in many cases it will be required. It’s also worth noting that a lot of base R and other behavior will coerce strings to factors. This made a lot more sense in the early days of R, but is not really necessary these days.</p>
@@ -583,47 +597,55 @@ $class
 <h3>Logicals</h3>
 <p>Logical scalar/vectors are those that take on one of two values TRUE or FALSE. They are especially useful in flagging whether to run certain parts of code, and indexing certain parts of data structures (e.g. taking rows that correspond to TRUE). We’ll talk about the latter usage more later in the document.</p>
 <p>Here is a logical vector.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">my_logic =<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data_structures.html#cb12-1"></a>my_logic =<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">TRUE</span>)</span></code></pre></div>
 <p>Note also that logicals are also treated as binary 0:1, and so, for example, taking the mean will provide the proportion of <code>TRUE</code> values.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="op">!</span>my_logic</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="data_structures.html#cb13-1"></a><span class="op">!</span>my_logic</span></code></pre></div>
 <pre><code>[1] FALSE  TRUE FALSE  TRUE FALSE FALSE</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">as.numeric</span>(my_logic)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="data_structures.html#cb15-1"></a><span class="kw">as.numeric</span>(my_logic)</span></code></pre></div>
 <pre><code>[1] 1 0 1 0 1 1</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">mean</span>(my_logic)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="data_structures.html#cb17-1"></a><span class="kw">mean</span>(my_logic)</span></code></pre></div>
 <pre><code>[1] 0.6666667</code></pre>
 </div>
 <div id="numeric-and-integer" class="section level3">
 <h3>Numeric and integer</h3>
 <p>The most common type of data structure you’ll deal with are integer and numeric vectors.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">class</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="data_structures.html#cb19-1"></a><span class="kw">class</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</span></code></pre></div>
 <pre><code>[1] &quot;integer&quot;</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">rnorm</span>(<span class="dv">5</span>)</a></code></pre></div>
-<pre><code>[1] -0.8762329 -0.3794934  1.1106148  0.3896611 -1.5185608</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="data_structures.html#cb21-1"></a>x =<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">5</span>)</span>
+<span id="cb21-2"><a href="data_structures.html#cb21-2"></a>x</span></code></pre></div>
+<pre><code>[1] -0.49360858  0.02945807 -0.15836130  0.56862995  0.56940660</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="data_structures.html#cb23-1"></a><span class="kw">class</span>(x)</span></code></pre></div>
+<pre><code>[1] &quot;numeric&quot;</code></pre>
 </div>
 </div>
 <div id="matrices" class="section level2">
 <h2>Matrices</h2>
-<p>With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. The vectors making up a matrix <em>must all be of the same type</em>. For example, all values in a matrix might be <span class="objclass">numeric</span>, or all <span class="objclass">character strings</span>.</p>
+<p>With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing. The vectors making up a matrix <em>must all be of the same type</em>. For example, all values in a matrix might be <span class="objclass">numeric</span>, or all <span class="objclass">character strings</span>.</p>
 <div id="creating-a-matrix" class="section level3">
 <h3>Creating a matrix</h3>
 <p>Creating a matrix can be done in a variety of ways.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co"># create vectors</span></a>
-<a class="sourceLine" id="cb23-2" data-line-number="2">x =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span></a>
-<a class="sourceLine" id="cb23-3" data-line-number="3">y =<span class="st"> </span><span class="dv">5</span><span class="op">:</span><span class="dv">8</span></a>
-<a class="sourceLine" id="cb23-4" data-line-number="4">z =<span class="st"> </span><span class="dv">9</span><span class="op">:</span><span class="dv">12</span></a>
-<a class="sourceLine" id="cb23-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="kw">rbind</span>(x, y, z)   <span class="co"># row bind</span></a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="data_structures.html#cb25-1"></a><span class="co"># create vectors</span></span>
+<span id="cb25-2"><a href="data_structures.html#cb25-2"></a>x =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span></span>
+<span id="cb25-3"><a href="data_structures.html#cb25-3"></a>y =<span class="st"> </span><span class="dv">5</span><span class="op">:</span><span class="dv">8</span></span>
+<span id="cb25-4"><a href="data_structures.html#cb25-4"></a>z =<span class="st"> </span><span class="dv">9</span><span class="op">:</span><span class="dv">12</span></span>
+<span id="cb25-5"><a href="data_structures.html#cb25-5"></a></span>
+<span id="cb25-6"><a href="data_structures.html#cb25-6"></a><span class="kw">rbind</span>(x, y, z)   <span class="co"># row bind</span></span></code></pre></div>
 <pre><code>  [,1] [,2] [,3] [,4]
 x    1    2    3    4
 y    5    6    7    8
 z    9   10   11   12</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">cbind</span>(x, y, z)   <span class="co"># column bind</span></a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="data_structures.html#cb27-1"></a><span class="kw">cbind</span>(x, y, z)   <span class="co"># column bind</span></span></code></pre></div>
 <pre><code>     x y  z
 [1,] 1 5  9
 [2,] 2 6 10
 [3,] 3 7 11
 [4,] 4 8 12</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">matrix</span>(<span class="kw">c</span>(x, y, z), <span class="dt">nrow=</span><span class="dv">3</span>, <span class="dt">ncol=</span><span class="dv">4</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="data_structures.html#cb29-1"></a><span class="kw">matrix</span>(</span>
+<span id="cb29-2"><a href="data_structures.html#cb29-2"></a>  <span class="kw">c</span>(x, y, z),</span>
+<span id="cb29-3"><a href="data_structures.html#cb29-3"></a>  <span class="dt">nrow =</span> <span class="dv">3</span>,</span>
+<span id="cb29-4"><a href="data_structures.html#cb29-4"></a>  <span class="dt">ncol =</span> <span class="dv">4</span>,</span>
+<span id="cb29-5"><a href="data_structures.html#cb29-5"></a>  <span class="dt">byrow =</span> <span class="ot">TRUE</span></span>
+<span id="cb29-6"><a href="data_structures.html#cb29-6"></a>)</span></code></pre></div>
 <pre><code>     [,1] [,2] [,3] [,4]
 [1,]    1    2    3    4
 [2,]    5    6    7    8
@@ -634,8 +656,8 @@ z    9   10   11   12</code></pre>
 <h2>Lists</h2>
 <p><span class="objclass">Lists</span> in R are highly flexible objects, and probably the most commonly used for applied data science. Unlike vectors, whose elements must be of the same type, lists can contain anything as their elements, even other lists.</p>
 <p>Here is a list. We use the <span class="func">list</span> function to create it.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span>, <span class="st">&quot;apple&quot;</span>, <span class="kw">list</span>(<span class="dv">3</span>, <span class="st">&quot;cat&quot;</span>))</a>
-<a class="sourceLine" id="cb29-2" data-line-number="2">x</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="data_structures.html#cb31-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span>, <span class="st">&quot;apple&quot;</span>, <span class="kw">list</span>(<span class="dv">3</span>, <span class="st">&quot;cat&quot;</span>))</span>
+<span id="cb31-2"><a href="data_structures.html#cb31-2"></a>x</span></code></pre></div>
 <pre><code>[[1]]
 [1] 1
 
@@ -649,15 +671,14 @@ z    9   10   11   12</code></pre>
 [[3]][[2]]
 [1] &quot;cat&quot;</code></pre>
 <p>We often want to loop some function over a list.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="cf">for</span> (elem <span class="cf">in</span> x) <span class="kw">print</span>(<span class="kw">class</span>(elem))</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="data_structures.html#cb33-1"></a><span class="cf">for</span> (elem <span class="cf">in</span> x) <span class="kw">print</span>(<span class="kw">class</span>(elem))</span></code></pre></div>
 <pre><code>[1] &quot;numeric&quot;
 [1] &quot;character&quot;
 [1] &quot;list&quot;</code></pre>
 <p>Lists can, and often do, have named elements.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">x =<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;a&quot;</span> =<span class="st"> </span><span class="dv">25</span>, <span class="st">&quot;b&quot;</span> =<span class="st"> </span><span class="dv">-1</span>, <span class="st">&quot;c&quot;</span> =<span class="st"> </span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb33-2" data-line-number="2">x[<span class="st">&quot;b&quot;</span>]</a></code></pre></div>
-<pre><code>$b
-[1] -1</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="data_structures.html#cb35-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;a&quot;</span> =<span class="st"> </span><span class="dv">25</span>, <span class="st">&quot;b&quot;</span> =<span class="st"> </span><span class="dv">-1</span>, <span class="st">&quot;c&quot;</span> =<span class="st"> </span><span class="dv">0</span>)</span>
+<span id="cb35-2"><a href="data_structures.html#cb35-2"></a>x[[<span class="st">&quot;b&quot;</span>]]</span></code></pre></div>
+<pre><code>[1] -1</code></pre>
 <p>Almost all standard models in base R and other packages return an object that is a list. Knowing how to work with a list will allow you to easily access the contents of the model object for further processing.</p>
 <div class="note">
 <p>Python has similar structures, <span class="objclass">lists</span> and <span class="objclass">dictionaries</span>, where the latter works similarly to R’s named list.</p>
@@ -666,28 +687,28 @@ z    9   10   11   12</code></pre>
 </div>
 <div id="data-frames" class="section level2">
 <h2>Data Frames</h2>
-<p>Data frames are a very commonly used data structure. Elements of a data frame can be different types, and this is because the <span class="objclass">data.frame</span> class is actually just a list. As such, everything about lists applies to them. But they can also be indexed by row or column as well, just like matrices. There are other very common types of object classes associated with packages that are both a <span class="objclass">data.frame</span> and some other type of structure (e.g. <span class="objclass">tibbles</span> in the tidyverse).</p>
+<p>Data frames are a very commonly used data structure. Elements of a data frame can be different types, and this is because the <span class="objclass">data.frame</span> class is actually just a list. As such, everything about lists applies to them. But they can also be indexed by row or column as well, just like matrices. There are other very common types of object classes associated with packages that are both a <span class="objclass">data.frame</span> and some other type of structure (e.g. <span class="objclass">tibbles</span> in the tidyverse).</p>
 <p>Usually your data frame will come directly from import or manipulation of other R objects (e.g. matrices). However, you should know how to create one from scratch.</p>
 <div id="creating-a-data-frame" class="section level3">
 <h3>Creating a data frame</h3>
 <p>The following will create a data frame with two columns, <code>a</code> and <code>b</code>.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">mydf =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">a =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">2</span>), </a>
-<a class="sourceLine" id="cb35-2" data-line-number="2">                  <span class="dt">b =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="data_structures.html#cb37-1"></a>mydf =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">a =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">2</span>), </span>
+<span id="cb37-2"><a href="data_structures.html#cb37-2"></a>                  <span class="dt">b =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">1</span>))</span></code></pre></div>
 <p>Much to the disdain of the tidyverse, we can add row names also.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">rownames</span>(mydf) =<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&#39;row&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb36-2" data-line-number="2">mydf</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="data_structures.html#cb38-1"></a><span class="kw">rownames</span>(mydf) =<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&#39;row&#39;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</span>
+<span id="cb38-2"><a href="data_structures.html#cb38-2"></a>mydf</span></code></pre></div>
 <pre><code>     a b
 row1 1 3
 row2 5 8
 row3 2 1</code></pre>
-<p>Everything about lists applies to data.frames, so we can add, select, and remove elements of a data frame just like lists. However, we’ll visit this later, because we’ll have much more flexibility with data frames than we would lists for common data analysis and visualization.</p>
+<p>Everything about lists applies to data.frames, so we can add, select, and remove elements of a data frame just like lists. However we’ll visit this more in depth later, and see that we’ll have much more flexibility with data frames than we would lists for common data analysis and visualization.</p>
 </div>
 </div>
 <div id="data-structure-exercises" class="section level2">
 <h2>Data Structure Exercises</h2>
 <div id="excercise-1" class="section level3">
 <h3>Excercise #1</h3>
-<p>Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span> (use the <span class="func">class</span> or <span class="func">str</span> functions) on the object you just created.</p>
+<p>Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span> (use the <span class="func">class</span> or <span class="func">str</span> functions on the object you just created).</p>
 </div>
 <div id="exercise-2" class="section level3">
 <h3>Exercise #2</h3>
@@ -703,12 +724,6 @@ row3 2 1</code></pre>
 
 </div>
 </div>
-</div>
-<div class="footnotes">
-<hr />
-<ol start="1">
-<li id="fn1"><p>Despite what the tidyverse would have you believe.<a href="data_structures.html#fnref1" class="footnote-back">↩</a></p></li>
-</ol>
 </div>
             </section>
 

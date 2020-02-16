@@ -1,5 +1,11 @@
 # More 
 
+<div class="" style="text-align: center;">
+<i class="fab fa-r-project fa-5x" style = 'color:#1f65b7'></i>
+</div>
+
+<br>
+
 This section is kind of a grab bag of miscellaneous things related to programming.  If you've made it this far, feel free to keep going!
 
 ## Code Style
@@ -18,9 +24,9 @@ You see some using `<-` or `=` for assignment.  While there is a slight differen
 
 If your script is becoming hundreds of lines long, you probably need to compartmentalize your operations into separate scripts.  For example, separate your data processing from your model scripts.
 
-#### Spacing
+### Spacing
 
-Don't be stingy with spaces. As you start out, err on the side of using them.  Just note there are exceptions (e.g. no space between function name and parenthesis, unless that function is something like <span class="func">if</span> or <span class="func">else</span>), but you'll get used to those over time.
+Don't be stingy with spaces. As you start out, err on the side of using them.  Just note there are exceptions (e.g. no space between function name and parenthesis, unless that function is something like <span class="func">if</span> or <span class="func">else</span>), but you'll get used to the exceptions over time.
 
 ```{r space, eval=FALSE}
 x=rnorm(10, mean=0,sd=1)              # harder to read
@@ -37,14 +43,14 @@ Here is a brief list of things to keep in mind.
 - The name should make sense to you, your future self, and others that will use the code
 - Try to be concise, but see the previous
 - Make liberal use of suffixes/prefixes for naming the same types of things e.g. model_x, model_z
-- For function names, try for verbs that describe what they do
+- For function names, try for verbs that describe what they do (e.g. add_two vs. two_more or plus2)
 
 - Don't name anything with 'final'
 - Don't name something that is already an R function/object (e.g. `T`, <span class="func">c</span>, <span class="func">data</span>, etc.)
 - Avoid distinguishing names only by number, e.g. <span class="objclass">data1</span> <span class="objclass">data2</span>
 
 
-Naming styles include:
+Common naming styles include:
 
 - snake_case
 - CamelCase or camelCase
@@ -55,7 +61,7 @@ For objects and functions, I find snake case easier to read and less prone to is
 
 ### Other
 
-Use tools like the built-in RStudio code cleanup shortcut like `Ctrl/Cmd + Shft + A`. It's not perfect, in the sense I disagree with some of its the style choice, but it will definitely be better than you will do on your own starting out.
+Use tools like the built-in RStudio code cleanup shortcut like `Ctrl/Cmd + Shft + A`. It's not perfect, in the sense I disagree with some of its style choice, but it will definitely be better than you will do on your own starting out.
 
 
 ## Vectorization 
@@ -295,11 +301,11 @@ summary(q)
 
 ## Vectorization Exercises
 
-Did you remember to fix the names in the previous exercise?
+Before we do this, did you remember to fix the names in the previous exercise?
 
 ### Exercise 1
 
-Show a non-vectorized and a vectorized way to add a two to the numbers 1 through 3.
+Show a non-vectorized (e.g. a loop) and a vectorized way to add a two to the numbers 1 through 3.
 
 ```{r vector_ex1, eval=FALSE}
 ?
@@ -340,4 +346,4 @@ str_replace(state.name, pattern = ?, replacement = ?)
 
 [^ifelse]: For those familiar with <span class="func">ifelse</span>, that would be applicable, but is not the point of the example.
 
-[^style_claim]: Note how I didn't say it's easier to read without qualification (even though I think it's obviously easier to read, based on how eyes/brains work).  Many style guides you encounter will try to come across as definitive.  They are not, nor are most of their claims tested.
+[^style_claim]: Even though I think it's obviously easier to read, based on how eyes/brains work, this is not necessarily the case for everyone.  Many style guides you encounter will try to come across as definitive.  They are not, nor are most of their claims tested. Same here.

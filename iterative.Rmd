@@ -1,5 +1,11 @@
 # Iterative Programming
 
+<div class="" style="text-align: center;">
+<i class="fas fa-sync-alt fa-5x" ></i>
+</div>
+
+<br>
+
 Almost everything you do when dealing with data will need to be done again, and again, and again.  If you are copy-pasting your way to repetitively do the same thing, you're not only doing things inefficiently, you're almost certainly setting yourself up for trouble if anything changes about the data or underlying process.
 
 In order to avoid this, you need to be familiar with basic programming, and a starting point is to use an iterative approach to repetitive problems.  Let's look at the following.  Let's say we want to get the means of some columns in our data set.  Do you do something like this?
@@ -24,7 +30,7 @@ for (column in c('x','y','z','q')) {
 }
 ```
 
-What's going on here?  We've created an iterative process in which, *for* every element in `c('x','y','z','q')`, we are going to do something.  We use the completely arbitrary word `column` as a placeholder to index which of the four columns we're dealing with at a given point in the process. On the first iteration, `column` will equal `x`, on the second `y`, and so on.  We then take the mean of `df[[column]]`, which will be `df[['x']]`, then `df[['y']]`, etc.
+What's going on here?  We've created an iterative process in which, *for* every *element* in `c('x','y','z','q')`, we are going to do something.  We use the completely arbitrary word `column` as a placeholder to index which of the four columns we're dealing with at a given point in the process. On the first iteration, `column` will equal `x`, on the second `y`, and so on.  We then take the mean of `df[[column]]`, which will be `df[['x']]`, then `df[['y']]`, etc.
 
 Here is an example with the <span class="pack">nycflights</span> data, which regards flights that departed New York City in 2013.  The <span class="objclass">weather</span> data set has columns for things like temperature, humidity, and so forth.
 
@@ -39,7 +45,7 @@ for (column in c('temp', 'humid', 'wind_speed', 'precip')) {
 
 You can check this for yourself by testing a column or two directly with just `mean(df$x)`.
 
-Now if the data name changes, the columns we want change, or we want to calculate something else, we usually end up only changing one thing, rather than *at least* changing one, and probably many more things.  In addition, the amount of code is the same whether the loop goes over 100 columns or 4.
+Now if the data name changes, the columns we want change, or we want to calculate something else, we usually end up only changing one thing, rather than at least changing one at a minimum, and probably many more things.  In addition, the amount of code is the same whether the loop goes over 100 columns or 4.
 
 Let's do things a little differently.
 
@@ -114,7 +120,7 @@ microbenchmark::microbenchmark(loop1(X), loop2(X))
 
 
 
-## While alternative
+### While alternative
 
 When you look at some people's R code, you may see a loop of a different sort. 
 
@@ -135,13 +141,17 @@ This involves a <span class="emph">while</span> statement.  It states, while `i`
 
 *There is zero difference to using the while approach vs. the for loop*.  While is often used when there is a check to be made, e.g. in modeling functions that have to stop the estimation process at some point, or else they'd go on indefinitely.  In that case the while syntax is probably more natural.  Either is fine.
 
-## Loops summary
+### Loops summary
 
 Understanding loops is fundamental toward spending less time processing data and more time toward exploring it.  Your code will be more succinct and more able to handle the usual changes that come with dealing with data.  Now that you have a sense of it, know that once you are armed with the sorts of things we'll be talking about next- apply functions, writing functions, and vectorization - you'll likely have little need to write explicit loops.  While there is always a need for iterative processing of data, R provides even more efficient means to do so.
 
-## apply family
+## Implicit Loops
 
-A family of functions comes with R that allows for a succinct way of looping when it is appropriate. As such, even when you loop in R, you don't have to do so explicitly. Common functions in this family include:
+Writing loops is straightforward once you get the initial hang of it. However, R offers alternative ways to do loops that can simplify code without losing readability.  As such, even when you loop in R, you don't have to do so explicitly.
+
+### apply family
+
+A family of functions comes with R that allows for a succinct way of looping when it is appropriate. Common functions in this family include:
 
 - <span class="func">apply</span>
     - arrays, matrices, data.frames
@@ -233,13 +243,13 @@ I pretty much never use an explicit double loop, as a little more thinking about
 
 
 
-## purrr
+### purrr
 
 The <span class="pack">purrr</span> package allows you to take the <span class="func">apply</span> family approach to the tidyverse.  And with packages <span class="pack" style = "">future</span> + <span class="pack" style = "">furrr</span>, they too are parallelizable.
 
 Consider the following.  We'll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the same way we would with <span class="func">lapply</span>.
 
-```{r purr_example, eval=TRUE, echo=-(1:2)}
+```{r purr_example, eval=TRUE, echo=-(1:3)}
 detach(package:maps)
 
 map = purrr::map  # could not remove conflict with something, nor able to debug
@@ -280,7 +290,7 @@ diamonds %>%
 However, working with lists is very useful, so let's turn to that.
 
 
-## Working with lists
+## Looping with lists
 
 Aside from data frames, you may think you don't have much need for list objects.  However, list objects make it very easy to iterate some form of data processing.
 
@@ -447,7 +457,7 @@ sapply()
 
 ### Exercise 3
 
-As in the previous example, use a map function to create a data frame of the column means.
+As in the previous example, use a <span class="func" style = "">map</span> function to create a data frame of the column means.  See `?map` to see all your options.
 
 ```{r purrr_ex3, echo=1:5, eval=FALSE}
 d = tibble(

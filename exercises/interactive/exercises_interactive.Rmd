@@ -1,5 +1,6 @@
 ---
-title: "Exercises for Data Processing with R"
+title: "Exercises"
+subtitle: Data Processing and Visualization with R
 output: 
   learnr::tutorial:
     css: [css/standard_html.css]
@@ -9,7 +10,12 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
-knitr::opts_chunk$set(echo = FALSE, exercise.lines=5, exercise.eval=FALSE, cache = F)
+knitr::opts_chunk$set(
+  echo = FALSE,
+  exercise.lines = 5,
+  exercise.eval = FALSE,
+  cache = FALSE
+)
 ```
 
 ## Data Processing
@@ -27,7 +33,7 @@ mydf =
 
 
 ```{r dsex1-hint}
-mydf = data.frame(A=1:3, B=letters[1:3])
+mydf = data.frame(A = 1:3, B = letters[1:3])
 str(mydf)
 ```
 
@@ -110,7 +116,7 @@ mymatrix = matrix(rnorm(100), 10, 10)
 ```{r ixex1-hint}
 mymatrix[1:5, ]
 mymatrix[, 1:5]
-mymatrix[1,2]
+mymatrix[1, 2]
 ```
 
 #### Exercise 2
@@ -123,7 +129,7 @@ mydf = cars
 
 ```{r ixex2-hint}
 mydf$disp
-mydf[,2]
+mydf[, 2]
 mydf['disp']
 ```
 
@@ -139,8 +145,6 @@ mylist = list(mymatrix, thisdf = mydf)
 mylist[2]
 mylist$thisdf
 ```
-
-
 
 
 
@@ -203,10 +207,20 @@ movies %>%
 ```{r dpex1c-hint}
 movies %>% 
   select(title, year, budget, length, rating, votes) 
+
 movies %>% 
   select(1:6)
+
 movies %>% 
-  select(-num_range('r',1:10), -mpaa, -starts_with('A'), -Comedy, -starts_with('D'), -Romance, -Short)
+  select(
+    -num_range('r', 1:10),
+    -mpaa,
+    -starts_with('A'),
+    -Comedy,
+    -starts_with('D'),
+    -Romance,
+    -Short
+  )
 ```
 
 ##### Exercise 1d
@@ -235,7 +249,7 @@ movies %>%
 ```{r dpex2-hint}
 movies %>%
   group_by(year) %>%
-  summarise(AvgBudget=mean(budget, na.rm=T)) %>%
+  summarise(AvgBudget = mean(budget, na.rm = T)) %>%
   tail()
 ```
 
@@ -249,10 +263,10 @@ N = 100
 
 dat = tibble(
   id = 1:N,
-  a = rnorm(N),
-  b = rpois(N, lambda = 5),
-  c = runif(N),
-  d = rbinom(N, size = 1, prob = .5)
+  a  = rnorm(N),
+  b  = rpois(N, lambda = 5),
+  c  = runif(N),
+  d  = rbinom(N, size = 1, prob = .5)
 )
 ```
 
@@ -286,7 +300,7 @@ movies %>%
 
 ```{r dpex4-hint}
 movies %>%
-  filter(year>=1990) %>%
+  filter(year >= 1990) %>%
   select(title, year, budget, length, rating, votes, mpaa, Action, Drama) %>%
   group_by(mpaa, Drama) %>%
   summarise(AvgRating = mean(rating))
@@ -296,10 +310,10 @@ movies %>%
 It should spit out something like the following:
 
 ```{r dpex4_show, echo=FALSE, message=FALSE}
-data('movies', package='ggplot2movies')
+data('movies', package = 'ggplot2movies')
 library(dplyr)
 movies %>%
-  filter(year>=1990) %>%
+  filter(year >= 1990) %>%
   select(title, year, budget, length, rating, votes, mpaa, Action, Drama) %>%
   group_by(mpaa, Drama) %>%
   summarise(AvgRating = mean(rating))
@@ -332,13 +346,17 @@ Create the following data table. Then, create a new object that contains only th
 ```{r dtex1, exercise=TRUE, exercise.eval=FALSE, message=FALSE}
 library(data.table)
 
-mydt = data.table(expand.grid(x=1:3, y=c('a','b','c')), z=sample(1:20, 9))
+mydt = data.table(
+  expand.grid(x = 1:3, 
+              y = c('a', 'b', 'c')), 
+  z = sample(1:20, 9)
+)
 
-mydt_a = mydt[?,]
+mydt_a = mydt[? , ]
 ```
 
 ```{r dtex1-hint}
-mydt_a = mydt[y=='a',]
+mydt_a = mydt[y == 'a', ]
 mydt_a
 ```
 
@@ -349,14 +367,22 @@ Create a new object that is the sum of z grouped by x. You don't need to name th
 
 
 ```{r dtex2, exercise=TRUE, exercise.eval=FALSE}
-mydt = data.table(expand.grid(x=1:3, y=c('a','b','c')), z=sample(1:20, 9))
+mydt = data.table(
+  expand.grid(x = 1:3, 
+              y = c('a', 'b', 'c')), 
+  z = sample(1:20, 9))
 
 mydt_grpsum = mydt[,?]
 ```
 ```{r dtex2-hint}
-mydt_grpsum = mydt[,sum(z), by=x]
-mydt_grpsum = mydt[,list(sumz=sum(z)), by=x]
+mydt_grpsum = mydt[, sum(z), by = x]
+mydt_grpsum = mydt[, list(sumz = sum(z)), by = x]
 ```
+
+
+
+
+
 
 
 ## Visualization
@@ -600,7 +626,7 @@ sapply()
 
 #### Exercise 3
 
-As in the previous example, use a map function to create a data frame of the column means.
+As in the previous example, use a <span class="func" style = "">map</span> function to create a data frame of the column means. See `?map` to see all your options.
 
 ```{r purrr_ex3, exercise = TRUE}
 d = tibble(
@@ -632,20 +658,18 @@ log_sum <- function(a, b) {
 
 #### Exercise 1b
 
-What happens if the sum of the two numbers is negative?  You can't take a log of a negative value, so it's an error.  How might we deal with this?  Try using a conditional to provide an error message using the <span class="func">stop</span> function.  Make the message whatever you want.
+What happens if the sum of the two numbers is negative?  You can't take a log of a negative value, so it's an error.  How might we deal with this?  Try using a conditional to provide an error message using the <span class="func">stop</span> function.  The first part is basically identical to the function you just did.  But given that result, you will need to check for whether it is negative or not.  The message can be whatever you want.
 
 ```{r wf_ex1b, exercise = TRUE, exercise.lines=15}
 log_sum <- function(a, b) {
-  #
-  #
-  #
   
-  if (?) {
+  ?
+  
+  if (? < 0) {
     stop('Your message here.')
-  } 
-  else {
+  } else {
     ?
-    return(your_log_sum_object)
+    return(your_log_sum_results)    # this is an arbitrary name, change accordingly
   }
 }
 ```
@@ -672,34 +696,71 @@ pos_neg <- function(?) {
 
 
 
+### More
 
-### Vector/Apply Exercises
+#### Coding Style Exercises
+##### Exercise 1 
 
+For the following model related output, come up with a name for each object.
 
-#### Exercise 1
+```{r name_ex, exercise = TRUE}
+lm(hwy ~ cyl, data = mpg)                 # hwy mileage predicted by number of cylinders
 
-With the following <span class="objclass">matrix</span>, use <span class="func">apply</span> and the <span class="func">sum</span> function to get row or column sums.  
+summary(lm(hwy ~ cyl, data = mpg))        # the summary of that
 
-```{r vectorapp_ex1, exercise=TRUE}
-x = matrix(1:9, 3, 3)
+lm(hwy ~ cyl + displ + year, data = mpg)  # an extension of that
 ```
 
-```{r vectorapp_ex1-hint}
-apply(x, ???, sum)
+
+##### Exercise 2
+
+
+Fix this code.
+
+```{r fix_code, exercise = TRUE}
+x=rnorm(100, 10, 2)
+y=.2* x+ rnorm(100)
+data = data.frame(x,y)
+q = lm(y~x, data=data)
+summary(q)
+```
+
+#### Vectorization Exercises
+
+Before we do this, did you remember to fix the names in the previous exercise?
+
+##### Exercise 1
+
+Show a non-vectorized (e.g. a loop) and a vectorized way to add a two to the numbers 1 through 3.
+
+```{r vector_ex1, exercise = TRUE}
+?
 ```
 
 
-#### Exercise 2
+##### Exercise 2
 
-With the following <span class="objclass">list</span>, use <span class="func">lapply</span> and <span class="func">sapply</span> and the <span class="func">sum</span> function to get sums for the elements.  There is no margin to specify with on a list, so just supply the list and the sum function.  
+Of the following <span class="objclass">matrix</span>, which do you think is faster?  Test it.
 
-```{r vectorapp_ex2, exercise=TRUE}
-x = list(1:3, 4:6, 7:9)
+```{r vector_ex2, exercise = TRUE}
+x = matrix(rpois(100000, lambda = 5), ncol = 100)
+colSums(x)
+apply(x, 2, sum)
+
+microbenchmark::microbenchmark(
+  cs = colSums(x),
+  app = apply(x, 2, sum)
+)
 ```
 
-```{r vectorapp_ex2-hint}
-lapply(x, sum)
-sapply(x, sum)
+#### Regex Exercises
+
+##### Exercise 1
+
+Using stringr and str_replace, replace all the states a's with nothing.
+
+```{r regex_ex, exercise = TRUE}
+library(stringr)
+str_replace(state.name, pattern = ?, replacement = ?)
 ```
 
-<span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>.  If you supply the argument `simplified=F`, it is identical. Otherwise, it attempts to return a vector or matrix.

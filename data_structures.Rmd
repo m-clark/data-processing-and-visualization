@@ -1,10 +1,26 @@
 
-# (PART\*) Part I: Data Processing {-}
+# (PART\*) Part I: Information Processing {-}
 
 
 # Data Structures
 
+
+
+
+<div class="" style="text-align: center;">
+<i class="fas fa-globe-americas fa-5x" style = 'color:#0077be'></i><span class="" style = "margin-right: 25px"></span>
+<i class="far fa-arrow-alt-circle-right fa-3x"></i><span class="" style = "margin-right: 25px"></span>
+<i class="fas fa-database fa-5x"   aria-hidden="true"></i><span class="" style = "margin-right: 25px"></span>
+<i class="far fa-arrow-alt-circle-right fa-3x"></i><span class="" style = "margin-right: 25px;"></span>
+<i class="fab fa-r-project fa-5x" style = 'color:#1f65b7'></i>
+</div>
+
+<br>
+
+In order to use R to understand the world around you, you have to know the basics of how R works.  Everything in R revolves around information in the form of data, so let's start with how data exists within R. 
+
 R has several core data structures, and we'll take a look at each.
+
   
 - Vectors
 - Factors
@@ -12,13 +28,13 @@ R has several core data structures, and we'll take a look at each.
 - Matrices/arrays
 - Data frames
 
-The more you know about R data structures, the more you'll know how to use them, the more you'll know *why* things go wrong if they do, and the further you'll be able to go with your data.
+The more you know about R data structures, the more you'll know how to use them, how packages use them, and you'll also better understand why things go wrong if they do, and the further you'll be able to go with your data.
 
 ## Vectors
 
-<span class="objclass">Vectors</span> form the basis of R data structures. Two main types are <span class="objclass">atomic</span> and <span class="objclass">lists</span>, but we'll talk about lists separately.
+*Vectors* form the basis of R data structures. Two main types are <span class="objclass">atomic</span> and <span class="objclass">lists</span>, but we'll talk about lists separately.
 
-Here is an R <span class="objclass">vector</span>. The <span class="emph">elements</span> of the vector are numeric values.
+Here is an R vector. The <span class="emph">elements</span> of the vector are numeric values.
 
 ```{r vec}
 x = c(1, 3, 2, 5, 4)
@@ -55,17 +71,17 @@ Not much to it, but be aware there is no real limit to what is represented as a 
 
 ### Factors
 
-An important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures.  Although not exactly precise, one can think of factors as integers with labels.  So the underlying representation of a variable for <span class="objclass">sex</span> is 1:2 with labels 'Male' and 'Female'.  They are a special class with attributes, or metadata, that contains the information about the <span class="objclass">levels</span>.
+An important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures.  Although not exactly precise, one can think of factors as integers with labels.  So the underlying representation of a variable for <span class="objclass">sex</span> is 1:2 with labels 'Male' and 'Female'.  They are a special class with attributes, or metadata, that contains the information about the *levels*.
 
 ```{r factor_atts}
-x = factor(rep(letters[1:3], e=10))
+x = factor(rep(letters[1:3], e = 10))
 x
 attributes(x)
 ```
 
 
 ```{r factors, eval=F, echo=FALSE}
-x = factor(1:3, labels=c('q', 'V', 'what the heck?'))
+x = factor(1:3, labels = c('q', 'V', 'what the heck?'))
 x
 ```
 
@@ -118,7 +134,10 @@ The most common type of data structure you'll deal with are integer and numeric 
 ```{r int_num}
 class(1:3)
 
-rnorm(5)
+x = rnorm(5)
+x
+
+class(x)
 ```
 
 
@@ -126,7 +145,7 @@ rnorm(5)
 
 ## Matrices
 
-With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing[^tidynomatrix]. The vectors making up a matrix *must all be of the same type*.  For example, all values in a matrix might be <span class="objclass">numeric</span>, or all <span class="objclass">character strings</span>.
+With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing. The vectors making up a matrix *must all be of the same type*.  For example, all values in a matrix might be <span class="objclass">numeric</span>, or all <span class="objclass">character strings</span>.
 
 
 
@@ -141,8 +160,15 @@ y = 5:8
 z = 9:12
 
 rbind(x, y, z)   # row bind
+
 cbind(x, y, z)   # column bind
-matrix(c(x, y, z), nrow=3, ncol=4, byrow=TRUE)
+
+matrix(
+  c(x, y, z),
+  nrow = 3,
+  ncol = 4,
+  byrow = TRUE
+)
 ```
 
 
@@ -167,7 +193,7 @@ Lists can, and often do, have named elements.
 
 ```{r namedlist}
 x = list("a" = 25, "b" = -1, "c" = 0)
-x["b"]
+x[["b"]]
 ```
 
 Almost all standard models in base R and other packages return an object that is a list.  Knowing how to work with a list will allow you to easily access the contents of the model object for further processing.
@@ -202,17 +228,17 @@ rownames(mydf) = paste0('row', 1:3)
 mydf
 ```
 
-Everything about lists applies to data.frames, so we can add, select, and remove elements of a data frame just like lists. However, we'll visit this later, because we'll have much more flexibility with data frames than we would lists for common data analysis and visualization.
+Everything about lists applies to data.frames, so we can add, select, and remove elements of a data frame just like lists. However we'll visit this more in depth later, and see that we'll have much more flexibility with data frames than we would lists for common data analysis and visualization.
 
 
 ## Data Structure Exercises
 
 ### Excercise #1
 
-Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span> (use the <span class="func">class</span> or <span class="func">str</span> functions) on the object you just created.
+Create an object that is a <span class="objclass">matrix</span> and/or a <span class="objclass">data.frame</span>, and inspect its <span class="emph">class</span> or <span class="emph">structure</span> (use the <span class="func">class</span> or <span class="func">str</span> functions on the object you just created).
 
 ```{r dsex1, echo=F}
-mydf = data.frame(A=1:3, B=letters[1:3])
+mydf = data.frame(A = 1:3, B = letters[1:3])
 ```
 
 
@@ -234,5 +260,3 @@ mylist = list(c('a', 'b'), 1:3, mydf)
 
 - How is a <span class="objclass">data.frame</span> the same as and different from a <span class="objclass">list</span>?
 
-
-[^tidynomatrix]: Despite what the tidyverse would have you believe.

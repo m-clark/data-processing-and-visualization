@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Basics | Data Processing &amp; Visualization</title>
-  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
-  <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
+  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Basics | Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://m-clark.github.io/data-processing-and-visualization/" />
   <meta property="og:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
-  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
   <meta name="github-repo" content="m-clark/data-processing-and-visualization/" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Basics | Data Processing &amp; Visualization" />
   
-  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of the data processing section are available in Python via Jupyter notebooks." />
+  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
   <meta name="twitter:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
 
 
 
-<meta name="date" content="2019-12-03" />
+<meta name="date" content="2020-02-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -49,6 +49,7 @@
 
 
 
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.9.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
@@ -58,7 +59,7 @@
 <script src="libs/plotly-main-1.49.4/plotly-latest.min.js"></script>
 <link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
 <script src="libs/vis-4.20.1/vis.min.js"></script>
-<script src="libs/visNetwork-binding-2.0.8/visNetwork.js"></script>
+<script src="libs/visNetwork-binding-2.0.9/visNetwork.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
 <link href="libs/highcharts-7.0.1/css/motion.css" rel="stylesheet" />
 <link href="libs/highcharts-7.0.1/css/htmlwdgtgrid.css" rel="stylesheet" />
@@ -123,16 +124,16 @@
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.10/datatables.js"></script>
+<script src="libs/datatables-binding-0.11/datatables.js"></script>
 <link href="libs/dt-core-1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.19/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.19/js/jquery.dataTables.min.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
@@ -141,14 +142,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -157,9 +160,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -193,7 +196,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <link rel="stylesheet" href="css/book.css" type="text/css" />
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css" type="text/css" />
 </head>
 
 <body>
@@ -223,7 +226,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#r"><i class="fa fa-check"></i>R</a></li>
 </ul></li>
 </ul></li>
-<li class="part"><span><b>Part I: Data Processing</b></span></li>
+<li class="part"><span><b>Part I: Information Processing</b></span></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html"><i class="fa fa-check"></i>Data Structures</a><ul>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#vectors"><i class="fa fa-check"></i>Vectors</a><ul>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#character-strings"><i class="fa fa-check"></i>Character strings</a></li>
@@ -309,7 +312,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#summary-1"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#dtplyr"><i class="fa fa-check"></i>dtplyr</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster-dplyr-alternatives"><i class="fa fa-check"></i>Faster dplyr alternatives</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-exercises"><i class="fa fa-check"></i>data.table Exercises</a><ul>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-0-1"><i class="fa fa-check"></i>Exercise 0</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-1-3"><i class="fa fa-check"></i>Exercise 1</a></li>
@@ -414,14 +417,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#a-slight-speed-gain"><i class="fa fa-check"></i>A slight speed gain</a></li>
-</ul></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#loops-summary"><i class="fa fa-check"></i>Loops summary</a></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a><ul>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#implicit-loops"><i class="fa fa-check"></i>Implicit Loops</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#working-with-lists"><i class="fa fa-check"></i>Working with lists</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#looping-with-lists"><i class="fa fa-check"></i>Looping with lists</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#iterative-programming-exercises"><i class="fa fa-check"></i>Iterative Programming Exercises</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-1-7"><i class="fa fa-check"></i>Exercise 1</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-2-7"><i class="fa fa-check"></i>Exercise 2</a></li>
@@ -444,6 +448,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#why-does-your-code-exist"><i class="fa fa-check"></i>Why does your code exist?</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#assignment"><i class="fa fa-check"></i>Assignment</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-length"><i class="fa fa-check"></i>Code length</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#spacing"><i class="fa fa-check"></i>Spacing</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#naming-things"><i class="fa fa-check"></i>Naming things</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#other-1"><i class="fa fa-check"></i>Other</a></li>
 </ul></li>
@@ -471,20 +476,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li class='after'">
-   <a href="https://m-clark.github.io/">
+   <a href="https://m-clark.github.io/" aria-label='Author Website Link'>
       <img src="img/mc_logo.png" style="width:25%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo">
    </a>
 </li>
 <li class='after'">
    <div style='text-align:center'>
-      <a href="https://github.com/m-clark/">
+      <a href="https://github.com/m-clark/" aria-label='GitHub Link'>
          <i class="fab fa-github fa-2x" aria-hidden="true"></i>
       </a>
    </div>
 </li>
 <li class='after'">
    <div style='text-align:center'>
-      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" aria-label="Creative commons CCBYSA link">
          <i class="fab fa-creative-commons fa-lg"></i> 
          <i class="fab fa-creative-commons-by fa-lg"></i> 
          <i class="fab fa-creative-commons-sa fa-lg"></i>
@@ -511,17 +516,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="basics-1" class="section level1">
 <h1>Basics</h1>
+<div style="text-align: center;">
+<p><i class="fas fa-laptop-code fa-5x" ></i></p>
+</div>
+<p><br></p>
 <p>Becoming a better programmer is in many ways like learning any language. While it may be literal, there is much nuance, and many ways are available to express yourself in order to solve some problem. However, it doesn’t take much in the way of practice to develop a few skills that will not only last, but go a long way toward saving you time and allowing you to explore your data, models, and visualizations more extensively. So let’s get to it!</p>
 <div id="r-objects" class="section level2">
 <h2>R Objects</h2>
 <div id="object-inspection-exploration" class="section level3">
 <h3>Object Inspection &amp; Exploration</h3>
 <p>Let’s say you’ve imported your data into R. If you are going to be able to do anything with it, you’ll have had to create an R object that represents that data. What is that object? By now you know it’s a data frame, specifically, an object of <a href="https://en.wikipedia.org/wiki/Class_(computer_programming)">class</a> <span class="objclass">data.frame</span> or possibly a <span class="objclass">tibble</span> if you’re working within the tidyverse. If you want to look at it, you might be tempted to look at it this way with <span class="func">View</span>, or clicking on it in your Environment viewer.</p>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb235-1" data-line-number="1"><span class="kw">View</span>(diamonds)</a></code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="programming.html#cb236-1"></a><span class="kw">View</span>(diamonds)</span></code></pre></div>
 <p><img class='zoom' src="img/view.png" style="display:block; margin: 0 auto;" width=50%></p>
 <p>While this is certainly one way to inspect it, it’s not very useful. There’s far too much information to get much out of it, and information you may need to know is absent.</p>
 <p>Consider the following:</p>
-<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb236-1" data-line-number="1"><span class="kw">str</span>(diamonds)</a></code></pre></div>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="programming.html#cb237-1"></a><span class="kw">str</span>(diamonds)</span></code></pre></div>
 <pre><code>Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:   53940 obs. of  10 variables:
  $ carat  : num  0.23 0.21 0.23 0.29 0.31 0.24 0.24 0.26 0.22 0.23 ...
  $ cut    : Ord.factor w/ 5 levels &quot;Fair&quot;&lt;&quot;Good&quot;&lt;..: 5 4 2 4 2 3 3 3 1 3 ...
@@ -533,7 +542,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  $ x      : num  3.95 3.89 4.05 4.2 4.34 3.94 3.95 4.07 3.87 4 ...
  $ y      : num  3.98 3.84 4.07 4.23 4.35 3.96 3.98 4.11 3.78 4.05 ...
  $ z      : num  2.43 2.31 2.31 2.63 2.75 2.48 2.47 2.53 2.49 2.39 ...</code></pre>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb238-1" data-line-number="1"><span class="kw">glimpse</span>(diamonds)</a></code></pre></div>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="programming.html#cb239-1"></a><span class="kw">glimpse</span>(diamonds)</span></code></pre></div>
 <pre><code>Observations: 53,940
 Variables: 10
 $ carat   &lt;dbl&gt; 0.23, 0.21, 0.23, 0.29, 0.31, 0.24, 0.24, 0.26, 0.22, 0.23, 0.30, 0.23, 0.22, 0.31, 0.20, 0.32, 0.30, 0.30, 0.30, 0.30, 0.30, 0.23, 0.23, 0.31, 0.31, 0.23, 0.24, 0.30, 0.23, 0.23, 0.23, 0.23, 0.23, 0.2…
@@ -548,11 +557,11 @@ $ y       &lt;dbl&gt; 3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, 4.05
 $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39, 2.73, 2.46, 2.33, 2.71, 2.27, 2.68, 2.68, 2.70, 2.71, 2.66, 2.71, 2.48, 2.41, 2.62, 2.59, 2.41, 2.47, 2.67, 2.40, 2.42, 2.41, 2.42, 2.42, 2.4…</code></pre>
 <p>The <span class="func">str</span> function looks at the <em>structure</em> of the object, while <span class="func">glimpse</span> perhaps provides a possibly more readable version, and is just <span class="func">str</span> specifically suited toward data frames. In both cases, we get info about the object and the various things within it.</p>
 <p>While you might be doing this with data frames, you should be doing it with any of the objects you’re interested in. Consider a regression model object.</p>
-<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb240-1" data-line-number="1">lm_mod =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>mtcars)</a>
-<a class="sourceLine" id="cb240-2" data-line-number="2"><span class="kw">str</span>(lm_mod, <span class="dv">0</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="programming.html#cb241-1"></a>lm_mod =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>mtcars)</span>
+<span id="cb241-2"><a href="programming.html#cb241-2"></a><span class="kw">str</span>(lm_mod, <span class="dv">0</span>)</span></code></pre></div>
 <pre><code>List of 12
  - attr(*, &quot;class&quot;)= chr &quot;lm&quot;</code></pre>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb242-1" data-line-number="1"><span class="kw">str</span>(lm_mod, <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="programming.html#cb243-1"></a><span class="kw">str</span>(lm_mod, <span class="dv">1</span>)</span></code></pre></div>
 <pre><code>List of 12
  $ coefficients : Named num [1:11] 12.3034 -0.1114 0.0133 -0.0215 0.7871 ...
   ..- attr(*, &quot;names&quot;)= chr [1:11] &quot;(Intercept)&quot; &quot;cyl&quot; &quot;disp&quot; &quot;hp&quot; ...
@@ -596,11 +605,11 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
   .. .. .. ..- attr(*, &quot;names&quot;)= chr [1:11] &quot;mpg&quot; &quot;cyl&quot; &quot;disp&quot; &quot;hp&quot; ...
  - attr(*, &quot;class&quot;)= chr &quot;lm&quot;</code></pre>
 <p>Here we look at the object at the lowest level of detail (0), which basically just tells us that it’s a list of stuff. But if we go into more depth, we can see that there is quite a bit going on in here! Coefficients, the data frame used in the model (i.e. only the variables used and no <code>NA</code>), and much more are available to us, and we can pluck out any piece of it.</p>
-<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb244-1" data-line-number="1">lm_mod<span class="op">$</span>coefficients</a></code></pre></div>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="programming.html#cb245-1"></a>lm_mod<span class="op">$</span>coefficients</span></code></pre></div>
 <pre><code>(Intercept)         cyl        disp          hp        drat          wt        qsec          vs          am        gear        carb 
 12.30337416 -0.11144048  0.01333524 -0.02148212  0.78711097 -3.71530393  0.82104075  0.31776281  2.52022689  0.65541302 -0.19941925 </code></pre>
-<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb246-1" data-line-number="1">lm_mod<span class="op">$</span>model <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb246-2" data-line-number="2"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="programming.html#cb247-1"></a>lm_mod<span class="op">$</span>model <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb247-2"><a href="programming.html#cb247-2"></a><span class="st">  </span><span class="kw">head</span>()</span></code></pre></div>
 <pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
 Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
 Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
@@ -609,7 +618,7 @@ Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
 Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
 Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
 <p>Let’s do a summary of it, something you’ve probably done many times.</p>
-<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb248-1" data-line-number="1"><span class="kw">summary</span>(lm_mod)</a></code></pre></div>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="programming.html#cb249-1"></a><span class="kw">summary</span>(lm_mod)</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = mpg ~ ., data = mtcars)
@@ -638,8 +647,8 @@ Residual standard error: 2.65 on 21 degrees of freedom
 Multiple R-squared:  0.869, Adjusted R-squared:  0.8066 
 F-statistic: 13.93 on 10 and 21 DF,  p-value: 3.793e-07</code></pre>
 <p>But you can assign that to an object and inspect it too!</p>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb250-1" data-line-number="1">lm_mod_summary =<span class="st"> </span><span class="kw">summary</span>(lm_mod)</a>
-<a class="sourceLine" id="cb250-2" data-line-number="2"><span class="kw">str</span>(lm_mod_summary)</a></code></pre></div>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="programming.html#cb251-1"></a>lm_mod_summary =<span class="st"> </span><span class="kw">summary</span>(lm_mod)</span>
+<span id="cb251-2"><a href="programming.html#cb251-2"></a><span class="kw">str</span>(lm_mod_summary)</span></code></pre></div>
 <pre><code>List of 11
  $ call         : language lm(formula = mpg ~ ., data = mtcars)
  $ terms        :Classes &#39;terms&#39;, &#39;formula&#39;  language mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb
@@ -675,9 +684,9 @@ F-statistic: 13.93 on 10 and 21 DF,  p-value: 3.793e-07</code></pre>
   .. ..$ : chr [1:11] &quot;(Intercept)&quot; &quot;cyl&quot; &quot;disp&quot; &quot;hp&quot; ...
   .. ..$ : chr [1:11] &quot;(Intercept)&quot; &quot;cyl&quot; &quot;disp&quot; &quot;hp&quot; ...
  - attr(*, &quot;class&quot;)= chr &quot;summary.lm&quot;</code></pre>
-<p>If we pull the coefficients from this object, we are not just getting the values, but the table that’s printed in the summary. And we can now get that ready for publishing for example<a href="#fn19" class="footnote-ref" id="fnref19"><sup>19</sup></a>.</p>
-<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb252-1" data-line-number="1">lm_mod_summary<span class="op">$</span>coefficients <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb252-2" data-line-number="2"><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">2</span>)</a></code></pre></div>
+<p>If we pull the coefficients from this object, we are not just getting the values, but the table that’s printed in the summary. And we can now get that ready for publishing for example<a href="#fn18" class="footnote-ref" id="fnref18"><sup>18</sup></a>.</p>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="programming.html#cb253-1"></a>lm_mod_summary<span class="op">$</span>coefficients <span class="op">%&gt;%</span></span>
+<span id="cb253-2"><a href="programming.html#cb253-2"></a><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">2</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -892,7 +901,7 @@ carb
 <div id="methods" class="section level3">
 <h3>Methods</h3>
 <p>Consider the following:</p>
-<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb253-1" data-line-number="1"><span class="kw">summary</span>(diamonds)            <span class="co"># data frame</span></a></code></pre></div>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="programming.html#cb254-1"></a><span class="kw">summary</span>(diamonds)            <span class="co"># data frame</span></span></code></pre></div>
 <pre><code>     carat               cut        color        clarity          depth           table           price             x                y                z         
  Min.   :0.2000   Fair     : 1610   D: 6775   SI1    :13065   Min.   :43.00   Min.   :43.00   Min.   :  326   Min.   : 0.000   Min.   : 0.000   Min.   : 0.000  
  1st Qu.:0.4000   Good     : 4906   E: 9797   VS2    :12258   1st Qu.:61.00   1st Qu.:56.00   1st Qu.:  950   1st Qu.: 4.710   1st Qu.: 4.720   1st Qu.: 2.910  
@@ -901,10 +910,10 @@ carb
  3rd Qu.:1.0400   Ideal    :21551   H: 8304   VVS2   : 5066   3rd Qu.:62.50   3rd Qu.:59.00   3rd Qu.: 5324   3rd Qu.: 6.540   3rd Qu.: 6.540   3rd Qu.: 4.040  
  Max.   :5.0100                     I: 5422   VVS1   : 3655   Max.   :79.00   Max.   :95.00   Max.   :18823   Max.   :10.740   Max.   :58.900   Max.   :31.800  
                                     J: 2808   (Other): 2531                                                                                                     </code></pre>
-<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb255-1" data-line-number="1"><span class="kw">summary</span>(diamonds<span class="op">$</span>clarity)    <span class="co"># vector</span></a></code></pre></div>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="programming.html#cb256-1"></a><span class="kw">summary</span>(diamonds<span class="op">$</span>clarity)    <span class="co"># vector</span></span></code></pre></div>
 <pre><code>   I1   SI2   SI1   VS2   VS1  VVS2  VVS1    IF 
   741  9194 13065 12258  8171  5066  3655  1790 </code></pre>
-<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb257-1" data-line-number="1"><span class="kw">summary</span>(lm_mod)              <span class="co"># lm object</span></a></code></pre></div>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="programming.html#cb258-1"></a><span class="kw">summary</span>(lm_mod)              <span class="co"># lm object</span></span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = mpg ~ ., data = mtcars)
@@ -932,7 +941,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 Residual standard error: 2.65 on 21 degrees of freedom
 Multiple R-squared:  0.869, Adjusted R-squared:  0.8066 
 F-statistic: 13.93 on 10 and 21 DF,  p-value: 3.793e-07</code></pre>
-<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb259-1" data-line-number="1"><span class="kw">summary</span>(lm_mod_summary)      <span class="co"># lm summary object</span></a></code></pre></div>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="programming.html#cb260-1"></a><span class="kw">summary</span>(lm_mod_summary)      <span class="co"># lm summary object</span></span></code></pre></div>
 <pre><code>              Length Class  Mode   
 call            3    -none- call   
 terms           3    terms  call   
@@ -948,59 +957,54 @@ cov.unscaled  121    -none- numeric</code></pre>
 <p>How is it that one function works on all these different types of objects? That’s not all. In RStudio, type <code>summary.</code> and hit the tab key.</p>
 <p><img class='zoom' src="img/summary_method.png" style="display:block; margin: 0 auto;" width=50%></p>
 <p>When you load additional packages, you’ll see even more <span class="emph">methods</span> for the summary function. When you call <span class="func" style="">summary</span> on an object, the appropriate type of summary method will be used depending on the class of the object. If there is no specific type, e.g. when we called summary on something that already had summary called on it, it will just use a default version listing the contents. To see all the methods for summary, type the following, and you’ll see all that is currently available for your R session.</p>
-<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb261-1" data-line-number="1"><span class="kw">methods</span>(<span class="st">&#39;summary&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="programming.html#cb262-1"></a><span class="kw">methods</span>(<span class="st">&#39;summary&#39;</span>)</span></code></pre></div>
 <pre><code>  [1] summary,ANY-method                   summary,DBIObject-method             summary,diagonalMatrix-method        summary,mle-method                   summary,quantmod-method             
   [6] summary,sparseMatrix-method          summary,stanfit-method               summary.aov                          summary.aovlist*                     summary.aspell*                     
- [11] summary.bridge*                      summary.bridge_list*                 summary.brmsfit*                     summary.check_packages_in_dir*       summary.clustCombi                  
- [16] summary.cohesiveBlocks*              summary.connection                   summary.corAR1*                      summary.corARMA*                     summary.corCAR1*                    
- [21] summary.corCompSymm*                 summary.corExp*                      summary.corGaus*                     summary.corIdent*                    summary.corLin*                     
- [26] summary.corNatural*                  summary.corRatio*                    summary.corSpher*                    summary.corStruct*                   summary.corSymm*                    
- [31] summary.crq                          summary.crqs                         summary.customfamily*                summary.data.frame                   summary.Date                        
- [36] summary.default                      summary.Duration*                    summary.dynrqs                       summary.ecdf*                        summary.factor                      
- [41] summary.family*                      summary.gam                          summary.ggplot*                      summary.glm                          summary.gls*                        
- [46] summary.gmmhd                        summary.hcl_palettes*                summary.igraph*                      summary.infl*                        summary.Interval*                   
- [51] summary.List*                        summary.lm                           summary.lme*                         summary.lmList*                      summary.loess*                      
- [56] summary.manova                       summary.matrix                       summary.Mclust                       summary.mclustBIC                    summary.MclustBootstrap             
- [61] summary.MclustDA                     summary.MclustDR                     summary.MclustDRsubsel               summary.mclustICL                    summary.mcmc*                       
- [66] summary.mcmc.list*                   summary.microbenchmark*              summary.mixfamily*                   summary.mlm*                         summary.modelStruct*                
- [71] summary.mslm                         summary.nlrq                         summary.nls*                         summary.nlsList*                     summary.packageStatus*              
- [76] summary.pandas.core.frame.DataFrame* summary.pandas.core.series.Series*   summary.pdBlocked*                   summary.pdCompSymm*                  summary.pdDiag*                     
- [81] summary.pdIdent*                     summary.pdIdnot*                     summary.pdLogChol*                   summary.pdMat*                       summary.pdNatural*                  
- [86] summary.pdSymm*                      summary.pdTens*                      summary.Period*                      summary.phylo*                       summary.phymltest*                  
- [91] summary.POSIXct                      summary.POSIXlt                      summary.ppr*                         summary.prcomp*                      summary.princomp*                   
- [96] summary.proc_time                    summary.prop.part*                   summary.python.builtin.object*       summary.reStruct*                    summary.rlang_error*                
-[101] summary.rlang_trace*                 summary.rq                           summary.rqs                          summary.rqss                         summary.shingle*                    
-[106] summary.slm                          summary.srcfile                      summary.srcref                       summary.stepfun                      summary.stl*                        
-[111] summary.table                        summary.trellis*                     summary.tukeysmooth*                 summary.varComb*                     summary.varConstPower*              
-[116] summary.varExp*                      summary.varFixed*                    summary.varFunc*                     summary.varIdent*                    summary.varPower*                   
-[121] summary.vctrs_sclr*                  summary.vctrs_vctr*                  summary.warnings                     summary.yearmon*                     summary.yearqtr*                    
-[126] summary.zoo*                        
+ [11] summary.bridge*                      summary.bridge_list*                 summary.brmsfit*                     summary.check_packages_in_dir*       summary.cohesiveBlocks*             
+ [16] summary.connection                   summary.corAR1*                      summary.corARMA*                     summary.corCAR1*                     summary.corCompSymm*                
+ [21] summary.corExp*                      summary.corGaus*                     summary.corIdent*                    summary.corLin*                      summary.corNatural*                 
+ [26] summary.corRatio*                    summary.corSpher*                    summary.corStruct*                   summary.corSymm*                     summary.customfamily*               
+ [31] summary.data.frame                   summary.Date                         summary.default                      summary.Duration*                    summary.ecdf*                       
+ [36] summary.factor                       summary.family*                      summary.gam                          summary.ggplot*                      summary.glm                         
+ [41] summary.gls*                         summary.hcl_palettes*                summary.igraph*                      summary.infl*                        summary.Interval*                   
+ [46] summary.List*                        summary.lm                           summary.lme*                         summary.lmList*                      summary.loess*                      
+ [51] summary.manova                       summary.matrix                       summary.mcmc*                        summary.mcmc.list*                   summary.microbenchmark*             
+ [56] summary.mixfamily*                   summary.mlm*                         summary.modelStruct*                 summary.nls*                         summary.nlsList*                    
+ [61] summary.packageStatus*               summary.pandas.core.frame.DataFrame* summary.pandas.core.series.Series*   summary.pdBlocked*                   summary.pdCompSymm*                 
+ [66] summary.pdDiag*                      summary.pdIdent*                     summary.pdIdnot*                     summary.pdLogChol*                   summary.pdMat*                      
+ [71] summary.pdNatural*                   summary.pdSymm*                      summary.pdTens*                      summary.Period*                      summary.POSIXct                     
+ [76] summary.POSIXlt                      summary.ppr*                         summary.prcomp*                      summary.princomp*                    summary.proc_time                   
+ [81] summary.python.builtin.object*       summary.reStruct*                    summary.rlang_error*                 summary.rlang_trace*                 summary.shingle*                    
+ [86] summary.srcfile                      summary.srcref                       summary.stepfun                      summary.stl*                         summary.table                       
+ [91] summary.trellis*                     summary.tukeysmooth*                 summary.varComb*                     summary.varConstPower*               summary.varExp*                     
+ [96] summary.varFixed*                    summary.varFunc*                     summary.varIdent*                    summary.varPower*                    summary.vctrs_sclr*                 
+[101] summary.vctrs_vctr*                  summary.warnings                     summary.yearmon*                     summary.yearqtr*                     summary.zoo*                        
 see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>Say you are new to a modeling package, and as such, you might want to see what all you can do with the resulting object. Once you’ve discerned the class of the model object, you can then list all the functions that can be used on that object.</p>
-<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb263-1" data-line-number="1"><span class="kw">library</span>(brms)</a>
-<a class="sourceLine" id="cb263-2" data-line-number="2"><span class="kw">methods</span>(<span class="dt">class =</span> <span class="st">&#39;brmsfit&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="programming.html#cb264-1"></a><span class="kw">library</span>(brms)</span>
+<span id="cb264-2"><a href="programming.html#cb264-2"></a><span class="kw">methods</span>(<span class="dt">class =</span> <span class="st">&#39;brmsfit&#39;</span>)</span></code></pre></div>
 <pre><code> [1] add_criterion           add_ic                  as.array                as.data.frame           as.matrix               as.mcmc                 autocor                 bayes_factor            bayes_R2               
-[10] bridge_sampler          coef                    control_params          expose_functions        extract_draws           family                  fitted                  fixef                   formula                
-[19] getCall                 hypothesis              kfold                   launch_shinystan        log_lik                 log_posterior           logLik                  loo_compare             loo_linpred            
-[28] loo_model_weights       loo_predict             loo_predictive_interval loo_R2                  loo                     LOO                     marginal_effects        marginal_smooths        model_weights          
-[37] model.frame             neff_ratio              ngrps                   nobs                    nsamples                nuts_params             pairs                   parnames                plot_coefficients      
-[46] plot                    post_prob               posterior_average       posterior_interval      posterior_linpred       posterior_predict       posterior_samples       posterior_summary       pp_average             
-[55] pp_check                pp_mixture              predict                 predictive_error        predictive_interval     print                   prior_samples           prior_summary           ranef                  
-[64] reloo                   residuals               rhat                    stancode                standata                stanplot                summary                 update                  VarCorr                
-[73] vcov                    waic                    WAIC                   
+[10] bridge_sampler          coef                    conditional_effects     conditional_smooths     control_params          expose_functions        extract_draws           family                  fitted                 
+[19] fixef                   formula                 getCall                 hypothesis              kfold                   launch_shinystan        log_lik                 log_posterior           logLik                 
+[28] loo_compare             loo_linpred             loo_model_weights       loo_predict             loo_predictive_interval loo_R2                  loo_subsample           loo                     LOO                    
+[37] marginal_effects        marginal_smooths        mcmc_plot               model_weights           model.frame             neff_ratio              ngrps                   nobs                    nsamples               
+[46] nuts_params             pairs                   parnames                plot_coefficients       plot                    post_prob               posterior_average       posterior_interval      posterior_linpred      
+[55] posterior_predict       posterior_samples       posterior_summary       pp_average              pp_check                pp_expect               pp_mixture              predict                 predictive_error       
+[64] predictive_interval     print                   prior_samples           prior_summary           ranef                   reloo                   residuals               rhat                    stancode               
+[73] standata                stanplot                summary                 update                  VarCorr                 vcov                    waic                    WAIC                   
 see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>This allows you to more quickly get familiar with a package and the objects it produces, and provides utility you might not have even known to look for in the first place!</p>
 </div>
 <div id="s4-classes" class="section level3">
 <h3>S4 classes</h3>
 <p>Everything we’ve been dealing with at this point are S3 objects, classes, and methods. R is a dialect of the <a href="https://www.r-project.org/conferences/useR-2006/Slides/Chambers.pdf">S language</a>, and the S3 name reflects the version of S at the time of R’s creation. S4 was the next iteration of S, but I’m not going to say much about the S4 system of objects other than they are a separate type of object with their own methods. For practical use you might not see much difference, but if you see an S4 object, it will have <span class="emph">slots</span> accessible via <code>@</code>.</p>
-<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb265-1" data-line-number="1">car_matrix =<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb265-2" data-line-number="2"><span class="st">  </span><span class="kw">as.matrix</span>() <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># convert from df to matrix</span></a>
-<a class="sourceLine" id="cb265-3" data-line-number="3"><span class="st">  </span>Matrix<span class="op">::</span><span class="kw">Matrix</span>()      <span class="co"># convert to Matrix class (S4)</span></a>
-<a class="sourceLine" id="cb265-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb265-5" data-line-number="5"><span class="kw">typeof</span>(car_matrix)</a></code></pre></div>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="programming.html#cb266-1"></a>car_matrix =<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb266-2"><a href="programming.html#cb266-2"></a><span class="st">  </span><span class="kw">as.matrix</span>() <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># convert from df to matrix</span></span>
+<span id="cb266-3"><a href="programming.html#cb266-3"></a><span class="st">  </span>Matrix<span class="op">::</span><span class="kw">Matrix</span>()      <span class="co"># convert to Matrix class (S4)</span></span>
+<span id="cb266-4"><a href="programming.html#cb266-4"></a></span>
+<span id="cb266-5"><a href="programming.html#cb266-5"></a><span class="kw">typeof</span>(car_matrix)</span></code></pre></div>
 <pre><code>[1] &quot;S4&quot;</code></pre>
-<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb267-1" data-line-number="1"><span class="kw">str</span>(car_matrix)</a></code></pre></div>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="programming.html#cb268-1"></a><span class="kw">str</span>(car_matrix)</span></code></pre></div>
 <pre><code>Formal class &#39;dgeMatrix&#39; [package &quot;Matrix&quot;] with 4 slots
   ..@ x       : num [1:352] 21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
   ..@ Dim     : int [1:2] 32 11
@@ -1017,9 +1021,9 @@ see &#39;?methods&#39; for accessing help and source code</code></pre>
 <div id="inspecting-functions" class="section level3">
 <h3>Inspecting Functions</h3>
 <p>You might not think of them as such, but in R, everything’s an object, including functions. You can inspect them like anything else.</p>
-<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb269-1" data-line-number="1"><span class="kw">str</span>(lm)</a></code></pre></div>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="programming.html#cb270-1"></a><span class="kw">str</span>(lm)</span></code></pre></div>
 <pre><code>function (formula, data, subset, weights, na.action, method = &quot;qr&quot;, model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, contrasts = NULL, offset, ...)  </code></pre>
-<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb271-1" data-line-number="1"><span class="co">## lm</span></a></code></pre></div>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="programming.html#cb272-1"></a><span class="co">## lm</span></span></code></pre></div>
 <pre><code>                                                                          
 1  function (formula, data, subset, weights, na.action, method = &quot;qr&quot;,    
 2      model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, 
@@ -1048,32 +1052,32 @@ see &#39;?methods&#39; for accessing help and source code</code></pre>
 <h2>Help Files</h2>
 <p>Many applied users of R are quick to search the web for available help when they come to a problem. This is great, you’ll find a lot of information out there. However, it will likely take you a bit to sort through things and find exactly what you need. Strangely, I see many users of R don’t use the help files first, and yet this is typically the quickest way to answer many of the questions they’ll have.</p>
 <p>Let’s start with an example. We’ll use the <span class="func">sample</span> function to get a random sample of 10 values from the range of numbers 1 through 5. So, go ahead and do so!</p>
-<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb273-1" data-line-number="1"><span class="kw">sample</span>(?)</a></code></pre></div>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="programming.html#cb274-1"></a><span class="kw">sample</span>(?)</span></code></pre></div>
 <p>Don’t know what to put? Consult the help file!</p>
 <p><img class="zoom" src="img/help.png" style="display:block; margin: 0 auto;" width=50%></p>
 <p>We get a brief description of a function at the top, then we see how to actually use it, i.e. the form the syntax should take. We find out there is even an additional function, <span class="func">sample.int</span>, that we could use. Next we see what arguments are possible. First we need an <code>x</code>, so what is the thing we’re trying to sample from? The numbers 1 through 5. Next is the size, which is how many values we want, in this case 10. So let’s try it.</p>
-<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb274-1" data-line-number="1">nums =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb274-2" data-line-number="2"><span class="kw">sample</span>(nums, <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="programming.html#cb275-1"></a>nums =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></span>
+<span id="cb275-2"><a href="programming.html#cb275-2"></a><span class="kw">sample</span>(nums, <span class="dv">10</span>)</span></code></pre></div>
 <pre><code>Error in sample.int(length(x), size, replace, prob): cannot take a sample larger than the population when &#39;replace = FALSE&#39;</code></pre>
-<p>Uh oh- we have a problem with the <code>replace</code> argument! We can see in the help file that, by default, it is <code>FALSE</code><a href="#fn20" class="footnote-ref" id="fnref20"><sup>20</sup></a>, but if we want to sample 10 times from only 5 numbers, we’ll need to change it to <code>TRUE</code>.</p>
+<p>Uh oh- we have a problem with the <code>replace</code> argument! We can see in the help file that, by default, it is <code>FALSE</code><a href="#fn19" class="footnote-ref" id="fnref19"><sup>19</sup></a>, but if we want to sample 10 times from only 5 numbers, we’ll need to change it to <code>TRUE</code>.</p>
 <p>Now we are on our way!</p>
 <p>The help file gives detailed information about the sampling that is possible, which actually is not as simple as one would think! The <strong><code>Value</code></strong> is important, as it tells us what we can expect the function to return, whether a data frame, list, or whatever. We even get references, other functions that might be of interest (<strong><code>See Also</code></strong>), and examples. There is a lot to digest for this function!</p>
-<p>Not all functions have all this information, but most do, and if they are adhering to standards they will<a href="#fn21" class="footnote-ref" id="fnref21"><sup>21</sup></a>. However, all functions have this same documentation form, which puts R above and beyond most programming languages in this regard. Once you look at a couple of help files, you’ll always be able to quickly find the information you need from any other.</p>
+<p>Not all functions have all this information, but most do, and if they are adhering to standards they will<a href="#fn20" class="footnote-ref" id="fnref20"><sup>20</sup></a>. However, all functions have this same documentation form, which puts R above and beyond most programming languages in this regard. Once you look at a couple of help files, you’ll always be able to quickly find the information you need from any other.</p>
 </div>
 <div id="objects-exercises" class="section level2">
 <h2>Objects Exercises</h2>
 <p>With one function, find out what the class, number of rows, number of columns are of the following object, including what kind of object the last three columns are. Inspect the help file also.</p>
-<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb276-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb276-2" data-line-number="2">?starwars</a></code></pre></div>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="programming.html#cb277-1"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb277-2"><a href="programming.html#cb277-2"></a>?starwars</span></code></pre></div>
 
 </div>
 </div>
 <div class="footnotes">
 <hr />
-<ol start="19">
-<li id="fn19"><p>An alternative would be to use the <span class="func" style="">coef</span> method, <code>broom::tidy</code> on the <span class="objclass" style="">lm</span> object itself, or use <span class="func" style="">pander</span> instead of <span class="func" style="">kableExtra</span> to work on the lm object.<a href="programming.html#fnref19" class="footnote-back">↩</a></p></li>
-<li id="fn20"><p>For the things I do, I need sample with replacement far more than I don’t, but that may not be the same for everyone.<a href="programming.html#fnref20" class="footnote-back">↩</a></p></li>
-<li id="fn21"><p>Ahem, tidyverse.<a href="programming.html#fnref21" class="footnote-back">↩</a></p></li>
+<ol start="18">
+<li id="fn18"><p>An alternative would be to use the <span class="func" style="">coef</span> method, <code>broom::tidy</code> on the <span class="objclass" style="">lm</span> object itself, or use <span class="func" style="">pander</span> instead of <span class="func" style="">kableExtra</span> to work on the lm object.<a href="programming.html#fnref18" class="footnote-back">↩︎</a></p></li>
+<li id="fn19"><p>For the things I do, I need sample with replacement far more than I don’t, but that may not be the same for everyone.<a href="programming.html#fnref19" class="footnote-back">↩︎</a></p></li>
+<li id="fn20"><p>Ahem, tidyverse.<a href="programming.html#fnref20" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

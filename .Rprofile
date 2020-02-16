@@ -1,1 +1,1 @@
-Sys.setenv(RETICULATE_PYTHON = '/Users/micl/anaconda3/bin/python')
+Sys.setenv(RETICULATE_PYTHON = '/Users/micl/opt/anaconda3/bin/python')

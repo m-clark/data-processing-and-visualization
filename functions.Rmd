@@ -1,5 +1,12 @@
 # Writing Functions
 
+
+<div class="" style="text-align: center;">
+<i class="fas fa-code fa-5x" ></i>
+</div>
+
+<br>
+
 You can't do anything in R without using functions, but have you ever written your own?  Why would you?
 
 - Efficiency
@@ -32,6 +39,8 @@ my_summary <- function(x) {
 ```
 
 
+In the above, `x` is an arbitrary name for an input. You can name it whatever you want, but the more meaningful the better.  In R (and other languages) these are called *arguments*, but these inputs will determine in part what is eventually produced as output by the function.
+
 ```{r func_ex3, echo=-1}
 mtcars = datasets::mtcars  # to undo previous factors
 my_summary(mtcars$mpg)
@@ -45,7 +54,7 @@ my_summary(gapminder_2019$lifeExp)
 ```
 
 
-If there are actually missing values, we need to set `na.rm = TRUE` or the <span class="func">mean</span> and <span class="func">sd</span> will return `NA`. Let's try it. We can either hard bake it in as in the initial example, or add an argument to let us control how to handle NAs with our custom function.
+If there are actually missing values, we need to set `na.rm = TRUE` or the <span class="func">mean</span> and <span class="func">sd</span> will return `NA`. Let's try it. We can either hard bake it in, as in the initial example, or add an argument to let us control how to handle NAs with our custom function.
 
 ```{r func_ex3ext}
 my_summary <- function(x) {
@@ -96,7 +105,7 @@ my_summary(gapminder_2019$lifeExp)
 ```
 
 
-Now let's do it for every column!  We've used the <span class="func">map</span> function before, now let's use a variant that will return a data frame.
+Now let's do it for every column!  We've used the <span class="func">map</span> function before, now let's use a variant that will return a data frame. 
 
 ```{r func_ex6}
 gapminder_2019 %>% 
@@ -150,7 +159,8 @@ Or even another function!
 center <- function(type) {
   if (type == 'mean') {
     mean
-  } else {
+  } 
+  else {
     median
   }
 }
@@ -159,7 +169,11 @@ center(type = 'mean')
 
 myfun = center(type = 'mean')
 
-myfun(1:3)
+myfun(1:5)
+
+myfun = center(type = 'median')
+
+myfun(1:4)
 ```
 
 We can also set default values for the inputs.
@@ -215,7 +229,7 @@ good_mileage_displ_high_cyl_6 = if_else(cyl == 6 & displ > mean(displ) & hwy > 3
 good_mileage_displ_high_cyl_8 = if_else(cyl == 8 & displ > mean(displ) & hwy > 30, 'yes', 'no')
 ```
 
-It was tedious, but that's not much code.  But now consider- what if you want to change the mpg cutoff? The mean to median? Something else?  You have to change all of it.  Let's write a function instead! What kinds of inputs will we need?
+It was tedious, but that's not much code.  But now consider- what if you want to change the mpg cutoff? The mean to median? Something else?  You have to change all of it.  Screw that- let's write a function instead! What kinds of inputs will we need?
 
 - cyl: Which cylinder type we want
 - mpg_cutoff: The cutoff for 'good' mileage
@@ -254,19 +268,19 @@ good_mileage <- function(
 }
 ```
 
-So what's going on here? The function filters the data to observations that match the input criteria, and returns that result at the end.  We also put <span class="emph">default values</span> to the arguments, which can be done to your discretion.  
+So what's going on here? Not a whole lot really. The function just filters the data to observations that match the input criteria, and returns that result at the end.  We also put *default values* to the arguments, which can be done to your discretion.  
 
 ## Conditionals
 
-The core of the above function uses a <span class="emph">conditional statement</span> using standard <span class="func">if</span>...<span class="func">else</span> structure.  The <span class="func">if</span> part determines whether some condition holds.  If it does, then proceed to the next step in the brackets.  If not, skip to the <span class="func">else</span> part. You may have used the <span class="func">ifelse</span> function in base R, or <span class="pack">dplyr</span>'s <span class="func">if_else</span> as above, which are a short cuts for this approach.  We can also add conditional else statements (<span class="func">else if</span>), drop the <span class="func">else</span> part entirely, nest conditionals within other conditionals, etc.  Like loops, conditional statements look very similar across all programming languages.
+The core of the above function uses a *conditional statement* using standard <span class="func">if</span>...<span class="func">else</span> structure.  The <span class="func">if</span> part determines whether some condition holds.  If it does, then proceed to the next step in the brackets.  If not, skip to the <span class="func">else</span> part. You may have used the <span class="func">ifelse</span> function in base R, or <span class="pack">dplyr</span>'s <span class="func">if_else</span> as above, which are a short cuts for this approach.  We can also add conditional else statements (<span class="func">else if</span>), drop the <span class="func">else</span> part entirely, nest conditionals within other conditionals, etc.  Like loops, conditional statements look very similar across all programming languages.
 
 JavaScript:
 
 ```{javascript, eval=FALSE}
 if (Math.random() < 0.5) {
-console.log("You got Heads!");
+  console.log("You got Heads!")
 } else {
-console.log("You got Tails!");
+  console.log("You got Tails!")
 }
 ```
 
@@ -289,7 +303,7 @@ good_mileage(mpg_cutoff = 40)
 good_mileage(
   cylinder = 8,
   mpg_cutoff = 15,
-  displ_low = F,
+  displ_low = FALSE,
   cls = 'suv'
 )
 ```
@@ -331,25 +345,25 @@ good_mileage <- function(
 good_mileage(
   cylinder = 8,
   mpg_cutoff = 19,
-  displ_low = F,
+  displ_low = FALSE,
   cls = 'suv',
   yr = 2008
 )
 ```
 
-So we now have something that is flexible, reusable, and extensible, and it took less code than writing out the individual lines of code
+So we now have something that is *flexible*, *reusable*, and *extensible*, and it took less code than writing out the individual lines of code.
 
 
 ## Anonymous functions
 
-Oftentimes we just need a quick and easy function for a one-off application, especially when using apply/map functions.  For example, both the following would calculate standard deviations of columns.
+Oftentimes we just need a quick and easy function for a one-off application, especially when using apply/map functions.  Consider the following two lines of code.
 
 ```{r lambda, eval=FALSE}
 apply(mtcars, 2, sd)
-apply(mtcars, 2, function(x) x/2)
+apply(mtcars, 2, function(x) x / 2 )
 ```
 
-The difference between the two is that for the latter, our function didn't have to be a named object already available.  We created a function on the fly just to serve a specific purpose.  A function doesn't exist that just does nothing but divide by two, but since it is simple, we just created it as needed.
+The difference between the two is that for the latter, our function didn't have to be a named object already available.  We created a function on the fly just to serve a specific purpose.  A function doesn't exist in base R that just does nothing but divide by two, but since it is simple, we just created it as needed.
 
 To further illustrate this, we'll create a robust standardization function that uses the median and median absolute deviation rather than the mean and standard deviation.
 
@@ -363,12 +377,12 @@ mtcars %>%
 ```
 
 
-Even if you don't use [anonymous functions](https://en.wikipedia.org/wiki/Anonymous_function) (sometimes called lambda functions), it's important to understand them, because you'll often see other people's code using them.
+Even if you don't use [anonymous functions](https://en.wikipedia.org/wiki/Anonymous_function) (sometimes called *lambda* functions), it's important to understand them, because you'll often see other people's code using them.
 
 
 <br>
 <div class='note'>
-While it goes beyond the scope of this document at present, I should note that RStudio has a very nice and easy to use debugger.  Once you get comfortable writing functions, you can use the debugger to troubleshoot problems that arise and test new functionality (see the 'Debug' menu).  In addition, one can profile functions to see what parts are, for example, more memory intensive, or otherwise serve as a bottleneck (see the 'Profile' menu).  You can use the profiler on any code, not just functions.
+While it goes beyond the scope of this document at present, I should note that RStudio has a very nice and easy to use debugger.  Once you get comfortable writing functions, you can use the debugger to troubleshoot problems that arise, and test new functionality (see the 'Debug' menu).  In addition, one can profile functions to see what parts are, for example, more memory intensive, or otherwise serve as a bottleneck (see the 'Profile' menu).  You can use the profiler on any code, not just functions.
 <br>
 
 <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
@@ -391,19 +405,18 @@ log_sum <- function(a, b) {
 
 ### Excercise 1b
 
-What happens if the sum of the two numbers is negative?  You can't take a log of a negative value, so it's an error.  How might we deal with this?  Try using a conditional to provide an error message using the <span class="func">stop</span> function.  Make the message whatever you want.
+What happens if the sum of the two numbers is negative?  You can't take a log of a negative value, so it's an error.  How might we deal with this?  Try using a conditional to provide an error message using the <span class="func">stop</span> function.  The first part is basically identical to the function you just did.  But given that result, you will need to check for whether it is negative or not.  The message can be whatever you want.
 
 ```{r wf_ex1b, eval=FALSE}
 log_sum <- function(a, b) {
-  #
-  #
-  #
   
-  if (?) {
+  ?
+  
+  if (? < 0) {
     stop('Your message here.')
   } else {
     ?
-    return(your_log_sum_results)
+    return(your_log_sum_results)    # this is an arbitrary name, change accordingly
   }
 }
 ```
