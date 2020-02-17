@@ -1,28 +1,20 @@
 
 ```{r model-criticism-setup, include=FALSE, eval=TRUE, cache=FALSE}
-knitr::opts_chunk$set(eval=T, echo=T)
 
-kable_df = function(data, digits=3, ...) {
-  kableExtra::kable(
-    data,
-    digits = digits,
-    format = 'html',
-    booktabs = T,
-    # longtable = F,
-    linesep = "",
-    ...,
-  ) %>% 
-    kableExtra::kable_styling(full_width = F)
-}
-
-perc = function(x, digits = 1) paste(rnd(x*100, digits = digits), '%')
 ```
 
 # Model Criticism
 
+<div class="" style="text-align: center;">
+<i class="fas fa-tools fa-5x" ></i>
+</div>
+
+
+
 It isn't enough to simply fit a particular model, we must also ask how well it matches the data under study, if it can predict well on new data, where it fails, and more.  In the following we will discuss how we can better understand our model and its limitations.
 
 ## Model Fit
+
 ### Standard linear model
 
 In the basic regression setting we can think of model fit in terms of a statistical result, or in terms of the match between our model predictions and the observed target values.  The former provides an inferential result, but as we will see, is limited. The latter regards a more practical result, and may provide a more nuanced or different conclusion.
@@ -507,7 +499,7 @@ In terms of general model fit, the `Scale est.` is the same as the residual stan
 
 Let's check our AIC now to see which model wins. It's pretty clear our wiggly model is the winner, even with the added complexity.  Note that even though we used a different function for the GAM model, the AIC is still comparable.
 
-```{r AIC-all}
+```{r AIC-all, cache=FALSE}
 AIC(
   happy_model_base,
   happy_model_more,

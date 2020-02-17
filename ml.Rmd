@@ -1,6 +1,8 @@
 # Machine Learning
 
-`r icon::fa_magic(size = 5, color = '#99002440')`
+<div style = 'text-align: center'>
+`r icon::fa_magic(size = 5, color = '#990024')`
+</div>
 
 *Machine learning* (ML) encompasses a wide variety of techniques from standard regression to almost impenetrably complex models.  While it may seem like magic to the uninitiated, the main thing that distinguishes it from standard statistical methods discussed thus far is an approach that heavily favors prediction over inference and explanatory power, and which takes the necessary steps to gain any predictive advantage.  
 
@@ -103,7 +105,7 @@ In any ML setting there are parameters that need to set in order to even run the
 A starting point for getting into ML from the more inferential methods is to use *regularized regression*.  These are conceptually no different than standard LM/GLM types of approaches, but they add something to the loss function.
 
 $$\mathcal{Loss} = \Sigma(y - \hat{y})^2 + \lambda\cdot\Sigma\beta^2$$
-In the above, this is the same squared error loss function as before, but we add a penalty that is based on the size of the coefficients.  This has the effect of shrinking the estimates toward zero. Well, [why would we want that](https://stats.stackexchange.com/questions/179864/why-does-shrinkage-work)?  This introduces[ bias in the coefficients](https://stats.stackexchange.com/questions/207760/when-is-a-biased-estimator-preferable-to-unbiased-one), but the end result is a model that will do better on test set prediction, which is the goal of the ML approach. The way this works regards the bias-variance tradeoff we discussed previously.  
+In the above, this is the same squared error loss function as before, but we add a penalty that is based on the size of the coefficients.  This has the effect of shrinking the estimates toward zero. Well, [why would we want that](https://stats.stackexchange.com/questions/179864/why-does-shrinkage-work)?  This introduces [bias in the coefficients](https://stats.stackexchange.com/questions/207760/when-is-a-biased-estimator-preferable-to-unbiased-one), but the end result is a model that will do better on test set prediction, which is the goal of the ML approach. The way this works regards the bias-variance tradeoff we discussed previously.  
 
 The following demonstrates regularized regression using the <span class="pack" style = "">glmnet</span> package. It actually uses elastic net, which has a mixture of two penalties, one of which is the squared sum of coefficients and the other is the sum of their absolute values.
 

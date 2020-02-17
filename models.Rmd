@@ -1,33 +1,15 @@
-# (PART\*) Part IV: Modeling {-}
+# (PART\*) Part III: Modeling {-}
 
 ```{r model-setup, include=FALSE, eval=TRUE, cache=FALSE}
 knitr::opts_chunk$set(eval=T, echo=T)
-
-kable_df = function(data, digits=3, ...) {
-  kableExtra::kable(
-    data,
-    digits = digits,
-    format = 'html',
-    booktabs = T,
-    # longtable = F,
-    linesep = "",
-    ...,
-  ) %>% 
-    kableExtra::kable_styling(full_width = F)
-}
-
-perc = function(x, digits = 1) paste(rnd(x*100, digits = digits), '%')
 ```
-
 
 
 # Model Exploration
 
-
-`r icon::fa_chart_line(size = 5, color = '#99002440')`
-
-
-IN PROGRESS
+<div style = 'text-align: center'>
+`r icon::fa_chart_line(size = 5, color = '#990024')`
+</div>
 
 The following shows how to get started with modeling in R generally, with a focus on concepts, tools, and syntax, rather than trying to understand the specifics of a given model.
 
@@ -57,7 +39,7 @@ While these are sometimes competing goals, it is definitely not the case that th
 
 Most models you see in published reports are linear models, and form the basis on which to build more complex forms.  We distinguish a target variable we want to understand from the variables which we will use to understand it, and we typically want to distinguish the relationships these variables have with the target variable. Note that these come with different names depending on the goal of the study, discipline, and other factors. 
 
-<br>
+
 ```{r model-names, echo=FALSE}
 tibble(
   Type = rep(c('Target', 'Prediction'), each = 5),
@@ -67,7 +49,6 @@ tibble(
   kable_df() %>% 
   collapse_rows()
 ```
-<br>
 
 A typical way to depict a linear regression model is as follows:
 
@@ -234,17 +215,21 @@ logLik(model)
 To better understand maximum likelihood, it might help to think of our model from a data generating perspective, rather than in terms of 'errors'.  In the standard regression setting, we think of a single observation as follows:
 
 $$\mu = b_0 + b_1*x_1 + ... + b_p*x_p$$
+
 Or with matrix notation (consider it shorthand if not familiar):
+
 $$\mu = X\beta$$
 
 Now we display how $y$ is generated:
+
 $$y \sim \mathcal{N}(\mathrm{mean} = \mu, \mathrm{sd} = \sigma)$$
+
 In words, this means that our target observation $y$ is assumed to be normally distributed with some mean and some standard deviation/variance.  The mean $\mu$ is a function, or simply weighted sum, of our covariates $X$. The unknown parameters we have to estimate are the $\beta$, i.e. weights, and standard deviation $\sigma$ (or variance $\sigma^2$).
 
-One more note regarding estimation, it is good to distinguish models from estimation procedures. The following shows the more specific to the more general.
+One more note regarding estimation, it is good to distinguish models from estimation procedures. The following shows the more specific to the more general for both models and estimation procedures respectively.
 
 ```{r models-graph, caption = 'Models', eval=TRUE, echo=FALSE}
-tags$div(
+htmltools::tags$div(
   style = "width:500px; margin:0 auto; font-family:Roboto; ",
   DiagrammeR::DiagrammeR(
     "scripts/models.gv",
@@ -256,7 +241,7 @@ tags$div(
 ```
 
 ```{r estimation-graph, caption = 'Estimation Procedures', eval=TRUE, echo=FALSE}
-tags$div(
+htmltools::tags$div(
   style = "width:500px; margin:0 auto; font-family:Roboto; ",
   DiagrammeR::DiagrammeR(
     "scripts/estimation.gv",
@@ -285,7 +270,7 @@ data.frame(
   )
 ) %>%
   kable_df() %>% 
-  kable_styling(font_size = 6)
+  kable_styling(font_size = 10)
 ```
 
 
