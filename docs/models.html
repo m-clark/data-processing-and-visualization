@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-02-16" />
+<meta name="date" content="2020-02-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -589,7 +589,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div style="text-align: center">
 <i class="fas  fa-chart-line fa-5x " style="color:#990024;"></i>
 </div>
-<p>The following shows how to get started with modeling in R generally, with a focus on concepts, tools, and syntax, rather than trying to understand the specifics of a given model.</p>
+<p>The following section shows how to get started with modeling in R generally, with a focus on concepts, tools, and syntax, rather than trying to understand the specifics of a given model. We first dive into model exploration, getting a sense of the basic mechanics behind our modeling tools, and contemplating standard results. We’ll then shift our attention to understanding the strengths and limitations of our models. We’ll then change from classical methods to explore machine learning techniques. The goal of these chapters is to provide an overview of concepts and ways to think about modeling.</p>
 <div id="model-taxonomy" class="section level2">
 <h2>Model Taxonomy</h2>
 <p>We can begin with a taxonomy that broadly describes two classes of models:</p>
@@ -599,18 +599,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Some combination</li>
 </ul>
 <p>For supervised settings, there is a target or set of target variables which we aim to predict with a set of predictor variables or covariates. This is far and away the most common case, and the one we will focus on here. It is very common in machine learning parlance to further distinguish <em>regression</em> and <em>classification</em> among supervised models, but what they actually mean to distinguish is numeric target variables from categorical ones (it’s all regression).</p>
-<p>In the case of unsupervised models, the data is the target, and this setting includes techniques such as principal components analysis, factor analysis, cluster analytic approaches, topic modeling, and many others. A key notion is <em>dimension reduction</em>, either of the columns or rows. For example, we may have many items of a survey we wish to group together into a few key concepts, or cluster thousands of observations into a few simple categories.</p>
+<p>In the case of unsupervised models, the data itself is the target, and this setting includes techniques such as principal components analysis, factor analysis, cluster analytic approaches, topic modeling, and many others. A key goal for many such methods is <em>dimension reduction</em>, either of the columns or rows. For example, we may have many items of a survey we wish to group together into a few concepts, or cluster thousands of observations into a few simple categories.</p>
 <p>We can also broadly describe two primary goals of modeling:</p>
 <ul>
 <li><em>Prediction</em></li>
 <li><em>Explanation</em></li>
 </ul>
 <p>Different models will provide varying amounts of predictive and explanatory (or inferential) power. In some settings, prediction is almost entirely the goal, with little need to understand the underlying details of the relation of inputs to outputs. For example, in a model that predicts words to suggest when typing, we don’t really need to know nor much care about the details except to be able to improve those suggestions. In scientific studies however, we may be much more interested in the (potentially causal) relations among the variables under study.</p>
-<p>While these are sometimes competing goals, it is definitely not the case that they are mutually exclusive. For example, a fully interpretable model, statistically speaking, may have no predictive capability, and so is fairly useless in practical terms. Often very predictive models offer little understanding. But sometimes we can luck out and have a highly predictive model that is also highly interpretable.</p>
+<p>While these are sometimes competing goals, it is definitely not the case that they are mutually exclusive. For example, a fully interpretable model, statistically speaking, may have no predictive capability, and so is fairly useless in practical terms. Often, very predictive models offer little understanding. But sometimes we can luck out and have both a highly predictive model as well as one that is highly interpretable.</p>
 </div>
 <div id="linear-models" class="section level2">
 <h2>Linear models</h2>
-<p>Most models you see in published reports are linear models, and form the basis on which to build more complex forms. We distinguish a target variable we want to understand from the variables which we will use to understand it, and we typically want to distinguish the relationships these variables have with the target variable. Note that these come with different names depending on the goal of the study, discipline, and other factors.</p>
+<p>Most models you see in published reports are <em>linear models</em> of varying kinds, and form the basis on which to build more complex forms. In such models we distinguish a target variable we want to understand from the variables which we will use to understand it. Note that these come with different names depending on the goal of the study, discipline, and other factors. The following table denotes common nomenclature across many disciplines.</p>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -682,46 +682,46 @@ X
 </tbody>
 </table>
 <p>A typical way to depict a linear regression model is as follows:</p>
-<p><span class="math display">\[y = b_0 + b_1\cdot x_1 + b_2\cdot x_2 + ... +  + b_p\cdot x_p + \epsilon\]</span>
-In the above, <span class="math inline">\(b_0\)</span> is the intercept, and the other <span class="math inline">\(b_*\)</span> are the regression coefficients that represent the relationship of the predictors <span class="math inline">\(x\)</span> to the target variable <span class="math inline">\(y\)</span>. The <span class="math inline">\(\epsilon\)</span> represents the <em>error</em> or <em>residual</em>. We don’t have perfect prediction, and that represents the difference between what we can guess with our predictor relationships to the target and what we actually observe with it.</p>
-<p>In R, we specify a linear model as follows. The target variable is first, followed by the predictor variables, separated by a tilde (<code>~</code>). Additional predictor variables are added with a plus sign (<code>+</code>)</p>
+<p><span class="math display">\[y = b_0 + b_1\cdot x_1 + b_2\cdot x_2 + ... +  + b_p\cdot x_p + \epsilon\]</span></p>
+<p>In the above, <span class="math inline">\(b_0\)</span> is the intercept, and the other <span class="math inline">\(b_*\)</span> are the regression coefficients that represent the relationship of the predictors <span class="math inline">\(x\)</span> to the target variable <span class="math inline">\(y\)</span>. The <span class="math inline">\(\epsilon\)</span> represents the <em>error</em> or <em>residual</em>. We don’t have perfect prediction, and that represents the difference between what we can guess with our predictor relationships to the target and what we actually observe with it.</p>
+<p>In R, we specify a linear model as follows. Conveniently enough, we use a function, <code>lm</code>, that stands for linear model. There are various inputs, typically starting with the formula. In the formula, The target variable is first, followed by the predictor variables, separated by a tilde (<code>~</code>). Additional predictor variables are added with a plus sign (<code>+</code>). In this example, <code>y</code> is our target, and the predictors are <code>x</code> and <code>z</code>.</p>
 <div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="models.html#cb322-1"></a><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z)</span></code></pre></div>
 <p>We can still use linear models to investigate nonlinear relationships. For example, in the following, we can add a quadratic term or an interaction, yet the model is still linear in the parameters. All of the following are standard linear regression models.</p>
 <div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="models.html#cb323-1"></a><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z <span class="op">+</span><span class="st"> </span>x<span class="op">:</span>z)</span>
 <span id="cb323-2"><a href="models.html#cb323-2"></a><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>x_squared)     <span class="co"># a better way: lm(y ~ poly(x, degree = 2))</span></span></code></pre></div>
 <p>In the models above, <code>x</code> has a potentially nonlinear relationship with <code>y</code>, either by varying its (linear) relationship depending on values of z (the first case) or itself (the second). In general, the manner in which nonlinear relationships may be explored in linear models is quite flexible.</p>
-<p>An example of a nonlinear model would be population growth models like exponential or logistic growth curves. You can use functions like <span class="func" style="">nls</span> or <span class="func" style="">nlme</span> for such models, but should have a specific theoretical reason to do so, and even then, flexible models such as <a href="https://m-clark.github.io/generalized-additive-models/">GAMs</a> might be better than assuming a functional form.</p>
+<p>An example of a <em>nonlinear model</em> would be population growth models, like exponential or logistic growth curves. You can use functions like <span class="func" style="">nls</span> or <span class="func" style="">nlme</span> for such models, but should have a specific theoretical reason to do so, and even then, flexible models such as <a href="https://m-clark.github.io/generalized-additive-models/">GAMs</a> might be better than assuming a functional form.</p>
 </div>
 <div id="estimation" class="section level2">
 <h2>Estimation</h2>
-<p>One thing to understand with predictive models of any kind is how we estimate the parameters of interest, e.g. coefficients/weights, variance, and more. To start with, we must have some sort of goal that choosing a set of parameters achieves, and then find some way to reach that goal efficiently.</p>
+<p>One thing to understand with predictive models of any kind is how we estimate the parameters of interest, e.g. coefficients/weights, variance, and more. To start with, we must have some sort of goal that choosing a particular set of values for the parameters achieves, and then find some way to reach that goal efficiently.</p>
 <div id="loss" class="section level3">
 <h3>Loss</h3>
-<p>The goal of many estimation approaches is the reduction of <em>loss</em>, conceptually defined as the difference between the model predictions and the observed data, i.e. prediction error. In an introductory methods course, many are introduced to ordinary least squares as a means to estimate the coefficients for a linear regression model. In this scenario, we are seeking to come up with estimates of the coefficients that minimize the (squared) difference between the observed target value and the fitted value based on the parameter estimates. The loss in this case is defined as the sum of the squared errors.</p>
-<p>We can see how this works more clearly with some simple conceptual code. In what follows, we create a function, allows us to move row by row through the data, calculating both our prediction based on the model <span class="math inline">\(\hat{y}\)</span>, and the difference between that and our target variable <span class="math inline">\(y\)</span>. We sum these squared differences to get a total. In practice such a function is called the loss function, cost function, or objective function.</p>
-<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="models.html#cb324-1"></a><span class="kw">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb324-2"><a href="models.html#cb324-2"></a></span>
-<span id="cb324-3"><a href="models.html#cb324-3"></a>ls_loss &lt;-<span class="st"> </span><span class="cf">function</span>(X, y, beta) {</span>
-<span id="cb324-4"><a href="models.html#cb324-4"></a>  </span>
-<span id="cb324-5"><a href="models.html#cb324-5"></a>  <span class="co"># initialize the objects</span></span>
-<span id="cb324-6"><a href="models.html#cb324-6"></a>  loss  =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">nrow</span>(X))</span>
-<span id="cb324-7"><a href="models.html#cb324-7"></a>  y_hat =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">nrow</span>(X))</span>
-<span id="cb324-8"><a href="models.html#cb324-8"></a>  </span>
-<span id="cb324-9"><a href="models.html#cb324-9"></a>  <span class="co"># for each row, calculate y_hat and square the difference with y</span></span>
-<span id="cb324-10"><a href="models.html#cb324-10"></a>  <span class="cf">for</span> (n <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(X)) {</span>
-<span id="cb324-11"><a href="models.html#cb324-11"></a>    y_hat[n] =<span class="st"> </span><span class="kw">sum</span>(X[n, ] <span class="op">*</span><span class="st"> </span>beta)</span>
-<span id="cb324-12"><a href="models.html#cb324-12"></a>    loss[n]  =<span class="st"> </span>(y[n] <span class="op">-</span><span class="st"> </span>y_hat[n]) <span class="op">^</span><span class="st"> </span><span class="dv">2</span></span>
-<span id="cb324-13"><a href="models.html#cb324-13"></a>  }</span>
-<span id="cb324-14"><a href="models.html#cb324-14"></a>  </span>
-<span id="cb324-15"><a href="models.html#cb324-15"></a>  <span class="kw">sum</span>(loss)  </span>
-<span id="cb324-16"><a href="models.html#cb324-16"></a>}</span></code></pre></div>
+<p>The goal of many estimation approaches is the reduction of <em>loss</em>, conceptually defined as the difference between the model predictions and the observed data, i.e. prediction error. In an introductory methods course, many are introduced to <em>ordinary least squares</em> as a means to estimate the coefficients for a linear regression model. In this scenario, we are seeking to come up with estimates of the coefficients that minimize the (squared) difference between the observed target value and the fitted value based on the parameter estimates. The loss in this case is defined as the sum of the squared errors. Formally we can state it as follows.</p>
+<p><span class="math display">\[\mathcal{Loss} = \Sigma(y - \hat{y})^2\]</span></p>
+<p>We can see how this works more clearly with some simple conceptual code. In what follows, we create a [function][writing-functions], allows us to move [row by row][for-loops] through the data, calculating both our prediction based on the given model parameters- <span class="math inline">\(\hat{y}\)</span>, and the difference between that and our target variable <span class="math inline">\(y\)</span>. We sum these squared differences to get a total. In practice such a function is called the loss function, cost function, or objective function.</p>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="models.html#cb324-1"></a>ls_loss &lt;-<span class="st"> </span><span class="cf">function</span>(X, y, beta) {</span>
+<span id="cb324-2"><a href="models.html#cb324-2"></a>  </span>
+<span id="cb324-3"><a href="models.html#cb324-3"></a>  <span class="co"># initialize the objects</span></span>
+<span id="cb324-4"><a href="models.html#cb324-4"></a>  loss  =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">nrow</span>(X))</span>
+<span id="cb324-5"><a href="models.html#cb324-5"></a>  y_hat =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">nrow</span>(X))</span>
+<span id="cb324-6"><a href="models.html#cb324-6"></a>  </span>
+<span id="cb324-7"><a href="models.html#cb324-7"></a>  <span class="co"># for each row, calculate y_hat and square the difference with y</span></span>
+<span id="cb324-8"><a href="models.html#cb324-8"></a>  <span class="cf">for</span> (n <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(X)) {</span>
+<span id="cb324-9"><a href="models.html#cb324-9"></a>    y_hat[n] =<span class="st"> </span><span class="kw">sum</span>(X[n, ] <span class="op">*</span><span class="st"> </span>beta)</span>
+<span id="cb324-10"><a href="models.html#cb324-10"></a>    loss[n]  =<span class="st"> </span>(y[n] <span class="op">-</span><span class="st"> </span>y_hat[n]) <span class="op">^</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb324-11"><a href="models.html#cb324-11"></a>  }</span>
+<span id="cb324-12"><a href="models.html#cb324-12"></a>  </span>
+<span id="cb324-13"><a href="models.html#cb324-13"></a>  <span class="kw">sum</span>(loss)  </span>
+<span id="cb324-14"><a href="models.html#cb324-14"></a>}</span></code></pre></div>
 <p>Now we need some data. Let’s construct some data so that we know the true underlying values for the regression coefficients. Feel free to change the sample size <code>N</code> or the coefficient values.</p>
-<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="models.html#cb325-1"></a>N =<span class="st"> </span><span class="dv">100</span></span>
-<span id="cb325-2"><a href="models.html#cb325-2"></a>X =<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, <span class="kw">rnorm</span>(N))  <span class="co"># a model matrix; first column represents the intercept</span></span>
-<span id="cb325-3"><a href="models.html#cb325-3"></a>y =<span class="st"> </span><span class="dv">5</span> <span class="op">*</span><span class="st"> </span>X[, <span class="dv">1</span>] <span class="op">+</span><span class="st"> </span><span class="fl">.5</span> <span class="op">*</span><span class="st"> </span>X[, <span class="dv">2</span>] <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(N)  <span class="co"># a target with some noise; truth is y = 5 +.5*x</span></span>
-<span id="cb325-4"><a href="models.html#cb325-4"></a></span>
-<span id="cb325-5"><a href="models.html#cb325-5"></a>df =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">y =</span> y, <span class="dt">x =</span> X[, <span class="dv">2</span>])</span></code></pre></div>
-<p>Now let’s make some guesses for the coefficients, and see what the corresponding sum of the squared errors, i.e. the <em>loss</em>, would be.</p>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="models.html#cb325-1"></a><span class="kw">set.seed</span>(<span class="dv">123</span>)           <span class="co"># for reproducibility</span></span>
+<span id="cb325-2"><a href="models.html#cb325-2"></a>N =<span class="st"> </span><span class="dv">100</span></span>
+<span id="cb325-3"><a href="models.html#cb325-3"></a>X =<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, <span class="kw">rnorm</span>(N))  <span class="co"># a model matrix; first column represents the intercept</span></span>
+<span id="cb325-4"><a href="models.html#cb325-4"></a>y =<span class="st"> </span><span class="dv">5</span> <span class="op">*</span><span class="st"> </span>X[, <span class="dv">1</span>] <span class="op">+</span><span class="st"> </span><span class="fl">.5</span> <span class="op">*</span><span class="st"> </span>X[, <span class="dv">2</span>] <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(N)  <span class="co"># a target with some noise; truth is y = 5 +.5*x</span></span>
+<span id="cb325-5"><a href="models.html#cb325-5"></a></span>
+<span id="cb325-6"><a href="models.html#cb325-6"></a>df =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">y =</span> y, <span class="dt">x =</span> X[, <span class="dv">2</span>])</span></code></pre></div>
+<p>Now let’s make some guesses for the coefficients, and see what the corresponding sum of the squared errors, i.e. the loss, would be.</p>
 <div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="models.html#cb326-1"></a><span class="kw">ls_loss</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))    <span class="co"># guess 1</span></span></code></pre></div>
 <pre><code>[1] 2467.106</code></pre>
 <div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="models.html#cb328-1"></a><span class="kw">ls_loss</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))    <span class="co"># guess 2</span></span></code></pre></div>
@@ -2029,7 +2029,7 @@ Residual Deviance: 708.8    AIC: 712.8</code></pre>
 <div class="footnotes">
 <hr />
 <ol start="18">
-<li id="fn18"><p>To be consistent with the many tools that minimize different types of losses, we usually minimize the negative log likelihood, rather than maximize the raw likelihood.<a href="models.html#fnref18" class="footnote-back">↩︎</a></p></li>
+<li id="fn18"><p>To be consistent with the many tools that minimize different types of losses, we usually minimize the <em>negative log likelihood</em>, rather than maximize the raw likelihood.<a href="models.html#fnref18" class="footnote-back">↩︎</a></p></li>
 <li id="fn19"><p>In this case, a Poisson distribution.<a href="models.html#fnref19" class="footnote-back">↩︎</a></p></li>
 <li id="fn20"><p>For example, if the next best guess for a regression coefficient results in only a difference to many decimal places from the previous one, you probably don’t care and can stop your search. Reaching your desired stopping point is known as <em>convergence</em>. In other cases, you may simply set a maximum number of iterations.<a href="models.html#fnref20" class="footnote-back">↩︎</a></p></li>
 <li id="fn21"><p>The World Happiness Report is a survey of the state of global happiness that ranks countries by how happy their citizens perceive themselves to be. Almost all the information here is gleaned from the report and appendices. This regards the report data from 2008-2018 included in the 2019 report.<a href="models.html#fnref21" class="footnote-back">↩︎</a></p></li>

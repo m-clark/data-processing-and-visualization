@@ -11,7 +11,7 @@ knitr::opts_chunk$set(eval=T, echo=T)
 `r icon::fa_chart_line(size = 5, color = '#990024')`
 </div>
 
-The following shows how to get started with modeling in R generally, with a focus on concepts, tools, and syntax, rather than trying to understand the specifics of a given model.
+The following section shows how to get started with modeling in R generally, with a focus on concepts, tools, and syntax, rather than trying to understand the specifics of a given model.  We first dive into model exploration, getting a sense of the basic mechanics behind our modeling tools, and contemplating standard results. We'll then shift our attention to understanding the strengths and limitations of our models.  We'll then change from classical methods to explore machine learning techniques.  The goal of these chapters is to provide an overview of concepts and ways to think about modeling.
 
 ## Model Taxonomy
 
@@ -23,7 +23,7 @@ We can begin with a taxonomy that broadly describes two classes of models:
 
 For supervised settings, there is a target or set of target variables which we aim to predict with a set of predictor variables or covariates.  This is far and away the most common case, and the one we will focus on here.  It is very common in machine learning parlance to further distinguish *regression* and *classification* among supervised models, but what they actually mean to distinguish is numeric target variables from categorical ones (it's all regression).
 
-In the case of unsupervised models, the data is the target, and this setting includes techniques such as principal components analysis, factor analysis, cluster analytic approaches, topic modeling, and many others. A key notion is *dimension reduction*, either of the columns or rows.  For example, we may have many items of a survey we wish to group together into a few key concepts, or cluster thousands of observations into a few simple categories.
+In the case of unsupervised models, the data itself is the target, and this setting includes techniques such as principal components analysis, factor analysis, cluster analytic approaches, topic modeling, and many others. A key goal for many such methods is *dimension reduction*, either of the columns or rows.  For example, we may have many items of a survey we wish to group together into a few concepts, or cluster thousands of observations into a few simple categories.
 
 
 We can also broadly describe two primary goals of modeling:
@@ -33,11 +33,11 @@ We can also broadly describe two primary goals of modeling:
 
 Different models will provide varying amounts of predictive and explanatory (or inferential) power.  In some settings, prediction is almost entirely the goal, with little need to understand the underlying details of the relation of inputs to outputs.  For example, in a model that predicts words to suggest when typing, we don't really need to know nor much care about the details except to be able to improve those suggestions. In scientific studies however, we may be much more interested in the (potentially causal) relations among the variables under study.
 
-While these are sometimes competing goals, it is definitely not the case that they are mutually exclusive. For example, a fully interpretable model, statistically speaking, may have no predictive capability, and so is fairly useless in practical terms.  Often very predictive models offer little understanding.  But sometimes we can luck out and have  a highly predictive model that is also highly interpretable.
+While these are sometimes competing goals, it is definitely not the case that they are mutually exclusive. For example, a fully interpretable model, statistically speaking, may have no predictive capability, and so is fairly useless in practical terms.  Often, very predictive models offer little understanding.  But sometimes we can luck out and have both a highly predictive model as well as one that is highly interpretable.
 
 ## Linear models
 
-Most models you see in published reports are linear models, and form the basis on which to build more complex forms.  We distinguish a target variable we want to understand from the variables which we will use to understand it, and we typically want to distinguish the relationships these variables have with the target variable. Note that these come with different names depending on the goal of the study, discipline, and other factors. 
+Most models you see in published reports are *linear models* of varying kinds, and form the basis on which to build more complex forms.  In such models we distinguish a target variable we want to understand from the variables which we will use to understand it. Note that these come with different names depending on the goal of the study, discipline, and other factors. The following table denotes common nomenclature across many disciplines.
 
 
 ```{r model-names, echo=FALSE}
@@ -52,10 +52,12 @@ tibble(
 
 A typical way to depict a linear regression model is as follows:
 
+
 $$y = b_0 + b_1\cdot x_1 + b_2\cdot x_2 + ... +  + b_p\cdot x_p + \epsilon$$
+
 In the above, $b_0$ is the intercept, and the other $b_*$ are the regression coefficients that represent the relationship of the predictors $x$ to the target variable $y$.  The $\epsilon$ represents the *error* or *residual*.  We don't have perfect prediction, and that represents the difference between what we can guess with our predictor relationships to the target and what we actually observe with it.
 
-In R, we specify a linear model as follows.  The target variable is first, followed by the predictor variables, separated by a tilde (`~`). Additional predictor variables are added with a plus sign (`+`)
+In R, we specify a linear model as follows.  Conveniently enough, we use a function, `lm`, that stands for linear model.  There are various inputs, typically starting with the formula. In the formula, The target variable is first, followed by the predictor variables, separated by a tilde (`~`). Additional predictor variables are added with a plus sign (`+`).  In this example, `y` is our target, and the predictors are `x` and `z`.
 
 ```{r linear-model, eval=FALSE}
 lm(y ~ x + z)
@@ -71,22 +73,22 @@ lm(y ~ x + x_squared)     # a better way: lm(y ~ poly(x, degree = 2))
 
 In the models above, `x` has a potentially nonlinear relationship with `y`, either by varying its (linear) relationship depending on values of z (the first case) or itself (the second). In general, the manner in which nonlinear relationships may be explored in linear models is quite flexible.
 
-An example of a nonlinear model would be population growth models like exponential or logistic growth curves.  You can use functions like <span class="func" style = "">nls</span> or <span class="func" style = "">nlme</span> for such models, but should have a specific theoretical reason to do so, and even then, flexible models such as [GAMs](https://m-clark.github.io/generalized-additive-models/) might be better than assuming a functional form.
+An example of a *nonlinear model* would be population growth models, like exponential or logistic growth curves.  You can use functions like <span class="func" style = "">nls</span> or <span class="func" style = "">nlme</span> for such models, but should have a specific theoretical reason to do so, and even then, flexible models such as [GAMs](https://m-clark.github.io/generalized-additive-models/) might be better than assuming a functional form.
 
 
 ## Estimation
 
-One thing to understand with predictive models of any kind is how we estimate the parameters of interest, e.g. coefficients/weights, variance, and more.  To start with, we must have some sort of goal that choosing a set of parameters achieves, and then find some way to reach that goal efficiently.
+One thing to understand with predictive models of any kind is how we estimate the parameters of interest, e.g. coefficients/weights, variance, and more.  To start with, we must have some sort of goal that choosing a particular set of values for the parameters achieves, and then find some way to reach that goal efficiently.
 
 ### Loss
 
-The goal of many estimation approaches is the reduction of *loss*, conceptually defined as the difference between the model predictions and the observed data, i.e. prediction error. In an introductory methods course, many are introduced to ordinary least squares as a means to estimate the coefficients for a linear regression model.  In this scenario, we are seeking to come up with estimates of the coefficients that minimize the (squared) difference between the observed target value and the fitted value based on the parameter estimates.  The loss in this case is defined as the sum of the squared errors.
+The goal of many estimation approaches is the reduction of *loss*, conceptually defined as the difference between the model predictions and the observed data, i.e. prediction error. In an introductory methods course, many are introduced to *ordinary least squares* as a means to estimate the coefficients for a linear regression model.  In this scenario, we are seeking to come up with estimates of the coefficients that minimize the (squared) difference between the observed target value and the fitted value based on the parameter estimates.  The loss in this case is defined as the sum of the squared errors.  Formally we can state it as follows.
 
-We can see how this works more clearly with some simple conceptual code.  In what follows, we create a function, allows us to move row by row through the data, calculating both our prediction based on the model $\hat{y}$, and the difference between that and our target variable $y$.  We sum these squared differences to get a total. In practice such a function is called the loss function, cost function, or objective function.
+$$\mathcal{Loss} = \Sigma(y - \hat{y})^2$$
+
+We can see how this works more clearly with some simple conceptual code.  In what follows, we create a [function][writing-functions], allows us to move [row by row][for-loops] through the data, calculating both our prediction based on the given model parameters- $\hat{y}$, and the difference between that and our target variable $y$.  We sum these squared differences to get a total. In practice such a function is called the loss function, cost function, or objective function.
 
 ```{r ls-loss}
-set.seed(123)
-
 ls_loss <- function(X, y, beta) {
   
   # initialize the objects
@@ -106,6 +108,7 @@ ls_loss <- function(X, y, beta) {
 Now we need some data. Let's construct some data so that we know the true underlying values for the regression coefficients. Feel free to change the sample size `N` or the coefficient values.
 
 ```{r ls-loss-data-gen}
+set.seed(123)           # for reproducibility
 N = 100
 X = cbind(1, rnorm(N))  # a model matrix; first column represents the intercept
 y = 5 * X[, 1] + .5 * X[, 2] + rnorm(N)  # a target with some noise; truth is y = 5 +.5*x
@@ -113,7 +116,7 @@ y = 5 * X[, 1] + .5 * X[, 2] + rnorm(N)  # a target with some noise; truth is y 
 df = data.frame(y = y, x = X[, 2])
 ```
 
-Now let's make some guesses for the coefficients, and see what the corresponding sum of the squared errors, i.e. the *loss*, would be.
+Now let's make some guesses for the coefficients, and see what the corresponding sum of the squared errors, i.e. the loss, would be.
 
 ```{r ls-loss-estimate}
 ls_loss(X, y, beta = c(0, 1))    # guess 1
@@ -688,6 +691,10 @@ At this point you should have a good idea of how to get started exploring models
 
 ## Exercises
 
+[^negloglik]: To be consistent with the many tools that minimize different types of losses, we usually minimize the *negative log likelihood*, rather than maximize the raw likelihood.
+
+[^pois]: In this case, a Poisson distribution.
+
 [^optimizing]: For example, if the next best guess for a regression coefficient results in only a difference to many decimal places from the previous one, you probably don't care and can stop your search. Reaching your desired stopping point is known as *convergence*. In other cases, you may simply set a maximum number of iterations.
 
 [^happy]: The World Happiness Report is a survey of the state of global happiness that ranks countries by how happy their citizens perceive themselves to be. Almost all the information here is gleaned from the report and appendices. This regards the report data from 2008-2018 included in the 2019 report.
@@ -704,8 +711,5 @@ At this point you should have a good idea of how to get started exploring models
 
 [^linknotmodel]: Before we distinguished models from [estimation procedures][estimation], and it's also important to distinguish models from link functions. In some disciplines (mostly one and those trained in its methods), you'll see some refer to a 'logit model', for example.  However that wouldn't tell you if the model regards a target that is binary, categorical, ordered categorical, count or has values between zero and one, which cover several types of possible distributions. 
 
-[^negloglik]: To be consistent with the many tools that minimize different types of losses, we usually minimize the negative log likelihood, rather than maximize the raw likelihood.
-
-[^pois]: In this case, a Poisson distribution.
 
 [^rmse]: For standard regression models, the divisor for calculating the RMSE is the residual degrees of freedom, but more generally it is just N, the sample size, as many modern models may have more parameters than observations.
