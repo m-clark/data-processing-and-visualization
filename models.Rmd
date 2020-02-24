@@ -118,18 +118,24 @@ df = data.frame(y = y, x = X[, 2])
 
 Now let's make some guesses for the coefficients, and see what the corresponding sum of the squared errors, i.e. the loss, would be.
 
-```{r ls-loss-estimate}
+```{r ls-loss-guess}
 ls_loss(X, y, beta = c(0, 1))    # guess 1
 ls_loss(X, y, beta = c(1, 2))    # guess 2
 ls_loss(X, y, beta = c(4, .25))  # guess 3
+```
 
+We see that in our third guess  we reduce the loss quite a bit relative to our first guess. This makes sense because a value of 4 for the intercept and .25 for the coefficient for `x` are not as relatively far from the true values. 
+
+ However, we can also see that they are not the best we could have done.  In addition, with more data, our estimated coefficients would get closer to true values
+
+```{r ls-loss-lm}
 model = lm(y ~ x, df)            # fit the model and obtain parameter estimates using OLS
 coef(model)                      # best guess given the data 
 sum(residuals(model)^2)          # least squares loss
 ```
 
 
-We see that in our third guess  we reduce the loss quite a bit relative to our first guess. This makes sense because a value of 4 for the intercept and .25 for the coefficient for `x` are not as relatively far from the true values.  However, we can also see that they are not the best we could have done.  In addition, with more data, our estimated coefficients would get closer to true values.
+.
 
 In some relatively rare cases, a known approach is available and we do not have to search for the best estimates, but simply have to perform the correct steps that will result in them.  For example, the following matrix operations will produce the best estimates for linear regression, which also happen to be the maximum likelihood estimates.
 
@@ -398,7 +404,7 @@ happy_model_base_sum = summary(happy_model_base)
 happy_model_base_sum
 ```
 
-The summary provides several pieces of information: the coefficients or weights (`Estimate`)[^sumtable_confusion], the standard errors, the t-statistic (which is just the coefficient divided by the standard error), and the corresponding p-value.  The main thing to look at are the actual coefficients and the direction of their relationship, positive or negative. For example, with regard to the effect of democratic quality, moving one point on democratic quality results in roughly `r round(coef(happy_model_base)['democratic_quality'], 1)` units of happiness. Is this a notable effect?  Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense.   Before we showed that the standard deviation of the happiness scale was `r rnd(sd(happy$happiness_score, na.rm = TRUE), 1)`. So, in terms of standard deviation units- moving 1 points on democratic quality would result in a `r rnd(coef(happy_model_base)['democratic_quality']/sd(happy$happiness_score, na.rm = TRUE), 1)` standard deviation increase in state-level happiness.  We might consider this fairly small, but maybe not negligible.
+The summary provides several pieces of information: the coefficients or weights (`Estimate`)[^sumtable_confusion], the standard errors (`Std. Error`), the t-statistic (which is just the coefficient divided by the standard error), and the corresponding p-value.  The main thing to look at are the actual coefficients and the direction of their relationship, positive or negative. For example, with regard to the effect of democratic quality, moving one point on democratic quality results in roughly `r round(coef(happy_model_base)['democratic_quality'], 1)` units of happiness. Is this a notable effect?  Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense.   Before we showed that the standard deviation of the happiness scale was `r rnd(sd(happy$happiness_score, na.rm = TRUE), 1)`. So, in terms of standard deviation units- moving 1 points on democratic quality would result in a `r rnd(coef(happy_model_base)['democratic_quality']/sd(happy$happiness_score, na.rm = TRUE), 1)` standard deviation increase in state-level happiness.  We might consider this fairly small, but maybe not negligible.
 
 One thing we must also have in order to understand our results is to get a sense of the uncertainty in the effects.  The following provides confidence intervals for each of the coefficients.
 
