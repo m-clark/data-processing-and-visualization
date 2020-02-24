@@ -37,7 +37,7 @@ While these are sometimes competing goals, it is definitely not the case that th
 
 ## Linear models
 
-Most models you see in published reports are *linear models* of varying kinds, and form the basis on which to build more complex forms.  In such models we distinguish a target variable we want to understand from the variables which we will use to understand it. Note that these come with different names depending on the goal of the study, discipline, and other factors. The following table denotes common nomenclature across many disciplines.
+Most models you see in published reports are *linear models* of varying kinds, and form the basis on which to build more complex forms.  In such models we distinguish a *target variable* we want to understand from the variables which we will use to understand it. Note that these come with different names depending on the goal of the study, discipline, and other factors[^target]. The following table denotes common nomenclature across many disciplines.
 
 
 ```{r model-names, echo=FALSE}
@@ -283,11 +283,11 @@ So we know the goal, but how do we get to it? In practice, we typically use *opt
 
 You generally don't need to know the details to use these algorithms to fit models, but knowing a little bit about the optimization process and available options may prove useful to deal with more complex data scenarios, where convergence can be difficult.  Some packages will even have documentation specifically dealing with convergence issues. In the more predictive models previously discussed, knowing more about the optimization algorithm may speedup the time it takes to train the model, or smooth out the variability in the process.
 
-**Blurb about MCMC**
+As an aside, most Bayesian models use an estimation approach that is some form of *Markov Chain Monte Carlo*.  It is a simulation based approach to generate subsequent estimates of parameters conditional on present estimates of them.  One set of iterations is called a chain, and convergence requires multiple chains to mix well, i.e. come to similar conclusions about the parameter estimates.  The goal even then is to maximize the log posterior distribution, similar to maximizing the likelihood. In the past this was an extremely computationally expensive procedure, but these days, modern laptops can handle even complex models with ease, though some data set sizes may be prohibitive still[^bayesian-big].  
 
 ## Fitting Models
 
-With practically every modern modeling package in R, the two components required to fit a model are the model formula, and a data frame that contains the variables specified in that formula.  Consider the following models. In general the syntax is the same or identical, with special considerations for the type of model. The data argument is not included.
+With practically every modern modeling package in R, the two components required to fit a model are the model formula, and a data frame that contains the variables specified in that formula.  Consider the following models. In general the syntax is the similar regardless of package, with special considerations for the type of model. The data argument is not included in these examples, but would be needed.
 
 ```{r model-syntax, eval=FALSE}
 lm(y ~ x + z)                                          # standard linear model/OLS
@@ -308,7 +308,7 @@ brms::brm(
 
 For examples of many other types of models, see this [document](https://m-clark.github.io/R-models/).
 
-Let's run an example. We'll use the world happiness dataset[^happy]. This is country level data based on surveys taken at various years, and the scores are averages or proportions, along with other values like GDP.  
+Let's finally get our hands dirty and run an example. We'll use the world happiness dataset[^happy]. This is country level data based on surveys taken at various years, and the scores are averages or proportions, along with other values like GDP.  
 
 ```{r model-prep, echo=1:5}
 library(tidyverse)  # load if you haven't already
@@ -329,6 +329,7 @@ The happiness score itself ranges from `r happy_score$Min` to `r happy_score$Max
 
 Fitting a model with R is trivial, and at a minimum requires the two key ingredients mentioned before, the formula and data.
 
+
 ```{r model-fit}
 happy_model_base = lm(
   happiness_score ~ democratic_quality + generosity + log_gdp_per_capita,
@@ -341,7 +342,7 @@ happy_model_base = lm(
 
 Many packages still allow for matrix input instead of specifying a model formula, or even require it (but shouldn't).  This means separating data into a model (or design) matrix, and the vector or matrix of the target variable(s).  For example, if we needed a speed boost and weren't concerned about some typical output we could use <span class="func" style = "">lm.fit</span>.
 
-First we need to create the required components.
+First we need to create the required components.  We can use <span class="" style = "func">model.matrix</span> to get what we need.
 
 ```{r model-matrix}
 X = model.matrix(
@@ -360,16 +361,31 @@ nrow(X)
 ```
 
 
-We can now fit the model as follows.  The target variable must contain the same number of observations as in the model matrix.
+ The target variable must contain the same number of observations as in the model matrix, and there are various ways to create it to ensure this.  Instead of <span class="" style = "func">model.matrix</span>, there is also <span class="" style = "func">model.frame</span>, which creates a data frame, with a method for extracting the corresponding target variable[^noresponse_matrix].  
+
+```{r model-response}
+X_df = model.frame(
+    happiness_score ~ democratic_quality + generosity + log_gdp_per_capita,
+    data = happy
+  )
+
+y = model.response(X_df)
+```
+
+We can now fit the model as follows. 
 
 ```{r model-fit-model-matrix}
-y = happy$happiness_score[as.integer(rownames(X))]
 happy_model_matrix = lm.fit(X, y)
-summary(happy_model_matrix)
+
+summary(happy_model_matrix)  # only a standard list is returned
+```
+
+
+```{r coef-model-matrix}
 coef(happy_model_matrix)
 ```
 
-In my experience, it is generally a bad sign if a package requires that you create the model matrix rather than doing so itself.  I typically find that such packages tend to skip out on many other things like using typical methods like <span class="func" style = "">predict</span>, <span class="func" style = "">coef</span>, etc., making them even more difficult to work with.  In general, the only real time you should need to use model matrices is when you are creating your own modeling package, doing simulations, utilizing model speed-ups, or otherwise know why you need them.
+In my experience, it is generally a bad sign if a package requires that you create the model matrix rather than doing so itself via the standard formula + data.frame approach.  I typically find that such packages tend to skip out on many other things like using typical methods like <span class="func" style = "">predict</span>, <span class="func" style = "">coef</span>, etc., making them even more difficult to work with.  In general, the only real time you should need to use model matrices is when you are creating your own modeling package, doing simulations, utilizing model speed-ups, or otherwise know why you need them.
 
 
 ## Summarizing Models
@@ -382,7 +398,7 @@ happy_model_base_sum = summary(happy_model_base)
 happy_model_base_sum
 ```
 
-The summary provides several pieces of information: the coefficients or weights (`Estimate`), the standard errors, the t-statistic (which is just the coefficient divided by the standard error), and the corresponding p-value. While we can see  that all these covariates are statistically significant, which doesn't tell us much, but serves as a starting point. The main thing to look at are the actual coefficients. For example, with regard to the effect of log GDP, moving one percentage point on GDP[^elasticity] results in roughly `r round(coef(happy_model_base)['log_gdp_per_capita'], 1)` units of happiness. Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense.  Before we showed that the standard deviation of the happiness scale was `r rnd(sd(happy$happiness_score, na.rm = TRUE), 1)`. So this would typically represent a notable effect in terms of standard deviation units- moving a percentage point on GDP would result in a `r rnd(coef(happy_model_base)['log_gdp_per_capita']/sd(happy$happiness_score, na.rm = TRUE), 1)` standard deviation increase in state-level happiness.
+The summary provides several pieces of information: the coefficients or weights (`Estimate`)[^sumtable_confusion], the standard errors, the t-statistic (which is just the coefficient divided by the standard error), and the corresponding p-value.  The main thing to look at are the actual coefficients and the direction of their relationship, positive or negative. For example, with regard to the effect of democratic quality, moving one point on democratic quality results in roughly `r round(coef(happy_model_base)['democratic_quality'], 1)` units of happiness. Is this a notable effect?  Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense.   Before we showed that the standard deviation of the happiness scale was `r rnd(sd(happy$happiness_score, na.rm = TRUE), 1)`. So, in terms of standard deviation units- moving 1 points on democratic quality would result in a `r rnd(coef(happy_model_base)['democratic_quality']/sd(happy$happiness_score, na.rm = TRUE), 1)` standard deviation increase in state-level happiness.  We might consider this fairly small, but maybe not negligible.
 
 One thing we must also have in order to understand our results is to get a sense of the uncertainty in the effects.  The following provides confidence intervals for each of the coefficients.
 
@@ -390,7 +406,7 @@ One thing we must also have in order to understand our results is to get a sense
 confint(happy_model_base)
 ```
 
-Now we have a sense of the range of plausible values for the coefficients.  The value we actually estimate is the best guess given our circumstances, but slight changes in the data, the way we collect it, the time we collect it, etc., all would result in a slightly different result. The confidence interval provides a range of what we could expect given the uncertainty.
+Now we have a sense of the range of plausible values for the coefficients.  The value we actually estimate is the best guess given our circumstances, but slight changes in the data, the way we collect it, the time we collect it, etc., all would result in a slightly different result. The confidence interval provides a range of what we could expect given the uncertainty, and, given its importance, you should always report it.  In fact, just showing the coefficient and the interval would be better than typical reporting of the statistical test results, though you can do both.
 
 
 ## Variable Transformations 
@@ -411,7 +427,7 @@ The following table shows the interpretation of two extremely common transformat
 
 ```{r coefficient-interpretation, echo=FALSE}
 tibble(
-  target = c('y', 'y', 'log(y)', 'log(y)', 'y', 'scale(y)', 'scale(y)'), 
+  target = c('y', 'y', 'log(y)', 'log(y)', 'y', 'scale(y)', 'scale(y)'),
   predictor = c('x', 'log(x)', 'x', 'log(x)', 'scale(x)', 'x', 'scale(x)'), 
   interpretation = c(
     '$\\Delta y = \\beta\\Delta x$',
@@ -426,7 +442,7 @@ tibble(
   kable_df(booktabs = T, escape = FALSE)
 ```
 
-For example, to start with the normal situation, a one-unit change in $x$, i.e. $\Delta x =1$, leads to $\beta$ unit change in $y$. If we log the target variable $y$, the interpretation of the coefficient for $x$ is that a one-unit change in $x$ leads to an (approximately) 100$\cdot$$\beta$% change in $y$. The 100 changes the result from a proportion to percentage change. More concretely, if $\beta$ was .5, a unit change in $x$ leads to (roughly) a 50% change in $y$. If both were logged, a percentage change in $x$ leads to a $\beta$ percentage change in y[^logtransform].  These percentage change interpretations are called [elasticities](https://en.wikipedia.org/wiki/Elasticity_(economics)) in econometrics and areas trained similarly.
+For example, to start with the normal linear model situation, a one-unit change in $x$, i.e. $\Delta x =1$, leads to $\beta$ unit change in $y$. If we log the target variable $y$, the interpretation of the coefficient for $x$ is that a one-unit change in $x$ leads to an (approximately) 100$\cdot$$\beta$% change in $y$. The 100 changes the result from a proportion to percentage change. More concretely, if $\beta$ was .5, a unit change in $x$ leads to (roughly) a 50% change in $y$. If both were logged, a percentage change in $x$ leads to a $\beta$ percentage change in y[^logtransform].  These percentage change interpretations are called [elasticities](https://en.wikipedia.org/wiki/Elasticity_(economics)) in econometrics and areas trained similarly[^elasticity].
 
 It is very common to use *standardized* variables as well, also called normalizing, or simply scaling. If $y$ and $x$ are both standardized, a one unit (i.e. one standard deviation) change in $x$ leads to a $\beta$ standard deviation change in $y$.  Again, if $\beta$ was .5, a standard deviation change in $x$ leads to a half standard deviation change in $y$.
 
@@ -434,7 +450,7 @@ Another common transformation, particularly in machine learning, is the *min-max
 
 ### Categorical variables
 
-For categorical variables, we can employ what is called *effects coding* to test for specific types of group differences.  Far and away the most common approach is called *dummy coding* or *one-hot encoding*[^onehotvsdummy].  For example:
+A raw character string is not an analyzable unit, so character strings and labeled variables like factors must be converted for analysis to be conducted on them. For categorical variables, we can employ what is called *effects coding* to test for specific types of group differences.  Far and away the most common approach is called *dummy coding* or *one-hot encoding*[^onehotvsdummy].  In the next example, we will use dummy coding via the recipes package.  I also to show how to standardize a numeric variable as previously discussed.
 
 ```{r dummy-coding}
 library(recipes)
@@ -443,17 +459,18 @@ nafta = happy %>%
   filter(country %in% c('United States', 'Canada', 'Mexico'))
 
 dummy = nafta  %>% 
-  recipe(~ country) %>% 
-  step_dummy(country, one_hot = TRUE) # make variables for all factor levels
+  recipe(~ country + generosity) %>%        # formula approach for specifying variables
+  step_dummy(country, one_hot = TRUE) %>%   # make variables for all factor levels
+  step_scale(generosity)
 
-prep(dummy) %>% 
-  bake(nafta) %>% 
+prep(dummy) %>%      # estimates the necessary data to apply to this or other data sets
+  bake(nafta) %>%    # apply the computations
   print(n = 20)
 ```
 
-We see that the first few observations are Canada, and the next few Mexico.  This is almost never required for R modeling packages, but sometimes can be useful to do explicitly.  If your modeling package cannot handle factor variables, and thus requires explicit coding, you'll know very quickly.
+We see that the first few observations are Canada, and the next few Mexico.  Note that doing this is rarely required for most modeling situations, but even if not, it sometimes can be useful to do explicitly.  If your modeling package cannot handle factor variables, and thus requires explicit coding, you'll know, and typically these are the same ones that require matrix input.
 
-Let's run a regression as follows:
+Let's run a regression as follows to show how it would happen automatically
 
 ```{r dummy-reg}
 model_dummy = lm(happiness_score ~ country, data = nafta)
@@ -464,7 +481,7 @@ summary(model_dummy)
 
 In this case, the coefficient represents the difference in means on the target variable between the reference group and the group in question.  In this case, the U.S. is `r rnd(coef(model_dummy)[3], 2)` less on the happy score than the reference country (Canada).
 
-Other codings are possible, and these would allow for specific group comparisons or types of comparisons.  This is sometimes called *contrast coding*.  For example, we could compare Canada vs. both the U.S. and Mexico. By giving Canada twice the weight of the other two we can get this result.  I also add a coding that will just compare Mexico vs. the U.S.  The actual weights used are aribtrary but in this case should sum to zero.
+Other codings are possible, and these would allow for specific group comparisons or types of comparisons.  This is sometimes called *contrast coding*.  For example, we could compare Canada vs. both the U.S. and Mexico. By giving Canada twice the weight of the other two we can get this result.  I also add a coding that will just compare Mexico vs. the U.S.  The actual weights used are arbitrary, but in this case should sum to zero.
 
 ```{r contrast-coding, echo=FALSE}
 tibble(
@@ -491,7 +508,7 @@ nafta %>%
   summarise(happy = mean(happiness_score, na.rm = TRUE))
 ```
 
-For example, we can see that for this balanced data set, the corresponding coefficient is the halfway point, i.e. average, of the U.S. and Mexico coefficients from dummy coding: `r rnd(coef(model_dummy)[2])` + `r rnd(coef(model_dummy)[3])` / 2 = `r rnd(mean(coef(model_dummy)[2:3]))`.
+For example, we can see that for this balanced data set, the `_fac1` coefficient is the average of the U.S. and Mexico coefficients that we got from dummy coding, which represented their respective mean differences from Canada: (`r rnd(coef(model_dummy)[2])` + `r rnd(coef(model_dummy)[3])`) / 2 = `r rnd(mean(coef(model_dummy)[2:3]))`.  The `_fac2` coefficient is just the U.S. Mexico mean difference, as expected.
 
 In other circumstances, we can use *categorical embeddings* to reduce a very large number of categorical levels to a smaller number of numeric variables.  This is very commonly employed in deep learning.
 
@@ -506,32 +523,30 @@ It is often the case that we have several correlated variables/items which do no
 Some might do a preliminary analysis, such as a *cluster analysis* or *factor analysis*, to create new target or predictor variables. In the former we reduce several variables to a single categorical label. Factor analysis does the same but results in a more expressive continuous metric. While fine to use, the corresponding results are measured with error, so treating the categories or factor scores as you would observed variables will typically result in optimistic results when you later include them in a subsequent analysis like a linear regression.  Though this difference is probably slight in most applications, keen reviewers would probably point out the model shortcoming.
 
 
-
-
 ### Don't discretize
 
-Little pains advanced modelers more than seeing results where a nice expressive continuous metric butchered into two categories.  There is almost never a reason to do this.  There are reasons to collapse rare labels of a categorical variable, so that the new variable has fewer but more frequent categories, but even that can cause problems, and doesn't really overcome the fact that you simply didn't have enough data to begin with.
+Little pains advanced modelers more than seeing results where a nice expressive continuous metric butchered into two categories (e.g. taking a numeric age and collapsing to 'old' vs. 'young').  There is rarely a reason to do this, and pretty much never a adequately justifiable one.  There are reasons to collapse rare labels of a categorical variable, so that the new variable has fewer but more frequent categories. For example, data may have five or six race categories, but often the values are lumped into majority group vs. minority group due to each minority category having too few observations. But even that can cause problems, and doesn't really overcome the fact that you simply didn't have enough data to begin with.
 
 ## Variable Importance
 
-In many circumstances, one of the modeling goals is to determine which predictor variable is most important out of the collection used in the model.  However, determining relative variable importance is at best an approximation with some methods, and a fairly hopeless endeavor with others.  For just basic linear regression there are many methods that would not necessarily come to the same conclusions.  Some believe that standardizing variables, i.e. putting them on the same scale (e.g. mean 0 sd 1), is enough, but it is not, and doesn't help with comparison to categorical inputs.  If you're model is not strong, it doesn't make much sense to even worry about which is the best of a bad lot.
+In many circumstances, one of the modeling goals is to determine which predictor variable is most important out of the collection used in the model, or otherwise rank order the effectiveness of the predictors in some fashion.  However, determining relative *variable importance* is at best an approximation with some methods, and a fairly hopeless endeavor with others.  For just basic linear regression there are many methods that would not necessarily come to the same conclusions. Statistical significance, e.g. the Z/t statistic or p-value, is simply not a correct way to do so. Some believe that [standardizing numeric variables][numeric-variables] is enough, but it is not, and doesn't help with comparison to categorical inputs.  In addition, if you're model is not strong, it doesn't make much sense to even worry about which is the best of a bad lot.
 
-Another reason that 'importance' is a problematic endeavor is that a statistical result doesn't speak to practical action, nor does it speak to the fact that small effects may be very important.  Sex may be an important driver in social science model, but we cannot do anything about a person's sex for many outcomes that may be of interest. With health outcomes, any effects might be worthy of attention, however small, if they could practically increase the likelihood of survival.
+Another reason that 'importance' is a problematic endeavor is that a statistical result doesn't speak to practical action, nor does it speak to the fact that small effects may be very important.  Sex may be an important driver in social science model, but we may not be able to do anything about it for many outcomes that may be of interest. With health outcomes, any effects might be worthy of attention, however small, if they could practically increase the likelihood of survival.
 
-Even if you can come up with a metric you like, you would still need some measure of uncertainty around that to make a claim that one predictor is statistically better than another, and the only real approach to do that is some computationally expensive procedure that you will likely have to put together by hand.
+Even if you can come up with a metric you like, you would still need some measure of uncertainty around that to make a claim that one predictor is reasonably better than another, and the only real approach to do that is usually some computationally expensive procedure that you will likely have to put together by hand.
 
-As an example, for standard linear regression there are many methods that decompose $R^2$ into relative contributions by the covariates.  The tools to do so have to re-run the model in many ways to produce these estimates (see the <span class="pack" style = "">relaimpo</span> package for example) but you would have to use bootstrapping or similar to get interval estimates for those measures of importance. Certain techniques like random forests have a natural way to provide variable importance metrics, but providing inference on them would similarly be very computationally expensive.
+As an example, for standard linear regression there are many methods that decompose $R^2$ into relative contributions by the covariates.  The tools to do so have to re-run the model in many ways to produce these estimates (see the <span class="pack" style = "">relaimpo</span> package for example), but you would then have to use bootstrapping or similar approach to get interval estimates for those measures of importance. Certain techniques like random forests have a natural way to provide variable importance metrics, but providing inference on them would similarly be very computationally expensive.
 
-In the end though, I think it is probably best to assume that any effect that seems statistically distinct from zero might be worthy of attention, and can be regarded for its own sake.  You can reduce 
+In the end though, I think it is probably best to assume that any effect that seems statistically distinct from zero might be worthy of attention, and can be regarded for its own sake.  The more actionable, the better. 
 
 ## Extracting Output
 
-The better you get at modeling, the more often you are going to need to get at certain parts of the model output easily.  For example, we can extract t
+The better you get at modeling, the more often you are going to need to get at certain parts of the model output easily.  For example, we can extract the coefficients, residuals, model data and other parts from standard linear model objects from base R.
 
 
 Why would you want to do this?  A simple example would be to compare effects across different settings. We can collect the values, put them in a data frame, and then to a table or visualization.
 
-Typical modeling methods you might want to use:
+Typical modeling [methods][methods] you might want to use:
 
 - <span class="func" style = "">summary</span>: print results in a legible way
 - <span class="func" style = "">plot</span>: plot something about the model (e.g. diagnostic plots)
@@ -555,7 +570,7 @@ Also, it's useful to assign the summary results to an object, so that you can ex
 str(happy_model_base_sum, 1)
 ```
 
-If we want the adjusted $R^2$ or root mean squared error (RMSE, i.e. average error[^rmse]), they aren't readily available in the model object, but in the summary object, we can pluck them as we would any other [list object][lists].
+If we want the adjusted $R^2$ or root mean squared error (RMSE, i.e. average error[^rmse]), they aren't readily available in the model object, but they are in the summary object, so we can pluck them out as we would any other [list object][lists].
 
 ```{r extract-from-model}
 happy_model_base_sum$adj.r.squared
@@ -564,14 +579,14 @@ happy_model_base_sum[['sigma']]
 
 ### Package support
 
-There are many packages available to get at model results.  One of the most widely used is broom, which has tidy and other functions that can apply in different ways to different models.
+There are many packages available to get at model results.  One of the more widely used is <span class="pack" style = "">broom</span>, which has <span class="func" style = "">tidy</span> and other functions that can apply in different ways to different models depending on their class.
 
 ```{r broom-demo}
 library(broom)
 tidy(happy_model_base)
 ```
 
-Some packages will produce tables for a model object that are more or less ready for publication.  However, unless you know it's in the exact style you need, you're probably better off dealing with it yourself.  For example, you can use tidy and do minor cleanup to get the table ready for publication.
+Some packages will produce tables for a model object that are more or less ready for publication.  However, unless you know it's in the exact style you need, you're probably better off dealing with it yourself.  For example, you can use <span class="func" style = "">tidy</span> and do minor cleanup to get the table ready for publication.
 
 
 
@@ -582,7 +597,7 @@ Some packages will produce tables for a model object that are more or less ready
 If you aren't using visualization as a fundamental part of your model exploration, you're likely leaving a lot of that exploration behind, and not communicating the results as well as you could to the broadest audience possible.  When adding nonlinear effects, interactions, and more, visualization is a must. Thankfully there are many packages to help you get data you need to visualize effects.
 
 
-We start with the <span class="pack" style = "">emmeans</span> package.  In the following example we have a country effect and which to get the mean happiness scores per country.  We then visualize the results.  Here we can see that Mexico is lowest on average.
+We start with the <span class="pack" style = "">emmeans</span> package.  In the following example we have a country effect, and wish to get the mean happiness scores per country.  We then visualize the results.  Here we can see that Mexico is lowest on average.
 
 ```{r emmeans}
 happy_model_nafta = lm(happiness_score ~ country + year, data = nafta)
@@ -594,7 +609,7 @@ country_means
 plot(country_means)
 ```
 
-We can also test for pairwise differences between the countries, and there's no reason not to visualize that also.  In the following,  after adjustment Mexico and U.S. might not differ on mean happiness, but the other comparisons are statistically notable.
+We can also test for pairwise differences between the countries, and there's no reason not to visualize that also.  In the following,  after adjustment Mexico and U.S. might not differ on mean happiness, but the other comparisons are statistically notable[^bonferonni].
 
 ```{r emmeans-pairwise}
 pw_comparisons = contrast(country_means, method = 'pairwise', adjust = 'bonferroni')
@@ -614,34 +629,34 @@ preds = ggpredict(happy_model_nafta, terms = c('year', 'country'))
 plot(preds)
 ```
 
-Whenever you move to generalized linear models or other more complicated settings, visualization is even more required, so it's best to have some tools at your disposal.
+Whenever you move to generalized linear models or other more complicated settings, visualization is even more important, so it's best to have some tools at your disposal.
 
 
 ## Extensions to the Standard Linear Model
 
 ### Different types of targets
 
-In many data situations, we do not have a continuous target variable, or may want to use a different distribution to get a better fit, or adhere to some theoretical perspective.  For example, count data is not continuous and often notably skewed, so assuming a normal symmetric distribution may not work as well. From a data generating perspective we can use the Poisson distribution[^poislambda] for the target variable instead.
+In many data situations, we do not have a continuous numeric target variable, or may want to use a different distribution to get a better fit, or adhere to some theoretical perspective.  For example, count data is not continuous and often notably skewed, so assuming a normal symmetric distribution may not work as well. From a data generating perspective we can use the Poisson distribution[^poislambda] for the target variable instead.  
 
 $$\ln{\mu} =  X\beta$$
 $$\mu = e^{X\beta}$$
 $$y \sim \mathcal{Pois}(\mu)$$
-Conceptually nothing has really changed from what we were doing with the standard linear model, except for the distribution.  We still have a mean function determined by our predictors, and this is what we're typically mainly interested in from a theoretical perspective.  We do have an added step, a transformation of the mean (now usually called the *linear predictor*).  Poisson naturally works with the log of the target, but rather than do that explicitly, we instead exponentiate the linear predictor.  The *link function*[^linknotmodel], which links is the natural log, with the *inverse link/mean function* exponentiation.
+Conceptually nothing has really changed from what we were doing with the standard linear model, except for the distribution.  We still have a mean function determined by our predictors, and this is what we're typically mainly interested in from a theoretical perspective.  We do have an added step, a transformation of the mean (now usually called the *linear predictor*).  Poisson naturally works with the log of the target, but rather than do that explicitly, we instead exponentiate the linear predictor.  The *link function*[^linknotmodel], which is the natural log in this setting, has a corresponding  *inverse link* (or mean function)- exponentiation.
 
 In code we can demonstrate this as follows.
 
 ```{r poisson}
-set.seed(123)
-N = 1000
-beta = c(2, 1)
-x = rnorm(N)
-mu = exp(beta[1] + beta[2]*x)
-y = rpois(N, mu)
+set.seed(123)                     # for reproducibility
+N = 1000                          # sample size
+beta = c(2, 1)                    # the true coefficient values
+x = rnorm(N)                      # a single predictor variable
+mu = exp(beta[1] + beta[2]*x)     # the linear predictor
+y = rpois(N, lambda = mu)         # the target variable lambda = mean
 
 glm(y ~ x, family = poisson)
 ```
 
-
+A very common setting is the case where our target variable takes on only two values- yes vs. no, alive vs. dead, etc.  The most common model used in such settings is the logistic regression model.  In this case, it will have a different link to go with a different distribution.
 
 $$\ln{\frac{\mu}{1-\mu}} =  X\beta$$
 $$\mu = \frac{1}{1+e^{-X\beta}}$$
@@ -667,11 +682,11 @@ glm(y ~ x, family = binomial)
 # glm(cbind(events, nonevents) ~ x, family = binomial)
 ```
 
-You'll have noticed that when we fit these models we used <span class="func" style = "">glm</span> instead of <span class="func" style = "">lm</span>. The normal linear model is a special case of *generalized linear models*, which includes a specific class of distributions- normal, poisson, binomial, gamma, beta and more- collectively referred to as the [exponential family](https://en.wikipedia.org/wiki/Exponential_family).  While this family can cover a lot of ground, you do not have to restrict yourself to it, and many R modeling packages will provide easy access to more.  The main point is that you have tools to deal with continuous, binary, count, ordinal, and other types of data.
+You'll have noticed that when we fit these models we used <span class="func" style = "">glm</span> instead of <span class="func" style = "">lm</span>. The normal linear model is a special case of *generalized linear models*, which includes a specific class of distributions- normal, poisson, binomial, gamma, beta and more- collectively referred to as the [exponential family](https://en.wikipedia.org/wiki/Exponential_family).  While this family can cover a lot of ground, you do not have to restrict yourself to it, and many R modeling packages will provide easy access to more.  The main point is that you have tools to deal with continuous, binary, count, ordinal, and other types of data.  Furthermore, not much necessarily changes conceptually from model to model besides the link function and/or distribution.
 
 ### Correlated data
 
-Often in standard regression modeling situations we have data that is correlated, like when we observe multiple observations for individuals (i.e. longitudinal studies), or observations are clustered within geographic units.  There are many ways to analyze all kinds of correlated data in the form of clustered data, time series, spatial data and similar. In terms of understanding the mean function and data generating distribution for our target variable, as we did in our previous models, not much changes.  However, we will want to utilize estimation techniques that take this correlation into account.  Examples of such models include:
+Often in standard regression modeling situations we have data that is correlated, like when we observe multiple observations for individuals (e.g. longitudinal studies), or observations are clustered within geographic units.  There are many ways to analyze all kinds of correlated data in the form of clustered data, time series, spatial data and similar. In terms of understanding the mean function and data generating distribution for our target variable, as we did in our previous models, not much changes.  However, we will want to utilize estimation techniques that take this correlation into account.  Examples of such models include:
 
 - Mixed models (e.g. random intercepts, 'multilevel' models)
 - Time series models (autoregressive)
@@ -686,10 +701,45 @@ There are many types of models that will take one well beyond the standard linea
 
 ## Model Exploration Summary
 
-At this point you should have a good idea of how to get started exploring models with R.  Generally what you will explore will be based on theory, or merely curiosity. Specific packages while make certain types of models easy to pull off, without much change to the syntax.  Almost invariably, you will need to process the data to make it more amenable to analysis and/or more interpretable.  After model fitting, summaries and visualizations go a long way toward understanding the part of the world you are exploring.
+At this point you should have a good idea of how to get started exploring models with R.  Generally what you will explore will be based on theory, or merely curiosity. Specific packages while make certain types of models easy to pull off, without much change to the syntax from the standard `lm` approach of base R.  Almost invariably, you will need to process the data to make it more amenable to analysis and/or more interpretable.  After model fitting, summaries and visualizations go a long way toward understanding the part of the world you are exploring.
 
 
-## Exercises
+## Model Exploration Exercises
+
+### Exercise 1
+
+With the google app data, use a standard linear model (i.e. lm) to predict one of three target variables:
+
+- `rating`: the user ratings of the app
+- `avg_sentiment_polarity`: the average sentiment score (positive vs. negative) for the app
+- `avg_sentiment_subjectivity`: the average subjectivity score (subjective vs. objective) for the app
+
+For prediction use the following variables:
+- `reviews`: number of reviews
+- `type`: free vs. paid
+- `size_in_MB`: size of the app in megabytes
+
+I would suggest preprocessing the number of reviews- dividing by 100,000, scaling (standarizing), or logging it (for the latter you can add 1 first to deal with zeros[^plusonelog]).
+
+Interpret the results.  Visualize the difference in means between free and paid apps. See the [emmeans][visualization] example above.
+
+### Exercise 2
+
+Rerun the above with interactions of the number of reviews and size with type.  Visualize the interaction.  Does it look like the effect differs by type?
+
+### Exercise 3
+
+Use the fish data to predict the number of fish caught `count` by the following predictor variables:
+
+`livebait`: whether live bait was used or not
+`child`: how many children present
+`persons`: total persons on the trip
+
+If you wish, you can start with an `lm`, but as the number of fish caught is a count, it is suitable for using a poisson distribution via `glm` with `family = poisson`.
+
+
+
+[^target]: I prefer *target* because it emphasizes where the focus should be- predicting/explaining that variable.  It represents the bullseye we are trying to hit.  Others, like 'response' or 'outcome', imply a specific type of study, and so don't even make sense in many situations. 'Output' is too generic, and 'dependent variable', along with its roots in experimental design which is far from the normal data situation, seems to shift focus to the predictors, i.e. how the target depends on the covariates, which it often doesn't, or doesn't in a practical way.  Furthermore, effects of one variable may depend on another. For the other side of the equation I'm more ambivalent, just as long as 'independent variable', which is only applicable in some experimental designs, is not used.
 
 [^negloglik]: To be consistent with the many tools that minimize different types of losses, we usually minimize the *negative log likelihood*, rather than maximize the raw likelihood.
 
@@ -697,7 +747,13 @@ At this point you should have a good idea of how to get started exploring models
 
 [^optimizing]: For example, if the next best guess for a regression coefficient results in only a difference to many decimal places from the previous one, you probably don't care and can stop your search. Reaching your desired stopping point is known as *convergence*. In other cases, you may simply set a maximum number of iterations.
 
+[^bayesian-big]: With very large data relative to the number of parameters to estimate, much of the gain for the Bayesian approach is diminished, though some interpretive advantages would remain.
+
 [^happy]: The World Happiness Report is a survey of the state of global happiness that ranks countries by how happy their citizens perceive themselves to be. Almost all the information here is gleaned from the report and appendices. This regards the report data from 2008-2018 included in the 2019 report.
+
+[^noresponse_matrix]: No, I have no idea why you can't use <span class="func" style = "">model.response</span> with <span class="func" style = "">model.matrix.</span>.
+
+[^sumtable_confusion]: People tend to get hung up on different models or packages labeling these columns differently, but any GLM and many other similar models are going to provide the same basic information whichever statistical package (R or otherwise) you use, namely: estimated coefficient, the standard error, the test statistic, the p-value associated with that test statistic.
 
 [^elasticity]: In econometrics, if both target and predictor variable are logged, the coefficient is referred to as an [elasticity](https://stats.idre.ucla.edu/sas/faq/how-can-i-interpret-log-transformed-variables-in-terms-of-percent-change-in-linear-regression/).
 
@@ -707,9 +763,13 @@ At this point you should have a good idea of how to get started exploring models
 
 [^onehotvsdummy]: Some distinguish one-hot from dummy coding in that the former creates a binary variable for all $C$ categorical levels while dummy coding only creates $C-1$ variables, leaving the reference group out.  However, the reference group is only left out at model fitting, there's no reason not to create all C variables, as it requires no additional effort and you might want to change the reference group.
 
+[^bonferonni]: Corrections to p-values are generally a poor way to deal with multiple testing.  Adding [regularization][regularization] to shrink the coefficients from the outset is less arbitrary and more conceptually sound, as it makes no reference to an inferential framework that almost no one uses.
+
 [^poislambda]: For historical reasons, Poisson is usually denoted with mean $\lambda$, and with the binomial the probability is often denoted with $\pi$, but consistency is desired here.
 
 [^linknotmodel]: Before we distinguished models from [estimation procedures][estimation], and it's also important to distinguish models from link functions. In some disciplines (mostly one and those trained in its methods), you'll see some refer to a 'logit model', for example.  However that wouldn't tell you if the model regards a target that is binary, categorical, ordered categorical, count or has values between zero and one, which cover several types of possible distributions. 
 
 
 [^rmse]: For standard regression models, the divisor for calculating the RMSE is the residual degrees of freedom, but more generally it is just N, the sample size, as many modern models may have more parameters than observations.
+
+[^plusonelog]: Just for our purpopses.  If you have zeros, then that's usually a sign that a log transform probably isn't appropriate.

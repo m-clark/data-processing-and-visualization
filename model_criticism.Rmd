@@ -17,11 +17,11 @@ It isn't enough to simply fit a particular model, we must also ask how well it m
 
 ### Standard linear model
 
-In the basic regression setting we can think of model fit in terms of a statistical result, or in terms of the match between our model predictions and the observed target values.  The former provides an inferential result, but as we will see, is limited. The latter regards a more practical result, and may provide a more nuanced or different conclusion.
+In the basic regression setting we can think of model fit in terms of a statistical result, or in terms of the match between our model predictions and the observed target values.  The former provides an inferential perspective, but as we will see, is limited. The latter regards a more practical result, and may provide a more nuanced or different conclusion.
 
 #### Statistical
 
-In a standard linear model we can compare a model where there are no covariates to the model we care about, which may have many.  This is an almost useless test, but the results are typically reported.  Let's think about it conceptually.
+In a standard linear model we can compare a model where there are no covariates vs. the model we actually care about, which may have many predictor variables.  This is an almost useless test, but the results are typically reported both in standard output and academic presentation.  Let's think about it conceptually- how does the variability in our target break down?
 
 <br>
 $$\textrm{Total Variance} = \textrm{Model Explained Variance} + \textrm{Residual Variance}$$
@@ -85,7 +85,7 @@ From the previous results, we can perform the necessary arithmetic based on this
 
 #### $R^2$
 
-This statistical result is mostly a straw man type of test- who actually cares if our model does statistically better than a model with nothing in it?  Let's turn instead to a different concept- the amount of variance of the target variable that is explained by our predictors.  For the standard linear model setting, this statistic is called *R-squared* ($R^2$).
+The statistical result just shown is mostly a straw man type of test- who actually cares if our model does statistically better than a model with nothing in it?  Surely if you don't do better than nothing, then you may need to think more intently about what you are trying to model and how.  But just because you can knock the straw man down, it isn't something to get overly excited about. Let's turn instead to a different concept- the amount of variance of the target variable that is explained by our predictors.  For the standard linear model setting, this statistic is called *R-squared* ($R^2$).
 
 Going back to our previous notions, $R^2$ is just:
 
@@ -123,18 +123,92 @@ One problem with $R^2$ is that it always goes up, no matter what nonsense you ad
 
 ### Beyond OLS
 
-People love $R^2$, so much that they will report it wherever they can, even coming up with things like 'Pseudo-$R^2$' when it proves difficult. However, outside of the OLS setting where we assume a normal distribution as the underlying data-generating mechanism, $R^2$ has little application, and so is not very useful. In some sense, for any numeric target variable we can ask how well our predictions correlate with the observed target values, but the notion of 'variance explained' doesn't easily follow us. For example, for other distributions the estimated variance is a function of the mean (e.g. our Poisson example), and so isn't constant. In other settings we have multiple sources of residual variance, and some sources  where it's not clear whether the variance should be considered as part of the model explained variance or residual variance.  For categorical targets it becomes even doesn't apply
+People love $R^2$, so much that they will report it wherever they can, even coming up with things like 'Pseudo-$R^2$' when it proves difficult. However, outside of the OLS setting where we assume a normal distribution as the underlying data-generating mechanism, $R^2$ has little application, and so is not very useful. In some sense, for any numeric target variable we can ask how well our predictions correlate with the observed target values, but the notion of 'variance explained' doesn't easily follow us. For example, for other distributions the estimated variance is a function of the mean (e.g. our Poisson example), and so isn't constant. In other settings we have multiple sources of residual variance, and some sources  where it's not clear whether the variance should be considered as part of the model explained variance or residual variance.  For categorical targets the notion doesn't really apply very well at all.
 
 At least for GLM for non-normal distributions, we can work with *deviance*, which is similar to the residual sum of squares in the OLS setting.  We can get a 'deviance explained' using the following approach:
 
 1. Fit a null model, i.e. intercept only. This gives the total deviance (`tot_dev`).
-2. Fit the desired model. This provides the model deviance, which will be reduced (`model_dev`)
+2. Fit the desired model. This provides the model unexplained deviance  (`model_dev`)
 3. Calculate $\frac{\textrm{tot_dev} -\textrm{model_dev}}{\textrm{tot_dev}}$
 
 But this value doesn't really behave in the same manner as $R^2$.  For one, it can actually go down for a more complex model, and there is no standard adjustment, neither of which is the case with $R^2$ for the standard linear model.  At most this can serve as an approximation.  For more complicated settings you will have to rely on other means to determine model fit.
 
 ### Classification
+
+For categorical targets we must think about obtaining predictions that allow us to classify the observations into specific categories.  Not surprisingly, this will require different metrics to assess model performance.
+
 #### Accuracy and other metrics
+
+A very natural starting point is *accuracy*, or what percentage of our predicted class labels match the observed class labels.  However, our model will not spit out a character string, only a number. On the scale of the linear predictor it can be anything, but we will at some point transform it to the probability scale, obtaining a predicted probability for each category.  The class associated with the highest probability is the predicted class.  In the case of binary targets, this is just an <span class="func" style = "">if_else</span> statement for one class `if_else(probability >= .5, 'class A', 'class B')`.
+
+With those predicted labels and the observed labels we create what is commonly called a *confusion matrix*, but would more sanely be called a *classification table*, *prediction table*, or just about any other name one could come up with in the first 10 seconds of trying.  Let's look at the following hypothetical result.
+
+
+```{r confusionMatrix, echo=FALSE}
+t1 = tibble(
+  ` ` = c('Predicted = 1', 'Predicted = 0'),
+  `Actual = 1` = c(41, 16),
+  `Actual = 0` = c(21, 13)
+)
+
+t2 = tibble(
+  ` ` = c('Predicted = 1', 'Predicted = 0'),
+  `Actual = 1` = c('A', 'C'),
+  `Actual = 0` = c('B', 'D')
+)
+
+kable_df(list(t1, t2), align='cc') %>% 
+  kable_styling(full_width = T, bootstrap_options = 'basic')
+```
+
+```{r confmat_values, echo=FALSE}
+A = 41
+B = 21
+C = 16
+D = 13
+# truepos_total = A + C
+# pospred_total = A + B
+# trueneg_total = B + D
+# negpred_total = C + D
+Total = A + B + C + D
+```
+
+In some cases we predict correctly, in other cases not.  In this 2 x 2 setting we label the cells A through D.  With things in place, consider the following the following nomenclature.
+
+*True Positive*, *False Positive*, *True Negative*, *False Negative*: Above, these are A, B, D, and C respectively.
+
+Now let's see what we can calculate.
+
+*Accuracy*: Number of correct classifications out of all predictions (A + D)/Total. In the above example this would be (41 + 13)/91, about `r round((A+D)/Total,2)*100`%.
+
+*Error Rate*: 1 - Accuracy.
+
+*Sensitivity*: is the proportion of correctly predicted positives to all true positive events: A/(A + C).  In the above example this would be 41/57, about `r round(A/(A+C),2)*100`%. High sensitivity would suggest a low type II error rate (see below), or high statistical power. Also known as *true positive rate*.
+
+*Specificity*: is the proportion of correctly predicted negatives to all true negative events: D/(B + D).  In the above example this would be 13/34, about `r round(D/(B+D),2)*100`%. High specificity would suggest a low type I error rate (see below). Also known as *true negative rate*.
+
+*Positive Predictive Value* (PPV): proportion of true positives of those that are predicted positives: A/(A + B). In the above example this would be 41/62, about `r round(A/(A+B),2)*100`%.
+
+*Negative Predictive Value* (NPV): proportion of true negatives of those that are predicted negative: D/(C + D). In the above example this would be 13/29, about `r round(D/(C+D),2)*100`%.
+
+*Precision*:  See PPV.
+
+*Recall*: See sensitivity.
+
+*Lift*: Ratio of positive predictions given actual positives to the proportion of positive predictions out of the total: (A/(A + C)) / ((A + B)/Total). In the above example this would be (41/(41 + 16))/((41 + 21)/(91)), or `r round((A/(A+C))/((A+B)/Total),2)`.
+
+*F Score* (F1 score): Harmonic mean of precision and recall: 2\*(Precision\*Recall)/(Precision+Recall). In the above example this would be 2\*(.66\*.72)/(.66+.72), about `r round(2*(.66*.72)/(.66+.72),2)`.
+
+*Type I Error Rate* (false positive rate): proportion of true negatives that are incorrectly predicted positive: B/(B+D). In the above example this would be 21/34, about `r round(B/(B+D),2)*100`%.  Also known as *alpha*.
+
+*Type II Error Rate* (false negative rate): proportion of true positives that are incorrectly predicted negative: C/(C+A). In the above example this would be 16/57, about `r round(C/(C+A),2)*100`%. Also known as *beta*.
+
+*False Discovery Rate*: proportion of false positives among all positive predictions: B/(A+B). In the above example this would be 21/62, about `r round(B/(A+B),2)*100`%.  Often used in multiple comparison testing in the context of ANOVA.
+
+*Phi coefficient*: A measure of association: (A\*D - B\*C) / (sqrt((A+C)\*(D+B)\*(A+B)\*(D+C))).  In the above example this would be `r psych::phi(matrix(c(A,C,B,D),2))`.
+
+Several of these may also be produced on a per-class basis when there are more than two classes.  In addition, for multi-class scenarios there are other metrics commonly employed.  In general there are many, many other metrics for confusion matrices, any of which might be useful for your situation, but the above provides a starting point, and is enough for many situations.
+
 
 ## Model Assumptions
 
@@ -145,7 +219,7 @@ There are quite a few assumptions for the standard linear model that we could ta
 - Independence of observations
 - Normality
 
-These concern bias (the first), accurate inference (most of the rest), or other statistical concepts (efficiency, consistency).  The issue with most of the assumptions you learn about is that they mostly just apply to the OLS setting.  Moreover, you can meet all the assumptions you want and still have a crappy model. Practically speaking, the effects on inference usually aren't large enough to matter, as most shouldn't be making any important decision based on a p-value, or slight differences in the boundaries of an interval.  Even then, at least for OLS settings, the solutions are often easy, for example, to obtain standard errors, or are mostly overcome by having a large amount of data.
+These concern bias (the first), accurate inference (most of the rest), or other statistical concepts (efficiency, consistency).  The issue with most of the assumptions you learn about in your statistics course is that they mostly just apply to the OLS setting.  Moreover, you can meet all the assumptions you want and still have a crappy model. Practically speaking, the effects on inference often aren't large enough to matter, as most shouldn't be making any important decision based on a p-value, or slight differences in the boundaries of an interval.  Even then, at least for OLS settings, the solutions are often easy, for example, to obtain correct standard errors, or are mostly overcome by having a large amount of data.
 
 Still, the diagnostic tools can provide clues to model failure.  As before, visualization will aid us here. 
 
@@ -170,14 +244,35 @@ autoplot(
 
 
 The first plot shows the spread of the residuals vs. the model estimated values. By default, the three most extreme observations are noted.  In this plot we are looking for a lack of any conspicuous pattern, e.g. a fanning out to one side or butterfly shape.  If the variance was dependent on some of the model estimated values, we have a couple options: 
+
 - Use a model that does not assume constant variance
 - Add complexity to the model to better capture more extreme observations
 - Change the assumed distribution
 
-In this case we have it about as good as it gets.  The second plot regards the normality of the residuals.  If they are normally distributed, they would fall along the dotted line. Again, in practical application this is about as good as you're going to get.   
+In this example we have it about as good as it gets.  The second plot regards the normality of the residuals.  If they are normally distributed, they would fall along the dotted line. Again, in practical application this is about as good as you're going to get.  In the following we can see that we have some issues, where predictions are worse at low and high ends, and we may not be capturing some of the tail of the target distribution.
+
+```{r bad_fit}
+set.seed(1234)
+N = 500
+x = rnorm(N)
+mu = 2 + .25*x - .5*x^2 + rnorm(sd=abs(x), N)
+y = mu
+
+bad_fit = lm(y ~ x)
+
+autoplot(
+  bad_fit,
+  which = 1:2,
+  colour = '#ff550040',
+  smooth.colour = '#00aaff80',
+  label.colour = 'gray50'
+) +
+  theme_clean()
+``` 
 
 
-Another plot we can use is to note the predictions vs. the observed values, and this sort of plot would be appropriate for any model. Here I show this both as a scatterplot and a density plot.  With the first, the closer the result is to a line the better, with the latter, we can more adequately see what the model is predicting in relation to the observed values. In this case, while we're doing well, one limitation of the model is that it does not have as much spread as target, and so is not capturing the more extreme values.
+
+Another plot we can use to assess model fit is simply to note the predictions vs. the observed values, and this sort of plot would be appropriate for any model. Here I show this both as a scatterplot and a density plot.  With the first, the closer the result is to a line the better, with the latter, we can more adequately see what the model is predicting in relation to the observed values. In this case, while we're doing well, one limitation of the model is that it does not have as much spread as target, and so is not capturing the more extreme values.
 
 ```{r pp_check_base, echo=F, out.width='1200px', out.height='400px'}
 init = data.frame(
@@ -210,7 +305,7 @@ p_scatter +
 # gridExtra::grid.arrange(p_scatter, p_dense, layout_matrix = matrix(c(1,1,1,2,2), nrow = 1 ))
 ```
 
-Beyond OLS, assumptions may change, are more difficult to check, and guarantees are harder to come by.  The primary one- that you have an adequate and sufficiently complex model- still remains the most vital.  It is important to note that these assumptions regard inference, not predictive capabilities.  In addition, in many modeling scenarios we will actually induce bias to have more predictive capacity. In such settings statistical tests are of less importance, and there often may not even be an obvious test to use.  Typically we will still have some means to get the interval estimates for weights or predictions though.  
+Beyond the OLS setting, assumptions may change, are more difficult to check, and guarantees are harder to come by.  The primary one- that you have an adequate and sufficiently complex model- still remains the most vital.  It is important to remember that these assumptions regard inference, not predictive capabilities.  In addition, in many modeling scenarios we will actually induce bias to have more predictive capacity. In such settings statistical tests are of less importance, and there often may not even be an obvious test to use.  Typically we will still have some means to get the interval estimates for weights or predictions though.  
 
 
 
@@ -242,27 +337,27 @@ Comparing our loss on training and test (i.e. RMSE), we can see the loss is grea
 
 ```{r train-test-loss, echo=FALSE}
 tibble(
-  RMSE_train = sqrt(crossprod(residuals(happy_model_train))/nrow(happy_train)),
+  RMSE_train = sqrt(crossprod(residuals(happy_model_train))/nrow(happy_train))[,1],
   RMSE_test  = sqrt(crossprod(predictions - happy_test$happiness_score)/nrow(happy_test))[,1],
   `% increase` = rnd(100*(RMSE_test/RMSE_train - 1), 1)
   ) %>% 
   kable_df()
 ```
 
-For a more accurate assessment of test error, we'd need to take an average over several test sets, an approach known as *cross-validation*, something we'll talk more about later.
+While in many settings we could simply report performance metrics from the test set, for a more accurate assessment of test error, we'd do better by taking an average over several test sets, an approach known as *cross-validation*, something we'll talk more about [later][cross-validation].
 
 In general, we may do okay in scenarios where the model is simple and uses a lot of data, but even then we may find a notable increase in test error relative to training error.  For more complex models and/or with less data, the difference in training vs. test could be quite significant.  
 
 
 ## Model Comparison
 
-Up until now the focus has been entirely on one model.  However, if you're trying to learn something new, you'll almost always want to have multiple plausible models to explore, rather than just confirming what you think you already know.  This can be as simple as starting with a base model and adding complexity to it, but it could also be pitting fundamentally different models against one another.  
+Up until now the focus has been entirely on one model.  However, if you're trying to learn something new, you'll almost always want to have multiple plausible models to explore, rather than just confirming what you think you already know.  This can be as simple as starting with a baseline model and adding complexity to it, but it could also be pitting fundamentally different theoretical models against one another.  
 
-A notable problem is that complex models should always do better than simple ones.  The question then becomes if they are doing notably better given the additional complexity.
+A notable problem is that complex models should always do better than simple ones.  The question often then becomes if they are doing notably better given the additional complexity.  So we'll need some way to compare models in a way that takes the complexity of the model into account.
 
 ### Example: Additional covariates
 
-A starting point for adding model complexity is simply adding more covariates.  Let's add life expectancy and a yearly trend.  To make this model comparable to our baseline model, they need to be fit to the same data, and life expectancy has a couple missing values the others do not.  So we'll start with some data processing. I will start by standardizing some of the variables, and making year start at zero, which will represent 2008, and finally dropping missing values.  Refer to our previous section on [transforming variables][numeric variables] if you want to.
+A starting point for adding model complexity is simply adding more covariates.  Let's add life expectancy and a yearly trend to our happiness model.  To make this model comparable to our baseline model, they need to be fit to the same data, and life expectancy has a couple missing values the others do not.  So we'll start with some data processing. I will start by standardizing some of the variables, and making year start at zero, which will represent 2008, and finally dropping missing values.  Refer to our previous section on [transforming variables][numeric variables] if you want to.
 
 ```{r happy-data-proc}
 happy_processed = happy %>% 
@@ -275,10 +370,12 @@ happy_processed = happy %>%
     healthy_life_expectancy_at_birth,
     log_gdp_per_capita
   ) %>% 
-  mutate_at(vars(happiness_score:healthy_life_expectancy_at_birth),
-            function(x) scale(x)[, 1]) %>% 
-  mutate(year = year - min(year)) %>% 
-  drop_na()
+  recipe(happiness_score ~ . ) %>% 
+  step_center(all_numeric(), -log_gdp_per_capita, -year) %>% 
+  step_scale(all_numeric(), -log_gdp_per_capita, -year) %>% 
+  step_center(year, means = 2005) %>% 
+  prep() %>% 
+  bake(happy)
 ```
 
 
@@ -308,7 +405,7 @@ summary(happy_model_more)
 
 Here it would seem that life expectancy has a notable effect on happiness (shocker), but the yearly trend, while negative, is not statistically notable.  In addition, the democratic effect is no longer significant, as it would seem that it's contribution was more due to it's correlation with life expectancy. But the key question is- is this model better?  
 
-The adjusted $R^2$ seems to indicate that we are doing slightly better with this model, but not much.  We can test if the increase is a statistically notable one. [Recall previously][Statistical] when we compared our model versus a null model to obtain a statistical test of model fit.  Since these models are *nested*, i.e. one is a simpler form of the other, we can use the more general approach we depicted to compare these models.  This ANOVA, or analysis of variance test, is essentially comparing whether the residual sum of squares (i.e. the loss) is less for one model vs. the other. In many settings it is often called a *likelihood ratio test*.
+The adjusted $R^2$ seems to indicate that we are doing slightly better with this model, but not much (`r rnd(summary(happy_model_more)$adj, 2)` vs. `r rnd(summary(happy_model_base)$adj, 2)`).  We can test if the increase is a statistically notable one. [Recall previously][Statistical] when we compared our model versus a null model to obtain a statistical test of model fit.  Since these models are *nested*, i.e. one is a simpler form of the other, we can use the more general approach we depicted to compare these models.  This ANOVA, or analysis of variance test, is essentially comparing whether the residual sum of squares (i.e. the loss) is statistically less for one model vs. the other. In many settings it is often called a *likelihood ratio test*.
 
 ```{r anova-comparison}
 anova(happy_model_base, happy_model_more)
@@ -316,14 +413,14 @@ anova(happy_model_base, happy_model_more)
 
 The `Df` from the test denotes that we have two additional parameters, i.e. coefficients, in the more complex model. But the main thing to note is whether the model statistically reduces the RSS. So we see that this is a statistically notable improvement as well.  
 
-I actually do not like this test though. It requires nested models, which is either not the case or can be hard to determine, and ignores various aspects of uncertainty in parameter estimates.  An approach that works in many settings is to compare AIC. AIC is a value based on the likelihood for a given model, but which adds a penalty for complexity, since otherwise any more complex model would result in a larger likelihood (or in this case, smaller negative likelihood).  In the following, $\mathcal{L}$ is the likelihood, and $\mathcal{P}$ is the number of parameters estimated for the model.
+I actually do not like this test though. It requires nested models, which in some settings is either not the case or can be hard to determine, and ignores various aspects of uncertainty in parameter estimates.  An approach that works in many settings is to compare *AIC* (Akaike Information Criterion). AIC is a value based on the likelihood for a given model, but which adds a penalty for complexity, since otherwise any more complex model would result in a larger likelihood (or in this case, smaller negative likelihood).  In the following, $\mathcal{L}$ is the likelihood, and $\mathcal{P}$ is the number of parameters estimated for the model.
 
 $$AIC = -2 ( \ln (\mathcal{L})) + 2 \mathcal{P}$$
 ```{r AIC}
 AIC(happy_model_base)
 ```
 
-The value itself is meaningless until we compare models, in which case the lower value is the better model.  With AIC, we don't have to have nested models, so that's a plus over the statistical test.
+The value itself is meaningless until we compare models, in which case the lower value is the better model (because we are working with the negative log likelihood).  With AIC, we don't have to have nested models, so that's a plus over the statistical test.
 
 ```{r AIC-compare}
 AIC(happy_model_base, happy_model_more)
@@ -377,9 +474,50 @@ diff_in_r2 %>%
   kable_df()
 ```
 
+It would seem the difference in adjusted R square is not statistically different from zero.  Likewise we could do the same for AIC.
 
+```{r boot-$AIC$, echo=FALSE}
+aic_base <- boot(
+  happy_processed,
+  function(data, indices)
+    AIC(lm(f_base, data[indices, ])
+    ), 
+  R = 1000
+)
 
+aic_more <- boot(
+  happy_processed,
+  function(data, indices)
+    AIC(lm(f_more, data[indices, ])
+    ), 
+  R = 1000
+)
 
+ci = rbind(
+  quantile(aic_base$t, c(0.025,0.975)),
+  quantile(aic_more$t, c(0.025,0.975))
+)
+
+tibble(
+  model = c('base', 'more'), 
+  aic = c(aic_base$t0, aic_more$t0),
+) %>% 
+  bind_cols(as_tibble(ci)) %>% 
+  kable_df()
+```
+
+```{r boot-$ARIC$-diff, echo=FALSE}
+diff_in_aic = data.matrix(quantile(aic_more$t0 - aic_base$t, c(0.025,0.975)))
+
+colnames(diff_in_aic) = 'Difference in AIC'
+
+diff_in_aic %>% 
+  t() %>% 
+  as_tibble(rownames = NA) %>% 
+  kable_df()
+```
+
+In this case, the more complex model may not be statistically better either, as the interval for the difference in AIC also contains zero, and exhibits a notably wide range.
 
 ### Example: Interactions
 
@@ -396,7 +534,7 @@ happy_model_interact = lm(
 summary(happy_model_interact)
 ```
 
-The coefficient interpretation for variables in the interaction change.  They now only describe the effect when the variable they interact with is zero (or the reference group if it's categorical). So democratic quality has a slight positive but not statistically notable effect at the mean of life expectancy.  However, this effect increases by `r rnd(coef(happy_model_interact)['democratic_quality:healthy_life_expectancy_at_birth'], 2)` when life expectancy increases by 1 (i.e. 1 standard deviation).  The same interpretation goes for life expectancy.  It's coefficient is when democratic quality is at it's mean, and the interaction term is interpreted identically.
+The coefficient interpretation for variables in the interaction model changes.  For those involved in an interaction, the base coefficient now only describes the effect when the variable they interact with is zero (or is at the reference group if it's categorical). So democratic quality has a slight positive but not statistically notable effect at the mean of life expectancy `r rnd(coef(happy_model_interact)['democratic_quality'])`.  However, this effect increases by `r rnd(coef(happy_model_interact)['democratic_quality:healthy_life_expectancy_at_birth'], 2)` when life expectancy increases by 1 (i.e. 1 standard deviation).  The same interpretation goes for life expectancy.  It's base coefficient is when democratic quality is at it's mean (`r rnd(coef(happy_model_interact)['healthy_life_expectancy_at_birth'])`), and the interaction term is interpreted identically.
 
 It seems most people (including journal reviewers) seem to have trouble understanding interactions if you just report them in a table. Furthermore, beyond the standard linear model with non-normal distributions, the coefficient for the interaction term doesn't even have the same meaning. But you know what works in every setting? Visualization!
 
@@ -415,7 +553,7 @@ plot(
 
 We seem to have discovered something interesting here!  Democratic quality only has a positive effect for those countries with a high life expectancy, i.e. that are already in a good place in general.  It may even be negative in countries in the contrary case. While this has to be taken with a lot of caution, it shows how exploring interactions can be fun and surprising!
 
-Another way to plot interactions in which the variables are continuous is with a contour plot similar to this.  Here we don't have to pick arbitrary values to plot against, just note the predictions at all values of the covariates in question.
+Another way to plot interactions in which the variables are continuous is with a contour plot similar to this.  Here we don't have to pick arbitrary values to plot against, and can see the predictions at all values of the covariates in question.
 
 ```{r contour-plot, echo=FALSE, fig.retina=5}
 # library(mgcv)
@@ -491,13 +629,13 @@ visibly::plot_gam(happy_model_gam)
 Here is a brief summary of interpretation.  We generally don't have to worry about small wiggles.
 
 - `democratic_quality`: Effect is most notable (positive and strong) for higher values. Negligible otherwise.
-- `generosity`: Effect seems seems strongly positive, but only for lower values of generosity.
+- `generosity`: Effect seems seems strongly positive, but mostly for lower values of generosity.
 - `life_expectancy`: Effect is positive, but only if the country is around the mean or higher.
 - `log GDP per capita`: Effect is mostly positive, but may depend on other factors not included in the model.
 
-In terms of general model fit, the `Scale est.` is the same as the residual standard error (squared) in the other models, and is a notably lower than even the model with the interaction (`r happy_model_gam$sig2` vs. `r summary(happy_model_interact)$sig^2`). We can also see that the adjusted $R^2$ is higher as well (`r summary(happy_model_gam)$r.sq` vs. `r summary(happy_model_interact)$adj`.
+In terms of general model fit, the `Scale est.` is the same as the residual standard error (squared) in the other models, and is a notably lower than even the model with the interaction (`r rnd(happy_model_gam$sig2, 2)` vs. `r rnd(summary(happy_model_interact)$sig^2, 2)`). We can also see that the adjusted $R^2$ is higher as well (`r rnd(summary(happy_model_gam)$r.sq, 2)` vs. `r rnd(summary(happy_model_interact)$adj, 2)`).
 
-Let's check our AIC now to see which model wins. It's pretty clear our wiggly model is the winner, even with the added complexity.  Note that even though we used a different function for the GAM model, the AIC is still comparable.
+Let's check our AIC now to see which model wins. 
 
 ```{r AIC-all, cache=FALSE}
 AIC(
@@ -508,7 +646,9 @@ AIC(
 )
 ```
 
-Performance vs. complexity
+It's pretty clear our wiggly model is the winner, even with the added complexity.  Note that even though we used a different function for the GAM model, the AIC is still comparable.
+
+
 
 
 ## Model Averaging
@@ -563,7 +703,34 @@ aic_weights %>%
 
 ## Model Criticism Summary
 
-## Exercises
+Statistical significance with a single model does not provide enough of a story to tell with your data. A better assessment of performance  can be made on data the model has not seen, and can provide a better idea of the practical capabilities of it.  Furthermore, pitting various models of differing complexities will allow for better confidence in the model or set of models we ultimately deem worthy. In general, in more explanatory settings we strive to balance performance with complexity through various means.
+
+## Model Criticism Exercises
+
+### Exercise 0
+
+Recall the [google app exercises][model-exploration-exercises], we use a standard linear model (i.e. lm) to predict one of three target variables:
+
+- `rating`: the user ratings of the app
+- `avg_sentiment_polarity`: the average sentiment score (positive vs. negative) for the app
+- `avg_sentiment_subjectivity`: the average subjectivity score (subjective vs. objective) for the app
+
+For prediction use the following variables:
+- `reviews`: number of reviews
+- `type`: free vs. paid
+- `size_in_MB`: size of the app in megabytes
+
+After that we did a model with an interaction.
+
+Either using those models, or running new ones with a different target variable, conduct the following exercises.
+
+### Exercise 1
+
+Assess the model fit and performance of your first model. Perform additional diagnostics to assess how the model is doing (e.g. plot the model to look at residuals).
+
+### Exercise 2
+
+Compare the model with the interaction model.  Based on AIC or some other metric, which one would you choose?  Visualize your result.
 
 
 [^ftest]: This is often depicted in different ways depending on the text and context. In our depiction, the focus is on the F statistic as a ratio of explained variance to unexplained variance, which naturally relates to the $R^2$ statistic.
