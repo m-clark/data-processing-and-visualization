@@ -246,7 +246,40 @@ For example, a regularized regression might not have straightforward inference, 
 
 Hopefully this has demystified ML for you somewhat.  Nowadays it may take little effort to get to state-of-the-art results from even just a year or two ago, and which, for all intents and purposes, would be good enough both now and for the foreseeable future. Despite what many may think, it is not magic, but for more classically statistically minded, it may require a bit of a different perspective. 
 
-## Machine Learnign Exercises
+## Machine Learning Exercises
+
+### Exercise 1
+
+Use the ranger package to predict the rating by several covariates
+
+```{r echo = FALSE}
+load('data/google_apps.RData')
+
+google_folds = google_apps %>% 
+  drop_na() %>% 
+  vfold_cv() 
+
+google_for_mod = google_apps %>% 
+  select(avg_sentiment_polarity, rating, type,installs, reviews, size_in_MB, category) %>% 
+  drop_na()
+
+ga_rf_results = rand_forest(mode = 'regression', mtry = 2, trees = 1000) %>%
+  set_engine(engine = "ranger", importance = 'impurity_corrected') %>% 
+  fit(
+    avg_sentiment_polarity ~ type + reviews + installs + size_in_MB + category,
+    google_for_mod
+  )
+
+ga_rf_results
+sort(ga_rf_results$fit$variable.importance)
+ranger::importance_pvalues(ga_rf_results$fit)
+ranger::importance_pvalues(
+  ga_rf_results$fit,
+  method = 'altmann',
+  formula = avg_sentiment_polarity ~ type + reviews + installs + size_in_MB + category,
+  data = google_for_mod
+)
+```
 
 
 [^machines]: The 'machine' part of the term has historical context, but otherwise has lost meaning for most modern applications, or, at least I really don't think we need to be referring to computers doing their usual thing as something notable.  'Learning' is a poor term that seems to lead many to believe ML is some 'algorithm' automatically/magically learning from data without any human input.  Nothing could be further from the truth.  ML models 'learn' from the data as much as a linear regression does.

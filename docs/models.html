@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-02-23" />
+<meta name="date" content="2020-02-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -464,7 +464,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#interpreting-the-black-box"><i class="fa fa-check"></i>Interpreting the black box</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-summary"><i class="fa fa-check"></i>Machine Learning Summary</a></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercises"><i class="fa fa-check"></i>Exercises</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-exercises"><i class="fa fa-check"></i>Machine Learning Exercises</a><ul>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercise-1-10"><i class="fa fa-check"></i>Exercise 1</a></li>
+</ul></li>
 </ul></li>
 <li class="part"><span><b>Part IV: Visualization</b></span></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
@@ -484,7 +486,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-exercises"><i class="fa fa-check"></i>ggplot2 Exercises</a><ul>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-0-3"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-1-10"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-1-11"><i class="fa fa-check"></i>Exercise 1</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-2-10"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
@@ -510,7 +512,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-visualization-exercises"><i class="fa fa-check"></i>Interactive Visualization Exercises</a><ul>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-0-4"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-1-11"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-1-12"><i class="fa fa-check"></i>Exercise 1</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-2-11"><i class="fa fa-check"></i>Exercise 2</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-3-4"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
@@ -544,7 +546,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#biplots"><i class="fa fa-check"></i>Biplots</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a><ul>
-<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-1-12"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-1-13"><i class="fa fa-check"></i>Exercise 1</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-2-12"><i class="fa fa-check"></i>Exercise 2</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-exercises-2"><i class="fa fa-check"></i>Thinking exercises</a></li>
 </ul></li>
@@ -736,13 +738,15 @@ X
 <pre><code>[1] 1702.547</code></pre>
 <div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="models.html#cb330-1"></a><span class="kw">ls_loss</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">.25</span>))  <span class="co"># guess 3</span></span></code></pre></div>
 <pre><code>[1] 179.2952</code></pre>
+<p>We see that in our third guess we reduce the loss quite a bit relative to our first guess. This makes sense because a value of 4 for the intercept and .25 for the coefficient for <code>x</code> are not as relatively far from the true values.</p>
+<p>However, we can also see that they are not the best we could have done. In addition, with more data, our estimated coefficients would get closer to true values</p>
 <div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="models.html#cb332-1"></a>model =<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, df)            <span class="co"># fit the model and obtain parameter estimates using OLS</span></span>
 <span id="cb332-2"><a href="models.html#cb332-2"></a><span class="kw">coef</span>(model)                      <span class="co"># best guess given the data </span></span></code></pre></div>
 <pre><code>(Intercept)           x 
   4.8971969   0.4475284 </code></pre>
 <div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="models.html#cb334-1"></a><span class="kw">sum</span>(<span class="kw">residuals</span>(model)<span class="op">^</span><span class="dv">2</span>)          <span class="co"># least squares loss</span></span></code></pre></div>
 <pre><code>[1] 92.34413</code></pre>
-<p>We see that in our third guess we reduce the loss quite a bit relative to our first guess. This makes sense because a value of 4 for the intercept and .25 for the coefficient for <code>x</code> are not as relatively far from the true values. However, we can also see that they are not the best we could have done. In addition, with more data, our estimated coefficients would get closer to true values.</p>
+<p>.</p>
 <p>In some relatively rare cases, a known approach is available and we do not have to search for the best estimates, but simply have to perform the correct steps that will result in them. For example, the following matrix operations will produce the best estimates for linear regression, which also happen to be the maximum likelihood estimates.</p>
 <div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="models.html#cb336-1"></a><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">crossprod</span>(X, y)  <span class="co"># &#39;normal equations&#39;</span></span></code></pre></div>
 <pre><code>          [,1]
@@ -1540,7 +1544,7 @@ Residual standard error: 0.6283 on 407 degrees of freedom
   (1293 observations deleted due to missingness)
 Multiple R-squared:  0.6953,    Adjusted R-squared:  0.6931 
 F-statistic: 309.6 on 3 and 407 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>The summary provides several pieces of information: the coefficients or weights (<code>Estimate</code>)<a href="#fn25" class="footnote-ref" id="fnref25"><sup>25</sup></a>, the standard errors, the t-statistic (which is just the coefficient divided by the standard error), and the corresponding p-value. The main thing to look at are the actual coefficients and the direction of their relationship, positive or negative. For example, with regard to the effect of democratic quality, moving one point on democratic quality results in roughly 0.2 units of happiness. Is this a notable effect? Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense. Before we showed that the standard deviation of the happiness scale was 1.1. So, in terms of standard deviation units- moving 1 points on democratic quality would result in a 0.2 standard deviation increase in state-level happiness. We might consider this fairly small, but maybe not negligible.</p>
+<p>The summary provides several pieces of information: the coefficients or weights (<code>Estimate</code>)<a href="#fn25" class="footnote-ref" id="fnref25"><sup>25</sup></a>, the standard errors (<code>Std. Error</code>), the t-statistic (which is just the coefficient divided by the standard error), and the corresponding p-value. The main thing to look at are the actual coefficients and the direction of their relationship, positive or negative. For example, with regard to the effect of democratic quality, moving one point on democratic quality results in roughly 0.2 units of happiness. Is this a notable effect? Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense. Before we showed that the standard deviation of the happiness scale was 1.1. So, in terms of standard deviation units- moving 1 points on democratic quality would result in a 0.2 standard deviation increase in state-level happiness. We might consider this fairly small, but maybe not negligible.</p>
 <p>One thing we must also have in order to understand our results is to get a sense of the uncertainty in the effects. The following provides confidence intervals for each of the coefficients.</p>
 <div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="models.html#cb365-1"></a><span class="kw">confint</span>(happy_model_base)</span></code></pre></div>
 <pre><code>                         2.5 %     97.5 %
@@ -2054,6 +2058,7 @@ Residual Deviance: 708.8    AIC: 712.8</code></pre>
 - <code>size_in_MB</code>: size of the app in megabytes</p>
 <p>I would suggest preprocessing the number of reviews- dividing by 100,000, scaling (standarizing), or logging it (for the latter you can add 1 first to deal with zeros<a href="#fn34" class="footnote-ref" id="fnref34"><sup>34</sup></a>).</p>
 <p>Interpret the results. Visualize the difference in means between free and paid apps. See the <a href="models.html#visualization">emmeans</a> example above.</p>
+<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="models.html#cb399-1"></a><span class="kw">load</span>(<span class="st">&#39;data/google_apps.RData&#39;</span>)</span></code></pre></div>
 </div>
 <div id="exercise-2-8" class="section level3">
 <h3>Exercise 2</h3>

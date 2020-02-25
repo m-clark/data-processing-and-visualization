@@ -4,7 +4,8 @@
 google_apps =  noiris::google_apps
 
 google_apps = google_apps %>% 
-  mutate(type = if_else(! type %in% c('Free', 'Paid'), NA_character_, type))
+  mutate(type = if_else(! type %in% c('Free', 'Paid'), NA_character_, type),
+         category = if_else(category == 1.9, NA_character_, category))
 
 # can't unnest due to NA
 google_apps_sent = google_apps$greviews

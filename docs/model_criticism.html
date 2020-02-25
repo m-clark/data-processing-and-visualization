@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-02-23" />
+<meta name="date" content="2020-02-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -464,7 +464,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#interpreting-the-black-box"><i class="fa fa-check"></i>Interpreting the black box</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-summary"><i class="fa fa-check"></i>Machine Learning Summary</a></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercises"><i class="fa fa-check"></i>Exercises</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-exercises"><i class="fa fa-check"></i>Machine Learning Exercises</a><ul>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercise-1-10"><i class="fa fa-check"></i>Exercise 1</a></li>
+</ul></li>
 </ul></li>
 <li class="part"><span><b>Part IV: Visualization</b></span></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
@@ -484,7 +486,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-exercises"><i class="fa fa-check"></i>ggplot2 Exercises</a><ul>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-0-3"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-1-10"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-1-11"><i class="fa fa-check"></i>Exercise 1</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-2-10"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
@@ -510,7 +512,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-visualization-exercises"><i class="fa fa-check"></i>Interactive Visualization Exercises</a><ul>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-0-4"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-1-11"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-1-12"><i class="fa fa-check"></i>Exercise 1</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-2-11"><i class="fa fa-check"></i>Exercise 2</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-3-4"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
@@ -544,7 +546,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#biplots"><i class="fa fa-check"></i>Biplots</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a><ul>
-<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-1-12"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-1-13"><i class="fa fa-check"></i>Exercise 1</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-2-12"><i class="fa fa-check"></i>Exercise 2</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-exercises-2"><i class="fa fa-check"></i>Thinking exercises</a></li>
 </ul></li>
@@ -603,15 +605,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="standard-linear-model" class="section level3">
 <h3>Standard linear model</h3>
 <p>In the basic regression setting we can think of model fit in terms of a statistical result, or in terms of the match between our model predictions and the observed target values. The former provides an inferential perspective, but as we will see, is limited. The latter regards a more practical result, and may provide a more nuanced or different conclusion.</p>
-<div id="statistical" class="section level4">
-<h4>Statistical</h4>
+<div id="statistical-assessment" class="section level4">
+<h4>Statistical Assessment</h4>
 <p>In a standard linear model we can compare a model where there are no covariates vs. the model we actually care about, which may have many predictor variables. This is an almost useless test, but the results are typically reported both in standard output and academic presentation. Let’s think about it conceptually- how does the variability in our target break down?</p>
 <p><br>
 <span class="math display">\[\textrm{Total Variance} = \textrm{Model Explained Variance} + \textrm{Residual Variance}\]</span>
 <br></p>
 <p>So the variability in our target (TV) can be decomposed into that which we can explain with the predictor variables (MEV), and everything else that is not in our model (RV). If we have nothing in the model, then TV = RV.</p>
 <p>Let’s revisit the summary of our model. Note the <em>F-statistic</em>.</p>
-<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="model_criticism.html#cb399-1"></a>happy_model_base_sum</span></code></pre></div>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="model_criticism.html#cb400-1"></a>happy_model_base_sum</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = happiness_score ~ democratic_quality + generosity + 
@@ -637,7 +639,7 @@ F-statistic: 309.6 on 3 and 407 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>The standard F statistic can be calculated as follows, where <span class="math inline">\(p\)</span> is the number of predictors<a href="#fn35" class="footnote-ref" id="fnref35"><sup>35</sup></a>:</p>
 <p><span class="math display">\[F = \frac{MV/p}{RV/(N-p-1)}\]</span>
 Conceptually it is a ratio of average squared variance to average unexplained variance. We can see this more explicitly as follows, where each predictor’s contribution to the total variance is provided in the <code>Sum Sq</code> column.</p>
-<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="model_criticism.html#cb401-1"></a><span class="kw">anova</span>(happy_model_base)</span></code></pre></div>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="model_criticism.html#cb402-1"></a><span class="kw">anova</span>(happy_model_base)</span></code></pre></div>
 <pre><code>Analysis of Variance Table
 
 Response: happiness_score
@@ -651,15 +653,15 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <p>If we add those together and use our formula above we get:</p>
 <p><span class="math display">\[F = \frac{366.62/3}{160.653/407} = 309.6\]</span>
 Which is what is reported in the summary of the model. And the p-value is just <code>pf(309.6, 3, 407, lower = FALSE)</code>, whose values can be extracted from the summary object.</p>
-<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="model_criticism.html#cb403-1"></a>happy_model_base_sum<span class="op">$</span>fstatistic</span></code></pre></div>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="model_criticism.html#cb404-1"></a>happy_model_base_sum<span class="op">$</span>fstatistic</span></code></pre></div>
 <pre><code>   value    numdf    dendf 
 309.5954   3.0000 407.0000 </code></pre>
-<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="model_criticism.html#cb405-1"></a><span class="kw">pf</span>(<span class="fl">309.6</span>, <span class="dv">3</span>, <span class="dv">407</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="model_criticism.html#cb406-1"></a><span class="kw">pf</span>(<span class="fl">309.6</span>, <span class="dv">3</span>, <span class="dv">407</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <pre><code>[1] 1.239283e-104</code></pre>
 <p>Because the F-value is so large and p-value so small, the printed result doesn’t give us the actual p-value. So let’s demonstrate again with a worse model.</p>
-<div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb407-1"><a href="model_criticism.html#cb407-1"></a>f_test =<span class="st"> </span><span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>generosity, happy)</span>
-<span id="cb407-2"><a href="model_criticism.html#cb407-2"></a></span>
-<span id="cb407-3"><a href="model_criticism.html#cb407-3"></a><span class="kw">summary</span>(f_test)</span></code></pre></div>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="model_criticism.html#cb408-1"></a>f_test =<span class="st"> </span><span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>generosity, happy)</span>
+<span id="cb408-2"><a href="model_criticism.html#cb408-2"></a></span>
+<span id="cb408-3"><a href="model_criticism.html#cb408-3"></a><span class="kw">summary</span>(f_test)</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = happiness_score ~ generosity, data = happy)
@@ -679,11 +681,11 @@ Residual standard error: 1.122 on 533 degrees of freedom
   (1169 observations deleted due to missingness)
 Multiple R-squared:  0.01621,   Adjusted R-squared:  0.01436 
 F-statistic:  8.78 on 1 and 533 DF,  p-value: 0.003181</code></pre>
-<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="model_criticism.html#cb409-1"></a><span class="kw">pf</span>(<span class="fl">8.78</span>, <span class="dv">1</span>, <span class="dv">533</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="model_criticism.html#cb410-1"></a><span class="kw">pf</span>(<span class="fl">8.78</span>, <span class="dv">1</span>, <span class="dv">533</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <pre><code>[1] 0.003181551</code></pre>
 <p>We can make this F-test more explicit by actually fitting a null model and making the comparison. The following will provide the same result as before. We make sure to use the same data as in the original model, since there are missing values for some covariates.</p>
-<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="model_criticism.html#cb411-1"></a>happy_model_null =<span class="st"> </span><span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data =</span> <span class="kw">model.frame</span>(happy_model_base)) </span>
-<span id="cb411-2"><a href="model_criticism.html#cb411-2"></a><span class="kw">anova</span>(happy_model_null, happy_model_base)</span></code></pre></div>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="model_criticism.html#cb412-1"></a>happy_model_null =<span class="st"> </span><span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data =</span> <span class="kw">model.frame</span>(happy_model_base)) </span>
+<span id="cb412-2"><a href="model_criticism.html#cb412-2"></a><span class="kw">anova</span>(happy_model_null, happy_model_base)</span></code></pre></div>
 <pre><code>Analysis of Variance Table
 
 Model 1: happiness_score ~ 1
@@ -696,7 +698,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <p>In this case our F statistic generalizes to the following, where <span class="math inline">\(\textrm{Model}_1\)</span> is the simpler model and <span class="math inline">\(p\)</span> now refers to the total number of parameters estimated (i.e. same as before + 1 for the intercept)</p>
 <p><span class="math display">\[F = \frac{(\textrm{Model}_2\ RV - \textrm{Model}_1\ RV)/(p_2 - p_1)}{\textrm{Model}_2\ RV/(N-p_2-1)}\]</span></p>
 <p>From the previous results, we can perform the necessary arithmetic based on this formula to get the F statistic.</p>
-<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="model_criticism.html#cb413-1"></a>((<span class="fl">527.27</span> <span class="op">-</span><span class="st"> </span><span class="fl">160.65</span>)<span class="op">/</span><span class="dv">3</span>) <span class="op">/</span><span class="st"> </span>(<span class="fl">160.65</span><span class="op">/</span><span class="dv">407</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb414-1"><a href="model_criticism.html#cb414-1"></a>((<span class="fl">527.27</span> <span class="op">-</span><span class="st"> </span><span class="fl">160.65</span>)<span class="op">/</span><span class="dv">3</span>) <span class="op">/</span><span class="st"> </span>(<span class="fl">160.65</span><span class="op">/</span><span class="dv">407</span>)</span></code></pre></div>
 <pre><code>[1] 309.6054</code></pre>
 </div>
 <div id="r2" class="section level4">
@@ -705,7 +707,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <p>Going back to our previous notions, <span class="math inline">\(R^2\)</span> is just:</p>
 <p><span class="math display">\[R^2 =\textrm{Model Explained Variance}/\textrm{Total Variance}\]</span></p>
 <p>This too is reported by default in our summary printout.</p>
-<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="model_criticism.html#cb415-1"></a>happy_model_base_sum</span></code></pre></div>
+<div class="sourceCode" id="cb416"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb416-1"><a href="model_criticism.html#cb416-1"></a>happy_model_base_sum</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = happiness_score ~ democratic_quality + generosity + 
@@ -729,15 +731,15 @@ Residual standard error: 0.6283 on 407 degrees of freedom
 Multiple R-squared:  0.6953,    Adjusted R-squared:  0.6931 
 F-statistic: 309.6 on 3 and 407 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>With our values from before for model and total variance, we can calculate it ourselves.</p>
-<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb417-1"><a href="model_criticism.html#cb417-1"></a><span class="fl">366.62</span> <span class="op">/</span><span class="st"> </span><span class="fl">527.27</span></span></code></pre></div>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="model_criticism.html#cb418-1"></a><span class="fl">366.62</span> <span class="op">/</span><span class="st"> </span><span class="fl">527.27</span></span></code></pre></div>
 <pre><code>[1] 0.6953174</code></pre>
 <p>Here is another way. Let’s get the model predictions, and see how well they correlate with the target.</p>
-<div class="sourceCode" id="cb419"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb419-1"><a href="model_criticism.html#cb419-1"></a>predictions =<span class="st"> </span><span class="kw">predict</span>(happy_model_base)</span>
-<span id="cb419-2"><a href="model_criticism.html#cb419-2"></a>target =<span class="st"> </span>happy_model_base<span class="op">$</span>model<span class="op">$</span>happiness_score</span>
-<span id="cb419-3"><a href="model_criticism.html#cb419-3"></a>rho =<span class="st"> </span><span class="kw">cor</span>(predictions, target)</span>
-<span id="cb419-4"><a href="model_criticism.html#cb419-4"></a>rho</span></code></pre></div>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="model_criticism.html#cb420-1"></a>predictions =<span class="st"> </span><span class="kw">predict</span>(happy_model_base)</span>
+<span id="cb420-2"><a href="model_criticism.html#cb420-2"></a>target =<span class="st"> </span>happy_model_base<span class="op">$</span>model<span class="op">$</span>happiness_score</span>
+<span id="cb420-3"><a href="model_criticism.html#cb420-3"></a>rho =<span class="st"> </span><span class="kw">cor</span>(predictions, target)</span>
+<span id="cb420-4"><a href="model_criticism.html#cb420-4"></a>rho</span></code></pre></div>
 <pre><code>[1] 0.8338528</code></pre>
-<div class="sourceCode" id="cb421"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb421-1"><a href="model_criticism.html#cb421-1"></a>rho<span class="op">^</span><span class="dv">2</span></span></code></pre></div>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="model_criticism.html#cb422-1"></a>rho<span class="op">^</span><span class="dv">2</span></span></code></pre></div>
 <pre><code>[1] 0.6953106</code></pre>
 <p>Now you can see why it’s called <span class="math inline">\(R^2\)</span>. It is the squared Pearson <span class="math inline">\(r\)</span> of the model expected value and the observed target variable.</p>
 <div id="adjustment" class="section level5">
@@ -882,9 +884,9 @@ D
 </ul>
 <p>These concern bias (the first), accurate inference (most of the rest), or other statistical concepts (efficiency, consistency). The issue with most of the assumptions you learn about in your statistics course is that they mostly just apply to the OLS setting. Moreover, you can meet all the assumptions you want and still have a crappy model. Practically speaking, the effects on inference often aren’t large enough to matter, as most shouldn’t be making any important decision based on a p-value, or slight differences in the boundaries of an interval. Even then, at least for OLS settings, the solutions are often easy, for example, to obtain correct standard errors, or are mostly overcome by having a large amount of data.</p>
 <p>Still, the diagnostic tools can provide clues to model failure. As before, visualization will aid us here.</p>
-<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb423-1"><a href="model_criticism.html#cb423-1"></a><span class="kw">library</span>(ggfortify)</span>
-<span id="cb423-2"><a href="model_criticism.html#cb423-2"></a></span>
-<span id="cb423-3"><a href="model_criticism.html#cb423-3"></a><span class="kw">autoplot</span>(happy_model_base)</span></code></pre></div>
+<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="model_criticism.html#cb424-1"></a><span class="kw">library</span>(ggfortify)</span>
+<span id="cb424-2"><a href="model_criticism.html#cb424-2"></a></span>
+<span id="cb424-3"><a href="model_criticism.html#cb424-3"></a><span class="kw">autoplot</span>(happy_model_base)</span></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/diag-plot-show-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>The first plot shows the spread of the residuals vs. the model estimated values. By default, the three most extreme observations are noted. In this plot we are looking for a lack of any conspicuous pattern, e.g. a fanning out to one side or butterfly shape. If the variance was dependent on some of the model estimated values, we have a couple options:</p>
 <ul>
@@ -893,22 +895,22 @@ D
 <li>Change the assumed distribution</li>
 </ul>
 <p>In this example we have it about as good as it gets. The second plot regards the normality of the residuals. If they are normally distributed, they would fall along the dotted line. Again, in practical application this is about as good as you’re going to get. In the following we can see that we have some issues, where predictions are worse at low and high ends, and we may not be capturing some of the tail of the target distribution.</p>
-<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="model_criticism.html#cb424-1"></a><span class="kw">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb424-2"><a href="model_criticism.html#cb424-2"></a>N =<span class="st"> </span><span class="dv">500</span></span>
-<span id="cb424-3"><a href="model_criticism.html#cb424-3"></a>x =<span class="st"> </span><span class="kw">rnorm</span>(N)</span>
-<span id="cb424-4"><a href="model_criticism.html#cb424-4"></a>mu =<span class="st"> </span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="fl">.25</span><span class="op">*</span>x <span class="op">-</span><span class="st"> </span><span class="fl">.5</span><span class="op">*</span>x<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">sd=</span><span class="kw">abs</span>(x), N)</span>
-<span id="cb424-5"><a href="model_criticism.html#cb424-5"></a>y =<span class="st"> </span>mu</span>
-<span id="cb424-6"><a href="model_criticism.html#cb424-6"></a></span>
-<span id="cb424-7"><a href="model_criticism.html#cb424-7"></a>bad_fit =<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)</span>
-<span id="cb424-8"><a href="model_criticism.html#cb424-8"></a></span>
-<span id="cb424-9"><a href="model_criticism.html#cb424-9"></a><span class="kw">autoplot</span>(</span>
-<span id="cb424-10"><a href="model_criticism.html#cb424-10"></a>  bad_fit,</span>
-<span id="cb424-11"><a href="model_criticism.html#cb424-11"></a>  <span class="dt">which =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,</span>
-<span id="cb424-12"><a href="model_criticism.html#cb424-12"></a>  <span class="dt">colour =</span> <span class="st">&#39;#ff550040&#39;</span>,</span>
-<span id="cb424-13"><a href="model_criticism.html#cb424-13"></a>  <span class="dt">smooth.colour =</span> <span class="st">&#39;#00aaff80&#39;</span>,</span>
-<span id="cb424-14"><a href="model_criticism.html#cb424-14"></a>  <span class="dt">label.colour =</span> <span class="st">&#39;gray50&#39;</span></span>
-<span id="cb424-15"><a href="model_criticism.html#cb424-15"></a>) <span class="op">+</span></span>
-<span id="cb424-16"><a href="model_criticism.html#cb424-16"></a><span class="st">  </span><span class="kw">theme_clean</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb425-1"><a href="model_criticism.html#cb425-1"></a><span class="kw">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb425-2"><a href="model_criticism.html#cb425-2"></a>N =<span class="st"> </span><span class="dv">500</span></span>
+<span id="cb425-3"><a href="model_criticism.html#cb425-3"></a>x =<span class="st"> </span><span class="kw">rnorm</span>(N)</span>
+<span id="cb425-4"><a href="model_criticism.html#cb425-4"></a>mu =<span class="st"> </span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="fl">.25</span><span class="op">*</span>x <span class="op">-</span><span class="st"> </span><span class="fl">.5</span><span class="op">*</span>x<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">sd=</span><span class="kw">abs</span>(x), N)</span>
+<span id="cb425-5"><a href="model_criticism.html#cb425-5"></a>y =<span class="st"> </span>mu</span>
+<span id="cb425-6"><a href="model_criticism.html#cb425-6"></a></span>
+<span id="cb425-7"><a href="model_criticism.html#cb425-7"></a>bad_fit =<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x)</span>
+<span id="cb425-8"><a href="model_criticism.html#cb425-8"></a></span>
+<span id="cb425-9"><a href="model_criticism.html#cb425-9"></a><span class="kw">autoplot</span>(</span>
+<span id="cb425-10"><a href="model_criticism.html#cb425-10"></a>  bad_fit,</span>
+<span id="cb425-11"><a href="model_criticism.html#cb425-11"></a>  <span class="dt">which =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,</span>
+<span id="cb425-12"><a href="model_criticism.html#cb425-12"></a>  <span class="dt">colour =</span> <span class="st">&#39;#ff550040&#39;</span>,</span>
+<span id="cb425-13"><a href="model_criticism.html#cb425-13"></a>  <span class="dt">smooth.colour =</span> <span class="st">&#39;#00aaff80&#39;</span>,</span>
+<span id="cb425-14"><a href="model_criticism.html#cb425-14"></a>  <span class="dt">label.colour =</span> <span class="st">&#39;gray50&#39;</span></span>
+<span id="cb425-15"><a href="model_criticism.html#cb425-15"></a>) <span class="op">+</span></span>
+<span id="cb425-16"><a href="model_criticism.html#cb425-16"></a><span class="st">  </span><span class="kw">theme_clean</span>()</span></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/bad_fit-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Another plot we can use to assess model fit is simply to note the predictions vs. the observed values, and this sort of plot would be appropriate for any model. Here I show this both as a scatterplot and a density plot. With the first, the closer the result is to a line the better, with the latter, we can more adequately see what the model is predicting in relation to the observed values. In this case, while we’re doing well, one limitation of the model is that it does not have as much spread as target, and so is not capturing the more extreme values.</p>
 <p><img src="data-processing-and-visualization_files/figure-html/pp_check_base-1.svg" width="1200px" height="400px" style="display: block; margin: auto;" /></p>
@@ -918,21 +920,21 @@ D
 <h2>Predictive Performance</h2>
 <p>While we can gauge predictive performance to some extent with a metric like <span class="math inline">\(R^2\)</span> in the standard linear model case, even then it almost certainly an optimistic viewpoint, and adjusted <span class="math inline">\(R^2\)</span> doesn’t really deal with the underlying issue. What is the problem? The concern is that we are judging model performance on the very data it was fit to. Any potential deviation to the underlying data would certainly result in a different result for <span class="math inline">\(R^2\)</span>, accuracy, or any metric we choose to look at.</p>
 <p>So the better estimate of how the model is doing is to observe performance on data it hasn’t seen. This data goes by different names- <em>test set</em>, <em>validation set</em>, <em>holdout sample</em>, etc., but the basic idea is that we use some data that wasn’t used in model fitting to assess performance. We can do this in any data situation by randomly splitting into a data set for training the model, and one used for testing the model’s performance.</p>
-<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb425-1"><a href="model_criticism.html#cb425-1"></a><span class="kw">library</span>(tidymodels)</span>
-<span id="cb425-2"><a href="model_criticism.html#cb425-2"></a></span>
-<span id="cb425-3"><a href="model_criticism.html#cb425-3"></a><span class="kw">set.seed</span>(<span class="dv">1212</span>)</span>
-<span id="cb425-4"><a href="model_criticism.html#cb425-4"></a></span>
-<span id="cb425-5"><a href="model_criticism.html#cb425-5"></a>happy_split =<span class="st"> </span><span class="kw">initial_split</span>(happy, <span class="dt">prop =</span> <span class="fl">0.75</span>)</span>
-<span id="cb425-6"><a href="model_criticism.html#cb425-6"></a></span>
-<span id="cb425-7"><a href="model_criticism.html#cb425-7"></a>happy_train =<span class="st"> </span><span class="kw">training</span>(happy_split)</span>
-<span id="cb425-8"><a href="model_criticism.html#cb425-8"></a>happy_test  =<span class="st"> </span><span class="kw">testing</span>(happy_split) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">drop_na</span>()</span>
-<span id="cb425-9"><a href="model_criticism.html#cb425-9"></a></span>
-<span id="cb425-10"><a href="model_criticism.html#cb425-10"></a>happy_model_train =<span class="st"> </span><span class="kw">lm</span>(</span>
-<span id="cb425-11"><a href="model_criticism.html#cb425-11"></a>  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita,</span>
-<span id="cb425-12"><a href="model_criticism.html#cb425-12"></a>  <span class="dt">data =</span> happy_train</span>
-<span id="cb425-13"><a href="model_criticism.html#cb425-13"></a>)</span>
-<span id="cb425-14"><a href="model_criticism.html#cb425-14"></a></span>
-<span id="cb425-15"><a href="model_criticism.html#cb425-15"></a>predictions =<span class="st"> </span><span class="kw">predict</span>(happy_model_train, <span class="dt">newdata =</span> happy_test)</span></code></pre></div>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="model_criticism.html#cb426-1"></a><span class="kw">library</span>(tidymodels)</span>
+<span id="cb426-2"><a href="model_criticism.html#cb426-2"></a></span>
+<span id="cb426-3"><a href="model_criticism.html#cb426-3"></a><span class="kw">set.seed</span>(<span class="dv">1212</span>)</span>
+<span id="cb426-4"><a href="model_criticism.html#cb426-4"></a></span>
+<span id="cb426-5"><a href="model_criticism.html#cb426-5"></a>happy_split =<span class="st"> </span><span class="kw">initial_split</span>(happy, <span class="dt">prop =</span> <span class="fl">0.75</span>)</span>
+<span id="cb426-6"><a href="model_criticism.html#cb426-6"></a></span>
+<span id="cb426-7"><a href="model_criticism.html#cb426-7"></a>happy_train =<span class="st"> </span><span class="kw">training</span>(happy_split)</span>
+<span id="cb426-8"><a href="model_criticism.html#cb426-8"></a>happy_test  =<span class="st"> </span><span class="kw">testing</span>(happy_split) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">drop_na</span>()</span>
+<span id="cb426-9"><a href="model_criticism.html#cb426-9"></a></span>
+<span id="cb426-10"><a href="model_criticism.html#cb426-10"></a>happy_model_train =<span class="st"> </span><span class="kw">lm</span>(</span>
+<span id="cb426-11"><a href="model_criticism.html#cb426-11"></a>  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita,</span>
+<span id="cb426-12"><a href="model_criticism.html#cb426-12"></a>  <span class="dt">data =</span> happy_train</span>
+<span id="cb426-13"><a href="model_criticism.html#cb426-13"></a>)</span>
+<span id="cb426-14"><a href="model_criticism.html#cb426-14"></a></span>
+<span id="cb426-15"><a href="model_criticism.html#cb426-15"></a>predictions =<span class="st"> </span><span class="kw">predict</span>(happy_model_train, <span class="dt">newdata =</span> happy_test)</span></code></pre></div>
 <p>Comparing our loss on training and test (i.e. RMSE), we can see the loss is greater on the test set.</p>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
@@ -972,29 +974,29 @@ RMSE_test
 <div id="example-additional-covariates" class="section level3">
 <h3>Example: Additional covariates</h3>
 <p>A starting point for adding model complexity is simply adding more covariates. Let’s add life expectancy and a yearly trend to our happiness model. To make this model comparable to our baseline model, they need to be fit to the same data, and life expectancy has a couple missing values the others do not. So we’ll start with some data processing. I will start by standardizing some of the variables, and making year start at zero, which will represent 2008, and finally dropping missing values. Refer to our previous section on <a href="models.html#numeric-variables">transforming variables</a> if you want to.</p>
-<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="model_criticism.html#cb426-1"></a>happy_processed =<span class="st"> </span>happy <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb426-2"><a href="model_criticism.html#cb426-2"></a><span class="st">  </span><span class="kw">select</span>(</span>
-<span id="cb426-3"><a href="model_criticism.html#cb426-3"></a>    country,</span>
-<span id="cb426-4"><a href="model_criticism.html#cb426-4"></a>    year,</span>
-<span id="cb426-5"><a href="model_criticism.html#cb426-5"></a>    happiness_score,</span>
-<span id="cb426-6"><a href="model_criticism.html#cb426-6"></a>    democratic_quality,</span>
-<span id="cb426-7"><a href="model_criticism.html#cb426-7"></a>    generosity,</span>
-<span id="cb426-8"><a href="model_criticism.html#cb426-8"></a>    healthy_life_expectancy_at_birth,</span>
-<span id="cb426-9"><a href="model_criticism.html#cb426-9"></a>    log_gdp_per_capita</span>
-<span id="cb426-10"><a href="model_criticism.html#cb426-10"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb426-11"><a href="model_criticism.html#cb426-11"></a><span class="st">  </span><span class="kw">recipe</span>(happiness_score <span class="op">~</span><span class="st"> </span>. ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb426-12"><a href="model_criticism.html#cb426-12"></a><span class="st">  </span><span class="kw">step_center</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span>log_gdp_per_capita, <span class="op">-</span>year) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb426-13"><a href="model_criticism.html#cb426-13"></a><span class="st">  </span><span class="kw">step_scale</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span>log_gdp_per_capita, <span class="op">-</span>year) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb426-14"><a href="model_criticism.html#cb426-14"></a><span class="st">  </span><span class="kw">step_center</span>(year, <span class="dt">means =</span> <span class="dv">2005</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb426-15"><a href="model_criticism.html#cb426-15"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb426-16"><a href="model_criticism.html#cb426-16"></a><span class="st">  </span><span class="kw">bake</span>(happy)</span></code></pre></div>
+<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="model_criticism.html#cb427-1"></a>happy_processed =<span class="st"> </span>happy <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb427-2"><a href="model_criticism.html#cb427-2"></a><span class="st">  </span><span class="kw">select</span>(</span>
+<span id="cb427-3"><a href="model_criticism.html#cb427-3"></a>    country,</span>
+<span id="cb427-4"><a href="model_criticism.html#cb427-4"></a>    year,</span>
+<span id="cb427-5"><a href="model_criticism.html#cb427-5"></a>    happiness_score,</span>
+<span id="cb427-6"><a href="model_criticism.html#cb427-6"></a>    democratic_quality,</span>
+<span id="cb427-7"><a href="model_criticism.html#cb427-7"></a>    generosity,</span>
+<span id="cb427-8"><a href="model_criticism.html#cb427-8"></a>    healthy_life_expectancy_at_birth,</span>
+<span id="cb427-9"><a href="model_criticism.html#cb427-9"></a>    log_gdp_per_capita</span>
+<span id="cb427-10"><a href="model_criticism.html#cb427-10"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb427-11"><a href="model_criticism.html#cb427-11"></a><span class="st">  </span><span class="kw">recipe</span>(happiness_score <span class="op">~</span><span class="st"> </span>. ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb427-12"><a href="model_criticism.html#cb427-12"></a><span class="st">  </span><span class="kw">step_center</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span>log_gdp_per_capita, <span class="op">-</span>year) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb427-13"><a href="model_criticism.html#cb427-13"></a><span class="st">  </span><span class="kw">step_scale</span>(<span class="kw">all_numeric</span>(), <span class="op">-</span>log_gdp_per_capita, <span class="op">-</span>year) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb427-14"><a href="model_criticism.html#cb427-14"></a><span class="st">  </span><span class="kw">step_center</span>(year, <span class="dt">means =</span> <span class="dv">2005</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb427-15"><a href="model_criticism.html#cb427-15"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb427-16"><a href="model_criticism.html#cb427-16"></a><span class="st">  </span><span class="kw">bake</span>(happy)</span></code></pre></div>
 <p>Now let’s start with our baseline model again.</p>
-<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="model_criticism.html#cb427-1"></a>happy_model_base =<span class="st"> </span><span class="kw">lm</span>(</span>
-<span id="cb427-2"><a href="model_criticism.html#cb427-2"></a>  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita, </span>
-<span id="cb427-3"><a href="model_criticism.html#cb427-3"></a>  <span class="dt">data =</span> happy_processed</span>
-<span id="cb427-4"><a href="model_criticism.html#cb427-4"></a>)</span>
-<span id="cb427-5"><a href="model_criticism.html#cb427-5"></a></span>
-<span id="cb427-6"><a href="model_criticism.html#cb427-6"></a><span class="kw">summary</span>(happy_model_base)</span></code></pre></div>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb428-1"><a href="model_criticism.html#cb428-1"></a>happy_model_base =<span class="st"> </span><span class="kw">lm</span>(</span>
+<span id="cb428-2"><a href="model_criticism.html#cb428-2"></a>  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita, </span>
+<span id="cb428-3"><a href="model_criticism.html#cb428-3"></a>  <span class="dt">data =</span> happy_processed</span>
+<span id="cb428-4"><a href="model_criticism.html#cb428-4"></a>)</span>
+<span id="cb428-5"><a href="model_criticism.html#cb428-5"></a></span>
+<span id="cb428-6"><a href="model_criticism.html#cb428-6"></a><span class="kw">summary</span>(happy_model_base)</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = happiness_score ~ democratic_quality + generosity + 
@@ -1018,12 +1020,12 @@ Multiple R-squared:  0.6952,    Adjusted R-squared:  0.6929
 F-statistic: 307.8 on 3 and 405 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>We can see that moving one standard deviation on democratic quality and generosity leads to similar standard deviation increases in happiness. Moving 10 percentage points in GDP would lead to less than .1 standard deviation increase in happiness.</p>
 <p>Now we add our life expectancy and yearly trend.</p>
-<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb429-1"><a href="model_criticism.html#cb429-1"></a>happy_model_more =<span class="st"> </span><span class="kw">lm</span>(</span>
-<span id="cb429-2"><a href="model_criticism.html#cb429-2"></a>  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita <span class="op">+</span><span class="st"> </span>healthy_life_expectancy_at_birth <span class="op">+</span><span class="st"> </span>year,</span>
-<span id="cb429-3"><a href="model_criticism.html#cb429-3"></a>  <span class="dt">data =</span> happy_processed</span>
-<span id="cb429-4"><a href="model_criticism.html#cb429-4"></a>)</span>
-<span id="cb429-5"><a href="model_criticism.html#cb429-5"></a></span>
-<span id="cb429-6"><a href="model_criticism.html#cb429-6"></a><span class="kw">summary</span>(happy_model_more)</span></code></pre></div>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb430-1"><a href="model_criticism.html#cb430-1"></a>happy_model_more =<span class="st"> </span><span class="kw">lm</span>(</span>
+<span id="cb430-2"><a href="model_criticism.html#cb430-2"></a>  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita <span class="op">+</span><span class="st"> </span>healthy_life_expectancy_at_birth <span class="op">+</span><span class="st"> </span>year,</span>
+<span id="cb430-3"><a href="model_criticism.html#cb430-3"></a>  <span class="dt">data =</span> happy_processed</span>
+<span id="cb430-4"><a href="model_criticism.html#cb430-4"></a>)</span>
+<span id="cb430-5"><a href="model_criticism.html#cb430-5"></a></span>
+<span id="cb430-6"><a href="model_criticism.html#cb430-6"></a><span class="kw">summary</span>(happy_model_more)</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = happiness_score ~ democratic_quality + generosity + 
@@ -1049,8 +1051,8 @@ Residual standard error: 0.5283 on 403 degrees of freedom
 Multiple R-squared:  0.727, Adjusted R-squared:  0.7237 
 F-statistic: 214.7 on 5 and 403 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Here it would seem that life expectancy has a notable effect on happiness (shocker), but the yearly trend, while negative, is not statistically notable. In addition, the democratic effect is no longer significant, as it would seem that it’s contribution was more due to it’s correlation with life expectancy. But the key question is- is this model better?</p>
-<p>The adjusted <span class="math inline">\(R^2\)</span> seems to indicate that we are doing slightly better with this model, but not much (0.72 vs. 0.69). We can test if the increase is a statistically notable one. <a href="model_criticism.html#statistical">Recall previously</a> when we compared our model versus a null model to obtain a statistical test of model fit. Since these models are <em>nested</em>, i.e. one is a simpler form of the other, we can use the more general approach we depicted to compare these models. This ANOVA, or analysis of variance test, is essentially comparing whether the residual sum of squares (i.e. the loss) is statistically less for one model vs. the other. In many settings it is often called a <em>likelihood ratio test</em>.</p>
-<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="model_criticism.html#cb431-1"></a><span class="kw">anova</span>(happy_model_base, happy_model_more)</span></code></pre></div>
+<p>The adjusted <span class="math inline">\(R^2\)</span> seems to indicate that we are doing slightly better with this model, but not much (0.72 vs. 0.69). We can test if the increase is a statistically notable one. [Recall previously][Statistical] when we compared our model versus a null model to obtain a statistical test of model fit. Since these models are <em>nested</em>, i.e. one is a simpler form of the other, we can use the more general approach we depicted to compare these models. This ANOVA, or analysis of variance test, is essentially comparing whether the residual sum of squares (i.e. the loss) is statistically less for one model vs. the other. In many settings it is often called a <em>likelihood ratio test</em>.</p>
+<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb432-1"><a href="model_criticism.html#cb432-1"></a><span class="kw">anova</span>(happy_model_base, happy_model_more)</span></code></pre></div>
 <pre><code>Analysis of Variance Table
 
 Model 1: happiness_score ~ democratic_quality + generosity + log_gdp_per_capita
@@ -1064,10 +1066,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <p>The <code>Df</code> from the test denotes that we have two additional parameters, i.e. coefficients, in the more complex model. But the main thing to note is whether the model statistically reduces the RSS. So we see that this is a statistically notable improvement as well.</p>
 <p>I actually do not like this test though. It requires nested models, which in some settings is either not the case or can be hard to determine, and ignores various aspects of uncertainty in parameter estimates. An approach that works in many settings is to compare <em>AIC</em> (Akaike Information Criterion). AIC is a value based on the likelihood for a given model, but which adds a penalty for complexity, since otherwise any more complex model would result in a larger likelihood (or in this case, smaller negative likelihood). In the following, <span class="math inline">\(\mathcal{L}\)</span> is the likelihood, and <span class="math inline">\(\mathcal{P}\)</span> is the number of parameters estimated for the model.</p>
 <p><span class="math display">\[AIC = -2 ( \ln (\mathcal{L})) + 2 \mathcal{P}\]</span></p>
-<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="model_criticism.html#cb433-1"></a><span class="kw">AIC</span>(happy_model_base)</span></code></pre></div>
+<div class="sourceCode" id="cb434"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb434-1"><a href="model_criticism.html#cb434-1"></a><span class="kw">AIC</span>(happy_model_base)</span></code></pre></div>
 <pre><code>[1] 687.92</code></pre>
 <p>The value itself is meaningless until we compare models, in which case the lower value is the better model (because we are working with the negative log likelihood). With AIC, we don’t have to have nested models, so that’s a plus over the statistical test.</p>
-<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="model_criticism.html#cb435-1"></a><span class="kw">AIC</span>(happy_model_base, happy_model_more)</span></code></pre></div>
+<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb436-1"><a href="model_criticism.html#cb436-1"></a><span class="kw">AIC</span>(happy_model_base, happy_model_more)</span></code></pre></div>
 <pre><code>                 df      AIC
 happy_model_base  5 687.9200
 happy_model_more  7 646.7308</code></pre>
@@ -1228,14 +1230,14 @@ Difference in AIC
 <div id="example-interactions" class="section level3">
 <h3>Example: Interactions</h3>
 <p>Let’s start by adding interactions to our model. Interactions allow the relationship of a predictor variable and target to vary depending on the values of another covariate. To keep things simple, we’ll add a single interaction to start- I will interact democratic quality with life expectancy.</p>
-<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="model_criticism.html#cb437-1"></a>happy_model_interact =<span class="st"> </span><span class="kw">lm</span>(</span>
-<span id="cb437-2"><a href="model_criticism.html#cb437-2"></a>  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita <span class="op">+</span><span class="st"> </span></span>
-<span id="cb437-3"><a href="model_criticism.html#cb437-3"></a><span class="st">    </span>healthy_life_expectancy_at_birth <span class="op">+</span></span>
-<span id="cb437-4"><a href="model_criticism.html#cb437-4"></a><span class="st">    </span>democratic_quality<span class="op">:</span>healthy_life_expectancy_at_birth,</span>
-<span id="cb437-5"><a href="model_criticism.html#cb437-5"></a>  <span class="dt">data =</span> happy_processed</span>
-<span id="cb437-6"><a href="model_criticism.html#cb437-6"></a>  )</span>
-<span id="cb437-7"><a href="model_criticism.html#cb437-7"></a></span>
-<span id="cb437-8"><a href="model_criticism.html#cb437-8"></a><span class="kw">summary</span>(happy_model_interact)</span></code></pre></div>
+<div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb438-1"><a href="model_criticism.html#cb438-1"></a>happy_model_interact =<span class="st"> </span><span class="kw">lm</span>(</span>
+<span id="cb438-2"><a href="model_criticism.html#cb438-2"></a>  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita <span class="op">+</span><span class="st"> </span></span>
+<span id="cb438-3"><a href="model_criticism.html#cb438-3"></a><span class="st">    </span>healthy_life_expectancy_at_birth <span class="op">+</span></span>
+<span id="cb438-4"><a href="model_criticism.html#cb438-4"></a><span class="st">    </span>democratic_quality<span class="op">:</span>healthy_life_expectancy_at_birth,</span>
+<span id="cb438-5"><a href="model_criticism.html#cb438-5"></a>  <span class="dt">data =</span> happy_processed</span>
+<span id="cb438-6"><a href="model_criticism.html#cb438-6"></a>  )</span>
+<span id="cb438-7"><a href="model_criticism.html#cb438-7"></a></span>
+<span id="cb438-8"><a href="model_criticism.html#cb438-8"></a><span class="kw">summary</span>(happy_model_interact)</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = happiness_score ~ democratic_quality + generosity + 
@@ -1263,21 +1265,21 @@ F-statistic: 224.5 on 5 and 403 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>The coefficient interpretation for variables in the interaction model changes. For those involved in an interaction, the base coefficient now only describes the effect when the variable they interact with is zero (or is at the reference group if it’s categorical). So democratic quality has a slight positive but not statistically notable effect at the mean of life expectancy 0.028. However, this effect increases by 0.12 when life expectancy increases by 1 (i.e. 1 standard deviation). The same interpretation goes for life expectancy. It’s base coefficient is when democratic quality is at it’s mean (0.417), and the interaction term is interpreted identically.</p>
 <p>It seems most people (including journal reviewers) seem to have trouble understanding interactions if you just report them in a table. Furthermore, beyond the standard linear model with non-normal distributions, the coefficient for the interaction term doesn’t even have the same meaning. But you know what works in every setting? Visualization!</p>
 <p>Let’s use ggeffects again. We’ll plot the effect of democratic quality at the mean of life expectancy, and at one standard deviation below and above. Since we already standardized it, this is even easier.</p>
-<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="model_criticism.html#cb439-1"></a><span class="kw">library</span>(ggeffects)</span>
-<span id="cb439-2"><a href="model_criticism.html#cb439-2"></a></span>
-<span id="cb439-3"><a href="model_criticism.html#cb439-3"></a><span class="kw">plot</span>(</span>
-<span id="cb439-4"><a href="model_criticism.html#cb439-4"></a>  <span class="kw">ggpredict</span>(</span>
-<span id="cb439-5"><a href="model_criticism.html#cb439-5"></a>    happy_model_interact,</span>
-<span id="cb439-6"><a href="model_criticism.html#cb439-6"></a>    <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&#39;democratic_quality&#39;</span>, <span class="st">&#39;healthy_life_expectancy_at_birth[-1, 0, 1]&#39;</span>)</span>
-<span id="cb439-7"><a href="model_criticism.html#cb439-7"></a>  )</span>
-<span id="cb439-8"><a href="model_criticism.html#cb439-8"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="model_criticism.html#cb440-1"></a><span class="kw">library</span>(ggeffects)</span>
+<span id="cb440-2"><a href="model_criticism.html#cb440-2"></a></span>
+<span id="cb440-3"><a href="model_criticism.html#cb440-3"></a><span class="kw">plot</span>(</span>
+<span id="cb440-4"><a href="model_criticism.html#cb440-4"></a>  <span class="kw">ggpredict</span>(</span>
+<span id="cb440-5"><a href="model_criticism.html#cb440-5"></a>    happy_model_interact,</span>
+<span id="cb440-6"><a href="model_criticism.html#cb440-6"></a>    <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&#39;democratic_quality&#39;</span>, <span class="st">&#39;healthy_life_expectancy_at_birth[-1, 0, 1]&#39;</span>)</span>
+<span id="cb440-7"><a href="model_criticism.html#cb440-7"></a>  )</span>
+<span id="cb440-8"><a href="model_criticism.html#cb440-8"></a>)</span></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/vis-interact-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>We seem to have discovered something interesting here! Democratic quality only has a positive effect for those countries with a high life expectancy, i.e. that are already in a good place in general. It may even be negative in countries in the contrary case. While this has to be taken with a lot of caution, it shows how exploring interactions can be fun and surprising!</p>
 <p>Another way to plot interactions in which the variables are continuous is with a contour plot similar to this. Here we don’t have to pick arbitrary values to plot against, and can see the predictions at all values of the covariates in question.</p>
 <p><img src="img/interaction_2d.png" width="75%" style="display: block; margin: auto;" /></p>
 <p>We see the the lowest expected happiness based on the model is with high democratic quality and low life expectancy. The best case scenario is to be high on both.</p>
 <p>Here is our model comparison for all three models with AIC.</p>
-<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="model_criticism.html#cb440-1"></a><span class="kw">AIC</span>(happy_model_base, happy_model_more, happy_model_interact)</span></code></pre></div>
+<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="model_criticism.html#cb441-1"></a><span class="kw">AIC</span>(happy_model_base, happy_model_more, happy_model_interact)</span></code></pre></div>
 <pre><code>                     df      AIC
 happy_model_base      5 687.9200
 happy_model_more      7 646.7308
@@ -1287,15 +1289,15 @@ happy_model_interact  7 633.2910</code></pre>
 <div id="example-additive-models" class="section level3">
 <h3>Example: Additive Models</h3>
 <p><em>Generalized additive models</em> allow our predictors to have a <em>wiggly</em> relationship with the target variable. For more information, see <a href="https://m-clark.github.io/generalized-additive-models/">this document</a>, but for our purposes, that’s all you really need to know. We will use the base R mgcv package because it is awesome and you don’t need to install anything. In this case, we’ll allow all the covariates to have a nonlinear relationship, and we denote this with the <code>s()</code> syntax.</p>
-<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb442-1"><a href="model_criticism.html#cb442-1"></a><span class="kw">library</span>(mgcv)</span>
-<span id="cb442-2"><a href="model_criticism.html#cb442-2"></a></span>
-<span id="cb442-3"><a href="model_criticism.html#cb442-3"></a>happy_model_gam =<span class="st"> </span><span class="kw">gam</span>(</span>
-<span id="cb442-4"><a href="model_criticism.html#cb442-4"></a>  happiness_score <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(democratic_quality) <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(generosity) <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(log_gdp_per_capita) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb442-5"><a href="model_criticism.html#cb442-5"></a><span class="st">    </span><span class="kw">s</span>(healthy_life_expectancy_at_birth),</span>
-<span id="cb442-6"><a href="model_criticism.html#cb442-6"></a>  <span class="dt">data =</span> happy_processed</span>
-<span id="cb442-7"><a href="model_criticism.html#cb442-7"></a>)</span>
-<span id="cb442-8"><a href="model_criticism.html#cb442-8"></a></span>
-<span id="cb442-9"><a href="model_criticism.html#cb442-9"></a><span class="kw">summary</span>(happy_model_gam)</span></code></pre></div>
+<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="model_criticism.html#cb443-1"></a><span class="kw">library</span>(mgcv)</span>
+<span id="cb443-2"><a href="model_criticism.html#cb443-2"></a></span>
+<span id="cb443-3"><a href="model_criticism.html#cb443-3"></a>happy_model_gam =<span class="st"> </span><span class="kw">gam</span>(</span>
+<span id="cb443-4"><a href="model_criticism.html#cb443-4"></a>  happiness_score <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(democratic_quality) <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(generosity) <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(log_gdp_per_capita) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb443-5"><a href="model_criticism.html#cb443-5"></a><span class="st">    </span><span class="kw">s</span>(healthy_life_expectancy_at_birth),</span>
+<span id="cb443-6"><a href="model_criticism.html#cb443-6"></a>  <span class="dt">data =</span> happy_processed</span>
+<span id="cb443-7"><a href="model_criticism.html#cb443-7"></a>)</span>
+<span id="cb443-8"><a href="model_criticism.html#cb443-8"></a></span>
+<span id="cb443-9"><a href="model_criticism.html#cb443-9"></a><span class="kw">summary</span>(happy_model_gam)</span></code></pre></div>
 <pre><code>
 Family: gaussian 
 Link function: identity 
@@ -1320,9 +1322,9 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 R-sq.(adj) =  0.821   Deviance explained = 83.5%
 GCV = 0.19657  Scale est. = 0.18081   n = 409</code></pre>
 <p>The first thing you may notice is that there are no regression coefficients. This is because the effect of any of these predictors depends on their value, so trying to assess it by a single value would be problematic at best. You can guess what will help us interpret this…</p>
-<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="model_criticism.html#cb444-1"></a><span class="kw">library</span>(mgcViz)</span>
-<span id="cb444-2"><a href="model_criticism.html#cb444-2"></a></span>
-<span id="cb444-3"><a href="model_criticism.html#cb444-3"></a><span class="kw">plot.gamViz</span>(happy_model_gam, <span class="dt">allTerms =</span> T)</span></code></pre></div>
+<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb445-1"><a href="model_criticism.html#cb445-1"></a><span class="kw">library</span>(mgcViz)</span>
+<span id="cb445-2"><a href="model_criticism.html#cb445-2"></a></span>
+<span id="cb445-3"><a href="model_criticism.html#cb445-3"></a><span class="kw">plot.gamViz</span>(happy_model_gam, <span class="dt">allTerms =</span> T)</span></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/happy-gam-vis-show-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Here is a brief summary of interpretation. We generally don’t have to worry about small wiggles.</p>
 <ul>
@@ -1333,12 +1335,12 @@ GCV = 0.19657  Scale est. = 0.18081   n = 409</code></pre>
 </ul>
 <p>In terms of general model fit, the <code>Scale est.</code> is the same as the residual standard error (squared) in the other models, and is a notably lower than even the model with the interaction (0.18 vs. 0.27). We can also see that the adjusted <span class="math inline">\(R^2\)</span> is higher as well (0.82 vs. 0.73).</p>
 <p>Let’s check our AIC now to see which model wins.</p>
-<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb445-1"><a href="model_criticism.html#cb445-1"></a><span class="kw">AIC</span>(</span>
-<span id="cb445-2"><a href="model_criticism.html#cb445-2"></a>  happy_model_base,</span>
-<span id="cb445-3"><a href="model_criticism.html#cb445-3"></a>  happy_model_more,</span>
-<span id="cb445-4"><a href="model_criticism.html#cb445-4"></a>  happy_model_interact,</span>
-<span id="cb445-5"><a href="model_criticism.html#cb445-5"></a>  happy_model_gam</span>
-<span id="cb445-6"><a href="model_criticism.html#cb445-6"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="model_criticism.html#cb446-1"></a><span class="kw">AIC</span>(</span>
+<span id="cb446-2"><a href="model_criticism.html#cb446-2"></a>  happy_model_base,</span>
+<span id="cb446-3"><a href="model_criticism.html#cb446-3"></a>  happy_model_more,</span>
+<span id="cb446-4"><a href="model_criticism.html#cb446-4"></a>  happy_model_interact,</span>
+<span id="cb446-5"><a href="model_criticism.html#cb446-5"></a>  happy_model_gam</span>
+<span id="cb446-6"><a href="model_criticism.html#cb446-6"></a>)</span></code></pre></div>
 <pre><code>                           df      AIC
 happy_model_base      5.00000 687.9200
 happy_model_more      7.00000 646.7308
