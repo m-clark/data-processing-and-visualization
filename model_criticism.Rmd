@@ -147,14 +147,14 @@ With those predicted labels and the observed labels we create what is commonly c
 ```{r confusionMatrix, echo=FALSE}
 t1 = tibble(
   ` ` = c('Predicted = 1', 'Predicted = 0'),
-  `Actual = 1` = c(41, 16),
-  `Actual = 0` = c(21, 13)
+  `Observed = 1` = c(41, 16),
+  `Observed = 0` = c(21, 13)
 )
 
 t2 = tibble(
   ` ` = c('Predicted = 1', 'Predicted = 0'),
-  `Actual = 1` = c('A', 'C'),
-  `Actual = 0` = c('B', 'D')
+  `Observed = 1` = c('A', 'C'),
+  `Observed = 0` = c('B', 'D')
 )
 
 kable_df(list(t1, t2), align='cc') %>% 
@@ -333,12 +333,23 @@ happy_model_train = lm(
 predictions = predict(happy_model_train, newdata = happy_test)
 ```
 
-Comparing our loss on training and test (i.e. RMSE), we can see the loss is greater on the test set.  
+Comparing our loss on training and test (i.e. RMSE), we can see the loss is greater on the test set.  You can use a package like <span class="pack" style = "">yardstick</span> to calculate this.
 
 ```{r train-test-loss, echo=FALSE}
+pita = data.frame(
+  observed_train = happy_model_train$model$happiness_score,
+  predict_train  = happy_model_train$fitted.values
+)
+
+pita2 = data.frame(
+  observed_test = happy_test$happiness_score,
+  predict_test  = predictions
+)
+
+
 tibble(
-  RMSE_train = sqrt(crossprod(residuals(happy_model_train))/nrow(happy_train))[,1],
-  RMSE_test  = sqrt(crossprod(predictions - happy_test$happiness_score)/nrow(happy_test))[,1],
+  RMSE_train = yardstick::rmse(pita, truth = observed_train, estimate = predict_train)$.estimate,
+  RMSE_test = yardstick::rmse(pita2, truth = observed_test, estimate = predict_test)$.estimate,
   `% increase` = rnd(100*(RMSE_test/RMSE_train - 1), 1)
   ) %>% 
   kable_df()
@@ -373,6 +384,7 @@ happy_processed = happy %>%
   recipe(happiness_score ~ . ) %>% 
   step_center(all_numeric(), -log_gdp_per_capita, -year) %>% 
   step_scale(all_numeric(), -log_gdp_per_capita, -year) %>% 
+  step_naomit(everything()) %>% 
   step_center(year, means = 2005) %>% 
   prep() %>% 
   bake(happy)
@@ -408,7 +420,7 @@ Here it would seem that life expectancy has a notable effect on happiness (shock
 The adjusted $R^2$ seems to indicate that we are doing slightly better with this model, but not much (`r rnd(summary(happy_model_more)$adj, 2)` vs. `r rnd(summary(happy_model_base)$adj, 2)`).  We can test if the increase is a statistically notable one. [Recall previously][Statistical] when we compared our model versus a null model to obtain a statistical test of model fit.  Since these models are *nested*, i.e. one is a simpler form of the other, we can use the more general approach we depicted to compare these models.  This ANOVA, or analysis of variance test, is essentially comparing whether the residual sum of squares (i.e. the loss) is statistically less for one model vs. the other. In many settings it is often called a *likelihood ratio test*.
 
 ```{r anova-comparison}
-anova(happy_model_base, happy_model_more)
+anova(happy_model_base, happy_model_more, test = 'Chi')
 ```
 
 The `Df` from the test denotes that we have two additional parameters, i.e. coefficients, in the more complex model. But the main thing to note is whether the model statistically reduces the RSS. So we see that this is a statistically notable improvement as well.  
@@ -521,7 +533,7 @@ In this case, the more complex model may not be statistically better either, as 
 
 ### Example: Interactions
 
-Let's start by adding interactions to our model.  Interactions allow the relationship of a predictor variable and target to vary depending on the values of another covariate.  To keep things simple, we'll add a single interaction to start- I will interact democratic quality with life expectancy.
+Let's now add interactions to our model.  Interactions allow the relationship of a predictor variable and target to vary depending on the values of another covariate.  To keep things simple, we'll add a single interaction to start- I will interact democratic quality with life expectancy.
 
 ```{r happy-interact}
 happy_model_interact = lm(

@@ -41,10 +41,13 @@ Most models you see in published reports are *linear models* of varying kinds, a
 
 
 ```{r model-names, echo=FALSE}
+y = c('Dependent variable', 'Endogenous', 'Response', 'Outcome', 'Output', 'Y', 'Regressand','Left hand side (LHS)')
+
+x = c('Independent variable', 'Exogenous', 'Explanatory Variable' , 'Covariate', 'Input', 'X', 'Regressor', 'Right hand side (RHS)')
+
 tibble(
-  Type = rep(c('Target', 'Prediction'), each = 5),
-  Names = c('Dependent variable', 'Response', 'Outcome', 'Output', 'Y',
-            'Independent variable', 'Predictor', 'Covariate', 'Input', 'X')
+  Type = rep(c('Target', 'Predictor'), each = length(y)),
+  Names = c(y, x)
 ) %>% 
   kable_df() %>% 
   collapse_rows()
