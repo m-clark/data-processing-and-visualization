@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-02-24" />
+<meta name="date" content="2020-02-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -940,38 +940,6 @@ standard
 <div id="exercise-1-10" class="section level3">
 <h3>Exercise 1</h3>
 <p>Use the ranger package to predict the rating by several covariates</p>
-<pre><code>parsnip model object
-
-Fit time:  337ms 
-Ranger result
-
-Call:
- ranger::ranger(formula = formula, data = data, mtry = ~2, num.trees = ~1000,      importance = ~&quot;impurity_corrected&quot;, num.threads = 1, verbose = FALSE,      seed = sample.int(10^5, 1)) 
-
-Type:                             Regression 
-Number of trees:                  1000 
-Sample size:                      577 
-Number of independent variables:  5 
-Mtry:                             2 
-Target node size:                 5 
-Variable importance mode:         impurity_corrected 
-Splitrule:                        variance 
-OOB prediction error (MSE):       0.02288033 
-R squared (OOB):                  0.1313599 </code></pre>
-<pre><code>       type    installs     reviews    category  size_in_MB 
--0.01987112  0.09504567  0.33642712  0.42935436  0.98979860 </code></pre>
-<pre><code>            importance pvalue
-type       -0.01987112      1
-reviews     0.33642712      0
-installs    0.09504567      0
-size_in_MB  0.98979860      0
-category    0.42935436      0</code></pre>
-<pre><code>            importance     pvalue
-type       -0.01987112 0.69306931
-reviews     0.33642712 0.00990099
-installs    0.09504567 0.12871287
-size_in_MB  0.98979860 0.00990099
-category    0.42935436 0.00990099</code></pre>
 
 </div>
 </div>
