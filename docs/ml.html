@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-02-25" />
+<meta name="date" content="2020-02-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -462,10 +462,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#random-forests"><i class="fa fa-check"></i>Random Forests</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#neural-networks"><i class="fa fa-check"></i>Neural Networks</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#interpreting-the-black-box"><i class="fa fa-check"></i>Interpreting the black box</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#interpreting-the-black-box"><i class="fa fa-check"></i>Interpreting the Black Box</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-summary"><i class="fa fa-check"></i>Machine Learning Summary</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-exercises"><i class="fa fa-check"></i>Machine Learning Exercises</a><ul>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercise-1-10"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercise-2-10"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part IV: Visualization</b></span></li>
@@ -487,7 +488,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-exercises"><i class="fa fa-check"></i>ggplot2 Exercises</a><ul>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-0-3"><i class="fa fa-check"></i>Exercise 0</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-1-11"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-2-10"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-2-11"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
@@ -513,7 +514,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-visualization-exercises"><i class="fa fa-check"></i>Interactive Visualization Exercises</a><ul>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-0-4"><i class="fa fa-check"></i>Exercise 0</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-1-12"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-2-11"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-2-12"><i class="fa fa-check"></i>Exercise 2</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-3-4"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
 </ul></li>
@@ -547,7 +548,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a><ul>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-1-13"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-2-12"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-2-13"><i class="fa fa-check"></i>Exercise 2</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-exercises-2"><i class="fa fa-check"></i>Thinking exercises</a></li>
 </ul></li>
 </ul></li>
@@ -715,6 +716,12 @@ standard
 <div id="tuning-parameters" class="section level3">
 <h3>Tuning parameters</h3>
 <p>In any ML setting there are parameters that need to set in order to even run the model. In regularized regression this may be the penalty parameter, for random forests the tree depth, for neural nets, how many hidden units, and many other things. None of these <em>tuning parameters</em> is known beforehand, and so must be tuned, or learned, just like any other. This is usually done with through validation process like k-fold cross validation. The ‘best’ settings are then used to make final predictions on the test set.</p>
+<p>The usual workflow is something like the following:</p>
+<ul>
+<li><p><strong>Tuning</strong>: With the <strong>training data</strong>, use a cross-validation approach to run models with different values for tuning parameters.</p></li>
+<li><p><strong>Model Selection</strong>: Select the ‘best’ model as that which minimizes or maximizes the objective function estimated during cross-validation (e.g. RMSE, accuracy, etc.). The test data in this setting are typically referred to as <em>validation sets</em>.</p></li>
+<li><p><strong>Prediction</strong>: Use the best model to make predictions on the <strong>test set</strong>.</p></li>
+</ul>
 </div>
 </div>
 <div id="techniques" class="section level2">
@@ -726,32 +733,34 @@ standard
 In the above, this is the same squared error loss function as before, but we add a penalty that is based on the size of the coefficients. So, while initially our loss goes down with some set of estimates, the penalty based on their size might be such that the estimated loss actually increases. This has the effect of shrinking the estimates toward zero. Well, <a href="https://stats.stackexchange.com/questions/179864/why-does-shrinkage-work">why would we want that</a>? This introduces <a href="https://stats.stackexchange.com/questions/207760/when-is-a-biased-estimator-preferable-to-unbiased-one">bias in the coefficients</a>, but the end result is a model that will do better on test set prediction, which is the goal of the ML approach. The way this works regards the bias-variance tradeoff we discussed previously.</p>
 <p>The following demonstrates regularized regression using the <span class="pack" style="">glmnet</span> package. It actually uses <em>elastic net</em>, which has a mixture of two penalties, one of which is the squared sum of coefficients (typically called <em>ridge regression</em>) and the other is the sum of their absolute values (the so-called <em>lasso</em>).</p>
 <div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb449-1"><a href="ml.html#cb449-1"></a><span class="kw">library</span>(tidymodels)</span>
-<span id="cb449-2"><a href="ml.html#cb449-2"></a></span>
-<span id="cb449-3"><a href="ml.html#cb449-3"></a>happy_prepped =<span class="st"> </span>happy <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb449-4"><a href="ml.html#cb449-4"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>country) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb449-5"><a href="ml.html#cb449-5"></a><span class="st">  </span><span class="kw">recipe</span>(happiness_score <span class="op">~</span><span class="st"> </span>.) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb449-6"><a href="ml.html#cb449-6"></a><span class="st">  </span><span class="kw">step_scale</span>(<span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb449-7"><a href="ml.html#cb449-7"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb449-8"><a href="ml.html#cb449-8"></a><span class="st">  </span><span class="kw">bake</span>(happy)</span>
-<span id="cb449-9"><a href="ml.html#cb449-9"></a></span>
-<span id="cb449-10"><a href="ml.html#cb449-10"></a>happy_folds =<span class="st"> </span>happy_prepped <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb449-11"><a href="ml.html#cb449-11"></a><span class="st">  </span><span class="kw">drop_na</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb449-12"><a href="ml.html#cb449-12"></a><span class="st">  </span><span class="kw">vfold_cv</span>() </span>
-<span id="cb449-13"><a href="ml.html#cb449-13"></a></span>
-<span id="cb449-14"><a href="ml.html#cb449-14"></a><span class="kw">library</span>(tune)</span>
+<span id="cb449-2"><a href="ml.html#cb449-2"></a><span class="kw">load</span>(<span class="st">&#39;data/world_happiness.RData&#39;</span>)</span>
+<span id="cb449-3"><a href="ml.html#cb449-3"></a></span>
+<span id="cb449-4"><a href="ml.html#cb449-4"></a>happy_prepped =<span class="st"> </span>happy <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb449-5"><a href="ml.html#cb449-5"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>country, <span class="op">-</span>gini_index_world_bank_estimate, <span class="op">-</span>dystopia_residual) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb449-6"><a href="ml.html#cb449-6"></a><span class="st">  </span><span class="kw">recipe</span>(happiness_score <span class="op">~</span><span class="st"> </span>.) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb449-7"><a href="ml.html#cb449-7"></a><span class="st">  </span><span class="kw">step_scale</span>(<span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb449-8"><a href="ml.html#cb449-8"></a><span class="st">  </span><span class="kw">step_naomit</span>(happiness_score) <span class="op">%&gt;%</span></span>
+<span id="cb449-9"><a href="ml.html#cb449-9"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb449-10"><a href="ml.html#cb449-10"></a><span class="st">  </span><span class="kw">bake</span>(happy) </span>
+<span id="cb449-11"><a href="ml.html#cb449-11"></a></span>
+<span id="cb449-12"><a href="ml.html#cb449-12"></a>happy_folds =<span class="st"> </span>happy_prepped <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb449-13"><a href="ml.html#cb449-13"></a><span class="st">  </span><span class="kw">drop_na</span>() <span class="op">%&gt;%</span></span>
+<span id="cb449-14"><a href="ml.html#cb449-14"></a><span class="st">  </span><span class="kw">vfold_cv</span>() </span>
 <span id="cb449-15"><a href="ml.html#cb449-15"></a></span>
-<span id="cb449-16"><a href="ml.html#cb449-16"></a>happy_regLM_spec =<span class="st"> </span><span class="kw">linear_reg</span>(<span class="dt">penalty =</span> <span class="fl">1e-3</span>, <span class="dt">mixture =</span> <span class="dv">0</span>) <span class="op">%&gt;%</span></span>
-<span id="cb449-17"><a href="ml.html#cb449-17"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;glmnet&quot;</span>)</span>
-<span id="cb449-18"><a href="ml.html#cb449-18"></a></span>
-<span id="cb449-19"><a href="ml.html#cb449-19"></a>happy_regLM_results =<span class="st"> </span><span class="kw">fit_resamples</span>(</span>
-<span id="cb449-20"><a href="ml.html#cb449-20"></a>  happiness_score <span class="op">~</span><span class="st"> </span>.,</span>
-<span id="cb449-21"><a href="ml.html#cb449-21"></a>  happy_regLM_spec,</span>
-<span id="cb449-22"><a href="ml.html#cb449-22"></a>  happy_folds,</span>
-<span id="cb449-23"><a href="ml.html#cb449-23"></a>  <span class="dt">control =</span> <span class="kw">control_resamples</span>(<span class="dt">save_pred =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb449-24"><a href="ml.html#cb449-24"></a>)</span>
-<span id="cb449-25"><a href="ml.html#cb449-25"></a></span>
-<span id="cb449-26"><a href="ml.html#cb449-26"></a>cv_regLM_res =<span class="st"> </span>happy_regLM_results <span class="op">%&gt;%</span></span>
-<span id="cb449-27"><a href="ml.html#cb449-27"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span></code></pre></div>
+<span id="cb449-16"><a href="ml.html#cb449-16"></a><span class="kw">library</span>(tune)</span>
+<span id="cb449-17"><a href="ml.html#cb449-17"></a></span>
+<span id="cb449-18"><a href="ml.html#cb449-18"></a>happy_regLM_spec =<span class="st"> </span><span class="kw">linear_reg</span>(<span class="dt">penalty =</span> <span class="fl">1e-3</span>, <span class="dt">mixture =</span> <span class="fl">.5</span>) <span class="op">%&gt;%</span></span>
+<span id="cb449-19"><a href="ml.html#cb449-19"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;glmnet&quot;</span>)</span>
+<span id="cb449-20"><a href="ml.html#cb449-20"></a></span>
+<span id="cb449-21"><a href="ml.html#cb449-21"></a>happy_regLM_results =<span class="st"> </span><span class="kw">fit_resamples</span>(</span>
+<span id="cb449-22"><a href="ml.html#cb449-22"></a>  happiness_score <span class="op">~</span><span class="st"> </span>.,</span>
+<span id="cb449-23"><a href="ml.html#cb449-23"></a>  happy_regLM_spec,</span>
+<span id="cb449-24"><a href="ml.html#cb449-24"></a>  happy_folds,</span>
+<span id="cb449-25"><a href="ml.html#cb449-25"></a>  <span class="dt">control =</span> <span class="kw">control_resamples</span>(<span class="dt">save_pred =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb449-26"><a href="ml.html#cb449-26"></a>)</span>
+<span id="cb449-27"><a href="ml.html#cb449-27"></a></span>
+<span id="cb449-28"><a href="ml.html#cb449-28"></a>cv_regLM_res =<span class="st"> </span>happy_regLM_results <span class="op">%&gt;%</span></span>
+<span id="cb449-29"><a href="ml.html#cb449-29"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -809,6 +818,114 @@ standard
 </tr>
 </tbody>
 </table>
+<div id="tuning-parameters-1" class="section level4">
+<h4>Tuning parameters</h4>
+<p>For the previous model setting, we wouldn’t know what the penalty or the mixing parameter should be. This is where we can use cross validation to choose those. We’ll redo our model spec, create a set of values to search over, and pass that to the tuning function for cross-validation. Our ultimate model will then be applied to the test data.</p>
+<p>First we create our training-test split.</p>
+<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb450-1"><a href="ml.html#cb450-1"></a><span class="co"># removing some variables with lots of missing values</span></span>
+<span id="cb450-2"><a href="ml.html#cb450-2"></a>happy_split =<span class="st"> </span>happy <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb450-3"><a href="ml.html#cb450-3"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>country, <span class="op">-</span>gini_index_world_bank_estimate, <span class="op">-</span>dystopia_residual) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb450-4"><a href="ml.html#cb450-4"></a><span class="st">  </span><span class="kw">initial_split</span>(<span class="dt">prop =</span> <span class="fl">0.75</span>)</span>
+<span id="cb450-5"><a href="ml.html#cb450-5"></a></span>
+<span id="cb450-6"><a href="ml.html#cb450-6"></a>happy_train =<span class="st"> </span><span class="kw">training</span>(happy_split)</span>
+<span id="cb450-7"><a href="ml.html#cb450-7"></a>happy_test  =<span class="st"> </span><span class="kw">testing</span>(happy_split)</span></code></pre></div>
+<p>Next we process the data. This is all specific to the <span class="pack" style="">tidymodels</span> approach.</p>
+<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb451-1"><a href="ml.html#cb451-1"></a>happy_prepped =<span class="st"> </span>happy_train <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb451-2"><a href="ml.html#cb451-2"></a><span class="st">  </span><span class="kw">recipe</span>(happiness_score <span class="op">~</span><span class="st"> </span>.) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb451-3"><a href="ml.html#cb451-3"></a><span class="st">  </span><span class="kw">step_knnimpute</span>(<span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st">    </span><span class="co"># impute missing values</span></span>
+<span id="cb451-4"><a href="ml.html#cb451-4"></a><span class="st">  </span><span class="kw">step_center</span>(<span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># standardize</span></span>
+<span id="cb451-5"><a href="ml.html#cb451-5"></a><span class="st">  </span><span class="kw">step_scale</span>(<span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st">        </span><span class="co"># standardize</span></span>
+<span id="cb451-6"><a href="ml.html#cb451-6"></a><span class="st">  </span><span class="kw">prep</span>()                              <span class="co"># prepare for other uses</span></span>
+<span id="cb451-7"><a href="ml.html#cb451-7"></a></span>
+<span id="cb451-8"><a href="ml.html#cb451-8"></a>happy_test_normalized &lt;-<span class="st"> </span><span class="kw">bake</span>(happy_prepped, <span class="dt">new_data =</span> happy_test, <span class="kw">all_predictors</span>())</span>
+<span id="cb451-9"><a href="ml.html#cb451-9"></a></span>
+<span id="cb451-10"><a href="ml.html#cb451-10"></a>happy_folds =<span class="st"> </span>happy_prepped <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb451-11"><a href="ml.html#cb451-11"></a><span class="st">  </span><span class="kw">bake</span>(happy) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb451-12"><a href="ml.html#cb451-12"></a><span class="st">  </span><span class="kw">vfold_cv</span>() </span>
+<span id="cb451-13"><a href="ml.html#cb451-13"></a></span>
+<span id="cb451-14"><a href="ml.html#cb451-14"></a><span class="co"># now we are indicating we don&#39;t know the value to place</span></span>
+<span id="cb451-15"><a href="ml.html#cb451-15"></a>happy_regLM_spec =<span class="st"> </span><span class="kw">linear_reg</span>(<span class="dt">penalty =</span> <span class="kw">tune</span>(), <span class="dt">mixture =</span> <span class="kw">tune</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb451-16"><a href="ml.html#cb451-16"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;glmnet&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="ml.html#cb452-1"></a>grid_search =<span class="st"> </span><span class="kw">expand.grid</span>(</span>
+<span id="cb452-2"><a href="ml.html#cb452-2"></a>  <span class="dt">penalty =</span> <span class="kw">exp</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">4</span>,<span class="op">-</span>.<span class="dv">5</span>, <span class="dt">length.out =</span> <span class="dv">10</span>)),</span>
+<span id="cb452-3"><a href="ml.html#cb452-3"></a>  <span class="dt">mixture =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">length.out =</span> <span class="dv">10</span>)</span>
+<span id="cb452-4"><a href="ml.html#cb452-4"></a>)</span>
+<span id="cb452-5"><a href="ml.html#cb452-5"></a></span>
+<span id="cb452-6"><a href="ml.html#cb452-6"></a>regLM_tune =<span class="st"> </span><span class="kw">tune_grid</span>(</span>
+<span id="cb452-7"><a href="ml.html#cb452-7"></a>  happy_prepped,</span>
+<span id="cb452-8"><a href="ml.html#cb452-8"></a>  <span class="dt">model =</span> happy_regLM_spec,</span>
+<span id="cb452-9"><a href="ml.html#cb452-9"></a>  <span class="dt">resamples =</span> happy_folds,</span>
+<span id="cb452-10"><a href="ml.html#cb452-10"></a>  <span class="dt">grid =</span> grid_search</span>
+<span id="cb452-11"><a href="ml.html#cb452-11"></a>)</span>
+<span id="cb452-12"><a href="ml.html#cb452-12"></a></span>
+<span id="cb452-13"><a href="ml.html#cb452-13"></a>best =<span class="st"> </span><span class="kw">show_best</span>(regLM_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>, <span class="dt">maximize =</span> <span class="ot">FALSE</span>, <span class="dt">n =</span> <span class="dv">1</span>) <span class="co"># we want to minimize rmse</span></span>
+<span id="cb452-14"><a href="ml.html#cb452-14"></a></span>
+<span id="cb452-15"><a href="ml.html#cb452-15"></a>best</span></code></pre></div>
+<pre><code># A tibble: 1 x 7
+  penalty mixture .metric .estimator  mean     n std_err
+    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+1  0.0868       1 rmse    standard   0.382    10  0.0112</code></pre>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="ml.html#cb454-1"></a><span class="kw">autoplot</span>(regLM_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span></code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/regLM-tune-model-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p>With the ‘best’ model, we can refit to the training data with the parameters in hand. We can then do our usual performance assessment with the test set.</p>
+<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb455-1"><a href="ml.html#cb455-1"></a><span class="co"># for technical reasons, only mixture is passed to the model; see https://github.com/tidymodels/parsnip/issues/215</span></span>
+<span id="cb455-2"><a href="ml.html#cb455-2"></a>tuned_model =<span class="st"> </span><span class="kw">linear_reg</span>(<span class="dt">penalty =</span> best<span class="op">$</span>penalty, <span class="dt">mixture =</span> best<span class="op">$</span>mixture) <span class="op">%&gt;%</span></span>
+<span id="cb455-3"><a href="ml.html#cb455-3"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;glmnet&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb455-4"><a href="ml.html#cb455-4"></a><span class="st">  </span><span class="kw">fit</span>(happiness_score <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> <span class="kw">juice</span>(happy_prepped))</span>
+<span id="cb455-5"><a href="ml.html#cb455-5"></a></span>
+<span id="cb455-6"><a href="ml.html#cb455-6"></a>test_predictions =<span class="st"> </span><span class="kw">predict</span>(tuned_model, <span class="dt">new_data =</span> happy_test_normalized)</span>
+<span id="cb455-7"><a href="ml.html#cb455-7"></a></span>
+<span id="cb455-8"><a href="ml.html#cb455-8"></a>rmse =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rmse</span>(</span>
+<span id="cb455-9"><a href="ml.html#cb455-9"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, happy_test),</span>
+<span id="cb455-10"><a href="ml.html#cb455-10"></a>  <span class="dt">truth =</span> happiness_score,</span>
+<span id="cb455-11"><a href="ml.html#cb455-11"></a>  <span class="dt">estimate =</span> .pred</span>
+<span id="cb455-12"><a href="ml.html#cb455-12"></a>)</span>
+<span id="cb455-13"><a href="ml.html#cb455-13"></a></span>
+<span id="cb455-14"><a href="ml.html#cb455-14"></a>rsq =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rsq</span>(</span>
+<span id="cb455-15"><a href="ml.html#cb455-15"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, happy_test),</span>
+<span id="cb455-16"><a href="ml.html#cb455-16"></a>  <span class="dt">truth =</span> happiness_score,</span>
+<span id="cb455-17"><a href="ml.html#cb455-17"></a>  <span class="dt">estimate =</span> .pred</span>
+<span id="cb455-18"><a href="ml.html#cb455-18"></a>)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+.metric
+</th>
+<th style="text-align:left;">
+.estimator
+</th>
+<th style="text-align:right;">
+.estimate
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+rmse
+</td>
+<td style="text-align:left;">
+standard
+</td>
+<td style="text-align:right;">
+5.33
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rsq
+</td>
+<td style="text-align:left;">
+standard
+</td>
+<td style="text-align:right;">
+0.91
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="random-forests" class="section level3">
 <h3>Random Forests</h3>
@@ -816,19 +933,18 @@ standard
 <p>Now let’s add a second input (<code>X2</code>), also on a 1 to 10 range. We now might find that even better classification results if, upon looking at the portion of data regarding those greater than or equal to 5.75, that we only classify positive if they are also less than 3 on the second variable. The following is a hypothetical tree reflecting this.</p>
 <p><img src="img/tree1.png" width="25%" style="display: block; margin: auto;" /></p>
 <p>This tree structure allows for both interactions between variables, and nonlinear relationships between some input and the target variable (e.g. the second branch could just be the same <code>X1</code> but with some cut value greater than 5.75). Random forests randomly select a few from the available input variables, and create a tree that minimizes (maximizes) some loss (objective) function on a validation set. A given tree can potentially be very wide/deep, but instead of just one tree, we now do, say, 1000 trees. A final prediction is made based on the average across all trees.</p>
-<p>We demonstrate the random forest using the ranger package. We don’t do any tuning here, but do note that the number of variables to randomly select (<code>mtry</code> below), the number of total trees, the tree depth - all of these are potential tuning parameters to investigate in the model building process.</p>
-<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb450-1"><a href="ml.html#cb450-1"></a>happy_rf_spec =<span class="st"> </span><span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>, <span class="dt">mtry =</span> <span class="dv">6</span>) <span class="op">%&gt;%</span></span>
-<span id="cb450-2"><a href="ml.html#cb450-2"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;ranger&quot;</span>)</span>
-<span id="cb450-3"><a href="ml.html#cb450-3"></a></span>
-<span id="cb450-4"><a href="ml.html#cb450-4"></a>happy_rf_results =<span class="st"> </span><span class="kw">fit_resamples</span>(</span>
-<span id="cb450-5"><a href="ml.html#cb450-5"></a>  happiness_score <span class="op">~</span><span class="st"> </span>.,</span>
-<span id="cb450-6"><a href="ml.html#cb450-6"></a>  happy_rf_spec,</span>
-<span id="cb450-7"><a href="ml.html#cb450-7"></a>  happy_folds,</span>
-<span id="cb450-8"><a href="ml.html#cb450-8"></a>  <span class="dt">control =</span> <span class="kw">control_resamples</span>(<span class="dt">save_pred =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb450-9"><a href="ml.html#cb450-9"></a>)</span>
-<span id="cb450-10"><a href="ml.html#cb450-10"></a></span>
-<span id="cb450-11"><a href="ml.html#cb450-11"></a>cv_rf_res =<span class="st"> </span>happy_rf_results <span class="op">%&gt;%</span></span>
-<span id="cb450-12"><a href="ml.html#cb450-12"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span></code></pre></div>
+<p>We demonstrate the random forest using the ranger package. We initially don’t do any tuning here, but do note that the number of variables to randomly select (<code>mtry</code> below), the number of total trees, the tree depth - all of these are potential tuning parameters to investigate in the model building process.</p>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="ml.html#cb456-1"></a>happy_rf_spec =<span class="st"> </span><span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>, <span class="dt">mtry =</span> <span class="dv">6</span>) <span class="op">%&gt;%</span></span>
+<span id="cb456-2"><a href="ml.html#cb456-2"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;ranger&quot;</span>)</span>
+<span id="cb456-3"><a href="ml.html#cb456-3"></a></span>
+<span id="cb456-4"><a href="ml.html#cb456-4"></a>happy_rf_results =<span class="st"> </span><span class="kw">fit_resamples</span>(</span>
+<span id="cb456-5"><a href="ml.html#cb456-5"></a>  happiness_score <span class="op">~</span><span class="st"> </span>.,</span>
+<span id="cb456-6"><a href="ml.html#cb456-6"></a>  happy_rf_spec,</span>
+<span id="cb456-7"><a href="ml.html#cb456-7"></a>  happy_folds</span>
+<span id="cb456-8"><a href="ml.html#cb456-8"></a>)</span>
+<span id="cb456-9"><a href="ml.html#cb456-9"></a></span>
+<span id="cb456-10"><a href="ml.html#cb456-10"></a>cv_rf_res =<span class="st"> </span>happy_rf_results <span class="op">%&gt;%</span></span>
+<span id="cb456-11"><a href="ml.html#cb456-11"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -886,37 +1002,177 @@ standard
 </tr>
 </tbody>
 </table>
+<p>It would appear we’re doing a bit better than the regularized regression.</p>
+<div id="tuning-parameters-2" class="section level4">
+<h4>Tuning parameters</h4>
+<p>As mentioned, we’d have a few tuning parameters to play around with. We’ll tune the number of predictors to randomly select per tree, as well as the minimum sample size for each leaf. The following takes the same appraoch as with the regularized regression model. Note that this will take a while (several minutes).</p>
+<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb457-1"><a href="ml.html#cb457-1"></a>grid_search =<span class="st"> </span><span class="kw">expand.grid</span>(</span>
+<span id="cb457-2"><a href="ml.html#cb457-2"></a>  <span class="dt">mtry =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="kw">ncol</span>(happy_train)<span class="op">-</span><span class="dv">1</span>),  <span class="co"># up to total number of predictors </span></span>
+<span id="cb457-3"><a href="ml.html#cb457-3"></a>  <span class="dt">min_n =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">10</span>)</span>
+<span id="cb457-4"><a href="ml.html#cb457-4"></a>)</span>
+<span id="cb457-5"><a href="ml.html#cb457-5"></a></span>
+<span id="cb457-6"><a href="ml.html#cb457-6"></a>happy_rf_spec =<span class="st"> </span><span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>,</span>
+<span id="cb457-7"><a href="ml.html#cb457-7"></a>                            <span class="dt">mtry =</span> <span class="kw">tune</span>(),</span>
+<span id="cb457-8"><a href="ml.html#cb457-8"></a>                            <span class="dt">min_n =</span> <span class="kw">tune</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb457-9"><a href="ml.html#cb457-9"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;ranger&quot;</span>)</span>
+<span id="cb457-10"><a href="ml.html#cb457-10"></a></span>
+<span id="cb457-11"><a href="ml.html#cb457-11"></a>rf_tune =<span class="st"> </span><span class="kw">tune_grid</span>(</span>
+<span id="cb457-12"><a href="ml.html#cb457-12"></a>  happy_prepped,</span>
+<span id="cb457-13"><a href="ml.html#cb457-13"></a>  <span class="dt">model =</span> happy_rf_spec,</span>
+<span id="cb457-14"><a href="ml.html#cb457-14"></a>  <span class="dt">resamples =</span> happy_folds,</span>
+<span id="cb457-15"><a href="ml.html#cb457-15"></a>  <span class="dt">grid =</span> grid_search</span>
+<span id="cb457-16"><a href="ml.html#cb457-16"></a>)</span>
+<span id="cb457-17"><a href="ml.html#cb457-17"></a></span>
+<span id="cb457-18"><a href="ml.html#cb457-18"></a>best =<span class="st"> </span><span class="kw">show_best</span>(rf_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>, <span class="dt">maximize =</span> <span class="ot">FALSE</span>, <span class="dt">n =</span> <span class="dv">1</span>) <span class="co"># we want to minimize rmse</span></span>
+<span id="cb457-19"><a href="ml.html#cb457-19"></a>best</span></code></pre></div>
+<pre><code># A tibble: 1 x 7
+   mtry min_n .metric .estimator  mean     n std_err
+  &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+1    13    10 rmse    standard    3.54    10  0.0207</code></pre>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb459-1"><a href="ml.html#cb459-1"></a><span class="kw">autoplot</span>(rf_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span></code></pre></div>
+<p><img src="data-processing-and-visualization_files/figure-html/rf-tune-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p>Now we are ready to refit the model with the selected tuning parameters and make predictions on the test data.</p>
+<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb460-1"><a href="ml.html#cb460-1"></a>tuned_model =<span class="st"> </span><span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>, <span class="dt">mtry =</span> best<span class="op">$</span>mtry, <span class="dt">min_n =</span> best<span class="op">$</span>min_n) <span class="op">%&gt;%</span></span>
+<span id="cb460-2"><a href="ml.html#cb460-2"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;ranger&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb460-3"><a href="ml.html#cb460-3"></a><span class="st">  </span><span class="kw">fit</span>(happiness_score <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> <span class="kw">juice</span>(happy_prepped))</span>
+<span id="cb460-4"><a href="ml.html#cb460-4"></a></span>
+<span id="cb460-5"><a href="ml.html#cb460-5"></a>test_predictions =<span class="st"> </span><span class="kw">predict</span>(tuned_model, <span class="dt">new_data =</span> happy_test_normalized)</span>
+<span id="cb460-6"><a href="ml.html#cb460-6"></a></span>
+<span id="cb460-7"><a href="ml.html#cb460-7"></a>rmse =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rmse</span>(</span>
+<span id="cb460-8"><a href="ml.html#cb460-8"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, happy_test),</span>
+<span id="cb460-9"><a href="ml.html#cb460-9"></a>  <span class="dt">truth =</span> happiness_score,</span>
+<span id="cb460-10"><a href="ml.html#cb460-10"></a>  <span class="dt">estimate =</span> .pred</span>
+<span id="cb460-11"><a href="ml.html#cb460-11"></a>)</span>
+<span id="cb460-12"><a href="ml.html#cb460-12"></a></span>
+<span id="cb460-13"><a href="ml.html#cb460-13"></a>rsq =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rsq</span>(</span>
+<span id="cb460-14"><a href="ml.html#cb460-14"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, happy_test),</span>
+<span id="cb460-15"><a href="ml.html#cb460-15"></a>  <span class="dt">truth =</span> happiness_score,</span>
+<span id="cb460-16"><a href="ml.html#cb460-16"></a>  <span class="dt">estimate =</span> .pred</span>
+<span id="cb460-17"><a href="ml.html#cb460-17"></a>)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+.metric
+</th>
+<th style="text-align:left;">
+.estimator
+</th>
+<th style="text-align:right;">
+.estimate
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+rmse
+</td>
+<td style="text-align:left;">
+standard
+</td>
+<td style="text-align:right;">
+5.35
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rsq
+</td>
+<td style="text-align:left;">
+standard
+</td>
+<td style="text-align:right;">
+0.93
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="neural-networks" class="section level3">
 <h3>Neural Networks</h3>
 <p><em>Neural networks</em> have been around for a long while as a general concept in artificial intelligence and even as a machine learning algorithm, and often work quite well. In some sense, neural networks can simply be thought of as nonlinear regression. Visually however, we can see them as a graphical model with layers of inputs and outputs. Weighted combinations of the inputs are created<a href="#fn40" class="footnote-ref" id="fnref40"><sup>40</sup></a> and put through some function (e.g. the sigmoid function) to produce the next layer of inputs. This next layer goes through the same process to produce either another layer, or to predict the output, or even multiple outputs, which serves as the final layer. All the layers between the input and output are usually referred to as hidden layers. If there were a single hidden layer with a single unit and no transformation, then it becomes the standard regression problem.</p>
 <p><img src="img/nnet.png" width="50%" style="display: block; margin: auto;" /></p>
-<p>As a simple example, we can run a simple neural network with a single hidden layer of 1000 units<a href="#fn41" class="footnote-ref" id="fnref41"><sup>41</sup></a>. Since this is a regression problem, no further transformation is required of the end result to map it onto the target variable. I set the number of epochs to 500, which you can think of as the number of iterations from our discussion of optimization. There are many tuning parameters I am not showing that could certainly be fiddled with as well. This is just an example that will run quickly with comparable performance to the previous. If you do not have <span class="pack" style="">keras</span> installed, you can change the engine to <code>nnet</code>, which was a part of the base R set of packages well before neural nets became cool again<a href="#fn42" class="footnote-ref" id="fnref42"><sup>42</sup></a>.</p>
-<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb451-1"><a href="ml.html#cb451-1"></a>happy_nn_spec =<span class="st"> </span><span class="kw">mlp</span>(</span>
-<span id="cb451-2"><a href="ml.html#cb451-2"></a>  <span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>,</span>
-<span id="cb451-3"><a href="ml.html#cb451-3"></a>  <span class="dt">hidden_units =</span> <span class="dv">1000</span>,</span>
-<span id="cb451-4"><a href="ml.html#cb451-4"></a>  <span class="dt">epochs =</span> <span class="dv">500</span>,</span>
-<span id="cb451-5"><a href="ml.html#cb451-5"></a>  <span class="dt">activation =</span> <span class="st">&#39;linear&#39;</span></span>
-<span id="cb451-6"><a href="ml.html#cb451-6"></a>) <span class="op">%&gt;%</span></span>
-<span id="cb451-7"><a href="ml.html#cb451-7"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;keras&quot;</span>)</span>
-<span id="cb451-8"><a href="ml.html#cb451-8"></a></span>
-<span id="cb451-9"><a href="ml.html#cb451-9"></a>happy_nn_results =<span class="st"> </span><span class="kw">fit_resamples</span>(</span>
-<span id="cb451-10"><a href="ml.html#cb451-10"></a>  happiness_score <span class="op">~</span><span class="st"> </span>.,</span>
-<span id="cb451-11"><a href="ml.html#cb451-11"></a>  happy_nn_spec,</span>
-<span id="cb451-12"><a href="ml.html#cb451-12"></a>  happy_folds,</span>
-<span id="cb451-13"><a href="ml.html#cb451-13"></a>  <span class="dt">control =</span> <span class="kw">control_resamples</span>(<span class="dt">save_pred =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb451-14"><a href="ml.html#cb451-14"></a>                              <span class="dt">verbose =</span> <span class="ot">FALSE</span>,</span>
-<span id="cb451-15"><a href="ml.html#cb451-15"></a>                              <span class="dt">allow_par =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb451-16"><a href="ml.html#cb451-16"></a>)</span>
-<span id="cb451-17"><a href="ml.html#cb451-17"></a></span>
-<span id="cb451-18"><a href="ml.html#cb451-18"></a>cv_nn_res =<span class="st"> </span>happy_nn_results <span class="op">%&gt;%</span></span>
-<span id="cb451-19"><a href="ml.html#cb451-19"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span></code></pre></div>
-<pre><code># A tibble: 2 x 5
-  .metric .estimator  mean     n std_err
-  &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
-1 rmse    standard   0.518    10 0.136  
-2 rsq     standard   0.967    10 0.00821</code></pre>
+<p>As a simple example, we can run a simple neural network with a single hidden layer of 1000 units<a href="#fn41" class="footnote-ref" id="fnref41"><sup>41</sup></a>. Since this is a regression problem, no further transformation is required of the end result to map it onto the target variable. I set the number of epochs to 500, which you can think of as the number of iterations from our discussion of optimization. There are many tuning parameters I am not showing that could certainly be fiddled with as well. This is just an example that will run quickly with comparable performance to the previous. If you do not have <span class="pack" style="">keras</span> installed, you can change the engine to <code>nnet</code>, which was a part of the base R set of packages well before neural nets became cool again<a href="#fn42" class="footnote-ref" id="fnref42"><sup>42</sup></a>. This will likely take several minutes for typical machines.</p>
+<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb461-1"><a href="ml.html#cb461-1"></a>happy_nn_spec =<span class="st"> </span><span class="kw">mlp</span>(</span>
+<span id="cb461-2"><a href="ml.html#cb461-2"></a>  <span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>,</span>
+<span id="cb461-3"><a href="ml.html#cb461-3"></a>  <span class="dt">hidden_units =</span> <span class="dv">1000</span>,</span>
+<span id="cb461-4"><a href="ml.html#cb461-4"></a>  <span class="dt">epochs =</span> <span class="dv">500</span>,</span>
+<span id="cb461-5"><a href="ml.html#cb461-5"></a>  <span class="dt">activation =</span> <span class="st">&#39;linear&#39;</span></span>
+<span id="cb461-6"><a href="ml.html#cb461-6"></a>) <span class="op">%&gt;%</span></span>
+<span id="cb461-7"><a href="ml.html#cb461-7"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;keras&quot;</span>)</span>
+<span id="cb461-8"><a href="ml.html#cb461-8"></a></span>
+<span id="cb461-9"><a href="ml.html#cb461-9"></a>happy_nn_results =<span class="st"> </span><span class="kw">fit_resamples</span>(</span>
+<span id="cb461-10"><a href="ml.html#cb461-10"></a>  happiness_score <span class="op">~</span><span class="st"> </span>.,</span>
+<span id="cb461-11"><a href="ml.html#cb461-11"></a>  happy_nn_spec,</span>
+<span id="cb461-12"><a href="ml.html#cb461-12"></a>  happy_folds,</span>
+<span id="cb461-13"><a href="ml.html#cb461-13"></a>  <span class="dt">control =</span> <span class="kw">control_resamples</span>(<span class="dt">save_pred =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb461-14"><a href="ml.html#cb461-14"></a>                              <span class="dt">verbose   =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb461-15"><a href="ml.html#cb461-15"></a>                              <span class="dt">allow_par =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb461-16"><a href="ml.html#cb461-16"></a>)</span>
+<span id="cb461-17"><a href="ml.html#cb461-17"></a></span>
+<span id="cb461-18"><a href="ml.html#cb461-18"></a>cv_nn_res =<span class="st"> </span>happy_nn_results <span class="op">%&gt;%</span></span>
+<span id="cb461-19"><a href="ml.html#cb461-19"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+.metric
+</th>
+<th style="text-align:left;">
+.estimator
+</th>
+<th style="text-align:right;">
+mean
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+std_err
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+rmse
+</td>
+<td style="text-align:left;">
+standard
+</td>
+<td style="text-align:right;">
+0.29
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rsq
+</td>
+<td style="text-align:left;">
+standard
+</td>
+<td style="text-align:right;">
+0.92
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+</tr>
+</tbody>
+</table>
 <p>You will typically see neural nets applied to image and natural language processing, but as demonstrated above, they can be applied in any scenario. It will take longer to set up and train, but once that’s done, you’re good to go, and may have a much better predictive result.</p>
+<p>I leave tuning the model as an [exercise][machine-learning-exercises], but definitely switch to using <code>nnet</code> if you do so, otherwise you’ll have to install keras (both for R and Python) and be waiting a long time besides. As mentioned, the <span style="">nnet</span> package is in base R, so you already have it.</p>
 <div id="deep-learning" class="section level4">
 <h4>Deep Learning</h4>
 <p><em>Deep learning</em> can be summarized succinctly as ‘very complicated neural nets’. Really, that’s about it. The complexity can be quite tremendous however, and there is a wide variety from which to choose. For example, we just ran a basic neural net above, but for image processing we might use a convolutional neural network, and for natural language processing some LTSM model. Here is a small(!) version of the convolutional neural network known as ‘resnet’ which has many layers in between input and output.</p>
@@ -927,7 +1183,7 @@ standard
 </div>
 </div>
 <div id="interpreting-the-black-box" class="section level2">
-<h2>Interpreting the black box</h2>
+<h2>Interpreting the Black Box</h2>
 <p>One of the key issues with ML techniques is interpretability. While a decision tree is immensely interpretable, a thousand of them is not so much. What any particular node or even layer in a complex neural network represents may be difficult to fathom. However, we can still interpret prediction changes based on input changes, which is what we really care about, and really is not necessarily more difficult than our standard inferential setting.</p>
 <p>For example, a regularized regression might not have straightforward inference, but the coefficients are interpreted exactly the same as a standard GLM. Random forests can have the interactions visualized, which is what we said was required for interpretation in standard settings. Furthermore, there are many approaches such as <em>Local Interpretable Model-Agnostic Explanations</em> (LIME), variable importance measures, Shapley values, and more to help us in this process. It might take more work, but honestly, in my consulting experience, a great many have trouble interpreting anything beyond a standard linear model any way, and I’m not convinced that it’s fundamentally different problem to <a href="https://christophm.github.io/interpretable-ml-book/">extract meaning from the machine learning context</a> these days, though it may take a little work.</p>
 </div>
@@ -939,7 +1195,66 @@ standard
 <h2>Machine Learning Exercises</h2>
 <div id="exercise-1-10" class="section level3">
 <h3>Exercise 1</h3>
-<p>Use the ranger package to predict the rating by several covariates</p>
+<p>Use the <span class="pack" style="">ranger</span> package to predict the rating by several covariates. Feel free to just use the standard function approach rather than all the tidymodels stuff, but do use a training and test appraoch. You can then try the model again with a different tuning.</p>
+<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb462-1"><a href="ml.html#cb462-1"></a><span class="kw">load</span>(<span class="st">&#39;data/google_apps.RData&#39;</span>)</span>
+<span id="cb462-2"><a href="ml.html#cb462-2"></a></span>
+<span id="cb462-3"><a href="ml.html#cb462-3"></a>google_for_mod =<span class="st"> </span>google_apps <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb462-4"><a href="ml.html#cb462-4"></a><span class="st">  </span><span class="kw">select</span>(avg_sentiment_polarity, rating, type,installs, reviews, size_in_MB, category) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb462-5"><a href="ml.html#cb462-5"></a><span class="st">  </span><span class="kw">drop_na</span>()</span>
+<span id="cb462-6"><a href="ml.html#cb462-6"></a></span>
+<span id="cb462-7"><a href="ml.html#cb462-7"></a>google_split =<span class="st"> </span>google_for_mod <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb462-8"><a href="ml.html#cb462-8"></a><span class="st">  </span><span class="kw">initial_split</span>(<span class="dt">prop =</span> <span class="fl">0.75</span>)</span>
+<span id="cb462-9"><a href="ml.html#cb462-9"></a></span>
+<span id="cb462-10"><a href="ml.html#cb462-10"></a>google_train =<span class="st"> </span><span class="kw">training</span>(google_split)</span>
+<span id="cb462-11"><a href="ml.html#cb462-11"></a>google_test  =<span class="st"> </span><span class="kw">testing</span>(google_split)</span>
+<span id="cb462-12"><a href="ml.html#cb462-12"></a></span>
+<span id="cb462-13"><a href="ml.html#cb462-13"></a>ga_rf_results =<span class="st"> </span><span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>, <span class="dt">mtry =</span> <span class="dv">2</span>, <span class="dt">trees =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span></span>
+<span id="cb462-14"><a href="ml.html#cb462-14"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;ranger&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb462-15"><a href="ml.html#cb462-15"></a><span class="st">  </span><span class="kw">fit</span>(</span>
+<span id="cb462-16"><a href="ml.html#cb462-16"></a>    rating <span class="op">~</span><span class="st"> </span>type <span class="op">+</span><span class="st"> </span>reviews <span class="op">+</span><span class="st"> </span>installs <span class="op">+</span><span class="st"> </span>size_in_MB <span class="op">+</span><span class="st"> </span>category,</span>
+<span id="cb462-17"><a href="ml.html#cb462-17"></a>    google_train</span>
+<span id="cb462-18"><a href="ml.html#cb462-18"></a>  )</span>
+<span id="cb462-19"><a href="ml.html#cb462-19"></a></span>
+<span id="cb462-20"><a href="ml.html#cb462-20"></a>test_predictions =<span class="st"> </span><span class="kw">predict</span>(ga_rf_results, <span class="dt">new_data =</span> google_test)</span>
+<span id="cb462-21"><a href="ml.html#cb462-21"></a></span>
+<span id="cb462-22"><a href="ml.html#cb462-22"></a>rmse =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rmse</span>(</span>
+<span id="cb462-23"><a href="ml.html#cb462-23"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, google_test),</span>
+<span id="cb462-24"><a href="ml.html#cb462-24"></a>  <span class="dt">truth =</span> rating,</span>
+<span id="cb462-25"><a href="ml.html#cb462-25"></a>  <span class="dt">estimate =</span> .pred</span>
+<span id="cb462-26"><a href="ml.html#cb462-26"></a>)</span>
+<span id="cb462-27"><a href="ml.html#cb462-27"></a></span>
+<span id="cb462-28"><a href="ml.html#cb462-28"></a>rsq =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rsq</span>(</span>
+<span id="cb462-29"><a href="ml.html#cb462-29"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, google_test),</span>
+<span id="cb462-30"><a href="ml.html#cb462-30"></a>  <span class="dt">truth =</span> rating,</span>
+<span id="cb462-31"><a href="ml.html#cb462-31"></a>  <span class="dt">estimate =</span> .pred</span>
+<span id="cb462-32"><a href="ml.html#cb462-32"></a>)</span>
+<span id="cb462-33"><a href="ml.html#cb462-33"></a></span>
+<span id="cb462-34"><a href="ml.html#cb462-34"></a><span class="kw">bind_rows</span>(</span>
+<span id="cb462-35"><a href="ml.html#cb462-35"></a>  rmse,</span>
+<span id="cb462-36"><a href="ml.html#cb462-36"></a>  rsq</span>
+<span id="cb462-37"><a href="ml.html#cb462-37"></a>)</span></code></pre></div>
+</div>
+<div id="exercise-2-10" class="section level3">
+<h3>Exercise 2</h3>
+<p>Respecify the neural net model demonstrated above as follows, and tune over the number of hidden units to have.</p>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="ml.html#cb463-1"></a>grid_search =<span class="st"> </span><span class="kw">expand.grid</span>(</span>
+<span id="cb463-2"><a href="ml.html#cb463-2"></a>  <span class="dt">hidden_units =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">50</span>),  </span>
+<span id="cb463-3"><a href="ml.html#cb463-3"></a>  <span class="dt">penalty =</span> <span class="kw">exp</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">4</span>, <span class="fl">-.5</span>, <span class="dt">length.out =</span> <span class="dv">10</span>))</span>
+<span id="cb463-4"><a href="ml.html#cb463-4"></a>)</span>
+<span id="cb463-5"><a href="ml.html#cb463-5"></a></span>
+<span id="cb463-6"><a href="ml.html#cb463-6"></a>happy_nn_spec =<span class="st"> </span><span class="kw">mlp</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>,</span>
+<span id="cb463-7"><a href="ml.html#cb463-7"></a>                    <span class="dt">penalty =</span> <span class="kw">tune</span>(),</span>
+<span id="cb463-8"><a href="ml.html#cb463-8"></a>                    <span class="dt">hidden_units =</span> <span class="kw">tune</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb463-9"><a href="ml.html#cb463-9"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;nnet&quot;</span>)</span>
+<span id="cb463-10"><a href="ml.html#cb463-10"></a></span>
+<span id="cb463-11"><a href="ml.html#cb463-11"></a>nn_tune =<span class="st"> </span><span class="kw">tune_grid</span>(</span>
+<span id="cb463-12"><a href="ml.html#cb463-12"></a>  happy_prepped,</span>
+<span id="cb463-13"><a href="ml.html#cb463-13"></a>  <span class="dt">model =</span> happy_nn_spec,</span>
+<span id="cb463-14"><a href="ml.html#cb463-14"></a>  <span class="dt">resamples =</span> happy_folds,</span>
+<span id="cb463-15"><a href="ml.html#cb463-15"></a>  <span class="dt">grid =</span> grid_search</span>
+<span id="cb463-16"><a href="ml.html#cb463-16"></a>)</span>
+<span id="cb463-17"><a href="ml.html#cb463-17"></a></span>
+<span id="cb463-18"><a href="ml.html#cb463-18"></a><span class="kw">show_best</span>(nn_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>, <span class="dt">maximize =</span> <span class="ot">FALSE</span>, <span class="dt">n =</span> <span class="dv">1</span>) </span></code></pre></div>
 
 </div>
 </div>

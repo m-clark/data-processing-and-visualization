@@ -97,6 +97,13 @@ knitr::include_graphics('img/opt_vis_rad.gif')
 
 In any ML setting there are parameters that need to set in order to even run the model.  In regularized regression this may be the penalty parameter, for random forests the tree depth, for neural nets, how many hidden units, and many other things.  None of these *tuning parameters* is known beforehand, and so must be tuned, or learned, just like any other. This is usually done with through validation process like k-fold cross validation.  The 'best' settings are then used to make final predictions on the test set.
 
+The usual workflow is something like the following:
+
+- **Tuning**: With the **training data**, use a cross-validation approach to run models with different values for tuning parameters.
+
+- **Model Selection**: Select the 'best' model as that which minimizes or maximizes the objective function estimated during cross-validation (e.g. RMSE, accuracy, etc.).  The test data in this setting are typically referred to as *validation sets*.
+
+- **Prediction**: Use the best model to make predictions on the **test set**.
 
 
 ## Techniques
@@ -112,21 +119,23 @@ The following demonstrates regularized regression using the <span class="pack" s
 
 ```{r glmnet}
 library(tidymodels)
+load('data/world_happiness.RData')
 
 happy_prepped = happy %>% 
-  select(-country) %>% 
+  select(-country, -gini_index_world_bank_estimate, -dystopia_residual) %>% 
   recipe(happiness_score ~ .) %>% 
   step_scale(everything()) %>% 
+  step_naomit(happiness_score) %>%
   prep() %>% 
-  bake(happy)
+  bake(happy) 
 
 happy_folds = happy_prepped %>% 
-  drop_na() %>% 
+  drop_na() %>%
   vfold_cv() 
 
 library(tune)
 
-happy_regLM_spec = linear_reg(penalty = 1e-3, mixture = 0) %>%
+happy_regLM_spec = linear_reg(penalty = 1e-3, mixture = .5) %>%
   set_engine(engine = "glmnet")
 
 happy_regLM_results = fit_resamples(
@@ -144,6 +153,95 @@ cv_regLM_res = happy_regLM_results %>%
 kable_df(cv_regLM_res)
 ```
 
+#### Tuning parameters
+
+For the previous model setting, we wouldn't know what the penalty or the mixing  parameter should be.  This is where we can use cross validation to choose those.  We'll redo our model spec, create a set of values to search over, and pass that to the tuning function for cross-validation. Our ultimate model will then be applied to the test data.  
+
+First we create our training-test split.
+
+```{r regLM-tune-data-split}
+# removing some variables with lots of missing values
+happy_split = happy %>% 
+  select(-country, -gini_index_world_bank_estimate, -dystopia_residual) %>% 
+  initial_split(prop = 0.75)
+
+happy_train = training(happy_split)
+happy_test  = testing(happy_split)
+```
+
+Next we process the data.  This is all specific to the <span class="pack" style = "">tidymodels</span> approach.
+
+```{r regLM-tune-prep}
+happy_prepped = happy_train %>% 
+  recipe(happiness_score ~ .) %>% 
+  step_knnimpute(everything()) %>%    # impute missing values
+  step_center(everything()) %>%       # standardize
+  step_scale(everything()) %>%        # standardize
+  prep()                              # prepare for other uses
+
+happy_test_normalized <- bake(happy_prepped, new_data = happy_test, all_predictors())
+
+happy_folds = happy_prepped %>% 
+  bake(happy) %>% 
+  vfold_cv() 
+
+# now we are indicating we don't know the value to place
+happy_regLM_spec = linear_reg(penalty = tune(), mixture = tune()) %>%
+  set_engine(engine = "glmnet")
+```
+
+
+```{r regLM-tune-model}
+grid_search = expand.grid(
+  penalty = exp(seq(-4,-.5, length.out = 10)),
+  mixture = seq(0, 1, length.out = 10)
+)
+
+regLM_tune = tune_grid(
+  happy_prepped,
+  model = happy_regLM_spec,
+  resamples = happy_folds,
+  grid = grid_search
+)
+
+best = show_best(regLM_tune, metric = "rmse", maximize = FALSE, n = 1) # we want to minimize rmse
+
+best
+
+autoplot(regLM_tune, metric = "rmse")
+```
+
+With the 'best' model, we can refit to the training data with the parameters in hand.  We can then do our usual performance assessment  with the test set.
+
+```{r regLM-tune-refit-test}
+# for technical reasons, only mixture is passed to the model; see https://github.com/tidymodels/parsnip/issues/215
+tuned_model = linear_reg(penalty = best$penalty, mixture = best$mixture) %>%
+  set_engine(engine = "glmnet") %>% 
+  fit(happiness_score ~ ., data = juice(happy_prepped))
+
+test_predictions = predict(tuned_model, new_data = happy_test_normalized)
+
+rmse = yardstick::rmse(
+  data = bind_cols(test_predictions, happy_test),
+  truth = happiness_score,
+  estimate = .pred
+)
+
+rsq = yardstick::rsq(
+  data = bind_cols(test_predictions, happy_test),
+  truth = happiness_score,
+  estimate = .pred
+)
+```
+
+```{r regLM-tune-results, echo=FALSE}
+bind_rows(rmse, rsq) %>% 
+  kable_df()
+```
+
+
+
+
 
 ### Random Forests
 
@@ -158,8 +256,7 @@ knitr::include_graphics('img/tree1.png')
 
 This tree structure allows for both interactions between variables, and nonlinear relationships between some input and the target variable (e.g. the second branch could just be the same `X1` but with some cut value greater than 5.75).  Random forests randomly select a few from the available input variables, and create a tree that minimizes (maximizes) some loss (objective) function on a validation set.  A given tree can potentially be very wide/deep, but instead of just one tree, we now do, say, 1000 trees. A final prediction is made based on the average across all trees. 
 
-We demonstrate the random forest using the ranger package.  We don't do any tuning here, but do note that the number of variables to randomly select (`mtry` below), the number of total trees, the tree depth - all of these are potential tuning parameters to investigate in the model building process.
-
+We demonstrate the random forest using the ranger package.  We initially don't do any tuning here, but do note that the number of variables to randomly select (`mtry` below), the number of total trees, the tree depth - all of these are potential tuning parameters to investigate in the model building process.
 
 ```{r rf-demo}
 happy_rf_spec = rand_forest(mode = 'regression', mtry = 6) %>%
@@ -168,8 +265,7 @@ happy_rf_spec = rand_forest(mode = 'regression', mtry = 6) %>%
 happy_rf_results = fit_resamples(
   happiness_score ~ .,
   happy_rf_spec,
-  happy_folds,
-  control = control_resamples(save_pred = TRUE)
+  happy_folds
 )
 
 cv_rf_res = happy_rf_results %>%
@@ -179,6 +275,63 @@ cv_rf_res = happy_rf_results %>%
 ```{r rf-display, echo=FALSE}
 kable_df(cv_rf_res)
 ```
+
+It would appear we're doing a bit better than the regularized regression.
+
+#### Tuning parameters
+
+As mentioned, we'd have a few tuning parameters to play around with. We'll tune the number of predictors to randomly select per tree, as well as the minimum sample size for each leaf. The following takes the same appraoch as with the regularized regression model. Note that this will take a while (several minutes).
+
+```{r rf-tune}
+grid_search = expand.grid(
+  mtry = c(3, 5, ncol(happy_train)-1),  # up to total number of predictors 
+  min_n = c(1, 5, 10)
+)
+
+happy_rf_spec = rand_forest(mode = 'regression',
+                            mtry = tune(),
+                            min_n = tune()) %>% 
+  set_engine(engine = "ranger")
+
+rf_tune = tune_grid(
+  happy_prepped,
+  model = happy_rf_spec,
+  resamples = happy_folds,
+  grid = grid_search
+)
+
+best = show_best(rf_tune, metric = "rmse", maximize = FALSE, n = 1) # we want to minimize rmse
+best
+autoplot(rf_tune, metric = "rmse")
+```
+
+Now we are ready to refit the model with the selected tuning parameters and make predictions on the test data.
+
+```{r rf-tune-refit-test}
+tuned_model = rand_forest(mode = 'regression', mtry = best$mtry, min_n = best$min_n) %>%
+  set_engine(engine = "ranger") %>% 
+  fit(happiness_score ~ ., data = juice(happy_prepped))
+
+test_predictions = predict(tuned_model, new_data = happy_test_normalized)
+
+rmse = yardstick::rmse(
+  data = bind_cols(test_predictions, happy_test),
+  truth = happiness_score,
+  estimate = .pred
+)
+
+rsq = yardstick::rsq(
+  data = bind_cols(test_predictions, happy_test),
+  truth = happiness_score,
+  estimate = .pred
+)
+```
+
+```{r rf-tune-result, echo=FALSE}
+bind_rows(rmse, rsq) %>% 
+  kable_df()
+```
+
 
 
 ### Neural Networks
@@ -190,7 +343,7 @@ knitr::include_graphics('img/nnet.png')
 ```
 
 
-As a simple example, we can run a simple neural network with a single hidden layer of 1000 units[^mlp].  Since this is a regression problem, no further transformation is required of the end result to map it onto the target variable.  I set the number of epochs to 500, which you can think of as the number of iterations from our discussion of optimization.  There are many tuning parameters I am not showing that could certainly be fiddled with as well. This is just an example that will run quickly with comparable performance to the previous.  If you do not have <span class="pack" style = "">keras</span> installed, you can change the engine to `nnet`, which was a part of the base R set of packages well before neural nets became cool again[^riprip].
+As a simple example, we can run a simple neural network with a single hidden layer of 1000 units[^mlp].  Since this is a regression problem, no further transformation is required of the end result to map it onto the target variable.  I set the number of epochs to 500, which you can think of as the number of iterations from our discussion of optimization.  There are many tuning parameters I am not showing that could certainly be fiddled with as well. This is just an example that will run quickly with comparable performance to the previous.  If you do not have <span class="pack" style = "">keras</span> installed, you can change the engine to `nnet`, which was a part of the base R set of packages well before neural nets became cool again[^riprip].  This will likely take several minutes for typical machines.
 
 ```{r nn-demo, cache=TRUE}
 happy_nn_spec = mlp(
@@ -206,7 +359,7 @@ happy_nn_results = fit_resamples(
   happy_nn_spec,
   happy_folds,
   control = control_resamples(save_pred = TRUE,
-                              verbose = FALSE,
+                              verbose   = FALSE,
                               allow_par = TRUE)
 )
 
@@ -215,10 +368,13 @@ cv_nn_res = happy_nn_results %>%
 ```
 
 ```{r nn-display, echo=FALSE}
-cv_nn_res
+cv_nn_res %>% 
+  kable_df()
 ```
 
 You will typically see neural nets applied to image and natural language processing, but as demonstrated above, they can be applied in any scenario.  It will take longer to set up and train, but once that's done, you're good to go, and may have a much better predictive result.
+
+I leave tuning the model as an [exercise][machine-learning-exercises], but definitely switch to using `nnet` if you do so, otherwise you'll have to install keras (both for R and Python) and be waiting a long time besides.  As mentioned, the <span class="" style = "">nnet</span> package is in base R, so you already have it.
 
 #### Deep Learning
 
@@ -250,35 +406,72 @@ Hopefully this has demystified ML for you somewhat.  Nowadays it may take little
 
 ### Exercise 1
 
-Use the ranger package to predict the rating by several covariates
+Use the <span class="pack" style = "">ranger</span> package to predict the rating by several covariates.  Feel free to just use the standard function approach rather than all the tidymodels stuff, but do use a training and test appraoch. You can then try the model again with a different tuning.
 
-```{r ex1, echo = FALSE, eval=FALSE}
+```{r ml-ex1, eval=FALSE}
 load('data/google_apps.RData')
-
-google_folds = google_apps %>% 
-  drop_na() %>% 
-  vfold_cv() 
 
 google_for_mod = google_apps %>% 
   select(avg_sentiment_polarity, rating, type,installs, reviews, size_in_MB, category) %>% 
   drop_na()
 
+google_split = google_for_mod %>% 
+  initial_split(prop = 0.75)
+
+google_train = training(google_split)
+google_test  = testing(google_split)
+
 ga_rf_results = rand_forest(mode = 'regression', mtry = 2, trees = 1000) %>%
-  set_engine(engine = "ranger", importance = 'impurity_corrected') %>% 
+  set_engine(engine = "ranger") %>% 
   fit(
-    avg_sentiment_polarity ~ type + reviews + installs + size_in_MB + category,
-    google_for_mod
+    rating ~ type + reviews + installs + size_in_MB + category,
+    google_train
   )
 
-ga_rf_results
-sort(ga_rf_results$fit$variable.importance)
-ranger::importance_pvalues(ga_rf_results$fit)
-ranger::importance_pvalues(
-  ga_rf_results$fit,
-  method = 'altmann',
-  formula = avg_sentiment_polarity ~ type + reviews + installs + size_in_MB + category,
-  data = google_for_mod
+test_predictions = predict(ga_rf_results, new_data = google_test)
+
+rmse = yardstick::rmse(
+  data = bind_cols(test_predictions, google_test),
+  truth = rating,
+  estimate = .pred
 )
+
+rsq = yardstick::rsq(
+  data = bind_cols(test_predictions, google_test),
+  truth = rating,
+  estimate = .pred
+)
+
+bind_rows(
+  rmse,
+  rsq
+)
+```
+
+
+### Exercise 2
+
+Respecify the neural net model demonstrated above as follows, and tune over the number of hidden units to have.
+
+```{r ml-ex-2, eval=FALSE}
+grid_search = expand.grid(
+  hidden_units = c(10, 50),  
+  penalty = exp(seq(-4, -.5, length.out = 10))
+)
+
+happy_nn_spec = mlp(mode = 'regression',
+                    penalty = tune(),
+                    hidden_units = tune()) %>% 
+  set_engine(engine = "nnet")
+
+nn_tune = tune_grid(
+  happy_prepped,
+  model = happy_nn_spec,
+  resamples = happy_folds,
+  grid = grid_search
+)
+
+show_best(nn_tune, metric = "rmse", maximize = FALSE, n = 1) 
 ```
 
 
