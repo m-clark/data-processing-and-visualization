@@ -55,6 +55,8 @@ Typically we do it more than three times, usually 10, and there are fancier meth
 ```{r kfoldcv}
 library(tidymodels)
 
+load('data/world_happiness.RData')
+
 set.seed(1212)
 
 # specify the model
@@ -62,7 +64,7 @@ happy_base_spec = linear_reg() %>%
   set_engine(engine = "lm")
 
 # by default 10-folds
-happy_folds = vfold_cv(happy)  # yay for non-standard naming!
+happy_folds = vfold_cv(happy)
 
 library(tune)
 
@@ -117,9 +119,8 @@ In the above, this is the same squared error loss function as before, but we add
 
 The following demonstrates regularized regression using the <span class="pack" style = "">glmnet</span> package. It actually uses *elastic net*, which has a mixture of two penalties, one of which is the squared sum of coefficients (typically called *ridge regression*) and the other is the sum of their absolute values (the so-called *lasso*).
 
-```{r glmnet}
+```{r regLM}
 library(tidymodels)
-load('data/world_happiness.RData')
 
 happy_prepped = happy %>% 
   select(-country, -gini_index_world_bank_estimate, -dystopia_residual) %>% 
@@ -149,7 +150,7 @@ cv_regLM_res = happy_regLM_results %>%
   collect_metrics()
 ```
 
-```{r glmnet-display, echo=FALSE}
+```{r regLM-display, echo=FALSE}
 kable_df(cv_regLM_res)
 ```
 
@@ -190,10 +191,11 @@ happy_regLM_spec = linear_reg(penalty = tune(), mixture = tune()) %>%
   set_engine(engine = "glmnet")
 ```
 
+Now, we need to create a set of values (grid) to try an test. In this case we set the penalty parameter from near zero to near 1, and the mixture parameter a range of values from 0 (ridge regression) to 1 (lasso).
 
 ```{r regLM-tune-model}
-grid_search = expand.grid(
-  penalty = exp(seq(-4,-.5, length.out = 10)),
+grid_search = expand_grid(
+  penalty = exp(seq(-4, -.25, length.out = 10)),
   mixture = seq(0, 1, length.out = 10)
 )
 
@@ -204,14 +206,28 @@ regLM_tune = tune_grid(
   grid = grid_search
 )
 
+autoplot(regLM_tune, metric = "rmse") + geom_smooth(se = FALSE)
+
 best = show_best(regLM_tune, metric = "rmse", maximize = FALSE, n = 1) # we want to minimize rmse
 
 best
-
-autoplot(regLM_tune, metric = "rmse")
 ```
 
-With the 'best' model, we can refit to the training data with the parameters in hand.  We can then do our usual performance assessment  with the test set.
+There isn't a real strong relationship with these settings, except that generally a more 'lasso-y' mixture and smaller penalty tends to work better, and this is more or less in keeping with the 'best' model.  Here is a plot where size indicates RMSE (smaller better) but only for RMSE < .5 (slight jitter added).
+
+```{r regLM-tune-model-vis, echo=FALSE, eval=FALSE}
+regLM_tune$.metrics %>% 
+  bind_rows() %>% 
+  filter(.estimate < .5) %>% 
+  ggplot(aes(penalty, mixture)) + 
+  geom_point(aes(size=.estimate), color = '#990024', alpha = .15, position = position_jitter()) +
+  geom_smooth(color = '#ff550080', se = F) +
+  scale_size_continuous(range = c(1,10), breaks = c(.5,1,2,5,10)) +
+  theme_clean()
+```
+
+
+With the 'best' model selected, we can refit to the training data with the parameters in hand.  We can then do our usual performance assessment  with the test set.
 
 ```{r regLM-tune-refit-test}
 # for technical reasons, only mixture is passed to the model; see https://github.com/tidymodels/parsnip/issues/215
@@ -239,8 +255,7 @@ bind_rows(rmse, rsq) %>%
   kable_df()
 ```
 
-
-
+Not too bad!
 
 
 ### Random Forests
@@ -300,10 +315,14 @@ rf_tune = tune_grid(
   grid = grid_search
 )
 
-best = show_best(rf_tune, metric = "rmse", maximize = FALSE, n = 1) # we want to minimize rmse
-best
 autoplot(rf_tune, metric = "rmse")
+
+best = show_best(rf_tune, metric = "rmse", maximize = FALSE, n = 1) # we want to minimize rmse
+
+best
 ```
+
+Looks like in general using all the variables for selection is the best (this is in keeping with standard approaches for random forest with regression).
 
 Now we are ready to refit the model with the selected tuning parameters and make predictions on the test data.
 

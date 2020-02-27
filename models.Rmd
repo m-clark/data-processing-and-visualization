@@ -81,11 +81,11 @@ An example of a *nonlinear model* would be population growth models, like expone
 
 ## Estimation
 
-One thing to understand with predictive models of any kind is how we estimate the parameters of interest, e.g. coefficients/weights, variance, and more.  To start with, we must have some sort of goal that choosing a particular set of values for the parameters achieves, and then find some way to reach that goal efficiently.
+One key thing to understand with predictive models of any kind is how we estimate the parameters of interest, e.g. coefficients/weights, variance, and more.  To start with, we must have some sort of goal that choosing a particular set of values for the parameters achieves, and then find some way to reach that goal efficiently.
 
-### Loss
+### Minimizing and Maximizing
 
-The goal of many estimation approaches is the reduction of *loss*, conceptually defined as the difference between the model predictions and the observed data, i.e. prediction error. In an introductory methods course, many are introduced to *ordinary least squares* as a means to estimate the coefficients for a linear regression model.  In this scenario, we are seeking to come up with estimates of the coefficients that minimize the (squared) difference between the observed target value and the fitted value based on the parameter estimates.  The loss in this case is defined as the sum of the squared errors.  Formally we can state it as follows.
+The goal of many estimation approaches is the reduction of *loss*, conceptually defined as the difference between the model predictions and the observed data, i.e. prediction error. In an introductory methods course, many are introduced to *ordinary least squares* as a means to estimate the coefficients for a linear regression model.  In this scenario, we are seeking to come up with estimates of the coefficients that *minimize* the (squared) difference between the observed target value and the fitted value based on the parameter estimates.  The loss in this case is defined as the sum of the squared errors.  Formally we can state it as follows.
 
 $$\mathcal{Loss} = \Sigma(y - \hat{y})^2$$
 
@@ -129,7 +129,7 @@ ls_loss(X, y, beta = c(4, .25))  # guess 3
 
 We see that in our third guess  we reduce the loss quite a bit relative to our first guess. This makes sense because a value of 4 for the intercept and .25 for the coefficient for `x` are not as relatively far from the true values. 
 
- However, we can also see that they are not the best we could have done.  In addition, with more data, our estimated coefficients would get closer to true values
+ However, we can also see that they are not the best we could have done.  In addition, with more data, our estimated coefficients would get closer to true values.
 
 ```{r ls-loss-lm}
 model = lm(y ~ x, df)            # fit the model and obtain parameter estimates using OLS
@@ -137,8 +137,6 @@ coef(model)                      # best guess given the data
 sum(residuals(model)^2)          # least squares loss
 ```
 
-
-.
 
 In some relatively rare cases, a known approach is available and we do not have to search for the best estimates, but simply have to perform the correct steps that will result in them.  For example, the following matrix operations will produce the best estimates for linear regression, which also happen to be the maximum likelihood estimates.
 
@@ -151,7 +149,6 @@ coef(model)
 Most of the time we don't have such luxury, or even if we did, the computations might be too great for the size of our data.  
 
 Many statistical modeling techniques use *maximum likelihood* in some form or fashion, including Bayesian approaches, so you would do well to understand the basics. In this case, instead of minimizing the loss, we use an approach to maximize the probability of the observations of the target variable given the estimates of the parameters of the model (e.g. the coefficients in a regression)[^negloglik].  
-
 
 The following shows how this would look for estimating a single value like a mean for a set of observations from a specific distribution[^pois].  In this case, the true underlying value that maximizes the likelihood is 5, but we typically don't know this.  We see that as our guesses for the mean would get closer to 5, the likelihood of the observed values increases.  Our final guess based on the observed data won't be exactly 5, but with enough data and an appropriate model for that data, we should get close.
 
@@ -302,19 +299,20 @@ With practically every modern modeling package in R, the two components required
 lm(y ~ x + z)                                          # standard linear model/OLS
 glm(y ~ x + z, family = 'binomial')                    # logistic regression with binary response
 glm(y ~ x + z + offset(log(q)), family = 'poisson')    # count/rate model
+betareg::betareg(y ~ x + z)                            # beta regression for targets between 0 and 1
 pscl::hurdle(y ~ x + z, dist = "negbin")               # hurdle model with negative binomial response
 lme4::glmer(y ~ x + (1 | group), family = 'binomial')  # generalized linear mixed model
 mgcv::gam(y ~ s(x))                                    # generalized additive model
 survival::coxph(Surv(time = t, event = q) ~ x)         # Cox Proportional Hazards Regression
 
-# Bayesian
+# Bayesian mixed model
 brms::brm(
   y ~ x + (1 + x | group), 
   family = 'zero_one_inflated_beta', 
   prior = priors
 )
 ```
-
+<br>
 For examples of many other types of models, see this [document](https://m-clark.github.io/R-models/).
 
 Let's finally get our hands dirty and run an example. We'll use the world happiness dataset[^happy]. This is country level data based on surveys taken at various years, and the scores are averages or proportions, along with other values like GDP.  
@@ -336,7 +334,7 @@ happy_score = tidyext::num_summary(happy$happiness_score)
 The happiness score itself ranges from `r happy_score$Min` to `r happy_score$Max`, with a mean of `r happy_score$Mean` and standard deviation of `r happy_score$SD`.
 
 
-Fitting a model with R is trivial, and at a minimum requires the two key ingredients mentioned before, the formula and data.
+Fitting a model with R is trivial, and at a minimum requires the two key ingredients mentioned before, the formula and data. Here we specify our target at `happiness_score` with predictors democratic quality, generosity, and GDP per capita (logged).
 
 
 ```{r model-fit}
@@ -346,6 +344,7 @@ happy_model_base = lm(
 )
 ```
 
+And that's all there is to it.
 
 ### Using matrices
 
@@ -362,7 +361,7 @@ X = model.matrix(
 head(X)
 ```
 
-Note the column of ones in the model matrix `X`.  This represents our intercept, but may not mean much to you unless you understand [matrix multiplication](http://matrixmultiplication.xyz/).  The other columns are just as they are in the data.  Note also that the missing values have been removed.
+Note the column of ones in the model matrix `X`.  This represents our intercept, but that may not mean much to you unless you understand matrix multiplication (nice demo [here](http://matrixmultiplication.xyz/)).  The other columns are just as they are in the data.  Note also that the missing values have been removed.
 
 ```{r na-omit}
 nrow(happy)
@@ -399,7 +398,7 @@ In my experience, it is generally a bad sign if a package requires that you crea
 
 ## Summarizing Models
 
-Once we have a model, we'll want to summarize the results of it. Most modeling packages have a summary method we can apply, which will provide parameter estimates, some notion of model fit, inferential statistics, and other output.
+Once we have a model, we'll want to summarize the results of it. Most modeling packages have a <span class="func" style = "">summary</span> method we can apply, which will provide parameter estimates, some notion of model fit, inferential statistics, and other output.
 
 ```{r model-summarize, echo=1}
 happy_model_base_sum = summary(happy_model_base)
@@ -407,7 +406,7 @@ happy_model_base_sum = summary(happy_model_base)
 happy_model_base_sum
 ```
 
-The summary provides several pieces of information: the coefficients or weights (`Estimate`)[^sumtable_confusion], the standard errors (`Std. Error`), the t-statistic (which is just the coefficient divided by the standard error), and the corresponding p-value.  The main thing to look at are the actual coefficients and the direction of their relationship, positive or negative. For example, with regard to the effect of democratic quality, moving one point on democratic quality results in roughly `r round(coef(happy_model_base)['democratic_quality'], 1)` units of happiness. Is this a notable effect?  Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense.   Before we showed that the standard deviation of the happiness scale was `r rnd(sd(happy$happiness_score, na.rm = TRUE), 1)`. So, in terms of standard deviation units- moving 1 points on democratic quality would result in a `r rnd(coef(happy_model_base)['democratic_quality']/sd(happy$happiness_score, na.rm = TRUE), 1)` standard deviation increase in state-level happiness.  We might consider this fairly small, but maybe not negligible.
+There is a lot of info to parse there, so we'll go over some of it in particular. The summary provides several pieces of information: the coefficients or weights (`Estimate`)[^sumtable_confusion], the standard errors (`Std. Error`), the t-statistic (which is just the coefficient divided by the standard error), and the corresponding p-value.  The main thing to look at are the actual coefficients and the direction of their relationship, positive or negative. For example, with regard to the effect of democratic quality, moving one point on democratic quality results in roughly `r round(coef(happy_model_base)['democratic_quality'], 1)` units of happiness. Is this a notable effect?  Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense.   Before we showed that the standard deviation of the happiness scale was `r rnd(sd(happy$happiness_score, na.rm = TRUE), 1)`. So, in terms of standard deviation units- moving 1 points on democratic quality would result in a `r rnd(coef(happy_model_base)['democratic_quality']/sd(happy$happiness_score, na.rm = TRUE), 1)` standard deviation increase in state-level happiness.  We might consider this fairly small, but maybe not negligible.
 
 One thing we must also have in order to understand our results is to get a sense of the uncertainty in the effects.  The following provides confidence intervals for each of the coefficients.
 
@@ -420,7 +419,7 @@ Now we have a sense of the range of plausible values for the coefficients.  The 
 
 ## Variable Transformations 
 
-Transforming variables can provide a few benefits, whether applied to the target, covariates, or both, and should regularly be used for most models. Some of these benefits include[^notfornormal]:
+Transforming variables can provide a few benefits in modeling, whether applied to the target, covariates, or both, and should regularly be used for most models. Some of these benefits include[^notfornormal]:
 
 - Interpretable intercepts
 - More comparable covariate effects
@@ -453,7 +452,7 @@ tibble(
 
 For example, to start with the normal linear model situation, a one-unit change in $x$, i.e. $\Delta x =1$, leads to $\beta$ unit change in $y$. If we log the target variable $y$, the interpretation of the coefficient for $x$ is that a one-unit change in $x$ leads to an (approximately) 100$\cdot$$\beta$% change in $y$. The 100 changes the result from a proportion to percentage change. More concretely, if $\beta$ was .5, a unit change in $x$ leads to (roughly) a 50% change in $y$. If both were logged, a percentage change in $x$ leads to a $\beta$ percentage change in y[^logtransform].  These percentage change interpretations are called [elasticities](https://en.wikipedia.org/wiki/Elasticity_(economics)) in econometrics and areas trained similarly[^elasticity].
 
-It is very common to use *standardized* variables as well, also called normalizing, or simply scaling. If $y$ and $x$ are both standardized, a one unit (i.e. one standard deviation) change in $x$ leads to a $\beta$ standard deviation change in $y$.  Again, if $\beta$ was .5, a standard deviation change in $x$ leads to a half standard deviation change in $y$.
+It is very common to use *standardized* variables as well, also called normalizing, or simply scaling. If $y$ and $x$ are both standardized, a one unit (i.e. one standard deviation) change in $x$ leads to a $\beta$ standard deviation change in $y$.  Again, if $\beta$ was .5, a standard deviation change in $x$ leads to a half standard deviation change in $y$.  In general, there is nothing to lose by standardizing, so you should employ it often.
 
 Another common transformation, particularly in machine learning, is the *min-max normalization*, changing variables to range from some minimum to some maximum, usually zero to one.
 
@@ -470,16 +469,17 @@ nafta = happy %>%
 dummy = nafta  %>% 
   recipe(~ country + generosity) %>%        # formula approach for specifying variables
   step_dummy(country, one_hot = TRUE) %>%   # make variables for all factor levels
-  step_scale(generosity)
+  step_center(generosity) %>%               # example of centering
+  step_scale(generosity)                    # example of standardizing
 
 prep(dummy) %>%      # estimates the necessary data to apply to this or other data sets
   bake(nafta) %>%    # apply the computations
   print(n = 20)
 ```
 
-We see that the first few observations are Canada, and the next few Mexico.  Note that doing this is rarely required for most modeling situations, but even if not, it sometimes can be useful to do explicitly.  If your modeling package cannot handle factor variables, and thus requires explicit coding, you'll know, and typically these are the same ones that require matrix input.
+We see that the first few observations are Canada, and the next few Mexico.  Note that doing this is rarely required for most modeling situations, but even if not, it sometimes can be useful to do so explicitly.  If your modeling package cannot handle factor variables, and thus requires explicit coding, you'll know, and typically these are the same ones that require matrix input.
 
-Let's run a regression as follows to show how it would happen automatically
+Let's run a regression as follows to show how it would happen automatically.
 
 ```{r dummy-reg}
 model_dummy = lm(happiness_score ~ country, data = nafta)
@@ -488,7 +488,7 @@ summary(model_dummy)
 ```
 
 
-In this case, the coefficient represents the difference in means on the target variable between the reference group and the group in question.  In this case, the U.S. is `r rnd(coef(model_dummy)[3], 2)` less on the happy score than the reference country (Canada).
+In this case, the coefficient represents the difference in means on the target variable between the reference group and the group in question.  In this case, the U.S. is `r rnd(coef(model_dummy)[3], 2)` less on the happy score than the reference country (Canada).  The intercept tells us the mean of the reference group.
 
 Other codings are possible, and these would allow for specific group comparisons or types of comparisons.  This is sometimes called *contrast coding*.  For example, we could compare Canada vs. both the U.S. and Mexico. By giving Canada twice the weight of the other two we can get this result.  I also add a coding that will just compare Mexico vs. the U.S.  The actual weights used are arbitrary, but in this case should sum to zero.
 
@@ -508,7 +508,8 @@ Adding such coding to a factor variable allows the corresonding models to use it
 nafta = nafta %>% 
   mutate(country_fac = factor(country))
 
-contrasts(nafta$country_fac) = matrix(c(-2/3,1/3,1/3, c(0,-.5,.5)), ncol = 2)
+contrasts(nafta$country_fac) = matrix(c(-2/3, 1/3, 1/3, 0, -.5, .5), 
+                                      ncol = 2)
 
 summary(lm(happiness_score ~ country_fac, data = nafta))
 
@@ -522,10 +523,10 @@ For example, we can see that for this balanced data set, the `_fac1` coefficient
 In other circumstances, we can use *categorical embeddings* to reduce a very large number of categorical levels to a smaller number of numeric variables.  This is very commonly employed in deep learning.
 
 
-
 ### Scales, indices, and dimension reduction
 
 It is often the case that we have several correlated variables/items which do not all need to go into the model.  For example, instead of using all items in a psychological scale, we can use the scale score, however defined, which is often just a *sum score* of the underlying items. Often people will create an index by using a *principal components analysis*, which can be thought of as a means to create a weighted sum score, or set of scores.  Some (especially binary) items may tend toward the creation of a single variable that simply notes whether any of those collection of variables was present or not.
+
 
 #### Two-step approaches
 
@@ -534,7 +535,9 @@ Some might do a preliminary analysis, such as a *cluster analysis* or *factor an
 
 ### Don't discretize
 
-Little pains advanced modelers more than seeing results where a nice expressive continuous metric butchered into two categories (e.g. taking a numeric age and collapsing to 'old' vs. 'young').  There is rarely a reason to do this, and pretty much never a adequately justifiable one.  There are reasons to collapse rare labels of a categorical variable, so that the new variable has fewer but more frequent categories. For example, data may have five or six race categories, but often the values are lumped into majority group vs. minority group due to each minority category having too few observations. But even that can cause problems, and doesn't really overcome the fact that you simply didn't have enough data to begin with.
+Little pains advanced modelers more than seeing results where a nice expressive continuous metric is  butchered into two categories (e.g. taking a numeric age and collapsing to 'old' vs. 'young').  There is rarely a reason to do this, and it is difficult to justify.  There are reasons to collapse rare labels of a categorical variable, so that the new variable has fewer but more frequent categories. For example, data may have five or six race categories, but often the values are lumped into majority group vs. minority group due to each minority category having too few observations. But even that can cause problems, and doesn't really overcome the fact that you simply didn't have enough data to begin with.
+
+
 
 ## Variable Importance
 
@@ -546,7 +549,9 @@ Even if you can come up with a metric you like, you would still need some measur
 
 As an example, for standard linear regression there are many methods that decompose $R^2$ into relative contributions by the covariates.  The tools to do so have to re-run the model in many ways to produce these estimates (see the <span class="pack" style = "">relaimpo</span> package for example), but you would then have to use bootstrapping or similar approach to get interval estimates for those measures of importance. Certain techniques like random forests have a natural way to provide variable importance metrics, but providing inference on them would similarly be very computationally expensive.
 
-In the end though, I think it is probably best to assume that any effect that seems statistically distinct from zero might be worthy of attention, and can be regarded for its own sake.  The more actionable, the better. 
+In the end though, I think it is probably best to assume that any effect that seems practically distinct from zero might be worthy of attention, and can be regarded for its own sake.  The more actionable, the better. 
+
+
 
 ## Extracting Output
 
@@ -601,7 +606,7 @@ Some packages will produce tables for a model object that are more or less ready
 
 ## Visualization
 
-> Models require visualization to be understood.
+> Models require visualization to be understood completely.
 
 If you aren't using visualization as a fundamental part of your model exploration, you're likely leaving a lot of that exploration behind, and not communicating the results as well as you could to the broadest audience possible.  When adding nonlinear effects, interactions, and more, visualization is a must. Thankfully there are many packages to help you get data you need to visualize effects.
 
@@ -630,7 +635,7 @@ plot(pw_comparisons)
 The following example uses <span class="pack" style = "">ggeffects</span>.  First, we run a model with an interaction of country and year (we'll talk more about interactions later). Then we get predictions for the year by country, and subsequently visualize.  We can see that the trend, while negative for all countries, is more pronounced as we move south.
 
 ```{r ggeffects}
-happy_model_nafta = lm(happiness_score ~ country*year, data = nafta)
+happy_model_nafta = lm(happiness_score ~ year*country, data = nafta)
 
 library(ggeffects)
 preds = ggpredict(happy_model_nafta, terms = c('year', 'country'))
@@ -691,7 +696,7 @@ glm(y ~ x, family = binomial)
 # glm(cbind(events, nonevents) ~ x, family = binomial)
 ```
 
-You'll have noticed that when we fit these models we used <span class="func" style = "">glm</span> instead of <span class="func" style = "">lm</span>. The normal linear model is a special case of *generalized linear models*, which includes a specific class of distributions- normal, poisson, binomial, gamma, beta and more- collectively referred to as the [exponential family](https://en.wikipedia.org/wiki/Exponential_family).  While this family can cover a lot of ground, you do not have to restrict yourself to it, and many R modeling packages will provide easy access to more.  The main point is that you have tools to deal with continuous, binary, count, ordinal, and other types of data.  Furthermore, not much necessarily changes conceptually from model to model besides the link function and/or distribution.
+You'll have noticed that when we fit these models we used <span class="func" style = "">glm</span> instead of <span class="func" style = "">lm</span>. The normal linear model is a special case of *generalized linear models*, which includes a specific class of distributions - normal, poisson, binomial, gamma, beta and more - collectively referred to as the [exponential family](https://en.wikipedia.org/wiki/Exponential_family).  While this family can cover a lot of ground, you do not have to restrict yourself to it, and many R modeling packages will provide easy access to more.  The main point is that you have tools to deal with continuous, binary, count, ordinal, and other types of data.  Furthermore, not much necessarily changes conceptually from model to model besides the link function and/or distribution.
 
 ### Correlated data
 
@@ -717,13 +722,14 @@ At this point you should have a good idea of how to get started exploring models
 
 ### Exercise 1
 
-With the google app data, use a standard linear model (i.e. lm) to predict one of three target variables:
+With the google app data, use a standard linear model (i.e. <span class="func" style = "">lm</span>) to predict one of three target variables of your choosing:
 
 - `rating`: the user ratings of the app
 - `avg_sentiment_polarity`: the average sentiment score (positive vs. negative) for the app
 - `avg_sentiment_subjectivity`: the average subjectivity score (subjective vs. objective) for the app
 
 For prediction use the following variables:
+
 - `reviews`: number of reviews
 - `type`: free vs. paid
 - `size_in_MB`: size of the app in megabytes
@@ -753,7 +759,7 @@ If you wish, you can start with an `lm`, but as the number of fish caught is a c
 
 
 
-[^target]: I prefer *target* because it emphasizes where the focus should be- predicting/explaining that variable.  It represents the bullseye we are trying to hit.  Others, like 'response' or 'outcome', imply a specific type of study, and so don't even make sense in many situations. 'Output' is too generic, and 'dependent variable', along with its roots in experimental design which is far from the normal data situation, seems to shift focus to the predictors, i.e. how the target depends on the covariates, which it often doesn't, or doesn't in a practical way.  Furthermore, effects of one variable may depend on another. For the other side of the equation I'm more ambivalent, just as long as 'independent variable', which is only applicable in some experimental designs, is not used.
+[^target]: I prefer *target* because it emphasizes where the focus should be- predicting/explaining that variable.  It represents the bullseye we are trying to hit.  Others, like 'response' or 'outcome', imply a specific type of study, and so don't even make sense in many situations. 'Output' is too generic, and 'dependent variable', along with its roots in experimental design which is far from the normal data situation, seems to shift focus to the predictors, i.e. how the target depends on the covariates, which it often doesn't, or doesn't in a practical way.  Furthermore, effects of one variable may depend on another, observations are dependent (correlated), etc. For the other side of the equation I'm more ambivalent, just as long as 'independent variable', which is only applicable in some experimental designs, is not used.
 
 [^negloglik]: To be consistent with the many tools that minimize different types of losses, we usually minimize the *negative log likelihood*, rather than maximize the raw likelihood.
 
