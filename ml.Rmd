@@ -1,3 +1,8 @@
+
+```{r ml-criticism-setup, include=FALSE, eval=TRUE, cache=FALSE}
+
+```
+
 # Machine Learning
 
 <div style = 'text-align: center'>
@@ -50,10 +55,11 @@ knitr::include_graphics('img/kfold.svg')
 ```
 
 
-Typically we do it more than three times, usually 10, and there are fancier methods of *k-fold cross-validation*, though they typically don't serve to add much value.  In any case, let's try it with our previous example.  The following uses the tidymodels packages again to employ k-fold cross validation to evaluate the loss.
+Typically we do it more than three times, usually 10, and there are fancier methods of *k-fold cross-validation*, though they typically don't serve to add much value.  In any case, let's try it with our previous example.  The following uses the <span class="pack" style = "">tidymodels</span> approach to be consistent with early chapters use of the <span class="pack" style = "">tidyverse</span>[^tidymodels]. With it we can employ k-fold cross validation to evaluate the loss.
 
 ```{r kfoldcv}
-library(tidymodels)
+# install.packages(tidymodels)  # if needed
+library(tidymodels)  
 
 load('data/world_happiness.RData')
 
@@ -421,14 +427,18 @@ For example, a regularized regression might not have straightforward inference, 
 
 Hopefully this has demystified ML for you somewhat.  Nowadays it may take little effort to get to state-of-the-art results from even just a year or two ago, and which, for all intents and purposes, would be good enough both now and for the foreseeable future. Despite what many may think, it is not magic, but for more classically statistically minded, it may require a bit of a different perspective. 
 
+
+
 ## Machine Learning Exercises
 
 ### Exercise 1
 
-Use the <span class="pack" style = "">ranger</span> package to predict the rating by several covariates.  Feel free to just use the standard function approach rather than all the tidymodels stuff, but do use a training and test appraoch. You can then try the model again with a different tuning.
+Use the <span class="pack" style = "">ranger</span> package to predict the Google variable `rating` by several covariates.  Feel free to just use the standard function approach rather than all the tidymodels stuff if you want, but do use a training and test approach. You can then try the model again with a different tuning.  For the first go around, 
 
-```{r ml-ex1, eval=FALSE}
-load('data/google_apps.RData')
+```{r ex1-ml, eval=FALSE}
+# run these if needed to load data and install the package
+# load('data/google_apps.RData')
+# install.packages('ranger')
 
 google_for_mod = google_apps %>% 
   select(avg_sentiment_polarity, rating, type,installs, reviews, size_in_MB, category) %>% 
@@ -443,7 +453,7 @@ google_test  = testing(google_split)
 ga_rf_results = rand_forest(mode = 'regression', mtry = 2, trees = 1000) %>%
   set_engine(engine = "ranger") %>% 
   fit(
-    rating ~ type + reviews + installs + size_in_MB + category,
+    rating ~ ?,
     google_train
   )
 
@@ -470,12 +480,12 @@ bind_rows(
 
 ### Exercise 2
 
-Respecify the neural net model demonstrated above as follows, and tune over the number of hidden units to have.
+Respecify the neural net model demonstrated above as follows, and tune over the number of hidden units to have.  This will probably take several minutes depending on your machine.
 
 ```{r ml-ex-2, eval=FALSE}
 grid_search = expand.grid(
-  hidden_units = c(10, 50),  
-  penalty = exp(seq(-4, -.5, length.out = 10))
+  hidden_units = c(25, 50),  
+  penalty = exp(seq(-4, -.25, length.out = 5))
 )
 
 happy_nn_spec = mlp(mode = 'regression',
@@ -484,9 +494,9 @@ happy_nn_spec = mlp(mode = 'regression',
   set_engine(engine = "nnet")
 
 nn_tune = tune_grid(
-  happy_prepped,
+  happy_prepped,                  # from previous examples, see tuning for regularized regression
   model = happy_nn_spec,
-  resamples = happy_folds,
+  resamples = happy_folds,        # from previous examples, see tuning for regularized regression
   grid = grid_search
 )
 
@@ -496,10 +506,14 @@ show_best(nn_tune, metric = "rmse", maximize = FALSE, n = 1)
 
 [^machines]: The 'machine' part of the term has historical context, but otherwise has lost meaning for most modern applications, or, at least I really don't think we need to be referring to computers doing their usual thing as something notable.  'Learning' is a poor term that seems to lead many to believe ML is some 'algorithm' automatically/magically learning from data without any human input.  Nothing could be further from the truth.  ML models 'learn' from the data as much as a linear regression does.
 
-[^sgd_vis]: This is [Alec Radford's visualization](https://imgur.com/a/Hqolp).
+
+
 
 [^biasvar-img-ref]: This image comes from [Elements of Statistical Learning](https://web.stanford.edu/~hastie/ElemStatLearn/).
 
+[^tidymodels]: Unfortunately, unlike the tidyverse, tidymodels doesn't really help me do things more easily.  As an alternative, consider the [mlr3](https://mlr3.mlr-org.com/) approach, which has its own 'verse' of packages.  I'm not suggesting it's easier, and it uses [R6][r6] which will take getting used to, but it's a viable alternative if you want to try an different framework for machine learning.
+
+[^sgd_vis]: This is [Alec Radford's visualization](https://imgur.com/a/Hqolp).
 [^lmnnet]: In at least conceptually, and most of the time, literally, in the exact same manner as happens with linear regression.
 
 [^riprip]: [Brian Ripley](https://en.wikipedia.org/wiki/Brian_D._Ripley), one of the early R developers, wrote a [seminal text on neural networks in the mid 90s](http://www.stats.ox.ac.uk/~ripley/PRbook/). However, google scholar seems to have [forgotten it](https://scholar.google.com/scholar?hl=en&as_sdt=1%2C14&q=ripley+%22Pattern+Recognition+and+Neural+Networks%22&btnG=) despite its thousands of citations, I guess because they think it's written by [this guy](https://scholar.google.com/citations?user=pGvWCH4AAAAJ&hl=en&oi=sra).

@@ -298,6 +298,344 @@ mydt_grpsum = mydt[,list(sumz=sum(z)), by=x]
 ```
 
 
+
+
+# Programming
+
+
+## Objects Exercises
+
+### Exercise 1
+
+With one function, find out what the class, number of rows, number of columns are of the following object, including what kind of object the last three columns are.
+
+```{r tibble_inspect, eval=FALSE}
+library(dplyr)
+?starwars
+```
+
+
+## Iterative Programming Exercises
+
+### Exercise 1
+
+With the following <span class="objclass">matrix</span>, use <span class="func">apply</span> and the <span class="func">sum</span> function to get row or column sums of the matrix <span class="objclass">x</span>.
+
+```{r app_ex1, echo=1, eval=FALSE}
+x = matrix(1:9, 3, 3)
+apply()
+```
+
+### Exercise 2
+
+With the following list object <span class="objclass">x</span>, use <span class="func">lapply</span> and <span class="func">sapply</span> and the <span class="func">sum</span> function to get sums for the elements.  There is no margin to specify for a list, so just supply the list and the sum function.  
+
+```{r app_ex2, echo=1, eval=FALSE}
+x = list(1:3, 4:10, 11:100)
+lapply()
+sapply()
+```
+
+
+### Exercise 3
+
+As in the previous example, use a <span class="func" style = "">map</span> function to create a data frame of the column means. See `?map` to see all your options.
+
+```{r purrr_ex3, echo=1:5, eval=FALSE}
+d = data_frame(
+  x = rnorm(100),
+  y = rnorm(100, 10, 2),
+  z = rnorm(100, 50, 10),
+)
+
+d %>% map_df(mean)
+```
+
+
+## Writing Functions Exercises
+
+### Excercise 1
+
+Write a function that takes the log of the sum of two values (i.e. just two single numbers) using the <span class="func">log</span> function.  Just remember that within a function, you can write R code just like you normally would.
+
+```{r wf_ex1, eval=FALSE}
+log_sum <- function(a, b) {
+  ?
+}
+```
+
+
+### Excercise 1b
+
+What happens if the sum of the two numbers is negative?  You can't take a log of a negative value, so it's an error.  How might we deal with this?  Try using a conditional to provide an error message using the <span class="func">stop</span> function.  The first part is basically identical to the function you just did.  But given that result, you will need to check for whether it is negative or not.  The message can be whatever you want.
+
+```{r wf_ex1b, eval=FALSE}
+log_sum <- function(a, b) {
+  
+  ?
+  
+  if (? < 0) {
+    stop('Your message here.')
+  } else {
+    ?
+    return(your_log_sum_results)    # this is an arbitrary name, change accordingly
+  }
+}
+```
+
+
+### Exercise 2
+
+
+Let's write a function that will take a numeric variable and convert it to a character string of 'positive' vs. 'negative'.  We can use `if {}... else {}` structure, <span class="func">ifelse</span>, or <span class="pack">dplyr</span>::<span class="func">if_else</span>- they all would accomplish this.  In this case, the input is a single vector of numbers, and the output will recode any negative value to 'negative' and positive values to 'positive' (or whatever you want).  Here is an example of how we would just do it as a one-off.
+
+```{r wf_ex2, eval=FALSE}
+set.seed(123)  # so you get the exact same 'random' result
+x <- rnorm(10)
+if_else(x < 0, "negative", "positive")
+```
+
+Now try your hand at writing a function for that.
+
+```{r wf_ex2b, eval=FALSE}
+pos_neg <- function(?) {
+  ?
+}
+```
+
+## More
+### Code Style Exercises
+
+#### Exercise 1 
+
+For the following model related output, come up with a name for each object.
+
+```{r name_ex, eval=FALSE}
+lm(hwy ~ cyl, data = mpg)                 # hwy mileage predicted by number of cylinders
+
+summary(lm(hwy ~ cyl, data = mpg))        # the summary of that
+
+lm(hwy ~ cyl + displ + year, data = mpg)  # an extension of that
+```
+
+
+#### Exercise 2
+
+
+Fix this code.
+
+```{r fix_code, eval=FALSE}
+x=rnorm(100, 10, 2)
+y=.2* x+ rnorm(100)
+data = data.frame(x,y)
+q = lm(y~x, data=data)
+summary(q)
+```
+
+### Vectorization Exercises
+
+Before we do this, did you remember to fix the names in the previous exercise?
+
+#### Exercise 1
+
+Show a non-vectorized (e.g. a loop) and a vectorized way to add a two to the numbers 1 through 3.
+
+```{r vector_ex1, eval=FALSE}
+?
+```
+
+
+#### Exercise 2
+
+Of the following <span class="objclass">matrix</span>, which do you think is faster?  Test it.
+
+```{r vector_ex2, eval=FALSE}
+x = matrix(rpois(100000, lambda = 5), ncol = 100)
+colSums(x)
+apply(x, 2, sum)
+
+microbenchmark::microbenchmark(
+  cs = colSums(x),
+  app = apply(x, 2, sum)
+)
+```
+
+### Regex Exercises
+
+#### Exercise 1
+
+Using stringr and str_replace, replace all the states a's with nothing.
+
+```{r regex_ex, eval=FALSE}
+library(stringr)
+str_replace(state.name, pattern = ?, replacement = ?)
+```
+
+
+
+# Modeling
+
+## Modeling Exploration Exercises
+
+### Exercise 1
+
+With the Google app data, use a standard linear model (i.e. <span class="func" style = "">lm</span>) to predict one of three target variables of your choosing:
+
+- `rating`: the user ratings of the app
+- `avg_sentiment_polarity`: the average sentiment score (positive vs. negative) for the app
+- `avg_sentiment_subjectivity`: the average subjectivity score (subjective vs. objective) for the app
+
+For prediction use the following variables:
+
+- `reviews`: number of reviews
+- `type`: free vs. paid
+- `size_in_MB`: size of the app in megabytes
+
+I would suggest preprocessing the number of reviews- dividing by 100,000, scaling (standardizing), or logging it (for the latter you can add 1 first to deal with zeros[^plusonelog]).
+
+Interpret the results.  Visualize the difference in means between free and paid apps. See the [emmeans][visualization] example above.
+
+```{r ex1-goog, eval=FALSE}
+load('data/google_apps.RData')
+
+model = lm(? ~ reviews + type + size_in_MB, data = google_apps)
+
+plot(emmeans::emmeans(model, ~type))
+```
+
+
+### Exercise 2
+
+Rerun the above with interactions of the number of reviews or app size (or both) with type (via `a + b + a:b` or just `a*b` for two predictors).  Visualize the interaction.  Does it look like the effect differs by type?
+
+```{r ex2-goog, eval=FALSE}
+model = lm(? ~ reviews + type*?, data = google_apps)
+
+plot(ggeffects::ggpredict(model, terms = c('size_in_MB', 'type')))
+```
+
+##  Model Criticism Exercises
+
+#### Exercise 0
+
+Recall the [google app exercises][model exploration exercises], we use a standard linear model (i.e. <span class="func" style = "">lm</span>) to predict one of three target variables:
+
+- `rating`: the user ratings of the app
+- `avg_sentiment_polarity`: the average sentiment score (positive vs. negative) for the app
+- `avg_sentiment_subjectivity`: the average subjectivity score (subjective vs. objective) for the app
+
+For prediction use the following variables:
+
+- `reviews`: number of reviews
+- `type`: free vs. paid
+- `size_in_MB`: size of the app in megabytes
+
+After that we did a model with an interaction.
+
+Either using those models, or running new ones with a different target variable, conduct the following exercises.
+
+```{r ex0-goog, eval=FALSE}
+load('data/google_apps.RData')
+```
+
+### Exercise 1
+
+Assess the model fit and performance of your first model. Perform additional diagnostics to assess how the model is doing (e.g. plot the model to look at residuals).
+
+```{r ex1-model-assess, eval=FALSE}
+summary(model)
+plot(model)
+```
+
+
+### Exercise 2
+
+Compare the model with the interaction model.  Based on AIC or some other metric, which one would you choose?  Visualize the interaction model if it's the better model.
+
+```{r ex2-model-compare, eval=FALSE}
+anova(model1, model2)
+AIC(model1, model2)
+```
+
+
+
+
+## Machine Learning Exercises
+
+### Exercise 1
+
+Use the <span class="pack" style = "">ranger</span> package to predict the google variable `rating` by several covariates.  Feel free to just use the standard function approach rather than all the tidymodels stuff if you want, but do use a training and test approach. You can then try the model again with a different tuning.  For the first go around, 
+
+```{r ex1-ml, eval=FALSE}
+# run these if needed to load data and install the package
+# load('data/google_apps.RData')
+# install.packages('ranger')
+
+google_for_mod = google_apps %>% 
+  select(avg_sentiment_polarity, rating, type,installs, reviews, size_in_MB, category) %>% 
+  drop_na()
+
+google_split = google_for_mod %>% 
+  initial_split(prop = 0.75)
+
+google_train = training(google_split)
+google_test  = testing(google_split)
+
+ga_rf_results = rand_forest(mode = 'regression', mtry = 2, trees = 1000) %>%
+  set_engine(engine = "ranger") %>% 
+  fit(
+    rating ~ ?,
+    google_train
+  )
+
+test_predictions = predict(ga_rf_results, new_data = google_test)
+
+rmse = yardstick::rmse(
+  data = bind_cols(test_predictions, google_test),
+  truth = rating,
+  estimate = .pred
+)
+
+rsq = yardstick::rsq(
+  data = bind_cols(test_predictions, google_test),
+  truth = rating,
+  estimate = .pred
+)
+
+bind_rows(
+  rmse,
+  rsq
+)
+```
+
+
+### Exercise 2
+
+Respecify the neural net model demonstrated above as follows, and tune over the number of hidden units to have.
+
+```{r ml-ex-2, eval=FALSE}
+grid_search = expand.grid(
+  hidden_units = c(25, 50),  
+  penalty = exp(seq(-4, -.25, length.out = 5))
+)
+
+happy_nn_spec = mlp(mode = 'regression',
+                    penalty = tune(),
+                    hidden_units = tune()) %>% 
+  set_engine(engine = "nnet")
+
+nn_tune = tune_grid(
+  happy_prepped,                  # from previous examples, see tuning for regularized regression
+  model = happy_nn_spec,
+  resamples = happy_folds,        # from previous examples, see tuning for regularized regression
+  grid = grid_search
+)
+
+show_best(nn_tune, metric = "rmse", maximize = FALSE, n = 1) 
+```
+
+
+
 # Visualization
 
 ## Thinking Visually Exercises
@@ -472,177 +810,4 @@ movies %>%
 ### Exercise 3
 
 Create a ggplot of your design and then use <span class="func">ggplotly</span> to make it interactive.
-
-
-
-# Programming
-
-
-## Objects Exercises
-
-### Exercise 1
-
-With one function, find out what the class, number of rows, number of columns are of the following object, including what kind of object the last three columns are.
-
-```{r tibble_inspect, eval=FALSE}
-library(dplyr)
-?starwars
-```
-
-
-## Iterative Programming Exercises
-
-### Exercise 1
-
-With the following <span class="objclass">matrix</span>, use <span class="func">apply</span> and the <span class="func">sum</span> function to get row or column sums of the matrix <span class="objclass">x</span>.
-
-```{r app_ex1, echo=1, eval=FALSE}
-x = matrix(1:9, 3, 3)
-apply()
-```
-
-### Exercise 2
-
-With the following list object <span class="objclass">x</span>, use <span class="func">lapply</span> and <span class="func">sapply</span> and the <span class="func">sum</span> function to get sums for the elements.  There is no margin to specify for a list, so just supply the list and the sum function.  
-
-```{r app_ex2, echo=1, eval=FALSE}
-x = list(1:3, 4:10, 11:100)
-lapply()
-sapply()
-```
-
-
-### Exercise 3
-
-As in the previous example, use a <span class="func" style = "">map</span> function to create a data frame of the column means. See `?map` to see all your options.
-
-```{r purrr_ex3, echo=1:5, eval=FALSE}
-d = data_frame(
-  x = rnorm(100),
-  y = rnorm(100, 10, 2),
-  z = rnorm(100, 50, 10),
-)
-
-d %>% map_df(mean)
-```
-
-
-## Writing Functions Exercises
-
-### Excercise 1
-
-Write a function that takes the log of the sum of two values (i.e. just two single numbers) using the <span class="func">log</span> function.  Just remember that within a function, you can write R code just like you normally would.
-
-```{r wf_ex1, eval=FALSE}
-log_sum <- function(a, b) {
-  ?
-}
-```
-
-
-### Excercise 1b
-
-What happens if the sum of the two numbers is negative?  You can't take a log of a negative value, so it's an error.  How might we deal with this?  Try using a conditional to provide an error message using the <span class="func">stop</span> function.  The first part is basically identical to the function you just did.  But given that result, you will need to check for whether it is negative or not.  The message can be whatever you want.
-
-```{r wf_ex1b, eval=FALSE}
-log_sum <- function(a, b) {
-  
-  ?
-  
-  if (? < 0) {
-    stop('Your message here.')
-  } else {
-    ?
-    return(your_log_sum_results)    # this is an arbitrary name, change accordingly
-  }
-}
-```
-
-
-### Exercise 2
-
-
-Let's write a function that will take a numeric variable and convert it to a character string of 'positive' vs. 'negative'.  We can use `if {}... else {}` structure, <span class="func">ifelse</span>, or <span class="pack">dplyr</span>::<span class="func">if_else</span>- they all would accomplish this.  In this case, the input is a single vector of numbers, and the output will recode any negative value to 'negative' and positive values to 'positive' (or whatever you want).  Here is an example of how we would just do it as a one-off.
-
-```{r wf_ex2, eval=FALSE}
-set.seed(123)  # so you get the exact same 'random' result
-x <- rnorm(10)
-if_else(x < 0, "negative", "positive")
-```
-
-Now try your hand at writing a function for that.
-
-```{r wf_ex2b, eval=FALSE}
-pos_neg <- function(?) {
-  ?
-}
-```
-
-## More
-### Code Style Exercises
-
-#### Exercise 1 
-
-For the following model related output, come up with a name for each object.
-
-```{r name_ex, eval=FALSE}
-lm(hwy ~ cyl, data = mpg)                 # hwy mileage predicted by number of cylinders
-
-summary(lm(hwy ~ cyl, data = mpg))        # the summary of that
-
-lm(hwy ~ cyl + displ + year, data = mpg)  # an extension of that
-```
-
-
-#### Exercise 2
-
-
-Fix this code.
-
-```{r fix_code, eval=FALSE}
-x=rnorm(100, 10, 2)
-y=.2* x+ rnorm(100)
-data = data.frame(x,y)
-q = lm(y~x, data=data)
-summary(q)
-```
-
-### Vectorization Exercises
-
-Before we do this, did you remember to fix the names in the previous exercise?
-
-#### Exercise 1
-
-Show a non-vectorized (e.g. a loop) and a vectorized way to add a two to the numbers 1 through 3.
-
-```{r vector_ex1, eval=FALSE}
-?
-```
-
-
-#### Exercise 2
-
-Of the following <span class="objclass">matrix</span>, which do you think is faster?  Test it.
-
-```{r vector_ex2, eval=FALSE}
-x = matrix(rpois(100000, lambda = 5), ncol = 100)
-colSums(x)
-apply(x, 2, sum)
-
-microbenchmark::microbenchmark(
-  cs = colSums(x),
-  app = apply(x, 2, sum)
-)
-```
-
-### Regex Exercises
-
-#### Exercise 1
-
-Using stringr and str_replace, replace all the states a's with nothing.
-
-```{r regex_ex, eval=FALSE}
-library(stringr)
-str_replace(state.name, pattern = ?, replacement = ?)
-```
 

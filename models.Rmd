@@ -502,7 +502,7 @@ tibble(
   kableExtra::add_footnote(notation = 'none', 'weights sum to zero, but are arbitrary')
 ```
 
-Adding such coding to a factor variable allows the corresonding models to use it in constructing the model matrix, rather than dummy coding. See the group means and calculate the results by hand for yourself.
+Adding such coding to a factor variable allows the corresponding models to use it in constructing the model matrix, rather than dummy coding. See the group means and calculate the results by hand for yourself.
 
 ```{r contrast-coding-lm}
 nafta = nafta %>% 
@@ -722,7 +722,7 @@ At this point you should have a good idea of how to get started exploring models
 
 ### Exercise 1
 
-With the google app data, use a standard linear model (i.e. <span class="func" style = "">lm</span>) to predict one of three target variables of your choosing:
+With the Google app data, use a standard linear model (i.e. <span class="func" style = "">lm</span>) to predict one of three target variables of your choosing:
 
 - `rating`: the user ratings of the app
 - `avg_sentiment_polarity`: the average sentiment score (positive vs. negative) for the app
@@ -734,29 +734,45 @@ For prediction use the following variables:
 - `type`: free vs. paid
 - `size_in_MB`: size of the app in megabytes
 
-I would suggest preprocessing the number of reviews- dividing by 100,000, scaling (standarizing), or logging it (for the latter you can add 1 first to deal with zeros[^plusonelog]).
+I would suggest preprocessing the number of reviews- dividing by 100,000, scaling (standardizing), or logging it (for the latter you can add 1 first to deal with zeros[^plusonelog]).
 
 Interpret the results.  Visualize the difference in means between free and paid apps. See the [emmeans][visualization] example above.
 
-```{r load-goog}
+```{r ex1-goog, eval=FALSE}
 load('data/google_apps.RData')
+
+model = lm(? ~ reviews + type + size_in_MB, data = google_apps)
+
+plot(emmeans::emmeans(model, ~type))
 ```
 
 
 ### Exercise 2
 
-Rerun the above with interactions of the number of reviews and size with type.  Visualize the interaction.  Does it look like the effect differs by type?
+Rerun the above with interactions of the number of reviews or app size (or both) with type (via `a + b + a:b` or just `a*b` for two predictors).  Visualize the interaction.  Does it look like the effect differs by type?
+
+```{r ex2-goog, eval=FALSE}
+model = lm(? ~ reviews + type*?, data = google_apps)
+
+plot(ggeffects::ggpredict(model, terms = c('size_in_MB', 'type')))
+```
+
 
 ### Exercise 3
 
 Use the fish data to predict the number of fish caught `count` by the following predictor variables:
 
-`livebait`: whether live bait was used or not
-`child`: how many children present
-`persons`: total persons on the trip
+- `livebait`: whether live bait was used or not
+- `child`: how many children present
+- `persons`: total persons on the trip
 
-If you wish, you can start with an `lm`, but as the number of fish caught is a count, it is suitable for using a poisson distribution via `glm` with `family = poisson`.
+If you wish, you can start with an `lm`, but as the number of fish caught is a count, it is suitable for using a poisson distribution via `glm` with `family = poisson`, so try that if you're feeling up for it.  If you exponentiate the coefficients, they can be interpreted as [incidence rate ratios](https://stats.idre.ucla.edu/stata/output/poisson-regression/).
 
+```{r ex3-fish, eval=FALSE}
+load('data/fish.RData')
+
+model = glm(?, data = fish)
+```
 
 
 [^target]: I prefer *target* because it emphasizes where the focus should be- predicting/explaining that variable.  It represents the bullseye we are trying to hit.  Others, like 'response' or 'outcome', imply a specific type of study, and so don't even make sense in many situations. 'Output' is too generic, and 'dependent variable', along with its roots in experimental design which is far from the normal data situation, seems to shift focus to the predictors, i.e. how the target depends on the covariates, which it often doesn't, or doesn't in a practical way.  Furthermore, effects of one variable may depend on another, observations are dependent (correlated), etc. For the other side of the equation I'm more ambivalent, just as long as 'independent variable', which is only applicable in some experimental designs, is not used.
@@ -779,7 +795,7 @@ If you wish, you can start with an `lm`, but as the number of fish caught is a c
 
 [^notfornormal]: Note that none of the benefits regard normality.  Transforming variables is not done to meet the normality assumption regarding residuals, and would rarely help in that regard.
 
-[^logtransform]: The log transformations in the table are approximations that allow an eyeballable interpretation.  Typically we use exponentiated coefficients for a more exact interpretation.  For example, if y is logged, a one-unit change in x leads to a $100*(e^B-1)$% change in y. See [this link](https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faqhow-do-i-interpret-a-regression-model-when-some-variables-are-log-transformed/) for more on interpreting logged variables.  
+[^logtransform]: The log transformations in the table are approximations that allow an 'eyeballable' interpretation.  Typically we use exponentiated coefficients for a more exact interpretation.  For example, if y is logged, a one-unit change in x leads to a $100*(e^B-1)$% change in y. See [this link](https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faqhow-do-i-interpret-a-regression-model-when-some-variables-are-log-transformed/) for more on interpreting logged variables.  
 
 [^onehotvsdummy]: Some distinguish one-hot from dummy coding in that the former creates a binary variable for all $C$ categorical levels while dummy coding only creates $C-1$ variables, leaving the reference group out.  However, the reference group is only left out at model fitting, there's no reason not to create all C variables, as it requires no additional effort and you might want to change the reference group.
 
@@ -792,4 +808,4 @@ If you wish, you can start with an `lm`, but as the number of fish caught is a c
 
 [^rmse]: For standard regression models, the divisor for calculating the RMSE is the residual degrees of freedom, but more generally it is just N, the sample size, as many modern models may have more parameters than observations.
 
-[^plusonelog]: Just for our purpopses.  If you have zeros, then that's usually a sign that a log transform probably isn't appropriate.
+[^plusonelog]: Just for our purposes.  If you have zeros, then that's usually a sign that a log transform probably isn't appropriate.

@@ -6,7 +6,8 @@
 # Model Criticism
 
 <div class="" style="text-align: center;">
-<i class="fas fa-tools fa-5x" ></i>
+<!-- because evidently icon didn't see this one -->
+<i class = 'fas fa-tools fa-5x'></i>
 </div>
 
 
@@ -27,7 +28,7 @@ $$\textrm{Total Variance} = \textrm{Model Explained Variance} + \textrm{Residual
 
 So the variability in our target (TV) can be decomposed into that which we can explain with the predictor variables (MEV), and everything else that is not in our model (RV). If we have nothing in the model, then TV = RV.
 
-Let's revisit the summary of our model.  Note the *F-statistic*.
+Let's revisit the summary of our model.  Note the *F-statistic*, which represents a statistical test for the model as a whole.
 
 ```{r model-summary-rev}
 happy_model_base_sum
@@ -53,7 +54,7 @@ happy_model_base_sum$fstatistic
 pf(309.6, 3, 407, lower.tail = FALSE)
 ```
 
-Because the F-value is so large and p-value so small, the printed result doesn't give us the actual p-value. So let's demonstrate again with a worse model.
+Because the F-value is so large and p-value so small, the printed result in the summary doesn't give us the actual p-value. So let's demonstrate again with a worse model, where the p-value will be higher.
 
 ```{r f-stat-redux}
 f_test = lm(happiness_score ~ generosity, happy)
@@ -73,7 +74,7 @@ anova(happy_model_null, happy_model_base)
 
 In this case our F statistic generalizes to the following, where $\textrm{Model}_1$ is the simpler model and $p$ now refers to the total number of parameters estimated (i.e. same as before + 1 for the intercept)
 
-$$F = \frac{(\textrm{Model}_2\ RV - \textrm{Model}_1\ RV)/(p_2 - p_1)}{\textrm{Model}_2\ RV/(N-p_2-1)}$$
+$$F = \frac{(\textrm{Model}_2\ \textrm{RV} - \textrm{Model}_1\ \textrm{RV})/(p_2 - p_1)}{\textrm{Model}_2\ \textrm{RV}/(N-p_2-1)}$$
 
 From the previous results, we can perform the necessary arithmetic based on this formula to get the F statistic.
 
@@ -89,7 +90,7 @@ Going back to our previous notions, $R^2$ is just:
 
 $$R^2 =\textrm{Model Explained Variance}/\textrm{Total Variance}$$
 
-This too is reported by default in our summary printout.
+This also is reported by default in our summary printout.
 
 ```{r happy-r2}
 happy_model_base_sum
@@ -121,7 +122,7 @@ One problem with $R^2$ is that it always goes up, no matter what nonsense you ad
 
 ### Beyond OLS
 
-People love $R^2$, so much that they will report it wherever they can, even coming up with things like 'Pseudo-$R^2$' when it proves difficult. However, outside of the OLS setting where we assume a normal distribution as the underlying data-generating mechanism, $R^2$ has little application, and so is not very useful. In some sense, for any numeric target variable we can ask how well our predictions correlate with the observed target values, but the notion of 'variance explained' doesn't easily follow us. For example, for other distributions the estimated variance is a function of the mean (e.g. our Poisson example), and so isn't constant. In other settings we have multiple sources of residual variance, and some sources  where it's not clear whether the variance should be considered as part of the model explained variance or residual variance.  For categorical targets the notion doesn't really apply very well at all.
+People love $R^2$, so much that they will report it wherever they can, even coming up with things like 'Pseudo-$R^2$' when it proves difficult. However, outside of the OLS setting where we assume a normal distribution as the underlying data-generating mechanism, $R^2$ has little application, and so is not very useful. In some sense, for any numeric target variable we can ask how well our predictions correlate with the observed target values, but the notion of 'variance explained' doesn't easily follow us. For example, for other distributions the estimated variance is a function of the mean (e.g. Poisson, Binomial), and so isn't constant. In other settings we have multiple sources of (residual) variance, and some sources  where it's not clear whether the variance should be considered as part of the model explained variance or residual variance.  For categorical targets the notion doesn't really apply very well at all.
 
 At least for GLM for non-normal distributions, we can work with *deviance*, which is similar to the residual sum of squares in the OLS setting.  We can get a 'deviance explained' using the following approach:
 
@@ -217,9 +218,9 @@ There are quite a few assumptions for the standard linear model that we could ta
 - Independence of observations
 - Normality
 
-These concern bias (the first), accurate inference (most of the rest), or other statistical concepts (efficiency, consistency).  The issue with most of the assumptions you learn about in your statistics course is that they mostly just apply to the OLS setting.  Moreover, you can meet all the assumptions you want and still have a crappy model. Practically speaking, the effects on inference often aren't large enough to matter, as most shouldn't be making any important decision based on a p-value, or slight differences in the boundaries of an interval.  Even then, at least for OLS settings, the solutions are often easy, for example, to obtain correct standard errors, or are mostly overcome by having a large amount of data.
+These concern bias (the first), accurate inference (most of the rest), or other statistical concepts (efficiency, consistency).  The issue with most of the assumptions you learn about in your statistics course is that they mostly just apply to the OLS setting.  Moreover, you can meet all the assumptions you want and still have a crappy model. Practically speaking, the effects on inference often aren't large enough to matter in many cases, as we shouldn't be making any important decision based on a p-value, or slight differences in the boundaries of an interval.  Even then, at least for OLS and other simpler settings, the solutions to these issues are often easy, for example, to obtain correct standard errors, or are mostly overcome by having a large amount of data.
 
-Still, the diagnostic tools can provide clues to model failure.  As before, visualization will aid us here. 
+Still, the diagnostic tools can provide clues to model failure, and so have utility in that sense.  As before, visualization will aid us here. 
 
 ```{r diag-plot-code, eval=F}
 library(ggfortify)
@@ -249,7 +250,7 @@ The first plot shows the spread of the residuals vs. the model estimated values.
 
 In this example we have it about as good as it gets.  The second plot regards the normality of the residuals.  If they are normally distributed, they would fall along the dotted line. Again, in practical application this is about as good as you're going to get.  In the following we can see that we have some issues, where predictions are worse at low and high ends, and we may not be capturing some of the tail of the target distribution.
 
-```{r bad_fit}
+```{r bad_fit, echo=FALSE}
 set.seed(1234)
 N = 500
 x = rnorm(N)
@@ -272,7 +273,7 @@ autoplot(
 
 Another plot we can use to assess model fit is simply to note the predictions vs. the observed values, and this sort of plot would be appropriate for any model. Here I show this both as a scatterplot and a density plot.  With the first, the closer the result is to a line the better, with the latter, we can more adequately see what the model is predicting in relation to the observed values. In this case, while we're doing well, one limitation of the model is that it does not have as much spread as target, and so is not capturing the more extreme values.
 
-```{r pp_check_base, echo=F, out.width='1200px', out.height='400px'}
+```{r pp_check_base, echo=F, fig.width=8}
 init = data.frame(
   predictions = predict(happy_model_base),
   target = happy_model_base$model$happiness_score
@@ -303,7 +304,7 @@ p_scatter +
 # gridExtra::grid.arrange(p_scatter, p_dense, layout_matrix = matrix(c(1,1,1,2,2), nrow = 1 ))
 ```
 
-Beyond the OLS setting, assumptions may change, are more difficult to check, and guarantees are harder to come by.  The primary one- that you have an adequate and sufficiently complex model- still remains the most vital.  It is important to remember that these assumptions regard inference, not predictive capabilities.  In addition, in many modeling scenarios we will actually induce bias to have more predictive capacity. In such settings statistical tests are of less importance, and there often may not even be an obvious test to use.  Typically we will still have some means to get the interval estimates for weights or predictions though.  
+Beyond the OLS setting, assumptions may change, are more difficult to check, and guarantees are harder to come by.  The primary one - that you have an adequate and sufficiently complex model - still remains the most vital.  It is important to remember that these assumptions regard inference, not predictive capabilities.  In addition, in many modeling scenarios we will actually induce bias to have more predictive capacity. In such settings statistical tests are of less importance, and there often may not even be an obvious test to use.  Typically we will still have some means to get interval estimates for weights or predictions though.  
 
 
 
@@ -311,7 +312,7 @@ Beyond the OLS setting, assumptions may change, are more difficult to check, and
 
 While we can gauge predictive performance to some extent with a metric like $R^2$ in the standard linear model case, even then it almost certainly an optimistic viewpoint, and adjusted $R^2$ doesn't really deal with the underlying issue.  What is the problem?  The concern is that we are judging model performance on the very data it was fit to. Any potential deviation to the underlying data would certainly result in a different result for $R^2$, accuracy, or any metric we choose to look at.
 
-So the better estimate of how the model is doing is to observe performance on data it hasn't seen.  This data goes by different names- *test set*, *validation set*, *holdout sample*, etc., but the basic idea is that we use some data that wasn't used in model fitting to assess performance.  We can do this in any data situation by randomly splitting into a data set for training the model, and one used for testing the model's performance.
+So the better estimate of how the model is doing is to observe performance on data it hasn't seen, using a metric that better captures how close we hit the target.  This data goes by different names- *test set*, *validation set*, *holdout sample*, etc., but the basic idea is that we use some data that wasn't used in model fitting to assess performance.  We can do this in any data situation by randomly splitting into a data set for training the model, and one used for testing the model's performance.
 
 ```{r train-test}
 library(tidymodels)
@@ -333,7 +334,7 @@ predictions = predict(happy_model_train, newdata = happy_test)
 
 Comparing our loss on training and test (i.e. RMSE), we can see the loss is greater on the test set.  You can use a package like <span class="pack" style = "">yardstick</span> to calculate this.
 
-```{r train-test-loss, echo=FALSE}
+```{r train-test-loss, echo=FALSE, cache.rebuild=TRUE}
 pita = data.frame(
   observed_train = happy_model_train$model$happiness_score,
   predict_train  = happy_model_train$fitted.values
@@ -369,9 +370,8 @@ A notable problem is that complex models should always do better than simple one
 A starting point for adding model complexity is simply adding more covariates.  Let's add life expectancy and a yearly trend to our happiness model.  To make this model comparable to our baseline model, they need to be fit to the same data, and life expectancy has a couple missing values the others do not.  So we'll start with some data processing. I will start by standardizing some of the variables, and making year start at zero, which will represent 2008, and finally dropping missing values.  Refer to our previous section on [transforming variables][numeric variables] if you want to.
 
 ```{r happy-data-proc}
-happy_processed = happy %>% 
+happy_recipe = happy %>% 
   select(
-    country,
     year,
     happiness_score,
     democratic_quality,
@@ -382,10 +382,12 @@ happy_processed = happy %>%
   recipe(happiness_score ~ . ) %>% 
   step_center(all_numeric(), -log_gdp_per_capita, -year) %>% 
   step_scale(all_numeric(), -log_gdp_per_capita, -year) %>% 
+  step_knnimpute(all_numeric()) %>% 
   step_naomit(everything()) %>% 
   step_center(year, means = 2005) %>% 
-  prep() %>% 
-  bake(happy)
+  prep()
+  
+happy_processed = happy_recipe %>% bake(happy)
 ```
 
 
@@ -415,7 +417,7 @@ summary(happy_model_more)
 
 Here it would seem that life expectancy has a notable effect on happiness (shocker), but the yearly trend, while negative, is not statistically notable.  In addition, the democratic effect is no longer significant, as it would seem that it's contribution was more due to it's correlation with life expectancy. But the key question is- is this model better?  
 
-The adjusted $R^2$ seems to indicate that we are doing slightly better with this model, but not much (`r rnd(summary(happy_model_more)$adj, 2)` vs. `r rnd(summary(happy_model_base)$adj, 2)`).  We can test if the increase is a statistically notable one. [Recall previously][Statistical] when we compared our model versus a null model to obtain a statistical test of model fit.  Since these models are *nested*, i.e. one is a simpler form of the other, we can use the more general approach we depicted to compare these models.  This ANOVA, or analysis of variance test, is essentially comparing whether the residual sum of squares (i.e. the loss) is statistically less for one model vs. the other. In many settings it is often called a *likelihood ratio test*.
+The adjusted $R^2$ seems to indicate that we are doing slightly better with this model, but not much (`r rnd(summary(happy_model_more)$adj, 2)` vs. `r rnd(summary(happy_model_base)$adj, 2)`).  We can test if the increase is a statistically notable one. [Recall previously][statistical assessment] when we compared our model versus a null model to obtain a statistical test of model fit.  Since these models are *nested*, i.e. one is a simpler form of the other, we can use the more general approach we depicted to compare these models.  This ANOVA, or analysis of variance test, is essentially comparing whether the residual sum of squares (i.e. the loss) is statistically less for one model vs. the other. In many settings it is often called a *likelihood ratio test*.
 
 ```{r anova-comparison}
 anova(happy_model_base, happy_model_more, test = 'Chi')
@@ -484,7 +486,7 @@ diff_in_r2 %>%
   kable_df()
 ```
 
-It would seem the difference in adjusted R square is not statistically different from zero.  Likewise we could do the same for AIC.
+It would seem the difference in adjusted $R^2$ is not statistically different from zero.  Likewise we could do the same for AIC.
 
 ```{r boot-$AIC$, echo=FALSE}
 aic_base <- boot(
@@ -544,11 +546,11 @@ happy_model_interact = lm(
 summary(happy_model_interact)
 ```
 
-The coefficient interpretation for variables in the interaction model changes.  For those involved in an interaction, the base coefficient now only describes the effect when the variable they interact with is zero (or is at the reference group if it's categorical). So democratic quality has a slight positive but not statistically notable effect at the mean of life expectancy `r rnd(coef(happy_model_interact)['democratic_quality'])`.  However, this effect increases by `r rnd(coef(happy_model_interact)['democratic_quality:healthy_life_expectancy_at_birth'], 2)` when life expectancy increases by 1 (i.e. 1 standard deviation).  The same interpretation goes for life expectancy.  It's base coefficient is when democratic quality is at it's mean (`r rnd(coef(happy_model_interact)['healthy_life_expectancy_at_birth'])`), and the interaction term is interpreted identically.
+The coefficient interpretation for variables in the interaction model changes.  For those involved in an interaction, the base coefficient now only describes the effect when the variable they interact with is zero (or is at the reference group if it's categorical). So democratic quality has a slight positive, but not statistically notable, effect at the mean of life expectancy (`r rnd(coef(happy_model_interact)['democratic_quality'])`).  However, this effect increases by `r rnd(coef(happy_model_interact)['democratic_quality:healthy_life_expectancy_at_birth'], 2)` when life expectancy increases by 1 (i.e. 1 standard deviation since we standardized).  The same interpretation goes for life expectancy.  It's base coefficient is when democratic quality is at it's mean (`r rnd(coef(happy_model_interact)['healthy_life_expectancy_at_birth'])`), and the interaction term is interpreted identically.
 
-It seems most people (including journal reviewers) seem to have trouble understanding interactions if you just report them in a table. Furthermore, beyond the standard linear model with non-normal distributions, the coefficient for the interaction term doesn't even have the same meaning. But you know what works in every setting? Visualization!
+It seems most people (including journal reviewers) seem to have trouble understanding interactions if you just report them in a table. Furthermore, beyond the standard linear model with non-normal distributions, the coefficient for the interaction term doesn't even have the same precise meaning. But you know what helps us in every interaction setting? Visualization!
 
-Let's use ggeffects again. We'll plot the effect of democratic quality at the mean of life expectancy, and at one standard deviation below and above.  Since we already standardized it, this is even easier.
+Let's use <span class="pack" style = "">ggeffects</span> again. We'll plot the effect of democratic quality at the mean of life expectancy, and at one standard deviation below and above.  Since we already standardized it, this is even easier.
 
 ```{r vis-interact}
 library(ggeffects)
@@ -563,7 +565,7 @@ plot(
 
 We seem to have discovered something interesting here!  Democratic quality only has a positive effect for those countries with a high life expectancy, i.e. that are already in a good place in general.  It may even be negative in countries in the contrary case. While this has to be taken with a lot of caution, it shows how exploring interactions can be fun and surprising!
 
-Another way to plot interactions in which the variables are continuous is with a contour plot similar to this.  Here we don't have to pick arbitrary values to plot against, and can see the predictions at all values of the covariates in question.
+Another way to plot interactions in which the variables are continuous is with a contour plot similar to the following.  Here we don't have to pick arbitrary values to plot against, and can see the predictions at all values of the covariates in question.
 
 ```{r contour-plot, echo=FALSE, fig.retina=5}
 # library(mgcv)
@@ -610,7 +612,7 @@ Looks like our interaction model is winning.
 
 ### Example: Additive Models
 
-*Generalized additive models* allow our predictors to have a *wiggly* relationship with the target variable.  For more information, see [this document](https://m-clark.github.io/generalized-additive-models/), but for our purposes, that's all you really need to know. We will use the base R mgcv package because it is awesome and you don't need to install anything.  In this case, we'll allow all the covariates to have a nonlinear relationship, and we denote this with the `s()` syntax.
+*Generalized additive models* allow our predictors to have a *wiggly* relationship with the target variable.  For more information, see [this document](https://m-clark.github.io/generalized-additive-models/), but for our purposes, that's all you really need to know- effects don't have to be linear even with linear models! We will use the base R <span class="pack" style = "">mgcv</span> package because it is awesome and you don't need to install anything.  In this case, we'll allow all the covariates to have a nonlinear relationship, and we denote this with the `s()` syntax.
 
 ```{r happy-gam}
 library(mgcv)
@@ -643,12 +645,23 @@ Here is a brief summary of interpretation.  We generally don't have to worry abo
 - `life_expectancy`: Effect is positive, but only if the country is around the mean or higher.
 - `log GDP per capita`: Effect is mostly positive, but may depend on other factors not included in the model.
 
-In terms of general model fit, the `Scale est.` is the same as the residual standard error (squared) in the other models, and is a notably lower than even the model with the interaction (`r rnd(happy_model_gam$sig2, 2)` vs. `r rnd(summary(happy_model_interact)$sig^2, 2)`). We can also see that the adjusted $R^2$ is higher as well (`r rnd(summary(happy_model_gam)$r.sq, 2)` vs. `r rnd(summary(happy_model_interact)$adj, 2)`).
+In terms of general model fit, the `Scale est.` is the same as the residual standard error (squared) in the other models, and is a notably lower than even the model with the interaction (`r rnd(happy_model_gam$sig2, 2)` vs. `r rnd(summary(happy_model_interact)$sig^2, 2)`). We can also see that the adjusted $R^2$ is higher as well (`r rnd(summary(happy_model_gam)$r.sq, 2)` vs. `r rnd(summary(happy_model_interact)$adj, 2)`).  If we wanted, we can actually do wiggly interactions also!  Here is our interaction from before for the GAM case.
+
+```{r gam-interact, echo=FALSE, fig.width=3}
+gam(
+  happiness_score ~ s(democratic_quality, healthy_life_expectancy_at_birth, k = 10) + s(generosity) + s(log_gdp_per_capita),
+  data = happy_processed
+) %>% 
+  visibly::plot_gam_3d(democratic_quality, healthy_life_expectancy_at_birth, palette = 'vik') %>% 
+  plotly::hide_colorbar()
+```
+
 
 Let's check our AIC now to see which model wins. 
 
 ```{r AIC-all, cache=FALSE}
 AIC(
+  happy_model_null,
   happy_model_base,
   happy_model_more,
   happy_model_interact,
@@ -719,13 +732,14 @@ Statistical significance with a single model does not provide enough of a story 
 
 ### Exercise 0
 
-Recall the [google app exercises][model-exploration-exercises], we use a standard linear model (i.e. lm) to predict one of three target variables:
+Recall the [google app exercises][model exploration exercises], we use a standard linear model (i.e. <span class="func" style = "">lm</span>) to predict one of three target variables:
 
 - `rating`: the user ratings of the app
 - `avg_sentiment_polarity`: the average sentiment score (positive vs. negative) for the app
 - `avg_sentiment_subjectivity`: the average subjectivity score (subjective vs. objective) for the app
 
 For prediction use the following variables:
+
 - `reviews`: number of reviews
 - `type`: free vs. paid
 - `size_in_MB`: size of the app in megabytes
@@ -734,13 +748,29 @@ After that we did a model with an interaction.
 
 Either using those models, or running new ones with a different target variable, conduct the following exercises.
 
+```{r ex0-goog, eval=FALSE}
+load('data/google_apps.RData')
+```
+
 ### Exercise 1
 
 Assess the model fit and performance of your first model. Perform additional diagnostics to assess how the model is doing (e.g. plot the model to look at residuals).
 
+```{r ex1-model-assess, eval=FALSE}
+summary(model)
+plot(model)
+```
+
+
 ### Exercise 2
 
-Compare the model with the interaction model.  Based on AIC or some other metric, which one would you choose?  Visualize your result.
+Compare the model with the interaction model.  Based on AIC or some other metric, which one would you choose?  Visualize the interaction model if it's the better model.
+
+```{r ex2-model-compare, eval=FALSE}
+anova(model1, model2)
+AIC(model1, model2)
+```
+
 
 
 [^ftest]: This is often depicted in different ways depending on the text and context. In our depiction, the focus is on the F statistic as a ratio of explained variance to unexplained variance, which naturally relates to the $R^2$ statistic.
