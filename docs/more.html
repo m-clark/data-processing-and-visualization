@@ -705,9 +705,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="more.html#cb311-1"></a><span class="kw">library</span>(microbenchmark)</span>
 <span id="cb311-2"><a href="more.html#cb311-2"></a><span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</span></code></pre></div>
 <pre><code>Unit: nanoseconds
-                    expr   min    lq     mean  median      uq   max neval
- apply(mymatrix, 2, log) 24316 25139 37127.76 26953.0 47140.0 96196   100
-           log(mymatrix)   706   796  1105.59   868.5  1098.5  9894   100</code></pre>
+                    expr   min      lq     mean  median      uq   max neval
+ apply(mymatrix, 2, log) 23834 24453.5 25552.80 24687.0 24938.5 80821   100
+           log(mymatrix)   721   747.5   883.39   842.5   903.5  5402   100</code></pre>
 <p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
 <div id="timings" class="section level4">
 <h4>Timings</h4>

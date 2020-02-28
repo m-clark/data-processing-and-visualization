@@ -263,15 +263,14 @@ mtcars %>%
 
 ## ----wf_ex1b, eval=FALSE----------------------------------------------------------------------
 ## log_sum <- function(a, b) {
-##   #
-##   #
-##   #
 ## 
-##   if (?) {
+##   ?
+## 
+##   if (? < 0) {
 ##     stop('Your message here.')
 ##   } else {
 ##     ?
-##     return(your_log_sum_results)
+##     return(your_log_sum_results)    # this is an arbitrary name, change accordingly
 ##   }
 ## }
 

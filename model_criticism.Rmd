@@ -647,7 +647,7 @@ Here is a brief summary of interpretation.  We generally don't have to worry abo
 
 In terms of general model fit, the `Scale est.` is the same as the residual standard error (squared) in the other models, and is a notably lower than even the model with the interaction (`r rnd(happy_model_gam$sig2, 2)` vs. `r rnd(summary(happy_model_interact)$sig^2, 2)`). We can also see that the adjusted $R^2$ is higher as well (`r rnd(summary(happy_model_gam)$r.sq, 2)` vs. `r rnd(summary(happy_model_interact)$adj, 2)`).  If we wanted, we can actually do wiggly interactions also!  Here is our interaction from before for the GAM case.
 
-```{r gam-interact, echo=FALSE, fig.width=3}
+```{r gam-interact, echo=FALSE}
 gam(
   happiness_score ~ s(democratic_quality, healthy_life_expectancy_at_birth, k = 10) + s(generosity) + s(log_gdp_per_capita),
   data = happy_processed

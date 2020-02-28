@@ -948,12 +948,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code># A tibble: 6 x 12
   observation       mpg   cyl   disp  hp    drat  wt    qsec  vs    am    gear  carb 
   &lt;chr&gt;             &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;
-1 Mazda RX4         21.0  6     160.0 &quot;110&quot; 3.90  2.620 &lt;NA&gt;  0     1     4     4    
-2 Mazda RX4 Wag     21.0  6     160.0 &quot;110&quot; 3.90  &lt;NA&gt;  17.02 0     1     4     4    
-3 Datsun 710        22.8  4     108.0 &quot; 93&quot; 3.85  2.320 18.61 1     1     4     1    
-4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; &lt;NA&gt;  &lt;NA&gt;  19.44 1     &lt;NA&gt;  3     1    
-5 Hornet Sportabout 18.7  8     360.0 &quot;175&quot; 3.15  3.440 &lt;NA&gt;  0     0     3     2    
-6 Valiant           18.1  &lt;NA&gt;  &lt;NA&gt;  &quot;105&quot; 2.76  3.460 20.22 1     0     3     1    </code></pre>
+1 Mazda RX4         21.0  &lt;NA&gt;  160.0 110   &lt;NA&gt;  2.620 16.46 0     1     4     4    
+2 Mazda RX4 Wag     21.0  6     160.0 110   3.90  2.875 17.02 0     1     4     &lt;NA&gt; 
+3 Datsun 710        22.8  4     108.0 &lt;NA&gt;  3.85  2.320 18.61 1     1     4     1    
+4 Hornet 4 Drive    21.4  6     258.0 110   3.08  3.215 19.44 1     0     3     1    
+5 Hornet Sportabout &lt;NA&gt;  8     360.0 175   3.15  3.440 17.02 0     0     3     2    
+6 Valiant           18.1  6     225.0 &lt;NA&gt;  2.76  &lt;NA&gt;  20.22 1     0     &lt;NA&gt;  1    </code></pre>
 <div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="iterative.html#cb241-1"></a>mtcars2 =<span class="st"> </span></span>
 <span id="cb241-2"><a href="iterative.html#cb241-2"></a><span class="st">  </span>mtcars2 <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb241-3"><a href="iterative.html#cb241-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
@@ -969,21 +969,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code># A tibble: 32 x 13
    observation       mpg   cyl   disp  hp    drat  wt    qsec  vs    am    gear  carb  newvar          
    &lt;chr&gt;             &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;list&gt;          
- 1 Mazda RX4         21.0  6     160.0 &quot;110&quot; 3.90  2.620 &lt;NA&gt;  0     1     4     4     &lt;df[,2] [1 × 2]&gt;
- 2 Mazda RX4 Wag     21.0  6     160.0 &quot;110&quot; 3.90  &lt;NA&gt;  17.02 0     1     4     4     &lt;df[,2] [1 × 2]&gt;
- 3 Datsun 710        22.8  4     108.0 &quot; 93&quot; 3.85  2.320 18.61 1     1     4     1     &lt;df[,2] [1 × 2]&gt;
- 4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; &lt;NA&gt;  &lt;NA&gt;  19.44 1     &lt;NA&gt;  3     1     &lt;df[,2] [1 × 2]&gt;
- 5 Hornet Sportabout 18.7  8     360.0 &quot;175&quot; 3.15  3.440 &lt;NA&gt;  0     0     3     2     &lt;df[,2] [1 × 2]&gt;
- 6 Valiant           18.1  &lt;NA&gt;  &lt;NA&gt;  &quot;105&quot; 2.76  3.460 20.22 1     0     3     1     &lt;df[,2] [1 × 2]&gt;
- 7 Duster 360        14.3  8     360.0 &quot;245&quot; &lt;NA&gt;  3.570 15.84 0     0     3     4     &lt;df[,2] [1 × 2]&gt;
- 8 Merc 240D         24.4  4     146.7 &quot; 62&quot; 3.69  3.190 20.00 1     0     4     2     &lt;df[,2] [1 × 2]&gt;
- 9 Merc 230          &lt;NA&gt;  4     140.8 &quot; 95&quot; 3.92  3.150 22.90 1     0     4     2     &lt;df[,2] [1 × 2]&gt;
-10 Merc 280          &lt;NA&gt;  &lt;NA&gt;  167.6  &lt;NA&gt; 3.92  3.440 18.30 &lt;NA&gt;  0     4     4     &lt;df[,2] [1 × 2]&gt;
+ 1 Mazda RX4         21.0  &lt;NA&gt;  160.0 &quot;110&quot; &lt;NA&gt;  2.620 16.46 0     1     4     4     &lt;df[,2] [1 × 2]&gt;
+ 2 Mazda RX4 Wag     21.0  6     160.0 &quot;110&quot; 3.90  2.875 17.02 0     1     4     &lt;NA&gt;  &lt;df[,2] [1 × 2]&gt;
+ 3 Datsun 710        22.8  4     108.0  &lt;NA&gt; 3.85  2.320 18.61 1     1     4     1     &lt;df[,2] [1 × 2]&gt;
+ 4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; 3.08  3.215 19.44 1     0     3     1     &lt;df[,2] [1 × 2]&gt;
+ 5 Hornet Sportabout &lt;NA&gt;  8     360.0 &quot;175&quot; 3.15  3.440 17.02 0     0     3     2     &lt;df[,2] [1 × 2]&gt;
+ 6 Valiant           18.1  6     225.0  &lt;NA&gt; 2.76  &lt;NA&gt;  20.22 1     0     &lt;NA&gt;  1     &lt;df[,2] [1 × 2]&gt;
+ 7 Duster 360        14.3  8     360.0 &quot;245&quot; 3.21  3.570 15.84 0     0     3     &lt;NA&gt;  &lt;df[,2] [1 × 2]&gt;
+ 8 Merc 240D         24.4  4     &lt;NA&gt;  &quot; 62&quot; 3.69  3.190 20.00 &lt;NA&gt;  &lt;NA&gt;  4     2     &lt;df[,2] [1 × 2]&gt;
+ 9 Merc 230          &lt;NA&gt;  4     140.8 &quot; 95&quot; 3.92  &lt;NA&gt;  22.90 &lt;NA&gt;  0     4     2     &lt;df[,2] [1 × 2]&gt;
+10 Merc 280          19.2  6     167.6 &quot;123&quot; 3.92  3.440 18.30 &lt;NA&gt;  0     4     4     &lt;df[,2] [1 × 2]&gt;
 # … with 22 more rows</code></pre>
 <div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="iterative.html#cb244-1"></a>mtcars2<span class="op">$</span>newvar <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <pre><code>[[1]]
    N Missing
-1 11       1
+1 10       2
 
 [[2]]
    N Missing
@@ -991,23 +991,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 [[3]]
    N Missing
-1 12       0</code></pre>
+1 11       1</code></pre>
 <p>Unnest it with the <span class="pack">tidyr</span> function.</p>
 <div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="iterative.html#cb246-1"></a>mtcars2 <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb246-2"><a href="iterative.html#cb246-2"></a><span class="st">  </span><span class="kw">unnest</span>(newvar)</span></code></pre></div>
 <pre><code># A tibble: 32 x 14
    observation       mpg   cyl   disp  hp    drat  wt    qsec  vs    am    gear  carb      N Missing
    &lt;chr&gt;             &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;int&gt;   &lt;int&gt;
- 1 Mazda RX4         21.0  6     160.0 &quot;110&quot; 3.90  2.620 &lt;NA&gt;  0     1     4     4        11       1
- 2 Mazda RX4 Wag     21.0  6     160.0 &quot;110&quot; 3.90  &lt;NA&gt;  17.02 0     1     4     4        11       1
- 3 Datsun 710        22.8  4     108.0 &quot; 93&quot; 3.85  2.320 18.61 1     1     4     1        12       0
- 4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; &lt;NA&gt;  &lt;NA&gt;  19.44 1     &lt;NA&gt;  3     1         9       3
- 5 Hornet Sportabout 18.7  8     360.0 &quot;175&quot; 3.15  3.440 &lt;NA&gt;  0     0     3     2        11       1
- 6 Valiant           18.1  &lt;NA&gt;  &lt;NA&gt;  &quot;105&quot; 2.76  3.460 20.22 1     0     3     1        10       2
- 7 Duster 360        14.3  8     360.0 &quot;245&quot; &lt;NA&gt;  3.570 15.84 0     0     3     4        11       1
- 8 Merc 240D         24.4  4     146.7 &quot; 62&quot; 3.69  3.190 20.00 1     0     4     2        12       0
- 9 Merc 230          &lt;NA&gt;  4     140.8 &quot; 95&quot; 3.92  3.150 22.90 1     0     4     2        11       1
-10 Merc 280          &lt;NA&gt;  &lt;NA&gt;  167.6  &lt;NA&gt; 3.92  3.440 18.30 &lt;NA&gt;  0     4     4         8       4
+ 1 Mazda RX4         21.0  &lt;NA&gt;  160.0 &quot;110&quot; &lt;NA&gt;  2.620 16.46 0     1     4     4        10       2
+ 2 Mazda RX4 Wag     21.0  6     160.0 &quot;110&quot; 3.90  2.875 17.02 0     1     4     &lt;NA&gt;     11       1
+ 3 Datsun 710        22.8  4     108.0  &lt;NA&gt; 3.85  2.320 18.61 1     1     4     1        11       1
+ 4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; 3.08  3.215 19.44 1     0     3     1        12       0
+ 5 Hornet Sportabout &lt;NA&gt;  8     360.0 &quot;175&quot; 3.15  3.440 17.02 0     0     3     2        11       1
+ 6 Valiant           18.1  6     225.0  &lt;NA&gt; 2.76  &lt;NA&gt;  20.22 1     0     &lt;NA&gt;  1         9       3
+ 7 Duster 360        14.3  8     360.0 &quot;245&quot; 3.21  3.570 15.84 0     0     3     &lt;NA&gt;     11       1
+ 8 Merc 240D         24.4  4     &lt;NA&gt;  &quot; 62&quot; 3.69  3.190 20.00 &lt;NA&gt;  &lt;NA&gt;  4     2         9       3
+ 9 Merc 230          &lt;NA&gt;  4     140.8 &quot; 95&quot; 3.92  &lt;NA&gt;  22.90 &lt;NA&gt;  0     4     2         9       3
+10 Merc 280          19.2  6     167.6 &quot;123&quot; 3.92  3.440 18.30 &lt;NA&gt;  0     4     4        11       1
 # … with 22 more rows</code></pre>
 <p>This is a pretty esoteric demonstration, and not something you’d normally want to do, as <span class="func">mutate</span> or other approaches would be far more efficient and sensical. However, the idea is that you might want to retain the information you might otherwise store in a list with the data that was used to create it. As an example, you could potentially attach models as a list column to a dataframe that contains meta-information about each model. Once you have a list column, you can use that column as you would any list for iterative programming.</p>
 </div>

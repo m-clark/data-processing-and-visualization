@@ -1,0 +1,181 @@
+---
+title: "Modeling Exercises"
+output: 
+  learnr::tutorial:
+css: css/standard_html.css
+highlight: pygments
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr); library(tidyverse)
+knitr::opts_chunk$set(
+  echo = FALSE,
+  # eval = FALSE,    # this will keep code from running regardless of chunk specific option
+  exercise.lines = 5,
+  exercise.eval = FALSE,
+  cache = FALSE
+)
+```
+
+
+# Modeling
+
+## Modeling Exploration Exercises
+### Exercise 1
+
+With the Google app data, use a standard linear model (i.e. <span class="func" style = "">lm</span>) to predict one of three target variables of your choosing:
+
+- `rating`: the user ratings of the app
+- `avg_sentiment_polarity`: the average sentiment score (positive vs. negative) for the app
+- `avg_sentiment_subjectivity`: the average subjectivity score (subjective vs. objective) for the app
+
+For prediction use the following variables:
+
+- `reviews`: number of reviews
+- `type`: free vs. paid
+- `size_in_MB`: size of the app in megabytes
+
+I would suggest preprocessing the number of reviews- dividing by 100,000, scaling (standardizing), or logging it (for the latter you can add 1 first to deal with zeros[^plusonelog]).
+
+Interpret the results.  Visualize the difference in means between free and paid apps. See the [emmeans][visualization] example above.
+
+```{r ex1-goog, exercise = TRUE}
+load('data/google_apps.RData')
+
+model = lm(? ~ reviews + type + size_in_MB, data = google_apps)
+
+plot(emmeans::emmeans(model, ~type))
+```
+
+
+### Exercise 2
+
+Rerun the above with interactions of the number of reviews or app size (or both) with type (via `a + b + a:b` or just `a*b` for two predictors).  Visualize the interaction.  Does it look like the effect differs by type?
+
+```{r ex2-goog, exercise = TRUE}
+model = lm(? ~ reviews + type*?, data = google_apps)
+
+plot(ggeffects::ggpredict(model, terms = c('size_in_MB', 'type')))
+```
+
+##  Model Criticism Exercises
+
+### Exercise 0
+
+Recall the [google app exercises][model exploration exercises], we use a standard linear model (i.e. <span class="func" style = "">lm</span>) to predict one of three target variables:
+
+- `rating`: the user ratings of the app
+- `avg_sentiment_polarity`: the average sentiment score (positive vs. negative) for the app
+- `avg_sentiment_subjectivity`: the average subjectivity score (subjective vs. objective) for the app
+
+For prediction use the following variables:
+
+- `reviews`: number of reviews
+- `type`: free vs. paid
+- `size_in_MB`: size of the app in megabytes
+
+After that we did a model with an interaction.
+
+Either using those models, or running new ones with a different target variable, conduct the following exercises.
+
+```{r ex0-goog, exercise = TRUE}
+load('data/google_apps.RData')
+```
+
+### Exercise 1
+
+Assess the model fit and performance of your first model. Perform additional diagnostics to assess how the model is doing (e.g. plot the model to look at residuals).
+
+```{r ex1-model-assess, exercise = TRUE}
+summary(model)
+plot(model)
+```
+
+
+### Exercise 2
+
+Compare the model with the interaction model.  Based on AIC or some other metric, which one would you choose?  Visualize the interaction model if it's the better model.
+
+```{r ex2-model-compare, exercise = TRUE}
+anova(model1, model2)
+AIC(model1, model2)
+```
+
+
+## Machine Learning Exercises
+
+### Exercise 1
+
+Use the <span class="pack" style = "">ranger</span> package to predict the google variable `rating` by several covariates.  Feel free to just use the standard function approach rather than all the tidymodels stuff if you want, but do use a training and test approach. You can then try the model again with a different tuning.  For the first go around, 
+
+```{r ex1-ml, exercise = TRUE}
+# run these if needed to load data and install the package
+# load('data/google_apps.RData')
+# install.packages('ranger')
+
+google_for_mod = google_apps %>% 
+  select(avg_sentiment_polarity, rating, type,installs, reviews, size_in_MB, category) %>% 
+  drop_na()
+
+google_split = google_for_mod %>% 
+  initial_split(prop = 0.75)
+
+google_train = training(google_split)
+google_test  = testing(google_split)
+
+ga_rf_results = rand_forest(mode = 'regression', mtry = 2, trees = 1000) %>%
+  set_engine(engine = "ranger") %>% 
+  fit(
+    rating ~ ?,
+    google_train
+  )
+
+test_predictions = predict(ga_rf_results, new_data = google_test)
+
+rmse = yardstick::rmse(
+  data = bind_cols(test_predictions, google_test),
+  truth = rating,
+  estimate = .pred
+)
+
+rsq = yardstick::rsq(
+  data = bind_cols(test_predictions, google_test),
+  truth = rating,
+  estimate = .pred
+)
+
+bind_rows(
+  rmse,
+  rsq
+)
+```
+
+
+### Exercise 2
+
+Respecify the neural net model demonstrated above as follows, and tune over the number of hidden units to have.
+
+```{r ml-ex-2, exercise = TRUE}
+grid_search = expand.grid(
+  hidden_units = c(25, 50),  
+  penalty = exp(seq(-4, -.25, length.out = 5))
+)
+
+happy_nn_spec = mlp(mode = 'regression',
+                    penalty = tune(),
+                    hidden_units = tune()) %>% 
+  set_engine(engine = "nnet")
+
+nn_tune = tune_grid(
+  happy_prepped,                  # from previous examples, see tuning for regularized regression
+  model = happy_nn_spec,
+  resamples = happy_folds,        # from previous examples, see tuning for regularized regression
+  grid = grid_search
+)
+
+show_best(nn_tune, metric = "rmse", maximize = FALSE, n = 1) 
+```
+
+
+

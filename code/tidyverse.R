@@ -2,6 +2,10 @@
 knitr::opts_chunk$set(echo = T, eval=T, cache.rebuild = F)
 
 
+## ----tidyhex, out.width='10%', echo=FALSE-----------------------------------------------------
+knitr::include_graphics('img/hex_tidyverse.svg')
+
+
 ## ----tv_load, eval=FALSE----------------------------------------------------------------------
 ## library(tidyverse)
 

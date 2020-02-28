@@ -1,3 +1,11 @@
+## ----dtsetup, include=FALSE, eval=TRUE, cache=FALSE-------------------------------------------
+knitr::opts_chunk$set(eval=T, echo=F, cache = T)
+
+
+## ----dthex, out.width='10%', echo=FALSE-------------------------------------------------------
+knitr::include_graphics('img/hex_datatable.png')
+
+
 ## ----dterror, eval=TRUE-----------------------------------------------------------------------
 library(data.table)
 dt = data.table(x = sample(1:10, 6),
@@ -99,7 +107,6 @@ test_dt2 = test_dt2[, mean := mean(x), by = g]
 
 # timing_group_by_1 %>% kable_df(justify='lr')
 
-
 timing_group_by_1 =
   microbenchmark::microbenchmark(
     test_dt0 = test_dt0[, mean := mean(x), by = g],
@@ -124,6 +131,7 @@ lets_1 %chin% letters[13:26] %>% head(10)
 
 # stri_detect_regex(lets_1, paste(letters[13:26], collapse='|'))
 # str_detect(lets_1, paste(letters[13:26], collapse='|'))
+
 
 # timing_chmatch %>% kable_df(justify='lr')
 # 

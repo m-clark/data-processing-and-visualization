@@ -713,7 +713,7 @@ standard
 </div>
 <div id="optimization-1" class="section level3">
 <h3>Optimization</h3>
-<p>With ML, much more attention is paid to different optimizers, but the vast majority for deep learning and other many other methods are some flavor of <em>stochastic gradient descent</em>. Often due to the sheer volume of data/parameters, this optimization is done on part of the data and in parallel. In general, some optimization approaches may work better in some situations or for some models, where ‘better’ means quicker convergence, or perhaps a smoother ride toward convergence. It is not the case that you would come to incorrect conclusions using one method vs. another per se, just that you might reach those conclusions in a more efficient fashion. The following graphic displays SGD versus several variants<a href="#fn40" class="footnote-ref" id="fnref40"><sup>40</sup></a>. The x and y axes represent the potential values two parameters might take, with the best selection of those values based on a loss function somewhere toward the bottom right. We can see that they all would get there eventually, but some might do so more quickly. This may or may not be the case for some other data situation.</p>
+<p>With ML, much more attention is paid to different optimizers, but the vast majority for deep learning and other many other methods are some flavor of <em>stochastic gradient descent</em>. Often due to the sheer volume of data/parameters, this optimization is done on chunks of the data and in parallel. In general, some optimization approaches may work better in some situations or for some models, where ‘better’ means quicker convergence, or perhaps a smoother ride toward convergence. It is not the case that you would come to incorrect conclusions using one method vs. another per se, just that you might reach those conclusions in a more efficient fashion. The following graphic displays SGD versus several variants<a href="#fn40" class="footnote-ref" id="fnref40"><sup>40</sup></a>. The x and y axes represent the potential values two parameters might take, with the best selection of those values based on a loss function somewhere toward the bottom right. We can see that they all would get there eventually, but some might do so more quickly. This may or may not be the case for some other data situation.</p>
 <p><img src="img/opt_vis_rad.gif" width="50%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="tuning-parameters" class="section level3">
@@ -792,13 +792,13 @@ rmse
 standard
 </td>
 <td style="text-align:right;">
-0.33
+0.335
 </td>
 <td style="text-align:right;">
 10
 </td>
 <td style="text-align:right;">
-0.02
+0.018
 </td>
 </tr>
 <tr>
@@ -809,13 +809,13 @@ rsq
 standard
 </td>
 <td style="text-align:right;">
-0.90
+0.897
 </td>
 <td style="text-align:right;">
 10
 </td>
 <td style="text-align:right;">
-0.01
+0.013
 </td>
 </tr>
 </tbody>
@@ -869,7 +869,7 @@ standard
 <pre><code># A tibble: 1 x 7
   penalty mixture .metric .estimator  mean     n std_err
     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
-1  0.0970       1 rmse    standard   0.359    10 0.00893</code></pre>
+1  0.0970       1 rmse    standard   0.350    10 0.00963</code></pre>
 <p>There isn’t a real strong relationship with these settings, except that generally a more ‘lasso-y’ mixture and smaller penalty tends to work better, and this is more or less in keeping with the ‘best’ model. Here is a plot where size indicates RMSE (smaller better) but only for RMSE &lt; .5 (slight jitter added).</p>
 <p>With the ‘best’ model selected, we can refit to the training data with the parameters in hand. We can then do our usual performance assessment with the test set.</p>
 <div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb459-1"><a href="ml.html#cb459-1"></a><span class="co"># for technical reasons, only mixture is passed to the model; see https://github.com/tidymodels/parsnip/issues/215</span></span>
@@ -913,7 +913,7 @@ rmse
 standard
 </td>
 <td style="text-align:right;">
-5.33
+5.425
 </td>
 </tr>
 <tr>
@@ -924,7 +924,7 @@ rsq
 standard
 </td>
 <td style="text-align:right;">
-0.91
+0.912
 </td>
 </tr>
 </tbody>
@@ -979,13 +979,13 @@ rmse
 standard
 </td>
 <td style="text-align:right;">
-0.25
+0.222
 </td>
 <td style="text-align:right;">
 10
 </td>
 <td style="text-align:right;">
-0.03
+0.004
 </td>
 </tr>
 <tr>
@@ -996,13 +996,13 @@ rsq
 standard
 </td>
 <td style="text-align:right;">
-0.95
+0.950
 </td>
 <td style="text-align:right;">
 10
 </td>
 <td style="text-align:right;">
-0.01
+0.003
 </td>
 </tr>
 </tbody>
@@ -1036,7 +1036,7 @@ standard
 <pre><code># A tibble: 1 x 7
    mtry min_n .metric .estimator  mean     n std_err
   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
-1    13    10 rmse    standard    3.54    10  0.0207</code></pre>
+1    13    10 rmse    standard    3.58    10  0.0210</code></pre>
 <p>Looks like in general using all the variables for selection is the best (this is in keeping with standard approaches for random forest with regression).</p>
 <p>Now we are ready to refit the model with the selected tuning parameters and make predictions on the test data.</p>
 <div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb464-1"><a href="ml.html#cb464-1"></a>tuned_model =<span class="st"> </span><span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>, <span class="dt">mtry =</span> best<span class="op">$</span>mtry, <span class="dt">min_n =</span> best<span class="op">$</span>min_n) <span class="op">%&gt;%</span></span>
@@ -1079,7 +1079,7 @@ rmse
 standard
 </td>
 <td style="text-align:right;">
-5.35
+5.437
 </td>
 </tr>
 <tr>
@@ -1090,7 +1090,7 @@ rsq
 standard
 </td>
 <td style="text-align:right;">
-0.93
+0.934
 </td>
 </tr>
 </tbody>
@@ -1150,13 +1150,13 @@ rmse
 standard
 </td>
 <td style="text-align:right;">
-0.29
+0.290
 </td>
 <td style="text-align:right;">
 10
 </td>
 <td style="text-align:right;">
-0.01
+0.007
 </td>
 </tr>
 <tr>
@@ -1167,13 +1167,13 @@ rsq
 standard
 </td>
 <td style="text-align:right;">
-0.92
+0.916
 </td>
 <td style="text-align:right;">
 10
 </td>
 <td style="text-align:right;">
-0.01
+0.005
 </td>
 </tr>
 </tbody>
