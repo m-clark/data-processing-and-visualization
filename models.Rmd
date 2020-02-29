@@ -89,7 +89,7 @@ The goal of many estimation approaches is the reduction of *loss*, conceptually 
 
 $$\mathcal{Loss} = \Sigma(y - \hat{y})^2$$
 
-We can see how this works more clearly with some simple conceptual code.  In what follows, we create a [function][writing-functions], allows us to move [row by row][for-loops] through the data, calculating both our prediction based on the given model parameters- $\hat{y}$, and the difference between that and our target variable $y$.  We sum these squared differences to get a total. In practice such a function is called the loss function, cost function, or objective function.
+We can see how this works more clearly with some simple conceptual code.  In what follows, we create a [function][writing functions], allows us to move [row by row][for loops] through the data, calculating both our prediction based on the given model parameters- $\hat{y}$, and the difference between that and our target variable $y$.  We sum these squared differences to get a total. In practice such a function is called the loss function, cost function, or objective function.
 
 ```{r ls-loss}
 ls_loss <- function(X, y, beta) {
@@ -541,7 +541,7 @@ Little pains advanced modelers more than seeing results where a nice expressive 
 
 ## Variable Importance
 
-In many circumstances, one of the modeling goals is to determine which predictor variable is most important out of the collection used in the model, or otherwise rank order the effectiveness of the predictors in some fashion.  However, determining relative *variable importance* is at best an approximation with some methods, and a fairly hopeless endeavor with others.  For just basic linear regression there are many methods that would not necessarily come to the same conclusions. Statistical significance, e.g. the Z/t statistic or p-value, is simply not a correct way to do so. Some believe that [standardizing numeric variables][numeric-variables] is enough, but it is not, and doesn't help with comparison to categorical inputs.  In addition, if you're model is not strong, it doesn't make much sense to even worry about which is the best of a bad lot.
+In many circumstances, one of the modeling goals is to determine which predictor variable is most important out of the collection used in the model, or otherwise rank order the effectiveness of the predictors in some fashion.  However, determining relative *variable importance* is at best an approximation with some methods, and a fairly hopeless endeavor with others.  For just basic linear regression there are many methods that would not necessarily come to the same conclusions. Statistical significance, e.g. the Z/t statistic or p-value, is simply not a correct way to do so. Some believe that [standardizing numeric variables][numeric variables] is enough, but it is not, and doesn't help with comparison to categorical inputs.  In addition, if you're model is not strong, it doesn't make much sense to even worry about which is the best of a bad lot.
 
 Another reason that 'importance' is a problematic endeavor is that a statistical result doesn't speak to practical action, nor does it speak to the fact that small effects may be very important.  Sex may be an important driver in social science model, but we may not be able to do anything about it for many outcomes that may be of interest. With health outcomes, any effects might be worthy of attention, however small, if they could practically increase the likelihood of survival.
 

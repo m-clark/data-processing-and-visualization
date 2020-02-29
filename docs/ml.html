@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-02-27" />
+<meta name="date" content="2020-02-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1179,7 +1179,7 @@ standard
 </tbody>
 </table>
 <p>You will typically see neural nets applied to image and natural language processing, but as demonstrated above, they can be applied in any scenario. It will take longer to set up and train, but once that’s done, you’re good to go, and may have a much better predictive result.</p>
-<p>I leave tuning the model as an [exercise][machine-learning-exercises], but definitely switch to using <code>nnet</code> if you do so, otherwise you’ll have to install keras (both for R and Python) and be waiting a long time besides. As mentioned, the <span style="">nnet</span> package is in base R, so you already have it.</p>
+<p>I leave tuning the model as an <a href="ml.html#machine-learning-exercises">exercise</a>, but definitely switch to using <code>nnet</code> if you do so, otherwise you’ll have to install keras (both for R and Python) and be waiting a long time besides. As mentioned, the <span style="">nnet</span> package is in base R, so you already have it.</p>
 <div id="deep-learning" class="section level4">
 <h4>Deep Learning</h4>
 <p><em>Deep learning</em> can be summarized succinctly as ‘very complicated neural nets’. Really, that’s about it. The complexity can be quite tremendous however, and there is a wide variety from which to choose. For example, we just ran a basic neural net above, but for image processing we might use a convolutional neural network, and for natural language processing some LTSM model. Here is a small(!) version of the convolutional neural network known as ‘resnet’ which has many layers in between input and output.</p>
@@ -1276,7 +1276,7 @@ standard
 <ol start="37">
 <li id="fn37"><p>The ‘machine’ part of the term has historical context, but otherwise has lost meaning for most modern applications, or, at least I really don’t think we need to be referring to computers doing their usual thing as something notable. ‘Learning’ is a poor term that seems to lead many to believe ML is some ‘algorithm’ automatically/magically learning from data without any human input. Nothing could be further from the truth. ML models ‘learn’ from the data as much as a linear regression does.<a href="ml.html#fnref37" class="footnote-back">↩︎</a></p></li>
 <li id="fn38"><p>This image comes from <a href="https://web.stanford.edu/~hastie/ElemStatLearn/">Elements of Statistical Learning</a>.<a href="ml.html#fnref38" class="footnote-back">↩︎</a></p></li>
-<li id="fn39"><p>Unfortunately, unlike the tidyverse, tidymodels doesn’t really help me do things more easily. As an alternative, consider the <a href="https://mlr3.mlr-org.com/">mlr3</a> approach, which has its own ‘verse’ of packages. I’m not suggesting it’s easier, and it uses [R6][r6] which will take getting used to, but it’s a viable alternative if you want to try an different framework for machine learning.<a href="ml.html#fnref39" class="footnote-back">↩︎</a></p></li>
+<li id="fn39"><p>Unfortunately, unlike the tidyverse, tidymodels doesn’t really help me do things more easily. As an alternative, consider the <a href="https://mlr3.mlr-org.com/">mlr3</a> approach, which has its own ‘verse’ of packages. I’m not suggesting it’s easier, and it uses <a href="programming.html#others">R6</a> which will take getting used to, but it’s a viable alternative if you want to try an different framework for machine learning.<a href="ml.html#fnref39" class="footnote-back">↩︎</a></p></li>
 <li id="fn40"><p>This is <a href="https://imgur.com/a/Hqolp">Alec Radford’s visualization</a>.<a href="ml.html#fnref40" class="footnote-back">↩︎</a></p></li>
 <li id="fn41"><p>In at least conceptually, and most of the time, literally, in the exact same manner as happens with linear regression.<a href="ml.html#fnref41" class="footnote-back">↩︎</a></p></li>
 <li id="fn42"><p>For some reason the <span class="pack" style="">parsnip</span> package calls this function <span class="func" style="">mlp</span>, which means ‘multilayer’ perceptron, even though only one hidden layer is possible. Something was clearly lost in translation.<a href="ml.html#fnref42" class="footnote-back">↩︎</a></p></li>

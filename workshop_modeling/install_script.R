@@ -4,8 +4,10 @@
 
 install.packages(
   c(
-    'tidymodels',
     'tidyverse',
+    'tidymodels',
+    'emmeans',
+    'ggeffects',
     'tune'
   )
 )
