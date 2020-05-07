@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>data.table | Data Processing &amp; Visualization</title>
   <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
 
   <meta property="og:title" content="data.table | Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-02-29" />
+<meta name="date" content="2020-05-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -55,15 +55,12 @@
 <script src="libs/viz-1.8.2/viz.js"></script>
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
 <script src="libs/grViz-binding-1.0.5/grViz.js"></script>
-<script src="libs/plotly-binding-4.9.2/plotly.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
-<link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
-<script src="libs/vis-4.20.1/vis.min.js"></script>
-<script src="libs/visNetwork-binding-2.0.9/visNetwork.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
 <link href="libs/highcharts-7.0.1/css/motion.css" rel="stylesheet" />
 <link href="libs/highcharts-7.0.1/css/htmlwdgtgrid.css" rel="stylesheet" />
@@ -104,6 +101,9 @@
 <script src="libs/highcharts-7.0.1/custom/symbols-extra.js"></script>
 <script src="libs/highcharts-7.0.1/custom/text-symbols.js"></script>
 <script src="libs/highchart-binding-0.7.0/highchart.js"></script>
+<link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
+<script src="libs/vis-4.20.1/vis.min.js"></script>
+<script src="libs/visNetwork-binding-2.0.9/visNetwork.js"></script>
 <script src="libs/sigma-1.2.1/sigma.min.js"></script>
 <script src="libs/sigma-1.2.1/plugins/sigma.layout.forceAtlas2.min.js"></script>
 <script src="libs/sigma-1.2.1/plugins/sigma.layout.noverlap.min.js"></script>
@@ -128,7 +128,7 @@
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.12/datatables.js"></script>
+<script src="libs/datatables-binding-0.13/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
@@ -599,17 +599,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1>data.table</h1>
 <p><img src="img/hex_datatable.png" width="10%" style="display: block; margin: auto;" /></p>
 <p>Another package for data processing that has been useful to many is <span class="pack">data.table</span>. It works in a notably different way than <span class="pack">dplyr</span>. However, you’d use it for the same reasons, e.g. subset, grouping, update, ordered joins etc., but with key advantages in speed and memory efficiency. Like <span class="pack">dplyr</span>, the data objects are both <span class="objclass">data.frames</span> and a package specific class.</p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="data_table.html#cb148-1"></a><span class="kw">library</span>(data.table)</span>
+<span id="cb148-2"><a href="data_table.html#cb148-2"></a>dt =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">x =</span> <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">6</span>),</span>
+<span id="cb148-3"><a href="data_table.html#cb148-3"></a>                <span class="dt">g =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,</span>
+<span id="cb148-4"><a href="data_table.html#cb148-4"></a>                <span class="dt">y =</span> <span class="kw">runif</span>(<span class="dv">6</span>))</span>
+<span id="cb148-5"><a href="data_table.html#cb148-5"></a><span class="kw">class</span>(dt)</span></code></pre></div>
 <pre><code>[1] &quot;data.table&quot; &quot;data.frame&quot;</code></pre>
 <div id="basics" class="section level2">
 <h2>Basics</h2>
 <p>In general, <span class="pack">data.table</span> works with brackets as in base R data frames. However, in order to use <span class="pack">data.table</span> effectively you’ll need to forget the data frame similarity. The brackets actually work like a function call, with several key arguments. Consider the following notation to start.</p>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="data_table.html#cb150-1"></a>x[i, j, by, keyby, with =<span class="st"> </span><span class="ot">TRUE</span>, ...]</span></code></pre></div>
 <p>Importantly: <em>you don’t use the brackets as you would with data.frames</em>. What <strong>i</strong> and <strong>j</strong> can be are fairly complex.</p>
 <p>In general, you use <strong>i</strong> for filtering by rows.</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="data_table.html#cb151-1"></a>dt[<span class="dv">2</span>]    <span class="co"># rows! not columns as with standard data.frame</span></span>
+<span id="cb151-2"><a href="data_table.html#cb151-2"></a>dt[<span class="dv">2</span>,]</span></code></pre></div>
 <pre><code>   x g         y
 1: 4 2 0.5316671
    x g         y
 1: 4 2 0.5316671</code></pre>
 <p>You use <strong>j</strong> to select (by name!) or create new columns. We can define a new column with the <span class="func">:=</span> operator.</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="data_table.html#cb153-1"></a>dt[,x]</span>
+<span id="cb153-2"><a href="data_table.html#cb153-2"></a>dt[,z <span class="op">:</span><span class="er">=</span><span class="st"> </span>x<span class="op">+</span>y]  <span class="co"># dt now has a new column</span></span>
+<span id="cb153-3"><a href="data_table.html#cb153-3"></a>dt[,z]</span>
+<span id="cb153-4"><a href="data_table.html#cb153-4"></a>dt[g <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>, <span class="kw">mean</span>(z), by =<span class="st"> </span>g]</span>
+<span id="cb153-5"><a href="data_table.html#cb153-5"></a>dt</span></code></pre></div>
 <pre><code>[1] 3 4 9 2 1 6
 [1] 3.314605 4.531667 9.986560 2.366484 1.724130 6.939924
    g       V1
@@ -623,6 +636,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 5: 1 2 0.7241302 1.724130
 6: 6 3 0.9399237 6.939924</code></pre>
 <p>Because <strong>j</strong> is an argument, dropping columns is awkward.</p>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="data_table.html#cb155-1"></a>dt[, <span class="op">-</span>y]             <span class="co"># creates negative values of y</span></span>
+<span id="cb155-2"><a href="data_table.html#cb155-2"></a>dt[, <span class="op">-</span><span class="st">&#39;y&#39;</span>, with =<span class="st"> </span>F] <span class="co"># drops y, but now needs quotes</span></span>
+<span id="cb155-3"><a href="data_table.html#cb155-3"></a><span class="co">## dt[, y := NULL]      # drops y, but this is just a base R approach</span></span>
+<span id="cb155-4"><a href="data_table.html#cb155-4"></a><span class="co">## dt$y = NULL</span></span></code></pre></div>
 <pre><code>[1] -0.3146050 -0.5316671 -0.9865603 -0.3664836 -0.7241302 -0.9399237
    x g        z
 1: 3 1 3.314605
@@ -632,13 +649,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 5: 1 2 1.724130
 6: 6 3 6.939924</code></pre>
 <p>Data table does not make unnecessary copies. For example if we do the following…</p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="data_table.html#cb157-1"></a>DT =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">A =</span> <span class="dv">5</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">B =</span> letters[<span class="dv">5</span><span class="op">:</span><span class="dv">1</span>])</span>
+<span id="cb157-2"><a href="data_table.html#cb157-2"></a>DT2 =<span class="st"> </span>DT</span>
+<span id="cb157-3"><a href="data_table.html#cb157-3"></a>DT3 =<span class="st"> </span><span class="kw">copy</span>(DT)  </span></code></pre></div>
 <p>DT2 and DT are just names for the same table. You’d actually need to use the copy function to make an explicit copy, otherwise whatever you do to DT2 will be done to DT.</p>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="data_table.html#cb158-1"></a>DT2[,q<span class="op">:</span><span class="er">=</span><span class="dv">1</span>]</span>
+<span id="cb158-2"><a href="data_table.html#cb158-2"></a>DT</span></code></pre></div>
 <pre><code>   A B q
 1: 5 e 1
 2: 4 d 1
 3: 3 c 1
 4: 2 b 1
 5: 1 a 1</code></pre>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="data_table.html#cb160-1"></a>DT3 </span></code></pre></div>
 <pre><code>   A B
 1: 5 e
 2: 4 d
@@ -649,10 +672,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="grouped-operations" class="section level2">
 <h2>Grouped operations</h2>
 <p>We can now attempt a ‘group-by’ operation, along with creation of a new variable. Note that these operations actually modify the <span class="objclass">dt</span> object <em>in place</em>, a key distinction with <span class="pack">dplyr</span>. Fewer copies means less of a memory hit.</p>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="data_table.html#cb162-1"></a>dt1 =<span class="st"> </span>dt2 =<span class="st"> </span>dt</span>
+<span id="cb162-2"><a href="data_table.html#cb162-2"></a>dt[, <span class="kw">sum</span>(x, y), by =<span class="st"> </span>g]                <span class="co"># sum of all x and y values</span></span></code></pre></div>
 <pre><code>   g        V1
 1: 1  5.681089
 2: 2  6.255797
 3: 3 16.926484</code></pre>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="data_table.html#cb164-1"></a>dt1[, mysum <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(x), by =<span class="st"> </span>g]         <span class="co"># add new variable to the original data</span></span>
+<span id="cb164-2"><a href="data_table.html#cb164-2"></a>dt1</span></code></pre></div>
 <pre><code>   x g         y        z mysum
 1: 3 1 0.3146050 3.314605     5
 2: 4 2 0.5316671 4.531667     5
@@ -661,9 +688,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 5: 1 2 0.7241302 1.724130     5
 6: 6 3 0.9399237 6.939924    15</code></pre>
 <p>We can also create groupings on the fly. For a new summary data set, we’ll take the following approach- we create a grouping based on whether <code>g</code> is a value of one or not, then get the mean and sum of <code>x</code> for those two categories. The corresponding <span class="pack" style="">dplyr</span> approach is also shown (but not evaluated) for comparison.</p>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="data_table.html#cb166-1"></a>dt2[, <span class="kw">list</span>(<span class="dt">mean_x =</span> <span class="kw">mean</span>(x), <span class="dt">sum_x =</span> <span class="kw">sum</span>(x)), by =<span class="st"> </span>g <span class="op">==</span><span class="st"> </span><span class="dv">1</span>]</span></code></pre></div>
 <pre><code>       g mean_x sum_x
 1:  TRUE    2.5     5
 2: FALSE    5.0    20</code></pre>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="data_table.html#cb168-1"></a><span class="co">## dt2 %&gt;% </span></span>
+<span id="cb168-2"><a href="data_table.html#cb168-2"></a><span class="co">##   group_by(g == 1) %&gt;% </span></span>
+<span id="cb168-3"><a href="data_table.html#cb168-3"></a><span class="co">##   summarise(mean_x = mean(x), sum_x = sum(x))</span></span></code></pre></div>
 </div>
 <div id="faster" class="section level2">
 <h2>Faster!</h2>
@@ -671,6 +702,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="joins" class="section level3">
 <h3>Joins</h3>
 <p>Joins can not only be faster but also easy to do. Note that the <code>i</code> argument can be a <span class="objclass">data.table</span> object itself. I compare its speed to the comparable <span class="pack">dplyr’s</span> <span class="func">left_join</span> function.</p>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="data_table.html#cb169-1"></a>dt1 =<span class="st"> </span><span class="kw">setkey</span>(dt1, x)</span>
+<span id="cb169-2"><a href="data_table.html#cb169-2"></a>dt1[dt2]</span>
+<span id="cb169-3"><a href="data_table.html#cb169-3"></a></span>
+<span id="cb169-4"><a href="data_table.html#cb169-4"></a>dt1_df =<span class="st"> </span>dt2_df =<span class="st"> </span><span class="kw">as.data.frame</span>(dt1)</span>
+<span id="cb169-5"><a href="data_table.html#cb169-5"></a><span class="kw">left_join</span>(dt1_df, dt2_df, <span class="dt">by =</span> <span class="st">&#39;x&#39;</span>)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -705,18 +741,18 @@ dplyr_join
 <div id="group-by" class="section level3">
 <h3>Group by</h3>
 <p>We can use the <span class="func">setkey</span> function to order a data set by a certain column(s). This ordering is done by reference; again, no copy is made. Doing this will allow for faster grouped operations, though you likely will only see the speed gain with very large data. The timing regards creating a new variable</p>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="data_table.html#cb157-1"></a>test_dt0 =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">x =</span> <span class="kw">rnorm</span>(<span class="dv">10000000</span>),</span>
-<span id="cb157-2"><a href="data_table.html#cb157-2"></a>                      <span class="dt">g =</span> <span class="kw">sample</span>(letters, <span class="dv">10000000</span>, <span class="dt">replace =</span> T))</span>
-<span id="cb157-3"><a href="data_table.html#cb157-3"></a>test_dt1 =<span class="st"> </span><span class="kw">copy</span>(test_dt0)</span>
-<span id="cb157-4"><a href="data_table.html#cb157-4"></a>test_dt2 =<span class="st"> </span><span class="kw">setkey</span>(test_dt1, g)</span>
-<span id="cb157-5"><a href="data_table.html#cb157-5"></a></span>
-<span id="cb157-6"><a href="data_table.html#cb157-6"></a><span class="kw">identical</span>(test_dt0, test_dt1)</span></code></pre></div>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="data_table.html#cb170-1"></a>test_dt0 =<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">x =</span> <span class="kw">rnorm</span>(<span class="dv">10000000</span>),</span>
+<span id="cb170-2"><a href="data_table.html#cb170-2"></a>                      <span class="dt">g =</span> <span class="kw">sample</span>(letters, <span class="dv">10000000</span>, <span class="dt">replace =</span> T))</span>
+<span id="cb170-3"><a href="data_table.html#cb170-3"></a>test_dt1 =<span class="st"> </span><span class="kw">copy</span>(test_dt0)</span>
+<span id="cb170-4"><a href="data_table.html#cb170-4"></a>test_dt2 =<span class="st"> </span><span class="kw">setkey</span>(test_dt1, g)</span>
+<span id="cb170-5"><a href="data_table.html#cb170-5"></a></span>
+<span id="cb170-6"><a href="data_table.html#cb170-6"></a><span class="kw">identical</span>(test_dt0, test_dt1)</span></code></pre></div>
 <pre><code>[1] FALSE</code></pre>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="data_table.html#cb159-1"></a><span class="kw">identical</span>(test_dt1, test_dt2)</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="data_table.html#cb172-1"></a><span class="kw">identical</span>(test_dt1, test_dt2)</span></code></pre></div>
 <pre><code>[1] TRUE</code></pre>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="data_table.html#cb161-1"></a>test_dt0 =<span class="st"> </span>test_dt0[, mean <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">mean</span>(x), by =<span class="st"> </span>g]</span>
-<span id="cb161-2"><a href="data_table.html#cb161-2"></a>test_dt1 =<span class="st"> </span>test_dt1[, mean <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">mean</span>(x), by =<span class="st"> </span>g]</span>
-<span id="cb161-3"><a href="data_table.html#cb161-3"></a>test_dt2 =<span class="st"> </span>test_dt2[, mean <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">mean</span>(x), by =<span class="st"> </span>g]</span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="data_table.html#cb174-1"></a>test_dt0 =<span class="st"> </span>test_dt0[, mean <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">mean</span>(x), by =<span class="st"> </span>g]</span>
+<span id="cb174-2"><a href="data_table.html#cb174-2"></a>test_dt1 =<span class="st"> </span>test_dt1[, mean <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">mean</span>(x), by =<span class="st"> </span>g]</span>
+<span id="cb174-3"><a href="data_table.html#cb174-3"></a>test_dt2 =<span class="st"> </span>test_dt2[, mean <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">mean</span>(x), by =<span class="st"> </span>g]</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -760,15 +796,16 @@ test_dt2
 <h3>String matching</h3>
 <p>The <span class="func">chin</span> function returns a vector of the <em>positions</em> of (first) matches of its first argument in its second, where both arguments are character vectors. Essentially it’s just like the <span class="func">%in%</span> function for character vectors.</p>
 <p>Consider the following. We sample the first 14 letters 1000 times with replacement and see which ones match in a subset of another subset of letters. I compare the same operation to <span class="pack">stringr</span> and the <span class="pack">stringi</span> package whose functionality <span class="pack">stringr</span> using. They are both far slower than <span class="func" style="">chin</span>.</p>
-<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="data_table.html#cb162-1"></a>lets_<span class="dv">1</span> =<span class="st"> </span><span class="kw">sample</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">14</span>], <span class="dv">1000</span>, <span class="dt">replace=</span>T)</span>
-<span id="cb162-2"><a href="data_table.html#cb162-2"></a></span>
-<span id="cb162-3"><a href="data_table.html#cb162-3"></a>lets_<span class="dv">1</span> <span class="op">%chin%</span><span class="st"> </span>letters[<span class="dv">13</span><span class="op">:</span><span class="dv">26</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="data_table.html#cb175-1"></a>lets_<span class="dv">1</span> =<span class="st"> </span><span class="kw">sample</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">14</span>], <span class="dv">1000</span>, <span class="dt">replace=</span>T)</span>
+<span id="cb175-2"><a href="data_table.html#cb175-2"></a></span>
+<span id="cb175-3"><a href="data_table.html#cb175-3"></a>lets_<span class="dv">1</span> <span class="op">%chin%</span><span class="st"> </span>letters[<span class="dv">13</span><span class="op">:</span><span class="dv">26</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>)</span></code></pre></div>
 <pre><code> [1] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE</code></pre>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="data_table.html#cb164-1"></a><span class="co"># stri_detect_regex(lets_1, paste(letters[13:26], collapse=&#39;|&#39;))</span></span></code></pre></div>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="data_table.html#cb177-1"></a><span class="co"># stri_detect_regex(lets_1, paste(letters[13:26], collapse=&#39;|&#39;))</span></span></code></pre></div>
 </div>
 <div id="reading-files" class="section level3">
 <h3>Reading files</h3>
 <p>If you use <span class="pack">data.table</span> for nothing else, you’d still want to consider it strongly for reading in large text files. The function <span class="func">fread</span> may be quite useful in being memory efficient too. I compare it to <span class="pack">readr</span>.</p>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="data_table.html#cb178-1"></a><span class="kw">fread</span>(<span class="st">&#39;data/cars.csv&#39;</span>)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -882,7 +919,14 @@ data.table
 <div id="pipe-with-data.table" class="section level2">
 <h2>Pipe with data.table</h2>
 <p>Piping can be done with <span class="objclass" style="">data.table</span> objects too, using the brackets, but it’s awkward at best.</p>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="data_table.html#cb179-1"></a>mydt[, newvar <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">mean</span>(x), ][, newvar2 <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(newvar), by =<span class="st"> </span>group][, <span class="op">-</span><span class="st">&#39;y&#39;</span>, with =<span class="st"> </span><span class="ot">FALSE</span>]</span>
+<span id="cb179-2"><a href="data_table.html#cb179-2"></a>mydt[, newvar <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">mean</span>(x),</span>
+<span id="cb179-3"><a href="data_table.html#cb179-3"></a>     ][, newvar2 <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(newvar), by =<span class="st"> </span>group</span>
+<span id="cb179-4"><a href="data_table.html#cb179-4"></a>       ][,<span class="op">-</span><span class="st">&#39;y&#39;</span>, with=<span class="ot">FALSE</span>]</span></code></pre></div>
 <p>Probably better to just use a standard pipe and dot approach if you really need it.</p>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="data_table.html#cb180-1"></a>mydt[, newvar <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">mean</span>(x), ] <span class="op">%&gt;%</span></span>
+<span id="cb180-2"><a href="data_table.html#cb180-2"></a><span class="st">  </span>.[, newvar2 <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sum</span>(newvar), by =<span class="st"> </span>group] <span class="op">%&gt;%</span></span>
+<span id="cb180-3"><a href="data_table.html#cb180-3"></a><span class="st">  </span>.[, <span class="op">-</span><span class="st">&#39;y&#39;</span>, with =<span class="st"> </span><span class="ot">FALSE</span>]</span></code></pre></div>
 </div>
 <div id="summary-1" class="section level2">
 <h2>Summary</h2>
@@ -971,6 +1015,11 @@ tidyfast
 <h3>Exercise 0</h3>
 <p>Install and load the <span class="pack">data.table</span> package.</p>
 <p>Create the following data table.</p>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="data_table.html#cb181-1"></a>mydt =<span class="st"> </span><span class="kw">data.table</span>(</span>
+<span id="cb181-2"><a href="data_table.html#cb181-2"></a>  <span class="kw">expand.grid</span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, </span>
+<span id="cb181-3"><a href="data_table.html#cb181-3"></a>              <span class="dt">y =</span> <span class="kw">c</span>(<span class="st">&#39;a&#39;</span>, <span class="st">&#39;b&#39;</span>, <span class="st">&#39;c&#39;</span>)), </span>
+<span id="cb181-4"><a href="data_table.html#cb181-4"></a>  <span class="dt">z =</span> <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>, <span class="dv">9</span>)</span>
+<span id="cb181-5"><a href="data_table.html#cb181-5"></a>)</span></code></pre></div>
 </div>
 <div id="exercise-1-3" class="section level3">
 <h3>Exercise 1</h3>
