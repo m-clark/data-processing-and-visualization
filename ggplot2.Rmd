@@ -528,7 +528,9 @@ The R community really lucked out with ggplot, and the basic philosophy behind i
 
 If using Python though, you're in luck!  You get most of the basic functionality of ggplot2 via the <span class="pack" style = "">plotnine</span> module. A jupyter notebook demonstrating most of the previous is available [here](https://github.com/m-clark/data-processing-and-visualization/blob/master/code/ggplot.ipynb).
 
-```{python ggplot, dev = 'png', message = FALSE}
+<!-- This stopped working for reasons I could not determine, could be conda, plotnine, reticulate, R4.0, or something else, and I don't care enough to sort it out right now. -->
+
+```{python ggplot, dev = 'png', message = FALSE, eval=FALSE}
 import pandas as pd
 from plotnine import *
 from plotnine.data import mtcars

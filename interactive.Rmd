@@ -3,9 +3,10 @@
 
 ```{r interactivesetup, include=FALSE, eval=TRUE, cache=FALSE}
 knitr::opts_chunk$set(cache.rebuild=T)
+library(ggplot2)
 ```
 
-```{r title, echo=F}
+```{r title, echo=F, eval=T}
 # saveWidget(vn, file='vntitle.html')
 library(visNetwork)
 nodes = data.frame(id=1:2, label=c('Interactive', 'Visualization'))
@@ -150,8 +151,8 @@ mtcars %>%
 
 While you can use plotly as a one-liner[^qplot], this would only be good for quick peeks while doing data exploration. It would generally be far too limiting otherwise.
 
-```{r plotly_1line}
-plot_ly(midwest, x = ~percollege, color = ~state, type = "box")
+```{r plotly_1line, eval = T}
+plot_ly(ggplot2::midwest, x = ~percollege, color = ~state, type = "box")
 ```
 
 And here is a Python example or two using plotly express.

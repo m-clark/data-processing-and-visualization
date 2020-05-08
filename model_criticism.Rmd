@@ -334,7 +334,7 @@ predictions = predict(happy_model_train, newdata = happy_test)
 
 Comparing our loss on training and test (i.e. RMSE), we can see the loss is greater on the test set.  You can use a package like <span class="pack" style = "">yardstick</span> to calculate this.
 
-```{r train-test-loss, echo=FALSE, cache.rebuild=TRUE}
+```{r train-test-loss, echo=FALSE}
 pita = data.frame(
   observed_train = happy_model_train$model$happiness_score,
   predict_train  = happy_model_train$fitted.values

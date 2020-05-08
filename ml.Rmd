@@ -75,8 +75,8 @@ happy_folds = vfold_cv(happy)
 library(tune)
 
 happy_base_results = fit_resamples(
-  happiness_score ~ democratic_quality + generosity + log_gdp_per_capita,
   happy_base_spec,
+  happiness_score ~ democratic_quality + generosity + log_gdp_per_capita,
   happy_folds,
   control = control_resamples(save_pred = TRUE)
 )
@@ -146,8 +146,8 @@ happy_regLM_spec = linear_reg(penalty = 1e-3, mixture = .5) %>%
   set_engine(engine = "glmnet")
 
 happy_regLM_results = fit_resamples(
-  happiness_score ~ .,
   happy_regLM_spec,
+  happiness_score ~ .,
   happy_folds,
   control = control_resamples(save_pred = TRUE)
 )
@@ -186,7 +186,7 @@ happy_prepped = happy_train %>%
   step_scale(everything()) %>%        # standardize
   prep()                              # prepare for other uses
 
-happy_test_normalized <- bake(happy_prepped, new_data = happy_test, all_predictors())
+happy_test_normalized <- bake(happy_prepped, new_data = happy_test, everything())
 
 happy_folds = happy_prepped %>% 
   bake(happy) %>% 
@@ -219,15 +219,15 @@ best = show_best(regLM_tune, metric = "rmse", maximize = FALSE, n = 1) # we want
 best
 ```
 
-There isn't a real strong relationship with these settings, except that generally a more 'lasso-y' mixture and smaller penalty tends to work better, and this is more or less in keeping with the 'best' model.  Here is a plot where size indicates RMSE (smaller better) but only for RMSE < .5 (slight jitter added).
+The results suggest a more ridge type mixture and smaller penalty tends to work better, and this is more or less in keeping with the 'best' model.  Here is a plot where size indicates RMSE (smaller better) but only for RMSE < .5 (slight jitter added).
 
 ```{r regLM-tune-model-vis, echo=FALSE, eval=FALSE}
 regLM_tune$.metrics %>% 
   bind_rows() %>% 
-  filter(.estimate < .5) %>% 
+  filter(.estimate < .5) %>%
   ggplot(aes(penalty, mixture)) + 
   geom_point(aes(size=.estimate), color = '#990024', alpha = .15, position = position_jitter()) +
-  geom_smooth(color = '#ff550080', se = F) +
+  # geom_smooth(color = '#ff550080', se = F) +
   scale_size_continuous(range = c(1,10), breaks = c(.5,1,2,5,10)) +
   theme_clean()
 ```
@@ -244,13 +244,13 @@ tuned_model = linear_reg(penalty = best$penalty, mixture = best$mixture) %>%
 test_predictions = predict(tuned_model, new_data = happy_test_normalized)
 
 rmse = yardstick::rmse(
-  data = bind_cols(test_predictions, happy_test),
+  data = bind_cols(test_predictions, happy_test_normalized),
   truth = happiness_score,
   estimate = .pred
 )
 
 rsq = yardstick::rsq(
-  data = bind_cols(test_predictions, happy_test),
+  data = bind_cols(test_predictions, happy_test_normalized),
   truth = happiness_score,
   estimate = .pred
 )
@@ -284,8 +284,8 @@ happy_rf_spec = rand_forest(mode = 'regression', mtry = 6) %>%
   set_engine(engine = "ranger")
 
 happy_rf_results = fit_resamples(
-  happiness_score ~ .,
   happy_rf_spec,
+  happiness_score ~ .,
   happy_folds
 )
 
@@ -340,13 +340,13 @@ tuned_model = rand_forest(mode = 'regression', mtry = best$mtry, min_n = best$mi
 test_predictions = predict(tuned_model, new_data = happy_test_normalized)
 
 rmse = yardstick::rmse(
-  data = bind_cols(test_predictions, happy_test),
+  data = bind_cols(test_predictions, happy_test_normalized),
   truth = happiness_score,
   estimate = .pred
 )
 
 rsq = yardstick::rsq(
-  data = bind_cols(test_predictions, happy_test),
+  data = bind_cols(test_predictions, happy_test_normalized),
   truth = happiness_score,
   estimate = .pred
 )
@@ -370,7 +370,8 @@ knitr::include_graphics('img/nnet.png')
 
 As a simple example, we can run a simple neural network with a single hidden layer of 1000 units[^mlp].  Since this is a regression problem, no further transformation is required of the end result to map it onto the target variable.  I set the number of epochs to 500, which you can think of as the number of iterations from our discussion of optimization.  There are many tuning parameters I am not showing that could certainly be fiddled with as well. This is just an example that will run quickly with comparable performance to the previous.  If you do not have <span class="pack" style = "">keras</span> installed, you can change the engine to `nnet`, which was a part of the base R set of packages well before neural nets became cool again[^riprip].  This will likely take several minutes for typical machines.
 
-```{r nn-demo, cache=TRUE}
+```{r nn-demo, cache=TRUE, echo = -1, eval=FALSE}
+# bookdown consistently fails here with uninformative error message, so just loading results separately.
 happy_nn_spec = mlp(
   mode = 'regression',
   hidden_units = 1000,
@@ -380,19 +381,20 @@ happy_nn_spec = mlp(
   set_engine(engine = "keras")
 
 happy_nn_results = fit_resamples(
-  happiness_score ~ .,
   happy_nn_spec,
+  happiness_score ~ .,
   happy_folds,
   control = control_resamples(save_pred = TRUE,
                               verbose   = FALSE,
                               allow_par = TRUE)
 )
-
-cv_nn_res = happy_nn_results %>%
-  collect_metrics()
 ```
 
 ```{r nn-display, echo=FALSE}
+load('data/other/happy_nn_results.RData')
+cv_nn_res = happy_nn_results %>%
+  collect_metrics()
+
 cv_nn_res %>% 
   kable_df()
 ```
