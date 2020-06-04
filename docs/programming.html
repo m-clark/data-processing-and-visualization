@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Basics | Data Processing &amp; Visualization</title>
   <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Basics | Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-02-29" />
+<meta name="date" content="2020-06-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -55,10 +55,10 @@
 <script src="libs/viz-1.8.2/viz.js"></script>
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
 <script src="libs/grViz-binding-1.0.5/grViz.js"></script>
-<script src="libs/plotly-binding-4.9.2/plotly.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 <link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
@@ -128,7 +128,7 @@
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.12/datatables.js"></script>
+<script src="libs/datatables-binding-0.13/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
@@ -607,25 +607,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="object-inspection-exploration" class="section level3">
 <h3>Object Inspection &amp; Exploration</h3>
 <p>Let’s say you’ve imported your data into R. If you are going to be able to do anything with it, you’ll have had to create an R object that represents that data. What is that object? By now you know it’s a data frame, specifically, an object of <a href="https://en.wikipedia.org/wiki/Class_(computer_programming)">class</a> <span class="objclass">data.frame</span> or possibly a <span class="objclass">tibble</span> if you’re working within the tidyverse. If you want to look at it, you might be tempted to look at it this way with <span class="func">View</span>, or clicking on it in your Environment viewer.</p>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="programming.html#cb165-1"></a><span class="kw">View</span>(diamonds)</span></code></pre></div>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="programming.html#cb182-1"></a><span class="kw">View</span>(diamonds)</span></code></pre></div>
 <p><img class='zoom' src="img/view.png" style="display:block; margin: 0 auto;" width=50%></p>
 <p>While this is certainly one way to inspect it, it’s not very useful. There’s far too much information to get much out of it, and information you may need to know is absent.</p>
 <p>Consider the following:</p>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="programming.html#cb166-1"></a><span class="kw">str</span>(diamonds)</span></code></pre></div>
-<pre><code>Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:   53940 obs. of  10 variables:
- $ carat  : num  0.23 0.21 0.23 0.29 0.31 0.24 0.24 0.26 0.22 0.23 ...
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="programming.html#cb183-1"></a><span class="kw">str</span>(diamonds)</span></code></pre></div>
+<pre><code>tibble [53,940 × 10] (S3: tbl_df/tbl/data.frame)
+ $ carat  : num [1:53940] 0.23 0.21 0.23 0.29 0.31 0.24 0.24 0.26 0.22 0.23 ...
  $ cut    : Ord.factor w/ 5 levels &quot;Fair&quot;&lt;&quot;Good&quot;&lt;..: 5 4 2 4 2 3 3 3 1 3 ...
  $ color  : Ord.factor w/ 7 levels &quot;D&quot;&lt;&quot;E&quot;&lt;&quot;F&quot;&lt;&quot;G&quot;&lt;..: 2 2 2 6 7 7 6 5 2 5 ...
  $ clarity: Ord.factor w/ 8 levels &quot;I1&quot;&lt;&quot;SI2&quot;&lt;&quot;SI1&quot;&lt;..: 2 3 5 4 2 6 7 3 4 5 ...
- $ depth  : num  61.5 59.8 56.9 62.4 63.3 62.8 62.3 61.9 65.1 59.4 ...
- $ table  : num  55 61 65 58 58 57 57 55 61 61 ...
- $ price  : int  326 326 327 334 335 336 336 337 337 338 ...
- $ x      : num  3.95 3.89 4.05 4.2 4.34 3.94 3.95 4.07 3.87 4 ...
- $ y      : num  3.98 3.84 4.07 4.23 4.35 3.96 3.98 4.11 3.78 4.05 ...
- $ z      : num  2.43 2.31 2.31 2.63 2.75 2.48 2.47 2.53 2.49 2.39 ...</code></pre>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="programming.html#cb168-1"></a><span class="kw">glimpse</span>(diamonds)</span></code></pre></div>
-<pre><code>Observations: 53,940
-Variables: 10
+ $ depth  : num [1:53940] 61.5 59.8 56.9 62.4 63.3 62.8 62.3 61.9 65.1 59.4 ...
+ $ table  : num [1:53940] 55 61 65 58 58 57 57 55 61 61 ...
+ $ price  : int [1:53940] 326 326 327 334 335 336 336 337 337 338 ...
+ $ x      : num [1:53940] 3.95 3.89 4.05 4.2 4.34 3.94 3.95 4.07 3.87 4 ...
+ $ y      : num [1:53940] 3.98 3.84 4.07 4.23 4.35 3.96 3.98 4.11 3.78 4.05 ...
+ $ z      : num [1:53940] 2.43 2.31 2.31 2.63 2.75 2.48 2.47 2.53 2.49 2.39 ...</code></pre>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="programming.html#cb185-1"></a><span class="kw">glimpse</span>(diamonds)</span></code></pre></div>
+<pre><code>Rows: 53,940
+Columns: 10
 $ carat   &lt;dbl&gt; 0.23, 0.21, 0.23, 0.29, 0.31, 0.24, 0.24, 0.26, 0.22, 0.23, 0.30, 0.23, 0.22, 0.31, 0.20, 0.32, 0.30, 0.30, 0.30, 0.30, 0.30, 0.23, 0.23, 0.31, 0.31, 0.23, 0.24, 0.30, 0.23, 0.23, 0.23, 0.23, 0.23, 0.2…
 $ cut     &lt;ord&gt; Ideal, Premium, Good, Premium, Good, Very Good, Very Good, Very Good, Fair, Very Good, Good, Ideal, Premium, Ideal, Premium, Premium, Ideal, Good, Good, Very Good, Good, Very Good, Very Good, Very Good…
 $ color   &lt;ord&gt; E, E, E, I, J, J, I, H, E, H, J, J, F, J, E, E, I, J, J, J, I, E, H, J, J, G, I, J, D, F, F, F, E, E, D, F, E, H, D, I, I, J, D, D, H, F, H, H, E, H, F, G, I, E, D, I, J, I, I, I, I, D, D, D, I, G, I, …
@@ -638,11 +638,11 @@ $ y       &lt;dbl&gt; 3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, 4.05
 $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39, 2.73, 2.46, 2.33, 2.71, 2.27, 2.68, 2.68, 2.70, 2.71, 2.66, 2.71, 2.48, 2.41, 2.62, 2.59, 2.41, 2.47, 2.67, 2.40, 2.42, 2.41, 2.42, 2.42, 2.4…</code></pre>
 <p>The <span class="func">str</span> function looks at the <em>structure</em> of the object, while <span class="func">glimpse</span> perhaps provides a possibly more readable version, and is just <span class="func">str</span> specifically suited toward data frames. In both cases, we get info about the object and the various things within it.</p>
 <p>While you might be doing this with data frames, you should be doing it with any of the objects you’re interested in. Consider a regression model object.</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="programming.html#cb170-1"></a>lm_mod =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>mtcars)</span>
-<span id="cb170-2"><a href="programming.html#cb170-2"></a><span class="kw">str</span>(lm_mod, <span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="programming.html#cb187-1"></a>lm_mod =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>mtcars)</span>
+<span id="cb187-2"><a href="programming.html#cb187-2"></a><span class="kw">str</span>(lm_mod, <span class="dv">0</span>)</span></code></pre></div>
 <pre><code>List of 12
  - attr(*, &quot;class&quot;)= chr &quot;lm&quot;</code></pre>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="programming.html#cb172-1"></a><span class="kw">str</span>(lm_mod, <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="programming.html#cb189-1"></a><span class="kw">str</span>(lm_mod, <span class="dv">1</span>)</span></code></pre></div>
 <pre><code>List of 12
  $ coefficients : Named num [1:11] 12.3034 -0.1114 0.0133 -0.0215 0.7871 ...
   ..- attr(*, &quot;names&quot;)= chr [1:11] &quot;(Intercept)&quot; &quot;cyl&quot; &quot;disp&quot; &quot;hp&quot; ...
@@ -686,11 +686,11 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
   .. .. .. ..- attr(*, &quot;names&quot;)= chr [1:11] &quot;mpg&quot; &quot;cyl&quot; &quot;disp&quot; &quot;hp&quot; ...
  - attr(*, &quot;class&quot;)= chr &quot;lm&quot;</code></pre>
 <p>Here we look at the object at the lowest level of detail (0), which basically just tells us that it’s a list of stuff. But if we go into more depth, we can see that there is quite a bit going on in here! Coefficients, the data frame used in the model (i.e. only the variables used and no <code>NA</code>), and much more are available to us, and we can pluck out any piece of it.</p>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="programming.html#cb174-1"></a>lm_mod<span class="op">$</span>coefficients</span></code></pre></div>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="programming.html#cb191-1"></a>lm_mod<span class="op">$</span>coefficients</span></code></pre></div>
 <pre><code>(Intercept)         cyl        disp          hp        drat          wt        qsec          vs          am        gear        carb 
 12.30337416 -0.11144048  0.01333524 -0.02148212  0.78711097 -3.71530393  0.82104075  0.31776281  2.52022689  0.65541302 -0.19941925 </code></pre>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="programming.html#cb176-1"></a>lm_mod<span class="op">$</span>model <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb176-2"><a href="programming.html#cb176-2"></a><span class="st">  </span><span class="kw">head</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="programming.html#cb193-1"></a>lm_mod<span class="op">$</span>model <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb193-2"><a href="programming.html#cb193-2"></a><span class="st">  </span><span class="kw">head</span>()</span></code></pre></div>
 <pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
 Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
 Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
@@ -699,7 +699,7 @@ Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
 Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
 Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
 <p>Let’s do a summary of it, something you’ve probably done many times.</p>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="programming.html#cb178-1"></a><span class="kw">summary</span>(lm_mod)</span></code></pre></div>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="programming.html#cb195-1"></a><span class="kw">summary</span>(lm_mod)</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = mpg ~ ., data = mtcars)
@@ -728,8 +728,8 @@ Residual standard error: 2.65 on 21 degrees of freedom
 Multiple R-squared:  0.869, Adjusted R-squared:  0.8066 
 F-statistic: 13.93 on 10 and 21 DF,  p-value: 3.793e-07</code></pre>
 <p>But you can assign that to an object and inspect it too!</p>
-<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="programming.html#cb180-1"></a>lm_mod_summary =<span class="st"> </span><span class="kw">summary</span>(lm_mod)</span>
-<span id="cb180-2"><a href="programming.html#cb180-2"></a><span class="kw">str</span>(lm_mod_summary)</span></code></pre></div>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="programming.html#cb197-1"></a>lm_mod_summary =<span class="st"> </span><span class="kw">summary</span>(lm_mod)</span>
+<span id="cb197-2"><a href="programming.html#cb197-2"></a><span class="kw">str</span>(lm_mod_summary)</span></code></pre></div>
 <pre><code>List of 11
  $ call         : language lm(formula = mpg ~ ., data = mtcars)
  $ terms        :Classes &#39;terms&#39;, &#39;formula&#39;  language mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb
@@ -766,8 +766,8 @@ F-statistic: 13.93 on 10 and 21 DF,  p-value: 3.793e-07</code></pre>
   .. ..$ : chr [1:11] &quot;(Intercept)&quot; &quot;cyl&quot; &quot;disp&quot; &quot;hp&quot; ...
  - attr(*, &quot;class&quot;)= chr &quot;summary.lm&quot;</code></pre>
 <p>If we pull the coefficients from this object, we are not just getting the values, but the table that’s printed in the summary. And we can now get that ready for publishing for example<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>.</p>
-<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="programming.html#cb182-1"></a>lm_mod_summary<span class="op">$</span>coefficients <span class="op">%&gt;%</span></span>
-<span id="cb182-2"><a href="programming.html#cb182-2"></a><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="programming.html#cb199-1"></a>lm_mod_summary<span class="op">$</span>coefficients <span class="op">%&gt;%</span></span>
+<span id="cb199-2"><a href="programming.html#cb199-2"></a><span class="st">  </span>kableExtra<span class="op">::</span><span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">2</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -982,7 +982,7 @@ carb
 <div id="methods" class="section level3">
 <h3>Methods</h3>
 <p>Consider the following:</p>
-<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="programming.html#cb183-1"></a><span class="kw">summary</span>(diamonds)            <span class="co"># data frame</span></span></code></pre></div>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="programming.html#cb200-1"></a><span class="kw">summary</span>(diamonds)            <span class="co"># data frame</span></span></code></pre></div>
 <pre><code>     carat               cut        color        clarity          depth           table           price             x                y                z         
  Min.   :0.2000   Fair     : 1610   D: 6775   SI1    :13065   Min.   :43.00   Min.   :43.00   Min.   :  326   Min.   : 0.000   Min.   : 0.000   Min.   : 0.000  
  1st Qu.:0.4000   Good     : 4906   E: 9797   VS2    :12258   1st Qu.:61.00   1st Qu.:56.00   1st Qu.:  950   1st Qu.: 4.710   1st Qu.: 4.720   1st Qu.: 2.910  
@@ -991,10 +991,10 @@ carb
  3rd Qu.:1.0400   Ideal    :21551   H: 8304   VVS2   : 5066   3rd Qu.:62.50   3rd Qu.:59.00   3rd Qu.: 5324   3rd Qu.: 6.540   3rd Qu.: 6.540   3rd Qu.: 4.040  
  Max.   :5.0100                     I: 5422   VVS1   : 3655   Max.   :79.00   Max.   :95.00   Max.   :18823   Max.   :10.740   Max.   :58.900   Max.   :31.800  
                                     J: 2808   (Other): 2531                                                                                                     </code></pre>
-<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="programming.html#cb185-1"></a><span class="kw">summary</span>(diamonds<span class="op">$</span>clarity)    <span class="co"># vector</span></span></code></pre></div>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="programming.html#cb202-1"></a><span class="kw">summary</span>(diamonds<span class="op">$</span>clarity)    <span class="co"># vector</span></span></code></pre></div>
 <pre><code>   I1   SI2   SI1   VS2   VS1  VVS2  VVS1    IF 
   741  9194 13065 12258  8171  5066  3655  1790 </code></pre>
-<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="programming.html#cb187-1"></a><span class="kw">summary</span>(lm_mod)              <span class="co"># lm object</span></span></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="programming.html#cb204-1"></a><span class="kw">summary</span>(lm_mod)              <span class="co"># lm object</span></span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = mpg ~ ., data = mtcars)
@@ -1022,7 +1022,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 Residual standard error: 2.65 on 21 degrees of freedom
 Multiple R-squared:  0.869, Adjusted R-squared:  0.8066 
 F-statistic: 13.93 on 10 and 21 DF,  p-value: 3.793e-07</code></pre>
-<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="programming.html#cb189-1"></a><span class="kw">summary</span>(lm_mod_summary)      <span class="co"># lm summary object</span></span></code></pre></div>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="programming.html#cb206-1"></a><span class="kw">summary</span>(lm_mod_summary)      <span class="co"># lm summary object</span></span></code></pre></div>
 <pre><code>              Length Class  Mode   
 call            3    -none- call   
 terms           3    terms  call   
@@ -1038,7 +1038,7 @@ cov.unscaled  121    -none- numeric</code></pre>
 <p>How is it that one function works on all these different types of objects? That’s not all. In RStudio, type <code>summary.</code> and hit the tab key.</p>
 <p><img class='zoom' src="img/summary_method.png" style="display:block; margin: 0 auto;" width=50%></p>
 <p>When you load additional packages, you’ll see even more <span class="emph">methods</span> for the summary function. When you call <span class="func" style="">summary</span> on an object, the appropriate type of summary method will be used depending on the class of the object. If there is no specific type, e.g. when we called summary on something that already had summary called on it, it will just use a default version listing the contents. To see all the methods for summary, type the following, and you’ll see all that is currently available for your R session.</p>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="programming.html#cb191-1"></a><span class="kw">methods</span>(<span class="st">&#39;summary&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="programming.html#cb208-1"></a><span class="kw">methods</span>(<span class="st">&#39;summary&#39;</span>)</span></code></pre></div>
 <pre><code> [1] summary,ANY-method                   summary,DBIObject-method             summary,diagonalMatrix-method        summary,sparseMatrix-method          summary.aov                         
  [6] summary.aovlist*                     summary.aspell*                      summary.check_packages_in_dir*       summary.connection                   summary.corAR1*                     
 [11] summary.corARMA*                     summary.corCAR1*                     summary.corCompSymm*                 summary.corExp*                      summary.corGaus*                    
@@ -1059,8 +1059,8 @@ cov.unscaled  121    -none- numeric</code></pre>
 [86] summary.vctrs_sclr*                  summary.vctrs_vctr*                  summary.warnings                    
 see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>Say you are new to a modeling package, and as such, you might want to see what all you can do with the resulting object. Once you’ve discerned the class of the model object, you can then list all the functions that can be used on that object.</p>
-<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="programming.html#cb193-1"></a><span class="kw">library</span>(brms)</span>
-<span id="cb193-2"><a href="programming.html#cb193-2"></a><span class="kw">methods</span>(<span class="dt">class =</span> <span class="st">&#39;brmsfit&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="programming.html#cb210-1"></a><span class="kw">library</span>(brms)</span>
+<span id="cb210-2"><a href="programming.html#cb210-2"></a><span class="kw">methods</span>(<span class="dt">class =</span> <span class="st">&#39;brmsfit&#39;</span>)</span></code></pre></div>
 <pre><code> [1] add_criterion           add_ic                  as.array                as.data.frame           as.matrix               as.mcmc                 autocor                 bayes_factor            bayes_R2               
 [10] bridge_sampler          coef                    conditional_effects     conditional_smooths     control_params          expose_functions        extract_draws           family                  fitted                 
 [19] fixef                   formula                 getCall                 hypothesis              kfold                   launch_shinystan        log_lik                 log_posterior           logLik                 
@@ -1076,13 +1076,13 @@ see &#39;?methods&#39; for accessing help and source code</code></pre>
 <div id="s4-classes" class="section level3">
 <h3>S4 classes</h3>
 <p>Everything we’ve been dealing with at this point are S3 objects, classes, and methods. R is a dialect of the <a href="https://www.r-project.org/conferences/useR-2006/Slides/Chambers.pdf">S language</a>, and the S3 name reflects the version of S at the time of R’s creation. S4 was the next iteration of S, but I’m not going to say much about the S4 system of objects other than they are a separate type of object with their own methods. For practical use you might not see much difference, but if you see an S4 object, it will have <span class="emph">slots</span> accessible via <code>@</code>.</p>
-<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="programming.html#cb195-1"></a>car_matrix =<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb195-2"><a href="programming.html#cb195-2"></a><span class="st">  </span><span class="kw">as.matrix</span>() <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># convert from df to matrix</span></span>
-<span id="cb195-3"><a href="programming.html#cb195-3"></a><span class="st">  </span>Matrix<span class="op">::</span><span class="kw">Matrix</span>()      <span class="co"># convert to Matrix class (S4)</span></span>
-<span id="cb195-4"><a href="programming.html#cb195-4"></a></span>
-<span id="cb195-5"><a href="programming.html#cb195-5"></a><span class="kw">typeof</span>(car_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="programming.html#cb212-1"></a>car_matrix =<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb212-2"><a href="programming.html#cb212-2"></a><span class="st">  </span><span class="kw">as.matrix</span>() <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># convert from df to matrix</span></span>
+<span id="cb212-3"><a href="programming.html#cb212-3"></a><span class="st">  </span>Matrix<span class="op">::</span><span class="kw">Matrix</span>()      <span class="co"># convert to Matrix class (S4)</span></span>
+<span id="cb212-4"><a href="programming.html#cb212-4"></a></span>
+<span id="cb212-5"><a href="programming.html#cb212-5"></a><span class="kw">typeof</span>(car_matrix)</span></code></pre></div>
 <pre><code>[1] &quot;S4&quot;</code></pre>
-<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="programming.html#cb197-1"></a><span class="kw">str</span>(car_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="programming.html#cb214-1"></a><span class="kw">str</span>(car_matrix)</span></code></pre></div>
 <pre><code>Formal class &#39;dgeMatrix&#39; [package &quot;Matrix&quot;] with 4 slots
   ..@ x       : num [1:352] 21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
   ..@ Dim     : int [1:2] 32 11
@@ -1099,9 +1099,9 @@ see &#39;?methods&#39; for accessing help and source code</code></pre>
 <div id="inspecting-functions" class="section level3">
 <h3>Inspecting Functions</h3>
 <p>You might not think of them as such, but in R, everything’s an object, including functions. You can inspect them like anything else.</p>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="programming.html#cb199-1"></a><span class="kw">str</span>(lm)</span></code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="programming.html#cb216-1"></a><span class="kw">str</span>(lm)</span></code></pre></div>
 <pre><code>function (formula, data, subset, weights, na.action, method = &quot;qr&quot;, model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, contrasts = NULL, offset, ...)  </code></pre>
-<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="programming.html#cb201-1"></a><span class="co">## lm</span></span></code></pre></div>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="programming.html#cb218-1"></a><span class="co">## lm</span></span></code></pre></div>
 <pre><code>                                                                          
 1  function (formula, data, subset, weights, na.action, method = &quot;qr&quot;,    
 2      model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, 
@@ -1130,12 +1130,12 @@ see &#39;?methods&#39; for accessing help and source code</code></pre>
 <h2>Help Files</h2>
 <p>Many applied users of R are quick to search the web for available help when they come to a problem. This is great, you’ll find a lot of information out there. However, it will likely take you a bit to sort through things and find exactly what you need. Strangely, I see many users of R don’t use the help files first, and yet this is typically the quickest way to answer many of the questions they’ll have.</p>
 <p>Let’s start with an example. We’ll use the <span class="func">sample</span> function to get a random sample of 10 values from the range of numbers 1 through 5. So, go ahead and do so!</p>
-<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="programming.html#cb203-1"></a><span class="kw">sample</span>(?)</span></code></pre></div>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="programming.html#cb220-1"></a><span class="kw">sample</span>(?)</span></code></pre></div>
 <p>Don’t know what to put? Consult the help file!</p>
 <p><img class="zoom" src="img/help.png" style="display:block; margin: 0 auto;" width=50%></p>
 <p>We get a brief description of a function at the top, then we see how to actually use it, i.e. the form the syntax should take. We find out there is even an additional function, <span class="func">sample.int</span>, that we could use. Next we see what arguments are possible. First we need an <code>x</code>, so what is the thing we’re trying to sample from? The numbers 1 through 5. Next is the size, which is how many values we want, in this case 10. So let’s try it.</p>
-<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="programming.html#cb204-1"></a>nums =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></span>
-<span id="cb204-2"><a href="programming.html#cb204-2"></a><span class="kw">sample</span>(nums, <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="programming.html#cb221-1"></a>nums =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></span>
+<span id="cb221-2"><a href="programming.html#cb221-2"></a><span class="kw">sample</span>(nums, <span class="dv">10</span>)</span></code></pre></div>
 <pre><code>Error in sample.int(length(x), size, replace, prob): cannot take a sample larger than the population when &#39;replace = FALSE&#39;</code></pre>
 <p>Uh oh- we have a problem with the <code>replace</code> argument! We can see in the help file that, by default, it is <code>FALSE</code><a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a>, but if we want to sample 10 times from only 5 numbers, we’ll need to change it to <code>TRUE</code>.</p>
 <p>Now we are on our way!</p>
@@ -1145,8 +1145,8 @@ see &#39;?methods&#39; for accessing help and source code</code></pre>
 <div id="objects-exercises" class="section level2">
 <h2>Objects Exercises</h2>
 <p>With one function, find out what the class, number of rows, number of columns are of the following object, including what kind of object the last three columns are. Inspect the help file also.</p>
-<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="programming.html#cb206-1"></a><span class="kw">library</span>(dplyr)</span>
-<span id="cb206-2"><a href="programming.html#cb206-2"></a>?starwars</span></code></pre></div>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="programming.html#cb223-1"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb223-2"><a href="programming.html#cb223-2"></a>?starwars</span></code></pre></div>
 
 </div>
 </div>

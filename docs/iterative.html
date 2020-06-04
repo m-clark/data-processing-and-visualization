@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Iterative Programming | Data Processing &amp; Visualization</title>
   <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Iterative Programming | Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-02-29" />
+<meta name="date" content="2020-06-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -55,10 +55,10 @@
 <script src="libs/viz-1.8.2/viz.js"></script>
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
 <script src="libs/grViz-binding-1.0.5/grViz.js"></script>
-<script src="libs/plotly-binding-4.9.2/plotly.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 <link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
@@ -128,7 +128,7 @@
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.12/datatables.js"></script>
+<script src="libs/datatables-binding-0.13/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
@@ -603,24 +603,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><br></p>
 <p>Almost everything you do when dealing with data will need to be done again, and again, and again. If you are copy-pasting your way to repetitively do the same thing, you’re not only doing things inefficiently, you’re almost certainly setting yourself up for trouble if anything changes about the data or underlying process.</p>
 <p>In order to avoid this, you need to be familiar with basic programming, and a starting point is to use an iterative approach to repetitive problems. Let’s look at the following. Let’s say we want to get the means of some columns in our data set. Do you do something like this?</p>
-<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="iterative.html#cb207-1"></a>means1 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>x)</span>
-<span id="cb207-2"><a href="iterative.html#cb207-2"></a>means2 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>y)</span>
-<span id="cb207-3"><a href="iterative.html#cb207-3"></a>means3 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>z)</span>
-<span id="cb207-4"><a href="iterative.html#cb207-4"></a>means4 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>q)</span></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="iterative.html#cb224-1"></a>means1 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>x)</span>
+<span id="cb224-2"><a href="iterative.html#cb224-2"></a>means2 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>y)</span>
+<span id="cb224-3"><a href="iterative.html#cb224-3"></a>means3 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>z)</span>
+<span id="cb224-4"><a href="iterative.html#cb224-4"></a>means4 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>q)</span></code></pre></div>
 <p>Now consider what you have to change if you change a variable name, decide to do a median, or the data object name changes. Any minor change with the data will cause you to have to redo that code, and possibly every line of it.</p>
 <div id="for-loops" class="section level2">
 <h2>For loops</h2>
 <p>A <span class="emph">for loop</span> will help us get around the problem. The idea is that we want to perform a particular action <em>for</em> every iteration of some sequence. That sequence may be over columns, rows, lines in a text, whatever. Here is a loop.</p>
-<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="iterative.html#cb208-1"></a><span class="cf">for</span> (column <span class="cf">in</span> <span class="kw">c</span>(<span class="st">&#39;x&#39;</span>,<span class="st">&#39;y&#39;</span>,<span class="st">&#39;z&#39;</span>,<span class="st">&#39;q&#39;</span>)) {</span>
-<span id="cb208-2"><a href="iterative.html#cb208-2"></a>  <span class="kw">mean</span>(df[[column]])</span>
-<span id="cb208-3"><a href="iterative.html#cb208-3"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="iterative.html#cb225-1"></a><span class="cf">for</span> (column <span class="cf">in</span> <span class="kw">c</span>(<span class="st">&#39;x&#39;</span>,<span class="st">&#39;y&#39;</span>,<span class="st">&#39;z&#39;</span>,<span class="st">&#39;q&#39;</span>)) {</span>
+<span id="cb225-2"><a href="iterative.html#cb225-2"></a>  <span class="kw">mean</span>(df[[column]])</span>
+<span id="cb225-3"><a href="iterative.html#cb225-3"></a>}</span></code></pre></div>
 <p>What’s going on here? We’ve created an iterative process in which, <em>for</em> every <em>element</em> in <code>c('x','y','z','q')</code>, we are going to do something. We use the completely arbitrary word <code>column</code> as a placeholder to index which of the four columns we’re dealing with at a given point in the process. On the first iteration, <code>column</code> will equal <code>x</code>, on the second <code>y</code>, and so on. We then take the mean of <code>df[[column]]</code>, which will be <code>df[['x']]</code>, then <code>df[['y']]</code>, etc.</p>
 <p>Here is an example with the <span class="pack">nycflights</span> data, which regards flights that departed New York City in 2013. The <span class="objclass">weather</span> data set has columns for things like temperature, humidity, and so forth.</p>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="iterative.html#cb209-1"></a>weather =<span class="st"> </span>nycflights13<span class="op">::</span>weather</span>
-<span id="cb209-2"><a href="iterative.html#cb209-2"></a></span>
-<span id="cb209-3"><a href="iterative.html#cb209-3"></a><span class="cf">for</span> (column <span class="cf">in</span> <span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;precip&#39;</span>)) {</span>
-<span id="cb209-4"><a href="iterative.html#cb209-4"></a>  <span class="kw">print</span>(<span class="kw">mean</span>(weather[[column]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
-<span id="cb209-5"><a href="iterative.html#cb209-5"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="iterative.html#cb226-1"></a>weather =<span class="st"> </span>nycflights13<span class="op">::</span>weather</span>
+<span id="cb226-2"><a href="iterative.html#cb226-2"></a></span>
+<span id="cb226-3"><a href="iterative.html#cb226-3"></a><span class="cf">for</span> (column <span class="cf">in</span> <span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;precip&#39;</span>)) {</span>
+<span id="cb226-4"><a href="iterative.html#cb226-4"></a>  <span class="kw">print</span>(<span class="kw">mean</span>(weather[[column]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb226-5"><a href="iterative.html#cb226-5"></a>}</span></code></pre></div>
 <pre><code>[1] 55.26039
 [1] 62.53006
 [1] 10.51749
@@ -628,58 +628,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>You can check this for yourself by testing a column or two directly with just <code>mean(df$x)</code>.</p>
 <p>Now if the data name changes, the columns we want change, or we want to calculate something else, we usually end up only changing one thing, rather than at least changing one at a minimum, and probably many more things. In addition, the amount of code is the same whether the loop goes over 100 columns or 4.</p>
 <p>Let’s do things a little differently.</p>
-<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="iterative.html#cb211-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;precip&#39;</span>)</span>
-<span id="cb211-2"><a href="iterative.html#cb211-2"></a>nyc_means =<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(columns))</span>
-<span id="cb211-3"><a href="iterative.html#cb211-3"></a></span>
-<span id="cb211-4"><a href="iterative.html#cb211-4"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(columns)) {</span>
-<span id="cb211-5"><a href="iterative.html#cb211-5"></a>  column =<span class="st"> </span>columns[i]</span>
-<span id="cb211-6"><a href="iterative.html#cb211-6"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[column]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb211-7"><a href="iterative.html#cb211-7"></a>  </span>
-<span id="cb211-8"><a href="iterative.html#cb211-8"></a>  <span class="co"># alternative without the initial first step</span></span>
-<span id="cb211-9"><a href="iterative.html#cb211-9"></a>  <span class="co"># nyc_means[i] = mean(weather[[columns[i]]], na.rm = TRUE)  </span></span>
-<span id="cb211-10"><a href="iterative.html#cb211-10"></a>}</span>
-<span id="cb211-11"><a href="iterative.html#cb211-11"></a></span>
-<span id="cb211-12"><a href="iterative.html#cb211-12"></a>nyc_means</span></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="iterative.html#cb228-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;precip&#39;</span>)</span>
+<span id="cb228-2"><a href="iterative.html#cb228-2"></a>nyc_means =<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(columns))</span>
+<span id="cb228-3"><a href="iterative.html#cb228-3"></a></span>
+<span id="cb228-4"><a href="iterative.html#cb228-4"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(columns)) {</span>
+<span id="cb228-5"><a href="iterative.html#cb228-5"></a>  column =<span class="st"> </span>columns[i]</span>
+<span id="cb228-6"><a href="iterative.html#cb228-6"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[column]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb228-7"><a href="iterative.html#cb228-7"></a>  </span>
+<span id="cb228-8"><a href="iterative.html#cb228-8"></a>  <span class="co"># alternative without the initial first step</span></span>
+<span id="cb228-9"><a href="iterative.html#cb228-9"></a>  <span class="co"># nyc_means[i] = mean(weather[[columns[i]]], na.rm = TRUE)  </span></span>
+<span id="cb228-10"><a href="iterative.html#cb228-10"></a>}</span>
+<span id="cb228-11"><a href="iterative.html#cb228-11"></a></span>
+<span id="cb228-12"><a href="iterative.html#cb228-12"></a>nyc_means</span></code></pre></div>
 <pre><code>[1] 55.260392127 62.530058972 10.517488384  0.004469079</code></pre>
 <p>By creating a <span class="objclass">columns</span> object, if anything changes about the columns we want, that’s the only line in the code that would need to be changed. The <code>i</code> is now a place holder for a number that goes from 1 to the length of <span class="objclass">columns</span> (i.e. 4). We make an empty <span class="objclass">nyc_means</span> object that’s the length of the columns, so that each element will eventually be the mean of the corresponding column.</p>
 <p>In the following I remove precipitation and add visibility and air pressure.</p>
-<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="iterative.html#cb213-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;visib&#39;</span>, <span class="st">&#39;pressure&#39;</span>)</span>
-<span id="cb213-2"><a href="iterative.html#cb213-2"></a>nyc_means =<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(columns))</span>
-<span id="cb213-3"><a href="iterative.html#cb213-3"></a></span>
-<span id="cb213-4"><a href="iterative.html#cb213-4"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(columns)) {</span>
-<span id="cb213-5"><a href="iterative.html#cb213-5"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[columns[i]]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb213-6"><a href="iterative.html#cb213-6"></a>}</span>
-<span id="cb213-7"><a href="iterative.html#cb213-7"></a></span>
-<span id="cb213-8"><a href="iterative.html#cb213-8"></a>nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="iterative.html#cb230-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;visib&#39;</span>, <span class="st">&#39;pressure&#39;</span>)</span>
+<span id="cb230-2"><a href="iterative.html#cb230-2"></a>nyc_means =<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(columns))</span>
+<span id="cb230-3"><a href="iterative.html#cb230-3"></a></span>
+<span id="cb230-4"><a href="iterative.html#cb230-4"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(columns)) {</span>
+<span id="cb230-5"><a href="iterative.html#cb230-5"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[columns[i]]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb230-6"><a href="iterative.html#cb230-6"></a>}</span>
+<span id="cb230-7"><a href="iterative.html#cb230-7"></a></span>
+<span id="cb230-8"><a href="iterative.html#cb230-8"></a>nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</span></code></pre></div>
 <pre><code>[1]   55.26   62.53   10.52    9.26 1017.90</code></pre>
 <p>Had we been copy-pasting, this would require deleting or commenting out a line in our code, pasting two more, and changing each one after pasting to represent the new columns. That’s tedious, and not a fun way to code.</p>
 <div id="a-slight-speed-gain" class="section level3">
 <h3>A slight speed gain</h3>
 <p>Note that you do not have to create an empty object like we did. The following works also.</p>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="iterative.html#cb215-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;visib&#39;</span>, <span class="st">&#39;pressure&#39;</span>)</span>
-<span id="cb215-2"><a href="iterative.html#cb215-2"></a>nyc_means =<span class="st"> </span><span class="kw">numeric</span>()</span>
-<span id="cb215-3"><a href="iterative.html#cb215-3"></a></span>
-<span id="cb215-4"><a href="iterative.html#cb215-4"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(columns)) {</span>
-<span id="cb215-5"><a href="iterative.html#cb215-5"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[columns[i]]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb215-6"><a href="iterative.html#cb215-6"></a>}</span>
-<span id="cb215-7"><a href="iterative.html#cb215-7"></a></span>
-<span id="cb215-8"><a href="iterative.html#cb215-8"></a>nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="iterative.html#cb232-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;visib&#39;</span>, <span class="st">&#39;pressure&#39;</span>)</span>
+<span id="cb232-2"><a href="iterative.html#cb232-2"></a>nyc_means =<span class="st"> </span><span class="kw">numeric</span>()</span>
+<span id="cb232-3"><a href="iterative.html#cb232-3"></a></span>
+<span id="cb232-4"><a href="iterative.html#cb232-4"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(columns)) {</span>
+<span id="cb232-5"><a href="iterative.html#cb232-5"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[columns[i]]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb232-6"><a href="iterative.html#cb232-6"></a>}</span>
+<span id="cb232-7"><a href="iterative.html#cb232-7"></a></span>
+<span id="cb232-8"><a href="iterative.html#cb232-8"></a>nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</span></code></pre></div>
 <pre><code>[1]   55.26   62.53   10.52    9.26 1017.90</code></pre>
 <p>However, the other approach is slightly faster, because memory is already allocated for all elements of <span class="objclass">nyc_means</span>, rather than updating it every iteration of the loop. This speed gain can become noticeable when dealing with thousands of columns and complex operations.</p>
 </div>
 <div id="while-alternative" class="section level3">
 <h3>While alternative</h3>
 <p>When you look at some people’s R code, you may see a loop of a different sort.</p>
-<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="iterative.html#cb217-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>,<span class="st">&#39;humid&#39;</span>,<span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;visib&#39;</span>, <span class="st">&#39;pressure&#39;</span>)</span>
-<span id="cb217-2"><a href="iterative.html#cb217-2"></a>nyc_means =<span class="st"> </span><span class="kw">c</span>()</span>
-<span id="cb217-3"><a href="iterative.html#cb217-3"></a></span>
-<span id="cb217-4"><a href="iterative.html#cb217-4"></a>i =<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb217-5"><a href="iterative.html#cb217-5"></a><span class="cf">while</span> (i <span class="op">&lt;=</span><span class="st"> </span><span class="kw">length</span>(columns)) {</span>
-<span id="cb217-6"><a href="iterative.html#cb217-6"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[columns[i]]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb217-7"><a href="iterative.html#cb217-7"></a>  i =<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb217-8"><a href="iterative.html#cb217-8"></a>}</span>
-<span id="cb217-9"><a href="iterative.html#cb217-9"></a></span>
-<span id="cb217-10"><a href="iterative.html#cb217-10"></a>nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="iterative.html#cb234-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>,<span class="st">&#39;humid&#39;</span>,<span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;visib&#39;</span>, <span class="st">&#39;pressure&#39;</span>)</span>
+<span id="cb234-2"><a href="iterative.html#cb234-2"></a>nyc_means =<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb234-3"><a href="iterative.html#cb234-3"></a></span>
+<span id="cb234-4"><a href="iterative.html#cb234-4"></a>i =<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb234-5"><a href="iterative.html#cb234-5"></a><span class="cf">while</span> (i <span class="op">&lt;=</span><span class="st"> </span><span class="kw">length</span>(columns)) {</span>
+<span id="cb234-6"><a href="iterative.html#cb234-6"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[columns[i]]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb234-7"><a href="iterative.html#cb234-7"></a>  i =<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb234-8"><a href="iterative.html#cb234-8"></a>}</span>
+<span id="cb234-9"><a href="iterative.html#cb234-9"></a></span>
+<span id="cb234-10"><a href="iterative.html#cb234-10"></a>nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</span></code></pre></div>
 <pre><code>[1]   55.26   62.53   10.52    9.26 1017.90</code></pre>
 <p>This involves a <span class="emph">while</span> statement. It states, while <code>i</code> is less than or equal to the length (number) of <span class="objclass">columns</span>, compute the value of the i<sup>th</sup> element of <span class="objclass">nyc_means</span> as the mean of i<sup>th</sup> column of <span class="objclass">weather</span>. After that, increase the value of <code>i</code>. So, we start with <code>i = 1</code>, compute that subsequent mean, <code>i</code> now equals 2, do the process again, and so on. The process will stop as soon as the value of <code>i</code> is greater than the length of <span class="objclass">columns</span>.</p>
 <p><em>There is zero difference to using the while approach vs. the for loop</em>. While is often used when there is a check to be made, e.g. in modeling functions that have to stop the estimation process at some point, or else they’d go on indefinitely. In that case the while syntax is probably more natural. Either is fine.</p>
@@ -718,26 +718,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul>
 <p>As an example we’ll consider standardizing variables, i.e. taking a set of numbers, subtracting the mean, and dividing by the standard deviation. This results in a variable with mean of 0 and standard deviation of 1. Let’s start with a loop approach.</p>
-<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="iterative.html#cb219-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mydf)) {</span>
-<span id="cb219-2"><a href="iterative.html#cb219-2"></a>  x =<span class="st"> </span>mydf[, i]</span>
-<span id="cb219-3"><a href="iterative.html#cb219-3"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) {</span>
-<span id="cb219-4"><a href="iterative.html#cb219-4"></a>    x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</span>
-<span id="cb219-5"><a href="iterative.html#cb219-5"></a>  }</span>
-<span id="cb219-6"><a href="iterative.html#cb219-6"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="iterative.html#cb236-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mydf)) {</span>
+<span id="cb236-2"><a href="iterative.html#cb236-2"></a>  x =<span class="st"> </span>mydf[, i]</span>
+<span id="cb236-3"><a href="iterative.html#cb236-3"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) {</span>
+<span id="cb236-4"><a href="iterative.html#cb236-4"></a>    x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</span>
+<span id="cb236-5"><a href="iterative.html#cb236-5"></a>  }</span>
+<span id="cb236-6"><a href="iterative.html#cb236-6"></a>}</span></code></pre></div>
 <p>The above would be a really bad way to use R. It goes over each column individually, then over each value of the column.</p>
 <p>Conversely, <span class="func">apply</span> will take a matrix or data frame, and apply a function over the margin, row or column, you want to loop over. The first argument is the data you’re considering, the margin is the second argument (1 for rows, 2 for columns<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a>), and the function you want to apply to those rows is the third argument. The following example is much cleaner compared to the loop, and now you’d have a function you can use elsewhere if needed.</p>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="iterative.html#cb220-1"></a>stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
-<span id="cb220-2"><a href="iterative.html#cb220-2"></a>  (x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</span>
-<span id="cb220-3"><a href="iterative.html#cb220-3"></a>}</span>
-<span id="cb220-4"><a href="iterative.html#cb220-4"></a></span>
-<span id="cb220-5"><a href="iterative.html#cb220-5"></a><span class="kw">apply</span>(mydf, <span class="dv">2</span>, stdize)   <span class="co"># 1 for rows, 2 for columnwise application</span></span></code></pre></div>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="iterative.html#cb237-1"></a>stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb237-2"><a href="iterative.html#cb237-2"></a>  (x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</span>
+<span id="cb237-3"><a href="iterative.html#cb237-3"></a>}</span>
+<span id="cb237-4"><a href="iterative.html#cb237-4"></a></span>
+<span id="cb237-5"><a href="iterative.html#cb237-5"></a><span class="kw">apply</span>(mydf, <span class="dv">2</span>, stdize)   <span class="co"># 1 for rows, 2 for columnwise application</span></span></code></pre></div>
 <p>Many of the other apply functions work similarly, taking an object and a function to do the work on the object (possibly implicit), possibly with other arguments specified if necessary.</p>
 <div id="lapply" class="section level4">
 <h4>lapply</h4>
 <p>Let’s say we have a list object, or even just a vector of values. There are no rows or columns to iterate over, so what do we do here?</p>
-<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="iterative.html#cb221-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="st">&#39;aba&#39;</span>, <span class="st">&#39;abb&#39;</span>, <span class="st">&#39;abc&#39;</span>, <span class="st">&#39;abd&#39;</span>, <span class="st">&#39;abe&#39;</span>)</span>
-<span id="cb221-2"><a href="iterative.html#cb221-2"></a></span>
-<span id="cb221-3"><a href="iterative.html#cb221-3"></a><span class="kw">lapply</span>(x, str_remove, <span class="dt">pattern =</span> <span class="st">&#39;ab&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="iterative.html#cb238-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="st">&#39;aba&#39;</span>, <span class="st">&#39;abb&#39;</span>, <span class="st">&#39;abc&#39;</span>, <span class="st">&#39;abd&#39;</span>, <span class="st">&#39;abe&#39;</span>)</span>
+<span id="cb238-2"><a href="iterative.html#cb238-2"></a></span>
+<span id="cb238-3"><a href="iterative.html#cb238-3"></a><span class="kw">lapply</span>(x, str_remove, <span class="dt">pattern =</span> <span class="st">&#39;ab&#39;</span>)</span></code></pre></div>
 <pre><code>[[1]]
 [1] &quot;a&quot;
 
@@ -754,7 +754,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [1] &quot;e&quot;</code></pre>
 <p>The <span class="func">lapply</span> operation iterates over each element of the list and applies a function to them. In this case, the function is <span class="func">str_remove</span>. It has an argument for the string pattern we want to take out of the character string that is fed to it (‘ab’). For example, for ‘aba’ we will be left with just the ‘a’.</p>
 <p>As can be seen, <span class="func">lapply</span> starts with a <span class="objclass">list</span> and returns a <span class="objclass">list</span>. The only difference with <span class="func">sapply</span> is that <span class="func">sapply</span> will return a simplified form if possible<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a>.</p>
-<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="iterative.html#cb223-1"></a><span class="kw">sapply</span>(x, str_remove, <span class="dt">pattern =</span> <span class="st">&#39;ab&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="iterative.html#cb240-1"></a><span class="kw">sapply</span>(x, str_remove, <span class="dt">pattern =</span> <span class="st">&#39;ab&#39;</span>)</span></code></pre></div>
 <pre><code>[1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot;</code></pre>
 <p>In this case we just get a vector back.</p>
 </div>
@@ -784,9 +784,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3>purrr</h3>
 <p>The <span class="pack">purrr</span> package allows you to take the <span class="func">apply</span> family approach to the tidyverse. And with packages <span class="pack" style="">future</span> + <span class="pack" style="">furrr</span>, they too are parallelizable.</p>
 <p>Consider the following. We’ll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the same way we would with <span class="func">lapply</span>.</p>
-<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="iterative.html#cb225-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">7</span><span class="op">:</span><span class="dv">9</span>)</span>
-<span id="cb225-2"><a href="iterative.html#cb225-2"></a></span>
-<span id="cb225-3"><a href="iterative.html#cb225-3"></a><span class="kw">map</span>(x, sum)</span></code></pre></div>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="iterative.html#cb242-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">7</span><span class="op">:</span><span class="dv">9</span>)</span>
+<span id="cb242-2"><a href="iterative.html#cb242-2"></a></span>
+<span id="cb242-3"><a href="iterative.html#cb242-3"></a><span class="kw">map</span>(x, sum)</span></code></pre></div>
 <pre><code>[[1]]
 [1] 6
 
@@ -797,11 +797,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [1] 24</code></pre>
 <p>The map functions take some getting used to, and in my experience they are typically slower than the apply functions, sometimes notably so. However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a>, which is especially important in reproducibility, package development, producing production-level code, etc. The key idea is that the map functions will always return something the same length as the input given to it.</p>
 <p>The <span class="pack">purrr</span> functions want a list or vector, i.e. they don’t work with data.frame objects in the same way we’ve done with mutate and summarize except in the sense that data.frames are lists.</p>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="iterative.html#cb227-1"></a><span class="co">## mtcars %&gt;% </span></span>
-<span id="cb227-2"><a href="iterative.html#cb227-2"></a><span class="co">##   map(scale)    # returns a list, not shown</span></span>
-<span id="cb227-3"><a href="iterative.html#cb227-3"></a></span>
-<span id="cb227-4"><a href="iterative.html#cb227-4"></a>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb227-5"><a href="iterative.html#cb227-5"></a><span class="st">  </span><span class="kw">map_df</span>(scale) <span class="co"># returns a df</span></span></code></pre></div>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="iterative.html#cb244-1"></a><span class="co">## mtcars %&gt;% </span></span>
+<span id="cb244-2"><a href="iterative.html#cb244-2"></a><span class="co">##   map(scale)    # returns a list, not shown</span></span>
+<span id="cb244-3"><a href="iterative.html#cb244-3"></a></span>
+<span id="cb244-4"><a href="iterative.html#cb244-4"></a>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb244-5"><a href="iterative.html#cb244-5"></a><span class="st">  </span><span class="kw">map_df</span>(scale) <span class="co"># returns a df</span></span></code></pre></div>
 <pre><code># A tibble: 32 x 11
       mpg    cyl    disp     hp   drat       wt   qsec     vs     am   gear   carb
     &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -816,17 +816,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  9  0.450 -1.22  -0.726  -0.754  0.605 -0.0687   2.83   1.12  -0.814  0.424 -0.503
 10 -0.148 -0.105 -0.509  -0.345  0.605  0.228    0.253  1.12  -0.814  0.424  0.735
 # … with 22 more rows</code></pre>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="iterative.html#cb229-1"></a>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb229-2"><a href="iterative.html#cb229-2"></a><span class="st">  </span><span class="kw">map_dbl</span>(sum)  <span class="co"># returns a numeric (double) vector of column sums</span></span></code></pre></div>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="iterative.html#cb246-1"></a>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb246-2"><a href="iterative.html#cb246-2"></a><span class="st">  </span><span class="kw">map_dbl</span>(sum)  <span class="co"># returns a numeric (double) vector of column sums</span></span></code></pre></div>
 <pre><code>     mpg      cyl     disp       hp     drat       wt     qsec       vs       am     gear     carb 
  642.900  198.000 7383.100 4694.000  115.090  102.952  571.160   14.000   13.000  118.000   90.000 </code></pre>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="iterative.html#cb231-1"></a>diamonds <span class="op">%&gt;%</span></span>
-<span id="cb231-2"><a href="iterative.html#cb231-2"></a><span class="st">  </span><span class="kw">map_at</span>(</span>
-<span id="cb231-3"><a href="iterative.html#cb231-3"></a>    <span class="kw">vars</span>(carat, depth, price),</span>
-<span id="cb231-4"><a href="iterative.html#cb231-4"></a>    <span class="cf">function</span>(x)</span>
-<span id="cb231-5"><a href="iterative.html#cb231-5"></a>      <span class="kw">as.integer</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="kw">median</span>(x))</span>
-<span id="cb231-6"><a href="iterative.html#cb231-6"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb231-7"><a href="iterative.html#cb231-7"></a><span class="st">  </span><span class="kw">as_tibble</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="iterative.html#cb248-1"></a>diamonds <span class="op">%&gt;%</span></span>
+<span id="cb248-2"><a href="iterative.html#cb248-2"></a><span class="st">  </span><span class="kw">map_at</span>(</span>
+<span id="cb248-3"><a href="iterative.html#cb248-3"></a>    <span class="kw">vars</span>(carat, depth, price),</span>
+<span id="cb248-4"><a href="iterative.html#cb248-4"></a>    <span class="cf">function</span>(x)</span>
+<span id="cb248-5"><a href="iterative.html#cb248-5"></a>      <span class="kw">as.integer</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="kw">median</span>(x))</span>
+<span id="cb248-6"><a href="iterative.html#cb248-6"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb248-7"><a href="iterative.html#cb248-7"></a><span class="st">  </span><span class="kw">as_tibble</span>()</span></code></pre></div>
 <pre><code># A tibble: 53,940 x 10
    carat cut       color clarity depth table price     x     y     z
    &lt;int&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -848,166 +848,166 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Looping with lists</h2>
 <p>Aside from data frames, you may think you don’t have much need for list objects. However, list objects make it very easy to iterate some form of data processing.</p>
 <p>Let’s say you have models of increasing complexity, and you want to easily summarise and/or compare them. We create a list for which each element is a model object. We then apply a function, e.g. to get the AIC value for each, or adjusted R square (this requires a custom function).</p>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="iterative.html#cb233-1"></a><span class="kw">library</span>(mgcv) <span class="co"># for gam</span></span>
-<span id="cb233-2"><a href="iterative.html#cb233-2"></a></span>
-<span id="cb233-3"><a href="iterative.html#cb233-3"></a>mtcars<span class="op">$</span>cyl =<span class="st"> </span><span class="kw">factor</span>(mtcars<span class="op">$</span>cyl)</span>
-<span id="cb233-4"><a href="iterative.html#cb233-4"></a></span>
-<span id="cb233-5"><a href="iterative.html#cb233-5"></a>mod_lm =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars)</span>
-<span id="cb233-6"><a href="iterative.html#cb233-6"></a></span>
-<span id="cb233-7"><a href="iterative.html#cb233-7"></a>mod_poly =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(wt, <span class="dv">2</span>), <span class="dt">data =</span> mtcars)</span>
-<span id="cb233-8"><a href="iterative.html#cb233-8"></a></span>
-<span id="cb233-9"><a href="iterative.html#cb233-9"></a>mod_inter =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt <span class="op">*</span><span class="st"> </span>cyl, <span class="dt">data =</span> mtcars)</span>
-<span id="cb233-10"><a href="iterative.html#cb233-10"></a></span>
-<span id="cb233-11"><a href="iterative.html#cb233-11"></a>mod_gam =<span class="st"> </span><span class="kw">gam</span>(mpg <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(wt), <span class="dt">data =</span> mtcars)</span>
-<span id="cb233-12"><a href="iterative.html#cb233-12"></a></span>
-<span id="cb233-13"><a href="iterative.html#cb233-13"></a>mod_gam_inter =<span class="st"> </span><span class="kw">gam</span>(mpg <span class="op">~</span><span class="st"> </span>cyl <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(wt, <span class="dt">by =</span> cyl), <span class="dt">data =</span> mtcars)</span>
-<span id="cb233-14"><a href="iterative.html#cb233-14"></a></span>
-<span id="cb233-15"><a href="iterative.html#cb233-15"></a>model_list =<span class="st"> </span><span class="kw">list</span>(</span>
-<span id="cb233-16"><a href="iterative.html#cb233-16"></a>  <span class="dt">mod_lm        =</span> mod_lm,</span>
-<span id="cb233-17"><a href="iterative.html#cb233-17"></a>  <span class="dt">mod_poly      =</span> mod_poly,</span>
-<span id="cb233-18"><a href="iterative.html#cb233-18"></a>  <span class="dt">mod_inter     =</span> mod_inter,</span>
-<span id="cb233-19"><a href="iterative.html#cb233-19"></a>  <span class="dt">mod_gam       =</span> mod_gam,</span>
-<span id="cb233-20"><a href="iterative.html#cb233-20"></a>  <span class="dt">mod_gam_inter =</span> mod_gam_inter</span>
-<span id="cb233-21"><a href="iterative.html#cb233-21"></a>)</span>
-<span id="cb233-22"><a href="iterative.html#cb233-22"></a></span>
-<span id="cb233-23"><a href="iterative.html#cb233-23"></a><span class="co"># lowest wins</span></span>
-<span id="cb233-24"><a href="iterative.html#cb233-24"></a>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb233-25"><a href="iterative.html#cb233-25"></a><span class="st">  </span><span class="kw">map_dbl</span>(AIC) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb233-26"><a href="iterative.html#cb233-26"></a><span class="st">  </span><span class="kw">sort</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="iterative.html#cb250-1"></a><span class="kw">library</span>(mgcv) <span class="co"># for gam</span></span>
+<span id="cb250-2"><a href="iterative.html#cb250-2"></a></span>
+<span id="cb250-3"><a href="iterative.html#cb250-3"></a>mtcars<span class="op">$</span>cyl =<span class="st"> </span><span class="kw">factor</span>(mtcars<span class="op">$</span>cyl)</span>
+<span id="cb250-4"><a href="iterative.html#cb250-4"></a></span>
+<span id="cb250-5"><a href="iterative.html#cb250-5"></a>mod_lm =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars)</span>
+<span id="cb250-6"><a href="iterative.html#cb250-6"></a></span>
+<span id="cb250-7"><a href="iterative.html#cb250-7"></a>mod_poly =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(wt, <span class="dv">2</span>), <span class="dt">data =</span> mtcars)</span>
+<span id="cb250-8"><a href="iterative.html#cb250-8"></a></span>
+<span id="cb250-9"><a href="iterative.html#cb250-9"></a>mod_inter =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt <span class="op">*</span><span class="st"> </span>cyl, <span class="dt">data =</span> mtcars)</span>
+<span id="cb250-10"><a href="iterative.html#cb250-10"></a></span>
+<span id="cb250-11"><a href="iterative.html#cb250-11"></a>mod_gam =<span class="st"> </span><span class="kw">gam</span>(mpg <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(wt), <span class="dt">data =</span> mtcars)</span>
+<span id="cb250-12"><a href="iterative.html#cb250-12"></a></span>
+<span id="cb250-13"><a href="iterative.html#cb250-13"></a>mod_gam_inter =<span class="st"> </span><span class="kw">gam</span>(mpg <span class="op">~</span><span class="st"> </span>cyl <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(wt, <span class="dt">by =</span> cyl), <span class="dt">data =</span> mtcars)</span>
+<span id="cb250-14"><a href="iterative.html#cb250-14"></a></span>
+<span id="cb250-15"><a href="iterative.html#cb250-15"></a>model_list =<span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb250-16"><a href="iterative.html#cb250-16"></a>  <span class="dt">mod_lm        =</span> mod_lm,</span>
+<span id="cb250-17"><a href="iterative.html#cb250-17"></a>  <span class="dt">mod_poly      =</span> mod_poly,</span>
+<span id="cb250-18"><a href="iterative.html#cb250-18"></a>  <span class="dt">mod_inter     =</span> mod_inter,</span>
+<span id="cb250-19"><a href="iterative.html#cb250-19"></a>  <span class="dt">mod_gam       =</span> mod_gam,</span>
+<span id="cb250-20"><a href="iterative.html#cb250-20"></a>  <span class="dt">mod_gam_inter =</span> mod_gam_inter</span>
+<span id="cb250-21"><a href="iterative.html#cb250-21"></a>)</span>
+<span id="cb250-22"><a href="iterative.html#cb250-22"></a></span>
+<span id="cb250-23"><a href="iterative.html#cb250-23"></a><span class="co"># lowest wins</span></span>
+<span id="cb250-24"><a href="iterative.html#cb250-24"></a>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb250-25"><a href="iterative.html#cb250-25"></a><span class="st">  </span><span class="kw">map_dbl</span>(AIC) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb250-26"><a href="iterative.html#cb250-26"></a><span class="st">  </span><span class="kw">sort</span>()</span></code></pre></div>
 <pre><code>mod_gam_inter     mod_inter      mod_poly       mod_gam        mod_lm 
      150.6324      155.4811      158.0484      158.5717      166.0294 </code></pre>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="iterative.html#cb235-1"></a><span class="co"># highest wins</span></span>
-<span id="cb235-2"><a href="iterative.html#cb235-2"></a>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb235-3"><a href="iterative.html#cb235-3"></a><span class="st">  </span><span class="kw">map_dbl</span>(</span>
-<span id="cb235-4"><a href="iterative.html#cb235-4"></a>    <span class="cf">function</span>(x)</span>
-<span id="cb235-5"><a href="iterative.html#cb235-5"></a>    <span class="kw">if_else</span>(<span class="kw">inherits</span>(x, <span class="st">&#39;gam&#39;</span>),</span>
-<span id="cb235-6"><a href="iterative.html#cb235-6"></a>            <span class="kw">summary</span>(x)<span class="op">$</span>r.sq,</span>
-<span id="cb235-7"><a href="iterative.html#cb235-7"></a>            <span class="kw">summary</span>(x)<span class="op">$</span>adj)</span>
-<span id="cb235-8"><a href="iterative.html#cb235-8"></a>    ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb235-9"><a href="iterative.html#cb235-9"></a><span class="st">  </span><span class="kw">sort</span>(<span class="dt">decreasing =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="iterative.html#cb252-1"></a><span class="co"># highest wins</span></span>
+<span id="cb252-2"><a href="iterative.html#cb252-2"></a>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb252-3"><a href="iterative.html#cb252-3"></a><span class="st">  </span><span class="kw">map_dbl</span>(</span>
+<span id="cb252-4"><a href="iterative.html#cb252-4"></a>    <span class="cf">function</span>(x)</span>
+<span id="cb252-5"><a href="iterative.html#cb252-5"></a>    <span class="kw">if_else</span>(<span class="kw">inherits</span>(x, <span class="st">&#39;gam&#39;</span>),</span>
+<span id="cb252-6"><a href="iterative.html#cb252-6"></a>            <span class="kw">summary</span>(x)<span class="op">$</span>r.sq,</span>
+<span id="cb252-7"><a href="iterative.html#cb252-7"></a>            <span class="kw">summary</span>(x)<span class="op">$</span>adj)</span>
+<span id="cb252-8"><a href="iterative.html#cb252-8"></a>    ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb252-9"><a href="iterative.html#cb252-9"></a><span class="st">  </span><span class="kw">sort</span>(<span class="dt">decreasing =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>mod_gam_inter     mod_inter      mod_poly       mod_gam        mod_lm 
     0.8643020     0.8349382     0.8065828     0.8041651     0.7445939 </code></pre>
 <p>Let’s go further and create a plot of these results. We’ll map to a data frame, use <span class="func" style="">pivot_longer</span> to melt it to two columns of model and value, then use ggplot2 to plot the results<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a>.</p>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="iterative.html#cb237-1"></a>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb237-2"><a href="iterative.html#cb237-2"></a><span class="st">  </span><span class="kw">map_df</span>(</span>
-<span id="cb237-3"><a href="iterative.html#cb237-3"></a>    <span class="cf">function</span>(x)</span>
-<span id="cb237-4"><a href="iterative.html#cb237-4"></a>      <span class="kw">if_else</span>(<span class="kw">inherits</span>(x, <span class="st">&#39;gam&#39;</span>),</span>
-<span id="cb237-5"><a href="iterative.html#cb237-5"></a>              <span class="kw">summary</span>(x)<span class="op">$</span>r.sq,</span>
-<span id="cb237-6"><a href="iterative.html#cb237-6"></a>              <span class="kw">summary</span>(x)<span class="op">$</span>adj)</span>
-<span id="cb237-7"><a href="iterative.html#cb237-7"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb237-8"><a href="iterative.html#cb237-8"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</span>
-<span id="cb237-9"><a href="iterative.html#cb237-9"></a>               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</span>
-<span id="cb237-10"><a href="iterative.html#cb237-10"></a>               <span class="dt">values_to =</span> <span class="st">&quot;Adj. Rsq&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb237-11"><a href="iterative.html#cb237-11"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(<span class="st">`</span><span class="dt">Adj. Rsq</span><span class="st">`</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb237-12"><a href="iterative.html#cb237-12"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="kw">factor</span>(model, <span class="dt">levels =</span> model)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># sigh</span></span>
-<span id="cb237-13"><a href="iterative.html#cb237-13"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> model, <span class="dt">y =</span> <span class="st">`</span><span class="dt">Adj. Rsq</span><span class="st">`</span>)) <span class="op">+</span></span>
-<span id="cb237-14"><a href="iterative.html#cb237-14"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> model), <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">show.legend =</span> F)</span></code></pre></div>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="iterative.html#cb254-1"></a>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb254-2"><a href="iterative.html#cb254-2"></a><span class="st">  </span><span class="kw">map_df</span>(</span>
+<span id="cb254-3"><a href="iterative.html#cb254-3"></a>    <span class="cf">function</span>(x)</span>
+<span id="cb254-4"><a href="iterative.html#cb254-4"></a>      <span class="kw">if_else</span>(<span class="kw">inherits</span>(x, <span class="st">&#39;gam&#39;</span>),</span>
+<span id="cb254-5"><a href="iterative.html#cb254-5"></a>              <span class="kw">summary</span>(x)<span class="op">$</span>r.sq,</span>
+<span id="cb254-6"><a href="iterative.html#cb254-6"></a>              <span class="kw">summary</span>(x)<span class="op">$</span>adj)</span>
+<span id="cb254-7"><a href="iterative.html#cb254-7"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb254-8"><a href="iterative.html#cb254-8"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</span>
+<span id="cb254-9"><a href="iterative.html#cb254-9"></a>               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</span>
+<span id="cb254-10"><a href="iterative.html#cb254-10"></a>               <span class="dt">values_to =</span> <span class="st">&quot;Adj. Rsq&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb254-11"><a href="iterative.html#cb254-11"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(<span class="st">`</span><span class="dt">Adj. Rsq</span><span class="st">`</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb254-12"><a href="iterative.html#cb254-12"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="kw">factor</span>(model, <span class="dt">levels =</span> model)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># sigh</span></span>
+<span id="cb254-13"><a href="iterative.html#cb254-13"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> model, <span class="dt">y =</span> <span class="st">`</span><span class="dt">Adj. Rsq</span><span class="st">`</span>)) <span class="op">+</span></span>
+<span id="cb254-14"><a href="iterative.html#cb254-14"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> model), <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">show.legend =</span> F)</span></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/purr_models2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Why not throw in AIC also?</p>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="iterative.html#cb238-1"></a>mod_rsq =<span class="st"> </span></span>
-<span id="cb238-2"><a href="iterative.html#cb238-2"></a><span class="st">  </span>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb238-3"><a href="iterative.html#cb238-3"></a><span class="st">  </span><span class="kw">map_df</span>(</span>
-<span id="cb238-4"><a href="iterative.html#cb238-4"></a>    <span class="cf">function</span>(x)</span>
-<span id="cb238-5"><a href="iterative.html#cb238-5"></a>      <span class="kw">if_else</span>(</span>
-<span id="cb238-6"><a href="iterative.html#cb238-6"></a>        <span class="kw">inherits</span>(x, <span class="st">&#39;gam&#39;</span>),</span>
-<span id="cb238-7"><a href="iterative.html#cb238-7"></a>        <span class="kw">summary</span>(x)<span class="op">$</span>r.sq,</span>
-<span id="cb238-8"><a href="iterative.html#cb238-8"></a>        <span class="kw">summary</span>(x)<span class="op">$</span>adj</span>
-<span id="cb238-9"><a href="iterative.html#cb238-9"></a>      )</span>
-<span id="cb238-10"><a href="iterative.html#cb238-10"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb238-11"><a href="iterative.html#cb238-11"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</span>
-<span id="cb238-12"><a href="iterative.html#cb238-12"></a>               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</span>
-<span id="cb238-13"><a href="iterative.html#cb238-13"></a>               <span class="dt">values_to =</span> <span class="st">&#39;Rsq&#39;</span>)</span>
-<span id="cb238-14"><a href="iterative.html#cb238-14"></a></span>
-<span id="cb238-15"><a href="iterative.html#cb238-15"></a>mod_aic =</span>
-<span id="cb238-16"><a href="iterative.html#cb238-16"></a><span class="st">  </span>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb238-17"><a href="iterative.html#cb238-17"></a><span class="st">  </span><span class="kw">map_df</span>(AIC) <span class="op">%&gt;%</span></span>
-<span id="cb238-18"><a href="iterative.html#cb238-18"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</span>
-<span id="cb238-19"><a href="iterative.html#cb238-19"></a>               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</span>
-<span id="cb238-20"><a href="iterative.html#cb238-20"></a>               <span class="dt">values_to =</span> <span class="st">&#39;AIC&#39;</span>)</span>
-<span id="cb238-21"><a href="iterative.html#cb238-21"></a></span>
-<span id="cb238-22"><a href="iterative.html#cb238-22"></a><span class="kw">left_join</span>(mod_rsq, mod_aic) <span class="op">%&gt;%</span></span>
-<span id="cb238-23"><a href="iterative.html#cb238-23"></a><span class="st">  </span><span class="kw">arrange</span>(AIC) <span class="op">%&gt;%</span></span>
-<span id="cb238-24"><a href="iterative.html#cb238-24"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="kw">factor</span>(model, <span class="dt">levels =</span> model)) <span class="op">%&gt;%</span></span>
-<span id="cb238-25"><a href="iterative.html#cb238-25"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="op">-</span>model, <span class="dt">names_to =</span> <span class="st">&#39;measure&#39;</span>, <span class="dt">values_to =</span> <span class="st">&#39;value&#39;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb238-26"><a href="iterative.html#cb238-26"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> model, <span class="dt">y =</span> value)) <span class="op">+</span></span>
-<span id="cb238-27"><a href="iterative.html#cb238-27"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> model), <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">show.legend =</span> F) <span class="op">+</span></span>
-<span id="cb238-28"><a href="iterative.html#cb238-28"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>measure, <span class="dt">scales =</span> <span class="st">&#39;free&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="iterative.html#cb255-1"></a>mod_rsq =<span class="st"> </span></span>
+<span id="cb255-2"><a href="iterative.html#cb255-2"></a><span class="st">  </span>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb255-3"><a href="iterative.html#cb255-3"></a><span class="st">  </span><span class="kw">map_df</span>(</span>
+<span id="cb255-4"><a href="iterative.html#cb255-4"></a>    <span class="cf">function</span>(x)</span>
+<span id="cb255-5"><a href="iterative.html#cb255-5"></a>      <span class="kw">if_else</span>(</span>
+<span id="cb255-6"><a href="iterative.html#cb255-6"></a>        <span class="kw">inherits</span>(x, <span class="st">&#39;gam&#39;</span>),</span>
+<span id="cb255-7"><a href="iterative.html#cb255-7"></a>        <span class="kw">summary</span>(x)<span class="op">$</span>r.sq,</span>
+<span id="cb255-8"><a href="iterative.html#cb255-8"></a>        <span class="kw">summary</span>(x)<span class="op">$</span>adj</span>
+<span id="cb255-9"><a href="iterative.html#cb255-9"></a>      )</span>
+<span id="cb255-10"><a href="iterative.html#cb255-10"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb255-11"><a href="iterative.html#cb255-11"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</span>
+<span id="cb255-12"><a href="iterative.html#cb255-12"></a>               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</span>
+<span id="cb255-13"><a href="iterative.html#cb255-13"></a>               <span class="dt">values_to =</span> <span class="st">&#39;Rsq&#39;</span>)</span>
+<span id="cb255-14"><a href="iterative.html#cb255-14"></a></span>
+<span id="cb255-15"><a href="iterative.html#cb255-15"></a>mod_aic =</span>
+<span id="cb255-16"><a href="iterative.html#cb255-16"></a><span class="st">  </span>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb255-17"><a href="iterative.html#cb255-17"></a><span class="st">  </span><span class="kw">map_df</span>(AIC) <span class="op">%&gt;%</span></span>
+<span id="cb255-18"><a href="iterative.html#cb255-18"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</span>
+<span id="cb255-19"><a href="iterative.html#cb255-19"></a>               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</span>
+<span id="cb255-20"><a href="iterative.html#cb255-20"></a>               <span class="dt">values_to =</span> <span class="st">&#39;AIC&#39;</span>)</span>
+<span id="cb255-21"><a href="iterative.html#cb255-21"></a></span>
+<span id="cb255-22"><a href="iterative.html#cb255-22"></a><span class="kw">left_join</span>(mod_rsq, mod_aic) <span class="op">%&gt;%</span></span>
+<span id="cb255-23"><a href="iterative.html#cb255-23"></a><span class="st">  </span><span class="kw">arrange</span>(AIC) <span class="op">%&gt;%</span></span>
+<span id="cb255-24"><a href="iterative.html#cb255-24"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="kw">factor</span>(model, <span class="dt">levels =</span> model)) <span class="op">%&gt;%</span></span>
+<span id="cb255-25"><a href="iterative.html#cb255-25"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="op">-</span>model, <span class="dt">names_to =</span> <span class="st">&#39;measure&#39;</span>, <span class="dt">values_to =</span> <span class="st">&#39;value&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb255-26"><a href="iterative.html#cb255-26"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> model, <span class="dt">y =</span> value)) <span class="op">+</span></span>
+<span id="cb255-27"><a href="iterative.html#cb255-27"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> model), <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">show.legend =</span> F) <span class="op">+</span></span>
+<span id="cb255-28"><a href="iterative.html#cb255-28"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>measure, <span class="dt">scales =</span> <span class="st">&#39;free&#39;</span>)</span></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/purr_models3-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <div id="list-columns" class="section level4">
 <h4>List columns</h4>
 <p>As data.frames are lists, anything can be put into a column just as you would a list element. We’ll use <span class="func">pmap</span> here, as it can take more than one argument, and we’re feeding all columns of the data.frame. You don’t need to worry about the details here, we just want to create a column that is actually a list. In this case the column will contain a data frame in each entry.</p>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="iterative.html#cb239-1"></a>mtcars2 =<span class="st"> </span><span class="kw">as.matrix</span>(mtcars)</span>
-<span id="cb239-2"><a href="iterative.html#cb239-2"></a></span>
-<span id="cb239-3"><a href="iterative.html#cb239-3"></a>mtcars2[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(mtcars2), <span class="dv">50</span>)] =<span class="st"> </span><span class="ot">NA</span>   <span class="co"># add some missing data</span></span>
-<span id="cb239-4"><a href="iterative.html#cb239-4"></a></span>
-<span id="cb239-5"><a href="iterative.html#cb239-5"></a>mtcars2 =<span class="st"> </span><span class="kw">data.frame</span>(mtcars2) <span class="op">%&gt;%</span></span>
-<span id="cb239-6"><a href="iterative.html#cb239-6"></a><span class="st">  </span><span class="kw">rownames_to_column</span>(<span class="dt">var =</span> <span class="st">&#39;observation&#39;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb239-7"><a href="iterative.html#cb239-7"></a><span class="st">  </span><span class="kw">as_tibble</span>()</span>
-<span id="cb239-8"><a href="iterative.html#cb239-8"></a></span>
-<span id="cb239-9"><a href="iterative.html#cb239-9"></a><span class="kw">head</span>(mtcars2)</span></code></pre></div>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="iterative.html#cb256-1"></a>mtcars2 =<span class="st"> </span><span class="kw">as.matrix</span>(mtcars)</span>
+<span id="cb256-2"><a href="iterative.html#cb256-2"></a></span>
+<span id="cb256-3"><a href="iterative.html#cb256-3"></a>mtcars2[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(mtcars2), <span class="dv">50</span>)] =<span class="st"> </span><span class="ot">NA</span>   <span class="co"># add some missing data</span></span>
+<span id="cb256-4"><a href="iterative.html#cb256-4"></a></span>
+<span id="cb256-5"><a href="iterative.html#cb256-5"></a>mtcars2 =<span class="st"> </span><span class="kw">data.frame</span>(mtcars2) <span class="op">%&gt;%</span></span>
+<span id="cb256-6"><a href="iterative.html#cb256-6"></a><span class="st">  </span><span class="kw">rownames_to_column</span>(<span class="dt">var =</span> <span class="st">&#39;observation&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb256-7"><a href="iterative.html#cb256-7"></a><span class="st">  </span><span class="kw">as_tibble</span>()</span>
+<span id="cb256-8"><a href="iterative.html#cb256-8"></a></span>
+<span id="cb256-9"><a href="iterative.html#cb256-9"></a><span class="kw">head</span>(mtcars2)</span></code></pre></div>
 <pre><code># A tibble: 6 x 12
   observation       mpg   cyl   disp  hp    drat  wt    qsec  vs    am    gear  carb 
-  &lt;chr&gt;             &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;
-1 Mazda RX4         21.0  &lt;NA&gt;  160.0 110   &lt;NA&gt;  2.620 16.46 0     1     4     4    
-2 Mazda RX4 Wag     21.0  6     160.0 110   3.90  2.875 17.02 0     1     4     &lt;NA&gt; 
-3 Datsun 710        22.8  4     108.0 &lt;NA&gt;  3.85  2.320 18.61 1     1     4     1    
-4 Hornet 4 Drive    21.4  6     258.0 110   3.08  3.215 19.44 1     0     3     1    
-5 Hornet Sportabout &lt;NA&gt;  8     360.0 175   3.15  3.440 17.02 0     0     3     2    
-6 Valiant           18.1  6     225.0 &lt;NA&gt;  2.76  &lt;NA&gt;  20.22 1     0     &lt;NA&gt;  1    </code></pre>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="iterative.html#cb241-1"></a>mtcars2 =<span class="st"> </span></span>
-<span id="cb241-2"><a href="iterative.html#cb241-2"></a><span class="st">  </span>mtcars2 <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb241-3"><a href="iterative.html#cb241-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb241-4"><a href="iterative.html#cb241-4"></a>    <span class="dt">newvar =</span> </span>
-<span id="cb241-5"><a href="iterative.html#cb241-5"></a>      <span class="kw">pmap</span>(., <span class="op">~</span><span class="st"> </span><span class="kw">data.frame</span>(</span>
-<span id="cb241-6"><a href="iterative.html#cb241-6"></a>        <span class="dt">N =</span> <span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(<span class="kw">c</span>(...))), </span>
-<span id="cb241-7"><a href="iterative.html#cb241-7"></a>        <span class="dt">Missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(<span class="kw">c</span>(...)))</span>
-<span id="cb241-8"><a href="iterative.html#cb241-8"></a>        )</span>
-<span id="cb241-9"><a href="iterative.html#cb241-9"></a>      )</span>
-<span id="cb241-10"><a href="iterative.html#cb241-10"></a>  )</span></code></pre></div>
+  &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+1 Mazda RX4         21.0  6     160.0 &quot;110&quot; 3.90  2.620 16.46 0     1     4     4    
+2 Mazda RX4 Wag     21.0  6     160.0 &quot;110&quot; 3.90  2.875 17.02 0     1     4     4    
+3 Datsun 710        22.8  4     108.0 &quot; 93&quot; 3.85  &lt;NA&gt;  18.61 1     1     4     1    
+4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; 3.08  &lt;NA&gt;  19.44 1     0     3     1    
+5 Hornet Sportabout 18.7  8     360.0  &lt;NA&gt; 3.15  3.440 17.02 0     0     3     2    
+6 Valiant           18.1  &lt;NA&gt;  &lt;NA&gt;  &quot;105&quot; 2.76  3.460 20.22 1     0     &lt;NA&gt;  1    </code></pre>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="iterative.html#cb258-1"></a>mtcars2 =<span class="st"> </span></span>
+<span id="cb258-2"><a href="iterative.html#cb258-2"></a><span class="st">  </span>mtcars2 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb258-3"><a href="iterative.html#cb258-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb258-4"><a href="iterative.html#cb258-4"></a>    <span class="dt">newvar =</span> </span>
+<span id="cb258-5"><a href="iterative.html#cb258-5"></a>      <span class="kw">pmap</span>(., <span class="op">~</span><span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb258-6"><a href="iterative.html#cb258-6"></a>        <span class="dt">N =</span> <span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(<span class="kw">c</span>(...))), </span>
+<span id="cb258-7"><a href="iterative.html#cb258-7"></a>        <span class="dt">Missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(<span class="kw">c</span>(...)))</span>
+<span id="cb258-8"><a href="iterative.html#cb258-8"></a>        )</span>
+<span id="cb258-9"><a href="iterative.html#cb258-9"></a>      )</span>
+<span id="cb258-10"><a href="iterative.html#cb258-10"></a>  )</span></code></pre></div>
 <p>Now check out the list column.</p>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="iterative.html#cb242-1"></a>mtcars2</span></code></pre></div>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="iterative.html#cb259-1"></a>mtcars2</span></code></pre></div>
 <pre><code># A tibble: 32 x 13
    observation       mpg   cyl   disp  hp    drat  wt    qsec  vs    am    gear  carb  newvar          
-   &lt;chr&gt;             &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;list&gt;          
- 1 Mazda RX4         21.0  &lt;NA&gt;  160.0 &quot;110&quot; &lt;NA&gt;  2.620 16.46 0     1     4     4     &lt;df[,2] [1 × 2]&gt;
- 2 Mazda RX4 Wag     21.0  6     160.0 &quot;110&quot; 3.90  2.875 17.02 0     1     4     &lt;NA&gt;  &lt;df[,2] [1 × 2]&gt;
- 3 Datsun 710        22.8  4     108.0  &lt;NA&gt; 3.85  2.320 18.61 1     1     4     1     &lt;df[,2] [1 × 2]&gt;
- 4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; 3.08  3.215 19.44 1     0     3     1     &lt;df[,2] [1 × 2]&gt;
- 5 Hornet Sportabout &lt;NA&gt;  8     360.0 &quot;175&quot; 3.15  3.440 17.02 0     0     3     2     &lt;df[,2] [1 × 2]&gt;
- 6 Valiant           18.1  6     225.0  &lt;NA&gt; 2.76  &lt;NA&gt;  20.22 1     0     &lt;NA&gt;  1     &lt;df[,2] [1 × 2]&gt;
- 7 Duster 360        14.3  8     360.0 &quot;245&quot; 3.21  3.570 15.84 0     0     3     &lt;NA&gt;  &lt;df[,2] [1 × 2]&gt;
- 8 Merc 240D         24.4  4     &lt;NA&gt;  &quot; 62&quot; 3.69  3.190 20.00 &lt;NA&gt;  &lt;NA&gt;  4     2     &lt;df[,2] [1 × 2]&gt;
- 9 Merc 230          &lt;NA&gt;  4     140.8 &quot; 95&quot; 3.92  &lt;NA&gt;  22.90 &lt;NA&gt;  0     4     2     &lt;df[,2] [1 × 2]&gt;
-10 Merc 280          19.2  6     167.6 &quot;123&quot; 3.92  3.440 18.30 &lt;NA&gt;  0     4     4     &lt;df[,2] [1 × 2]&gt;
+   &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;list&gt;          
+ 1 Mazda RX4         21.0  6     160.0 &quot;110&quot; 3.90  2.620 16.46 0     1     4     4     &lt;df[,2] [1 × 2]&gt;
+ 2 Mazda RX4 Wag     21.0  6     160.0 &quot;110&quot; 3.90  2.875 17.02 0     1     4     4     &lt;df[,2] [1 × 2]&gt;
+ 3 Datsun 710        22.8  4     108.0 &quot; 93&quot; 3.85  &lt;NA&gt;  18.61 1     1     4     1     &lt;df[,2] [1 × 2]&gt;
+ 4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; 3.08  &lt;NA&gt;  19.44 1     0     3     1     &lt;df[,2] [1 × 2]&gt;
+ 5 Hornet Sportabout 18.7  8     360.0  &lt;NA&gt; 3.15  3.440 17.02 0     0     3     2     &lt;df[,2] [1 × 2]&gt;
+ 6 Valiant           18.1  &lt;NA&gt;  &lt;NA&gt;  &quot;105&quot; 2.76  3.460 20.22 1     0     &lt;NA&gt;  1     &lt;df[,2] [1 × 2]&gt;
+ 7 Duster 360        14.3  8     360.0 &quot;245&quot; 3.21  3.570 15.84 0     0     3     4     &lt;df[,2] [1 × 2]&gt;
+ 8 Merc 240D         24.4  4     146.7 &quot; 62&quot; &lt;NA&gt;  3.190 20.00 1     0     4     2     &lt;df[,2] [1 × 2]&gt;
+ 9 Merc 230          22.8  4     140.8 &quot; 95&quot; 3.92  &lt;NA&gt;  22.90 1     0     4     2     &lt;df[,2] [1 × 2]&gt;
+10 Merc 280          19.2  6     167.6  &lt;NA&gt; 3.92  &lt;NA&gt;  18.30 &lt;NA&gt;  0     4     4     &lt;df[,2] [1 × 2]&gt;
 # … with 22 more rows</code></pre>
-<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="iterative.html#cb244-1"></a>mtcars2<span class="op">$</span>newvar <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="iterative.html#cb261-1"></a>mtcars2<span class="op">$</span>newvar <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <pre><code>[[1]]
    N Missing
-1 10       2
+1 12       0
 
 [[2]]
    N Missing
-1 11       1
+1 12       0
 
 [[3]]
    N Missing
 1 11       1</code></pre>
 <p>Unnest it with the <span class="pack">tidyr</span> function.</p>
-<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="iterative.html#cb246-1"></a>mtcars2 <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb246-2"><a href="iterative.html#cb246-2"></a><span class="st">  </span><span class="kw">unnest</span>(newvar)</span></code></pre></div>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="iterative.html#cb263-1"></a>mtcars2 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb263-2"><a href="iterative.html#cb263-2"></a><span class="st">  </span><span class="kw">unnest</span>(newvar)</span></code></pre></div>
 <pre><code># A tibble: 32 x 14
    observation       mpg   cyl   disp  hp    drat  wt    qsec  vs    am    gear  carb      N Missing
-   &lt;chr&gt;             &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;int&gt;   &lt;int&gt;
- 1 Mazda RX4         21.0  &lt;NA&gt;  160.0 &quot;110&quot; &lt;NA&gt;  2.620 16.46 0     1     4     4        10       2
- 2 Mazda RX4 Wag     21.0  6     160.0 &quot;110&quot; 3.90  2.875 17.02 0     1     4     &lt;NA&gt;     11       1
- 3 Datsun 710        22.8  4     108.0  &lt;NA&gt; 3.85  2.320 18.61 1     1     4     1        11       1
- 4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; 3.08  3.215 19.44 1     0     3     1        12       0
- 5 Hornet Sportabout &lt;NA&gt;  8     360.0 &quot;175&quot; 3.15  3.440 17.02 0     0     3     2        11       1
- 6 Valiant           18.1  6     225.0  &lt;NA&gt; 2.76  &lt;NA&gt;  20.22 1     0     &lt;NA&gt;  1         9       3
- 7 Duster 360        14.3  8     360.0 &quot;245&quot; 3.21  3.570 15.84 0     0     3     &lt;NA&gt;     11       1
- 8 Merc 240D         24.4  4     &lt;NA&gt;  &quot; 62&quot; 3.69  3.190 20.00 &lt;NA&gt;  &lt;NA&gt;  4     2         9       3
- 9 Merc 230          &lt;NA&gt;  4     140.8 &quot; 95&quot; 3.92  &lt;NA&gt;  22.90 &lt;NA&gt;  0     4     2         9       3
-10 Merc 280          19.2  6     167.6 &quot;123&quot; 3.92  3.440 18.30 &lt;NA&gt;  0     4     4        11       1
+   &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;   &lt;int&gt;
+ 1 Mazda RX4         21.0  6     160.0 &quot;110&quot; 3.90  2.620 16.46 0     1     4     4        12       0
+ 2 Mazda RX4 Wag     21.0  6     160.0 &quot;110&quot; 3.90  2.875 17.02 0     1     4     4        12       0
+ 3 Datsun 710        22.8  4     108.0 &quot; 93&quot; 3.85  &lt;NA&gt;  18.61 1     1     4     1        11       1
+ 4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; 3.08  &lt;NA&gt;  19.44 1     0     3     1        11       1
+ 5 Hornet Sportabout 18.7  8     360.0  &lt;NA&gt; 3.15  3.440 17.02 0     0     3     2        11       1
+ 6 Valiant           18.1  &lt;NA&gt;  &lt;NA&gt;  &quot;105&quot; 2.76  3.460 20.22 1     0     &lt;NA&gt;  1         9       3
+ 7 Duster 360        14.3  8     360.0 &quot;245&quot; 3.21  3.570 15.84 0     0     3     4        12       0
+ 8 Merc 240D         24.4  4     146.7 &quot; 62&quot; &lt;NA&gt;  3.190 20.00 1     0     4     2        11       1
+ 9 Merc 230          22.8  4     140.8 &quot; 95&quot; 3.92  &lt;NA&gt;  22.90 1     0     4     2        11       1
+10 Merc 280          19.2  6     167.6  &lt;NA&gt; 3.92  &lt;NA&gt;  18.30 &lt;NA&gt;  0     4     4         9       3
 # … with 22 more rows</code></pre>
 <p>This is a pretty esoteric demonstration, and not something you’d normally want to do, as <span class="func">mutate</span> or other approaches would be far more efficient and sensical. However, the idea is that you might want to retain the information you might otherwise store in a list with the data that was used to create it. As an example, you could potentially attach models as a list column to a dataframe that contains meta-information about each model. Once you have a list column, you can use that column as you would any list for iterative programming.</p>
 </div>
@@ -1017,21 +1017,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="exercise-1-4" class="section level3">
 <h3>Exercise 1</h3>
 <p>With the following <span class="objclass">matrix</span>, use <span class="func">apply</span> and the <span class="func">sum</span> function to get row or column sums of the matrix <span class="objclass">x</span>.</p>
-<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="iterative.html#cb248-1"></a>x =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="iterative.html#cb265-1"></a>x =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span></code></pre></div>
 </div>
 <div id="exercise-2-4" class="section level3">
 <h3>Exercise 2</h3>
 <p>With the following list object <span class="objclass">x</span>, use <span class="func">lapply</span> and <span class="func">sapply</span> and the <span class="func">sum</span> function to get sums for the elements. There is no margin to specify for a list, so just supply the list and the sum function.</p>
-<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="iterative.html#cb249-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">11</span><span class="op">:</span><span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="iterative.html#cb266-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">11</span><span class="op">:</span><span class="dv">100</span>)</span></code></pre></div>
 </div>
 <div id="exercise-3-2" class="section level3">
 <h3>Exercise 3</h3>
 <p>As in the previous example, use a <span class="func" style="">map</span> function to create a data frame of the column means. See <code>?map</code> to see all your options.</p>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="iterative.html#cb250-1"></a>d =<span class="st"> </span><span class="kw">tibble</span>(</span>
-<span id="cb250-2"><a href="iterative.html#cb250-2"></a>  <span class="dt">x =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>),</span>
-<span id="cb250-3"><a href="iterative.html#cb250-3"></a>  <span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">10</span>, <span class="dv">2</span>),</span>
-<span id="cb250-4"><a href="iterative.html#cb250-4"></a>  <span class="dt">z =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">50</span>, <span class="dv">10</span>),</span>
-<span id="cb250-5"><a href="iterative.html#cb250-5"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="iterative.html#cb267-1"></a>d =<span class="st"> </span><span class="kw">tibble</span>(</span>
+<span id="cb267-2"><a href="iterative.html#cb267-2"></a>  <span class="dt">x =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>),</span>
+<span id="cb267-3"><a href="iterative.html#cb267-3"></a>  <span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">10</span>, <span class="dv">2</span>),</span>
+<span id="cb267-4"><a href="iterative.html#cb267-4"></a>  <span class="dt">z =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">50</span>, <span class="dv">10</span>),</span>
+<span id="cb267-5"><a href="iterative.html#cb267-5"></a>)</span></code></pre></div>
 
 </div>
 </div>

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Model Exploration | Data Processing &amp; Visualization</title>
   <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Model Exploration | Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-02-29" />
+<meta name="date" content="2020-06-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -55,10 +55,10 @@
 <script src="libs/viz-1.8.2/viz.js"></script>
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
 <script src="libs/grViz-binding-1.0.5/grViz.js"></script>
-<script src="libs/plotly-binding-4.9.2/plotly.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 <link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
@@ -128,7 +128,7 @@
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.12/datatables.js"></script>
+<script src="libs/datatables-binding-0.13/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
@@ -726,10 +726,10 @@ Right hand side (RHS)
 <p><span class="math display">\[y = b_0 + b_1\cdot x_1 + b_2\cdot x_2 + ... +  + b_p\cdot x_p + \epsilon\]</span></p>
 <p>In the above, <span class="math inline">\(b_0\)</span> is the intercept, and the other <span class="math inline">\(b_*\)</span> are the regression coefficients that represent the relationship of the predictors <span class="math inline">\(x\)</span> to the target variable <span class="math inline">\(y\)</span>. The <span class="math inline">\(\epsilon\)</span> represents the <em>error</em> or <em>residual</em>. We don’t have perfect prediction, and that represents the difference between what we can guess with our predictor relationships to the target and what we actually observe with it.</p>
 <p>In R, we specify a linear model as follows. Conveniently enough, we use a function, <code>lm</code>, that stands for linear model. There are various inputs, typically starting with the formula. In the formula, The target variable is first, followed by the predictor variables, separated by a tilde (<code>~</code>). Additional predictor variables are added with a plus sign (<code>+</code>). In this example, <code>y</code> is our target, and the predictors are <code>x</code> and <code>z</code>.</p>
-<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="models.html#cb322-1"></a><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z)</span></code></pre></div>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="models.html#cb339-1"></a><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z)</span></code></pre></div>
 <p>We can still use linear models to investigate nonlinear relationships. For example, in the following, we can add a quadratic term or an interaction, yet the model is still linear in the parameters. All of the following are standard linear regression models.</p>
-<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="models.html#cb323-1"></a><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z <span class="op">+</span><span class="st"> </span>x<span class="op">:</span>z)</span>
-<span id="cb323-2"><a href="models.html#cb323-2"></a><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>x_squared)     <span class="co"># a better way: lm(y ~ poly(x, degree = 2))</span></span></code></pre></div>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="models.html#cb340-1"></a><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z <span class="op">+</span><span class="st"> </span>x<span class="op">:</span>z)</span>
+<span id="cb340-2"><a href="models.html#cb340-2"></a><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>x_squared)     <span class="co"># a better way: lm(y ~ poly(x, degree = 2))</span></span></code></pre></div>
 <p>In the models above, <code>x</code> has a potentially nonlinear relationship with <code>y</code>, either by varying its (linear) relationship depending on values of z (the first case) or itself (the second). In general, the manner in which nonlinear relationships may be explored in linear models is quite flexible.</p>
 <p>An example of a <em>nonlinear model</em> would be population growth models, like exponential or logistic growth curves. You can use functions like <span class="func" style="">nls</span> or <span class="func" style="">nlme</span> for such models, but should have a specific theoretical reason to do so, and even then, flexible models such as <a href="https://m-clark.github.io/generalized-additive-models/">GAMs</a> might be better than assuming a functional form.</p>
 </div>
@@ -741,48 +741,48 @@ Right hand side (RHS)
 <p>The goal of many estimation approaches is the reduction of <em>loss</em>, conceptually defined as the difference between the model predictions and the observed data, i.e. prediction error. In an introductory methods course, many are introduced to <em>ordinary least squares</em> as a means to estimate the coefficients for a linear regression model. In this scenario, we are seeking to come up with estimates of the coefficients that <em>minimize</em> the (squared) difference between the observed target value and the fitted value based on the parameter estimates. The loss in this case is defined as the sum of the squared errors. Formally we can state it as follows.</p>
 <p><span class="math display">\[\mathcal{Loss} = \Sigma(y - \hat{y})^2\]</span></p>
 <p>We can see how this works more clearly with some simple conceptual code. In what follows, we create a <a href="functions.html#writing-functions">function</a>, allows us to move <a href="iterative.html#for-loops">row by row</a> through the data, calculating both our prediction based on the given model parameters- <span class="math inline">\(\hat{y}\)</span>, and the difference between that and our target variable <span class="math inline">\(y\)</span>. We sum these squared differences to get a total. In practice such a function is called the loss function, cost function, or objective function.</p>
-<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="models.html#cb324-1"></a>ls_loss &lt;-<span class="st"> </span><span class="cf">function</span>(X, y, beta) {</span>
-<span id="cb324-2"><a href="models.html#cb324-2"></a>  </span>
-<span id="cb324-3"><a href="models.html#cb324-3"></a>  <span class="co"># initialize the objects</span></span>
-<span id="cb324-4"><a href="models.html#cb324-4"></a>  loss  =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">nrow</span>(X))</span>
-<span id="cb324-5"><a href="models.html#cb324-5"></a>  y_hat =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">nrow</span>(X))</span>
-<span id="cb324-6"><a href="models.html#cb324-6"></a>  </span>
-<span id="cb324-7"><a href="models.html#cb324-7"></a>  <span class="co"># for each row, calculate y_hat and square the difference with y</span></span>
-<span id="cb324-8"><a href="models.html#cb324-8"></a>  <span class="cf">for</span> (n <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(X)) {</span>
-<span id="cb324-9"><a href="models.html#cb324-9"></a>    y_hat[n] =<span class="st"> </span><span class="kw">sum</span>(X[n, ] <span class="op">*</span><span class="st"> </span>beta)</span>
-<span id="cb324-10"><a href="models.html#cb324-10"></a>    loss[n]  =<span class="st"> </span>(y[n] <span class="op">-</span><span class="st"> </span>y_hat[n]) <span class="op">^</span><span class="st"> </span><span class="dv">2</span></span>
-<span id="cb324-11"><a href="models.html#cb324-11"></a>  }</span>
-<span id="cb324-12"><a href="models.html#cb324-12"></a>  </span>
-<span id="cb324-13"><a href="models.html#cb324-13"></a>  <span class="kw">sum</span>(loss)  </span>
-<span id="cb324-14"><a href="models.html#cb324-14"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="models.html#cb341-1"></a>ls_loss &lt;-<span class="st"> </span><span class="cf">function</span>(X, y, beta) {</span>
+<span id="cb341-2"><a href="models.html#cb341-2"></a>  </span>
+<span id="cb341-3"><a href="models.html#cb341-3"></a>  <span class="co"># initialize the objects</span></span>
+<span id="cb341-4"><a href="models.html#cb341-4"></a>  loss  =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">nrow</span>(X))</span>
+<span id="cb341-5"><a href="models.html#cb341-5"></a>  y_hat =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">nrow</span>(X))</span>
+<span id="cb341-6"><a href="models.html#cb341-6"></a>  </span>
+<span id="cb341-7"><a href="models.html#cb341-7"></a>  <span class="co"># for each row, calculate y_hat and square the difference with y</span></span>
+<span id="cb341-8"><a href="models.html#cb341-8"></a>  <span class="cf">for</span> (n <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(X)) {</span>
+<span id="cb341-9"><a href="models.html#cb341-9"></a>    y_hat[n] =<span class="st"> </span><span class="kw">sum</span>(X[n, ] <span class="op">*</span><span class="st"> </span>beta)</span>
+<span id="cb341-10"><a href="models.html#cb341-10"></a>    loss[n]  =<span class="st"> </span>(y[n] <span class="op">-</span><span class="st"> </span>y_hat[n]) <span class="op">^</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb341-11"><a href="models.html#cb341-11"></a>  }</span>
+<span id="cb341-12"><a href="models.html#cb341-12"></a>  </span>
+<span id="cb341-13"><a href="models.html#cb341-13"></a>  <span class="kw">sum</span>(loss)  </span>
+<span id="cb341-14"><a href="models.html#cb341-14"></a>}</span></code></pre></div>
 <p>Now we need some data. Let’s construct some data so that we know the true underlying values for the regression coefficients. Feel free to change the sample size <code>N</code> or the coefficient values.</p>
-<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="models.html#cb325-1"></a><span class="kw">set.seed</span>(<span class="dv">123</span>)           <span class="co"># for reproducibility</span></span>
-<span id="cb325-2"><a href="models.html#cb325-2"></a>N =<span class="st"> </span><span class="dv">100</span></span>
-<span id="cb325-3"><a href="models.html#cb325-3"></a>X =<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, <span class="kw">rnorm</span>(N))  <span class="co"># a model matrix; first column represents the intercept</span></span>
-<span id="cb325-4"><a href="models.html#cb325-4"></a>y =<span class="st"> </span><span class="dv">5</span> <span class="op">*</span><span class="st"> </span>X[, <span class="dv">1</span>] <span class="op">+</span><span class="st"> </span><span class="fl">.5</span> <span class="op">*</span><span class="st"> </span>X[, <span class="dv">2</span>] <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(N)  <span class="co"># a target with some noise; truth is y = 5 +.5*x</span></span>
-<span id="cb325-5"><a href="models.html#cb325-5"></a></span>
-<span id="cb325-6"><a href="models.html#cb325-6"></a>df =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">y =</span> y, <span class="dt">x =</span> X[, <span class="dv">2</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="models.html#cb342-1"></a><span class="kw">set.seed</span>(<span class="dv">123</span>)           <span class="co"># for reproducibility</span></span>
+<span id="cb342-2"><a href="models.html#cb342-2"></a>N =<span class="st"> </span><span class="dv">100</span></span>
+<span id="cb342-3"><a href="models.html#cb342-3"></a>X =<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, <span class="kw">rnorm</span>(N))  <span class="co"># a model matrix; first column represents the intercept</span></span>
+<span id="cb342-4"><a href="models.html#cb342-4"></a>y =<span class="st"> </span><span class="dv">5</span> <span class="op">*</span><span class="st"> </span>X[, <span class="dv">1</span>] <span class="op">+</span><span class="st"> </span><span class="fl">.5</span> <span class="op">*</span><span class="st"> </span>X[, <span class="dv">2</span>] <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(N)  <span class="co"># a target with some noise; truth is y = 5 +.5*x</span></span>
+<span id="cb342-5"><a href="models.html#cb342-5"></a></span>
+<span id="cb342-6"><a href="models.html#cb342-6"></a>df =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">y =</span> y, <span class="dt">x =</span> X[, <span class="dv">2</span>])</span></code></pre></div>
 <p>Now let’s make some guesses for the coefficients, and see what the corresponding sum of the squared errors, i.e. the loss, would be.</p>
-<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="models.html#cb326-1"></a><span class="kw">ls_loss</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))    <span class="co"># guess 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="models.html#cb343-1"></a><span class="kw">ls_loss</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))    <span class="co"># guess 1</span></span></code></pre></div>
 <pre><code>[1] 2467.106</code></pre>
-<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="models.html#cb328-1"></a><span class="kw">ls_loss</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))    <span class="co"># guess 2</span></span></code></pre></div>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="models.html#cb345-1"></a><span class="kw">ls_loss</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))    <span class="co"># guess 2</span></span></code></pre></div>
 <pre><code>[1] 1702.547</code></pre>
-<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="models.html#cb330-1"></a><span class="kw">ls_loss</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">.25</span>))  <span class="co"># guess 3</span></span></code></pre></div>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="models.html#cb347-1"></a><span class="kw">ls_loss</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">.25</span>))  <span class="co"># guess 3</span></span></code></pre></div>
 <pre><code>[1] 179.2952</code></pre>
 <p>We see that in our third guess we reduce the loss quite a bit relative to our first guess. This makes sense because a value of 4 for the intercept and .25 for the coefficient for <code>x</code> are not as relatively far from the true values.</p>
 <p>However, we can also see that they are not the best we could have done. In addition, with more data, our estimated coefficients would get closer to true values.</p>
-<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="models.html#cb332-1"></a>model =<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, df)            <span class="co"># fit the model and obtain parameter estimates using OLS</span></span>
-<span id="cb332-2"><a href="models.html#cb332-2"></a><span class="kw">coef</span>(model)                      <span class="co"># best guess given the data </span></span></code></pre></div>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="models.html#cb349-1"></a>model =<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, df)            <span class="co"># fit the model and obtain parameter estimates using OLS</span></span>
+<span id="cb349-2"><a href="models.html#cb349-2"></a><span class="kw">coef</span>(model)                      <span class="co"># best guess given the data </span></span></code></pre></div>
 <pre><code>(Intercept)           x 
   4.8971969   0.4475284 </code></pre>
-<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="models.html#cb334-1"></a><span class="kw">sum</span>(<span class="kw">residuals</span>(model)<span class="op">^</span><span class="dv">2</span>)          <span class="co"># least squares loss</span></span></code></pre></div>
+<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb351-1"><a href="models.html#cb351-1"></a><span class="kw">sum</span>(<span class="kw">residuals</span>(model)<span class="op">^</span><span class="dv">2</span>)          <span class="co"># least squares loss</span></span></code></pre></div>
 <pre><code>[1] 92.34413</code></pre>
 <p>In some relatively rare cases, a known approach is available and we do not have to search for the best estimates, but simply have to perform the correct steps that will result in them. For example, the following matrix operations will produce the best estimates for linear regression, which also happen to be the maximum likelihood estimates.</p>
-<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="models.html#cb336-1"></a><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">crossprod</span>(X, y)  <span class="co"># &#39;normal equations&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="models.html#cb353-1"></a><span class="kw">solve</span>(<span class="kw">crossprod</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">crossprod</span>(X, y)  <span class="co"># &#39;normal equations&#39;</span></span></code></pre></div>
 <pre><code>          [,1]
 [1,] 4.8971969
 [2,] 0.4475284</code></pre>
-<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="models.html#cb338-1"></a><span class="kw">coef</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="models.html#cb355-1"></a><span class="kw">coef</span>(model)</span></code></pre></div>
 <pre><code>(Intercept)           x 
   4.8971969   0.4475284 </code></pre>
 <p>Most of the time we don’t have such luxury, or even if we did, the computations might be too great for the size of our data.</p>
@@ -790,25 +790,25 @@ Right hand side (RHS)
 <p>The following shows how this would look for estimating a single value like a mean for a set of observations from a specific distribution<a href="#fn20" class="footnote-ref" id="fnref20"><sup>20</sup></a>. In this case, the true underlying value that maximizes the likelihood is 5, but we typically don’t know this. We see that as our guesses for the mean would get closer to 5, the likelihood of the observed values increases. Our final guess based on the observed data won’t be exactly 5, but with enough data and an appropriate model for that data, we should get close.</p>
 <p><img src="data-processing-and-visualization_files/figure-html/maximum-likelihood-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Again, some simple conceptual code can help us. The next bit of code follows a similar approach to what we had with least squares regression, but the goal is instead to maximize the likelihood of the observed data. In this example, I fix the estimated variance, but in practice we’d need to estimate that parameter as well. As probabilities are typically very small, we work with them on the log scale.</p>
-<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="models.html#cb340-1"></a>max_like &lt;-<span class="st"> </span><span class="cf">function</span>(X, y, beta, <span class="dt">sigma =</span> <span class="dv">1</span>) {</span>
-<span id="cb340-2"><a href="models.html#cb340-2"></a>  </span>
-<span id="cb340-3"><a href="models.html#cb340-3"></a>  likelihood =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">nrow</span>(X))</span>
-<span id="cb340-4"><a href="models.html#cb340-4"></a>  y_hat =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">nrow</span>(X))</span>
-<span id="cb340-5"><a href="models.html#cb340-5"></a>  </span>
-<span id="cb340-6"><a href="models.html#cb340-6"></a>  <span class="cf">for</span> (n <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(X)) {</span>
-<span id="cb340-7"><a href="models.html#cb340-7"></a>    y_hat[n] &lt;-<span class="st"> </span><span class="kw">sum</span>(X[n, ] <span class="op">*</span><span class="st"> </span>beta)</span>
-<span id="cb340-8"><a href="models.html#cb340-8"></a>    likelihood[n] =<span class="st"> </span><span class="kw">dnorm</span>(y[n],  <span class="dt">mean =</span> y_hat[n], <span class="dt">sd =</span> sigma, <span class="dt">log =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb340-9"><a href="models.html#cb340-9"></a>  }</span>
-<span id="cb340-10"><a href="models.html#cb340-10"></a>  </span>
-<span id="cb340-11"><a href="models.html#cb340-11"></a>  <span class="kw">sum</span>(likelihood)  </span>
-<span id="cb340-12"><a href="models.html#cb340-12"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="models.html#cb341-1"></a><span class="kw">max_like</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))    <span class="co"># guess 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="models.html#cb357-1"></a>max_like &lt;-<span class="st"> </span><span class="cf">function</span>(X, y, beta, <span class="dt">sigma =</span> <span class="dv">1</span>) {</span>
+<span id="cb357-2"><a href="models.html#cb357-2"></a>  </span>
+<span id="cb357-3"><a href="models.html#cb357-3"></a>  likelihood =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">nrow</span>(X))</span>
+<span id="cb357-4"><a href="models.html#cb357-4"></a>  y_hat =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, <span class="kw">nrow</span>(X))</span>
+<span id="cb357-5"><a href="models.html#cb357-5"></a>  </span>
+<span id="cb357-6"><a href="models.html#cb357-6"></a>  <span class="cf">for</span> (n <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(X)) {</span>
+<span id="cb357-7"><a href="models.html#cb357-7"></a>    y_hat[n] &lt;-<span class="st"> </span><span class="kw">sum</span>(X[n, ] <span class="op">*</span><span class="st"> </span>beta)</span>
+<span id="cb357-8"><a href="models.html#cb357-8"></a>    likelihood[n] =<span class="st"> </span><span class="kw">dnorm</span>(y[n],  <span class="dt">mean =</span> y_hat[n], <span class="dt">sd =</span> sigma, <span class="dt">log =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb357-9"><a href="models.html#cb357-9"></a>  }</span>
+<span id="cb357-10"><a href="models.html#cb357-10"></a>  </span>
+<span id="cb357-11"><a href="models.html#cb357-11"></a>  <span class="kw">sum</span>(likelihood)  </span>
+<span id="cb357-12"><a href="models.html#cb357-12"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="models.html#cb358-1"></a><span class="kw">max_like</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))    <span class="co"># guess 1</span></span></code></pre></div>
 <pre><code>[1] -1327.593</code></pre>
-<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="models.html#cb343-1"></a><span class="kw">max_like</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))    <span class="co"># guess 2</span></span></code></pre></div>
+<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb360-1"><a href="models.html#cb360-1"></a><span class="kw">max_like</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))    <span class="co"># guess 2</span></span></code></pre></div>
 <pre><code>[1] -1022.18</code></pre>
-<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="models.html#cb345-1"></a><span class="kw">max_like</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">.25</span>))  <span class="co"># guess 3</span></span></code></pre></div>
+<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb362-1"><a href="models.html#cb362-1"></a><span class="kw">max_like</span>(X, y, <span class="dt">beta =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="fl">.25</span>))  <span class="co"># guess 3</span></span></code></pre></div>
 <pre><code>[1] -300.6741</code></pre>
-<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="models.html#cb347-1"></a><span class="kw">logLik</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="models.html#cb364-1"></a><span class="kw">logLik</span>(model)</span></code></pre></div>
 <pre><code>&#39;log Lik.&#39; -137.9115 (df=3)</code></pre>
 <p>To better understand maximum likelihood, it might help to think of our model from a data generating perspective, rather than in terms of ‘errors’. In the standard regression setting, we think of a single observation as follows:</p>
 <p><span class="math display">\[\mu = b_0 + b_1*x_1 + ... + b_p*x_p\]</span></p>
@@ -923,29 +923,29 @@ Generalized Method of Moments
 <div id="fitting-models" class="section level2">
 <h2>Fitting Models</h2>
 <p>With practically every modern modeling package in R, the two components required to fit a model are the model formula, and a data frame that contains the variables specified in that formula. Consider the following models. In general the syntax is the similar regardless of package, with special considerations for the type of model. The data argument is not included in these examples, but would be needed.</p>
-<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="models.html#cb349-1"></a><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z)                                          <span class="co"># standard linear model/OLS</span></span>
-<span id="cb349-2"><a href="models.html#cb349-2"></a><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z, <span class="dt">family =</span> <span class="st">&#39;binomial&#39;</span>)                    <span class="co"># logistic regression with binary response</span></span>
-<span id="cb349-3"><a href="models.html#cb349-3"></a><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z <span class="op">+</span><span class="st"> </span><span class="kw">offset</span>(<span class="kw">log</span>(q)), <span class="dt">family =</span> <span class="st">&#39;poisson&#39;</span>)    <span class="co"># count/rate model</span></span>
-<span id="cb349-4"><a href="models.html#cb349-4"></a>betareg<span class="op">::</span><span class="kw">betareg</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z)                            <span class="co"># beta regression for targets between 0 and 1</span></span>
-<span id="cb349-5"><a href="models.html#cb349-5"></a>pscl<span class="op">::</span><span class="kw">hurdle</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z, <span class="dt">dist =</span> <span class="st">&quot;negbin&quot;</span>)               <span class="co"># hurdle model with negative binomial response</span></span>
-<span id="cb349-6"><a href="models.html#cb349-6"></a>lme4<span class="op">::</span><span class="kw">glmer</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>group), <span class="dt">family =</span> <span class="st">&#39;binomial&#39;</span>)  <span class="co"># generalized linear mixed model</span></span>
-<span id="cb349-7"><a href="models.html#cb349-7"></a>mgcv<span class="op">::</span><span class="kw">gam</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(x))                                    <span class="co"># generalized additive model</span></span>
-<span id="cb349-8"><a href="models.html#cb349-8"></a>survival<span class="op">::</span><span class="kw">coxph</span>(<span class="kw">Surv</span>(<span class="dt">time =</span> t, <span class="dt">event =</span> q) <span class="op">~</span><span class="st"> </span>x)         <span class="co"># Cox Proportional Hazards Regression</span></span>
-<span id="cb349-9"><a href="models.html#cb349-9"></a></span>
-<span id="cb349-10"><a href="models.html#cb349-10"></a><span class="co"># Bayesian mixed model</span></span>
-<span id="cb349-11"><a href="models.html#cb349-11"></a>brms<span class="op">::</span><span class="kw">brm</span>(</span>
-<span id="cb349-12"><a href="models.html#cb349-12"></a>  y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x <span class="op">|</span><span class="st"> </span>group), </span>
-<span id="cb349-13"><a href="models.html#cb349-13"></a>  <span class="dt">family =</span> <span class="st">&#39;zero_one_inflated_beta&#39;</span>, </span>
-<span id="cb349-14"><a href="models.html#cb349-14"></a>  <span class="dt">prior =</span> priors</span>
-<span id="cb349-15"><a href="models.html#cb349-15"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="models.html#cb366-1"></a><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z)                                          <span class="co"># standard linear model/OLS</span></span>
+<span id="cb366-2"><a href="models.html#cb366-2"></a><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z, <span class="dt">family =</span> <span class="st">&#39;binomial&#39;</span>)                    <span class="co"># logistic regression with binary response</span></span>
+<span id="cb366-3"><a href="models.html#cb366-3"></a><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z <span class="op">+</span><span class="st"> </span><span class="kw">offset</span>(<span class="kw">log</span>(q)), <span class="dt">family =</span> <span class="st">&#39;poisson&#39;</span>)    <span class="co"># count/rate model</span></span>
+<span id="cb366-4"><a href="models.html#cb366-4"></a>betareg<span class="op">::</span><span class="kw">betareg</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z)                            <span class="co"># beta regression for targets between 0 and 1</span></span>
+<span id="cb366-5"><a href="models.html#cb366-5"></a>pscl<span class="op">::</span><span class="kw">hurdle</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>z, <span class="dt">dist =</span> <span class="st">&quot;negbin&quot;</span>)               <span class="co"># hurdle model with negative binomial response</span></span>
+<span id="cb366-6"><a href="models.html#cb366-6"></a>lme4<span class="op">::</span><span class="kw">glmer</span>(y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>group), <span class="dt">family =</span> <span class="st">&#39;binomial&#39;</span>)  <span class="co"># generalized linear mixed model</span></span>
+<span id="cb366-7"><a href="models.html#cb366-7"></a>mgcv<span class="op">::</span><span class="kw">gam</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(x))                                    <span class="co"># generalized additive model</span></span>
+<span id="cb366-8"><a href="models.html#cb366-8"></a>survival<span class="op">::</span><span class="kw">coxph</span>(<span class="kw">Surv</span>(<span class="dt">time =</span> t, <span class="dt">event =</span> q) <span class="op">~</span><span class="st"> </span>x)         <span class="co"># Cox Proportional Hazards Regression</span></span>
+<span id="cb366-9"><a href="models.html#cb366-9"></a></span>
+<span id="cb366-10"><a href="models.html#cb366-10"></a><span class="co"># Bayesian mixed model</span></span>
+<span id="cb366-11"><a href="models.html#cb366-11"></a>brms<span class="op">::</span><span class="kw">brm</span>(</span>
+<span id="cb366-12"><a href="models.html#cb366-12"></a>  y <span class="op">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>x <span class="op">|</span><span class="st"> </span>group), </span>
+<span id="cb366-13"><a href="models.html#cb366-13"></a>  <span class="dt">family =</span> <span class="st">&#39;zero_one_inflated_beta&#39;</span>, </span>
+<span id="cb366-14"><a href="models.html#cb366-14"></a>  <span class="dt">prior =</span> priors</span>
+<span id="cb366-15"><a href="models.html#cb366-15"></a>)</span></code></pre></div>
 <p><br>
 For examples of many other types of models, see this <a href="https://m-clark.github.io/R-models/">document</a>.</p>
 <p>Let’s finally get our hands dirty and run an example. We’ll use the world happiness dataset<a href="#fn23" class="footnote-ref" id="fnref23"><sup>23</sup></a>. This is country level data based on surveys taken at various years, and the scores are averages or proportions, along with other values like GDP.</p>
-<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="models.html#cb350-1"></a><span class="kw">library</span>(tidyverse)  <span class="co"># load if you haven&#39;t already</span></span>
-<span id="cb350-2"><a href="models.html#cb350-2"></a></span>
-<span id="cb350-3"><a href="models.html#cb350-3"></a><span class="kw">load</span>(<span class="st">&#39;data/world_happiness.RData&#39;</span>)</span>
-<span id="cb350-4"><a href="models.html#cb350-4"></a></span>
-<span id="cb350-5"><a href="models.html#cb350-5"></a><span class="co"># glimpse(happy)</span></span></code></pre></div>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="models.html#cb367-1"></a><span class="kw">library</span>(tidyverse)  <span class="co"># load if you haven&#39;t already</span></span>
+<span id="cb367-2"><a href="models.html#cb367-2"></a></span>
+<span id="cb367-3"><a href="models.html#cb367-3"></a><span class="kw">load</span>(<span class="st">&#39;data/world_happiness.RData&#39;</span>)</span>
+<span id="cb367-4"><a href="models.html#cb367-4"></a></span>
+<span id="cb367-5"><a href="models.html#cb367-5"></a><span class="co"># glimpse(happy)</span></span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -1498,21 +1498,21 @@ dystopia_residual
 </table>
 <p>The happiness score itself ranges from 2.7 to 7.6, with a mean of 5.4 and standard deviation of 1.1.</p>
 <p>Fitting a model with R is trivial, and at a minimum requires the two key ingredients mentioned before, the formula and data. Here we specify our target at <code>happiness_score</code> with predictors democratic quality, generosity, and GDP per capita (logged).</p>
-<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb351-1"><a href="models.html#cb351-1"></a>happy_model_base =<span class="st"> </span><span class="kw">lm</span>(</span>
-<span id="cb351-2"><a href="models.html#cb351-2"></a>  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita,</span>
-<span id="cb351-3"><a href="models.html#cb351-3"></a>  <span class="dt">data =</span> happy</span>
-<span id="cb351-4"><a href="models.html#cb351-4"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="models.html#cb368-1"></a>happy_model_base =<span class="st"> </span><span class="kw">lm</span>(</span>
+<span id="cb368-2"><a href="models.html#cb368-2"></a>  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita,</span>
+<span id="cb368-3"><a href="models.html#cb368-3"></a>  <span class="dt">data =</span> happy</span>
+<span id="cb368-4"><a href="models.html#cb368-4"></a>)</span></code></pre></div>
 <p>And that’s all there is to it.</p>
 <div id="using-matrices" class="section level3">
 <h3>Using matrices</h3>
 <p>Many packages still allow for matrix input instead of specifying a model formula, or even require it (but shouldn’t). This means separating data into a model (or design) matrix, and the vector or matrix of the target variable(s). For example, if we needed a speed boost and weren’t concerned about some typical output we could use <span class="func" style="">lm.fit</span>.</p>
 <p>First we need to create the required components. We can use <span style="func">model.matrix</span> to get what we need.</p>
-<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="models.html#cb352-1"></a>X =<span class="st"> </span><span class="kw">model.matrix</span>(</span>
-<span id="cb352-2"><a href="models.html#cb352-2"></a>  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita, </span>
-<span id="cb352-3"><a href="models.html#cb352-3"></a>  <span class="dt">data =</span> happy</span>
-<span id="cb352-4"><a href="models.html#cb352-4"></a>)</span>
-<span id="cb352-5"><a href="models.html#cb352-5"></a></span>
-<span id="cb352-6"><a href="models.html#cb352-6"></a><span class="kw">head</span>(X)</span></code></pre></div>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="models.html#cb369-1"></a>X =<span class="st"> </span><span class="kw">model.matrix</span>(</span>
+<span id="cb369-2"><a href="models.html#cb369-2"></a>  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita, </span>
+<span id="cb369-3"><a href="models.html#cb369-3"></a>  <span class="dt">data =</span> happy</span>
+<span id="cb369-4"><a href="models.html#cb369-4"></a>)</span>
+<span id="cb369-5"><a href="models.html#cb369-5"></a></span>
+<span id="cb369-6"><a href="models.html#cb369-6"></a><span class="kw">head</span>(X)</span></code></pre></div>
 <pre><code>   (Intercept) democratic_quality  generosity log_gdp_per_capita
 8            1         -1.8443636  0.08909068           7.500539
 9            1         -1.8554263  0.05136492           7.497038
@@ -1521,21 +1521,21 @@ dystopia_residual
 20           1          0.2572919 -0.02068741           9.337532
 21           1          0.2999450 -0.03264282           9.376145</code></pre>
 <p>Note the column of ones in the model matrix <code>X</code>. This represents our intercept, but that may not mean much to you unless you understand matrix multiplication (nice demo <a href="http://matrixmultiplication.xyz/">here</a>). The other columns are just as they are in the data. Note also that the missing values have been removed.</p>
-<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="models.html#cb354-1"></a><span class="kw">nrow</span>(happy)</span></code></pre></div>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="models.html#cb371-1"></a><span class="kw">nrow</span>(happy)</span></code></pre></div>
 <pre><code>[1] 1704</code></pre>
-<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="models.html#cb356-1"></a><span class="kw">nrow</span>(X)</span></code></pre></div>
+<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb373-1"><a href="models.html#cb373-1"></a><span class="kw">nrow</span>(X)</span></code></pre></div>
 <pre><code>[1] 411</code></pre>
 <p>The target variable must contain the same number of observations as in the model matrix, and there are various ways to create it to ensure this. Instead of <span style="func">model.matrix</span>, there is also <span style="func">model.frame</span>, which creates a data frame, with a method for extracting the corresponding target variable<a href="#fn24" class="footnote-ref" id="fnref24"><sup>24</sup></a>.</p>
-<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="models.html#cb358-1"></a>X_df =<span class="st"> </span><span class="kw">model.frame</span>(</span>
-<span id="cb358-2"><a href="models.html#cb358-2"></a>    happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita,</span>
-<span id="cb358-3"><a href="models.html#cb358-3"></a>    <span class="dt">data =</span> happy</span>
-<span id="cb358-4"><a href="models.html#cb358-4"></a>  )</span>
-<span id="cb358-5"><a href="models.html#cb358-5"></a></span>
-<span id="cb358-6"><a href="models.html#cb358-6"></a>y =<span class="st"> </span><span class="kw">model.response</span>(X_df)</span></code></pre></div>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="models.html#cb375-1"></a>X_df =<span class="st"> </span><span class="kw">model.frame</span>(</span>
+<span id="cb375-2"><a href="models.html#cb375-2"></a>    happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita,</span>
+<span id="cb375-3"><a href="models.html#cb375-3"></a>    <span class="dt">data =</span> happy</span>
+<span id="cb375-4"><a href="models.html#cb375-4"></a>  )</span>
+<span id="cb375-5"><a href="models.html#cb375-5"></a></span>
+<span id="cb375-6"><a href="models.html#cb375-6"></a>y =<span class="st"> </span><span class="kw">model.response</span>(X_df)</span></code></pre></div>
 <p>We can now fit the model as follows.</p>
-<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="models.html#cb359-1"></a>happy_model_matrix =<span class="st"> </span><span class="kw">lm.fit</span>(X, y)</span>
-<span id="cb359-2"><a href="models.html#cb359-2"></a></span>
-<span id="cb359-3"><a href="models.html#cb359-3"></a><span class="kw">summary</span>(happy_model_matrix)  <span class="co"># only a standard list is returned</span></span></code></pre></div>
+<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb376-1"><a href="models.html#cb376-1"></a>happy_model_matrix =<span class="st"> </span><span class="kw">lm.fit</span>(X, y)</span>
+<span id="cb376-2"><a href="models.html#cb376-2"></a></span>
+<span id="cb376-3"><a href="models.html#cb376-3"></a><span class="kw">summary</span>(happy_model_matrix)  <span class="co"># only a standard list is returned</span></span></code></pre></div>
 <pre><code>              Length Class  Mode   
 coefficients    4    -none- numeric
 residuals     411    -none- numeric
@@ -1545,7 +1545,7 @@ fitted.values 411    -none- numeric
 assign          4    -none- numeric
 qr              5    qr     list   
 df.residual     1    -none- numeric</code></pre>
-<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="models.html#cb361-1"></a><span class="kw">coef</span>(happy_model_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb378-1"><a href="models.html#cb378-1"></a><span class="kw">coef</span>(happy_model_matrix)</span></code></pre></div>
 <pre><code>       (Intercept) democratic_quality         generosity log_gdp_per_capita 
         -1.0104775          0.1703734          1.1608465          0.6934213 </code></pre>
 <p>In my experience, it is generally a bad sign if a package requires that you create the model matrix rather than doing so itself via the standard formula + data.frame approach. I typically find that such packages tend to skip out on many other things like using typical methods like <span class="func" style="">predict</span>, <span class="func" style="">coef</span>, etc., making them even more difficult to work with. In general, the only real time you should need to use model matrices is when you are creating your own modeling package, doing simulations, utilizing model speed-ups, or otherwise know why you need them.</p>
@@ -1554,7 +1554,7 @@ df.residual     1    -none- numeric</code></pre>
 <div id="summarizing-models" class="section level2">
 <h2>Summarizing Models</h2>
 <p>Once we have a model, we’ll want to summarize the results of it. Most modeling packages have a <span class="func" style="">summary</span> method we can apply, which will provide parameter estimates, some notion of model fit, inferential statistics, and other output.</p>
-<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="models.html#cb363-1"></a>happy_model_base_sum =<span class="st"> </span><span class="kw">summary</span>(happy_model_base)</span></code></pre></div>
+<div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb380-1"><a href="models.html#cb380-1"></a>happy_model_base_sum =<span class="st"> </span><span class="kw">summary</span>(happy_model_base)</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = happiness_score ~ democratic_quality + generosity + 
@@ -1579,7 +1579,7 @@ Multiple R-squared:  0.6953,    Adjusted R-squared:  0.6931
 F-statistic: 309.6 on 3 and 407 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>There is a lot of info to parse there, so we’ll go over some of it in particular. The summary provides several pieces of information: the coefficients or weights (<code>Estimate</code>)<a href="#fn25" class="footnote-ref" id="fnref25"><sup>25</sup></a>, the standard errors (<code>Std. Error</code>), the t-statistic (which is just the coefficient divided by the standard error), and the corresponding p-value. The main thing to look at are the actual coefficients and the direction of their relationship, positive or negative. For example, with regard to the effect of democratic quality, moving one point on democratic quality results in roughly 0.2 units of happiness. Is this a notable effect? Knowing the scale of the outcome can help us understand the magnitude of the effect in a general sense. Before we showed that the standard deviation of the happiness scale was 1.1. So, in terms of standard deviation units- moving 1 points on democratic quality would result in a 0.2 standard deviation increase in state-level happiness. We might consider this fairly small, but maybe not negligible.</p>
 <p>One thing we must also have in order to understand our results is to get a sense of the uncertainty in the effects. The following provides confidence intervals for each of the coefficients.</p>
-<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="models.html#cb365-1"></a><span class="kw">confint</span>(happy_model_base)</span></code></pre></div>
+<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb382-1"><a href="models.html#cb382-1"></a><span class="kw">confint</span>(happy_model_base)</span></code></pre></div>
 <pre><code>                         2.5 %     97.5 %
 (Intercept)        -1.62845472 -0.3925003
 democratic_quality  0.08018814  0.2605586
@@ -1702,20 +1702,20 @@ scale(x)
 <div id="categorical-variables" class="section level3">
 <h3>Categorical variables</h3>
 <p>A raw character string is not an analyzable unit, so character strings and labeled variables like factors must be converted for analysis to be conducted on them. For categorical variables, we can employ what is called <em>effects coding</em> to test for specific types of group differences. Far and away the most common approach is called <em>dummy coding</em> or <em>one-hot encoding</em><a href="#fn29" class="footnote-ref" id="fnref29"><sup>29</sup></a>. In the next example, we will use dummy coding via the recipes package. I also to show how to standardize a numeric variable as previously discussed.</p>
-<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="models.html#cb367-1"></a><span class="kw">library</span>(recipes)</span>
-<span id="cb367-2"><a href="models.html#cb367-2"></a></span>
-<span id="cb367-3"><a href="models.html#cb367-3"></a>nafta =<span class="st"> </span>happy <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb367-4"><a href="models.html#cb367-4"></a><span class="st">  </span><span class="kw">filter</span>(country <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;United States&#39;</span>, <span class="st">&#39;Canada&#39;</span>, <span class="st">&#39;Mexico&#39;</span>))</span>
-<span id="cb367-5"><a href="models.html#cb367-5"></a></span>
-<span id="cb367-6"><a href="models.html#cb367-6"></a>dummy =<span class="st"> </span>nafta  <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb367-7"><a href="models.html#cb367-7"></a><span class="st">  </span><span class="kw">recipe</span>(<span class="op">~</span><span class="st"> </span>country <span class="op">+</span><span class="st"> </span>generosity) <span class="op">%&gt;%</span><span class="st">        </span><span class="co"># formula approach for specifying variables</span></span>
-<span id="cb367-8"><a href="models.html#cb367-8"></a><span class="st">  </span><span class="kw">step_dummy</span>(country, <span class="dt">one_hot =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># make variables for all factor levels</span></span>
-<span id="cb367-9"><a href="models.html#cb367-9"></a><span class="st">  </span><span class="kw">step_center</span>(generosity) <span class="op">%&gt;%</span><span class="st">               </span><span class="co"># example of centering</span></span>
-<span id="cb367-10"><a href="models.html#cb367-10"></a><span class="st">  </span><span class="kw">step_scale</span>(generosity)                    <span class="co"># example of standardizing</span></span>
-<span id="cb367-11"><a href="models.html#cb367-11"></a></span>
-<span id="cb367-12"><a href="models.html#cb367-12"></a><span class="kw">prep</span>(dummy) <span class="op">%&gt;%</span><span class="st">      </span><span class="co"># estimates the necessary data to apply to this or other data sets</span></span>
-<span id="cb367-13"><a href="models.html#cb367-13"></a><span class="st">  </span><span class="kw">bake</span>(nafta) <span class="op">%&gt;%</span><span class="st">    </span><span class="co"># apply the computations</span></span>
-<span id="cb367-14"><a href="models.html#cb367-14"></a><span class="st">  </span><span class="kw">print</span>(<span class="dt">n =</span> <span class="dv">20</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb384-1"><a href="models.html#cb384-1"></a><span class="kw">library</span>(recipes)</span>
+<span id="cb384-2"><a href="models.html#cb384-2"></a></span>
+<span id="cb384-3"><a href="models.html#cb384-3"></a>nafta =<span class="st"> </span>happy <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb384-4"><a href="models.html#cb384-4"></a><span class="st">  </span><span class="kw">filter</span>(country <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;United States&#39;</span>, <span class="st">&#39;Canada&#39;</span>, <span class="st">&#39;Mexico&#39;</span>))</span>
+<span id="cb384-5"><a href="models.html#cb384-5"></a></span>
+<span id="cb384-6"><a href="models.html#cb384-6"></a>dummy =<span class="st"> </span>nafta  <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb384-7"><a href="models.html#cb384-7"></a><span class="st">  </span><span class="kw">recipe</span>(<span class="op">~</span><span class="st"> </span>country <span class="op">+</span><span class="st"> </span>generosity) <span class="op">%&gt;%</span><span class="st">        </span><span class="co"># formula approach for specifying variables</span></span>
+<span id="cb384-8"><a href="models.html#cb384-8"></a><span class="st">  </span><span class="kw">step_dummy</span>(country, <span class="dt">one_hot =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># make variables for all factor levels</span></span>
+<span id="cb384-9"><a href="models.html#cb384-9"></a><span class="st">  </span><span class="kw">step_center</span>(generosity) <span class="op">%&gt;%</span><span class="st">               </span><span class="co"># example of centering</span></span>
+<span id="cb384-10"><a href="models.html#cb384-10"></a><span class="st">  </span><span class="kw">step_scale</span>(generosity)                    <span class="co"># example of standardizing</span></span>
+<span id="cb384-11"><a href="models.html#cb384-11"></a></span>
+<span id="cb384-12"><a href="models.html#cb384-12"></a><span class="kw">prep</span>(dummy) <span class="op">%&gt;%</span><span class="st">      </span><span class="co"># estimates the necessary data to apply to this or other data sets</span></span>
+<span id="cb384-13"><a href="models.html#cb384-13"></a><span class="st">  </span><span class="kw">bake</span>(nafta) <span class="op">%&gt;%</span><span class="st">    </span><span class="co"># apply the computations</span></span>
+<span id="cb384-14"><a href="models.html#cb384-14"></a><span class="st">  </span><span class="kw">print</span>(<span class="dt">n =</span> <span class="dv">20</span>)</span></code></pre></div>
 <pre><code># A tibble: 39 x 4
    generosity country_Canada country_Mexico country_United.States
         &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;                 &lt;dbl&gt;
@@ -1742,9 +1742,9 @@ scale(x)
 # … with 19 more rows</code></pre>
 <p>We see that the first few observations are Canada, and the next few Mexico. Note that doing this is rarely required for most modeling situations, but even if not, it sometimes can be useful to do so explicitly. If your modeling package cannot handle factor variables, and thus requires explicit coding, you’ll know, and typically these are the same ones that require matrix input.</p>
 <p>Let’s run a regression as follows to show how it would happen automatically.</p>
-<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="models.html#cb369-1"></a>model_dummy =<span class="st"> </span><span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>country, <span class="dt">data =</span> nafta)</span>
-<span id="cb369-2"><a href="models.html#cb369-2"></a></span>
-<span id="cb369-3"><a href="models.html#cb369-3"></a><span class="kw">summary</span>(model_dummy)</span></code></pre></div>
+<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="models.html#cb386-1"></a>model_dummy =<span class="st"> </span><span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>country, <span class="dt">data =</span> nafta)</span>
+<span id="cb386-2"><a href="models.html#cb386-2"></a></span>
+<span id="cb386-3"><a href="models.html#cb386-3"></a><span class="kw">summary</span>(model_dummy)</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = happiness_score ~ country, data = nafta)
@@ -1825,13 +1825,13 @@ United States
 </tfoot>
 </table>
 <p>Adding such coding to a factor variable allows the corresponding models to use it in constructing the model matrix, rather than dummy coding. See the group means and calculate the results by hand for yourself.</p>
-<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="models.html#cb371-1"></a>nafta =<span class="st"> </span>nafta <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb371-2"><a href="models.html#cb371-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">country_fac =</span> <span class="kw">factor</span>(country))</span>
-<span id="cb371-3"><a href="models.html#cb371-3"></a></span>
-<span id="cb371-4"><a href="models.html#cb371-4"></a><span class="kw">contrasts</span>(nafta<span class="op">$</span>country_fac) =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">0</span>, <span class="fl">-.5</span>, <span class="fl">.5</span>), </span>
-<span id="cb371-5"><a href="models.html#cb371-5"></a>                                      <span class="dt">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb371-6"><a href="models.html#cb371-6"></a></span>
-<span id="cb371-7"><a href="models.html#cb371-7"></a><span class="kw">summary</span>(<span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>country_fac, <span class="dt">data =</span> nafta))</span></code></pre></div>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="models.html#cb388-1"></a>nafta =<span class="st"> </span>nafta <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb388-2"><a href="models.html#cb388-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">country_fac =</span> <span class="kw">factor</span>(country))</span>
+<span id="cb388-3"><a href="models.html#cb388-3"></a></span>
+<span id="cb388-4"><a href="models.html#cb388-4"></a><span class="kw">contrasts</span>(nafta<span class="op">$</span>country_fac) =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">0</span>, <span class="fl">-.5</span>, <span class="fl">.5</span>), </span>
+<span id="cb388-5"><a href="models.html#cb388-5"></a>                                      <span class="dt">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb388-6"><a href="models.html#cb388-6"></a></span>
+<span id="cb388-7"><a href="models.html#cb388-7"></a><span class="kw">summary</span>(<span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>country_fac, <span class="dt">data =</span> nafta))</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = happiness_score ~ country_fac, data = nafta)
@@ -1852,9 +1852,9 @@ Residual standard error: 0.1927 on 9 degrees of freedom
   (27 observations deleted due to missingness)
 Multiple R-squared:  0.692, Adjusted R-squared:  0.6236 
 F-statistic: 10.11 on 2 and 9 DF,  p-value: 0.004994</code></pre>
-<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb373-1"><a href="models.html#cb373-1"></a>nafta <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb373-2"><a href="models.html#cb373-2"></a><span class="st">  </span><span class="kw">group_by</span>(country) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb373-3"><a href="models.html#cb373-3"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">happy =</span> <span class="kw">mean</span>(happiness_score, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="models.html#cb390-1"></a>nafta <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb390-2"><a href="models.html#cb390-2"></a><span class="st">  </span><span class="kw">group_by</span>(country) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb390-3"><a href="models.html#cb390-3"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">happy =</span> <span class="kw">mean</span>(happiness_score, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span></code></pre></div>
 <pre><code># A tibble: 3 x 2
   country       happy
   &lt;chr&gt;         &lt;dbl&gt;
@@ -1901,14 +1901,14 @@ F-statistic: 10.11 on 2 and 9 DF,  p-value: 0.004994</code></pre>
 <li><span class="func" style="">AIC</span>: extract AIC</li>
 </ul>
 <p>Here is an example of using the <span class="func" style="">predict</span> and <span class="func" style="">coef</span> methods.</p>
-<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="models.html#cb375-1"></a><span class="kw">predict</span>(happy_model_base, <span class="dt">newdata =</span> happy <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">slice</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="models.html#cb392-1"></a><span class="kw">predict</span>(happy_model_base, <span class="dt">newdata =</span> happy <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">slice</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>))</span></code></pre></div>
 <pre><code>       1        2        3        4        5 
 3.838179 3.959046 3.928180 4.004129 4.171624 </code></pre>
-<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="models.html#cb377-1"></a><span class="kw">coef</span>(happy_model_base)</span></code></pre></div>
+<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb394-1"><a href="models.html#cb394-1"></a><span class="kw">coef</span>(happy_model_base)</span></code></pre></div>
 <pre><code>       (Intercept) democratic_quality         generosity log_gdp_per_capita 
         -1.0104775          0.1703734          1.1608465          0.6934213 </code></pre>
 <p>Also, it’s useful to assign the summary results to an object, so that you can extract things that are also useful but would not be in the model object. We did this before, so now let’s take a look.</p>
-<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="models.html#cb379-1"></a><span class="kw">str</span>(happy_model_base_sum, <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="models.html#cb396-1"></a><span class="kw">str</span>(happy_model_base_sum, <span class="dv">1</span>)</span></code></pre></div>
 <pre><code>List of 12
  $ call         : language lm(formula = happiness_score ~ democratic_quality + generosity + log_gdp_per_capita, data = happy)
  $ terms        :Classes &#39;terms&#39;, &#39;formula&#39;  language happiness_score ~ democratic_quality + generosity + log_gdp_per_capita
@@ -1941,15 +1941,15 @@ F-statistic: 10.11 on 2 and 9 DF,  p-value: 0.004994</code></pre>
   ..- attr(*, &quot;names&quot;)= chr [1:1293] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
  - attr(*, &quot;class&quot;)= chr &quot;summary.lm&quot;</code></pre>
 <p>If we want the adjusted <span class="math inline">\(R^2\)</span> or root mean squared error (RMSE, i.e. average error<a href="#fn30" class="footnote-ref" id="fnref30"><sup>30</sup></a>), they aren’t readily available in the model object, but they are in the summary object, so we can pluck them out as we would any other <a href="data_structures.html#lists">list object</a>.</p>
-<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="models.html#cb381-1"></a>happy_model_base_sum<span class="op">$</span>adj.r.squared</span></code></pre></div>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="models.html#cb398-1"></a>happy_model_base_sum<span class="op">$</span>adj.r.squared</span></code></pre></div>
 <pre><code>[1] 0.6930647</code></pre>
-<div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="models.html#cb383-1"></a>happy_model_base_sum[[<span class="st">&#39;sigma&#39;</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="models.html#cb400-1"></a>happy_model_base_sum[[<span class="st">&#39;sigma&#39;</span>]]</span></code></pre></div>
 <pre><code>[1] 0.6282718</code></pre>
 <div id="package-support" class="section level3">
 <h3>Package support</h3>
 <p>There are many packages available to get at model results. One of the more widely used is <span class="pack" style="">broom</span>, which has <span class="func" style="">tidy</span> and other functions that can apply in different ways to different models depending on their class.</p>
-<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="models.html#cb385-1"></a><span class="kw">library</span>(broom)</span>
-<span id="cb385-2"><a href="models.html#cb385-2"></a><span class="kw">tidy</span>(happy_model_base)</span></code></pre></div>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="models.html#cb402-1"></a><span class="kw">library</span>(broom)</span>
+<span id="cb402-2"><a href="models.html#cb402-2"></a><span class="kw">tidy</span>(happy_model_base)</span></code></pre></div>
 <pre><code># A tibble: 4 x 5
   term               estimate std.error statistic  p.value
   &lt;chr&gt;                 &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
@@ -1967,37 +1967,37 @@ F-statistic: 10.11 on 2 and 9 DF,  p-value: 0.004994</code></pre>
 </blockquote>
 <p>If you aren’t using visualization as a fundamental part of your model exploration, you’re likely leaving a lot of that exploration behind, and not communicating the results as well as you could to the broadest audience possible. When adding nonlinear effects, interactions, and more, visualization is a must. Thankfully there are many packages to help you get data you need to visualize effects.</p>
 <p>We start with the <span class="pack" style="">emmeans</span> package. In the following example we have a country effect, and wish to get the mean happiness scores per country. We then visualize the results. Here we can see that Mexico is lowest on average.</p>
-<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="models.html#cb387-1"></a>happy_model_nafta =<span class="st"> </span><span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>country <span class="op">+</span><span class="st"> </span>year, <span class="dt">data =</span> nafta)</span>
-<span id="cb387-2"><a href="models.html#cb387-2"></a></span>
-<span id="cb387-3"><a href="models.html#cb387-3"></a><span class="kw">library</span>(emmeans)</span>
-<span id="cb387-4"><a href="models.html#cb387-4"></a>country_means =<span class="st"> </span><span class="kw">emmeans</span>(happy_model_nafta, <span class="op">~</span><span class="st"> </span>country)</span>
-<span id="cb387-5"><a href="models.html#cb387-5"></a>country_means</span></code></pre></div>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="models.html#cb404-1"></a>happy_model_nafta =<span class="st"> </span><span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>country <span class="op">+</span><span class="st"> </span>year, <span class="dt">data =</span> nafta)</span>
+<span id="cb404-2"><a href="models.html#cb404-2"></a></span>
+<span id="cb404-3"><a href="models.html#cb404-3"></a><span class="kw">library</span>(emmeans)</span>
+<span id="cb404-4"><a href="models.html#cb404-4"></a>country_means =<span class="st"> </span><span class="kw">emmeans</span>(happy_model_nafta, <span class="op">~</span><span class="st"> </span>country)</span>
+<span id="cb404-5"><a href="models.html#cb404-5"></a>country_means</span></code></pre></div>
 <pre><code> country       emmean    SE df lower.CL upper.CL
  Canada          7.37 0.064  8     7.22     7.52
  Mexico          6.76 0.064  8     6.61     6.91
  United States   7.03 0.064  8     6.88     7.17
 
 Confidence level used: 0.95 </code></pre>
-<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="models.html#cb389-1"></a><span class="kw">plot</span>(country_means)</span></code></pre></div>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="models.html#cb406-1"></a><span class="kw">plot</span>(country_means)</span></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/emmeans-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>We can also test for pairwise differences between the countries, and there’s no reason not to visualize that also. In the following, after adjustment Mexico and U.S. might not differ on mean happiness, but the other comparisons are statistically notable<a href="#fn31" class="footnote-ref" id="fnref31"><sup>31</sup></a>.</p>
-<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="models.html#cb390-1"></a>pw_comparisons =<span class="st"> </span><span class="kw">contrast</span>(country_means, <span class="dt">method =</span> <span class="st">&#39;pairwise&#39;</span>, <span class="dt">adjust =</span> <span class="st">&#39;bonferroni&#39;</span>)</span>
-<span id="cb390-2"><a href="models.html#cb390-2"></a>pw_comparisons</span></code></pre></div>
+<div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb407-1"><a href="models.html#cb407-1"></a>pw_comparisons =<span class="st"> </span><span class="kw">contrast</span>(country_means, <span class="dt">method =</span> <span class="st">&#39;pairwise&#39;</span>, <span class="dt">adjust =</span> <span class="st">&#39;bonferroni&#39;</span>)</span>
+<span id="cb407-2"><a href="models.html#cb407-2"></a>pw_comparisons</span></code></pre></div>
 <pre><code> contrast               estimate     SE df t.ratio p.value
  Canada - Mexico           0.611 0.0905  8  6.751  0.0004 
  Canada - United States    0.343 0.0905  8  3.793  0.0159 
  Mexico - United States   -0.268 0.0905  8 -2.957  0.0547 
 
 P value adjustment: bonferroni method for 3 tests </code></pre>
-<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="models.html#cb392-1"></a><span class="kw">plot</span>(pw_comparisons)</span></code></pre></div>
+<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="models.html#cb409-1"></a><span class="kw">plot</span>(pw_comparisons)</span></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/emmeans-pairwise-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>The following example uses <span class="pack" style="">ggeffects</span>. First, we run a model with an interaction of country and year (we’ll talk more about interactions later). Then we get predictions for the year by country, and subsequently visualize. We can see that the trend, while negative for all countries, is more pronounced as we move south.</p>
-<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="models.html#cb393-1"></a>happy_model_nafta =<span class="st"> </span><span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>year<span class="op">*</span>country, <span class="dt">data =</span> nafta)</span>
-<span id="cb393-2"><a href="models.html#cb393-2"></a></span>
-<span id="cb393-3"><a href="models.html#cb393-3"></a><span class="kw">library</span>(ggeffects)</span>
-<span id="cb393-4"><a href="models.html#cb393-4"></a>preds =<span class="st"> </span><span class="kw">ggpredict</span>(happy_model_nafta, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&#39;year&#39;</span>, <span class="st">&#39;country&#39;</span>))</span>
-<span id="cb393-5"><a href="models.html#cb393-5"></a></span>
-<span id="cb393-6"><a href="models.html#cb393-6"></a><span class="kw">plot</span>(preds)</span></code></pre></div>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="models.html#cb410-1"></a>happy_model_nafta =<span class="st"> </span><span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>year<span class="op">*</span>country, <span class="dt">data =</span> nafta)</span>
+<span id="cb410-2"><a href="models.html#cb410-2"></a></span>
+<span id="cb410-3"><a href="models.html#cb410-3"></a><span class="kw">library</span>(ggeffects)</span>
+<span id="cb410-4"><a href="models.html#cb410-4"></a>preds =<span class="st"> </span><span class="kw">ggpredict</span>(happy_model_nafta, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&#39;year&#39;</span>, <span class="st">&#39;country&#39;</span>))</span>
+<span id="cb410-5"><a href="models.html#cb410-5"></a></span>
+<span id="cb410-6"><a href="models.html#cb410-6"></a><span class="kw">plot</span>(preds)</span></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/ggeffects-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Whenever you move to generalized linear models or other more complicated settings, visualization is even more important, so it’s best to have some tools at your disposal.</p>
 </div>
@@ -2011,14 +2011,14 @@ P value adjustment: bonferroni method for 3 tests </code></pre>
 <span class="math display">\[y \sim \mathcal{Pois}(\mu)\]</span>
 Conceptually nothing has really changed from what we were doing with the standard linear model, except for the distribution. We still have a mean function determined by our predictors, and this is what we’re typically mainly interested in from a theoretical perspective. We do have an added step, a transformation of the mean (now usually called the <em>linear predictor</em>). Poisson naturally works with the log of the target, but rather than do that explicitly, we instead exponentiate the linear predictor. The <em>link function</em><a href="#fn33" class="footnote-ref" id="fnref33"><sup>33</sup></a>, which is the natural log in this setting, has a corresponding <em>inverse link</em> (or mean function)- exponentiation.</p>
 <p>In code we can demonstrate this as follows.</p>
-<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb394-1"><a href="models.html#cb394-1"></a><span class="kw">set.seed</span>(<span class="dv">123</span>)                     <span class="co"># for reproducibility</span></span>
-<span id="cb394-2"><a href="models.html#cb394-2"></a>N =<span class="st"> </span><span class="dv">1000</span>                          <span class="co"># sample size</span></span>
-<span id="cb394-3"><a href="models.html#cb394-3"></a>beta =<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>)                    <span class="co"># the true coefficient values</span></span>
-<span id="cb394-4"><a href="models.html#cb394-4"></a>x =<span class="st"> </span><span class="kw">rnorm</span>(N)                      <span class="co"># a single predictor variable</span></span>
-<span id="cb394-5"><a href="models.html#cb394-5"></a>mu =<span class="st"> </span><span class="kw">exp</span>(beta[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>beta[<span class="dv">2</span>]<span class="op">*</span>x)     <span class="co"># the linear predictor</span></span>
-<span id="cb394-6"><a href="models.html#cb394-6"></a>y =<span class="st"> </span><span class="kw">rpois</span>(N, <span class="dt">lambda =</span> mu)         <span class="co"># the target variable lambda = mean</span></span>
-<span id="cb394-7"><a href="models.html#cb394-7"></a></span>
-<span id="cb394-8"><a href="models.html#cb394-8"></a><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">family =</span> poisson)</span></code></pre></div>
+<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="models.html#cb411-1"></a><span class="kw">set.seed</span>(<span class="dv">123</span>)                     <span class="co"># for reproducibility</span></span>
+<span id="cb411-2"><a href="models.html#cb411-2"></a>N =<span class="st"> </span><span class="dv">1000</span>                          <span class="co"># sample size</span></span>
+<span id="cb411-3"><a href="models.html#cb411-3"></a>beta =<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>)                    <span class="co"># the true coefficient values</span></span>
+<span id="cb411-4"><a href="models.html#cb411-4"></a>x =<span class="st"> </span><span class="kw">rnorm</span>(N)                      <span class="co"># a single predictor variable</span></span>
+<span id="cb411-5"><a href="models.html#cb411-5"></a>mu =<span class="st"> </span><span class="kw">exp</span>(beta[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>beta[<span class="dv">2</span>]<span class="op">*</span>x)     <span class="co"># the linear predictor</span></span>
+<span id="cb411-6"><a href="models.html#cb411-6"></a>y =<span class="st"> </span><span class="kw">rpois</span>(N, <span class="dt">lambda =</span> mu)         <span class="co"># the target variable lambda = mean</span></span>
+<span id="cb411-7"><a href="models.html#cb411-7"></a></span>
+<span id="cb411-8"><a href="models.html#cb411-8"></a><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">family =</span> poisson)</span></code></pre></div>
 <pre><code>
 Call:  glm(formula = y ~ x, family = poisson)
 
@@ -2035,10 +2035,10 @@ Residual Deviance: 1056     AIC: 4831</code></pre>
 <span class="math display">\[y \sim \mathcal{Binom}(\mathrm{prob}=\mu, \mathrm{size} = 1)\]</span>
 Here our link function is called the <em>logit</em>, and it’s inverse takes our linear predictor and puts it on the probability scale.</p>
 <p>Again, some code can help drive this home.</p>
-<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="models.html#cb396-1"></a>mu =<span class="st"> </span><span class="kw">plogis</span>(beta[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>beta[<span class="dv">2</span>]<span class="op">*</span>x)</span>
-<span id="cb396-2"><a href="models.html#cb396-2"></a>y =<span class="st"> </span><span class="kw">rbinom</span>(N, <span class="dt">size =</span> <span class="dv">1</span>, mu)</span>
-<span id="cb396-3"><a href="models.html#cb396-3"></a></span>
-<span id="cb396-4"><a href="models.html#cb396-4"></a><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">family =</span> binomial)</span></code></pre></div>
+<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="models.html#cb413-1"></a>mu =<span class="st"> </span><span class="kw">plogis</span>(beta[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>beta[<span class="dv">2</span>]<span class="op">*</span>x)</span>
+<span id="cb413-2"><a href="models.html#cb413-2"></a>y =<span class="st"> </span><span class="kw">rbinom</span>(N, <span class="dt">size =</span> <span class="dv">1</span>, mu)</span>
+<span id="cb413-3"><a href="models.html#cb413-3"></a></span>
+<span id="cb413-4"><a href="models.html#cb413-4"></a><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">family =</span> binomial)</span></code></pre></div>
 <pre><code>
 Call:  glm(formula = y ~ x, family = binomial)
 
@@ -2049,13 +2049,13 @@ Coefficients:
 Degrees of Freedom: 999 Total (i.e. Null);  998 Residual
 Null Deviance:      852.3 
 Residual Deviance: 708.8    AIC: 712.8</code></pre>
-<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="models.html#cb398-1"></a><span class="co"># extension to count/proportional model</span></span>
-<span id="cb398-2"><a href="models.html#cb398-2"></a><span class="co"># mu = plogis(beta[1] + beta[2]*x)</span></span>
-<span id="cb398-3"><a href="models.html#cb398-3"></a><span class="co"># total = rpois(N, lambda = 5)</span></span>
-<span id="cb398-4"><a href="models.html#cb398-4"></a><span class="co"># events = rbinom(N, size = total, mu)</span></span>
-<span id="cb398-5"><a href="models.html#cb398-5"></a><span class="co"># nonevents = total - events</span></span>
-<span id="cb398-6"><a href="models.html#cb398-6"></a><span class="co"># </span></span>
-<span id="cb398-7"><a href="models.html#cb398-7"></a><span class="co"># glm(cbind(events, nonevents) ~ x, family = binomial)</span></span></code></pre></div>
+<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="models.html#cb415-1"></a><span class="co"># extension to count/proportional model</span></span>
+<span id="cb415-2"><a href="models.html#cb415-2"></a><span class="co"># mu = plogis(beta[1] + beta[2]*x)</span></span>
+<span id="cb415-3"><a href="models.html#cb415-3"></a><span class="co"># total = rpois(N, lambda = 5)</span></span>
+<span id="cb415-4"><a href="models.html#cb415-4"></a><span class="co"># events = rbinom(N, size = total, mu)</span></span>
+<span id="cb415-5"><a href="models.html#cb415-5"></a><span class="co"># nonevents = total - events</span></span>
+<span id="cb415-6"><a href="models.html#cb415-6"></a><span class="co"># </span></span>
+<span id="cb415-7"><a href="models.html#cb415-7"></a><span class="co"># glm(cbind(events, nonevents) ~ x, family = binomial)</span></span></code></pre></div>
 <p>You’ll have noticed that when we fit these models we used <span class="func" style="">glm</span> instead of <span class="func" style="">lm</span>. The normal linear model is a special case of <em>generalized linear models</em>, which includes a specific class of distributions - normal, poisson, binomial, gamma, beta and more - collectively referred to as the <a href="https://en.wikipedia.org/wiki/Exponential_family">exponential family</a>. While this family can cover a lot of ground, you do not have to restrict yourself to it, and many R modeling packages will provide easy access to more. The main point is that you have tools to deal with continuous, binary, count, ordinal, and other types of data. Furthermore, not much necessarily changes conceptually from model to model besides the link function and/or distribution.</p>
 </div>
 <div id="correlated-data" class="section level3">
@@ -2095,18 +2095,18 @@ Residual Deviance: 708.8    AIC: 712.8</code></pre>
 </ul>
 <p>I would suggest preprocessing the number of reviews- dividing by 100,000, scaling (standardizing), or logging it (for the latter you can add 1 first to deal with zeros<a href="#fn34" class="footnote-ref" id="fnref34"><sup>34</sup></a>).</p>
 <p>Interpret the results. Visualize the difference in means between free and paid apps. See the <a href="models.html#visualization">emmeans</a> example above.</p>
-<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="models.html#cb399-1"></a><span class="kw">load</span>(<span class="st">&#39;data/google_apps.RData&#39;</span>)</span>
-<span id="cb399-2"><a href="models.html#cb399-2"></a></span>
-<span id="cb399-3"><a href="models.html#cb399-3"></a>model =<span class="st"> </span><span class="kw">lm</span>(? <span class="op">~</span><span class="st"> </span>reviews <span class="op">+</span><span class="st"> </span>type <span class="op">+</span><span class="st"> </span>size_in_MB, <span class="dt">data =</span> google_apps)</span>
-<span id="cb399-4"><a href="models.html#cb399-4"></a></span>
-<span id="cb399-5"><a href="models.html#cb399-5"></a><span class="kw">plot</span>(emmeans<span class="op">::</span><span class="kw">emmeans</span>(model, <span class="op">~</span>type))</span></code></pre></div>
+<div class="sourceCode" id="cb416"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb416-1"><a href="models.html#cb416-1"></a><span class="kw">load</span>(<span class="st">&#39;data/google_apps.RData&#39;</span>)</span>
+<span id="cb416-2"><a href="models.html#cb416-2"></a></span>
+<span id="cb416-3"><a href="models.html#cb416-3"></a>model =<span class="st"> </span><span class="kw">lm</span>(? <span class="op">~</span><span class="st"> </span>reviews <span class="op">+</span><span class="st"> </span>type <span class="op">+</span><span class="st"> </span>size_in_MB, <span class="dt">data =</span> google_apps)</span>
+<span id="cb416-4"><a href="models.html#cb416-4"></a></span>
+<span id="cb416-5"><a href="models.html#cb416-5"></a><span class="kw">plot</span>(emmeans<span class="op">::</span><span class="kw">emmeans</span>(model, <span class="op">~</span>type))</span></code></pre></div>
 </div>
 <div id="exercise-2-8" class="section level3">
 <h3>Exercise 2</h3>
 <p>Rerun the above with interactions of the number of reviews or app size (or both) with type (via <code>a + b + a:b</code> or just <code>a*b</code> for two predictors). Visualize the interaction. Does it look like the effect differs by type?</p>
-<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="models.html#cb400-1"></a>model =<span class="st"> </span><span class="kw">lm</span>(? <span class="op">~</span><span class="st"> </span>reviews <span class="op">+</span><span class="st"> </span>type<span class="op">*</span>?, <span class="dt">data =</span> google_apps)</span>
-<span id="cb400-2"><a href="models.html#cb400-2"></a></span>
-<span id="cb400-3"><a href="models.html#cb400-3"></a><span class="kw">plot</span>(ggeffects<span class="op">::</span><span class="kw">ggpredict</span>(model, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&#39;size_in_MB&#39;</span>, <span class="st">&#39;type&#39;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb417-1"><a href="models.html#cb417-1"></a>model =<span class="st"> </span><span class="kw">lm</span>(? <span class="op">~</span><span class="st"> </span>reviews <span class="op">+</span><span class="st"> </span>type<span class="op">*</span>?, <span class="dt">data =</span> google_apps)</span>
+<span id="cb417-2"><a href="models.html#cb417-2"></a></span>
+<span id="cb417-3"><a href="models.html#cb417-3"></a><span class="kw">plot</span>(ggeffects<span class="op">::</span><span class="kw">ggpredict</span>(model, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&#39;size_in_MB&#39;</span>, <span class="st">&#39;type&#39;</span>)))</span></code></pre></div>
 </div>
 <div id="exercise-3-3" class="section level3">
 <h3>Exercise 3</h3>
@@ -2117,9 +2117,9 @@ Residual Deviance: 708.8    AIC: 712.8</code></pre>
 <li><code>persons</code>: total persons on the trip</li>
 </ul>
 <p>If you wish, you can start with an <code>lm</code>, but as the number of fish caught is a count, it is suitable for using a poisson distribution via <code>glm</code> with <code>family = poisson</code>, so try that if you’re feeling up for it. If you exponentiate the coefficients, they can be interpreted as <a href="https://stats.idre.ucla.edu/stata/output/poisson-regression/">incidence rate ratios</a>.</p>
-<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="models.html#cb401-1"></a><span class="kw">load</span>(<span class="st">&#39;data/fish.RData&#39;</span>)</span>
-<span id="cb401-2"><a href="models.html#cb401-2"></a></span>
-<span id="cb401-3"><a href="models.html#cb401-3"></a>model =<span class="st"> </span><span class="kw">glm</span>(?, <span class="dt">data =</span> fish)</span></code></pre></div>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="models.html#cb418-1"></a><span class="kw">load</span>(<span class="st">&#39;data/fish.RData&#39;</span>)</span>
+<span id="cb418-2"><a href="models.html#cb418-2"></a></span>
+<span id="cb418-3"><a href="models.html#cb418-3"></a>model =<span class="st"> </span><span class="kw">glm</span>(?, <span class="dt">data =</span> fish)</span></code></pre></div>
 
 </div>
 </div>

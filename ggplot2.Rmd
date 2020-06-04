@@ -11,7 +11,10 @@ knitr::opts_chunk$set(eval=T, echo=T)
 
 <br>
 
-The most [popular](https://www.rdocumentation.org/trends?page1=1&sort1=total&page2=1&sort2=total&page3=1&page4=1) visualization package in R is <span class="pack">ggplot2</span>.  It's so popular, it or its aesthetic is copied in other languages/programs as well.  It entails a <span class="emph">grammar of graphics</span> (hence the **gg**), and learning that grammar is key to using it effectively. Some of the strengths of <span class="pack">ggplot2</span> include:
+
+Visualization is key to telling the data's story, and it can take a lot of work to get things to look just right.  But, it can also be a lot of fun, so let's dive in!
+
+When it comes to visualization, the most [popular](https://r-pkg.org/downloaded) package used in R is <span class="pack">ggplot2</span>.  It's so popular, it or its aesthetic is even copied in other languages/programs as well.  It entails a <span class="emph">grammar of graphics</span> (hence the **gg**), and learning that grammar is key to using it effectively. Some of the strengths of <span class="pack">ggplot2</span> include:
 
 - The ease of getting a good looking plot
 - Easy customization
@@ -19,7 +22,7 @@ The most [popular](https://www.rdocumentation.org/trends?page1=1&sort1=total&pag
 - Clear syntax
 - Easy multidimensional approach
 - Decent default color scheme as a default
-- Lots of extensions
+- *Lots* of extensions
 
 Every graph is built from the same few parts, and it's important to be aware of a few key ideas, which we will cover in turn.
 
@@ -31,7 +34,7 @@ Every graph is built from the same few parts, and it's important to be aware of 
 - Themes
 - Extensions
 
-Note that while you can obviously use base R for visualization, it's never going to be easier, nor as flexible as <span class="pack">ggplot2</span>.  If you're used to using base R visuals, you should be prepared to leave them behind.
+Note that while you can obviously use base R for visualization, it's not going to be as easy or as flexible as <span class="pack">ggplot2</span>.  
 
 
 
@@ -44,7 +47,7 @@ In general, we start with a base layer and add to it. In most cases you'll start
 ggplot(aes(x = height, y = mass), data = starwars)
 ```
 
-This would just produce a plot background, but nothing else.  However, with the foundation in place, we're now ready to add something to it. Let's add some points (the outlier is Jabba the Hut).
+The code above would just produce a plot background, but nothing else.  However, with the foundation in place, we're now ready to add something to it. Let's add some points (the outlier is Jabba the Hut).
 
 ```{r layer2}
 ggplot(aes(x = height, y = mass), data = starwars) +
@@ -72,7 +75,7 @@ As we saw, <span class="emph">layers</span> are added via piping (<span class="e
 - density
 - text
 
-In case you're wondering why ggplot doesn't use `%>%` as in the tidyverse and other visualization packages, it's because <span class="pack">ggplot2</span> was using pipes before it was cool, well before those came along. Otherwise, the concept is the same as we saw in the data processing section.
+In case you're wondering why ggplot doesn't use `%>%` as in the tidyverse and other visualization packages, it's because <span class="pack">ggplot2</span> was using pipes before it was cool, well before those came along. Otherwise, the concept is the same as we saw in the [data processing section][pipes].
 
 ```{r pipeplus, eval=FALSE}
 ggplot(aes(x = myvar, y = myvar2), data = mydata) +
@@ -156,6 +159,8 @@ In the ggplot2 world, geoms are the geometric objects- shapes, lines, and other 
 - <span class="func">geom_rug</span>:	Rug plots in the margins
 - <span class="func">geom_segment</span>:	Line segments and curves
 - <span class="func">geom_sf</span>:	Visualise sf objects
+- <span class="func">geom_sf_label</span>:	Visualise sf objects
+- <span class="func">geom_sf_text</span>:	Visualise sf objects
 - <span class="func">geom_smooth</span>:	Smoothed conditional means
 - <span class="func">geom_spoke</span>:	Line segments parameterised by location, direction and distance
 - <span class="func">geom_step</span>:	Connect observations
@@ -182,7 +187,7 @@ ggplot(aes(x = carat, y = price), data = diamonds) +
   geom_point(size = .5, color = 'peru')
 ```
 
-Next we use two different geoms, one using a different data source.  Note that geoms often have arguments specific to them, as `label` is for <span class="func">geom_text</span>. It would be ignored by <span class="func">geom_line</span>.
+Next we use two different geoms, and one is even using a different data source.  Note that geoms  have arguments both common and specific to them. In the following, `label` is used for <span class="func">geom_text</span>, but it would be ignored by <span class="func">geom_line</span>.
 
 ```{r ggline}
 ggplot(aes(x = date, y = unemploy), data = economics) +
@@ -201,11 +206,20 @@ ggplot(aes(x = carat, y = price), data = diamonds) +
   geom_point(aes(size = carat, color = clarity), alpha = .05) 
 ```
 
+
+There are some other options to play with as well.
+
+```{r key_glyphs}
+ggplot(aes(x = carat, y = price), data = diamonds %>% sample_frac(.01)) +
+  geom_point(aes(size = carat, color = clarity), key_glyph = "vpath")
+```
+
+
 ## Stats
 
 There are many statistical functions built in, and it is a key strength of ggplot that you don't have to do a lot of processing for very common plots.
 
-Quantile regression lines:
+Her are some quantile regression lines:
 
 ```{r ggquant}
 ggplot(mpg, aes(x = displ, y = hwy)) +
@@ -213,10 +227,11 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_quantile()
 ```
 
-Loess (or additive model) smooth. This shows how we can do some fine-tuning and use model-based approaches for visualization.
+The following shows loess (or additive model) smooths. We can do some fine-tuning and use model-based approaches for visualization.
 
 ```{r ggsmooth}
 data(mcycle, package = 'MASS')
+
 ggplot(aes(x = times, y = accel), data = mcycle) +
   geom_point() +
   geom_smooth(formula = y ~ s(x, bs = 'ad'), method = 'gam')
@@ -281,7 +296,7 @@ ggplot(mpg, aes(x = displ, y = hwy, size = cyl)) +
 ```
 
 
-Now that you know more about color issues, you may want to apply something besides the default options.  The following shows a built-in color scale for a color aesthetic that is treated as continuous, and one that is discrete and which we want to supply our own colors (these actually come from plotly's default color scheme).
+We will talk about color issues later, but for now, you may want to apply something besides the default options.  The following shows a built-in color scale for a color aesthetic that is treated as continuous, and one that is discrete and which we want to supply our own colors (these actually come from plotly's default color scheme).
 
 ```{r scale_color}
 ggplot(mpg, aes(x = displ, y = hwy, color = cyl)) +
@@ -328,7 +343,7 @@ In short, scale alterations are really useful for getting just the plot you want
 
 ## Facets
 
-<span class="emph">Facets</span> allow for paneled display, a very common operation. In general, we often want comparison plots. The <span class="func">facet_grid</span> function will produce a grid, and often this is all that's needed.  However, <span class="func">facet_wrap</span> is more flexible, while possibly taking a bit extra to get things just the way you want. Both use a formula approach to specify the grouping.
+<span class="emph">Facets</span> allow for paneled display, a very common operation. In general, we often want comparison plots. The <span class="func">facet_grid</span> function will produce a grid, and often this is all that's needed.  However, <span class="func">facet_wrap</span> is more flexible, while possibly taking a bit extra effort to get things just the way you want. Both use a formula approach to specify the grouping.
 
 #### facet_grid
 
@@ -338,9 +353,11 @@ Facet by cylinder.
 ggplot(mtcars, aes(x = wt, y = mpg)) + 
   geom_point() +
   facet_grid(~ cyl)
+
 ggplot(mpg, aes(displ, cty)) + 
   geom_point() +
   facet_grid(~ cyl, labeller = label_both)
+
 ggplot(midwest, aes(popdensity, percbelowpoverty)) + 
   geom_point() +
   facet_grid(~ state, labeller = label_both)
@@ -371,6 +388,7 @@ Often we want distinct visualizations to come together in one plot.  There are s
 
 ```{r patchwork}
 library(patchwork)
+
 g1 = ggplot(mtcars, aes(x = wt, y = mpg)) + 
   geom_point()
 
@@ -387,18 +405,15 @@ g1 /                       # initial plot, place next part underneath
 Not that you want this, but just to demonstrate the flexibility.
 
 ```{r patchwork2}
-p1 <- ggplot(mtcars) + geom_point(aes(mpg, disp))
-p2 <- ggplot(mtcars) + geom_boxplot(aes(gear, disp, group = gear))
-p3 <- ggplot(mtcars) + geom_smooth(aes(disp, qsec))
-p4 <- ggplot(mtcars) + geom_bar(aes(carb))
-p5 <- ggplot(mtcars) + geom_violin(aes(cyl, mpg, group = cyl))
+p1 = ggplot(mtcars) + geom_point(aes(mpg, disp))
+p2 = ggplot(mtcars) + geom_boxplot(aes(gear, disp, group = gear))
+p3 = ggplot(mtcars) + geom_smooth(aes(disp, qsec))
+p4 = ggplot(mtcars) + geom_bar(aes(carb))
+p5 = ggplot(mtcars) + geom_violin(aes(cyl, mpg, group = cyl))
 
 p1 +
   p2 +
-  (p3 +
-     p4 +
-     plot_layout(ncol = 1)
-  ) +
+  (p3 / p4) * theme_void() +
   p5 +
   plot_layout(widths = c(2, 1))
 ```
@@ -449,7 +464,7 @@ ggplot(aes(x = carat, y = price), data = diamonds) +
 
 ## Themes
 
-In the last example you saw two uses of a <span class="emph">theme</span>- a built-in version that comes with ggplot (<span class="func">theme_minimal</span>), and specific customization (<span class="func">theme</span>(...)).  The built-in themes provide ready-made approaches that might already be enough for a finished product.  For the theme function, each argument, and there are many, takes on a specific value or an element function:
+In the last example you saw two uses of a <span class="emph">theme</span>- a built-in version that comes with ggplot (<span class="func">theme_minimal</span>), and specific customization (<span class="func">theme</span>(...)).  The built-in themes provide ready-made approaches that might already be good enough for a finished product.  For the theme function, each argument, and there are many, takes on a specific value or an element function:
 
 - <span class="func">element_rect</span>
 - <span class="func">element_line</span>
