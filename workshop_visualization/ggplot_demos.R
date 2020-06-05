@@ -3,7 +3,9 @@
 
 library(tidyverse)
 
-# Example
+
+
+# Example -----------------------------------------------------------------
 
 data("diamonds")
 
@@ -13,8 +15,8 @@ ggplot(aes(x = carat, y = price), data = diamonds) +
   geom_point(size = .5, color = 'peru')
 
 
-# Geoms -------------------------------------------------------------------
 
+# Geoms -------------------------------------------------------------------
 
 ggplot(aes(x = date, y = unemploy), data = economics) +
   geom_line() +

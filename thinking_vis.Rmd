@@ -25,17 +25,23 @@ We'll start with a couple examples. Consider the following.
 
 ```{r problems}
 library(plotly)
-sw_height = starwars %>% 
-  filter(gender %in% c('male', 'female')) %>% 
-  group_by(gender) %>% 
-  summarise(Height=mean(height, na.rm=T),
-            N= n(),
-            se = sd(height, na.rm=T)/sqrt(N))
-sw_height %>% 
-  ggplot(aes(x=gender, y=Height)) +
-  geom_bar(aes(), color='black', stat='identity', width=.5) +
-  scale_fill_manual(values=c('red1', 'green')) +
-  labs(title='Height of Some Star Wars Characters') +
+sw_height = starwars %>%
+  filter(gender %in% c('male', 'female')) %>%
+  group_by(gender) %>%
+  summarise(
+    Height = mean(height, na.rm = T),
+    N = n(),
+    se = sd(height, na.rm = T) / sqrt(N)
+  )
+
+sw_height %>%
+  ggplot(aes(x = gender, y = Height)) +
+  geom_bar(aes(),
+           color = 'black',
+           stat = 'identity',
+           width = .5) +
+  scale_fill_manual(values = c('red1', 'green')) +
+  labs(title = 'Height of Some Star Wars Characters') +
   theme_bw()
 ```
 
@@ -169,9 +175,9 @@ Here are some things to keep in mind when creating visualizations for scientific
 
 Assume your audience, which in academia is full of people with advanced degrees or those aspiring to obtain one, and in other contexts comprises people who are interested in your story, can handle more than a bar graph.  If the visualization is good and well-explained[^captions], they'll be fine. 
 
-See the data visualization and maps sections of [2017: The Year in Visual Stories and Graphics](https://www.nytimes.com/interactive/2017/12/21/us/2017-year-in-graphics.html) at the New York Times.  Good data visualization of even complex relationships can be appreciated by more than an academic audience.  Assume you can at least provide visualizations on that level of complexity and be okay.  It won't always work, but at least put the same effort you'd appreciate yourself.
+See the data visualization and maps sections of [2019: The Year in Visual Stories and Graphics](https://www.nytimes.com/interactive/2019/12/30/us/2019-year-in-graphics.html) at the New York Times.  Good data visualization of even complex relationships can be appreciated by more than an academic audience.  Assume you can at least provide visualizations on that level of complexity and be okay.  It won't always work, but at least put the same effort you'd appreciate yourself.
 
-<img class='zoom' src="img/nyt2017.png" width=50%>
+<img class='zoom' src="img/nyt2019.png" width=50%>
 
 ### Clarity is key
 
@@ -187,7 +193,7 @@ In striving for clarity, there are pitfalls to avoid. Gridlines, 3d, unnecessary
 
 ### Color isn't optional
 
-It's odd for me to have to say this, as it's been the case for many years, but no modern scientific outlet should be a print-first outfit, and if they are, you shouldn't care to send your work there.  The only thing you should be concerned with is how it will look online, because that's how people will interact with your work first and foremost.  That means that color is essentially a requirement for any visualization, so use it well in yours.
+It's odd for me to have to say this, as it's been the case for many years, but no modern scientific outlet should be a print-first outfit, and if they are, you shouldn't care to send your work there.  The only thing you should be concerned with is how it will look online, because that's how people will interact with your work first and foremost.  That means that color is essentially a requirement for any visualization, so use it well in yours.  Appropriate color choice will still look fine in black and white anyway.
 
 ### Think interactively
 
@@ -207,7 +213,7 @@ A couple packages will help you get started in choosing a decent color scheme.  
 
 > These color maps are designed in such a way that they will analytically be perfectly perceptually-uniform, both in regular form and also when converted to black-and-white. They are also designed to be perceived by readers with the most common form of color blindness.
 
-So basically you have something that will take care of your audience without having to do much. There are four palettes.
+So basically you have something that will take care of your audience without having to do much. There are four primary  palettes, plus one version of the main viridis color scheme that will be perceived by those with any type of color blindness (*cividis*).
 
 <img class='zoom' src="img/viridis_scales.png" style="display:block; margin: 0 auto;" width=50%>
 
@@ -226,7 +232,9 @@ You can use the following functions for with <span class="pack" style = "">ggplo
 
 ### Scientific colors
 
-Yet another set of palettes are available via the <span class="pack">scico</span> package, and are specifically geared toward for scientific presentation. These perceptually-uniform color maps will handle data variations equally all along the colour bar and still work for black and white print. Just another option beyond viridis palettes.
+
+
+Yet another set of palettes are available via the <span class="pack">scico</span> package, and are specifically geared toward for scientific presentation. These perceptually-uniform color maps sequential, divierging, and circular pallets, will handle data variations equally all along the colour bar, and still work for black and white print. They provide more palettes to go with viridis.  
 
 
 - Perceptually uniform     
@@ -243,12 +251,14 @@ You can use the following functions for with <span class="pack" style = "">ggplo
 
 
 
-<img class='zoom' src="img/scico.png" width=50%> 
+<img class='zoom' src="img/scico.svg" width=50%> 
 
+
+I personally prefer these for the choices available, and viridis doesn't seem to work aesthetically that well in a lot of contexts. More information on their development can be found [here](http://www.fabiocrameri.ch/colourmaps.php).
 
 ### RColorBrewer
 
-Color Brewer offers a collection of palettes that will generally work well in a variety of situations, especially for discrete data.  While there are print and color-blind friendly palettes, not all adhere to those restrictions.  Specifically though, you have palettes for the following data situations:
+Color Brewer offers a collection of palettes that will generally work well in a variety of situations, but especially for discrete data.  While there are print and color-blind friendly palettes, not all adhere to those restrictions.  Specifically though, you have palettes for the following data situations:
 
 - Qualitative (e.g. Dark2[^Dark1])
 - Sequential (e.g. Reds)
@@ -295,13 +305,18 @@ So contrast comes into play with text as well as color.  In general, you should 
 
 I personally don't like stark black, and find it visually irritating, but obviously that would be fine to use for most people.
 
-Contrast concerns regard color as well.  When considering color, one should also think about the background for plots, or perhaps the surrounding text.  The following function will check for this. Ideally one would pass AAA.
+Contrast concerns regard color as well.  When considering color, one should also think about the background for plots, or perhaps the surrounding text.  The following function will check for this. Ideally one would pass *AAA* status, but *AA* is sufficient for the vast majority of cases.
 
-```{r contrast, echo=TRUE}
-# default ggplot2 discrete color against the default ggplot2 gray background
+```{r contrast, echo=-(1:2)}
+data.frame(x=letters[1:2], y = 1) %>% 
+  ggplot() +
+  geom_col(aes(x, y, fill = x), width = .1, show.legend = F) +
+  scale_fill_manual(values = c('#F8766D', '#440154'))
+
+# default ggplot2 discrete color (left) against the default ggplot2 gray background
 visibly::color_contrast_checker(foreground = '#F8766D', background = 'gray92')
 
-# the dark viridis would work 
+# the dark viridis (right) would be better
 visibly::color_contrast_checker(foreground = '#440154', background = 'gray92')
 ```
 
@@ -339,7 +354,7 @@ What's the difference? The first plot scales the dots by their area, while the s
 
 ## Transparency
 
-Using transparency is a great way to keep detailed information available to the audience without being overwhelming. Consider the following.  Fifty individual trajectories are shown on the left, but it doesn't cause any issue graphically.  The right has 10 lines plus a fitted line, 20 points and a ribbon to provide a sense of variance.  Using transparency and a viridis color scheme allows it to be perceived cleanly.
+Using transparency is a great way to keep detailed information available to the audience without being overwhelming. Consider the following.  Fifty individual trajectories are shown on the left, but it doesn't cause any issue graphically.  The right has 10 lines plus a fitted line, 20 points and a ribbon to provide a sense of variance.  Using transparency and a scientific color scheme allows it to be perceived cleanly.
 
 ```{r transp, out.width='75%', fig.asp=.5}
 ########################################################################################
@@ -404,6 +419,7 @@ yg1 = mvtnorm::rmvnorm(nprior,
 # pal = viridis::plasma(4)
 # scico::scico_palette_show()
 pal = scico::scico(4, end = .75, palette = 'turku')
+
 gdat1 = data.frame(
   x = xg1,
   y = t(yg1),
@@ -421,13 +437,15 @@ g1 = ggplot(aes(x = x, y = value), data = gdat1) +
   scale_alpha_continuous(range = c(.15, .25)) +
   labs(title = 'Prior') +
   theme_clean() +
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.line = element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.ticks.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank())
+  theme(
+    axis.text.x  = element_blank(),
+    axis.text.y  = element_blank(),
+    axis.line    = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  )
 
 # g1 # show plot
 
@@ -435,11 +453,11 @@ g1 = ggplot(aes(x = x, y = value), data = gdat1) +
 ### generate noisy training data ###
 ####################################
 
-Xtrain = 15*(runif(20)-.5)  
+Xtrain = 15 * (runif(20) - .5)
 nTrain = length(Xtrain)
-ytrain = sin(Xtrain) + rnorm(n=nTrain, sd=.1)  # kept sine function for comparison to noise free result
+ytrain = sin(Xtrain) + rnorm(n = nTrain, sd = .1)  # kept sine function for comparison to noise free result
 
-Xtest = seq(-7.5, 7.5, length=200)
+Xtest = seq(-7.5, 7.5, length = 200)
 nTest = length(Xtest)
 
 #####################################
@@ -447,22 +465,34 @@ nTest = length(Xtest)
 #####################################
 
 ### Create Ky, K*, and K** matrices as defined in the texts
-Ky = Kfn(x=Xtrain, y=ytrain, l=l, sigmaf=sigmaf, sigman=sigman)
-K_ = Kfn(c(Xtrain, Xtest), l=l, sigmaf=sigmaf, sigman=sigman)                    # initial matrix
-Kstar = K_[1:nTrain, (nTrain+1):ncol(K_)]                                        # dim = N x N*
-tKstar = t(Kstar)                                                                # dim = N* x N
-Kstarstar = K_[(nTrain+1):nrow(K_), (nTrain+1):ncol(K_)] + keps*diag(nTest)      # dim = N* x N*; the keps part is for positive definiteness
+Ky = Kfn(
+  x = Xtrain,
+  y = ytrain,
+  l = l,
+  sigmaf = sigmaf,
+  sigman = sigman
+)
+
+K_ = Kfn(c(Xtrain, Xtest),
+         l = l,
+         sigmaf = sigmaf,
+         sigman = sigman)                                                          # initial matrix
+Kstar = K_[1:nTrain, (nTrain + 1):ncol(K_)]                                        # dim = N x N*
+tKstar = t(Kstar)                                                                  # dim = N* x N
+Kstarstar = K_[(nTrain + 1):nrow(K_), (nTrain + 1):ncol(K_)] + keps * diag(nTest)  # dim = N* x N*; the keps part is for positive definiteness
 Kyinv = solve(Ky)
 
 # calculate posterior mean and covariance
-postMu = muFn(Xtest) + tKstar %*% Kyinv %*% (ytrain-muFn(Xtrain))
+postMu = muFn(Xtest) + tKstar %*% Kyinv %*% (ytrain - muFn(Xtrain))
 postCov = Kstarstar - tKstar %*% Kyinv %*% Kstar
 s2 = diag(postCov)
 # R = chol(postCov)  
 # L = t(R)      # L is used in alternative formulation below based on gaussSample.m
 
 # generate draws from posterior predictive
-y2 = data.frame(t(mvtnorm::rmvnorm(npostpred, mean=postMu, sigma=postCov)))
+y2 = data.frame(t(mvtnorm::rmvnorm(
+  npostpred, mean = postMu, sigma = postCov
+)))
 # y2 = data.frame(replicate(npostpred, postMu + L %*% rnorm(postMu))) # alternative
 
 #################################
@@ -483,20 +513,37 @@ gdat2 = data.frame(
     values_to = 'value'
   )
 
-g2 = ggplot(aes(x=x, y=value), data=gdat2) + 
-  geom_ribbon(aes(ymin=selower, ymax=seupper,group=variable), fill=pal[1], alpha=.01) +
-  geom_line(aes(group=variable), color=pal[2], alpha=.25) +
-  geom_line(aes(group=variable, y=fmean), color=pal[3], size=1, alpha=.5) +
-  geom_point(aes(x=Xtrain, y=ytrain), color=pal[4], alpha=1, size=2, data=data.frame(Xtrain, ytrain)) +
-  labs(title='Posterior Predictive') +
+g2 = ggplot(aes(x = x, y = value), data = gdat2) +
+  geom_ribbon(
+    aes(ymin = selower, ymax = seupper, group = variable),
+    fill = pal[1],
+    alpha = .01
+  ) +
+  geom_line(aes(group = variable), color = pal[2], alpha = .25) +
+  geom_line(
+    aes(group = variable, y = fmean),
+    color = pal[3],
+    size = 1,
+    alpha = .5
+  ) +
+  geom_point(
+    aes(x = Xtrain, y = ytrain),
+    color = pal[4],
+    alpha = 1,
+    size = 2,
+    data = data.frame(Xtrain, ytrain)
+  ) +
+  labs(title = 'Posterior Predictive') +
   theme_clean() +
-  theme(axis.text.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.line = element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.ticks.y=element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank())
+  theme(
+    axis.text.x  = element_blank(),
+    axis.text.y  = element_blank(),
+    axis.line    = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  )
 
 # g2
 
