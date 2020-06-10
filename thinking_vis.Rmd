@@ -113,7 +113,7 @@ Now consider the following.  We have six pieces of information in one graph- nam
 
 <br>
 
-```{r better}
+```{r better, height = '110%', width = '125%'}
 sw2 = starwars %>% 
   filter(gender %in% c('male', 'female')) %>% 
   mutate(homeworld2 = ifelse(homeworld=='Tatooine', 'Tatooine', 'Naboo'),
@@ -135,8 +135,8 @@ g = sw2 %>%
   ggplot(aes(x = mass, y = height)) +
   geom_smooth(
     color = linecol,
-    se = F,
-    size = .5,
+    se    = FALSE,
+    size  = .5,
     alpha = .5
   ) +
   geom_point(
@@ -144,10 +144,10 @@ g = sw2 %>%
       label = name,
       color = gender,
       shape = homeworld,
-      size = birth_year
+      size  = birth_year
     ),
     alpha = .5,
-    show.legend = F
+    show.legend = FALSE
   ) +
   scale_color_manual(values = pal[2:3]) +
   # geom_text(aes(label=name)) +
@@ -155,13 +155,25 @@ g = sw2 %>%
   theme_clean() +
   theme(legend.position = "none")  # only way to keep plotly from putting a legend
 
-ggplotly() %>%
+ggplotly(width = 600, height = 400) %>%
   layout(
-    title = 'Star Wars Characters',
+    title = list(text = 'Star Wars Characters',
+                 x = 0.1,
+                 font = list(size = 16)),
     font  = list(family = 'Roboto'),
-    xaxis = list(title  = 'Mass'),
-    yaxis = list(title  = 'Height')
+    xaxis = list(title  = 'Mass in kg', titlefont = list(size = 12), x = 0),  # I give up, plotly's defaults are shite and they haven't fixed them in years; tried with annotate but it won't go below the axis
+    yaxis = list(title  = '')
   ) %>%
+  add_annotations(             # because plotly still doesn't know how to rotate axes
+    text = c('Height in cm'),
+    textfont = list(color = '#000000'),
+    x = c(-0.13),
+    y = c(.98),
+    xref = 'paper',
+    yref = 'paper',
+    showarrow = FALSE,
+    font = list(size = 12, align='right')
+  ) %>% 
   theme_plotly()
 ```
 
@@ -181,7 +193,7 @@ See the data visualization and maps sections of [2019: The Year in Visual Storie
 
 ### Clarity is key
 
-Sometimes the clearest message *is* a complicated one.  That's okay, science is an inherently fuzzy process.  Make sure your visualization tells the story you think is important, and don't dumb the story down in the visualization.  People will likely remember the graphic before they'll remember the table of numbers.
+Sometimes the clearest message *is* a complicated one.  That's okay, science is an inherently fuzzy process.  Make sure your visualization tells the story you think is important, and don't dumb the story down in the visualization.  People will remember the graphic before they'll remember a table of numbers.
 
 By the same token, don't needlessly complicate something that is straightforward.  Perhaps a scatter plot with some groupwise coloring is enough.  That's fine.
 

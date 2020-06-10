@@ -1,0 +1,211 @@
+---
+title: "Thinking Visually"
+output:  
+   learnr::tutorial:
+     toc: true
+     toc_depth: 3
+     highlight: pygments
+css: css/standard_html.css
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr); library(tidyverse)
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, error=FALSE, comment=NA, R.options=list(width=220),
+                      exercise.lines=5, exercise.eval=FALSE, cache = FALSE, out.width='50%')
+
+```
+
+## ggplot2 Exercises
+
+#### Exercise 0
+
+Load the <span class="pack">ggplot2</span> package if you haven’t already.
+
+#### Exercise 1
+
+Create two plots, one a scatterplot (e.g. with <span class="func">geom_point</span>) and one with lines (e.g. <span class="func">geom_line</span>) with a data set of your choosing (all are base R or available after loading <span class="pack">ggplot2</span>.  Some suggestions:
+
+- <span class="objclass">faithful</span>: Waiting time between eruptions and the duration of the eruption for the Old Faithful geyser in Yellowstone National Park, Wyoming, USA.
+- <span class="objclass">msleep</span>:  mammals sleep dataset with sleep times and weights etc.
+- <span class="objclass">diamonds</span>: used in the slides
+- <span class="objclass">economics</span>: US economic time series.
+- <span class="objclass">txhousing</span>: Housing sales in TX.
+- <span class="objclass">midwest</span>: Midwest demographics.
+- <span class="objclass">mpg</span>: Fuel economy data from 1999 and 2008 for 38 popular models of car
+
+Recall the basic form for ggplot.
+
+```
+ggplot(data = *, aes(x = *, y = *, other)) +
+  geom_*() +
+  otherLayers, theme etc.
+```
+
+Themes to play with:
+
+- <span class="func">theme_bw</span>
+- <span class="func">theme_classic</span>
+- <span class="func">theme_dark</span>
+- <span class="func">theme_gray</span>
+- <span class="func">theme_light</span>
+- <span class="func">theme_linedraw</span>
+- <span class="func">theme_minimal</span>
+
+```{r gg-ex1, exercise=TRUE}
+library(ggplot2)
+```
+
+```{r gg-ex1-hint}
+library(ggplot2)
+ggplot(aes(x = waiting, y = eruptions), data = faithful) +
+  geom_point()
+```
+
+
+#### Exercise 2
+
+Play around and change the arguments to the following.
+
+```{r gg-ex2, exercise=TRUE}
+library(maps)
+mi <- map_data("county", "michigan")
+seats = mi %>% 
+  group_by(subregion) %>% 
+  summarise_at(vars(lat, long), function(x) median(range(x)))
+
+ggplot(mi, aes(long, lat)) +
+  geom_polygon(aes(group = group), fill = NA, colour = "grey60") +
+  geom_text(aes(label = subregion), data = seats, size = 1, angle = 45) +
+  geom_point(y=42.281389, x=-83.748333, color='#1e90ff', size=3) +
+  theme_minimal() +
+  theme(panel.grid=element_blank())
+```
+
+
+## Interactive Visualization Exercises
+
+
+#### Exercise 0
+
+Install and load the <span class="pack">plotly</span> package. Load the <span class="pack">tidyverse</span> package if necessary (so you can use <span class="pack">dplyr</span> and <span class="pack">ggplot2</span>), and install/load the <span class="pack">ggplot2movies</span> for the IMDB data.
+
+
+
+
+#### Exercise 1
+
+
+Using <span class="pack">dplyr</span>, group by year, and summarize to create a new variable that is the Average rating.   Refer to the [tidyverse][tidyverse] section if you need a refresher on what's being done here. Then create a plot with <span class="pack">plotly</span> for a line or scatter plot (for the latter, use the <span class="func">add_markers</span> function). It will take the following form, but you'll need to supply the plotly arguments.
+
+
+```{r plotly-ex1, exercise = TRUE}
+library(ggplot2movies)
+library(plotly)
+
+movies %>%
+  group_by(year) %>%
+  summarise(Avg_Rating = mean(rating)) %>% 
+  plot_ly() %>%
+  add_markers()
+```
+
+
+```{r plotly-ex1-hint}
+movies %>%
+  group_by(year) %>%
+  summarise(Avg_Rating = mean(rating)) %>%
+  plot_ly() %>%
+  add_markers(x =  ~ year, y =  ~ Avg_Rating)
+```
+
+
+#### Exercise 2
+
+This time group by year *and* Drama. In the <span class="func">summarize</span> create average rating again, but also a variable representing the average number of votes. In your plotly line, use the size and color arguments to represent whether the average number of votes and whether it was drama or not respectively. Use <span class="func">add_markers</span>.  Note that Drama will be treated as numeric since it's a 0-1 indicator. This won't affect the plot, but if you want, you might use <span class="func">mutate</span> to change it to a factor with labels 'Drama' and 'Other'.
+
+
+
+```{r plotly-ex2, exercise=TRUE}
+movies %>%
+  group_by(year, Drama) %>%
+  summarise(Avg_Rating = mean(rating),
+            Avg_Votes  = mean(votes)) %>% 
+  plot_ly() %>%
+  ?
+```
+
+
+```{r plotly-ex2-hint}
+movies %>%
+  group_by(year, Drama) %>%
+  summarise(Avg_Rating = mean(rating),
+            Avg_Votes  = mean(votes)) %>%
+  plot_ly() %>%
+  add_markers(
+    x =  ~ year,
+    y =  ~ Avg_Rating,
+    size =  ~ Avg_Votes,
+    color =  ~ Drama,
+    mode = 'markers'
+  )
+```
+
+
+#### Exercise 3
+
+Create a ggplot of your design and then use <span class="func">ggplotly</span> to make it interactive.
+
+```{r ggplotly-ex3, exercise=TRUE}
+?
+ggplotly()
+```
+
+
+## Thinking Visually Exercises
+
+#### Exercise 1
+
+The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>.  Use the <span class="func">scale_color_viridis</span> or <span class="func">scale_color_scico</span> function to add a more accessible palette. Use `?` to examine your options.
+
+```{r thinkingvis_ex1, exercise = TRUE}
+# devtools::install_github("thomasp85/scico") # to use scientific colors
+library(ggplot2)
+
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  geom_point(aes(color = price)) +
+  ????
+```
+
+```{r thinkingvis_ex1-hint}
+library(ggplot2)
+
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  geom_point(aes(color = price), alpha = .05) +
+  scale_color_scico(palette = 'acton')
+```
+
+
+
+#### Exercise 2
+
+Now color it by the `cut` instead of `price`.  Use <span class="func">scale_color_viridis/scioc_d</span>.   See the helpfile via `?scale_color_*` to see how to change the palette.
+
+```{r thinkingvis_ex2, exercise = TRUE}
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  geom_point(aes(color = cut)) +
+  scale_color_*(?)
+```
+
+```{r thinkingvis_ex2-hint, eval=FALSE, out.width='50%'}
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  geom_point(aes(color = cut)) +
+  scale_color_scico_d(palette = 'batlow') # or
+  scale_color_viridis_d(palette = 'magma') 
+```
+
+
+
+#### Thinking exercises
+
+For your upcoming presentation, *who* is your audience?

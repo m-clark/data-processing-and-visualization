@@ -13,7 +13,7 @@ Some are `.RData` files, while others might be raw `.csv`.  The former require `
 
 ### A note about the code
 
-The code is purled from the document automatically without any additional cleaning.  You will see both code plus commented chunk titles, as well as section headers.
+The code is purled from the document automatically without any additional cleaning.  You will see both code plus commented chunk titles, as well as section headers.  To make things easier for the online workshop, I have split out a clean version of the code from the ggplot2 section (`ggplot_demos.R`), which will mostly be all you'll need.
 
 
 ### A note about the exercises

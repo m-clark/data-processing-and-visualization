@@ -1,7 +1,7 @@
 
 # Preliminaries -----------------------------------------------------------
 
-library(tidyverse)
+library(tidyverse)  # loads dplyr, ggplot2, etc.
 
 
 
@@ -136,7 +136,7 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
 # Multiple Plots ----------------------------------------------------------
 
 
-library(patchwork)
+library(patchwork)   # you may need to install
 
 g1 = ggplot(mtcars, aes(x = wt, y = mpg)) + 
   geom_point()
@@ -157,17 +157,17 @@ p3 = ggplot(mtcars) + geom_smooth(aes(disp, qsec))
 p4 = ggplot(mtcars) + geom_bar(aes(carb))
 p5 = ggplot(mtcars) + geom_violin(aes(cyl, mpg, group = cyl))
 
-p1 +
-  p2 +
-  (p3 / p4) * theme_void() +
-  p5 +
-  plot_layout(widths = c(2, 1))
+p1 +                                 # initial plot
+  p2 +                               # add the next plot (horizontally)
+  (p3 / p4) * theme_void() +         # add the next plot, which is two plots stacked vertically, with their own theme
+  p5 +                               # add one last plot, this will shift the layout to 2x2
+  plot_layout(widths = c(2, 1))      # relative widths of the columns
 
 
 
 # Extensions --------------------------------------------------------------
 
-library(gganimate)
+library(gganimate)   # you may need to install
 
 load('data/gapminder.RData')
 
