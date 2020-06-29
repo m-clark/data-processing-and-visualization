@@ -1,0 +1,162 @@
+# (PART\*) Part V: Presentation {-}
+
+```{r rmdsetup, include=FALSE, eval=TRUE, cache=FALSE}
+knitr::opts_chunk$set(eval=T, echo=T)
+```
+
+# Reproducible Programming
+
+
+We'll start a discussion of reproducible programming with some terminology you might have come across:
+
+- *Reproducible research*
+- *Replicable science*
+- *Reproducible data analysis*
+- *Dynamic data analysis*
+- *Dynamic report generation*
+- *Literate programming*
+
+Each of these may mean slightly different things depending on the context and background of the person using them, so one should take care to note precisely what is meant.  We'll examine a couple of these concepts, or at least my particular version of them.
+
+## How to read this chapter
+
+This chapter (and the rest of the document) is [available on GitHub](https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/concepts.Rmd). By looking at the raw content versus the finished product will get you well on your way to understanding how to use R Markdown.
+
+## Literate Programming
+
+*Literate programming*, or in the context of research, literate statistical programming, is actually an [old idea](http://www.literateprogramming.com/knuthweb.pdf) at this point.  
+
+> I believe that the time is ripe for significantly better documentation of programs, and that we can best achieve this by considering programs to be works of literature. <br> ~ Donald Knuth (1984)
+
+<span class="marginnote">You might wonder why, given that such an idea was around even before MS Word, how the latter took over in most, but certainly not all, disciplines in academia, especially given that MS Word was only very recently remotely viable as a means for scientific communication, and many would say still isn't.</span>
+The interweaving of code and text is something you already do in normal scripting.  Comments in code are not only useful, they are practically required.  But in a program script, almost all the emphasis is on the code.  With literate programming, we focus on the text, and the code exists to help facilitate our ability to tell a (data-driven) story.
+
+In the early days, the idea was largely to communicate the idea of the computer program itself. Now, at least in the context we'll be discussing, our usage of literate programming is to generate results that tell the story in a completely human-oriented fashion, possibly without any reference to the code at all.  However, the document, in whatever format, does not exist independently of the code, and cannot be generated without it.
+
+Consider the following example. This code, which is clearly delimited from the text via background and font style, shows how to do an unordered list in markdown using two different methods.  Either a `-` or a `*` will denote a list item.
+
+```
+- item 1
+- item 2
+
+* item 3
+* item 4
+```
+
+So, we have a statement explaining the code, followed by the code itself. We actually don't need a code comment, because the text explains the code in everyday language.  This is a simple example, but it gets at the essence of the approach.  In the document you're reading right now, there is a delineation for the code itself, but this isn't visible. However, it's clear what the code part is and what the text part is.  
+
+The following table shows the results of a regression analysis.
+
+```{r lm_demo, echo=FALSE}
+lm(mpg ~ wt, mtcars) %>% 
+  summary() %>% 
+  pander::pander(round = 2)
+```
+
+So, imagine a paper in which the previous text content explains the results while the analysis code resides right where the text is.  You didn't see the code, but you saw some nicely formatted results. I personally didn't format anything however, those are using default settings.  Here is the underlying code.
+
+
+```{r lm_demo_show, eval=FALSE}
+lm(mpg ~ wt, mtcars) %>% 
+  summary() %>% 
+  pander(round = 2)
+```
+
+Here we see the code, but it isn't evaluated, because the goal of the text here is not the result, but to understand the code.  Nothing is copied and pasted, and the code and text both reside in the same document.
+
+The idea of literate programming, i.e. creating human-understandable programs, can extend beyond reports or slides that you might put together for an analysis, and in fact be used for any setting in which you have to write code at all.
+
+## R Markdown
+
+*R Markdown* is a flavor of Markdown, a markup language.  Markdown can be converted to other formats like HTML, but is as easy to use as normal text. R Markdown allows one to combine normal R code with text to produce a wide variety of document formats.  This allows for a continuous transition from initial data import and processing to a finished product, whether journal article, slide presentation, or even a website.
+
+To use R Markdown effectively, it helps to know why you'd even want to. So, let's talk about some ideas, all of which are related, and which will give you some sense of the goals of effective document generation, and why this approach is superior to others you might try.
+
+## Replicability & reproducible research
+
+The ideas of *replicability* and *reproducible research* are hot topics in various disciplines of late.  To begin, neither is precisely defined, and depending on the definition one selects, possibly unlikely or even impossible.  They are more ideals to strive for, or goals for certain aspects of the research process.  For example, nothing is exactly replicable, if only because time will have passed, and with it some things will have changed about the process since the initial research was conducted- the people involved, the data collection approach, the analytical tools, etc.  However, we can replicate some things, possibly even exactly, and thus make the results reproducible.
+
+Our focus will be on data analysis in particular.  Let's start with the following scenario. Various versions of a data set are used leading up to analysis, and after several iterations, `finaldata7` is now spread across the computers of the faculty advisor, two graduate students and one undergrad. Two of those finaldata7 data sets, specifically named `finaldata7a` and `finaldata7b`, are slightly different from the other two and each other.  The undergraduate, who helped with the processing of `finaldata2` through `finaldata6`, has graduated and no longer resides in the same state, nor likely cares any more about the project.  Some of the data processing was done with menus in a software package that shall not be named.
+
+The script that did the final analysis, called `model.Results.C`, calls the data using a directory location which no longer exists (and refers only to `finaldata7`).  It does several more data processing steps, but has no comments that would indicate why any of them are being done.  Some of the variables are named things like PDQ and V3, but there is no document that would say what those mean.
+
+When writing their research document in Microsoft Word, all the values from the analyses were copied and pasted into the tables and text[^intheback].  The variable names in the document have no exact match to any of the names in any of the data objects.  Furthermore, no reference was provided in the text regarding what software or specific packages were used for the analysis.  
+
+And now, several months later, after the final draft of the document was written and sent to the journal, and the reviewers have eventually made their comments on the paper, it's time to dive back into the analysis.  Now, what do you think the odds are that this research group could even reproduce the values reported in the main analysis of the paper?
+
+Sadly, up until recently this was not uncommon, and even certain issues just described are still very common.  Such an approach is essentially the antithesis of replicability and reproducible research.  Anything that was only done with menus cannot be replicated, and without sufficient documentation it's not clear what was done even when there is potentially reproducible code.  The naming of files, variables and other objects was done poorly, so it will take unnecessary effort to figure out what was done, to what, and when.  And even after most things get squared away, there is still a chance the numbers won't match what was in the paper anyway.
+
+While certain tools like Box, Dropbox, Google drive etc. have perhaps helped somewhat, people generally don't use them for *version control*, and they are not geared toward academic research specifically.  However, using proper naming procedures, the approach of literate programming, and utilizing proper documentation, all could go a long way even with those tools.
+
+In summary, truly reproducible data analysis requires:
+
+- Data
+- Code
+- Clear documentation (of data and code)
+- Version control
+- Standard means of distribution
+- Literate programming practices
+
+As an example, one could start their research as an RStudio project using Git for version control, write their research products using R Markdown, set seeds for random variables, and use <span class="pack">packrat</span> to keep the packages used in analysis specific to the project.  Doing so would make it essentially *impossible* not to reproduce the previous results at any stage, even years later.
+
+
+## Dynamic data analysis & report generation
+
+Sometimes the goal is to create an expression of the analysis that is not only to be disseminated to a particular audience, but one which possibly will change over time, as the data itself evolves temporally.  In this dynamic setting, the document must be able to handle changes with minimal effort.  
+
+I can tell you from firsthand experience that R Markdown can allow one to automatically create custom reports for different audiences on a regular basis without even touching the data for explicit processing, nor the reports after the templates are created, even as the data continues to come in over time.  Furthermore, any academic effort that would fall under the heading of science is applicable here.
+
+The notion of *science as software development* is something you should get used to. Print has had its day, but is not the best choice for scientific advancement as it should take place.  Waiting months for feedback, or a year to get a paper published after it's first sent for review, is simply unacceptable.  Furthermore, what if more data comes in? A data or modeling bug is found? Other studies shed additional light on the conclusions?  In this day and age, are we supposed to just continue to cite a work that may no longer be applicable while waiting another year or so for updates?
+
+```{r arxiv, echo=FALSE}
+library(rvest)
+
+test0 = read_html('https://arxiv.org/abs/1507.02646')
+
+N = test0 %>% 
+  html_nodes('.submission-history') %>% 
+  html_nodes('a') %>% 
+  grepl(pattern = 'v[0-9]+') %>% 
+  sum()
+N = N + 1
+```
+
+
+Consider [arxiv.org](https://arxiv.org/). Researchers will put papers there before they are published in journals, ostensibly to provide an openly available, if not *necessarily* 100% complete, work.  Others put working drafts or just use it as a place to float some ideas out there.  It is a serious outlet however, and a good chunk of the articles I read in the stats world can be found there.
+
+Look closely at [this particular entry](https://arxiv.org/abs/1507.02646). As I write this there have been `r N` versions of it, and one has access to any of them.  <span class="marginnote">The number of versions in that sentence, `r N`, is not typed. It is based on R code that scraped the arXiv website and processed the submission history.</span> If something changes, there is no reason not to have a version `r N+1` or however many one wants.  In a similar vein, many of my own documents on machine learning, Bayesian analysis, generalized additive models, etc. have been regularly updated for several years now.
+
+Research is never complete.  Data can be augmented, analyses tweaked, visualizations improved. Will the products of your own efforts adapt?
+
+
+
+## Using Modern Tools
+
+The main problem for other avenues you might use, like MS Word and $\LaTeX$ [^layteks], is that they were created for printed documents.  In modern times, not only is printing unnecessary (and environmentally problematic), contorting a document to the confines of print potentially distorts or hinders the meaning an author wishes to convey, as well as restricting the means with which they can convey it.  In addition, for academic outlets and well beyond, print is not the dominant format anymore.  Even avid print readers must admit they see much more text on a screen than they do on a page on a typical day.
+
+
+Let's recap the issues with traditional approaches:
+
+- Possibly not usable for reproducible scholarly research
+- Syntax gets in the way of fluid text
+- Designed for print
+- Wasteful if printed
+- Often very difficult to get figures/tables to look as desired
+
+<span class="marginnote">Some journals still charge extra for color plots. First, there obviously is no cost for color for electronic documents, which is how the vast majority of research articles are accessed. They often don't ask whether you actually want it printed in color (they'll simply want to charge you for any color plots you have), nor do they seem to care that you can use color schemes that would look fine in black and white.  This situation is ridiculous.</span>
+The case for using a markdown approach is now years old and well established. Unfortunately many, but not all, journals are still print-oriented, because their income depends on the assumption of print, not to mention a closed-source, broken, and anti-scientific system of review and publication that dates [back to the 17th century](https://www.npr.org/sections/health-shots/2018/02/24/586184355/scientists-aim-to-pull-peer-review-out-of-the-17th-century).  Consider the fact that you could blog about your research while conducting it, present preliminary results in your blog via R Markdown (because your blog itself is done via R Markdown), get regular feedback from peers along the way via your site's comment system, and all this before you'd ever send it off to a journal.  Now ask yourself what a print-oriented journal actually offers you? When was the last time you actually opened a print version of a journal? How often do you go to a journal site to look for something as opposed to a simple web search or using Google Scholar?  How many journals do adequate retractions when problems are found[^retract]? Is it possible you may actually get more eyeballs and clicks on your work just having it on your own website[^noaccess] or [tweeting about it](https://www.altmetric.com/about-altmetrics/what-are-altmetrics/)?
+
+The current paradigm is going to change because it has to, and there is practically no justification for the traditional approach to academic publication. Indeed, the change is already well underway, with some outlets requiring pre-registration, code, and other changes to the usual send-a-pdf-and-we'll-get-back-to-you approach.  You might as well be using tools and an approach that will already accommodate such change[^nobel].
+
+For more on tools for reproducible research in R, see the [task view](https://cran.r-project.org/web/views/ReproducibleResearch.html).
+
+
+[^intheback]: And since the journal they are submitting to still thinks it's 1990, all the tables had to be at the end of the document, so they aren't even near the text which refers to them.
+
+[^layteks]: You can pronounce it lah-tek or lay-tek, just don't pronounce it -teks or people who know better will look at you funny.  The 'tex' is based on the Greek.  Also, the stress is on the first syllable.
+
+[^retract]: The answer is none, because none of them can seem to do it in a timely fashion, and even top journals such as Nature, Science, Lancet, and others have been known to actually delay and even refuse to do so even in the face of overwhelming evidence of problematic articles. See [Retraction Watch](https://retractionwatch.com/the-retraction-watch-leaderboard/top-10-most-highly-cited-retracted-papers/) for some insight. 
+
+[^noaccess]: You certainly will from those who don't have paid access to journals.
+
+[^nobel]: Nobel prize-winning research groups are using [interactive reproducible research practices](https://hub.mybinder.org/user/losc-tutorial-l-_event_tutorial-s6sl5re6/notebooks/index.ipynb), so you should feel okay about using it for your stuff.
