@@ -4,10 +4,10 @@
 knitr::opts_chunk$set(eval=T, echo=T)
 ```
 
-# Reproducible Programming
+# Building a Better Data-Driven Product
 
 
-We'll start a discussion of reproducible programming with some terminology you might have come across:
+We'll start a discussion of how to present one's work with some terminology you might have come across:
 
 - *Reproducible research*
 - *Replicable science*
@@ -53,7 +53,7 @@ lm(mpg ~ wt, mtcars) %>%
   pander::pander(round = 2)
 ```
 
-So, imagine a paper in which the previous text content explains the results while the analysis code resides right where the text is.  You didn't see the code, but you saw some nicely formatted results. I personally didn't format anything however, those are using default settings.  Here is the underlying code.
+So, imagine a presentation in which the previous text content explains the results, while the analysis code resides right where the text is.  You didn't see the code, but you saw some nicely formatted results. I personally didn't format anything however, those are using default settings.  Here is the underlying code.
 
 
 ```{r lm_demo_show, eval=FALSE}
@@ -68,13 +68,13 @@ The idea of literate programming, i.e. creating human-understandable programs, c
 
 ## R Markdown
 
-*R Markdown* is a flavor of Markdown, a markup language.  Markdown can be converted to other formats like HTML, but is as easy to use as normal text. R Markdown allows one to combine normal R code with text to produce a wide variety of document formats.  This allows for a continuous transition from initial data import and processing to a finished product, whether journal article, slide presentation, or even a website.
+*R Markdown* provides a means for literate programming. It is a flavor of Markdown, a markup language.  Markdown can be converted to other formats like HTML, but is as easy to use as normal text. R Markdown allows one to combine normal R code with text to produce a wide variety of document formats.  This allows for a continuous transition from initial data import and processing to a finished product, whether journal article, software application, slide presentation, or even a website.
 
-To use R Markdown effectively, it helps to know why you'd even want to. So, let's talk about some ideas, all of which are related, and which will give you some sense of the goals of effective document generation, and why this approach is superior to others you might try.
+To use R Markdown effectively, it helps to know why you'd even want to. So, in addition to literate programming, let's talk about some ideas, all of which are related, and which will give you some sense of the goals of effective document generation, and why this approach is superior to others you might try.
 
 ## Replicability & reproducible research
 
-The ideas of *replicability* and *reproducible research* are hot topics in various disciplines of late.  To begin, neither is precisely defined, and depending on the definition one selects, possibly unlikely or even impossible.  They are more ideals to strive for, or goals for certain aspects of the research process.  For example, nothing is exactly replicable, if only because time will have passed, and with it some things will have changed about the process since the initial research was conducted- the people involved, the data collection approach, the analytical tools, etc.  However, we can replicate some things, possibly even exactly, and thus make the results reproducible.
+The ideas of *replicability* and *reproducible research* are hot topics in various disciplines of late.  To begin, neither is precisely defined, and depending on the definition one selects, possibly unlikely or even impossible.  They are more ideals to strive for, or goals for certain aspects of the data analysis process.  For example, nothing is exactly replicable, if only because time will have passed, and with it some things will have changed about the process since the initial research was conducted- the people involved, the data collection approach, the analytical tools, etc.  However, we can replicate some things, possibly even exactly, and thus make the results reproducible.
 
 Our focus will be on data analysis in particular.  Let's start with the following scenario. Various versions of a data set are used leading up to analysis, and after several iterations, `finaldata7` is now spread across the computers of the faculty advisor, two graduate students and one undergrad. Two of those finaldata7 data sets, specifically named `finaldata7a` and `finaldata7b`, are slightly different from the other two and each other.  The undergraduate, who helped with the processing of `finaldata2` through `finaldata6`, has graduated and no longer resides in the same state, nor likely cares any more about the project.  Some of the data processing was done with menus in a software package that shall not be named.
 
