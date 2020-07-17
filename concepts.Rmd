@@ -36,7 +36,7 @@ To begin, these and related terms are often not precisely defined, and depending
 
 ### Example
 
-As our focus will be on data analysis in particular, let's start with the following scenario. Various versions of a data set are used leading up to analysis, and after several iterations, `finaldata7` is now spread across the computers of the faculty advisor, two graduate students and one undergrad. Two of those `finaldata7` data sets, specifically named `finaldata7a` and `finaldata7b`, are slightly different from the other two and each other.  The undergraduate, who helped with the processing of `finaldata2` through `finaldata6`, has graduated and no longer resides in the same state, and has other things to occupy their time.  Some of the data processing was done with menus in a software package that shall not be named.
+As our focus will be on data analysis in particular, let's start with the following scenario. Various versions of a data set are used leading up to analysis, and after several iterations, `finaldata7` is now spread across the computers of the faculty advisor, two graduate students and one undergraduate student. Two of those `finaldata7` data sets, specifically named `finaldata7a` and `finaldata7b`, are slightly different from the other two and each other.  The undergraduate, who helped with the processing of `finaldata2` through `finaldata6`, has graduated and no longer resides in the same state, and has other things to occupy their time.  Some of the data processing was done with menus in a software package that shall not be named.
 
 The script that did the final analysis, called `results.C`, calls the data using a directory location which no longer exists (and refers only to `finaldata7`).  Though it is titled 'results', the script performs several more data processing steps, but without comments that would indicate why any of them are being done.  Some of the variables are named things like `PDQ` and `V3`, but there is no documentation that would say what those mean.
 
@@ -123,7 +123,9 @@ In summary, truly rep* data analysis requires:
 
 We've seen a poor example, what about a good one?  For instance, one could start their research as an RStudio project using Git for version control, write their research products using R Markdown, set seeds for random variables, and use <span class="pack">packrat</span> to keep the packages used in analysis specific to the project.  Doing so would make it much more likely to reproduce the previous results at any stage, even years later.
 
-
+- [Reproducibility Guide by ROpenSci](https://ropensci.github.io/reproducibility-guide/)
+[Ten Simple Rules for Reproducible Computational Research](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003285) @sandve2013ten
+[Recommendations to Funding Agencies for Supporting Reproducible Research](https://www.amstat.org/asa/files/pdfs/POL-ReproducibleResearchRecommendations.pdf)
 
 ## Literate Programming
 
