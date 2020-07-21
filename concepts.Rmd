@@ -8,6 +8,21 @@ knitr::opts_chunk$set(eval=T, echo=T)
 
 # Building Better Data-Driven Products
 
+
+<div style = 'text-align: center'>
+<i class="fas fa-database fa-5x" aria-hidden="true"></i><span class="" style = "margin-right: 25px"></span><i class="fas fa-plus fa-3x"></i><span class="" style = "margin-right: 25px"></span><i class="fab fa-r-project fa-5x" style = 'color:#1f65b7'></i>
+
+<br>
+<i class="far fa-arrow-alt-circle-down fa-3x"></i></i><span class="" style = "margin-right: 25px">
+<br>
+
+<i class="fas fa-users fa-5x" style = 'color:#009975'></i></i><span class="" style = "margin-right: 25px">
+
+
+</div>
+
+
+
 At this point we've covered many topics that will get you from data import and generation to visualizing model results.  What's left? To tell others about what you've discovered!  While there are any number of ways to present your *data-driven product*, there are a couple of things to keep in mind regardless of the chosen rendition. Chief among them is building a product that will be intimately connected with all the work that went before it, and which will be consistent across products and (hopefully) over time as well.
 
 We'll start our discussion of how to present one's work with some terminology you might have come across:
@@ -205,7 +220,7 @@ N = N + 1
 
 Consider [arxiv.org](https://arxiv.org/). Researchers will put papers there before they are published in journals, ostensibly to provide an openly available, if not *necessarily* 100% complete, work.  Others put working drafts or just use it as a place to float some ideas out there.  It is a serious outlet however, and a good chunk of the articles I read in the stats world can be found there.
 
-Look closely at [this particular entry](https://arxiv.org/abs/1507.02646). As I write this there have been `r N` versions of it, and one has access to any of them.  <span class="marginnote">The number of versions in that sentence, `r N`, is not typed. It is based on R code that scraped the arXiv website and processed the submission history.</span> If something changes, there is no reason not to have a version `r N+1` or however many one wants.  In a similar vein, many of my own documents on machine learning, Bayesian analysis, generalized additive models, etc. have been regularly updated for several years now.
+Look closely at [this particular entry](https://arxiv.org/abs/1507.02646). As I write this there have been `r N` versions of it, and one has access to any of them.[^inlinedl] If something changes, there is no reason not to have a version `r N+1` or however many one wants.  In a similar vein, many of my own documents on machine learning, Bayesian analysis, generalized additive models, etc. have been regularly updated for several years now.
 
 Research is never complete.  Data can be augmented, analyses tweaked, visualizations improved. Will the products of your own efforts adapt?
 
@@ -225,8 +240,8 @@ Let's recap the issues with traditional approaches:
 - Often very difficult to get visualizations/tables to look as desired
 - No interactivity
 
-<span class="marginnote">Some journals still charge extra for color plots. First, there obviously is no cost for color for electronic documents, which is how the vast majority of research articles are accessed. They often don't ask whether you actually want it printed in color (they'll simply want to charge you for any color plots you have), nor do they seem to care that you can use color schemes that would look fine in black and white.  This situation is ridiculous.</span>
-The case for using a markdown approach is now years old and well established. Unfortunately many, but not all, journals are still print-oriented, because their income depends on the assumption of print, not to mention a closed-source, broken, and anti-scientific system of review and publication that dates [back to the 17th century](https://www.npr.org/sections/health-shots/2018/02/24/586184355/scientists-aim-to-pull-peer-review-out-of-the-17th-century).  Consider the fact that you could blog about your research while conducting it, present preliminary results in your blog via R Markdown (because your blog itself is done via R Markdown), get regular feedback from peers along the way via your site's comment system, and all this before you'd ever send it off to a journal.  Now ask yourself what a print-oriented journal actually offers you? When was the last time you actually opened a print version of a journal? How often do you go to a journal site to look for something as opposed to a simple web search or using something like Google Scholar?  How many journals do adequate retractions when problems are found[^retract]? Is it possible you may actually get more eyeballs and clicks on your work just having it on your own website[^noaccess] or [tweeting about it](https://www.altmetric.com/about-altmetrics/what-are-altmetrics/)?
+
+The case for using a markdown approach is now years old and well established. Unfortunately many, but not all, journals are still print-oriented[^badparadigm], because their income depends on the assumption of print, not to mention a closed-source, broken, and anti-scientific system of review and publication that dates [back to the 17th century](https://www.npr.org/sections/health-shots/2018/02/24/586184355/scientists-aim-to-pull-peer-review-out-of-the-17th-century).  Consider the fact that you could blog about your research while conducting it, present preliminary results in your blog via R Markdown (because your blog itself is done via R Markdown), get regular feedback from peers along the way via your site's comment system, and all this before you'd ever send it off to a journal.  Now ask yourself what a print-oriented journal actually offers you? When was the last time you actually opened a print version of a journal? How often do you go to a journal site to look for something as opposed to a simple web search or using something like Google Scholar?  How many journals do adequate retractions when problems are found[^retract]? Is it possible you may actually get more eyeballs and clicks on your work just having it on your own website[^noaccess] or [tweeting about it](https://www.altmetric.com/about-altmetrics/what-are-altmetrics/)?
 
 The current paradigm is going to change because it has to, and there is practically no justification for the traditional approach to academic publication. Indeed, the change has already been well underway, with some outlets requiring pre-registration, code, and other changes to the usual send-a-pdf-and-we'll-get-back-to-you approach[^nobel]. In non-academic settings, while there is the same sort of pushback there, even those used to print and powerpoints must admit they'd prefer an interactive document that works on their phone if needed.  As such, you might as well be using tools and an approach that accommodate the things we've talked about in order to produce a better data-driven product. 
 
@@ -250,3 +265,7 @@ For more on tools for reproducible research in R, see the [task view](https://cr
 [^litprog]: You might wonder why, given that such an idea was around even before MS Word, how the latter took over in most, but certainly not all, disciplines in academia, especially given that MS Word was only very recently remotely viable as a means for scientific communication, and many would say still isn't. I don't have a good answer.
 
 [^hipaa]: It is often the case that data is restricted due to privacy concerns, such as HIPAA and other. However, some abuse this to keep from having to reveal their data to those would try to replicate results.  Merely having demographic data does not make data identifiable, and many research settings allow for data to be made available for research purposes beyond a single study.  Accessible data is not equivalent to publicly available data.  Even when data is publicly available some will not publish their processed data that went into analysis, which again makes the study non-replicable if the data-processing code is not also made available.
+
+[^inlinedl]: The number of versions in that sentence, `r N`, is not typed. It is based on R code that scraped the arXiv website and processed the submission history.
+
+[^badparadigm]: Some journals still charge extra for color plots. First, there obviously is no cost for color for electronic documents, which is how the vast majority of research articles are accessed. They often don't ask whether you actually want it printed in color (they'll simply want to charge you for any color plots you have), nor do they seem to care that you can use color schemes that would look fine in black and white.  This situation is ridiculous.

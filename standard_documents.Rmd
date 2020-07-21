@@ -2,7 +2,7 @@
 
 ## R Markdown files
 
-R Markdown files, with extension `*.Rmd`, are a combination of text, <span class="emph">chunks</span> of R code, and possibly other code or syntax, all within a single file. Various packages, e.g. <span class="pack">rmarkdown</span>, <span class="pack">knitr</span>, <span class="pack">pandoc</span>, etc., work behind the scenes to knit all those pieces into one coherent whole, in whatever format is desired.<span class="marginnote">Pandoc is the universal translator that takes various formats, particularly markup languages, and converts them into others.</span>  The <span class="pack">knitr</span> package is the driving force behind most of what is done to create the final product.
+R Markdown files, with extension `*.Rmd`, are a combination of text, <span class="emph">chunks</span> of R code, and possibly other code or syntax, all within a single file. Various packages, e.g. <span class="pack">rmarkdown</span>, <span class="pack">knitr</span>, <span class="pack">pandoc</span>, etc., work behind the scenes to knit all those pieces into one coherent whole, in whatever format is desired[^pandoc].  The <span class="pack">knitr</span> package is the driving force behind most of what is done to create the final product.
 
 #### HTML
 
@@ -14,7 +14,7 @@ I personally do everything in HTML because it's the most flexible and easiest to
 Writing text in a R Markdown document is the same as anywhere else.  There are a couple things you'll use frequently though.
 
 - Headers: Specified #, ##, ### etc. corresponding to H1 H2 H3 etc.
-- Italics & bold:  \**word*\* for italics \*\***word**\*\* for bold.  You can also use underscores (some flavors may require it).
+- Italics & bold:  \**word*\* for italics \*\***word**\*\* for bold.  You can also use underscores (some Markdown flavors may require it).
 - Links: `[some_text](http://webaddress.com)`
 - Image: `![alt-text](img_location)`
 - Lists: Start with a dash or number, and make sure the first element is separated from any preceding text by a full blank line. Then separate each element by a line.
@@ -42,7 +42,7 @@ x = rnorm(10)
 ```")
 ```
 
-There is no limit to what you put in an R chunk.  I don't recommend it, but it could be hundreds of lines of code.  You can put these anywhere within the document.  Other languages, e.g. Python, can be used as well, as long as <span class="emph">knitr</span> knows where to look for the engine for the code you want to insert.
+There is no limit to what you put in an R chunk.  I don't recommend it, but it could be hundreds of lines of code!  You can put these anywhere within the document.  Other languages, e.g. Python, can be used as well, as long as <span class="emph">knitr</span> knows where to look for the engine for the code you want to insert.
 
 ### In-line
 
@@ -66,7 +66,7 @@ This effect of this in scientific reporting cannot be understated.
 
 ### Labels
 
-All chunks should be given a label. This makes it easy to find it within your document because there are two outlines available to you. One that shows your text headers (to the right), and one that you can click to reveal that will also show your chunks (bottom left).  If they just say Chunk 1, Chunk 2 etc., it doesn't help you any.  There is also some potential benefit in terms of caching, which we'll discuss later.
+All chunks should be given a label. This makes it easy to find it within your document because there are two outlines available to you. One that shows your text headers (to the right), and one that you can click to reveal that will also show your chunks (bottom left).  If they just say Chunk 1, Chunk 2 etc., it doesn't help you to know what they're doing.  There is also some potential benefit in terms of caching, which we'll discuss later.
 
 <img src="img/chunk_outline.png" style="display:block; margin: 0 auto;">
 
@@ -77,7 +77,7 @@ You don't have to knit the document to run the code, and often you'll be using t
 
 <img src="img/run_chunk.png" style="display:block; margin: 0 auto;" width=75%>
 
-By default, when you knit the document all code will be run.  Depending on a variety of factors, this may or may not be what you want to do, especially if it is time-consuming to do so.  We'll talk about how to deal with this issue in the next part.
+By default, when you knit the document, all code will be run.  Depending on a variety of factors, this may or may not be what you want to do, especially if it is time-consuming to do so.  We'll talk about how to deal with this issue in the next part.
 
 ## Multiple documents
 
@@ -88,9 +88,11 @@ A single `.Rmd` file can call others, referred to as <span class="emph">child do
 
 <span class="emph">R Notebooks</span> are a format one can use that might be more suitable for code collaboration.  They are identical to the standard HTML document in most respects, but chunks will by default print output in the Rmd file itself.  For example, a graduate student could write up a notebook, and their advisor could then look at the document, change the code as needed etc. Of course, you could just do this with a standard R script as well.  Some prefer the inline output however.
 
-For more involved collaborations, I would suggest partitioning the sections into their own document, then use version control to merge respective contributions.  Such a process was designed for software development, but there's no reason it wouldn't work for a document in general, and in my experience, it has quite well.
+For more involved collaborations, I would suggest partitioning the sections into their own document, then use version control keep track of respective contributions, and merge as needed.  Such a process was designed for software development, but there's no reason it wouldn't work for a document in general, and in my experience, it has quite well.
 
 
 [^preload]: There is not yet a way within R Markdown that I'm aware of to load on demand as many websites do.  However, waiting for things to load until you come to them is annoying at best, and I usually get tired of waiting and move on to other things.
 
 [^macshortcuts]: As with RStudio in general, Mac shortcuts for R Markdown documents will deviate from the Windows/Linux ones (in mostly unfortunate/inefficient ways).
+
+[^pandoc]: Pandoc is the universal translator that takes various formats, particularly markup languages, and converts them into others.
