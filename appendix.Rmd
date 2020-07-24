@@ -1,0 +1,101 @@
+# Appendix{#appendix}
+
+
+## R Markdown
+
+### Footnotes
+
+Footnotes are very straightforward.  To add one just put `[^myfootnote]` where needed (the name is arbitrary). Then, somewhere in your document add the following.
+
+```markdown
+[^myfootnote]:  Yadda blah yadda.
+```
+
+The usual practice is to put them at the end of the document.  It doesn't matter what order you put them in, they will be displayed/numbered as they appear in the actual text.
+
+### Citations and References
+
+
+#### References & Bibliography
+
+Assuming you have a reference file somewhere adding them to the text of the document is very easy.  Many formats of the file are acceptable, such as BibTeX, EndNote, and more.  For example if using BibTeX and the file is `refs.bib`, then just note the file in the YAML section.
+
+```yaml
+bibliography: refs.bib
+biblio-style: apalike
+link-citations: yes
+```
+
+The style can be anything you want, but will take some extra steps to use.  Consult the R Markdown page for how to use custom styles.
+
+Now, somewhere in your document, put an empty References header like so:
+
+```markdown
+# References
+```
+
+The references you cite will magically appear in the references section when you knit the document.  Note that <span class="emph">bookdown</span> documents, of which this is one, also put them at the bottom of the page where the citation occurs.
+
+#### Citations
+
+Now that your document has some references, you'll want to cite them! In the refs.bib file for example, we have the following entry:
+
+```bibtex
+@book{clark2018rmd,
+  title={Introduction to R Markdown},
+  author={Clark, Michael},
+  year={2018}
+}
+```
+
+For example, if we type the following:
+
+`Blah blah [see @clark2018rmd, pp. 33-35; also @barthelme1981balloon].`
+
+It will produce:
+
+Blah blah [see @clark2018rmd, pp. 33-35; also @barthelme1981balloon].
+
+
+Use a minus sign (-) before the @ to suppress mention of the author in the citation. T
+
+`Clark says blah [-@clark2018rmd].`
+
+Clark says blah [-@clark2018rmd].
+
+You can also write an in-text citation, as follows:
+
+`@barthelme1981balloon says blah.`
+
+@barthelme1981balloon says blah.
+
+`@barthelme1981balloon [p. 33] says blah.`
+
+@barthelme1981balloon [p. 33] says blah.
+
+
+### Multiple Documents
+
+If you're writing a lengthy document, for example, an academic article, you'll not want to have a single `*.Rmd` file for the whole thing, no more than you want a single R script to do all the data preparation and analysis for it.  For one thing, probably only one section is data heavy, and you wouldn't want to have to do a lot of processing every time you make a change to the document (though caching would help there). In addition, if there is a problem with one section, you can still put the document together by just ignoring the problematic part.  A more compelling reason regards collaboration.  Your colleague can write the introduction while you work on the results, and the final paper can then be put together without conflict.
+
+The best way to accomplish this is to think of your document like you would a website.  The `index.Rmd` file has the YAML and other settings, and it will also be where the other files come together.  For example a paper with an introduction, results, and discussion section might have this in the index file.
+
+```{r multidoc, echo=FALSE, results='markup', results='hold'}
+cat("```{r, child='introduction.Rmd'}
+```\n\n")
+cat("```{r, child='results.Rmd'}
+```\n\n")
+cat("```{r, child='discussion.Rmd'}
+```")
+```
+
+You work on the individual sections separately, and when you knit the index file, all will come together.  What's more, if you're creating an HTML document, you now can put this index file, which is the complete document, on the web for easy access.  For example, if the document is placed in a folder like `mydoc`, then one could go to `www.someplace.net/mydoc/` and view the document.
+
+### Web Standards
+
+When creating an HTML document or site and customizing things as you like, you should consider accessibility issues at some point. Not everyone interacts with the web the same way. For example, roughly 10% of people see [color differently](https://en.wikipedia.org/wiki/Color_blindness) from 'normal'.  Also, if your font is too light to read, or your visualizations don't distinguish points of interest for a certain group of people, your document is less effective at communicating your ideas.
+
+As a simple example, when we changed the link color to dodgerblue, it might not have seemed like much, but the color was no longer sufficient contrast at the lowest web standards.  Nor was my original color when the gray background was added.  The default link color for my documents is just fine though.
+
+You can get a [browser extension](https://www.deque.com/axe/) to see what problems your page has once it's on the web.    This is where your `*.css` file will come in handy, fixing 100 problems with one line of code.  Then you have a template you can use from there on out.  As you'll be using HTML more and more the more you use R Markdown, things like this become more important.  You won't likely be able to deal with every issue that arises, but you'll want to consider them.
+
