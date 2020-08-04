@@ -1,19 +1,21 @@
 # Standard Documents
 
+
 ## R Markdown files
 
-R Markdown files, with extension `*.Rmd`, are a combination of text, <span class="emph">chunks</span> of R code, and possibly other code or syntax, all within a single file. Various packages, e.g. <span class="pack">rmarkdown</span>, <span class="pack">knitr</span>, <span class="pack">pandoc</span>, etc., work behind the scenes to knit all those pieces into one coherent whole, in whatever format is desired[^pandoc].  The <span class="pack">knitr</span> package is the driving force behind most of what is done to create the final product.
+R Markdown files, with extension `*.Rmd`, are a combination of text, R code, and possibly other code or syntax, all within a single file. Various packages, e.g. <span class="pack">rmarkdown</span>, <span class="pack">knitr</span>, <span class="pack">pandoc</span>, etc., work behind the scenes to knit all those pieces into one coherent whole, in whatever format is desired[^pandoc].  The <span class="pack">knitr</span> package is the driving force behind most of what is done to create the final product.
+
 
 #### HTML
 
-I personally do everything in HTML because it's the most flexible and easiest to get things looking the way you want.  Presumably at some point, these will simply be the default that people both use and expect in the academic realm and beyond, as there is little additional value that one can get with PDF or MS Word, and often notably less.  Furthermore, academia is an anachronism.  How much do you engage PDF and Word for *anything* else relative to how much you make use of HTML (i.e. the web)?
+I personally do everything in HTML because it's the most flexible, and easiest to get things looking the way you want.  Presumably at some point, these will simply be the default that people both use and expect in the academic realm and beyond, as there is little additional value that one can get with PDF or MS Word, and often notably less.  Furthermore, academia is an anachronism.  How much do you engage PDF and Word for *anything* else relative to how much you make use of HTML (i.e. the web)?
 
 
 ## Text
 
 Writing text in a R Markdown document is the same as anywhere else.  There are a couple things you'll use frequently though.
 
-- Headers: Specified #, ##, ### etc. corresponding to H1 H2 H3 etc.
+- Headings/Subheadings: Specified #, ##, ### etc.
 - Italics & bold:  \**word*\* for italics \*\***word**\*\* for bold.  You can also use underscores (some Markdown flavors may require it).
 - Links: `[some_text](http://webaddress.com)`
 - Image: `![alt-text](img_location)`
@@ -31,10 +33,13 @@ Some *text*.
 
 That will pretty much cover most of your basic text needs.  For those that know HTML & CSS, you can use those throughout the text as you desire as well.  For example, sometimes I need some extra space after a plot and will put in a `<br>`.
 
+
+
 ## Code
+
 ### Chunks
 
-Along with text, the most common thing you'll have is code.  The code resides in a <span class="emph">chunk</span>, and looks like this.  You can add it to your document with the `Insert` menu in the upper right of your Rmd file, but as you'll be needing to do this all the time, instead you'll want to use the keyboard shortcut of Ctrl/Cmd + Alt/Option + I[^macshortcuts].
+After text, the most common thing you'll have is code.  The code resides in a *chunk*, and looks like this.  You can add it to your document with the `Insert` menu in the upper right of your Rmd file, but as you'll be needing to do this all the time, instead you'll want to use the keyboard shortcut of Ctrl/Cmd + Alt/Option + I[^macshortcuts].
 
 ```{r rchunk, echo=FALSE, results='markup'}
 cat("```{r}
@@ -42,7 +47,8 @@ x = rnorm(10)
 ```")
 ```
 
-There is no limit to what you put in an R chunk.  I don't recommend it, but it could be hundreds of lines of code!  You can put these anywhere within the document.  Other languages, e.g. Python, can be used as well, as long as <span class="emph">knitr</span> knows where to look for the engine for the code you want to insert.
+There is no limit to what you put in an R chunk.  I don't recommend it, but it could be hundreds of lines of code!  You can put these anywhere within the document.  Other languages, e.g. Python, can be used as well, as long as <span class="pack">knitr</span> knows where to look for the engine for the code you want to insert[^otherlang].
+
 
 ### In-line
 
@@ -64,6 +70,7 @@ This effect of this in scientific reporting cannot be understated.
 
 >**Your goal in writing a document should be to not explicitly write a single number that's based on data.**
 
+
 ### Labels
 
 All chunks should be given a label. This makes it easy to find it within your document because there are two outlines available to you. One that shows your text headers (to the right), and one that you can click to reveal that will also show your chunks (bottom left).  If they just say Chunk 1, Chunk 2 etc., it doesn't help you to know what they're doing.  There is also some potential benefit in terms of caching, which we'll discuss later.
@@ -79,14 +86,15 @@ You don't have to knit the document to run the code, and often you'll be using t
 
 By default, when you knit the document, all code will be run.  Depending on a variety of factors, this may or may not be what you want to do, especially if it is time-consuming to do so.  We'll talk about how to deal with this issue in the next part.
 
+
 ## Multiple documents
 
-A single `.Rmd` file can call others, referred to as <span class="emph">child documents</span>, and when you knit that document you'll have one single document with the content from all of them.  You may want to consider other formats, such as <span class="emph">bookdown</span>, rather than doing this.  Scrolling a lot is sometimes problematic, and not actually required for the presentation of material.  It also makes the content take longer to load, because everything has to load[^preload].  See the [appendix](#appendix) for details.
+A single `.Rmd` file can call others, referred to as *child documents*, and when you knit that document you'll have one single document with the content from all of them.  You may want to consider other formats, such as *bookdown*, rather than doing this.  Scrolling a lot is sometimes problematic, and not actually required for the presentation of material.  It also makes the content take longer to load, because everything has to load[^preload].  See the [appendix](#appendix) for details.
 
 
 ## Sharing Code & Collaboration
 
-<span class="emph">R Notebooks</span> are a format one can use that might be more suitable for code collaboration.  They are identical to the standard HTML document in most respects, but chunks will by default print output in the Rmd file itself.  For example, a graduate student could write up a notebook, and their advisor could then look at the document, change the code as needed etc. Of course, you could just do this with a standard R script as well.  Some prefer the inline output however.
+*R Notebooks* are a format one can use that might be more suitable for code collaboration.  They are identical to the standard HTML document in most respects, but chunks will by default print output in the Rmd file itself.  For example, a graduate student could write up a notebook, and their advisor could then look at the document, change the code as needed etc. Of course, you could just do this with a standard R script as well.  Some prefer the inline output however.
 
 For more involved collaborations, I would suggest partitioning the sections into their own document, then use version control keep track of respective contributions, and merge as needed.  Such a process was designed for software development, but there's no reason it wouldn't work for a document in general, and in my experience, it has quite well.
 
@@ -96,3 +104,5 @@ For more involved collaborations, I would suggest partitioning the sections into
 [^macshortcuts]: As with RStudio in general, Mac shortcuts for R Markdown documents will deviate from the Windows/Linux ones (in mostly unfortunate/inefficient ways).
 
 [^pandoc]: Pandoc is the universal translator that takes various formats, particularly markup languages, and converts them into others.
+
+[^otherlang]: In theory.  I've had numerous issues trying to use Python via RStudio's <span class="pack" style = "">reticulate</span> package, and find it extremely frustrating to use on a Mac (only mildly frustrating on Windows). Other packages, e.g. Stata, cannot pass results from one chunk to the next. When it works, it's a great resource.
