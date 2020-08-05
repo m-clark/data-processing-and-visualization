@@ -1,6 +1,12 @@
 # Standard Documents
 
 
+<br>
+<div style = 'text-align: center'>
+<i class="fas fa-file-code fa-5x" aria-hidden="true"></i><span class="" style = "margin-right: 25px"></span><i class="far fa-arrow-alt-circle-right fa-3x"></i><span class="" style = "margin-right: 25px"></span><i class="fab fa-html5 fa-5x"></i>
+</div>
+<br>
+
 ## R Markdown files
 
 R Markdown files, with extension `*.Rmd`, are a combination of text, R code, and possibly other code or syntax, all within a single file. Various packages, e.g. <span class="pack">rmarkdown</span>, <span class="pack">knitr</span>, <span class="pack">pandoc</span>, etc., work behind the scenes to knit all those pieces into one coherent whole, in whatever format is desired[^pandoc].  The <span class="pack">knitr</span> package is the driving force behind most of what is done to create the final product.
@@ -49,6 +55,40 @@ x = rnorm(10)
 
 There is no limit to what you put in an R chunk.  I don't recommend it, but it could be hundreds of lines of code!  You can put these anywhere within the document.  Other languages, e.g. Python, can be used as well, as long as <span class="pack">knitr</span> knows where to look for the engine for the code you want to insert[^otherlang].
 
+#### Chunk Options
+
+There are many things to specify for a specific chunk, or to apply to all chunks.  The example demonstrates some of the more common ones you might use.
+
+```{r rchunk-opts, echo=FALSE, results='markup'}
+cat("```{r mylabel, echo = TRUE, eval = TRUE, cache = FALSE, out.width = '50%'}
+# code
+```")
+```
+
+These do the following:
+
+- **echo**: show the code; can be logical, or line numbers specifying which lines to show
+- **eval**: evaluate the code; can be logical, or line numbers specifying which lines to show
+- **cache**:  logical, whether to cache the results for later reuse without reevaluation
+- **out.width**:  figure width, can be pixels, percentage, etc.
+
+You can also specify these as defaults for the whole document by using a chunk near the beginning that looks something like this.
+
+```{r rchunk-default, echo=FALSE, results='markup'}
+cat("```{r setup}
+knitr::opts_chunk$set(
+  echo = T,
+  message = F,
+  warning = F,
+  error = F,
+  comment = NA,
+  R.options = list(width = 220),
+  dev.args = list(bg = 'transparent')
+)
+```")
+```
+
+There are [quite a few options](https://yihui.org/knitr/options/), so familiarize yourself with what's available, even if you don't plan on using it, because you never know.
 
 ### In-line
 

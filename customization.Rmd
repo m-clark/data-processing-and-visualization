@@ -1,9 +1,25 @@
 # Customization & Configuration
 
+<br>
+
+<div style = 'text-align: center'>
+<i class="fas fa-file-code fa-5x" aria-hidden="true"></i>
+<span class="" style = "margin-right: 25px">
+</span><i class="far fas fa-plus fa-3x"></i>
+<span class="" style = "margin-right: 25px"></span>
+<i class="fab fa-html5 fa-5x"></i>
+<span class="" style = "margin-right: 25px"></span>
+</span><i class="far fas fa-plus fa-3x"></i>
+<span class="" style = "margin-right: 25px"></span>
+<i class="fab fa-css3-alt  fa-5x"></i>
+</div>
+
+<br>
+
 Now that you have a document ready to go, you'll want to customize it to make it look the way you want.  There is basically nothing you can't change by using R packages to enhance output, using custom themes to control the overall look, and using various other tools to your liking.
 
 
-## Output options
+## Output Options
 
 The basic document comes with several options to apply to your output.  You'll find a cog wheel in the toolbar area underneath the tabs.
 
@@ -242,3 +258,54 @@ For some of you, if you aren't careful, you'll spend an afternoon on an already 
 [^css]: **CSS** stands for **c**ascading **s**tyle **s**hheets.
 
 [^classidtag]: In CSS, tags like **a**, **table**, and **img**, have no marker, classes are denoted with **.classname**, and IDs are note with **#idname**.
+
+
+## R Markdown Exercises
+
+
+
+### Create a document
+
+- Create an `*.Rmd` for HTML.
+- Now change some configuration options: choose a theme and add a table of contents.  For the latter, create some headings/sections and sub-sections so that you can see your configuration in action.
+
+
+### Adding code
+
+- Add a chunk that does the following: `summary(mtcars)`
+
+- Add a chunk that produces a visualization.  If you need an example, create a density plot of the population total variable from the <span class="objclass">midwest</span> data set in the <span class="pack">ggplot2</span> package.  Now align it with the `fig.align` chunk option.
+
+- Add a chunk similar to the previous but have the resulting document hide the code, just showing the visualization.
+
+- Now add a chunk that *only* shows the code, but doesn't actually run it.
+
+- Add a chunk that creates an R object such as a set of numbers or text. Then use that object in the text via inline R code. For example, show only the first element of the object in a sentence.
+
+- **Bonus**: Set a chunk option that will be applied to the whole document.  For example, make the default figure alignment be centered, or have the default be to hide the code.
+
+
+### Dealing with text
+
+- Italicize or bold some words.
+- Add a hyperlink.
+- Add a line break via HTML. Bonus: use <span class="pack">htmltools</span> and the `br()` function to add a line break within an R chunk.  See what happens when you simply put several line returns.
+- Change your output to PDF.
+
+
+### Adding more
+
+For these, you'll have to look it up, as we haven't explicitly discussed it.
+
+- Add a title and subtitle to your document (YAML)
+- Remove the # from the R chunk outputs (Chunk option)
+- Create a quoted block. (Basic Markdown)
+
+
+### Advanced
+
+For this you'd have to know a little CSS, but just doing it once will go quite a ways to helping you feel comfortable being creative with your own CSS files.
+
+- Create a `*.css` file to set an option for your link color. Don't forget to refer to it in your YAML configuration section of the Rmd file.  Just add something like `css: file/location/file.css`.
+
+- Create a special class of links and add a link of that class.
