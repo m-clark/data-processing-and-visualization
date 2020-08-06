@@ -1,0 +1,271 @@
+# (PART\*) Part V: Presentation {-}
+
+```{r rmdsetup, include=FALSE, eval=TRUE, cache=FALSE}
+knitr::opts_chunk$set(eval=T, echo=T)
+```
+
+
+
+# Building Better Data-Driven Products
+
+
+<div style = 'text-align: center'>
+<i class="fas fa-database fa-5x" aria-hidden="true"></i><span class="" style = "margin-right: 25px"></span><i class="fas fa-plus fa-3x"></i><span class="" style = "margin-right: 25px"></span><i class="fab fa-r-project fa-5x" style = 'color:#1f65b7'></i>
+
+<br>
+<i class="far fa-arrow-alt-circle-down fa-3x"></i></i><span class="" style = "margin-right: 25px">
+<br>
+
+<i class="fas fa-users fa-5x" style = 'color:#009975'></i></i><span class="" style = "margin-right: 25px">
+
+
+</div>
+
+
+
+At this point we've covered many topics that will get you from data import and generation to visualizing model results.  What's left? To tell others about what you've discovered!  While there are any number of ways to present your *data-driven product*, there are a couple of things to keep in mind regardless of the chosen rendition. Chief among them is building a product that will be intimately connected with all the work that went before it, and which will be consistent across products and (hopefully) over time as well.
+
+We'll start our discussion of how to present one's work with some terminology you might have come across:
+
+- *Reproducible research*
+- *Repeatable research*
+- *Replicable science*
+- *Reproducible data analysis*
+- *Literate programming*
+- *Dynamic data analysis*
+- *Dynamic report generation*
+
+Each of these may mean slightly different things depending on the context and background of the person using them, so one should take care to note precisely what is meant.  We'll examine some of these concepts, or at least my particular version of them.
+
+
+
+
+## Rep* Analysis
+
+Let's start with the notions of *replicability*, *repeatability*, and *reproducibility*, which are hot topics in various disciplines of late.  In our case, we are specifically concerned with programming and analytical results, visualizations, etc. (e.g. as opposed to running an experiment).
+
+To begin, these and related terms are often not precisely defined, and depending on the definition one selects, possibly unlikely, or even impossible!  I'll roughly follow the Association for Computing Machinery guidelines @acm2020 since they actually do define them, but mostly just to help get us organize our thinking about them, and so you can at least know what *I* mean when I use the terms.  In many cases, the concepts are best thought of as ideals to strive for, or goals for certain aspects of the data analysis process.  For example, in deference to Heraclitus, Cratylus, the Buddha, and others, nothing is exactly replicable, if only because time will have passed, and with it some things will have changed about the process since the initial analysis was conducted- the people involved, the data collection approach, the analytical tools, etc.  Indeed, even your thought processes regarding the programming and analysis are in constant flux while engaged with the data process.  However, we can replicate some things or some aspects of the process, possibly even exactly, and thus make the results reproducible.  In other cases, even when we can, we may not want to.
+
+
+### Example
+
+As our focus will be on data analysis in particular, let's start with the following scenario. Various versions of a data set are used leading up to analysis, and after several iterations, `finaldata7` is now spread across the computers of the faculty advisor, two graduate students and one undergraduate student. Two of those `finaldata7` data sets, specifically named `finaldata7a` and `finaldata7b`, are slightly different from the other two and each other.  The undergraduate, who helped with the processing of `finaldata2` through `finaldata6`, has graduated and no longer resides in the same state, and has other things to occupy their time.  Some of the data processing was done with menus in a software package that shall not be named.
+
+The script that did the final analysis, called `results.C`, calls the data using a directory location which no longer exists (and refers only to `finaldata7`).  Though it is titled 'results', the script performs several more data processing steps, but without comments that would indicate why any of them are being done.  Some of the variables are named things like `PDQ` and `V3`, but there is no documentation that would say what those mean.
+
+When writing their research document in Microsoft Word, all the values from the analyses were copied and pasted into the tables and text[^intheback].  The variable names in the document have no exact match to any of the names in any of the data objects.  Furthermore, no reference was provided in the text regarding what software or specific packages were used for the analysis.  
+
+And now, several months later, after the final draft of the document was written and sent to the journal, the reviewers have eventually made their comments on the paper, and it's time to dive back into the analysis.  Now, what do you think the odds are that this research group could even reproduce the values reported in the main analysis of the paper?
+
+Sadly, up until recently this was not uncommon, and even certain issues just described are still very common.  Such an approach is essentially the antithesis of replicability and reproducible research[^notsci].  Anything that was only done with menus cannot be replicated for certain, and without sufficient documentation it's not clear what was done even when there is potentially reproducible code.  The naming of files, variables and other objects was done poorly, so it will take unnecessary effort to figure out what was done, to what, and when.  And even after most things get squared away, there is still a chance the numbers won't match what was in the paper anyway.  This scenario is exactly what we don't want.
+
+
+### Repeatable
+
+*Repeatability* can simply be thought of as whether *you* can run the code and analysis again given the same circumstances, essentially producing the same results.  In the above scenario, even this is may not even possible.  But let's say that whoever did the analysis can run their code, it works, and produces a result very similar to what was published.  We could then say it's repeatable. This should only be seen as a minimum standard, though sometimes it is enough.
+
+The notion of repeatability also extends to a specific measure itself. This consistency of a measure across repeated observations is typically referred to as *reliability*. This is not our focus here, but I mention it for those who have the false belief that at least some data driven products are entirely replicable.  However, you can't escape measurement error.
+
+
+### Reproducible
+
+Now let someone else try the analytical process to see if they can *reproduce* the results. Assuming the same data starting point, they should get the same result using the same tools.  For our scenario, if we just start at the very last part, maybe this is possible, but at the least, it would require the data that went into the final analysis and the model being specified in a way that anyone could potentially understand.  However, it is entirely unlikely that if they start from the raw data import they would get the same results that are in the Word document.  If a research article does not provide the analytical data, nor specifies the model in code or math, it is not reproducible, and we can only take on faith what was done. 
+
+Here are some typical non-reproducible situations:
+
+- data is not made available
+- code is not made available
+- model is not adequately represented (in math or code)
+- data processing and/or analysis was done with menus
+- visualizations were tweaked in other programs than the one that produced it
+- p-hacking efforts where 'outliers' are removed or other data transformations were undertaken to obtain a desired result, and are not reported or are not explained well enough to reproduce
+
+I find the lack of clear model explanation to be pervasive in some sciences. For example, I have seen articles in medical outlets where they ran a mixed model, yet none of the variance components or even a regression table is provided, nor is the model depicted in a formal fashion.  You can forget about the code or data being provided as well. I also tend to ignore analyses done using SPSS, because the only reason to use the program is to not have to use the syntax, making reproducibility difficult at best, if it's even possible.
+
+Tools like <span class="pack" style = "">Docker</span>, <span class="pack" style = "">packrat</span>, and others can ensure that the package environment is the same even if you're running the same code years from now, so that results should be reproduced if run on the same data, assuming other things are accounted for.
+
+
+### Replicable
+
+*Replicability*, for our purposes, would be something like, if someone had the same type of data (e.g. same structure), and did the same analysis using their own setup (though with the same or similar tools), would they get the same result (to within some tolerance)?  
+
+For example, if I have some new data that is otherwise the same, install the same R packages etc. on my machine rather than yours, will I get a very similar result (on average)?  Similarly, if I do the exact same analysis using some other package (i.e. using the same estimation procedure even if the underlying code implementation is different), will the results be highly similar?
+
+Here are some typical non-replicable situations:
+
+- all of the non-reproducible/repeatable situations
+- new versions of the packages break old code, fix bugs that ultimately change results, etc.
+- small data and/or overfit models
+
+The last example is an interesting one, and yet it is also one that is driving a lot of so-called unreplicated findings.  Even with a clear model and method, if you're running a complex analysis on small data without any regularization, or explicit understanding of the uncertainty, the odds of seeing the same results in a new setting are not very strong.  While this has been well known and taught in every intro stats course people have taken, the concept evidently immediately gets lost in practice.  I see people regularly befuddled as to why they don't see the same thing when they only have a couple hundred or fewer observations[^hugeeffect].  However, the uncertainty in small samples, if reported, should make this no surprise.
+
+For my own work, I'm not typically as interested in analytical replicability, as I want my results to work now, not replicate precisely what I did two years ago.  No code is bug free, improvements in tools should typically lead to improvements in modeling approach, etc.  In the end, I don't mind the extra work to get my old code working with the latest packages, and there is a correlation between recency and relevancy.  However, if such replicability is desired, specific tools will need to be used, such as version control (Git), containers (e.g. Docker), and similar.
+
+<br>
+<div class='note'>
+These are the stated ACM guidelines.
+
+
+Repeatability (Same team, same experimental setup)
+
+- The measurement can be obtained with stated precision by the same team using the same measurement procedure, the same measuring system, under the same operating conditions, in the same location on multiple trials. For computational experiments, this means that a researcher can reliably repeat her own computation.
+
+Reproducibility (Different team, same experimental setup)
+
+- The measurement can be obtained with stated precision by a different team using the same measurement procedure, the same measuring system, under the same operating conditions, in the same or a different location on multiple trials. For computational experiments, this means that an independent group can obtain the same result using the author’s own artifacts.
+
+Replicability (Different team, different experimental setup)
+
+- The measurement can be obtained with stated precision by a different team, a different measuring system, in a different location on multiple trials. For computational experiments, this means that an independent group can obtain the same result using artifacts which they develop completely independently.
+
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
+
+
+### Summary of Rep* Analysis
+
+In summary, truly rep* data analysis requires:
+
+- Accessible data, or at least, essentially similar data[^hipaa]
+- Accessible, well written code
+- Clear documentation (of data and code)
+- Version control
+- Standard means of distribution
+- Literate programming practices
+- Possibly more depending on the stringency of desired replicability
+
+We've seen a poor example, what about a good one?  For instance, one could start their research as an RStudio project using Git for version control, write their research products using R Markdown, set seeds for random variables, and use <span class="pack">packrat</span> to keep the packages used in analysis specific to the project.  Doing so would make it much more likely to reproduce the previous results at any stage, even years later.
+
+- [Reproducibility Guide by ROpenSci](https://ropensci.github.io/reproducibility-guide/)
+[Ten Simple Rules for Reproducible Computational Research](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003285) @sandve2013ten
+[Recommendations to Funding Agencies for Supporting Reproducible Research](https://www.amstat.org/asa/files/pdfs/POL-ReproducibleResearchRecommendations.pdf)
+
+## Literate Programming
+
+At this point we have an idea of what we want.  But how to we get it?  There is an additional concept to think about that will help us with regard to programming and data analysis. So let's now talk about *literate programming*, which is actually an [old idea](http://www.literateprogramming.com/knuthweb.pdf)[^litprog].
+
+> I believe that the time is ripe for significantly better documentation of programs, and that we can best achieve this by considering programs to be works of literature. <br> ~ Donald Knuth (1984)
+
+The interweaving of code and text is something many already do in normal scripting.  *Comments* in code are not only useful, they are practically required.  But in a program script, almost all the emphasis is on the code.  With literate programming, we instead focus on the text, and the code exists to help facilitate our ability to tell a (data-driven) story.
+
+In the early days, the idea was largely to communicate the idea of the computer program itself. Now, at least in the context we'll be discussing, our usage of literate programming is to generate results that tell the story in a completely human-oriented fashion, possibly without any reference to the code at all.  However, the document, in whatever format, does not exist independently of the code, and cannot be generated without it.
+
+Consider the following example. This code, which is clearly delimited from the text via background and font style, shows how to do an unordered list in *Markdown* using two different methods.  Either a `-` or a `*` will denote a list item.
+
+```
+- item 1
+- item 2
+
+* item 3
+* item 4
+```
+
+So, we have a statement explaining the code, followed by the code itself. We actually don't need a code comment, because the text explains the code in everyday language.  This is a simple example, but it gets at the essence of the approach.  In the document you're reading right now, code may be visible or not, but when visible, it's clear what the code part is and what the text explaining the code is.
+
+The following table shows the results of a regression analysis.
+
+```{r lm_demo, echo=FALSE}
+lm(mpg ~ wt, mtcars) %>% 
+  summary() %>% 
+  pander::pander(round = 2)
+```
+
+You didn't see the code, but you saw some nicely formatted results. I personally didn't format anything however, those are using default settings.  Here is the underlying code.
+
+
+```{r lm_demo_show, eval=FALSE}
+lm(mpg ~ wt, mtcars) %>% 
+  summary() %>% 
+  pander(round = 2)
+```
+
+Now we see the code, but it isn't evaluated, because the goal of the text is not the result, but to explain the code.  So, imagine a product in which the previous text content explains the results, while the analysis code that produces the result resides right where the text is. Nothing is copied and pasted, and the code and text both reside in the same document.  You can imagine how much more easily it is to reproduce a result given such a setup.
+
+The idea of literate programming, i.e. creating human-understandable programs, can extend beyond reports or slides that you might put together for an analysis, and in fact be used for any setting in which you have to write code at all.
+
+
+
+## R Markdown
+
+Now let's shift our focus from concepts to implementation.  *R Markdown* provides a means for literate programming. It is a flavor of Markdown, a markup language used pervasively throughout the web.  Markdown can be converted to other formats like HTML, but is as easy to use as normal text. R Markdown allows one to combine normal R code with text to produce a wide variety of document formats.  This allows for a continuous transition from initial data import and processing to a finished product, whether journal article, software application, slide presentation, or even a website.
+
+To use R Markdown effectively, it helps to know why you'd even want to. So, in addition to literate programming, let's talk about some ideas, all of which are related, and which will give you some sense of the goals of effective document generation, and why this approach is superior to others you might try.
+
+## How to read this chapter
+
+This chapter (and the rest of the document) is [available on GitHub](https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/concepts.Rmd). Looking at the raw content (i.e. the R Markdown files *.Rmd) versus the finished product will get you well on your way to understanding how to use various tools at your disposal to produce a better data driven product.
+
+
+## Dynamic data analysis & report generation
+
+Sometimes the goal is to create an expression of the analysis that is not only to be disseminated to a particular audience, but one which possibly will change over time, as the data itself evolves temporally.  In this dynamic setting, the document must be able to handle changes with minimal effort.  
+
+I can tell you from firsthand experience that R Markdown can allow one to automatically create custom presentation products for different audiences on a regular basis without even touching the data for explicit processing, nor the reports after the templates are created, even as the data continues to come in over time.  Furthermore, any academic effort that would fall under the heading of science is applicable here.
+
+The notion of *science as software development* is something you should get used to. Print has had its day, but is not the best choice for scientific advancement as it should take place.  Waiting months for feedback, or a year to get a paper published after it's first sent for review, and then hoping people have access to a possibly pay-walled outlet, is simply unacceptable.  Furthermore, what if more data comes in? A data or modeling bug is found? Other studies shed additional light on the conclusions?  In this day and age, are we supposed to just continue to cite a work that may no longer be applicable while waiting another year or so for updates?
+
+```{r arxiv, echo=FALSE}
+library(rvest)
+
+test0 = read_html('https://arxiv.org/abs/1507.02646')
+
+N = test0 %>% 
+  html_nodes('.submission-history') %>% 
+  html_nodes('a') %>% 
+  grepl(pattern = 'v[0-9]+') %>% 
+  sum()
+N = N + 1
+```
+
+
+Consider [arxiv.org](https://arxiv.org/). Researchers will put papers there before they are published in journals, ostensibly to provide an openly available, if not *necessarily* 100% complete, work.  Others put working drafts or just use it as a place to float some ideas out there.  It is a serious outlet however, and a good chunk of the articles I read in the stats world can be found there.
+
+Look closely at [this particular entry](https://arxiv.org/abs/1507.02646). As I write this there have been `r N` versions of it, and one has access to any of them.[^inlinedl] If something changes, there is no reason not to have a version `r N+1` or however many one wants.  In a similar vein, many of my own documents on machine learning, Bayesian analysis, generalized additive models, etc. have been regularly updated for several years now.
+
+Research is never complete.  Data can be augmented, analyses tweaked, visualizations improved. Will the products of your own efforts adapt?
+
+
+
+## Using Modern Tools
+
+The main problem for other avenues you might use, like MS Word and $\LaTeX$ [^layteks], is that they were created for printed documents.  However, not only is printing unnecessary (and environmentally problematic), contorting a document to the confines of print potentially distorts or hinders the meaning an author wishes to convey, as well as restricts the means with which they can convey it.  In addition, for academic outlets and well beyond, print is not the dominant format anymore.  Even avid print readers must admit they see much more text on a screen than they do on a page on a typical day.
+
+
+Let's recap the issues with traditional approaches:
+
+- Possibly not usable for rep* analysis
+- Syntax gets in the way of fluid text
+- Designed for print
+- Wasteful if printed
+- Often very difficult to get visualizations/tables to look as desired
+- No interactivity
+
+
+The case for using a markdown approach is now years old and well established. Unfortunately many, but not all, journals are still print-oriented[^badparadigm], because their income depends on the assumption of print, not to mention a closed-source, broken, and anti-scientific system of review and publication that dates [back to the 17th century](https://www.npr.org/sections/health-shots/2018/02/24/586184355/scientists-aim-to-pull-peer-review-out-of-the-17th-century).  Consider the fact that you could blog about your research while conducting it, present preliminary results in your blog via R Markdown (because your blog itself is done via R Markdown), get regular feedback from peers along the way via your site's comment system, and all this before you'd ever send it off to a journal.  Now ask yourself what a print-oriented journal actually offers you? When was the last time you actually opened a print version of a journal? How often do you go to a journal site to look for something as opposed to a simple web search or using something like Google Scholar?  How many journals do adequate retractions when problems are found[^retract]? Is it possible you may actually get more eyeballs and clicks on your work just having it on your own website[^noaccess] or [tweeting about it](https://www.altmetric.com/about-altmetrics/what-are-altmetrics/)?
+
+The current paradigm is going to change because it has to, and there is practically no justification for the traditional approach to academic publication. Indeed, the change has already been well underway, with some outlets requiring pre-registration, code, and other changes to the usual send-a-pdf-and-we'll-get-back-to-you approach[^nobel]. In non-academic settings, while there is the same sort of pushback there, even those used to print and powerpoints must admit they'd prefer an interactive document that works on their phone if needed.  As such, you might as well be using tools and an approach that accommodate the things we've talked about in order to produce a better data-driven product. 
+
+For more on tools for reproducible research in R, see the [task view](https://cran.r-project.org/web/views/ReproducibleResearch.html).
+
+
+[^intheback]: And since the journal they are submitting to still thinks it's 1990, all the tables had to be at the end of the document, so they aren't even near the text which refers to them.
+
+[^layteks]: You can pronounce it lah-tek or lay-tek, just don't pronounce it -teks or people who know better will look at you funny.  The 'tex' is based on the Greek.  Also, the stress is on the first syllable.
+
+[^retract]: The answer is none, because none of them can seem to do it in a timely fashion, and even top journals such as Nature, Science, Lancet, and others have been known to actually delay and even refuse to do so even in the face of overwhelming evidence of problematic articles. See [Retraction Watch](https://retractionwatch.com/the-retraction-watch-leaderboard/top-10-most-highly-cited-retracted-papers/) for some insight. 
+
+[^noaccess]: You certainly will from those who don't have paid access to journals.
+
+[^nobel]: Nobel prize-winning research groups are using [interactive reproducible research practices](https://hub.mybinder.org/user/losc-tutorial-l-_event_tutorial-s6sl5re6/notebooks/index.ipynb), so you should feel okay about using it for your stuff.
+
+[^notsci]: I would even say such an approach is not even *scientific*.
+
+[^hugeeffect]: Likewise, many are excited to see a 'huge' effect 'even with such a small sample!'. The probability of seeing extreme results is greater with smaller samples (again, basic sampling distribution/error concepts apply), and if the result is surprising, it's probably unlikely to be seen again, at least in such an extreme form.
+
+[^litprog]: You might wonder why, given that such an idea was around even before MS Word, how the latter took over in most, but certainly not all, disciplines in academia, especially given that MS Word was only very recently remotely viable as a means for scientific communication, and many would say still isn't. I don't have a good answer.
+
+[^hipaa]: It is often the case that data is restricted due to privacy concerns, such as HIPAA and other. However, some abuse this to keep from having to reveal their data to those would try to replicate results.  Merely having demographic data does not make data identifiable, and many research settings allow for data to be made available for research purposes beyond a single study.  Accessible data is not equivalent to publicly available data.  Even when data is publicly available some will not publish their processed data that went into analysis, which again makes the study non-replicable if the data-processing code is not also made available.
+
+[^inlinedl]: The number of versions in that sentence, `r N`, is not typed. It is based on R code that scraped the arXiv website and processed the submission history.
+
+[^badparadigm]: Some journals still charge extra for color plots. First, there obviously is no cost for color for electronic documents, which is how the vast majority of research articles are accessed. They often don't ask whether you actually want it printed in color (they'll simply want to charge you for any color plots you have), nor do they seem to care that you can use color schemes that would look fine in black and white.  This situation is ridiculous.

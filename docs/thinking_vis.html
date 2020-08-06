@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Thinking Visually | Data Processing &amp; Visualization</title>
   <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
-  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Thinking Visually | Data Processing &amp; Visualization" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-06-10" />
+<meta name="date" content="2020-06-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   <link rel="shortcut icon" href="img/R.ico" type="image/x-icon" />
 <link rel="prev" href="interactive.html"/>
-<link rel="next" href="summary.html"/>
+<link rel="next" href="concepts.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -49,6 +49,7 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
@@ -119,7 +120,7 @@
 <script src="libs/sigma-1.2.1/plugins/sigma.plugins.neighborhoods.min.js"></script>
 <script src="libs/sigma-1.2.1/plugins/sigma.plugins.filter.min.js"></script>
 <script src="libs/sigma-1.2.1/plugins/sigma.renderers.snapshot.min.js"></script>
-<script src="libs/sigmajs-binding-0.1.3/sigmajs.js"></script>
+<script src="libs/sigmajs-binding-0.1.5/sigmajs.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
@@ -128,7 +129,7 @@
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.13/datatables.js"></script>
+<script src="libs/datatables-binding-0.14/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
@@ -259,15 +260,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html#big-data"><i class="fa fa-check"></i>Big Data</a></li>
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html#io-exercises"><i class="fa fa-check"></i>I/O Exercises</a><ul>
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#thinking-exercises-1"><i class="fa fa-check"></i>Thinking Exercises</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#thinking-exercises"><i class="fa fa-check"></i>Thinking Exercises</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html"><i class="fa fa-check"></i>Indexing</a><ul>
 <li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#base-r-indexing-refresher"><i class="fa fa-check"></i>Base R Indexing Refresher</a></li>
 <li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/Data.frame extraction</a></li>
 <li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#indexing-exercises"><i class="fa fa-check"></i>Indexing Exercises</a><ul>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-1-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-2-1"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
 <li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
 </ul></li>
@@ -298,9 +299,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyverse-exercises"><i class="fa fa-check"></i>tidyverse Exercises</a><ul>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-1-2"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-2-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-3-1"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-4"><i class="fa fa-check"></i>Exercise 4</a></li>
 </ul></li>
 </ul></li>
@@ -315,17 +316,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#more-speed"><i class="fa fa-check"></i>More speed</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#summary-1"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster-dplyr-alternatives"><i class="fa fa-check"></i>Faster dplyr alternatives</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-exercises"><i class="fa fa-check"></i>data.table Exercises</a><ul>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-0-1"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-1-3"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-2-3"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part II: Programming</b></span></li>
-<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html"><i class="fa fa-check"></i>Basics</a><ul>
-<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#r-objects"><i class="fa fa-check"></i>R Objects</a><ul>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#basics"><i class="fa fa-check"></i>Basics</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html"><i class="fa fa-check"></i>R Objects</a><ul>
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#object-inspection-exploration"><i class="fa fa-check"></i>Object Inspection &amp; Exploration</a></li>
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#methods"><i class="fa fa-check"></i>Methods</a></li>
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#s4-classes"><i class="fa fa-check"></i>S4 classes</a></li>
@@ -348,9 +349,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#looping-with-lists"><i class="fa fa-check"></i>Looping with lists</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#iterative-programming-exercises"><i class="fa fa-check"></i>Iterative Programming Exercises</a><ul>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-1-4"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-2-4"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-3-2"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i>Writing Functions</a><ul>
@@ -359,9 +360,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#conditionals"><i class="fa fa-check"></i>Conditionals</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#anonymous-functions"><i class="fa fa-check"></i>Anonymous functions</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#writing-functions-exercises"><i class="fa fa-check"></i>Writing Functions Exercises</a><ul>
-<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1-1"><i class="fa fa-check"></i>Excercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#excercise-1"><i class="fa fa-check"></i>Excercise 1</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1b"><i class="fa fa-check"></i>Excercise 1b</a></li>
-<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#exercise-2-5"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html"><i class="fa fa-check"></i>More</a><ul>
@@ -371,7 +372,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-length"><i class="fa fa-check"></i>Code length</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#spacing"><i class="fa fa-check"></i>Spacing</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#naming-things"><i class="fa fa-check"></i>Naming things</a></li>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#other-1"><i class="fa fa-check"></i>Other</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#other"><i class="fa fa-check"></i>Other</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorization"><i class="fa fa-check"></i>Vectorization</a><ul>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#boolean-indexing"><i class="fa fa-check"></i>Boolean Indexing</a></li>
@@ -381,20 +382,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#typical-uses"><i class="fa fa-check"></i>Typical Uses</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-style-exercises"><i class="fa fa-check"></i>Code Style Exercises</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-5"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-6"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorization-exercises"><i class="fa fa-check"></i>Vectorization Exercises</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-6"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-7"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-1"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#regex-exercises"><i class="fa fa-check"></i>Regex Exercises</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-7"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-2"><i class="fa fa-check"></i>Exercise 1</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part III: Modeling</b></span></li>
-<li class="chapter" data-level="" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i>Model Exploration</a><ul>
-<li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-taxonomy"><i class="fa fa-check"></i>Model Taxonomy</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#model-exploration"><i class="fa fa-check"></i>Model Exploration</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i>Model Taxonomy</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#linear-models"><i class="fa fa-check"></i>Linear models</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#estimation"><i class="fa fa-check"></i>Estimation</a><ul>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#minimizing-and-maximizing"><i class="fa fa-check"></i>Minimizing and Maximizing</a></li>
@@ -422,13 +423,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-exploration-summary"><i class="fa fa-check"></i>Model Exploration Summary</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-exploration-exercises"><i class="fa fa-check"></i>Model Exploration Exercises</a><ul>
-<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-1-8"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-2-8"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-3-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html"><i class="fa fa-check"></i>Model Criticism</a><ul>
-<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-fit"><i class="fa fa-check"></i>Model Fit</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#model-criticism"><i class="fa fa-check"></i>Model Criticism</a><ul>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html"><i class="fa fa-check"></i>Model Fit</a><ul>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#standard-linear-model"><i class="fa fa-check"></i>Standard linear model</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#beyond-ols"><i class="fa fa-check"></i>Beyond OLS</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#classification"><i class="fa fa-check"></i>Classification</a></li>
@@ -443,18 +444,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-averaging"><i class="fa fa-check"></i>Model Averaging</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-criticism-summary"><i class="fa fa-check"></i>Model Criticism Summary</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-criticism-exercises"><i class="fa fa-check"></i>Model Criticism Exercises</a><ul>
-<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-0-2"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-1-9"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-2-9"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html"><i class="fa fa-check"></i>Machine Learning</a><ul>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#concepts"><i class="fa fa-check"></i>Concepts</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#machine-learning"><i class="fa fa-check"></i>Machine Learning</a><ul>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html"><i class="fa fa-check"></i>Concepts</a><ul>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#loss"><i class="fa fa-check"></i>Loss</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#bias-variance-tradeoff"><i class="fa fa-check"></i>Bias-variance Tradeoff</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#regularization"><i class="fa fa-check"></i>Regularization</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#optimization-1"><i class="fa fa-check"></i>Optimization</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#optimization"><i class="fa fa-check"></i>Optimization</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#tuning-parameters"><i class="fa fa-check"></i>Tuning parameters</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#techniques"><i class="fa fa-check"></i>Techniques</a><ul>
@@ -465,13 +466,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#interpreting-the-black-box"><i class="fa fa-check"></i>Interpreting the Black Box</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-summary"><i class="fa fa-check"></i>Machine Learning Summary</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-exercises"><i class="fa fa-check"></i>Machine Learning Exercises</a><ul>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercise-1-10"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercise-2-10"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part IV: Visualization</b></span></li>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#ggplot2"><i class="fa fa-check"></i>ggplot2</a><ul>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i>Layers</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#geoms"><i class="fa fa-check"></i>Geoms</a></li>
@@ -483,12 +484,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#themes"><i class="fa fa-check"></i>Themes</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#python-1"><i class="fa fa-check"></i>Python</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#python"><i class="fa fa-check"></i>Python</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-exercises"><i class="fa fa-check"></i>ggplot2 Exercises</a><ul>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-0-3"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-1-11"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-2-11"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
@@ -512,14 +513,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-visualization-exercises"><i class="fa fa-check"></i>Interactive Visualization Exercises</a><ul>
-<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-0-4"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-1-12"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-2-12"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-3-4"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html"><i class="fa fa-check"></i>Thinking Visually</a><ul>
-<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#information"><i class="fa fa-check"></i>Information</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#thinking-visually"><i class="fa fa-check"></i>Thinking Visually</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html"><i class="fa fa-check"></i>Information</a><ul>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#your-audience-isnt-dumb"><i class="fa fa-check"></i>Your audience isn’t dumb</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#clarity-is-key"><i class="fa fa-check"></i>Clarity is key</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#avoid-clutter"><i class="fa fa-check"></i>Avoid clutter</a></li>
@@ -536,7 +537,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#accessibility"><i class="fa fa-check"></i>Accessibility</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#file-types"><i class="fa fa-check"></i>File Types</a></li>
-<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#summary-2"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#a-casual-list-of-things-to-avoid"><i class="fa fa-check"></i>A casual list of things to avoid</a><ul>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#pie"><i class="fa fa-check"></i>Pie</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#histograms"><i class="fa fa-check"></i>Histograms</a></li>
@@ -547,13 +548,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#biplots"><i class="fa fa-check"></i>Biplots</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a><ul>
-<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-1-13"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-2-13"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-exercises-2"><i class="fa fa-check"></i>Thinking exercises</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#thinking-exercises"><i class="fa fa-check"></i>Thinking exercises</a></li>
 </ul></li>
+</ul></li>
+<li class="part"><span><b>Part V: Presentation</b></span></li>
+<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html"><i class="fa fa-check"></i>Reproducible Programming</a><ul>
+<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#how-to-read-this-chapter"><i class="fa fa-check"></i>How to read this chapter</a></li>
+<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#literate-programming"><i class="fa fa-check"></i>Literate Programming</a></li>
+<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#r-markdown"><i class="fa fa-check"></i>R Markdown</a></li>
+<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#replicability-reproducible-research"><i class="fa fa-check"></i>Replicability &amp; reproducible research</a></li>
+<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#dynamic-data-analysis-report-generation"><i class="fa fa-check"></i>Dynamic data analysis &amp; report generation</a></li>
+<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#using-modern-tools"><i class="fa fa-check"></i>Using Modern Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html"><i class="fa fa-check"></i>Getting Started</a><ul>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#what-is-markdown"><i class="fa fa-check"></i>What is Markdown?</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#documents"><i class="fa fa-check"></i>Documents</a><ul>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#standard-html"><i class="fa fa-check"></i>Standard HTML</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#r-notebooks"><i class="fa fa-check"></i>R Notebooks</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#distill"><i class="fa fa-check"></i>Distill</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#bookdown"><i class="fa fa-check"></i>Bookdown</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#presentations"><i class="fa fa-check"></i>Presentations</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#shiny-apps"><i class="fa fa-check"></i>Shiny Apps</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#templates"><i class="fa fa-check"></i>Templates</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#how-to-start"><i class="fa fa-check"></i>How to start</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html"><i class="fa fa-check"></i>Standard Documents</a><ul>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#r-markdown-files"><i class="fa fa-check"></i>R Markdown files</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#text"><i class="fa fa-check"></i>Text</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#code"><i class="fa fa-check"></i>Code</a><ul>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#chunks"><i class="fa fa-check"></i>Chunks</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#in-line"><i class="fa fa-check"></i>In-line</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#labels"><i class="fa fa-check"></i>Labels</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#running-code"><i class="fa fa-check"></i>Running code</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#multiple-documents"><i class="fa fa-check"></i>Multiple documents</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#sharing-code-collaboration"><i class="fa fa-check"></i>Sharing Code &amp; Collaboration</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html"><i class="fa fa-check"></i>Customization &amp; Configuration</a><ul>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#output-options"><i class="fa fa-check"></i>Output options</a><ul>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#themes-etc."><i class="fa fa-check"></i>Themes etc.</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#yaml"><i class="fa fa-check"></i>YAML</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#html-css"><i class="fa fa-check"></i>HTML &amp; CSS</a><ul>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#html"><i class="fa fa-check"></i>HTML</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#css"><i class="fa fa-check"></i>CSS</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#custom-classes"><i class="fa fa-check"></i>Custom classes</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#personal-templates"><i class="fa fa-check"></i>Personal Templates</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#the-rabbit-hole-goes-deep"><i class="fa fa-check"></i>The Rabbit Hole Goes Deep</a></li>
 </ul></li>
 <li class="part"><span><b>Wrap-up</b></span></li>
-<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li class='after'">
@@ -595,7 +643,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="thinking-visually-1" class="section level1">
+<div id="thinking-visually" class="section level1">
 <h1>Thinking Visually</h1>
 <div style="text-align: center;">
 <p><i class="fas fa-paint-brush fa-3x"></i><span style="margin-right: 25px"></span>
@@ -611,7 +659,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Minor issues can also be noted, including unnecessary border around the bars, unnecessary vertical gridlines, and an unnecessary X axis label.</p>
 <p>You might think the following is an improvement, but I would say it’s even worse.</p>
 <p><img src="data-processing-and-visualization_files/figure-html/problems2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
-<p>Now the y axis has been changed to distort the difference, perceptually suggesting a height increase of over 54%. Furthermore, color is used but the colors are chosen poorly, and add no information, thus making the legend superfluous. And finally, the above doesn’t even convey the information people think it does, assuming they are even standard error bars, which one typically has to guess about in many journal visualizations of this kind<a href="#fn49" class="footnote-ref" id="fnref49"><sup>49</sup></a>.</p>
+<p>Now the y axis has been changed to distort the difference, perceptually suggesting a height increase of over NA%. Furthermore, color is used but the colors are chosen poorly, and add no information, thus making the legend superfluous. And finally, the above doesn’t even convey the information people think it does, assuming they are even standard error bars, which one typically has to guess about in many journal visualizations of this kind<a href="#fn49" class="footnote-ref" id="fnref49"><sup>49</sup></a>.</p>
 <p>Now we add more information, but more problems!</p>
 <p><img src="data-processing-and-visualization_files/figure-html/ugly-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>The above has unnecessary border, gridlines, and emphasis. The labels, while possibly interesting, do not relate anything useful to the graph, and many are illegible. It imposes a straight (and too wide of a) straight line on a nonlinear relationship. And finally, color choice is both terrible and tends to draw one’s eye to the female data points. Here is what it looks like to someone with the most common form of colorblindness. If the points were less clumpy on gender, it would be very difficult to distinguish the groups.</p>
@@ -622,7 +670,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Now consider the following. We have six pieces of information in one graph- name (on hover), homeworld (shape), age (size), gender (color), mass (x), and height (y). The colors are evenly spaced from one another, and so do not draw one’s attention to one group over another, or even to the line over groups. Opacity allows the line to be added and the points to overlap without loss of information. We technically don’t need a caption, legend or gridlines, because hovering over the data tells us everything we’d want to know about a given data point. The interactivity additionally allows one to select and zoom on specific areas.</p>
 <p><br></p>
 <div id="htmlwidget-b00125c2e771a8c4dcbe" style="width:600px;height:400px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b00125c2e771a8c4dcbe">{"x":{"data":[{"x":[15,16.8227848101266,18.6455696202532,20.4683544303797,22.2911392405063,24.1139240506329,25.9367088607595,27.7594936708861,29.5822784810127,31.4050632911392,33.2278481012658,35.0506329113924,36.873417721519,38.6962025316456,40.5189873417722,42.3417721518987,44.1645569620253,45.9873417721519,47.8101265822785,49.6329113924051,51.4556962025316,53.2784810126582,55.1012658227848,56.9240506329114,58.746835443038,60.5696202531646,62.3924050632911,64.2151898734177,66.0379746835443,67.8607594936709,69.6835443037975,71.506329113924,73.3291139240506,75.1518987341772,76.9746835443038,78.7974683544304,80.620253164557,82.4430379746835,84.2658227848101,86.0886075949367,87.9113924050633,89.7341772151899,91.5569620253165,93.379746835443,95.2025316455696,97.0253164556962,98.8481012658228,100.670886075949,102.493670886076,104.316455696203,106.139240506329,107.962025316456,109.784810126582,111.607594936709,113.430379746835,115.253164556962,117.075949367089,118.898734177215,120.721518987342,122.544303797468,124.367088607595,126.189873417722,128.012658227848,129.835443037975,131.658227848101,133.481012658228,135.303797468354,137.126582278481,138.949367088608,140.772151898734,142.594936708861,144.417721518987,146.240506329114,148.063291139241,149.886075949367,151.708860759494,153.53164556962,155.354430379747,157.177215189873,159],"y":[67.883949369789,74.2029968238042,80.3354005629403,86.2871180696687,92.0641068264609,97.6723243157886,103.117728020123,108.406275421936,113.543924003699,118.536631247883,123.390354636961,128.111051653402,132.70467977968,137.177196498266,141.53455929163,145.782725642245,149.927653032582,153.975298945112,157.931620862308,161.770255943893,165.411021709847,168.795534437919,171.865731626308,174.563550773214,176.470828900265,177.310141602557,177.34188421635,176.827225167201,176.027332880667,175.203375782308,174.61652229768,174.527940852341,175.198799871849,176.89294591734,179.905344880831,183.015276584868,185.675037694258,188.14413848047,190.1279262458,191.806202958959,193.231574103478,194.438264549422,195.453570887157,196.304789707048,197.01921759946,197.624151154757,198.146886963304,198.614721615466,199.054951701608,199.494873812095,199.961784537291,200.482980467561,201.085758193271,201.748578608784,202.407115435705,203.06114674323,203.71126360734,204.358057104018,205.002118309243,205.644038298997,206.28440814926,206.923818936015,207.562861735241,208.202127622921,208.842207675034,209.483692967563,210.127174576487,210.773243577789,211.422491047449,212.075508061449,212.732885695769,213.39521502639,214.063087129294,214.737093080461,215.417823955873,216.10587083151,216.801824783354,217.506276887386,218.219818219586,218.943039855936],"text":["mass:  15.00000<br />height:  67.88395","mass:  16.82278<br />height:  74.20300","mass:  18.64557<br />height:  80.33540","mass:  20.46835<br />height:  86.28712","mass:  22.29114<br />height:  92.06411","mass:  24.11392<br />height:  97.67232","mass:  25.93671<br />height: 103.11773","mass:  27.75949<br />height: 108.40628","mass:  29.58228<br />height: 113.54392","mass:  31.40506<br />height: 118.53663","mass:  33.22785<br />height: 123.39035","mass:  35.05063<br />height: 128.11105","mass:  36.87342<br />height: 132.70468","mass:  38.69620<br />height: 137.17720","mass:  40.51899<br />height: 141.53456","mass:  42.34177<br />height: 145.78273","mass:  44.16456<br />height: 149.92765","mass:  45.98734<br />height: 153.97530","mass:  47.81013<br />height: 157.93162","mass:  49.63291<br />height: 161.77026","mass:  51.45570<br />height: 165.41102","mass:  53.27848<br />height: 168.79553","mass:  55.10127<br />height: 171.86573","mass:  56.92405<br />height: 174.56355","mass:  58.74684<br />height: 176.47083","mass:  60.56962<br />height: 177.31014","mass:  62.39241<br />height: 177.34188","mass:  64.21519<br />height: 176.82723","mass:  66.03797<br />height: 176.02733","mass:  67.86076<br />height: 175.20338","mass:  69.68354<br />height: 174.61652","mass:  71.50633<br />height: 174.52794","mass:  73.32911<br />height: 175.19880","mass:  75.15190<br />height: 176.89295","mass:  76.97468<br />height: 179.90534","mass:  78.79747<br />height: 183.01528","mass:  80.62025<br />height: 185.67504","mass:  82.44304<br />height: 188.14414","mass:  84.26582<br />height: 190.12793","mass:  86.08861<br />height: 191.80620","mass:  87.91139<br />height: 193.23157","mass:  89.73418<br />height: 194.43826","mass:  91.55696<br />height: 195.45357","mass:  93.37975<br />height: 196.30479","mass:  95.20253<br />height: 197.01922","mass:  97.02532<br />height: 197.62415","mass:  98.84810<br />height: 198.14689","mass: 100.67089<br />height: 198.61472","mass: 102.49367<br />height: 199.05495","mass: 104.31646<br />height: 199.49487","mass: 106.13924<br />height: 199.96178","mass: 107.96203<br />height: 200.48298","mass: 109.78481<br />height: 201.08576","mass: 111.60759<br />height: 201.74858","mass: 113.43038<br />height: 202.40712","mass: 115.25316<br />height: 203.06115","mass: 117.07595<br />height: 203.71126","mass: 118.89873<br />height: 204.35806","mass: 120.72152<br />height: 205.00212","mass: 122.54430<br />height: 205.64404","mass: 124.36709<br />height: 206.28441","mass: 126.18987<br />height: 206.92382","mass: 128.01266<br />height: 207.56286","mass: 129.83544<br />height: 208.20213","mass: 131.65823<br />height: 208.84221","mass: 133.48101<br />height: 209.48369","mass: 135.30380<br />height: 210.12717","mass: 137.12658<br />height: 210.77324","mass: 138.94937<br />height: 211.42249","mass: 140.77215<br />height: 212.07551","mass: 142.59494<br />height: 212.73289","mass: 144.41772<br />height: 213.39522","mass: 146.24051<br />height: 214.06309","mass: 148.06329<br />height: 214.73709","mass: 149.88608<br />height: 215.41782","mass: 151.70886<br />height: 216.10587","mass: 153.53165<br />height: 216.80182","mass: 155.35443<br />height: 217.50628","mass: 157.17722<br />height: 218.21982","mass: 159.00000<br />height: 218.94304"],"type":"scatter","mode":"lines","name":"fitted values","line":{"width":1.88976377952756,"color":"rgba(0,25,89,0.502)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[null,null,45],"y":[157,165,165],"text":["name: Cordé<br />gender: female<br />homeworld: Naboo<br />birth_year:    NA<br />mass:    NA<br />height: 157","name: Dormé<br />gender: female<br />homeworld: Naboo<br />birth_year:    NA<br />mass:    NA<br />height: 165","name: Padmé Amidala<br />gender: female<br />homeworld: Naboo<br />birth_year:  46.0<br />mass:  45.0<br />height: 165"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(77,114,76,1)","opacity":0.5,"size":13.8138463520334,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(77,114,76,1)"}},"hoveron":"points","name":"(female,Naboo)","legendgroup":"(female,Naboo)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[49,null,55,50,56.2,50,55,null,null,null,57,48,null,null],"y":[150,150,178,184,170,166,168,213,167,96,178,178,null,null],"text":["name: Leia Organa<br />gender: female<br />homeworld: Other<br />birth_year:  19.0<br />mass:  49.0<br />height: 150","name: Mon Mothma<br />gender: female<br />homeworld: Other<br />birth_year:  48.0<br />mass:    NA<br />height: 150","name: Ayla Secura<br />gender: female<br />homeworld: Other<br />birth_year:  48.0<br />mass:  55.0<br />height: 178","name: Adi Gallia<br />gender: female<br />homeworld: Other<br />birth_year:    NA<br />mass:  50.0<br />height: 184","name: Luminara Unduli<br />gender: female<br />homeworld: Other<br />birth_year:  58.0<br />mass:  56.2<br />height: 170","name: Barriss Offee<br />gender: female<br />homeworld: Other<br />birth_year:  40.0<br />mass:  50.0<br />height: 166","name: Zam Wesell<br />gender: female<br />homeworld: Other<br />birth_year:    NA<br />mass:  55.0<br />height: 168","name: Taun We<br />gender: female<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height: 213","name: Jocasta Nu<br />gender: female<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height: 167","name: R4-P17<br />gender: female<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height:  96","name: Shaak Ti<br />gender: female<br />homeworld: Other<br />birth_year:    NA<br />mass:  57.0<br />height: 178","name: Sly Moore<br />gender: female<br />homeworld: Other<br />birth_year:    NA<br />mass:  48.0<br />height: 178","name: Rey<br />gender: female<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height:  NA","name: Captain Phasma<br />gender: female<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height:  NA"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(77,114,76,1)","opacity":0.5,"size":[10.924305351942,13.9763355209274,13.9763355209274,null,14.7337927237984,13.2988452026608,null,null,null,null,null,null,null,null],"symbol":"triangle-up","line":{"width":1.88976377952756,"color":"rgba(77,114,76,1)"}},"hoveron":"points","name":"(female,Other)","legendgroup":"(female,Other)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[75,null],"y":[165,163],"text":["name: Beru Whitesun lars<br />gender: female<br />homeworld: Tatooine<br />birth_year:  47.0<br />mass:  75.0<br />height: 165","name: Shmi Skywalker<br />gender: female<br />homeworld: Tatooine<br />birth_year:  72.0<br />mass:    NA<br />height: 163"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(77,114,76,1)","opacity":0.5,"size":[13.895611799319,15.6763441008562],"symbol":"square","line":{"width":1.88976377952756,"color":"rgba(77,114,76,1)"}},"hoveron":"points","name":"(female,Tatooine)","legendgroup":"(female,Tatooine)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[75,66,82,null,null,null,85],"y":[170,196,224,206,183,183,185],"text":["name: Palpatine<br />gender: male<br />homeworld: Naboo<br />birth_year:  82.0<br />mass:  75.0<br />height: 170","name: Jar Jar Binks<br />gender: male<br />homeworld: Naboo<br />birth_year:  52.0<br />mass:  66.0<br />height: 196","name: Roos Tarpals<br />gender: male<br />homeworld: Naboo<br />birth_year:    NA<br />mass:  82.0<br />height: 224","name: Rugor Nass<br />gender: male<br />homeworld: Naboo<br />birth_year:    NA<br />mass:    NA<br />height: 206","name: Ric Olié<br />gender: male<br />homeworld: Naboo<br />birth_year:    NA<br />mass:    NA<br />height: 183","name: Quarsh Panaka<br />gender: male<br />homeworld: Naboo<br />birth_year:  62.0<br />mass:    NA<br />height: 183","name: Gregar Typho<br />gender: male<br />homeworld: Naboo<br />birth_year:    NA<br />mass:  85.0<br />height: 185"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(244,158,113,1)","opacity":0.5,"size":[16.2875001326306,14.2895555857738,null,null,null,15.0152611565264,null],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(244,158,113,1)"}},"hoveron":"points","name":"(male,Naboo)","legendgroup":"(male,Naboo)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[77,null,112,80,74,77,110,17,78.2,113,79,79,83,null,20,68,89,90,null,null,40,80,null,45,null,65,84,82,87,null,null,null,80,null,80,80,null,79,102,88,15,48,null,159,136,79,80,null,null],"y":[182,180,228,180,173,170,180,66,183,190,177,175,180,null,88,160,193,191,170,137,112,175,180,94,122,163,188,198,196,171,188,264,188,196,183,193,191,183,198,229,79,193,191,216,234,188,206,null,null],"text":["name: Obi-Wan Kenobi<br />gender: male<br />homeworld: Other<br />birth_year:  57.0<br />mass:  77.0<br />height: 182","name: Wilhuff Tarkin<br />gender: male<br />homeworld: Other<br />birth_year:  64.0<br />mass:    NA<br />height: 180","name: Chewbacca<br />gender: male<br />homeworld: Other<br />birth_year: 200.0<br />mass: 112.0<br />height: 228","name: Han Solo<br />gender: male<br />homeworld: Other<br />birth_year:  29.0<br />mass:  80.0<br />height: 180","name: Greedo<br />gender: male<br />homeworld: Other<br />birth_year:  44.0<br />mass:  74.0<br />height: 173","name: Wedge Antilles<br />gender: male<br />homeworld: Other<br />birth_year:  21.0<br />mass:  77.0<br />height: 170","name: Jek Tono Porkins<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass: 110.0<br />height: 180","name: Yoda<br />gender: male<br />homeworld: Other<br />birth_year: 896.0<br />mass:  17.0<br />height:  66","name: Boba Fett<br />gender: male<br />homeworld: Other<br />birth_year:  31.5<br />mass:  78.2<br />height: 183","name: Bossk<br />gender: male<br />homeworld: Other<br />birth_year:  53.0<br />mass: 113.0<br />height: 190","name: Lando Calrissian<br />gender: male<br />homeworld: Other<br />birth_year:  31.0<br />mass:  79.0<br />height: 177","name: Lobot<br />gender: male<br />homeworld: Other<br />birth_year:  37.0<br />mass:  79.0<br />height: 175","name: Ackbar<br />gender: male<br />homeworld: Other<br />birth_year:  41.0<br />mass:  83.0<br />height: 180","name: Arvel Crynyd<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height:  NA","name: Wicket Systri Warrick<br />gender: male<br />homeworld: Other<br />birth_year:   8.0<br />mass:  20.0<br />height:  88","name: Nien Nunb<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:  68.0<br />height: 160","name: Qui-Gon Jinn<br />gender: male<br />homeworld: Other<br />birth_year:  92.0<br />mass:  89.0<br />height: 193","name: Nute Gunray<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:  90.0<br />height: 191","name: Finis Valorum<br />gender: male<br />homeworld: Other<br />birth_year:  91.0<br />mass:    NA<br />height: 170","name: Watto<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height: 137","name: Sebulba<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:  40.0<br />height: 112","name: Darth Maul<br />gender: male<br />homeworld: Other<br />birth_year:  54.0<br />mass:  80.0<br />height: 175","name: Bib Fortuna<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height: 180","name: Dud Bolt<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:  45.0<br />height:  94","name: Gasgano<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height: 122","name: Ben Quadinaros<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:  65.0<br />height: 163","name: Mace Windu<br />gender: male<br />homeworld: Other<br />birth_year:  72.0<br />mass:  84.0<br />height: 188","name: Ki-Adi-Mundi<br />gender: male<br />homeworld: Other<br />birth_year:  92.0<br />mass:  82.0<br />height: 198","name: Kit Fisto<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:  87.0<br />height: 196","name: Eeth Koth<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height: 171","name: Saesee Tiin<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height: 188","name: Yarael Poof<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height: 264","name: Plo Koon<br />gender: male<br />homeworld: Other<br />birth_year:  22.0<br />mass:  80.0<br />height: 188","name: Mas Amedda<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height: 196","name: Poggle the Lesser<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:  80.0<br />height: 183","name: Dooku<br />gender: male<br />homeworld: Other<br />birth_year: 102.0<br />mass:  80.0<br />height: 193","name: Bail Prestor Organa<br />gender: male<br />homeworld: Other<br />birth_year:  67.0<br />mass:    NA<br />height: 191","name: Jango Fett<br />gender: male<br />homeworld: Other<br />birth_year:  66.0<br />mass:  79.0<br />height: 183","name: Dexter Jettster<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass: 102.0<br />height: 198","name: Lama Su<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:  88.0<br />height: 229","name: Ratts Tyerell<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:  15.0<br />height:  79","name: Wat Tambor<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:  48.0<br />height: 193","name: San Hill<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height: 191","name: Grievous<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass: 159.0<br />height: 216","name: Tarfful<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass: 136.0<br />height: 234","name: Raymus Antilles<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:  79.0<br />height: 188","name: Tion Medon<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:  80.0<br />height: 206","name: Finn<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height:  NA","name: Poe Dameron<br />gender: male<br />homeworld: Other<br />birth_year:    NA<br />mass:    NA<br />height:  NA"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(244,158,113,1)","opacity":0.5,"size":[14.661682978013,15.1520836888278,21.6186120559454,12.2088165182683,13.6470218551697,11.2174678237414,null,37.7952755905512,12.4778074054209,14.3656088525215,12.4251989165218,13.0231724880133,13.3878395032899,null,7.55905511811024,null,16.8585779184264,null,16.8030578831136,null,null,14.4408216742816,null,null,null,null,15.6763441008562,16.8585779184264,null,null,null,null,11.355569403469,null,null,17.3965596927315,15.3528150873652,15.2864840090255,null,null,null,null,null,null,null,null,null,null,null],"symbol":"triangle-up","line":{"width":1.88976377952756,"color":"rgba(244,158,113,1)"}},"hoveron":"points","name":"(male,Other)","legendgroup":"(male,Other)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[77,136,120,84,84,null],"y":[172,202,178,183,188,183],"text":["name: Luke Skywalker<br />gender: male<br />homeworld: Tatooine<br />birth_year:  19.0<br />mass:  77.0<br />height: 172","name: Darth Vader<br />gender: male<br />homeworld: Tatooine<br />birth_year:  41.9<br />mass: 136.0<br />height: 202","name: Owen Lars<br />gender: male<br />homeworld: Tatooine<br />birth_year:  52.0<br />mass: 120.0<br />height: 178","name: Biggs Darklighter<br />gender: male<br />homeworld: Tatooine<br />birth_year:  24.0<br />mass:  84.0<br />height: 183","name: Anakin Skywalker<br />gender: male<br />homeworld: Tatooine<br />birth_year:  41.9<br />mass:  84.0<br />height: 188","name: Cliegg Lars<br />gender: male<br />homeworld: Tatooine<br />birth_year:  82.0<br />mass:    NA<br />height: 183"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(244,158,113,1)","opacity":0.5,"size":[10.924305351942,13.4667882606703,14.2895555857738,11.6176996094832,13.4667882606703,16.2875001326306],"symbol":"square","line":{"width":1.88976377952756,"color":"rgba(244,158,113,1)"}},"hoveron":"points","name":"(male,Tatooine)","legendgroup":"(male,Tatooine)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.958904109589,"r":7.30593607305936,"b":40.1162308011623,"l":68.3437110834371},"paper_bgcolor":"transparent","font":{"color":"rgba(77,77,77,1)","family":"Roboto","size":15.9402241594022},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[7.8,166.2],"tickmode":"array","ticktext":["40","80","120","160"],"tickvals":[40,80,120,160],"categoryorder":"array","categoryarray":["40","80","120","160"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":"Mass in kg","hoverformat":".2f","titlefont":{"size":12},"x":0},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[56.1,273.9],"tickmode":"array","ticktext":["100","150","200","250"],"tickvals":[100,150,200,250],"categoryorder":"array","categoryarray":["100","150","200","250"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"transparent","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218}},"hovermode":"closest","width":600,"height":400,"barmode":"relative","title":{"text":"Star Wars Characters","x":0.1,"font":{"size":16}},"annotations":[{"text":"Height in cm","textfont":"#000000","x":-0.13,"y":0.98,"xref":"paper","yref":"paper","showarrow":false,"font":{"size":12,"align":"right"}},{"text":"Height in cm","textfont":"#000000","x":-0.13,"y":0.98,"xref":"paper","yref":"paper","showarrow":false,"font":{"size":12,"align":"right"}}],"plot_bgcolor":"transparent"},"config":{"doubleClick":"reset","showSendToCloud":false,"displayModeBar":false},"source":"A","attrs":{"3fbf4724d322":{"x":{},"y":{},"type":"scatter"},"3fbf42a181ab":{"label":{},"colour":{},"shape":{},"size":{},"x":{},"y":{}}},"cur_data":"3fbf4724d322","visdat":{"3fbf4724d322":["function (y) ","x"],"3fbf42a181ab":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-b00125c2e771a8c4dcbe">{"x":{"data":[{"visible":false,"showlegend":false,"xaxis":null,"yaxis":null,"hoverinfo":"text","mode":"","frame":null}],"layout":{"margin":{"t":26.958904109589,"r":7.30593607305936,"b":27.3640514736405,"l":49.2154420921544},"paper_bgcolor":"transparent","font":{"color":"rgba(77,77,77,1)","family":"Roboto","size":15.9402241594022},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.05,1.05],"tickmode":"array","ticktext":[],"tickvals":[],"categoryorder":"array","categoryarray":[],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":"Mass in kg","hoverformat":".2f","titlefont":{"size":12},"x":0},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.05,1.05],"tickmode":"array","ticktext":[],"tickvals":[],"categoryorder":"array","categoryarray":[],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"transparent","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218}},"hovermode":"closest","width":600,"height":400,"barmode":"relative","title":{"text":"Star Wars Characters","x":0.1,"font":{"size":16}},"annotations":[{"text":"Height in cm","textfont":"#000000","x":-0.13,"y":0.98,"xref":"paper","yref":"paper","showarrow":false,"font":{"size":12,"align":"right"}},{"text":"Height in cm","textfont":"#000000","x":-0.13,"y":0.98,"xref":"paper","yref":"paper","showarrow":false,"font":{"size":12,"align":"right"}}],"plot_bgcolor":"transparent"},"config":{"doubleClick":"reset","showSendToCloud":false,"displayModeBar":false},"source":"A","attrs":{"79cc30b939c8":{"x":{},"y":{},"type":"scatter"},"79cc50809275":{"label":{},"colour":{},"shape":{},"size":{},"x":{},"y":{}}},"cur_data":"79cc30b939c8","visdat":{"79cc30b939c8":["function (y) ","x"],"79cc50809275":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p><br></p>
 <p>Whether this particular scheme is something you’d prefer or not, the point is that we get quite a bit of information without being overwhelming, and the data is allowed to express itself cleanly.</p>
 <p>Here are some things to keep in mind when creating visualizations for scientific communication.</p>
@@ -792,7 +840,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>![](img/future.jpg){width=50%}</code></pre>
 <p><img src="img/future.jpg" style="width:50.0%" /></p>
 </div>
-<div id="summary-2" class="section level2">
+<div id="summary" class="section level2">
 <h2>Summary</h2>
 <p>The goal of this section was mostly just to help you realize that there are many things to consider when visualizing information and attempting to communicate the contents of data. The approach is not the same as what one would do in say, an artistic venture, or where there is nothing specific to impart to an audience. Even some of the most common things you see published are fundamentally problematic, so you can’t even use what people traditionally do as a guide. However, there are many tools available to help you. Another thing to keep in mind is that there is no right way to do a particular visualization, and many ways, to have fun with it.</p>
 </div>
@@ -849,7 +897,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="thinking-visually-exercises" class="section level2">
 <h2>Thinking Visually Exercises</h2>
-<div id="exercise-1-13" class="section level3">
+<div id="exercise-1" class="section level3">
 <h3>Exercise 1</h3>
 <p>The following uses the <span class="objclass">diamonds</span> data set that comes with <span class="pack">ggplot2</span>. Use the <span class="func">scale_color_viridis</span> or <span class="func">scale_color_scico</span> function to add a more accessible palette. Use <code>?</code> to examine your options.</p>
 <div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb538-1"><a href="thinking_vis.html#cb538-1"></a><span class="co"># devtools::install_github(&quot;thomasp85/scico&quot;) # to use scientific colors</span></span>
@@ -860,12 +908,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb538-6"><a href="thinking_vis.html#cb538-6"></a><span class="st">  </span>????</span></code></pre></div>
 <p><img class='zoom' src="img/visex_diamonds.png" style="display:block; margin: 0 auto;" width=50% title='scatterplot of diamond data'></p>
 </div>
-<div id="exercise-2-13" class="section level3">
+<div id="exercise-2" class="section level3">
 <h3>Exercise 2</h3>
 <p>Now color it by the <code>cut</code> instead of <code>price</code>. Use <span class="func">scale_color_viridis/scioc_d</span>. See the helpfile via <code>?scale_color_*</code> to see how to change the palette.</p>
 <p><img class='zoom' src="img/visex_diamonds2.png" style="display:block; margin: 0 auto;" width=50% title='scatterplot of diamond data with options'></p>
 </div>
-<div id="thinking-exercises-2" class="section level3">
+<div id="thinking-exercises" class="section level3">
 <h3>Thinking exercises</h3>
 <p>For your upcoming presentation, <em>who</em> is your audience?</p>
 
@@ -891,7 +939,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 <a href="interactive.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="summary.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="concepts.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
