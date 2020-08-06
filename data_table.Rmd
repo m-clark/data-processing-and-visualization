@@ -22,7 +22,7 @@ dt = data.table(x = sample(1:10, 6),
 class(dt)
 ```
 
-## Basics
+## data.table Basics
 
 In general, <span class="pack">data.table</span> works with brackets as in base R data frames.  However, in order to use <span class="pack">data.table</span> effectively you'll need to forget the data frame similarity. The brackets actually work like a function call, with several key arguments.  Consider the following notation to start.
 
@@ -83,7 +83,7 @@ DT3
 
 
 
-## Grouped operations
+## Grouped Operations
 
 We can now attempt a 'group-by' operation, along with creation of a new variable. Note that these operations actually modify the <span class="objclass">dt</span> object *in place*, a key distinction with <span class="pack">dplyr</span>.  Fewer copies means less of a memory hit.
 
@@ -286,7 +286,7 @@ timing_group_by_big[["aggregate"]] = system.time(
 
 # dplyr
 timing_group_by_big[["dplyr"]] = system.time({
-    df = data_frame(x, grp)
+    df = tibble(x, grp)
     r.dplyr = summarise(group_by(df, grp), sum(x), n())
 })
 
@@ -355,7 +355,7 @@ Piping allows one to use both, so no need to choose.
 
 And on the horizon...
 
-## Faster dplyr alternatives
+## Faster dplyr Alternatives
 
 So we have <span class="pack" style = "">data.table</span> as a starting point for faster data processing operations, but there are others. The <span class="pack">dtplyr</span> package implements the <span class="pack">data.table</span> back-end for <span class="pack">dplyr</span>, so that you can seamlessly use them together.  The newer package <span class="pack" style = "">tidyfast</span> works directly with a <span class="objclass" style = "">data.table</span> object, but uses dplyr-esque functions. The following shows times for a counting unique arrival times in the <span class="pack" style = "">nycflights13</span> <span class="objclass" style = "">flights</span> data (`r nrow(nycflights13::flights)` rows).
 
@@ -418,7 +418,7 @@ ggplot(test, aes(expr, time, color = expr, fill = expr)) +
   visibly::theme_clean()
 ```
 
-Just for giggles I did the same in Python with a <span class="pack">pandas</span> <span class="objclass">DataFrame</span>, and it was notably slower than all of these options (almost 10x slower than standard dplyr).  A lot of folks that use Python primarily think R is slow, but that is mostly because they don't know how to effectively program with R for data science.
+Just for giggles I did the same in Python with a <span class="pack">pandas</span> <span class="objclass">DataFrame</span>, and it was notably slower than all of these options (almost 10x slower than standard dplyr).  A lot of folks that use Python think R is slow, but that is mostly because they don't know how to effectively program with R for data science.
 
 ```{python timing, engine = '~/anaconda3/bin/python', eval = FALSE, echo = FALSE}
 import pandas as pd
@@ -442,7 +442,9 @@ test_result/100  # per run
 test_result/100*1000  # in milliseconds
 ```
 
+#### Out of memory situations
 
+For very large data sets, especially in cases where distributed data solutions like Spark (and <span class="pack" style = "">sparklyr</span>) are not viable for practical or security reasons, you may need to try another approach.  The <span class="pack" style = "">disk.frame</span> package does data processing on disk rather than in memory, as is the case with default R approaches.  This allows you to process data that may be too large or time consuming to do so otherwise. For example, it'd be a great option if you are starting out with extremely large data, but for which your subset of interest is easily manageable within R. With <span class="pack" style = "">disk.frame</span>, you can do the initial filtering and selection before bringing it into memory.
 
 ## data.table Exercises
 
