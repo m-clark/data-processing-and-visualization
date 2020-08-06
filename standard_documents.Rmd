@@ -55,7 +55,7 @@ x = rnorm(10)
 
 There is no limit to what you put in an R chunk.  I don't recommend it, but it could be hundreds of lines of code!  You can put these anywhere within the document.  Other languages, e.g. Python, can be used as well, as long as <span class="pack">knitr</span> knows where to look for the engine for the code you want to insert[^otherlang].
 
-#### Chunk Options
+#### Chunk options
 
 There are many things to specify for a specific chunk, or to apply to all chunks.  The example demonstrates some of the more common ones you might use.
 
@@ -127,12 +127,12 @@ You don't have to knit the document to run the code, and often you'll be using t
 By default, when you knit the document, all code will be run.  Depending on a variety of factors, this may or may not be what you want to do, especially if it is time-consuming to do so.  We'll talk about how to deal with this issue in the next part.
 
 
-## Multiple documents
+## Multiple Documents
 
 A single `.Rmd` file can call others, referred to as *child documents*, and when you knit that document you'll have one single document with the content from all of them.  You may want to consider other formats, such as *bookdown*, rather than doing this.  Scrolling a lot is sometimes problematic, and not actually required for the presentation of material.  It also makes the content take longer to load, because everything has to load[^preload].  See the [appendix](#appendix) for details.
 
 
-## Sharing Code & Collaboration
+## Collaboration
 
 *R Notebooks* are a format one can use that might be more suitable for code collaboration.  They are identical to the standard HTML document in most respects, but chunks will by default print output in the Rmd file itself.  For example, a graduate student could write up a notebook, and their advisor could then look at the document, change the code as needed etc. Of course, you could just do this with a standard R script as well.  Some prefer the inline output however.
 

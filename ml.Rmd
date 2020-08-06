@@ -28,7 +28,7 @@ knitr::include_graphics('img/learningcurve.svg')
 ```
 
 
-### Bias-variance Tradeoff
+### Bias-variance tradeoff
 
 Prediction error, i.e. loss, is composed of several sources. One part is *measurement error*, which we can't do anything about, and two components of specific interest: *bias*, the difference in the observed value and our average predicted value, and *variance* how much that prediction would change had we trained on different data.  More generally we can think of this as a problem of *underfitting* vs. *overfitting*.  With a model that is too simple, we underfit, and bias is high. If we overfit, the model is too close to the training data, and likely will do poorly with new observations.  ML techniques trade some increased bias for even greater reduced variance, which often means less overfitting to the training data, leading to increased performance on new data.
 
@@ -160,7 +160,7 @@ cv_regLM_res = happy_regLM_results %>%
 kable_df(cv_regLM_res)
 ```
 
-#### Tuning parameters
+#### Tuning parameters for regularized regression
 
 For the previous model setting, we wouldn't know what the penalty or the mixing  parameter should be.  This is where we can use cross validation to choose those.  We'll redo our model spec, create a set of values to search over, and pass that to the tuning function for cross-validation. Our ultimate model will then be applied to the test data.  
 
@@ -264,7 +264,7 @@ bind_rows(rmse, rsq) %>%
 Not too bad!
 
 
-### Random Forests
+### Random forests
 
 A limitation of standard linear models, especially with many input variables, is that there's not a real automatic way to incorporate interactions and nonlinearities.  So we often will want to use techniques that do so.  To understand *random forests* and similar techniques (boosted trees, etc.), we can start with a simple decision tree.  To begin, for a single input variable (`X1`) whose range might be 1 to 10, we find that a cut at 5.75 results in the best classification, such that if all observations greater than or equal to 5.75 are classified as positive, and the rest negative. This general approach is fairly straightforward and conceptually easy to grasp, and it is because of this that tree approaches are appealing.
 
@@ -299,7 +299,7 @@ kable_df(cv_rf_res)
 
 It would appear we're doing a bit better than the regularized regression.
 
-#### Tuning parameters
+#### Tuning parameters for random forests
 
 As mentioned, we'd have a few tuning parameters to play around with. We'll tune the number of predictors to randomly select per tree, as well as the minimum sample size for each leaf. The following takes the same appraoch as with the regularized regression model. Note that this will take a while (several minutes).
 
@@ -359,7 +359,7 @@ bind_rows(rmse, rsq) %>%
 
 
 
-### Neural Networks
+### Neural networks
 
 *Neural networks* have been around for a long while as a general concept in artificial intelligence and even as a machine learning algorithm, and often work quite well. In some sense, neural networks can simply be thought of as nonlinear regression. Visually however, we can see them as a graphical model with layers of inputs and outputs. Weighted combinations of the inputs are created[^lmnnet] and put through some function (e.g. the sigmoid function) to produce the next layer of inputs. This next layer goes through the same process to produce either another layer, or to predict the output, or even multiple outputs, which serves as the final layer. All the layers between the input and output are usually referred to as hidden layers. If there were a single hidden layer with a single unit and no transformation, then it becomes the standard regression problem.
 
@@ -403,7 +403,7 @@ You will typically see neural nets applied to image and natural language process
 
 I leave tuning the model as an [exercise][machine learning exercises], but definitely switch to using `nnet` if you do so, otherwise you'll have to install keras (both for R and Python) and be waiting a long time besides.  As mentioned, the <span class="" style = "">nnet</span> package is in base R, so you already have it.
 
-#### Deep Learning
+#### Deep learning
 
 *Deep learning* can be summarized succinctly as 'very complicated neural nets'.  Really, that's about it.  The complexity can be quite tremendous however, and there is a wide variety from which to choose.  For example, we just ran a basic neural net above, but for image processing we might use a convolutional neural network, and for natural language processing some LTSM model.  Here is a small(!) version of the convolutional neural network known as 'resnet' which has many layers in between input and output.
 

@@ -31,12 +31,12 @@ You can use that for any package, which can help avoid naming conflicts by not l
 <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
 </div>
 
-## Other approaches
+## Other Approaches
 
 There are some better and faster ways to read in data than the base R approach.  A package for reading in foreign statistical files is <span class="pack">haven</span>, which has functions like <span class="func">read_spss</span> and <span class="func">read_dta</span> for SPSS and Stata files respectively.  The package <span class="pack">readxl</span> is a clean way to read Excel files that doesn't require any outside packages or languages.  The package <span class="pack">rio</span> uses <span class="pack">haven</span>, <span class="pack">readxl</span> etc., but with just two functions for everything: <span class="func">import</span>, <span class="func">export</span> (also <span class="func">convert</span>).
 
 
-## Faster approaches
+## Faster Approaches
 
 For faster versions of base R functions, <span class="pack">readr</span> has <span class="func">read_csv</span>, <span class="func">read_delim</span>, and others.  These make assumptions about what type each vector is after an initial scan of the data, then proceed accordingly.  If you don't have 'big' data, the subsequent speed gain won't help much, however, such an approach actually can be used as a diagnostic to pick up potential data entry errors, as warnings are given when unexpected observations occur.
 
@@ -60,7 +60,7 @@ Be aware that R can handle practically any type of data you want to throw at it.
 And many, many others.
 
 
-## On the horizon
+## On the Horizon
  
 <span class="pack">feather</span> is designed to make reading/writing data frames efficient, and the really nice thing about it is that it works in both Python and R. It's still in early stages of development on the R side though.
 
