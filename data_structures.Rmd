@@ -27,7 +27,7 @@ R has several core data structures, and we'll take a look at each.
 - Matrices/arrays
 - Data frames
 
-The more you know about R data structures, the more you'll know how to use them, how packages use them, and you'll also better understand why things go wrong if they do, and the further you'll be able to go with your data.
+The more you know about R data structures, the more you'll know how to use them, how packages use them, and you'll also better understand why things go wrong when they do, and the further you'll be able to go with your data.  Furthermore, most of these data structures are common to many programming languages (e.g. vectors, lists, matrices), so what you learn with R will often generalize to other languages as well.
 
 ## Vectors
 
@@ -58,14 +58,14 @@ You can use <span class="func">typeof</span> to examine an object's type, or use
 
 ### Character strings
 
-When dealing with text, objects of class character are what you'd typically be dealing with.  
+When dealing with text, objects of the character class are what you'd typically be dealing with.  
 
-```{r create_a_char, eval=F}
+```{r create_a_char, eval=T}
 x = c('... Of Your Fake Dimension', 'Ephemeron', 'Dryswch', 'Isotasy', 'Memory')
-x
+class(x)
 ```
 
-Not much to it, but be aware there is no real limit to what is represented as a character vector. For example, in a data frame, you could have a column where each entry is one of the works of Shakespeare.
+Not much to it, but be aware there is no real limit to what is represented as a character vector. For example, in a data frame, a special class we'll talk about later, you could have a column where each entry is one of the works of Shakespeare.
 
 
 ### Factors
@@ -110,7 +110,7 @@ Some packages to note to help you with processing strings and factors:
 
 ### Logicals
 
-Logical scalar/vectors are those that take on one of two values `r TRUE` or `r FALSE`. They are especially useful in flagging whether to run certain parts of code, and indexing certain parts of data structures (e.g. taking rows that correspond to `r TRUE`). We'll talk about the latter usage more later in the document.
+Logical scalar/vectors are those that take on one of two values: `TRUE` or `FALSE`. They are especially useful in flagging whether to run certain parts of code, and indexing certain parts of data structures (e.g. taking rows that correspond to `r TRUE`). We'll talk about the latter usage later.
 
 Here is a logical vector.
 
@@ -134,11 +134,52 @@ The most common type of data structure you'll deal with are integer and numeric 
 class(1:3)
 
 x = rnorm(5)
+
 x
 
 class(x)
 ```
 
+
+
+### Dates
+
+Another common data structure you'll deal with is a date variable. Typically dates require special treatment and to work as intended, but they can be stored as character strings or factors if desired.  The following shows some of the base R functionality for this.
+
+```{r dates}
+Sys.Date()
+
+x = as.Date(c(Sys.Date(), '2020-09-01'))
+
+x
+```
+
+
+In almost every case however, a package like <span class="pack" style = "">lubridate</span> will make processing them much easier.  The following shows how to strip out certain aspects of a date using it.
+
+```{r lubridate}
+library(lubridate)
+
+month(Sys.Date())
+
+day(Sys.Date())
+
+wday(Sys.Date(), label = TRUE )
+
+quarter(Sys.Date())
+
+as_date('2000-01-01') + 100
+```
+
+In general though, dates are treated as numeric variables, with consistent (but arbitrary) starting point.  If you use these in analysis, you'll probably want to make zero a useful value (e.g. the starting date).  
+
+```{r numeric-date}
+as.numeric(Sys.Date())
+
+as.Date(10, origin = '2000-01-01')  # 10 days after a supplied origin
+```
+
+For visualization purposes, you can typically treat date variables as is, as ordered factors, or use the values as labels, and get the desired result.
 
 
 
@@ -206,7 +247,7 @@ Python has similar structures, <span class="objclass">lists</span> and <span cla
 
 ## Data Frames
 
-Data frames are a very commonly used data structure. Elements of a data frame can be different types, and this is because the <span class="objclass">data.frame</span> class is actually just a list.  As such, everything about lists applies to them. But they can also be indexed by row or column as well, just like matrices.  There are other very common types of object classes associated with packages that are both a <span class="objclass">data.frame</span> and some other type of structure (e.g. <span class="objclass">tibbles</span> in the tidyverse).
+Data frames are a very commonly used data structure, and are essentially a representation of data in a table format with rows and columns. Elements of a data frame can be different types, and this is because the <span class="objclass">data.frame</span> class is actually just a list.  As such, everything about lists applies to them. But they can also be indexed by row or column as well, just like matrices.  There are other very common types of object classes associated with packages that are both a <span class="objclass">data.frame</span> and some other type of structure (e.g. <span class="objclass">tibbles</span> in the tidyverse).
 
 Usually your data frame will come directly from import or manipulation of other R objects (e.g. matrices).  However, you should know how to create one from scratch.
 
@@ -216,8 +257,10 @@ Usually your data frame will come directly from import or manipulation of other 
 The following will create a data frame with two columns, `a` and `b`.
 
 ```{r createdf, eval=TRUE}
-mydf = data.frame(a = c(1,5,2), 
-                  b = c(3,8,1))
+mydf = data.frame(
+  a = c(1, 5, 2),
+  b = c(3, 8, 1)
+)
 ```
 
 Much to the disdain of the tidyverse, we can add row names also.
@@ -243,7 +286,7 @@ mydf = data.frame(A = 1:3, B = letters[1:3])
 
 ### Exercise 2
 
-Create a <span class="objclass">list</span> of 3 elements, the first of which contains character strings, the second numbers, and the third, the <span class="objclass">data.frame</span> or <span class="objclass">matrix</span> you just created.
+Create a <span class="objclass">list</span> of 3 elements, the first of which contains character strings, the second numbers, and the third, the <span class="objclass">data.frame</span> or <span class="objclass">matrix</span> you just created in Exercise 1.
 
 ```{r dsex2, echo=F}
 mylist = list(c('a', 'b'), 1:3, mydf)
