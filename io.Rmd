@@ -18,6 +18,30 @@ Until you get comfortable getting data into your chosen programming and analytic
 
 Base R also comes with the <span class="pack">foreign</span> package for reading in other types of files, especially other statistical packages. However, while you may see it still in use, it's not as useful as what's found in other packages.
 
+Most of the `read.*` functions are going to have a corresponding `write.* `function.  For example if I read a comma-separated file as follows:
+
+```{r read.csv, eval=FALSE}
+mydata = read.csv('data/myfile.csv')
+```
+
+Then I would save an R object, e.g. a data frame, as a csv file as follows:
+
+```{r write.csv, eval=FALSE}
+write(mydata, file = 'data/newfile.csv')
+```
+
+
+
+
+## Better & Faster Approaches
+
+Now that you know how base R tools work, you can mostly forget those functions, as there are some better and faster ways to read in data.  The <span class="pack">readr</span> package has <span class="func">read_csv</span>, <span class="func">read_delim</span>, and others.  These make assumptions about what type each vector is after an initial scan of the data, then proceed accordingly.  If you don't have 'big' data, the subsequent speed gain won't help much, however, such an approach actually can be used as a diagnostic to pick up potential data entry errors, as warnings are given when unexpected observations occur.
+
+The <span class="pack">data.table</span> package provides a faster version <span class="func">read.table</span>, and is typically faster than <span class="pack">readr</span> approaches (<span class="func">fread</span>).
+
+A package for reading in foreign statistical files is <span class="pack">haven</span>, which has functions like <span class="func">read_spss</span> and <span class="func">read_dta</span> for SPSS and Stata files respectively.  The package <span class="pack">readxl</span> is a clean way to read Excel files that doesn't require any outside packages or languages.  The package <span class="pack">rio</span> uses <span class="pack">haven</span>, <span class="pack">readxl</span> etc., but with just two functions for everything: <span class="func">import</span>, <span class="func">export</span> (also <span class="func">convert</span>).
+
+At least for common tabular data types, <span class="pack">readr</span> and <span class="pack">haven</span> will likely serve most of your needs, at least to start.
 
 <div class='note'>
 Reading in data is usually a one-off event, such that you'll never need to use the package again after the data is loaded.  In that case, you might use the following approach, so that you don't need to attach the whole package.
@@ -31,13 +55,40 @@ You can use that for any package, which can help avoid naming conflicts by not l
 <img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
 </div>
 
-## Better & Faster Approaches
 
-There are some better and faster ways to read in data than the base R approach.  The <span class="pack">readr</span> package has <span class="func">read_csv</span>, <span class="func">read_delim</span>, and others.  These make assumptions about what type each vector is after an initial scan of the data, then proceed accordingly.  If you don't have 'big' data, the subsequent speed gain won't help much, however, such an approach actually can be used as a diagnostic to pick up potential data entry errors, as warnings are given when unexpected observations occur.
 
-The <span class="pack">data.table</span> package provides a faster version <span class="func">read.table</span>, and is typically faster than <span class="pack">readr</span> approaches (<span class="func">fread</span>).
+## R-specific Data
 
-A package for reading in foreign statistical files is <span class="pack">haven</span>, which has functions like <span class="func">read_spss</span> and <span class="func">read_dta</span> for SPSS and Stata files respectively.  The package <span class="pack">readxl</span> is a clean way to read Excel files that doesn't require any outside packages or languages.  The package <span class="pack">rio</span> uses <span class="pack">haven</span>, <span class="pack">readxl</span> etc., but with just two functions for everything: <span class="func">import</span>, <span class="func">export</span> (also <span class="func">convert</span>).
+R provides the means to read and store compressed data types.  While there are a variety of ways to do so <span class="" style = "">save</span> and <span class="func" style = "">save.image</span> are probably the most common. To save a one or more objects we can use save as follows:
+
+```{r rsave, eval = FALSE}
+save(object1, object2, file = 'data/myfile.RData')
+```
+
+To get those objects when we next use R, we can use the <span class="func" style = "">load</span> function.
+
+```{r rload, eval = FALSE}
+load('data/myfile.RData')
+```
+
+The <span class="func" style = "">save.image</span> function works just like <span class="func" style = "">save</span>, but saves all objects currently in your working environment.  You would still just use load to load the objects back into your working environment[^savews].
+
+
+### R Datasets
+
+If you just needs some quick data to learn a new package or try something out, you can consider the datasets package that's automatically loaded with R. To be honest, most of them are not very accessible conceptually, too small to be interesting, or have other issues, but again, this doesn't preclude them from helping you learn new things.
+
+```{r rdatasets}
+head(iris)
+```
+
+In addition, many packages come with their own data, and these are either available when you load the package, can be loaded with the data function.
+
+```{r data-load}
+data(mcycle, package = 'MASS') # loads data
+head(mcycle)
+```
+
 
 
 
@@ -102,3 +153,7 @@ What is your definition of 'big' data?
 ## Link to Python I/O Notebook
 
 [Available on GitHub](https://github.com/m-clark/data-processing-and-visualization/blob/master/jupyter_notebooks/io.ipynb)
+
+
+
+[^savews]: For some reason the default for RStudio is to save and reload your entire workspace of objects, essentially an automatic `save.image` whenever you close your session.  You should check off this option in `Tools/Global Options/General`, as I've never seen it do much besides cause people issues, as they aren't sure what version of objects are actually loaded and so rerun their data prep anyway, or with large data it can simply be time-consuming without possibly needing to be.

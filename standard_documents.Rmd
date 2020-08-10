@@ -139,6 +139,16 @@ A single `.Rmd` file can call others, referred to as *child documents*, and when
 For more involved collaborations, I would suggest partitioning the sections into their own document, then use version control keep track of respective contributions, and merge as needed.  Such a process was designed for software development, but there's no reason it wouldn't work for a document in general, and in my experience, it has quite well.
 
 
+
+## Using Python
+
+Most of what we've discussed for the standard html document would apply to the Python world as well.  The main document format there is the [Jupyter Notebook](https://jupyter.org/).  Like RStudio and R Markdown, Jupyter notebooks seamlessly integrate code and text via markdown, and even can use R instead of of Python as well.  Jupyter Notebooks are superior to R Notebooks in most respects, but particularly in look and feel, and interactivity. They are entirely browser-based to use, so whatever you are constructing will look the same if converted to HTML.
+
+However it is not as easy to customize notebooks, which is why almost all of the ones you come across look exactly the same.  With R, one or two clicks in Rstudio, or a couple knitr/YAML option adjustments, can make the final product look notably different. For Jupyter, one would need various extensions, possibly via the browser, terminal scripting, or would have to directly manipulate html/css.  None of this is necessarily a deal-breaker, but most probably would prefer a more straightforward way to change the look.
+
+
+
+
 [^preload]: There is not yet a way within R Markdown that I'm aware of to load on demand as many websites do.  However, waiting for things to load until you come to them is annoying at best, and I usually get tired of waiting and move on to other things.
 
 [^macshortcuts]: As with RStudio in general, Mac shortcuts for R Markdown documents will deviate from the Windows/Linux ones (in mostly unfortunate/inefficient ways).

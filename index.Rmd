@@ -1,5 +1,6 @@
 --- 
-title: Data Processing & Visualization
+title: Practical Data Science
+subtitle: Doing more with data
 author:  |
   <span class="noem">Michael Clark</span>
   https://m-clark.github.io/ <span></span>
@@ -14,7 +15,7 @@ biblio-style: apalike
 nocite: | 
   @xie2018b @hadley2018 @hadley2018b @wilke2018
 link-citations: yes
-description: "The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced.  Exercises may be found in the document as well.  In addition, the demonstrations of most content in Python is available via Jupyter notebooks."  
+description: "The focus of this document is on data science tools and techniques in R, including basic programming knowledge, visualization practices, modeling, and more, along with exercises to practice further. In addition, the demonstrations of most content in Python is available via Jupyter notebooks."
 cover-image: 'img/nineteeneightyR.png'
 url: 'https\://m-clark.github.io/data-processing-and-visualization/'  # evidently the \: is required or you'll get text in the title/toc area
 favicon: 'img/R.ico'
@@ -23,22 +24,23 @@ github-repo:  'm-clark/data-processing-and-visualization/'
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-  echo = T,
-  message = F,
-  warning = F,
-  error = F,
-  comment = NA,
-  R.options = list(width = 220),
   # code
-  dev.args = list(bg = 'transparent'),
-  dev = 'svglite',
+  echo      = T,
+  message   = F,
+  warning   = F,
+  error     = F,
+  comment   = NA,
+  R.options = list(width = 220),
   # viz
+  dev.args  = list(bg = 'transparent'),
+  dev       = 'svglite',
   fig.align = 'center',
   out.width = '75%',
-  fig.asp = .75,
+  fig.asp   = .75,
+  # cache
   cache.rebuild = F,
-  cache = T
-)                                                         # cache
+  cache         = T
+)
 
 kable_df = function(data, digits=3, ...) {
   kableExtra::kable(
