@@ -423,9 +423,9 @@ The adjusted $R^2$ seems to indicate that we are doing slightly better with this
 anova(happy_model_base, happy_model_more, test = 'Chi')
 ```
 
-The `Df` from the test denotes that we have two additional parameters, i.e. coefficients, in the more complex model. But the main thing to note is whether the model statistically reduces the RSS. So we see that this is a statistically notable improvement as well.  
+The `Df` from the test denotes that we have two additional parameters, i.e. coefficients, in the more complex model. But the main thing to note is whether the model statistically reduces the RSS, and so we see that this is a statistically notable improvement as well.  
 
-I actually do not like this test though. It requires nested models, which in some settings is either not the case or can be hard to determine, and ignores various aspects of uncertainty in parameter estimates.  An approach that works in many settings is to compare *AIC* (Akaike Information Criterion). AIC is a value based on the likelihood for a given model, but which adds a penalty for complexity, since otherwise any more complex model would result in a larger likelihood (or in this case, smaller negative likelihood).  In the following, $\mathcal{L}$ is the likelihood, and $\mathcal{P}$ is the number of parameters estimated for the model.
+I actually do not like this test though. It requires nested models, which in some settings is either not the case or can be hard to determine, and ignores various aspects of uncertainty in parameter estimates. Furthermore, it may not be appropriate for some complex model settings.  An approach that works in many settings is to compare *AIC* (Akaike Information Criterion). AIC is a value based on the likelihood for a given model, but which adds a penalty for complexity, since otherwise any more complex model would result in a larger likelihood (or in this case, smaller negative likelihood).  In the following, $\mathcal{L}$ is the likelihood, and $\mathcal{P}$ is the number of parameters estimated for the model.
 
 $$AIC = -2 ( \ln (\mathcal{L})) + 2 \mathcal{P}$$
 ```{r AIC}
@@ -678,7 +678,7 @@ It's pretty clear our wiggly model is the winner, even with the added complexity
 
 Have you ever suffered from choice overload?  Many folks who seek to understand some phenomenon via modeling do so. There are plenty of choices due to data processing, but then there may be many models to consider as well, and should be if you're doing things correctly.  But you know what? You don't have to pick a best.
 
-Model averaging is a common technique in the Bayesian world and also with some applications of machine learning, but not as widely applied elsewhere, even though it could be. As an example if we (inversely) weight models by the AIC, we can get an average parameter that favors the better models, while not ignoring the lesser models if they aren't notably poorer.  People will use such an approach to get model averaged effects (i.e. coefficients) or predictions.  In our setting, the GAM is doing so much better, that it's weight would basically be 1.0 and zero for the others. So the model averaged predictions would be almost identical to the GAM predictions.
+Model averaging is a common technique in the Bayesian world and also with some applications of machine learning (usually under the guise of *stacking*), but not as widely applied elsewhere, even though it could be. As an example if we (inversely) weight models by the AIC, we can get an average parameter that favors the better models, while not ignoring the lesser models if they aren't notably poorer.  People will use such an approach to get model averaged effects (i.e. coefficients) or predictions.  In our setting, the GAM is doing so much better, that it's weight would basically be 1.0 and zero for the others. So the model averaged predictions would be almost identical to the GAM predictions.
 
 ```{r aic-average, echo=FALSE}
 model_list = list(
