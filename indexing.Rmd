@@ -12,7 +12,7 @@ knitr::opts_chunk$set(eval=FALSE)
 
 What follows is probably more of a refresher for those that have used R quite a bit already.  Presumably you've had enough R exposure to be aware of some of this. However, much of data processing regards data frames, or other tables of mixed data types, so more time will be spent on slicing and dicing of data frames instead.  Even so, it would be impossible to use R effectively without knowing how to handle basic data types.
 
-## Slicing vectors
+## Slicing Vectors
 
 Taking individual parts of a vector of values is straightforward and something you'll likely need to do a lot. The basic idea is to provide the indices for which elements you want to exract.
 
@@ -21,7 +21,7 @@ letters[4:6]  # lower case letters a-z
 letters[c(13, 10, 3)]
 ```
 
-## Slicing matrices/data.frames
+## Slicing Matrices/data.frames
 
 With 2-d objects we can specify rows and columns. Rows are indexed to the left of the comma, columns to the right.
 
@@ -30,7 +30,7 @@ myMatrix[1, 2:3]  # matrix[rows, columns]
 ```
 
 
-## Label-based indexing
+## Label-based Indexing
 
 We can do this by name if they are available.
 
@@ -38,7 +38,7 @@ We can do this by name if they are available.
 mydf['row1', 'b']
 ```
 
-## Position-based indexing
+## Position-based Indexing
 
 Otherwise we can index by number.
 
@@ -47,7 +47,7 @@ mydf[1, 2]
 ```
 
 
-## Mixed indexing
+## Mixed Indexing
 
 Even both!
 
