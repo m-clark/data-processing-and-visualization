@@ -59,7 +59,7 @@ You can use that for any package, which can help avoid naming conflicts by not l
 
 ## R-specific Data
 
-R provides the means to read and store compressed data types.  While there are a variety of ways to do so <span class="" style = "">save</span> and <span class="func" style = "">save.image</span> are probably the most common. To save a one or more objects we can use save as follows:
+R provides the means to read and store compressed data types.  While there are a variety of ways to do so <span class="func" style = "">save</span> and <span class="func" style = "">save.image</span> are probably the most common. To save a one or more objects we can use save as follows:
 
 ```{r rsave, eval = FALSE}
 save(object1, object2, file = 'data/myfile.RData')
@@ -71,7 +71,7 @@ To get those objects when we next use R, we can use the <span class="func" style
 load('data/myfile.RData')
 ```
 
-The <span class="func" style = "">save.image</span> function works just like <span class="func" style = "">save</span>, but saves all objects currently in your working environment.  You would still just use load to load the objects back into your working environment[^savews].
+The <span class="func" style = "">save.image</span> function works just like <span class="func" style = "">save</span>, but saves all objects currently in your working environment.  You would still just use <span class="func" style = "">load</span> to load the objects back into your working environment. This might seem handy at first glance, but I would suggest you be more precise with which objects you save[^savews].
 
 
 ### R Datasets
@@ -85,7 +85,7 @@ head(iris)
 In addition, many packages come with their own data, and these are either available when you load the package, can be loaded with the data function.
 
 ```{r data-load}
-data(mcycle, package = 'MASS') # loads data
+data(mcycle, package = 'MASS') # loads data without loading package
 head(mcycle)
 ```
 

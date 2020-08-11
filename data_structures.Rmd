@@ -29,6 +29,12 @@ R has several core data structures, and we'll take a look at each.
 
 The more you know about R data structures, the more you'll know how to use them, how packages use them, and you'll also better understand why things go wrong when they do, and the further you'll be able to go with your data.  Furthermore, most of these data structures are common to many programming languages (e.g. vectors, lists, matrices), so what you learn with R will often generalize to other languages as well.
 
+<div class='note'>
+R and other programming languages are used via an IDE (integrated development environment), which makes programming vastly easier through syntax highlighting, code completion, and more.  RStudio the IDE of choice for R, while Python is varied (e.g. PyCharm for software developers, Spyder for users of  Anaconda), and others like VSCode might be useful for many languages.
+
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
+
 ## Vectors
 
 *Vectors* form the basis of R data structures. Two main types are <span class="objclass">atomic</span> and <span class="objclass">lists</span>, but we'll talk about lists separately.
@@ -70,7 +76,7 @@ Not much to it, but be aware there is no real limit to what is represented as a 
 
 ### Factors
 
-An important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures.  Although not exactly precise, one can think of factors as integers with labels.  So the underlying representation of a variable for <span class="objclass">sex</span> is 1:2 with labels 'Male' and 'Female'.  They are a special class with attributes, or metadata, that contains the information about the *levels*.
+An important type of vector is a <span class="objclass">factor</span>. Factors are used to represent categorical data structures.  Although not exactly precise, one can think of factors as integers with labels.  For example, the underlying representation of a variable for <span class="objclass">sex</span> is 1:2 with labels 'Male' and 'Female'.  They are a special class with attributes, or metadata, that contains the information about the *levels*.
 
 ```{r factor_atts}
 x = factor(rep(letters[1:3], e = 10))
@@ -131,15 +137,22 @@ mean(my_logic)
 The most common type of data structure you'll deal with are integer and numeric vectors.  
 
 ```{r int_num}
-class(1:3)
+ints = -3:3   # integer sequences are easily constructed with the colon operator
+class(ints)
 
-x = rnorm(5)
+
+x = rnorm(5)  # 5 random values from the standard normal distribution
 
 x
 
+typeof(x)
 class(x)
+
+typeof(ints)
+is.numeric(ints)  # also numeric!
 ```
 
+The main difference between the two is that integers regard whole numbers only and are otherwise smaller in size in memory, but practically speaking you typically won't distinguish them for most of your data science needs.
 
 
 ### Dates
@@ -185,7 +198,7 @@ For visualization purposes, you can typically treat date variables as is, as ord
 
 ## Matrices
 
-With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are 2-d arrays, and extremely commonly used for scientific computing. The vectors making up a matrix *must all be of the same type*.  For example, all values in a matrix might be <span class="objclass">numeric</span>, or all <span class="objclass">character strings</span>.
+With multiple dimensions, we are dealing with <span class="objclass">arrays</span>. <span class="objclass">Matrices</span> are two dimensional (2-d) arrays, and extremely commonly used for scientific computing. The vectors making up a matrix *must all be of the same type*.  For example, all values in a matrix might be <span class="objclass">numeric</span>, or all <span class="objclass">character strings</span>.
 
 
 
@@ -226,10 +239,10 @@ x
 We often want to loop some function over a list.
 
 ```{r listloop}
-for (elem in x) print(class(elem))
+for (element in x) print(class(element))
 ```
 
-Lists can, and often do, have named elements.
+Lists can, and often do, have named elements, which we can then extract by name.
 
 ```{r namedlist}
 x = list("a" = 25, "b" = -1, "c" = 0)
