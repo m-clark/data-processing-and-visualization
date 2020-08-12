@@ -45,7 +45,7 @@ In addition, there are other packages like <span class="pack">lubridate</span>, 
 
 ## What is Tidy?
 
-<span class="emph">Tidy data</span> refers to data arranged in a way that makes data processing, analysis, and visualization simpler.
+*Tidy data* refers to data arranged in a way that makes data processing, analysis, and visualization simpler.
 
 In a tidy data set: 
 
@@ -103,7 +103,7 @@ How might we go about this in a dataset of possibly hundreds or even thousands o
 newData = oldData[,c(1,2,3,4, etc.)]
 ```
 
-Using numeric indexes, or rather <span class="emph">magic numbers</span>, is not conducive to readability or reproducibility.  If anything changes about the data columns, the numbers may no longer be applicable, and you'd have to redo the line again.
+Using numeric indexes, or rather *magic numbers*, is not conducive to readability or reproducibility.  If anything changes about the data columns, the numbers may no longer be applicable, and you'd have to redo the line again.
 
 We could name the variables explicitly.
 
@@ -218,7 +218,7 @@ bball %>%
   head()
 ```
 
-The <span class="func">select</span> also has helper functions to make selecting columns even easier.  I probably don't even need to explain what's being done above, and this is the power of the tidyverse way.  Here is the list of <span class="emph">helper functions</span> to be aware of:
+The <span class="func">select</span> also has helper functions to make selecting columns even easier.  I probably don't even need to explain what's being done above, and this is the power of the tidyverse way.  Here is the list of *helper functions* to be aware of:
 
 - <span class="func">starts_with</span>: starts with a prefix
 - <span class="func">ends_with</span>: ends with a suffix
@@ -304,6 +304,8 @@ summary(select(bball, shootingDif))  # select and others don't have to be piped 
 
 Another very common task is to look at group-based statistics, and we can use <span class='func'>group_by</span> and <span class="func">summarize</span> to help us in this regard[^summarise].  Base R has things like <span class="func">aggregate</span>, <span class="func">by</span>, and <span class="func">tapply</span> for this, but they should not be used, as this approach is much more straightforward, flexible, and faster.
 
+Conceptually we are doing a three-phase task: **split**, **apply**, **combine**.  We split the data into subsets, apply a function, and then combine the results back into a single output.  In applying a function, we may do any of the previously demonstrated tasks: calculate some statistic, generate new data, or even filter to a reduced part of the data.
+
 For this demonstration, I'm going to start putting together several things we've demonstrated thus far. Ultimately we'll create a variable called <span class="objclass">trueShooting</span>, which represents 'true shooting percentage', and get an average for each position, and compare it to the average field goal percentage.
 
 ```{r groupby}
@@ -321,11 +323,11 @@ bball %>%
   )    
 ```
 
-We can use <span class="func">do</span> on grouped data to go further.  This function can be used to create a new <span class="emph">list-column</span> in the data, the elements of which can be anything, even the results of an analysis for each group.  As such, we can use <span class="pack">tidyr's</span> <span class="func">unnest</span> to get back to a standard data frame.
+We can do even more with grouped data.  Specifically, we can create a new *list-column* in the data, the elements of which can be anything, even the results of an analysis for each group.  As such, we can use <span class="pack">tidyr's</span> <span class="func">unnest</span> to get back to a standard data frame.
 
-To demonstrate, the following will group data by position, then get the correlation between field-goal percentage and free-throw shooting percentage.  Some players are listed with multiple positions, so we will reduce those to whatever their first position is.  On your own, I recommend just looking at it to the do line first, and compare to this result.
+To demonstrate, the following will group data by position, then get the correlation between field-goal percentage and free-throw shooting percentage.  Some players are listed with multiple positions, so we will reduce those to whatever their first position is using <span class="func" style = "">case_when</span>.  
 
-```{r do}
+```{r do-old, echo=FALSE, eval=FALSE}
 bball %>% 
   mutate(
     Pos = case_when(
@@ -339,11 +341,7 @@ bball %>%
   group_by(Pos) %>%     
   do(FgFt_Corr = cor(.$FG., .$FT., use = 'complete')) %>%
   unnest(FgFt_Corr)
-```
 
-As a reminder, data frames are lists. As such, anything can go into the 'columns'. 
-
-```{r do2}
 library(nycflights13)
 carriers = group_by(flights, carrier)
 group_size(carriers)
@@ -359,6 +357,46 @@ mods %>%
   head()
 ```
 
+```{r newdo}
+bball %>% 
+  mutate(
+    Pos = case_when(
+      Pos == 'PG-SG' ~ 'PG',
+      Pos == 'C-PF'  ~ 'C',
+      Pos == 'SF-SG' ~ 'SF',
+      Pos == 'PF-C'  | Pos == 'PF-SF' ~ 'PF',
+      Pos == 'SG-PF' | Pos == 'SG-SF' ~ 'SG',
+      TRUE ~ Pos
+    )) %>% 
+  nest_by(Pos) %>%     
+  mutate(FgFt_Corr = list(cor(data$FG., data$FT., use = 'complete'))) %>% 
+  unnest(c(Pos, FgFt_Corr))
+```
+
+As a reminder, data frames are lists. As such, anything can go into the 'columns', even regression models!
+
+```{r newdo2}
+library(nycflights13)
+
+carriers = group_by(flights, carrier)
+
+group_size(carriers)  # if you're curious, there is a function to quickly get group Ns
+
+mods = flights %>% 
+  nest_by(carrier) %>% 
+  mutate(model = list(lm(arr_delay ~ dep_time, data = data)) )
+
+mods
+
+mods %>%
+  summarize(
+    carrier = carrier,
+    `Adjusted Rsq` = summary(model)$adj.r.squared,
+    coef_dep_time = coef(model)[2]
+  )
+```
+
+
 <div class='note'>
 You can use <span class="func">group_by</span> on more than one variable, e.g. `group_by(var1, var2)`
 
@@ -370,7 +408,7 @@ You can use <span class="func">group_by</span> on more than one variable, e.g. `
 
 Tibbles in the tidyverse don't really have a problem with variable names starting with numbers or incorporating symbols and spaces.  I would still suggest it is poor practice, because even if your data set looks fine, you'll encounter problems with modeling and visualization package using that data.  However, as a demonstration, we can 'fix' some of the variable names.
 
-One issue is that when we scraped the data and converted it to a <span class="objclass">data.frame</span>, the names that started with a number, like `3P` for 'three point baskets made', were made into `X3P`, because that's the way R works by default. In addition, `3P%`, i.e. three point percentage made, was made into `3P.`  Same goes for the 2P (two-pointers) and FT (free-throw) variables.
+One issue is that when we scraped the data and converted it to a <span class="objclass">data.frame</span>, the names that started with a number, like `3P` for 'three point baskets made', were made into `X3P`, because that's the way R works by default. In addition, `3P%`, i.e. three point percentage made, was made into `3P.` with a dot for the percent sign.  Same goes for the 2P (two-pointers) and FT (free-throw) variables.
 
 We can use rename to change column names. A basic example is as follows.
 
@@ -380,7 +418,7 @@ data %>%
          new_name2 = old_name2)
 ```
 
-Very straightforward.  However, oftentimes we'll need to change *patterns*, as with our current problem.  The following uses <span class="func">str_replace</span> and <span class="func">str_remove</span> from <span class="pack">stringr</span> to look for a pattern in a name, and replace that pattern with some other pattern.  It uses <span class="emph">regular expressions</span> for the patterns.
+Very straightforward.  However, oftentimes we'll need to change *patterns*, as with our current problem.  The following uses <span class="func">str_replace</span> and <span class="func">str_remove</span> from <span class="pack">stringr</span> to look for a pattern in a name, and replace that pattern with some other pattern.  It uses *regular expressions* for the patterns.
 
 
 ```{r rename_ex2}
@@ -455,7 +493,7 @@ anti_join(band_instruments, band_members)
 Merges can get quite complex, and involve multiple data sources. In many cases you may have to do a lot of processing before getting to the merge, but <span class="pack">dplyr's</span> joins will help quite a bit.
 
 
-## tidyr
+## Pivoting axes
 
 The <span class="pack">tidyr</span> package can be thought of as a specialized subset of <span class="pack">dplyr's</span> functionality, as well as an update to the previous <span class="pack">reshape</span> and <span class="pack">reshape2</span> packages[^reshape]. Some of its functions for manipulating data you'll want to be familiar with are:
 
@@ -465,7 +503,7 @@ The <span class="pack">tidyr</span> package can be thought of as a specialized s
 - <span class="func">separate</span>: complement of <span class="func" style = "">unite</span>
 - <span class="func">unnest</span>: expand 'list columns'
 
-The following example shows how we take a 'wide-form' data set, where multiple columns represent different stock prices, and turn it into two columns, one representing stock name, and one for the price.  We need to know which columns to work on, which is the first entry.  It works very much like the select function, where you can use helpers etc. Then we need to give a name to the column(s) representing the indicators of what were multiple columns in the wide format. And finally we need to specify the column(s) of the values.
+The following example shows how we take a 'wide-form' data set, where multiple columns represent different stock prices, and turn it into two columns, one representing stock name, and one for the price.  We need to know which columns to work on, which is the first entry.  This function works very much like <span class="func" style = "">select</span>, where you can use helpers. Then we need to give a name to the column(s) representing the indicators of what were multiple columns in the wide format. And finally we need to specify the column(s) of the values.
 
 ```{r pivot}
 library(tidyr)
@@ -481,8 +519,8 @@ stocks %>% head
 
 stocks %>% 
   pivot_longer(
-    cols = -time,        # works similar to using select()
-    names_to = 'stock',  # the name of the column that will have column names as labels
+    cols      = -time,   # works similar to using select()
+    names_to  = 'stock', # the name of the column that will have column names as labels
     values_to = 'price'  # the name of the column for the values
   ) %>% 
   head()
@@ -516,7 +554,7 @@ stocks %>%
 ```
 
 
-Note that the latter is an example of <span class="emph">tidy data</span> while the former is not.  Why do we generally prefer such data?  Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. This is especially the case for visualization.
+Note that the latter is an example of *tidy data* while the former is not.  Why do we generally prefer such data?  Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. This is especially the case for visualization.
 
 The following demonstrates the <span class="func" style = "">separate</span> function utilized for a very common data processing task- dealing with names. Here' we'll separate <span class="objclass">player</span> into first and last names based on the space.
 
@@ -677,12 +715,14 @@ movies %>%
   summarise(AvgRating = mean(rating))
 ```
 
+## Link to Python Pandas Notebook
+
+[Available on GitHub](https://github.com/m-clark/data-processing-and-visualization/blob/master/jupyter_notebooks/pandaverse.ipynb)
+
 
 [^headers]: You may be thinking- 'it's `r lubridate::year(Sys.Date())` and why on earth would anyone do that?!'.  Peruse most sports websites and you'll see that fundamental web design basics escape them.  See also, financial sites.
 
 [^summarise]: As Hadley Wickham is from New Zealand, and his examples use <span class="func">summarise</span>, you'll probably see it about as much as you do the other spelling, especially since it will come up first in autocomplete.
-
-
 
 [^noslice]: If you're following good programming practices, you'll likely never use <span class="func">slice</span>.
 
