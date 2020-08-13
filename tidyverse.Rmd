@@ -233,7 +233,7 @@ The <span class="func">select</span> also has helper functions to make selecting
 
 There are repeated header rows in this data[^headers], so we need to drop them.  This is also why everything was character string when we first scraped it, because having any character strings in a column coerces the entire column to be character,  since all elements of a vector [need to be of the same type][vectors].  Character string is chosen over others because anything can be converted to a string, but not everything can be a number.  
 
-Filtering by rows requires the basic indexing knowledge [we talked about before][Indexing], especially Boolean indexing. In the following, `Rk`, or rank, is for all intents and purposes just a row id, but if it equals the actual text 'Rk' instead of something else, we know we're dealing with a header row, so we'll drop it.
+Filtering by rows requires the basic indexing knowledge [we talked about before][indexing], especially Boolean indexing. In the following, `Rk`, or rank, is for all intents and purposes just a row id, but if it equals the actual text 'Rk' instead of something else, we know we're dealing with a header row, so we'll drop it.
 
 ```{r filter0}
 bball = bball %>% 
