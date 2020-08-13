@@ -25,9 +25,10 @@ We'll start with a couple examples. Consider the following.
 
 ```{r problems}
 library(plotly)
+
 sw_height = starwars %>%
-  filter(gender %in% c('male', 'female')) %>%
-  group_by(gender) %>%
+  filter(sex %in% c('male', 'female')) %>%
+  group_by(sex) %>%
   summarise(
     Height = mean(height, na.rm = T),
     N = n(),
@@ -35,7 +36,7 @@ sw_height = starwars %>%
   )
 
 sw_height %>%
-  ggplot(aes(x = gender, y = Height)) +
+  ggplot(aes(x = sex, y = Height)) +
   geom_bar(aes(),
            color = 'black',
            stat = 'identity',
@@ -54,11 +55,11 @@ You might think the following is an improvement, but I would say it's even worse
 
 ```{r problems2}
 sw_height %>% 
-  ggplot(aes(x=gender, y=Height)) +
+  ggplot(aes(x=sex, y=Height)) +
   geom_errorbar(aes(ymin=Height-2*se, ymax=Height+2*se),
                 width=.2,                    # Width of the error bars
                 position=position_dodge(.9)) +
-  geom_bar(aes(fill=gender), color='black', stat='identity', width=.5) +
+  geom_bar(aes(fill=sex), color='black', stat='identity', width=.5) +
   scale_fill_manual(values=c('red1', 'green')) +
   coord_cartesian(ylim=c(140,200)) +
   labs(title='Height of Some Star Wars Characters') +
@@ -72,9 +73,9 @@ Now we add more information, but more problems!
 
 ```{r ugly}
 starwars %>% 
-  filter(gender %in% c('male', 'female')) %>% 
+  filter(sex %in% c('male', 'female')) %>% 
   ggplot(aes(x=mass, y=height)) +
-  geom_point(aes(color=gender), size=6) + 
+  geom_point(aes(color=sex), size=6) + 
   geom_text(aes(label=name), size=2) + 
   geom_smooth(method='lm', se=F, color='red', lwd=2) + 
   scale_color_manual(values=c('red1', 'green')) +
@@ -85,7 +86,7 @@ starwars %>%
         )
 ```
 
-The above has unnecessary border, gridlines, and emphasis. The labels, while possibly interesting, do not relate anything useful to the graph, and many are illegible. It imposes a straight (and too wide of a) straight line on a nonlinear relationship.  And finally, color choice is both terrible and tends to draw one's eye to the female data points.  Here is what it looks like to someone with the most common form of colorblindness. If the points were less clumpy on gender, it would be very difficult to distinguish the groups.
+The above has unnecessary border, gridlines, and emphasis. The labels, while possibly interesting, do not relate anything useful to the graph, and many are illegible. It imposes a straight (and too wide of a) straight line on a nonlinear relationship.  And finally, color choice is both terrible and tends to draw one's eye to the female data points.  Here is what it looks like to someone with the most common form of colorblindness. If the points were less clumpy on sex, it would be very difficult to distinguish the groups.
 
 <img class = 'zoom' src="img/deuteranopia.png" style="display:block; margin: 0 auto;" width=50%>
 
@@ -94,9 +95,9 @@ And here is what it might look like when printed.
 
 ```{r badbw}
 starwars %>% 
-  filter(gender %in% c('male', 'female')) %>% 
+  filter(sex %in% c('male', 'female')) %>% 
   ggplot(aes(x=mass, y=height)) +
-  geom_point(aes(color=gender), size=6) + 
+  geom_point(aes(color=sex), size=6) + 
   geom_text(aes(label=name), size=2) + 
   geom_smooth(method='lm', se=F, color='black', lwd=2) + 
   scale_color_grey(start=.6, end=.4) +
@@ -109,17 +110,17 @@ starwars %>%
 
 <br>
 
-Now consider the following.  We have six pieces of information in one graph- name (on hover), homeworld (shape), age (size), gender (color), mass (x), and height (y).  The colors are evenly spaced from one another, and so do not draw one's attention to one group over another, or even to the line over groups. Opacity allows the line to be added and the points to overlap without loss of information.  We technically don't need a caption, legend or gridlines, because hovering over the data tells us everything we'd want to know about a given data point.  The interactivity additionally allows one to select and zoom on specific areas.
+Now consider the following.  We have six pieces of information in one graph- name (on hover), homeworld (shape), age (size), sex (color), mass (x), and height (y).  The colors are evenly spaced from one another, and so do not draw one's attention to one group over another, or even to the line over groups. Opacity allows the line to be added and the points to overlap without loss of information.  We technically don't need a caption, legend or gridlines, because hovering over the data tells us everything we'd want to know about a given data point.  The interactivity additionally allows one to select and zoom on specific areas.
 
 <br>
 
 ```{r better, height = '110%', width = '125%'}
 sw2 = starwars %>% 
-  filter(gender %in% c('male', 'female')) %>% 
+  filter(sex %in% c('male', 'female')) %>% 
   mutate(homeworld2 = ifelse(homeworld=='Tatooine', 'Tatooine', 'Naboo'),
          homeworld2 = ifelse(homeworld!='Tatooine'& homeworld!='Naboo', 'Other', homeworld2),
          homeworld2 = ifelse(is.na(homeworld2), 'Other', homeworld2)) %>% 
-  select(name, mass, height, birth_year, gender, homeworld, homeworld2) %>% ungroup
+  select(name, mass, height, birth_year, sex, homeworld, homeworld2) %>% ungroup
 
 
 # adding label=name will add name to plotly tooltip; ggplot will ignore
@@ -142,7 +143,7 @@ g = sw2 %>%
   geom_point(
     aes(
       label = name,
-      color = gender,
+      color = sex,
       shape = homeworld,
       size  = birth_year
     ),
