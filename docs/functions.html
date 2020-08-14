@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Writing Functions | Data Processing &amp; Visualization</title>
-  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <title>Writing Functions | Practical Data Science</title>
+  <meta name="description" content="The focus of this document is on data science tools and techniques in R, including basic programming knowledge, visualization practices, modeling, and more, along with exercises to practice further. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta name="generator" content="bookdown 0.20.2 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Writing Functions | Data Processing &amp; Visualization" />
+  <meta property="og:title" content="Writing Functions | Practical Data Science" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://m-clark.github.io/data-processing-and-visualization/" />
   <meta property="og:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
-  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta property="og:description" content="The focus of this document is on data science tools and techniques in R, including basic programming knowledge, visualization practices, modeling, and more, along with exercises to practice further. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
   <meta name="github-repo" content="m-clark/data-processing-and-visualization/" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Writing Functions | Data Processing &amp; Visualization" />
+  <meta name="twitter:title" content="Writing Functions | Practical Data Science" />
   
-  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta name="twitter:description" content="The focus of this document is on data science tools and techniques in R, including basic programming knowledge, visualization practices, modeling, and more, along with exercises to practice further. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
   <meta name="twitter:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
 
 
 
-<meta name="date" content="2020-06-29" />
+<meta name="date" content="2020-08-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   <link rel="shortcut icon" href="img/R.ico" type="image/x-icon" />
 <link rel="prev" href="iterative.html"/>
 <link rel="next" href="more.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.5.0/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -66,45 +66,46 @@
 <script src="libs/vis-4.20.1/vis.min.js"></script>
 <script src="libs/visNetwork-binding-2.0.9/visNetwork.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
-<link href="libs/highcharts-7.0.1/css/motion.css" rel="stylesheet" />
-<link href="libs/highcharts-7.0.1/css/htmlwdgtgrid.css" rel="stylesheet" />
-<script src="libs/highcharts-7.0.1/highcharts.js"></script>
-<script src="libs/highcharts-7.0.1/highcharts-3d.js"></script>
-<script src="libs/highcharts-7.0.1/highcharts-more.js"></script>
-<script src="libs/highcharts-7.0.1/modules/stock.js"></script>
-<script src="libs/highcharts-7.0.1/modules/map.js"></script>
-<script src="libs/highcharts-7.0.1/modules/annotations.js"></script>
-<script src="libs/highcharts-7.0.1/modules/boost.js"></script>
-<script src="libs/highcharts-7.0.1/modules/data.js"></script>
-<script src="libs/highcharts-7.0.1/modules/drag-panes.js"></script>
-<script src="libs/highcharts-7.0.1/modules/drilldown.js"></script>
-<script src="libs/highcharts-7.0.1/modules/item-series.js"></script>
-<script src="libs/highcharts-7.0.1/modules/offline-exporting.js"></script>
-<script src="libs/highcharts-7.0.1/modules/overlapping-datalabels.js"></script>
-<script src="libs/highcharts-7.0.1/modules/exporting.js"></script>
-<script src="libs/highcharts-7.0.1/modules/export-data.js"></script>
-<script src="libs/highcharts-7.0.1/modules/funnel.js"></script>
-<script src="libs/highcharts-7.0.1/modules/heatmap.js"></script>
-<script src="libs/highcharts-7.0.1/modules/treemap.js"></script>
-<script src="libs/highcharts-7.0.1/modules/sankey.js"></script>
-<script src="libs/highcharts-7.0.1/modules/solid-gauge.js"></script>
-<script src="libs/highcharts-7.0.1/modules/streamgraph.js"></script>
-<script src="libs/highcharts-7.0.1/modules/sunburst.js"></script>
-<script src="libs/highcharts-7.0.1/modules/vector.js"></script>
-<script src="libs/highcharts-7.0.1/modules/wordcloud.js"></script>
-<script src="libs/highcharts-7.0.1/modules/xrange.js"></script>
-<script src="libs/highcharts-7.0.1/modules/tilemap.js"></script>
-<script src="libs/highcharts-7.0.1/modules/venn.js"></script>
-<script src="libs/highcharts-7.0.1/modules/gantt.js"></script>
-<script src="libs/highcharts-7.0.1/modules/timeline.js"></script>
-<script src="libs/highcharts-7.0.1/modules/parallel-coordinates.js"></script>
-<script src="libs/highcharts-7.0.1/plugins/grouped-categories.js"></script>
-<script src="libs/highcharts-7.0.1/plugins/motion.js"></script>
-<script src="libs/highcharts-7.0.1/plugins/multicolor_series.js"></script>
-<script src="libs/highcharts-7.0.1/custom/reset.js"></script>
-<script src="libs/highcharts-7.0.1/custom/symbols-extra.js"></script>
-<script src="libs/highcharts-7.0.1/custom/text-symbols.js"></script>
-<script src="libs/highchart-binding-0.7.0/highchart.js"></script>
+<link href="libs/highcharts-8.1.2/css/motion.css" rel="stylesheet" />
+<script src="libs/highcharts-8.1.2/highcharts.js"></script>
+<script src="libs/highcharts-8.1.2/highcharts-3d.js"></script>
+<script src="libs/highcharts-8.1.2/highcharts-more.js"></script>
+<script src="libs/highcharts-8.1.2/modules/stock.js"></script>
+<script src="libs/highcharts-8.1.2/modules/map.js"></script>
+<script src="libs/highcharts-8.1.2/modules/annotations.js"></script>
+<script src="libs/highcharts-8.1.2/modules/data.js"></script>
+<script src="libs/highcharts-8.1.2/modules/drilldown.js"></script>
+<script src="libs/highcharts-8.1.2/modules/item-series.js"></script>
+<script src="libs/highcharts-8.1.2/modules/offline-exporting.js"></script>
+<script src="libs/highcharts-8.1.2/modules/overlapping-datalabels.js"></script>
+<script src="libs/highcharts-8.1.2/modules/exporting.js"></script>
+<script src="libs/highcharts-8.1.2/modules/export-data.js"></script>
+<script src="libs/highcharts-8.1.2/modules/funnel.js"></script>
+<script src="libs/highcharts-8.1.2/modules/heatmap.js"></script>
+<script src="libs/highcharts-8.1.2/modules/treemap.js"></script>
+<script src="libs/highcharts-8.1.2/modules/sankey.js"></script>
+<script src="libs/highcharts-8.1.2/modules/dependency-wheel.js"></script>
+<script src="libs/highcharts-8.1.2/modules/organization.js"></script>
+<script src="libs/highcharts-8.1.2/modules/solid-gauge.js"></script>
+<script src="libs/highcharts-8.1.2/modules/streamgraph.js"></script>
+<script src="libs/highcharts-8.1.2/modules/sunburst.js"></script>
+<script src="libs/highcharts-8.1.2/modules/vector.js"></script>
+<script src="libs/highcharts-8.1.2/modules/wordcloud.js"></script>
+<script src="libs/highcharts-8.1.2/modules/xrange.js"></script>
+<script src="libs/highcharts-8.1.2/modules/tilemap.js"></script>
+<script src="libs/highcharts-8.1.2/modules/venn.js"></script>
+<script src="libs/highcharts-8.1.2/modules/gantt.js"></script>
+<script src="libs/highcharts-8.1.2/modules/timeline.js"></script>
+<script src="libs/highcharts-8.1.2/modules/parallel-coordinates.js"></script>
+<script src="libs/highcharts-8.1.2/modules/bullet.js"></script>
+<script src="libs/highcharts-8.1.2/modules/coloraxis.js"></script>
+<script src="libs/highcharts-8.1.2/modules/dumbbell.js"></script>
+<script src="libs/highcharts-8.1.2/modules/lollipop.js"></script>
+<script src="libs/highcharts-8.1.2/modules/series-label.js"></script>
+<script src="libs/highcharts-8.1.2/plugins/motion.js"></script>
+<script src="libs/highcharts-8.1.2/custom/reset.js"></script>
+<script src="libs/highcharts-8.1.2/modules/boost.js"></script>
+<script src="libs/highchart-binding-0.8.2/highchart.js"></script>
 <script src="libs/sigma-1.2.1/sigma.min.js"></script>
 <script src="libs/sigma-1.2.1/plugins/sigma.layout.forceAtlas2.min.js"></script>
 <script src="libs/sigma-1.2.1/plugins/sigma.layout.noverlap.min.js"></script>
@@ -129,7 +130,7 @@
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.14/datatables.js"></script>
+<script src="libs/datatables-binding-0.15/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
@@ -214,10 +215,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class='before'><a href="./">Data Processing & Visualization</a></li>
+<li class='before'><a href="./">Practical Data Science</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i>Intro</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#intended-audience"><i class="fa fa-check"></i>Intended Audience</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#programming-language"><i class="fa fa-check"></i>Programming Language</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#additional-practice"><i class="fa fa-check"></i>Additional Practice</a></li>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#outline"><i class="fa fa-check"></i>Outline</a><ul>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-1-information-processing"><i class="fa fa-check"></i>Part 1: Information Processing</a></li>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-2-programming-basics"><i class="fa fa-check"></i>Part 2: Programming Basics</a></li>
@@ -225,10 +229,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-4-visualization"><i class="fa fa-check"></i>Part 4: Visualization</a></li>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-5-presentation"><i class="fa fa-check"></i>Part 5: Presentation</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#preparation"><i class="fa fa-check"></i>Preparation</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#workshops"><i class="fa fa-check"></i>Workshops</a></li>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#other"><i class="fa fa-check"></i>Other</a><ul>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#python"><i class="fa fa-check"></i>Python</a></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#r"><i class="fa fa-check"></i>R</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#python-notebooks"><i class="fa fa-check"></i>Python notebooks</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#other-r-packages"><i class="fa fa-check"></i>Other R packages</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#history"><i class="fa fa-check"></i>History</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#current-efforts"><i class="fa fa-check"></i>Current Efforts</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part I: Information Processing</b></span></li>
@@ -238,6 +244,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#factors"><i class="fa fa-check"></i>Factors</a></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#logicals"><i class="fa fa-check"></i>Logicals</a></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#numeric-and-integer"><i class="fa fa-check"></i>Numeric and integer</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#dates"><i class="fa fa-check"></i>Dates</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#matrices"><i class="fa fa-check"></i>Matrices</a><ul>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#creating-a-matrix"><i class="fa fa-check"></i>Creating a matrix</a></li>
@@ -247,67 +254,79 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#creating-a-data-frame"><i class="fa fa-check"></i>Creating a data frame</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#data-structure-exercises"><i class="fa fa-check"></i>Data Structure Exercises</a><ul>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#excercise-1"><i class="fa fa-check"></i>Excercise #1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise #2</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#excercise-1"><i class="fa fa-check"></i>Excercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#thinking-exercises"><i class="fa fa-check"></i>Thinking Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#python-data-structures-notebook"><i class="fa fa-check"></i>Python Data Structures Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html"><i class="fa fa-check"></i>Input/Output</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#other-approaches"><i class="fa fa-check"></i>Other approaches</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#faster-approaches"><i class="fa fa-check"></i>Faster approaches</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#other-data"><i class="fa fa-check"></i>Other Data</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#on-the-horizon"><i class="fa fa-check"></i>On the horizon</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#better-faster-approaches"><i class="fa fa-check"></i>Better &amp; Faster Approaches</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#r-specific-data"><i class="fa fa-check"></i>R-specific Data</a><ul>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#r-datasets"><i class="fa fa-check"></i>R Datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#other-types-of-data"><i class="fa fa-check"></i>Other Types of Data</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#on-the-horizon"><i class="fa fa-check"></i>On the Horizon</a></li>
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html#big-data"><i class="fa fa-check"></i>Big Data</a></li>
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html#io-exercises"><i class="fa fa-check"></i>I/O Exercises</a><ul>
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#thinking-exercises"><i class="fa fa-check"></i>Thinking Exercises</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#thinking-exercises-1"><i class="fa fa-check"></i>Thinking Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#python-io-notebook"><i class="fa fa-check"></i>Python I/O Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html"><i class="fa fa-check"></i>Indexing</a><ul>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#base-r-indexing-refresher"><i class="fa fa-check"></i>Base R Indexing Refresher</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/Data.frame extraction</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#slicing-vectors"><i class="fa fa-check"></i>Slicing Vectors</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#slicing-matricesdata.frames"><i class="fa fa-check"></i>Slicing Matrices/data.frames</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#label-based-indexing"><i class="fa fa-check"></i>Label-based Indexing</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#position-based-indexing"><i class="fa fa-check"></i>Position-based Indexing</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#mixed-indexing"><i class="fa fa-check"></i>Mixed Indexing</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#non-contiguous"><i class="fa fa-check"></i>Non-contiguous</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#boolean"><i class="fa fa-check"></i>Boolean</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/data.frame Extraction</a></li>
 <li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#indexing-exercises"><i class="fa fa-check"></i>Indexing Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-1-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-2-1"><i class="fa fa-check"></i>Exercise 2</a></li>
 <li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#python-indexing-notebook"><i class="fa fa-check"></i>Python Indexing Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html"><i class="fa fa-check"></i>Pipes</a><ul>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#using-variables-as-they-are-created"><i class="fa fa-check"></i>Using variables as they are created</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#using-variables-as-they-are-created"><i class="fa fa-check"></i>Using Variables as They are Created</a></li>
 <li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#pipes-for-visualization-more-later"><i class="fa fa-check"></i>Pipes for Visualization (more later)</a></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#the-dot"><i class="fa fa-check"></i>The dot</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#the-dot"><i class="fa fa-check"></i>The Dot</a></li>
 <li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#flexibility"><i class="fa fa-check"></i>Flexibility</a></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#pipes-summary"><i class="fa fa-check"></i>Pipes Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html"><i class="fa fa-check"></i>Tidyverse</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-the-tidyverse"><i class="fa fa-check"></i>What is the tidyverse?</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is tidy?</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-the-tidyverse"><i class="fa fa-check"></i>What is the Tidyverse?</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is Tidy?</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#dplyr"><i class="fa fa-check"></i>dplyr</a><ul>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#an-example"><i class="fa fa-check"></i>An example</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#running-example"><i class="fa fa-check"></i>Running example</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#running-example"><i class="fa fa-check"></i>Running Example</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#selecting-columns"><i class="fa fa-check"></i>Selecting Columns</a><ul>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#helper-functions"><i class="fa fa-check"></i>Helper functions</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#filtering-rows"><i class="fa fa-check"></i>Filtering Rows</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#generating-new-data"><i class="fa fa-check"></i>Generating New Data</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#grouping-and-summarizing-data"><i class="fa fa-check"></i>Grouping and Summarizing Data</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#renaming-columns"><i class="fa fa-check"></i>Renaming columns</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#renaming-columns"><i class="fa fa-check"></i>Renaming Columns</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#merging-data"><i class="fa fa-check"></i>Merging Data</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyr"><i class="fa fa-check"></i>tidyr</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#pivoting-axes"><i class="fa fa-check"></i>Pivoting axes</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#more-tidyverse"><i class="fa fa-check"></i>More Tidyverse</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyverse-exercises"><i class="fa fa-check"></i>tidyverse Exercises</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyverse-exercises"><i class="fa fa-check"></i>Tidyverse Exercises</a><ul>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-1-2"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-2-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-3-1"><i class="fa fa-check"></i>Exercise 3</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-4"><i class="fa fa-check"></i>Exercise 4</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#python-pandas-notebook"><i class="fa fa-check"></i>Python Pandas Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html"><i class="fa fa-check"></i>data.table</a><ul>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#basics"><i class="fa fa-check"></i>Basics</a></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#grouped-operations"><i class="fa fa-check"></i>Grouped operations</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-basics"><i class="fa fa-check"></i>data.table Basics</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#grouped-operations"><i class="fa fa-check"></i>Grouped Operations</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster"><i class="fa fa-check"></i>Faster!</a><ul>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#joins"><i class="fa fa-check"></i>Joins</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#group-by"><i class="fa fa-check"></i>Group by</a></li>
@@ -316,17 +335,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#more-speed"><i class="fa fa-check"></i>More speed</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster-dplyr-alternatives"><i class="fa fa-check"></i>Faster dplyr alternatives</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-summary"><i class="fa fa-check"></i>data.table Summary</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster-dplyr-alternatives"><i class="fa fa-check"></i>Faster dplyr Alternatives</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-exercises"><i class="fa fa-check"></i>data.table Exercises</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-0-1"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-1-3"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-2-3"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part II: Programming</b></span></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#basics"><i class="fa fa-check"></i>Basics</a><ul>
-<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html"><i class="fa fa-check"></i>R Objects</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html"><i class="fa fa-check"></i>Programming Basics</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#r-objects"><i class="fa fa-check"></i>R Objects</a><ul>
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#object-inspection-exploration"><i class="fa fa-check"></i>Object Inspection &amp; Exploration</a></li>
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#methods"><i class="fa fa-check"></i>Methods</a></li>
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#s4-classes"><i class="fa fa-check"></i>S4 classes</a></li>
@@ -337,7 +356,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#objects-exercises"><i class="fa fa-check"></i>Objects Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For Loops</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#a-slight-speed-gain"><i class="fa fa-check"></i>A slight speed gain</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#loops-summary"><i class="fa fa-check"></i>Loops summary</a></li>
@@ -347,58 +366,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#looping-with-lists"><i class="fa fa-check"></i>Looping with lists</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#looping-with-lists"><i class="fa fa-check"></i>Looping with Lists</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#iterative-programming-exercises"><i class="fa fa-check"></i>Iterative Programming Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-1-4"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-2-4"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-3-2"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i>Writing Functions</a><ul>
-<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#a-starting-point"><i class="fa fa-check"></i>A starting point</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#a-starting-point"><i class="fa fa-check"></i>A Starting Point</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#dry"><i class="fa fa-check"></i>DRY</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#conditionals"><i class="fa fa-check"></i>Conditionals</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#anonymous-functions"><i class="fa fa-check"></i>Anonymous functions</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#writing-functions-exercises"><i class="fa fa-check"></i>Writing Functions Exercises</a><ul>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#excercise-1"><i class="fa fa-check"></i>Excercise 1</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1-1"><i class="fa fa-check"></i>Excercise 1</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1b"><i class="fa fa-check"></i>Excercise 1b</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#exercise-2-5"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html"><i class="fa fa-check"></i>More</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html"><i class="fa fa-check"></i>More Programming</a><ul>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-style"><i class="fa fa-check"></i>Code Style</a><ul>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#why-does-your-code-exist"><i class="fa fa-check"></i>Why does your code exist?</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#assignment"><i class="fa fa-check"></i>Assignment</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-length"><i class="fa fa-check"></i>Code length</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#spacing"><i class="fa fa-check"></i>Spacing</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#naming-things"><i class="fa fa-check"></i>Naming things</a></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#other"><i class="fa fa-check"></i>Other</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#other-1"><i class="fa fa-check"></i>Other</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorization"><i class="fa fa-check"></i>Vectorization</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#boolean-indexing"><i class="fa fa-check"></i>Boolean Indexing</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#boolean-indexing"><i class="fa fa-check"></i>Boolean indexing</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorized-operations"><i class="fa fa-check"></i>Vectorized operations</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#regular-expressions"><i class="fa fa-check"></i>Regular Expressions</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#typical-uses"><i class="fa fa-check"></i>Typical Uses</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#typical-uses"><i class="fa fa-check"></i>Typical uses</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-style-exercises"><i class="fa fa-check"></i>Code Style Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-5"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-6"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorization-exercises"><i class="fa fa-check"></i>Vectorization Exercises</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-1"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-6"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-7"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#regex-exercises"><i class="fa fa-check"></i>Regex Exercises</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-2"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-7"><i class="fa fa-check"></i>Exercise 1</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part III: Modeling</b></span></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#model-exploration"><i class="fa fa-check"></i>Model Exploration</a><ul>
-<li class="chapter" data-level="" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i>Model Taxonomy</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i>Model Exploration</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-taxonomy"><i class="fa fa-check"></i>Model Taxonomy</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#linear-models"><i class="fa fa-check"></i>Linear models</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#estimation"><i class="fa fa-check"></i>Estimation</a><ul>
-<li class="chapter" data-level="" data-path="models.html"><a href="models.html#minimizing-and-maximizing"><i class="fa fa-check"></i>Minimizing and Maximizing</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#minimizing-and-maximizing"><i class="fa fa-check"></i>Minimizing and maximizing</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#optimization"><i class="fa fa-check"></i>Optimization</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#fitting-models"><i class="fa fa-check"></i>Fitting Models</a><ul>
@@ -423,13 +442,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-exploration-summary"><i class="fa fa-check"></i>Model Exploration Summary</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-exploration-exercises"><i class="fa fa-check"></i>Model Exploration Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-1-8"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-2-8"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-3-3"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#python-model-exploration-notebook"><i class="fa fa-check"></i>Python Model Exploration Notebook</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#model-criticism"><i class="fa fa-check"></i>Model Criticism</a><ul>
-<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html"><i class="fa fa-check"></i>Model Fit</a><ul>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html"><i class="fa fa-check"></i>Model Criticism</a><ul>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-fit"><i class="fa fa-check"></i>Model Fit</a><ul>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#standard-linear-model"><i class="fa fa-check"></i>Standard linear model</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#beyond-ols"><i class="fa fa-check"></i>Beyond OLS</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#classification"><i class="fa fa-check"></i>Classification</a></li>
@@ -439,40 +459,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-comparison"><i class="fa fa-check"></i>Model Comparison</a><ul>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-additional-covariates"><i class="fa fa-check"></i>Example: Additional covariates</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-interactions"><i class="fa fa-check"></i>Example: Interactions</a></li>
-<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-additive-models"><i class="fa fa-check"></i>Example: Additive Models</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-additive-models"><i class="fa fa-check"></i>Example: Additive models</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-averaging"><i class="fa fa-check"></i>Model Averaging</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-criticism-summary"><i class="fa fa-check"></i>Model Criticism Summary</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-criticism-exercises"><i class="fa fa-check"></i>Model Criticism Exercises</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-0-2"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-1-9"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-2-9"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#python-model-criticism-notebook"><i class="fa fa-check"></i>Python Model Criticism Notebook</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#machine-learning"><i class="fa fa-check"></i>Machine Learning</a><ul>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html"><i class="fa fa-check"></i>Concepts</a><ul>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html"><i class="fa fa-check"></i>Machine Learning</a><ul>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#concepts"><i class="fa fa-check"></i>Concepts</a><ul>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#loss"><i class="fa fa-check"></i>Loss</a></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#bias-variance-tradeoff"><i class="fa fa-check"></i>Bias-variance Tradeoff</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#bias-variance-tradeoff"><i class="fa fa-check"></i>Bias-variance tradeoff</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#regularization"><i class="fa fa-check"></i>Regularization</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
-<li class="chapter" data-level="" data-path="models.html"><a href="models.html#optimization"><i class="fa fa-check"></i>Optimization</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#optimization-1"><i class="fa fa-check"></i>Optimization</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#tuning-parameters"><i class="fa fa-check"></i>Tuning parameters</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#techniques"><i class="fa fa-check"></i>Techniques</a><ul>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#regularized-regression"><i class="fa fa-check"></i>Regularized regression</a></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#random-forests"><i class="fa fa-check"></i>Random Forests</a></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#neural-networks"><i class="fa fa-check"></i>Neural Networks</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#random-forests"><i class="fa fa-check"></i>Random forests</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#neural-networks"><i class="fa fa-check"></i>Neural networks</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#interpreting-the-black-box"><i class="fa fa-check"></i>Interpreting the Black Box</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-summary"><i class="fa fa-check"></i>Machine Learning Summary</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-exercises"><i class="fa fa-check"></i>Machine Learning Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercise-1-10"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercise-2-10"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#python-machine-learning-notebook"><i class="fa fa-check"></i>Python Machine Learning Notebook</a></li>
 </ul></li>
 <li class="part"><span><b>Part IV: Visualization</b></span></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#ggplot2"><i class="fa fa-check"></i>ggplot2</a><ul>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i>Layers</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#geoms"><i class="fa fa-check"></i>Geoms</a></li>
@@ -484,13 +506,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#themes"><i class="fa fa-check"></i>Themes</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#python"><i class="fa fa-check"></i>Python</a></li>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-summary"><i class="fa fa-check"></i>ggplot2 Summary</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-exercises"><i class="fa fa-check"></i>ggplot2 Exercises</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-0-3"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-1-11"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-2-11"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#python-plotnine-notebook"><i class="fa fa-check"></i>Python Plotnine Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#packages"><i class="fa fa-check"></i>Packages</a></li>
@@ -513,14 +535,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-visualization-exercises"><i class="fa fa-check"></i>Interactive Visualization Exercises</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-0-4"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-1-12"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-2-12"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-3-4"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#python-interactive-visualization-notebook"><i class="fa fa-check"></i>Python Interactive Visualization Notebook</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#thinking-visually"><i class="fa fa-check"></i>Thinking Visually</a><ul>
-<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html"><i class="fa fa-check"></i>Information</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html"><i class="fa fa-check"></i>Thinking Visually</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#information"><i class="fa fa-check"></i>Information</a><ul>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#your-audience-isnt-dumb"><i class="fa fa-check"></i>Your audience isn’t dumb</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#clarity-is-key"><i class="fa fa-check"></i>Clarity is key</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#avoid-clutter"><i class="fa fa-check"></i>Avoid clutter</a></li>
@@ -537,7 +560,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#accessibility"><i class="fa fa-check"></i>Accessibility</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#file-types"><i class="fa fa-check"></i>File Types</a></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#summary-of-thinking-visually"><i class="fa fa-check"></i>Summary of Thinking Visually</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#a-casual-list-of-things-to-avoid"><i class="fa fa-check"></i>A casual list of things to avoid</a><ul>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#pie"><i class="fa fa-check"></i>Pie</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#histograms"><i class="fa fa-check"></i>Histograms</a></li>
@@ -548,32 +571,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#biplots"><i class="fa fa-check"></i>Biplots</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#thinking-exercises"><i class="fa fa-check"></i>Thinking exercises</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-1-13"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-2-13"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-exercises-2"><i class="fa fa-check"></i>Thinking exercises</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part V: Presentation</b></span></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html"><i class="fa fa-check"></i>Reproducible Programming</a><ul>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#how-to-read-this-chapter"><i class="fa fa-check"></i>How to read this chapter</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#literate-programming"><i class="fa fa-check"></i>Literate Programming</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#r-markdown"><i class="fa fa-check"></i>R Markdown</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#replicability-reproducible-research"><i class="fa fa-check"></i>Replicability &amp; reproducible research</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#dynamic-data-analysis-report-generation"><i class="fa fa-check"></i>Dynamic data analysis &amp; report generation</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#using-modern-tools"><i class="fa fa-check"></i>Using Modern Tools</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i>Building Better Data-Driven Products</a><ul>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#rep-analysis"><i class="fa fa-check"></i>Rep* Analysis</a><ul>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#example"><i class="fa fa-check"></i>Example</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#repeatable"><i class="fa fa-check"></i>Repeatable</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#reproducible"><i class="fa fa-check"></i>Reproducible</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#replicable"><i class="fa fa-check"></i>Replicable</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#summary-of-rep-analysis"><i class="fa fa-check"></i>Summary of rep* analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#literate-programming"><i class="fa fa-check"></i>Literate Programming</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#r-markdown"><i class="fa fa-check"></i>R Markdown</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#how-to-read-this-chapter"><i class="fa fa-check"></i>How to read this chapter</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#dynamic-data-analysis-report-generation"><i class="fa fa-check"></i>Dynamic data analysis &amp; report generation</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#using-modern-tools"><i class="fa fa-check"></i>Using Modern Tools</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html"><i class="fa fa-check"></i>Getting Started</a><ul>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#what-is-markdown"><i class="fa fa-check"></i>What is Markdown?</a></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#documents"><i class="fa fa-check"></i>Documents</a><ul>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#standard-html"><i class="fa fa-check"></i>Standard HTML</a></li>
-<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#r-notebooks"><i class="fa fa-check"></i>R Notebooks</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#r-notebooks"><i class="fa fa-check"></i>R notebooks</a></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#distill"><i class="fa fa-check"></i>Distill</a></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#bookdown"><i class="fa fa-check"></i>Bookdown</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#presentations"><i class="fa fa-check"></i>Presentations</a></li>
-<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#shiny-apps"><i class="fa fa-check"></i>Shiny Apps</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#apps-sites-dashboards"><i class="fa fa-check"></i>Apps, Sites &amp; Dashboards</a></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#templates"><i class="fa fa-check"></i>Templates</a></li>
-<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#how-to-start"><i class="fa fa-check"></i>How to start</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#how-to-begin"><i class="fa fa-check"></i>How to Begin</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html"><i class="fa fa-check"></i>Standard Documents</a><ul>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#r-markdown-files"><i class="fa fa-check"></i>R Markdown files</a></li>
@@ -584,24 +613,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#labels"><i class="fa fa-check"></i>Labels</a></li>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#running-code"><i class="fa fa-check"></i>Running code</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#multiple-documents"><i class="fa fa-check"></i>Multiple documents</a></li>
-<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#sharing-code-collaboration"><i class="fa fa-check"></i>Sharing Code &amp; Collaboration</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#multiple-documents"><i class="fa fa-check"></i>Multiple Documents</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#collaboration"><i class="fa fa-check"></i>Collaboration</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#using-python-for-documents"><i class="fa fa-check"></i>Using Python for Documents</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html"><i class="fa fa-check"></i>Customization &amp; Configuration</a><ul>
-<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#output-options"><i class="fa fa-check"></i>Output options</a><ul>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#output-options"><i class="fa fa-check"></i>Output Options</a><ul>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#themes-etc."><i class="fa fa-check"></i>Themes etc.</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#yaml"><i class="fa fa-check"></i>YAML</a></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#html-css"><i class="fa fa-check"></i>HTML &amp; CSS</a><ul>
-<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#html"><i class="fa fa-check"></i>HTML</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#html-1"><i class="fa fa-check"></i>HTML</a></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#css"><i class="fa fa-check"></i>CSS</a></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#custom-classes"><i class="fa fa-check"></i>Custom classes</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#personal-templates"><i class="fa fa-check"></i>Personal Templates</a></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#the-rabbit-hole-goes-deep"><i class="fa fa-check"></i>The Rabbit Hole Goes Deep</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#r-markdown-exercises"><i class="fa fa-check"></i>R Markdown Exercises</a><ul>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-1-14"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-2-14"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-3-5"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-4-1"><i class="fa fa-check"></i>Exercise 4</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-5"><i class="fa fa-check"></i>Exercise 5</a></li>
+</ul></li>
 </ul></li>
 <li class="part"><span><b>Wrap-up</b></span></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i>Appendix</a><ul>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#r-markdown-1"><i class="fa fa-check"></i>R Markdown</a><ul>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#footnotes"><i class="fa fa-check"></i>Footnotes</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#citations-and-references"><i class="fa fa-check"></i>Citations and references</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#multiple-documents-1"><i class="fa fa-check"></i>Multiple documents</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#web-standards"><i class="fa fa-check"></i>Web standards</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li class='after'">
@@ -635,7 +680,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Data Processing &amp; Visualization</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Practical Data Science</a>
           </h1>
         </div>
 
@@ -657,81 +702,81 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>There are many benefits to writing your own functions, and it’s actually easy to do. Once you get the basic concept down, you’ll likely find yourself using your own functions more and more.</p>
 <div id="a-starting-point" class="section level2">
-<h2>A starting point</h2>
+<h2>A Starting Point</h2>
 <p>Let’s assume you want to calculate the mean, standard deviation, and number of missing values for a variable, called <code>myvar</code>. We could do something like the following</p>
-<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="functions.html#cb268-1"></a><span class="kw">mean</span>(myvar)</span>
-<span id="cb268-2"><a href="functions.html#cb268-2"></a><span class="kw">sd</span>(myvar)</span>
-<span id="cb268-3"><a href="functions.html#cb268-3"></a><span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</span></code></pre></div>
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="functions.html#cb301-1"></a><span class="kw">mean</span>(myvar)</span>
+<span id="cb301-2"><a href="functions.html#cb301-2"></a><span class="kw">sd</span>(myvar)</span>
+<span id="cb301-3"><a href="functions.html#cb301-3"></a><span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</span></code></pre></div>
 <p>Now let’s say you need to do it for several variables. Here’s what your custom function could look like. It takes a single input, the variable you want information about, and returns a data frame with that info.</p>
-<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="functions.html#cb269-1"></a>my_summary &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
-<span id="cb269-2"><a href="functions.html#cb269-2"></a>  <span class="kw">data.frame</span>(</span>
-<span id="cb269-3"><a href="functions.html#cb269-3"></a>    <span class="dt">mean =</span> <span class="kw">mean</span>(x),</span>
-<span id="cb269-4"><a href="functions.html#cb269-4"></a>    <span class="dt">sd =</span> <span class="kw">sd</span>(x),</span>
-<span id="cb269-5"><a href="functions.html#cb269-5"></a>    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</span>
-<span id="cb269-6"><a href="functions.html#cb269-6"></a>  )</span>
-<span id="cb269-7"><a href="functions.html#cb269-7"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="functions.html#cb302-1"></a>my_summary &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb302-2"><a href="functions.html#cb302-2"></a>  <span class="kw">data.frame</span>(</span>
+<span id="cb302-3"><a href="functions.html#cb302-3"></a>    <span class="dt">mean =</span> <span class="kw">mean</span>(x),</span>
+<span id="cb302-4"><a href="functions.html#cb302-4"></a>    <span class="dt">sd =</span> <span class="kw">sd</span>(x),</span>
+<span id="cb302-5"><a href="functions.html#cb302-5"></a>    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</span>
+<span id="cb302-6"><a href="functions.html#cb302-6"></a>  )</span>
+<span id="cb302-7"><a href="functions.html#cb302-7"></a>}</span></code></pre></div>
 <p>In the above, <code>x</code> is an arbitrary name for an input. You can name it whatever you want, but the more meaningful the better. In R (and other languages) these are called <em>arguments</em>, but these inputs will determine in part what is eventually produced as output by the function.</p>
-<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="functions.html#cb270-1"></a><span class="kw">my_summary</span>(mtcars<span class="op">$</span>mpg)</span></code></pre></div>
+<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="functions.html#cb303-1"></a><span class="kw">my_summary</span>(mtcars<span class="op">$</span>mpg)</span></code></pre></div>
 <pre><code>      mean       sd N_missing
 1 20.09062 6.026948         0</code></pre>
 <p>Works fine. However, data typically isn’t that pretty. It often has missing values.</p>
-<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="functions.html#cb272-1"></a><span class="kw">load</span>(<span class="st">&#39;data/gapminder.RData&#39;</span>)</span>
-<span id="cb272-2"><a href="functions.html#cb272-2"></a><span class="kw">my_summary</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp)</span></code></pre></div>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="functions.html#cb305-1"></a><span class="kw">load</span>(<span class="st">&#39;data/gapminder.RData&#39;</span>)</span>
+<span id="cb305-2"><a href="functions.html#cb305-2"></a><span class="kw">my_summary</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp)</span></code></pre></div>
 <pre><code>  mean sd N_missing
 1   NA NA       516</code></pre>
 <p>If there are actually missing values, we need to set <code>na.rm = TRUE</code> or the <span class="func">mean</span> and <span class="func">sd</span> will return <code>NA</code>. Let’s try it. We can either hard bake it in, as in the initial example, or add an argument to let us control how to handle NAs with our custom function.</p>
-<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="functions.html#cb274-1"></a>my_summary &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
-<span id="cb274-2"><a href="functions.html#cb274-2"></a>  <span class="kw">data.frame</span>(</span>
-<span id="cb274-3"><a href="functions.html#cb274-3"></a>    <span class="dt">mean =</span> <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
-<span id="cb274-4"><a href="functions.html#cb274-4"></a>    <span class="dt">sd =</span> <span class="kw">sd</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
-<span id="cb274-5"><a href="functions.html#cb274-5"></a>    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</span>
-<span id="cb274-6"><a href="functions.html#cb274-6"></a>  )</span>
-<span id="cb274-7"><a href="functions.html#cb274-7"></a>}</span>
-<span id="cb274-8"><a href="functions.html#cb274-8"></a></span>
-<span id="cb274-9"><a href="functions.html#cb274-9"></a></span>
-<span id="cb274-10"><a href="functions.html#cb274-10"></a>my_summary_na &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">remove_na =</span> <span class="ot">TRUE</span>) {</span>
-<span id="cb274-11"><a href="functions.html#cb274-11"></a>  <span class="kw">data.frame</span>(</span>
-<span id="cb274-12"><a href="functions.html#cb274-12"></a>    <span class="dt">mean =</span> <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> remove_na),</span>
-<span id="cb274-13"><a href="functions.html#cb274-13"></a>    <span class="dt">sd =</span> <span class="kw">sd</span>(x, <span class="dt">na.rm =</span> remove_na),</span>
-<span id="cb274-14"><a href="functions.html#cb274-14"></a>    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</span>
-<span id="cb274-15"><a href="functions.html#cb274-15"></a>  )</span>
-<span id="cb274-16"><a href="functions.html#cb274-16"></a>}</span>
-<span id="cb274-17"><a href="functions.html#cb274-17"></a></span>
-<span id="cb274-18"><a href="functions.html#cb274-18"></a></span>
-<span id="cb274-19"><a href="functions.html#cb274-19"></a><span class="kw">my_summary</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp)</span></code></pre></div>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="functions.html#cb307-1"></a>my_summary &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb307-2"><a href="functions.html#cb307-2"></a>  <span class="kw">data.frame</span>(</span>
+<span id="cb307-3"><a href="functions.html#cb307-3"></a>    <span class="dt">mean =</span> <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb307-4"><a href="functions.html#cb307-4"></a>    <span class="dt">sd =</span> <span class="kw">sd</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb307-5"><a href="functions.html#cb307-5"></a>    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</span>
+<span id="cb307-6"><a href="functions.html#cb307-6"></a>  )</span>
+<span id="cb307-7"><a href="functions.html#cb307-7"></a>}</span>
+<span id="cb307-8"><a href="functions.html#cb307-8"></a></span>
+<span id="cb307-9"><a href="functions.html#cb307-9"></a></span>
+<span id="cb307-10"><a href="functions.html#cb307-10"></a>my_summary_na &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">remove_na =</span> <span class="ot">TRUE</span>) {</span>
+<span id="cb307-11"><a href="functions.html#cb307-11"></a>  <span class="kw">data.frame</span>(</span>
+<span id="cb307-12"><a href="functions.html#cb307-12"></a>    <span class="dt">mean =</span> <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> remove_na),</span>
+<span id="cb307-13"><a href="functions.html#cb307-13"></a>    <span class="dt">sd =</span> <span class="kw">sd</span>(x, <span class="dt">na.rm =</span> remove_na),</span>
+<span id="cb307-14"><a href="functions.html#cb307-14"></a>    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</span>
+<span id="cb307-15"><a href="functions.html#cb307-15"></a>  )</span>
+<span id="cb307-16"><a href="functions.html#cb307-16"></a>}</span>
+<span id="cb307-17"><a href="functions.html#cb307-17"></a></span>
+<span id="cb307-18"><a href="functions.html#cb307-18"></a></span>
+<span id="cb307-19"><a href="functions.html#cb307-19"></a><span class="kw">my_summary</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp)</span></code></pre></div>
 <pre><code>      mean       sd N_missing
 1 43.13218 16.31355       516</code></pre>
-<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="functions.html#cb276-1"></a><span class="kw">my_summary_na</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp, <span class="dt">remove_na =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="functions.html#cb309-1"></a><span class="kw">my_summary_na</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp, <span class="dt">remove_na =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <pre><code>  mean sd N_missing
 1   NA NA       516</code></pre>
 <p>Seems to work fine. Let’s add how many total observations there are.</p>
-<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="functions.html#cb278-1"></a>my_summary &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
-<span id="cb278-2"><a href="functions.html#cb278-2"></a>  <span class="co"># create an arbitrarily named object with the summary information</span></span>
-<span id="cb278-3"><a href="functions.html#cb278-3"></a>  summary_data =<span class="st"> </span><span class="kw">data.frame</span>(</span>
-<span id="cb278-4"><a href="functions.html#cb278-4"></a>    <span class="dt">mean =</span> <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
-<span id="cb278-5"><a href="functions.html#cb278-5"></a>    <span class="dt">sd =</span> <span class="kw">sd</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
-<span id="cb278-6"><a href="functions.html#cb278-6"></a>    <span class="dt">N_total =</span> <span class="kw">length</span>(x),</span>
-<span id="cb278-7"><a href="functions.html#cb278-7"></a>    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</span>
-<span id="cb278-8"><a href="functions.html#cb278-8"></a>  )</span>
-<span id="cb278-9"><a href="functions.html#cb278-9"></a>  </span>
-<span id="cb278-10"><a href="functions.html#cb278-10"></a>  <span class="co"># return the result!</span></span>
-<span id="cb278-11"><a href="functions.html#cb278-11"></a>  summary_data       </span>
-<span id="cb278-12"><a href="functions.html#cb278-12"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="functions.html#cb311-1"></a>my_summary &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb311-2"><a href="functions.html#cb311-2"></a>  <span class="co"># create an arbitrarily named object with the summary information</span></span>
+<span id="cb311-3"><a href="functions.html#cb311-3"></a>  summary_data =<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb311-4"><a href="functions.html#cb311-4"></a>    <span class="dt">mean =</span> <span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb311-5"><a href="functions.html#cb311-5"></a>    <span class="dt">sd =</span> <span class="kw">sd</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb311-6"><a href="functions.html#cb311-6"></a>    <span class="dt">N_total =</span> <span class="kw">length</span>(x),</span>
+<span id="cb311-7"><a href="functions.html#cb311-7"></a>    <span class="dt">N_missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(x))</span>
+<span id="cb311-8"><a href="functions.html#cb311-8"></a>  )</span>
+<span id="cb311-9"><a href="functions.html#cb311-9"></a>  </span>
+<span id="cb311-10"><a href="functions.html#cb311-10"></a>  <span class="co"># return the result!</span></span>
+<span id="cb311-11"><a href="functions.html#cb311-11"></a>  summary_data       </span>
+<span id="cb311-12"><a href="functions.html#cb311-12"></a>}</span></code></pre></div>
 <p>That was easy! Let’s try it.</p>
-<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="functions.html#cb279-1"></a><span class="kw">my_summary</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp)</span></code></pre></div>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="functions.html#cb312-1"></a><span class="kw">my_summary</span>(gapminder_<span class="dv">2019</span><span class="op">$</span>lifeExp)</span></code></pre></div>
 <pre><code>      mean       sd N_total N_missing
 1 43.13218 16.31355   40953       516</code></pre>
 <p>Now let’s do it for every column! We’ve used the <span class="func">map</span> function before, now let’s use a variant that will return a data frame.</p>
-<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="functions.html#cb281-1"></a>gapminder_<span class="dv">2019</span> <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb281-2"><a href="functions.html#cb281-2"></a><span class="st">  </span><span class="kw">select_if</span>(is.numeric) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb281-3"><a href="functions.html#cb281-3"></a><span class="st">  </span><span class="kw">map_dfr</span>(my_summary, <span class="dt">.id =</span> <span class="st">&#39;variable&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="functions.html#cb314-1"></a>gapminder_<span class="dv">2019</span> <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb314-2"><a href="functions.html#cb314-2"></a><span class="st">  </span><span class="kw">select_if</span>(is.numeric) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb314-3"><a href="functions.html#cb314-3"></a><span class="st">  </span><span class="kw">map_dfr</span>(my_summary, <span class="dt">.id =</span> <span class="st">&#39;variable&#39;</span>)</span></code></pre></div>
 <pre><code>    variable         mean           sd N_total N_missing
 1       year 1.909000e+03 6.321997e+01   40953         0
 2    lifeExp 4.313218e+01 1.631355e+01   40953       516
 3        pop 1.353928e+07 6.565653e+07   40953         0
 4  gdpPercap 4.591026e+03 1.016210e+04   40953         0
 5 giniPercap 4.005331e+01 9.102757e+00   40953         0</code></pre>
-<p>The <span class="func">map_dfr</span> function is just like our previous usage in the [iterative programming][Iterative programming] section, just that it will create mini-data.frames then row-bind them together.</p>
+<p>The <span class="func">map_dfr</span> function is just like our previous usage in the <a href="iterative.html#iterative-programming">iterative programming</a> section, just that it will create mini-data.frames then row-bind them together.</p>
 <p>This shows that writing the first part of any function can be straightforward. Then, once in place, you can usually add functionality without too much trouble. Eventually you could have something very complicated, but which will make sense to you because you built it from the ground up.</p>
 <p>Keep in mind as you start out that your initial decisions to make are:</p>
 <ul>
@@ -739,57 +784,57 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>What is the <span class="emph">value</span> to be returned?</li>
 </ul>
 <p>When you think about writing a function, just write the code that can do it first. The goal is then to generalize beyond that single use case. RStudio even has a shortcut to help you get started. Consider our starting point. Highlight the code, hit Ctrl/Cmd + Shft + X, then give it a name.</p>
-<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="functions.html#cb283-1"></a><span class="kw">mean</span>(myvar)</span>
-<span id="cb283-2"><a href="functions.html#cb283-2"></a><span class="kw">sd</span>(myvar)</span>
-<span id="cb283-3"><a href="functions.html#cb283-3"></a><span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</span></code></pre></div>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="functions.html#cb316-1"></a><span class="kw">mean</span>(myvar)</span>
+<span id="cb316-2"><a href="functions.html#cb316-2"></a><span class="kw">sd</span>(myvar)</span>
+<span id="cb316-3"><a href="functions.html#cb316-3"></a><span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</span></code></pre></div>
 <p>It should look something like this.</p>
-<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="functions.html#cb284-1"></a>test_fun &lt;-<span class="st"> </span><span class="cf">function</span>(myvar) {</span>
-<span id="cb284-2"><a href="functions.html#cb284-2"></a>  <span class="kw">mean</span>(myvar)</span>
-<span id="cb284-3"><a href="functions.html#cb284-3"></a>  <span class="kw">sd</span>(myvar)</span>
-<span id="cb284-4"><a href="functions.html#cb284-4"></a>  <span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</span>
-<span id="cb284-5"><a href="functions.html#cb284-5"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="functions.html#cb317-1"></a>test_fun &lt;-<span class="st"> </span><span class="cf">function</span>(myvar) {</span>
+<span id="cb317-2"><a href="functions.html#cb317-2"></a>  <span class="kw">mean</span>(myvar)</span>
+<span id="cb317-3"><a href="functions.html#cb317-3"></a>  <span class="kw">sd</span>(myvar)</span>
+<span id="cb317-4"><a href="functions.html#cb317-4"></a>  <span class="kw">sum</span>(<span class="kw">is.na</span>(myvar))</span>
+<span id="cb317-5"><a href="functions.html#cb317-5"></a>}</span></code></pre></div>
 <p>RStudio could tell that you would need at least one input <code>myvar</code>, but beyond that, you’re now on your way to tweaking the function as you see fit.</p>
 <p>Note that what goes in and what comes out could be anything, even nothing!</p>
-<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="functions.html#cb285-1"></a>two &lt;-<span class="st"> </span><span class="cf">function</span>() {</span>
-<span id="cb285-2"><a href="functions.html#cb285-2"></a>  <span class="dv">2</span></span>
-<span id="cb285-3"><a href="functions.html#cb285-3"></a>}</span>
-<span id="cb285-4"><a href="functions.html#cb285-4"></a></span>
-<span id="cb285-5"><a href="functions.html#cb285-5"></a><span class="kw">two</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="functions.html#cb318-1"></a>two &lt;-<span class="st"> </span><span class="cf">function</span>() {</span>
+<span id="cb318-2"><a href="functions.html#cb318-2"></a>  <span class="dv">2</span></span>
+<span id="cb318-3"><a href="functions.html#cb318-3"></a>}</span>
+<span id="cb318-4"><a href="functions.html#cb318-4"></a></span>
+<span id="cb318-5"><a href="functions.html#cb318-5"></a><span class="kw">two</span>()</span></code></pre></div>
 <pre><code>[1] 2</code></pre>
 <p>Or even another function!</p>
-<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="functions.html#cb287-1"></a>center &lt;-<span class="st"> </span><span class="cf">function</span>(type) {</span>
-<span id="cb287-2"><a href="functions.html#cb287-2"></a>  <span class="cf">if</span> (type <span class="op">==</span><span class="st"> &#39;mean&#39;</span>) {</span>
-<span id="cb287-3"><a href="functions.html#cb287-3"></a>    mean</span>
-<span id="cb287-4"><a href="functions.html#cb287-4"></a>  } </span>
-<span id="cb287-5"><a href="functions.html#cb287-5"></a>  <span class="cf">else</span> {</span>
-<span id="cb287-6"><a href="functions.html#cb287-6"></a>    median</span>
-<span id="cb287-7"><a href="functions.html#cb287-7"></a>  }</span>
-<span id="cb287-8"><a href="functions.html#cb287-8"></a>}</span>
-<span id="cb287-9"><a href="functions.html#cb287-9"></a></span>
-<span id="cb287-10"><a href="functions.html#cb287-10"></a><span class="kw">center</span>(<span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="functions.html#cb320-1"></a>center &lt;-<span class="st"> </span><span class="cf">function</span>(type) {</span>
+<span id="cb320-2"><a href="functions.html#cb320-2"></a>  <span class="cf">if</span> (type <span class="op">==</span><span class="st"> &#39;mean&#39;</span>) {</span>
+<span id="cb320-3"><a href="functions.html#cb320-3"></a>    mean</span>
+<span id="cb320-4"><a href="functions.html#cb320-4"></a>  } </span>
+<span id="cb320-5"><a href="functions.html#cb320-5"></a>  <span class="cf">else</span> {</span>
+<span id="cb320-6"><a href="functions.html#cb320-6"></a>    median</span>
+<span id="cb320-7"><a href="functions.html#cb320-7"></a>  }</span>
+<span id="cb320-8"><a href="functions.html#cb320-8"></a>}</span>
+<span id="cb320-9"><a href="functions.html#cb320-9"></a></span>
+<span id="cb320-10"><a href="functions.html#cb320-10"></a><span class="kw">center</span>(<span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</span></code></pre></div>
 <pre><code>function (x, ...) 
 UseMethod(&quot;mean&quot;)
 &lt;bytecode: 0x7f8df1d85a60&gt;
 &lt;environment: namespace:base&gt;</code></pre>
-<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="functions.html#cb289-1"></a>myfun =<span class="st"> </span><span class="kw">center</span>(<span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</span>
-<span id="cb289-2"><a href="functions.html#cb289-2"></a></span>
-<span id="cb289-3"><a href="functions.html#cb289-3"></a><span class="kw">myfun</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="functions.html#cb322-1"></a>myfun =<span class="st"> </span><span class="kw">center</span>(<span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</span>
+<span id="cb322-2"><a href="functions.html#cb322-2"></a></span>
+<span id="cb322-3"><a href="functions.html#cb322-3"></a><span class="kw">myfun</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</span></code></pre></div>
 <pre><code>[1] 3</code></pre>
-<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="functions.html#cb291-1"></a>myfun =<span class="st"> </span><span class="kw">center</span>(<span class="dt">type =</span> <span class="st">&#39;median&#39;</span>)</span>
-<span id="cb291-2"><a href="functions.html#cb291-2"></a></span>
-<span id="cb291-3"><a href="functions.html#cb291-3"></a><span class="kw">myfun</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="functions.html#cb324-1"></a>myfun =<span class="st"> </span><span class="kw">center</span>(<span class="dt">type =</span> <span class="st">&#39;median&#39;</span>)</span>
+<span id="cb324-2"><a href="functions.html#cb324-2"></a></span>
+<span id="cb324-3"><a href="functions.html#cb324-3"></a><span class="kw">myfun</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)</span></code></pre></div>
 <pre><code>[1] 2.5</code></pre>
 <p>We can also set default values for the inputs.</p>
-<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="functions.html#cb293-1"></a>hi &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">name =</span> <span class="st">&#39;Beyoncé&#39;</span>) {</span>
-<span id="cb293-2"><a href="functions.html#cb293-2"></a>  <span class="kw">paste0</span>(<span class="st">&#39;Hi &#39;</span>, name, <span class="st">&#39;!&#39;</span>)</span>
-<span id="cb293-3"><a href="functions.html#cb293-3"></a>}</span>
-<span id="cb293-4"><a href="functions.html#cb293-4"></a></span>
-<span id="cb293-5"><a href="functions.html#cb293-5"></a><span class="kw">hi</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="functions.html#cb326-1"></a>hi &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">name =</span> <span class="st">&#39;Beyoncé&#39;</span>) {</span>
+<span id="cb326-2"><a href="functions.html#cb326-2"></a>  <span class="kw">paste0</span>(<span class="st">&#39;Hi &#39;</span>, name, <span class="st">&#39;!&#39;</span>)</span>
+<span id="cb326-3"><a href="functions.html#cb326-3"></a>}</span>
+<span id="cb326-4"><a href="functions.html#cb326-4"></a></span>
+<span id="cb326-5"><a href="functions.html#cb326-5"></a><span class="kw">hi</span>()</span></code></pre></div>
 <pre><code>[1] &quot;Hi Beyoncé!&quot;</code></pre>
-<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="functions.html#cb295-1"></a><span class="kw">hi</span>(<span class="dt">name =</span> <span class="st">&#39;Jay-Z&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="functions.html#cb328-1"></a><span class="kw">hi</span>(<span class="dt">name =</span> <span class="st">&#39;Jay-Z&#39;</span>)</span></code></pre></div>
 <pre><code>[1] &quot;Hi Jay-Z!&quot;</code></pre>
 <p>If you are working within an RStudio project, it would be a good idea to create a folder for your functions and save each as their own script. When you need the function just use the following:</p>
-<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="functions.html#cb297-1"></a><span class="kw">source</span>(<span class="st">&#39;my_functions/awesome_func.R&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="functions.html#cb330-1"></a><span class="kw">source</span>(<span class="st">&#39;my_functions/awesome_func.R&#39;</span>)</span></code></pre></div>
 <p>This would make it easy to even create your own personal package with the functions you create.</p>
 <p>However you go about creating a function and for whatever purpose, try to make a clear decision at the beginning</p>
 <ul>
@@ -811,12 +856,12 @@ Cmd/Ctrl + Option/Alt + Shift + R
 <h2>DRY</h2>
 <p>An oft-quoted mantra in programming is <em><strong>D</strong>on’t <strong>R</strong>epeat <strong>Y</strong>ourself</em>. One context regards iterative programming, where we would rather write one line of code than one-hundred. More generally though, we would like to gain efficiency where possible. A good rule of thumb is, if you are writing the same set of code more than twice, you should write a function to do it instead.</p>
 <p>Consider the following example, where we want to subset the data given a set of conditions. Given the cylinder, engine displacement, and mileage, we’ll get different parts of the data.</p>
-<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="functions.html#cb298-1"></a>good_mileage_displ_low_cyl_<span class="dv">4</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</span>
-<span id="cb298-2"><a href="functions.html#cb298-2"></a>good_mileage_displ_low_cyl_<span class="dv">6</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">6</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</span>
-<span id="cb298-3"><a href="functions.html#cb298-3"></a>good_mileage_displ_low_cyl_<span class="dv">8</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">8</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</span>
-<span id="cb298-4"><a href="functions.html#cb298-4"></a>good_mileage_displ_high_cyl_<span class="dv">4</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</span>
-<span id="cb298-5"><a href="functions.html#cb298-5"></a>good_mileage_displ_high_cyl_<span class="dv">6</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">6</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</span>
-<span id="cb298-6"><a href="functions.html#cb298-6"></a>good_mileage_displ_high_cyl_<span class="dv">8</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">8</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="functions.html#cb331-1"></a>good_mileage_displ_low_cyl_<span class="dv">4</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</span>
+<span id="cb331-2"><a href="functions.html#cb331-2"></a>good_mileage_displ_low_cyl_<span class="dv">6</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">6</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</span>
+<span id="cb331-3"><a href="functions.html#cb331-3"></a>good_mileage_displ_low_cyl_<span class="dv">8</span>  =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">8</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&lt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</span>
+<span id="cb331-4"><a href="functions.html#cb331-4"></a>good_mileage_displ_high_cyl_<span class="dv">4</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</span>
+<span id="cb331-5"><a href="functions.html#cb331-5"></a>good_mileage_displ_high_cyl_<span class="dv">6</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">6</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</span>
+<span id="cb331-6"><a href="functions.html#cb331-6"></a>good_mileage_displ_high_cyl_<span class="dv">8</span> =<span class="st"> </span><span class="kw">if_else</span>(cyl <span class="op">==</span><span class="st"> </span><span class="dv">8</span> <span class="op">&amp;</span><span class="st"> </span>displ <span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(displ) <span class="op">&amp;</span><span class="st"> </span>hwy <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>, <span class="st">&#39;yes&#39;</span>, <span class="st">&#39;no&#39;</span>)</span></code></pre></div>
 <p>It was tedious, but that’s not much code. But now consider- what if you want to change the mpg cutoff? The mean to median? Something else? You have to change all of it. Screw that- let’s write a function instead! What kinds of inputs will we need?</p>
 <ul>
 <li>cyl: Which cylinder type we want</li>
@@ -825,61 +870,61 @@ Cmd/Ctrl + Option/Alt + Shift + R
 <li>displ_low: Whether we are interested in low or high displacement vehicles</li>
 <li>cls: the class of the vehicle (e.g. compact or suv)</li>
 </ul>
-<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="functions.html#cb299-1"></a>good_mileage &lt;-<span class="st"> </span><span class="cf">function</span>(</span>
-<span id="cb299-2"><a href="functions.html#cb299-2"></a>  <span class="dt">cylinder =</span> <span class="dv">4</span>,</span>
-<span id="cb299-3"><a href="functions.html#cb299-3"></a>  <span class="dt">mpg_cutoff =</span> <span class="dv">30</span>,</span>
-<span id="cb299-4"><a href="functions.html#cb299-4"></a>  <span class="dt">displ_fun =</span> mean,</span>
-<span id="cb299-5"><a href="functions.html#cb299-5"></a>  <span class="dt">displ_low =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb299-6"><a href="functions.html#cb299-6"></a>  <span class="dt">cls =</span> <span class="st">&#39;compact&#39;</span></span>
-<span id="cb299-7"><a href="functions.html#cb299-7"></a>) {</span>
-<span id="cb299-8"><a href="functions.html#cb299-8"></a>  </span>
-<span id="cb299-9"><a href="functions.html#cb299-9"></a>  <span class="cf">if</span> (displ_low <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) {              <span class="co"># condition to check, if it holds,</span></span>
-<span id="cb299-10"><a href="functions.html#cb299-10"></a>    result &lt;-<span class="st"> </span>mpg <span class="op">%&gt;%</span><span class="st">                   </span><span class="co"># filter data given the arguments</span></span>
-<span id="cb299-11"><a href="functions.html#cb299-11"></a><span class="st">      </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder,</span>
-<span id="cb299-12"><a href="functions.html#cb299-12"></a>             displ <span class="op">&lt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),</span>
-<span id="cb299-13"><a href="functions.html#cb299-13"></a>             hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</span>
-<span id="cb299-14"><a href="functions.html#cb299-14"></a>             class <span class="op">==</span><span class="st"> </span>cls)</span>
-<span id="cb299-15"><a href="functions.html#cb299-15"></a>  } </span>
-<span id="cb299-16"><a href="functions.html#cb299-16"></a>  <span class="cf">else</span> {                                <span class="co"># if the condition doesn&#39;t hold, filter </span></span>
-<span id="cb299-17"><a href="functions.html#cb299-17"></a>    result &lt;-<span class="st"> </span>mpg <span class="op">%&gt;%</span><span class="st">                   </span><span class="co"># the data this way instead</span></span>
-<span id="cb299-18"><a href="functions.html#cb299-18"></a><span class="st">      </span><span class="kw">filter</span>(</span>
-<span id="cb299-19"><a href="functions.html#cb299-19"></a>        cyl <span class="op">==</span><span class="st"> </span>cylinder,</span>
-<span id="cb299-20"><a href="functions.html#cb299-20"></a>        displ <span class="op">&gt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),      <span class="co"># the only change is here</span></span>
-<span id="cb299-21"><a href="functions.html#cb299-21"></a>        hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</span>
-<span id="cb299-22"><a href="functions.html#cb299-22"></a>        class <span class="op">==</span><span class="st"> </span>cls</span>
-<span id="cb299-23"><a href="functions.html#cb299-23"></a>      )</span>
-<span id="cb299-24"><a href="functions.html#cb299-24"></a>  }</span>
-<span id="cb299-25"><a href="functions.html#cb299-25"></a>  </span>
-<span id="cb299-26"><a href="functions.html#cb299-26"></a>  result                                <span class="co"># return the object</span></span>
-<span id="cb299-27"><a href="functions.html#cb299-27"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="functions.html#cb332-1"></a>good_mileage &lt;-<span class="st"> </span><span class="cf">function</span>(</span>
+<span id="cb332-2"><a href="functions.html#cb332-2"></a>  <span class="dt">cylinder =</span> <span class="dv">4</span>,</span>
+<span id="cb332-3"><a href="functions.html#cb332-3"></a>  <span class="dt">mpg_cutoff =</span> <span class="dv">30</span>,</span>
+<span id="cb332-4"><a href="functions.html#cb332-4"></a>  <span class="dt">displ_fun =</span> mean,</span>
+<span id="cb332-5"><a href="functions.html#cb332-5"></a>  <span class="dt">displ_low =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb332-6"><a href="functions.html#cb332-6"></a>  <span class="dt">cls =</span> <span class="st">&#39;compact&#39;</span></span>
+<span id="cb332-7"><a href="functions.html#cb332-7"></a>) {</span>
+<span id="cb332-8"><a href="functions.html#cb332-8"></a>  </span>
+<span id="cb332-9"><a href="functions.html#cb332-9"></a>  <span class="cf">if</span> (displ_low <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>) {              <span class="co"># condition to check, if it holds,</span></span>
+<span id="cb332-10"><a href="functions.html#cb332-10"></a>    result &lt;-<span class="st"> </span>mpg <span class="op">%&gt;%</span><span class="st">                   </span><span class="co"># filter data given the arguments</span></span>
+<span id="cb332-11"><a href="functions.html#cb332-11"></a><span class="st">      </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder,</span>
+<span id="cb332-12"><a href="functions.html#cb332-12"></a>             displ <span class="op">&lt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),</span>
+<span id="cb332-13"><a href="functions.html#cb332-13"></a>             hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</span>
+<span id="cb332-14"><a href="functions.html#cb332-14"></a>             class <span class="op">==</span><span class="st"> </span>cls)</span>
+<span id="cb332-15"><a href="functions.html#cb332-15"></a>  } </span>
+<span id="cb332-16"><a href="functions.html#cb332-16"></a>  <span class="cf">else</span> {                                <span class="co"># if the condition doesn&#39;t hold, filter </span></span>
+<span id="cb332-17"><a href="functions.html#cb332-17"></a>    result &lt;-<span class="st"> </span>mpg <span class="op">%&gt;%</span><span class="st">                   </span><span class="co"># the data this way instead</span></span>
+<span id="cb332-18"><a href="functions.html#cb332-18"></a><span class="st">      </span><span class="kw">filter</span>(</span>
+<span id="cb332-19"><a href="functions.html#cb332-19"></a>        cyl <span class="op">==</span><span class="st"> </span>cylinder,</span>
+<span id="cb332-20"><a href="functions.html#cb332-20"></a>        displ <span class="op">&gt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),      <span class="co"># the only change is here</span></span>
+<span id="cb332-21"><a href="functions.html#cb332-21"></a>        hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</span>
+<span id="cb332-22"><a href="functions.html#cb332-22"></a>        class <span class="op">==</span><span class="st"> </span>cls</span>
+<span id="cb332-23"><a href="functions.html#cb332-23"></a>      )</span>
+<span id="cb332-24"><a href="functions.html#cb332-24"></a>  }</span>
+<span id="cb332-25"><a href="functions.html#cb332-25"></a>  </span>
+<span id="cb332-26"><a href="functions.html#cb332-26"></a>  result                                <span class="co"># return the object</span></span>
+<span id="cb332-27"><a href="functions.html#cb332-27"></a>}</span></code></pre></div>
 <p>So what’s going on here? Not a whole lot really. The function just filters the data to observations that match the input criteria, and returns that result at the end. We also put <em>default values</em> to the arguments, which can be done to your discretion.</p>
 </div>
 <div id="conditionals" class="section level2">
 <h2>Conditionals</h2>
 <p>The core of the above function uses a <em>conditional statement</em> using standard <span class="func">if</span>…<span class="func">else</span> structure. The <span class="func">if</span> part determines whether some condition holds. If it does, then proceed to the next step in the brackets. If not, skip to the <span class="func">else</span> part. You may have used the <span class="func">ifelse</span> function in base R, or <span class="pack">dplyr</span>’s <span class="func">if_else</span> as above, which are a short cuts for this approach. We can also add conditional else statements (<span class="func">else if</span>), drop the <span class="func">else</span> part entirely, nest conditionals within other conditionals, etc. Like loops, conditional statements look very similar across all programming languages.</p>
 <p>JavaScript:</p>
-<div class="sourceCode" id="cb300"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb300-1"><a href="functions.html#cb300-1"></a><span class="cf">if</span> (<span class="va">Math</span>.<span class="at">random</span>() <span class="op">&lt;</span> <span class="fl">0.5</span>) <span class="op">{</span></span>
-<span id="cb300-2"><a href="functions.html#cb300-2"></a>  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;You got Heads!&quot;</span>)</span>
-<span id="cb300-3"><a href="functions.html#cb300-3"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb300-4"><a href="functions.html#cb300-4"></a>  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;You got Tails!&quot;</span>)</span>
-<span id="cb300-5"><a href="functions.html#cb300-5"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb333"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb333-1"><a href="functions.html#cb333-1"></a><span class="cf">if</span> (<span class="va">Math</span>.<span class="at">random</span>() <span class="op">&lt;</span> <span class="fl">0.5</span>) <span class="op">{</span></span>
+<span id="cb333-2"><a href="functions.html#cb333-2"></a>  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;You got Heads!&quot;</span>)</span>
+<span id="cb333-3"><a href="functions.html#cb333-3"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb333-4"><a href="functions.html#cb333-4"></a>  <span class="va">console</span>.<span class="at">log</span>(<span class="st">&quot;You got Tails!&quot;</span>)</span>
+<span id="cb333-5"><a href="functions.html#cb333-5"></a><span class="op">}</span></span></code></pre></div>
 <p>Python:</p>
-<div class="sourceCode" id="cb301"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb301-1"><a href="functions.html#cb301-1"></a><span class="cf">if</span> x <span class="op">==</span> <span class="dv">2</span>:</span>
-<span id="cb301-2"><a href="functions.html#cb301-2"></a>  <span class="bu">print</span>(x)</span>
-<span id="cb301-3"><a href="functions.html#cb301-3"></a><span class="cf">else</span>:</span>
-<span id="cb301-4"><a href="functions.html#cb301-4"></a>  <span class="bu">print</span>(x<span class="op">*</span>x)</span></code></pre></div>
+<div class="sourceCode" id="cb334"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb334-1"><a href="functions.html#cb334-1"></a><span class="cf">if</span> x <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb334-2"><a href="functions.html#cb334-2"></a>  <span class="bu">print</span>(x)</span>
+<span id="cb334-3"><a href="functions.html#cb334-3"></a><span class="cf">else</span>:</span>
+<span id="cb334-4"><a href="functions.html#cb334-4"></a>  <span class="bu">print</span>(x<span class="op">*</span>x)</span></code></pre></div>
 <p>In any case, with our function at the ready, we can now do the things we want to as needed:</p>
-<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="functions.html#cb302-1"></a><span class="kw">good_mileage</span>(<span class="dt">mpg_cutoff =</span> <span class="dv">40</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb335-1"><a href="functions.html#cb335-1"></a><span class="kw">good_mileage</span>(<span class="dt">mpg_cutoff =</span> <span class="dv">40</span>)</span></code></pre></div>
 <pre><code># A tibble: 1 x 11
   manufacturer model displ  year   cyl trans      drv     cty   hwy fl    class  
   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  
 1 volkswagen   jetta   1.9  1999     4 manual(m5) f        33    44 d     compact</code></pre>
-<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="functions.html#cb304-1"></a><span class="kw">good_mileage</span>(</span>
-<span id="cb304-2"><a href="functions.html#cb304-2"></a>  <span class="dt">cylinder =</span> <span class="dv">8</span>,</span>
-<span id="cb304-3"><a href="functions.html#cb304-3"></a>  <span class="dt">mpg_cutoff =</span> <span class="dv">15</span>,</span>
-<span id="cb304-4"><a href="functions.html#cb304-4"></a>  <span class="dt">displ_low =</span> <span class="ot">FALSE</span>,</span>
-<span id="cb304-5"><a href="functions.html#cb304-5"></a>  <span class="dt">cls =</span> <span class="st">&#39;suv&#39;</span></span>
-<span id="cb304-6"><a href="functions.html#cb304-6"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb337-1"><a href="functions.html#cb337-1"></a><span class="kw">good_mileage</span>(</span>
+<span id="cb337-2"><a href="functions.html#cb337-2"></a>  <span class="dt">cylinder =</span> <span class="dv">8</span>,</span>
+<span id="cb337-3"><a href="functions.html#cb337-3"></a>  <span class="dt">mpg_cutoff =</span> <span class="dv">15</span>,</span>
+<span id="cb337-4"><a href="functions.html#cb337-4"></a>  <span class="dt">displ_low =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb337-5"><a href="functions.html#cb337-5"></a>  <span class="dt">cls =</span> <span class="st">&#39;suv&#39;</span></span>
+<span id="cb337-6"><a href="functions.html#cb337-6"></a>)</span></code></pre></div>
 <pre><code># A tibble: 34 x 11
    manufacturer model              displ  year   cyl trans    drv     cty   hwy fl    class
    &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
@@ -895,41 +940,41 @@ Cmd/Ctrl + Option/Alt + Shift + R
 10 dodge        durango 4wd          4.7  2008     8 auto(l5) 4        13    17 r     suv  
 # … with 24 more rows</code></pre>
 <p>Let’s extend the functionality by adding a year argument (the only values available are 2008 and 1999).</p>
-<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="functions.html#cb306-1"></a>good_mileage &lt;-<span class="st"> </span><span class="cf">function</span>(</span>
-<span id="cb306-2"><a href="functions.html#cb306-2"></a>  <span class="dt">cylinder =</span> <span class="dv">4</span>,</span>
-<span id="cb306-3"><a href="functions.html#cb306-3"></a>  <span class="dt">mpg_cutoff =</span> <span class="dv">30</span>,</span>
-<span id="cb306-4"><a href="functions.html#cb306-4"></a>  <span class="dt">displ_fun =</span> mean,</span>
-<span id="cb306-5"><a href="functions.html#cb306-5"></a>  <span class="dt">displ_low =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb306-6"><a href="functions.html#cb306-6"></a>  <span class="dt">cls =</span> <span class="st">&#39;compact&#39;</span>,</span>
-<span id="cb306-7"><a href="functions.html#cb306-7"></a>  <span class="dt">yr =</span> <span class="dv">2008</span></span>
-<span id="cb306-8"><a href="functions.html#cb306-8"></a>) {</span>
-<span id="cb306-9"><a href="functions.html#cb306-9"></a>  </span>
-<span id="cb306-10"><a href="functions.html#cb306-10"></a>  <span class="cf">if</span> (displ_low) {</span>
-<span id="cb306-11"><a href="functions.html#cb306-11"></a>    result =<span class="st"> </span>mpg <span class="op">%&gt;%</span></span>
-<span id="cb306-12"><a href="functions.html#cb306-12"></a><span class="st">    </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder,</span>
-<span id="cb306-13"><a href="functions.html#cb306-13"></a>           displ <span class="op">&lt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),</span>
-<span id="cb306-14"><a href="functions.html#cb306-14"></a>           hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</span>
-<span id="cb306-15"><a href="functions.html#cb306-15"></a>           class <span class="op">==</span><span class="st"> </span>cls,</span>
-<span id="cb306-16"><a href="functions.html#cb306-16"></a>           year <span class="op">==</span><span class="st"> </span>yr)</span>
-<span id="cb306-17"><a href="functions.html#cb306-17"></a>  } </span>
-<span id="cb306-18"><a href="functions.html#cb306-18"></a>  <span class="cf">else</span> {</span>
-<span id="cb306-19"><a href="functions.html#cb306-19"></a>    result =<span class="st"> </span>mpg <span class="op">%&gt;%</span></span>
-<span id="cb306-20"><a href="functions.html#cb306-20"></a><span class="st">    </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder,</span>
-<span id="cb306-21"><a href="functions.html#cb306-21"></a>           displ <span class="op">&gt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),</span>
-<span id="cb306-22"><a href="functions.html#cb306-22"></a>           hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</span>
-<span id="cb306-23"><a href="functions.html#cb306-23"></a>           class <span class="op">==</span><span class="st"> </span>cls,</span>
-<span id="cb306-24"><a href="functions.html#cb306-24"></a>           year <span class="op">==</span><span class="st"> </span>yr)</span>
-<span id="cb306-25"><a href="functions.html#cb306-25"></a>  }</span>
-<span id="cb306-26"><a href="functions.html#cb306-26"></a>  </span>
-<span id="cb306-27"><a href="functions.html#cb306-27"></a>  result</span>
-<span id="cb306-28"><a href="functions.html#cb306-28"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="functions.html#cb307-1"></a><span class="kw">good_mileage</span>(</span>
-<span id="cb307-2"><a href="functions.html#cb307-2"></a>  <span class="dt">cylinder =</span> <span class="dv">8</span>,</span>
-<span id="cb307-3"><a href="functions.html#cb307-3"></a>  <span class="dt">mpg_cutoff =</span> <span class="dv">19</span>,</span>
-<span id="cb307-4"><a href="functions.html#cb307-4"></a>  <span class="dt">displ_low =</span> <span class="ot">FALSE</span>,</span>
-<span id="cb307-5"><a href="functions.html#cb307-5"></a>  <span class="dt">cls =</span> <span class="st">&#39;suv&#39;</span>,</span>
-<span id="cb307-6"><a href="functions.html#cb307-6"></a>  <span class="dt">yr =</span> <span class="dv">2008</span></span>
-<span id="cb307-7"><a href="functions.html#cb307-7"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="functions.html#cb339-1"></a>good_mileage &lt;-<span class="st"> </span><span class="cf">function</span>(</span>
+<span id="cb339-2"><a href="functions.html#cb339-2"></a>  <span class="dt">cylinder =</span> <span class="dv">4</span>,</span>
+<span id="cb339-3"><a href="functions.html#cb339-3"></a>  <span class="dt">mpg_cutoff =</span> <span class="dv">30</span>,</span>
+<span id="cb339-4"><a href="functions.html#cb339-4"></a>  <span class="dt">displ_fun =</span> mean,</span>
+<span id="cb339-5"><a href="functions.html#cb339-5"></a>  <span class="dt">displ_low =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb339-6"><a href="functions.html#cb339-6"></a>  <span class="dt">cls =</span> <span class="st">&#39;compact&#39;</span>,</span>
+<span id="cb339-7"><a href="functions.html#cb339-7"></a>  <span class="dt">yr =</span> <span class="dv">2008</span></span>
+<span id="cb339-8"><a href="functions.html#cb339-8"></a>) {</span>
+<span id="cb339-9"><a href="functions.html#cb339-9"></a>  </span>
+<span id="cb339-10"><a href="functions.html#cb339-10"></a>  <span class="cf">if</span> (displ_low) {</span>
+<span id="cb339-11"><a href="functions.html#cb339-11"></a>    result =<span class="st"> </span>mpg <span class="op">%&gt;%</span></span>
+<span id="cb339-12"><a href="functions.html#cb339-12"></a><span class="st">    </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder,</span>
+<span id="cb339-13"><a href="functions.html#cb339-13"></a>           displ <span class="op">&lt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),</span>
+<span id="cb339-14"><a href="functions.html#cb339-14"></a>           hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</span>
+<span id="cb339-15"><a href="functions.html#cb339-15"></a>           class <span class="op">==</span><span class="st"> </span>cls,</span>
+<span id="cb339-16"><a href="functions.html#cb339-16"></a>           year <span class="op">==</span><span class="st"> </span>yr)</span>
+<span id="cb339-17"><a href="functions.html#cb339-17"></a>  } </span>
+<span id="cb339-18"><a href="functions.html#cb339-18"></a>  <span class="cf">else</span> {</span>
+<span id="cb339-19"><a href="functions.html#cb339-19"></a>    result =<span class="st"> </span>mpg <span class="op">%&gt;%</span></span>
+<span id="cb339-20"><a href="functions.html#cb339-20"></a><span class="st">    </span><span class="kw">filter</span>(cyl <span class="op">==</span><span class="st"> </span>cylinder,</span>
+<span id="cb339-21"><a href="functions.html#cb339-21"></a>           displ <span class="op">&gt;=</span><span class="st"> </span><span class="kw">displ_fun</span>(displ),</span>
+<span id="cb339-22"><a href="functions.html#cb339-22"></a>           hwy <span class="op">&gt;=</span><span class="st"> </span>mpg_cutoff,</span>
+<span id="cb339-23"><a href="functions.html#cb339-23"></a>           class <span class="op">==</span><span class="st"> </span>cls,</span>
+<span id="cb339-24"><a href="functions.html#cb339-24"></a>           year <span class="op">==</span><span class="st"> </span>yr)</span>
+<span id="cb339-25"><a href="functions.html#cb339-25"></a>  }</span>
+<span id="cb339-26"><a href="functions.html#cb339-26"></a>  </span>
+<span id="cb339-27"><a href="functions.html#cb339-27"></a>  result</span>
+<span id="cb339-28"><a href="functions.html#cb339-28"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="functions.html#cb340-1"></a><span class="kw">good_mileage</span>(</span>
+<span id="cb340-2"><a href="functions.html#cb340-2"></a>  <span class="dt">cylinder =</span> <span class="dv">8</span>,</span>
+<span id="cb340-3"><a href="functions.html#cb340-3"></a>  <span class="dt">mpg_cutoff =</span> <span class="dv">19</span>,</span>
+<span id="cb340-4"><a href="functions.html#cb340-4"></a>  <span class="dt">displ_low =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb340-5"><a href="functions.html#cb340-5"></a>  <span class="dt">cls =</span> <span class="st">&#39;suv&#39;</span>,</span>
+<span id="cb340-6"><a href="functions.html#cb340-6"></a>  <span class="dt">yr =</span> <span class="dv">2008</span></span>
+<span id="cb340-7"><a href="functions.html#cb340-7"></a>)</span></code></pre></div>
 <pre><code># A tibble: 6 x 11
   manufacturer model              displ  year   cyl trans    drv     cty   hwy fl    class
   &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
@@ -944,16 +989,16 @@ Cmd/Ctrl + Option/Alt + Shift + R
 <div id="anonymous-functions" class="section level2">
 <h2>Anonymous functions</h2>
 <p>Oftentimes we just need a quick and easy function for a one-off application, especially when using apply/map functions. Consider the following two lines of code.</p>
-<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="functions.html#cb309-1"></a><span class="kw">apply</span>(mtcars, <span class="dv">2</span>, sd)</span>
-<span id="cb309-2"><a href="functions.html#cb309-2"></a><span class="kw">apply</span>(mtcars, <span class="dv">2</span>, <span class="cf">function</span>(x) x <span class="op">/</span><span class="st"> </span><span class="dv">2</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="functions.html#cb342-1"></a><span class="kw">apply</span>(mtcars, <span class="dv">2</span>, sd)</span>
+<span id="cb342-2"><a href="functions.html#cb342-2"></a><span class="kw">apply</span>(mtcars, <span class="dv">2</span>, <span class="cf">function</span>(x) x <span class="op">/</span><span class="st"> </span><span class="dv">2</span> )</span></code></pre></div>
 <p>The difference between the two is that for the latter, our function didn’t have to be a named object already available. We created a function on the fly just to serve a specific purpose. A function doesn’t exist in base R that just does nothing but divide by two, but since it is simple, we just created it as needed.</p>
 <p>To further illustrate this, we’ll create a robust standardization function that uses the median and median absolute deviation rather than the mean and standard deviation.</p>
-<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="functions.html#cb310-1"></a><span class="co"># some variables have a mad = 0, and so return Inf (x/0) or NaN (0/0)</span></span>
-<span id="cb310-2"><a href="functions.html#cb310-2"></a><span class="co"># apply(mtcars, 2, function(x) (x - median(x))/mad(x)) %&gt;% </span></span>
-<span id="cb310-3"><a href="functions.html#cb310-3"></a><span class="co">#   head()</span></span>
-<span id="cb310-4"><a href="functions.html#cb310-4"></a></span>
-<span id="cb310-5"><a href="functions.html#cb310-5"></a>mtcars <span class="op">%&gt;%</span></span>
-<span id="cb310-6"><a href="functions.html#cb310-6"></a><span class="st">  </span><span class="kw">map_df</span>(<span class="cf">function</span>(x) (x <span class="op">-</span><span class="st"> </span><span class="kw">median</span>(x))<span class="op">/</span><span class="kw">mad</span>(x))</span></code></pre></div>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="functions.html#cb343-1"></a><span class="co"># some variables have a mad = 0, and so return Inf (x/0) or NaN (0/0)</span></span>
+<span id="cb343-2"><a href="functions.html#cb343-2"></a><span class="co"># apply(mtcars, 2, function(x) (x - median(x))/mad(x)) %&gt;% </span></span>
+<span id="cb343-3"><a href="functions.html#cb343-3"></a><span class="co">#   head()</span></span>
+<span id="cb343-4"><a href="functions.html#cb343-4"></a></span>
+<span id="cb343-5"><a href="functions.html#cb343-5"></a>mtcars <span class="op">%&gt;%</span></span>
+<span id="cb343-6"><a href="functions.html#cb343-6"></a><span class="st">  </span><span class="kw">map_df</span>(<span class="cf">function</span>(x) (x <span class="op">-</span><span class="st"> </span><span class="kw">median</span>(x))<span class="op">/</span><span class="kw">mad</span>(x))</span></code></pre></div>
 <pre><code># A tibble: 32 x 11
        mpg    cyl   disp     hp     drat     wt   qsec    vs    am   gear   carb
      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -978,38 +1023,38 @@ Cmd/Ctrl + Option/Alt + Shift + R
 </div>
 <div id="writing-functions-exercises" class="section level2">
 <h2>Writing Functions Exercises</h2>
-<div id="excercise-1" class="section level3">
+<div id="excercise-1-1" class="section level3">
 <h3>Excercise 1</h3>
 <p>Write a function that takes the log of the sum of two values (i.e. just two single numbers) using the <span class="func">log</span> function. Just remember that within a function, you can write R code just like you normally would.</p>
-<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="functions.html#cb312-1"></a>log_sum &lt;-<span class="st"> </span><span class="cf">function</span>(a, b) {</span>
-<span id="cb312-2"><a href="functions.html#cb312-2"></a>  ?</span>
-<span id="cb312-3"><a href="functions.html#cb312-3"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="functions.html#cb345-1"></a>log_sum &lt;-<span class="st"> </span><span class="cf">function</span>(a, b) {</span>
+<span id="cb345-2"><a href="functions.html#cb345-2"></a>  ?</span>
+<span id="cb345-3"><a href="functions.html#cb345-3"></a>}</span></code></pre></div>
 </div>
 <div id="excercise-1b" class="section level3">
 <h3>Excercise 1b</h3>
 <p>What happens if the sum of the two numbers is negative? You can’t take a log of a negative value, so it’s an error. How might we deal with this? Try using a conditional to provide an error message using the <span class="func">stop</span> function. The first part is basically identical to the function you just did. But given that result, you will need to check for whether it is negative or not. The message can be whatever you want.</p>
-<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="functions.html#cb313-1"></a>log_sum &lt;-<span class="st"> </span><span class="cf">function</span>(a, b) {</span>
-<span id="cb313-2"><a href="functions.html#cb313-2"></a>  </span>
-<span id="cb313-3"><a href="functions.html#cb313-3"></a>  ?</span>
-<span id="cb313-4"><a href="functions.html#cb313-4"></a>  </span>
-<span id="cb313-5"><a href="functions.html#cb313-5"></a>  <span class="cf">if</span> (? <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
-<span id="cb313-6"><a href="functions.html#cb313-6"></a>    <span class="kw">stop</span>(<span class="st">&#39;Your message here.&#39;</span>)</span>
-<span id="cb313-7"><a href="functions.html#cb313-7"></a>  } <span class="cf">else</span> {</span>
-<span id="cb313-8"><a href="functions.html#cb313-8"></a>    ?</span>
-<span id="cb313-9"><a href="functions.html#cb313-9"></a>    <span class="kw">return</span>(your_log_sum_results)    <span class="co"># this is an arbitrary name, change accordingly</span></span>
-<span id="cb313-10"><a href="functions.html#cb313-10"></a>  }</span>
-<span id="cb313-11"><a href="functions.html#cb313-11"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb346-1"><a href="functions.html#cb346-1"></a>log_sum &lt;-<span class="st"> </span><span class="cf">function</span>(a, b) {</span>
+<span id="cb346-2"><a href="functions.html#cb346-2"></a>  </span>
+<span id="cb346-3"><a href="functions.html#cb346-3"></a>  ?</span>
+<span id="cb346-4"><a href="functions.html#cb346-4"></a>  </span>
+<span id="cb346-5"><a href="functions.html#cb346-5"></a>  <span class="cf">if</span> (? <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb346-6"><a href="functions.html#cb346-6"></a>    <span class="kw">stop</span>(<span class="st">&#39;Your message here.&#39;</span>)</span>
+<span id="cb346-7"><a href="functions.html#cb346-7"></a>  } <span class="cf">else</span> {</span>
+<span id="cb346-8"><a href="functions.html#cb346-8"></a>    ?</span>
+<span id="cb346-9"><a href="functions.html#cb346-9"></a>    <span class="kw">return</span>(your_log_sum_results)    <span class="co"># this is an arbitrary name, change accordingly</span></span>
+<span id="cb346-10"><a href="functions.html#cb346-10"></a>  }</span>
+<span id="cb346-11"><a href="functions.html#cb346-11"></a>}</span></code></pre></div>
 </div>
-<div id="exercise-2" class="section level3">
+<div id="exercise-2-5" class="section level3">
 <h3>Exercise 2</h3>
 <p>Let’s write a function that will take a numeric variable and convert it to a character string of ‘positive’ vs. ‘negative’. We can use <code>if {}... else {}</code> structure, <span class="func">ifelse</span>, or <span class="pack">dplyr</span>::<span class="func">if_else</span>- they all would accomplish this. In this case, the input is a single vector of numbers, and the output will recode any negative value to ‘negative’ and positive values to ‘positive’ (or whatever you want). Here is an example of how we would just do it as a one-off.</p>
-<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="functions.html#cb314-1"></a><span class="kw">set.seed</span>(<span class="dv">123</span>)  <span class="co"># so you get the exact same &#39;random&#39; result</span></span>
-<span id="cb314-2"><a href="functions.html#cb314-2"></a>x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>)</span>
-<span id="cb314-3"><a href="functions.html#cb314-3"></a><span class="kw">if_else</span>(x <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>, <span class="st">&quot;negative&quot;</span>, <span class="st">&quot;positive&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="functions.html#cb347-1"></a><span class="kw">set.seed</span>(<span class="dv">123</span>)  <span class="co"># so you get the exact same &#39;random&#39; result</span></span>
+<span id="cb347-2"><a href="functions.html#cb347-2"></a>x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10</span>)</span>
+<span id="cb347-3"><a href="functions.html#cb347-3"></a><span class="kw">if_else</span>(x <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>, <span class="st">&quot;negative&quot;</span>, <span class="st">&quot;positive&quot;</span>)</span></code></pre></div>
 <p>Now try your hand at writing a function for that.</p>
-<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="functions.html#cb315-1"></a>pos_neg &lt;-<span class="st"> </span><span class="cf">function</span>(?) {</span>
-<span id="cb315-2"><a href="functions.html#cb315-2"></a>  ?</span>
-<span id="cb315-3"><a href="functions.html#cb315-3"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb348-1"><a href="functions.html#cb348-1"></a>pos_neg &lt;-<span class="st"> </span><span class="cf">function</span>(?) {</span>
+<span id="cb348-2"><a href="functions.html#cb348-2"></a>  ?</span>
+<span id="cb348-3"><a href="functions.html#cb348-3"></a>}</span></code></pre></div>
 
 </div>
 </div>
@@ -1043,9 +1088,8 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["twitter", "facebook", "weibo", "instapaper"],
-"google": false,
-"instapper": false
+"all": ["twitter", "facebook", "instapaper"],
+"google": false
 },
 "fontsettings": {
 "theme": "white",
@@ -1064,7 +1108,7 @@ gitbook.start({
 "download": null,
 "toc": {
 "collapse": "section",
-"depth": 2,
+"toc_depth": 2,
 "scroll_highlight": true
 },
 "search": true

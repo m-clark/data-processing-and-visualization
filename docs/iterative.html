@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Iterative Programming | Data Processing &amp; Visualization</title>
-  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <title>Iterative Programming | Practical Data Science</title>
+  <meta name="description" content="The focus of this document is on data science tools and techniques in R, including basic programming knowledge, visualization practices, modeling, and more, along with exercises to practice further. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta name="generator" content="bookdown 0.20.2 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Iterative Programming | Data Processing &amp; Visualization" />
+  <meta property="og:title" content="Iterative Programming | Practical Data Science" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://m-clark.github.io/data-processing-and-visualization/" />
   <meta property="og:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
-  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta property="og:description" content="The focus of this document is on data science tools and techniques in R, including basic programming knowledge, visualization practices, modeling, and more, along with exercises to practice further. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
   <meta name="github-repo" content="m-clark/data-processing-and-visualization/" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Iterative Programming | Data Processing &amp; Visualization" />
+  <meta name="twitter:title" content="Iterative Programming | Practical Data Science" />
   
-  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta name="twitter:description" content="The focus of this document is on data science tools and techniques in R, including basic programming knowledge, visualization practices, modeling, and more, along with exercises to practice further. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
   <meta name="twitter:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
 
 
 
-<meta name="date" content="2020-06-29" />
+<meta name="date" content="2020-08-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   <link rel="shortcut icon" href="img/R.ico" type="image/x-icon" />
 <link rel="prev" href="programming.html"/>
 <link rel="next" href="functions.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.5.0/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -66,45 +66,46 @@
 <script src="libs/vis-4.20.1/vis.min.js"></script>
 <script src="libs/visNetwork-binding-2.0.9/visNetwork.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
-<link href="libs/highcharts-7.0.1/css/motion.css" rel="stylesheet" />
-<link href="libs/highcharts-7.0.1/css/htmlwdgtgrid.css" rel="stylesheet" />
-<script src="libs/highcharts-7.0.1/highcharts.js"></script>
-<script src="libs/highcharts-7.0.1/highcharts-3d.js"></script>
-<script src="libs/highcharts-7.0.1/highcharts-more.js"></script>
-<script src="libs/highcharts-7.0.1/modules/stock.js"></script>
-<script src="libs/highcharts-7.0.1/modules/map.js"></script>
-<script src="libs/highcharts-7.0.1/modules/annotations.js"></script>
-<script src="libs/highcharts-7.0.1/modules/boost.js"></script>
-<script src="libs/highcharts-7.0.1/modules/data.js"></script>
-<script src="libs/highcharts-7.0.1/modules/drag-panes.js"></script>
-<script src="libs/highcharts-7.0.1/modules/drilldown.js"></script>
-<script src="libs/highcharts-7.0.1/modules/item-series.js"></script>
-<script src="libs/highcharts-7.0.1/modules/offline-exporting.js"></script>
-<script src="libs/highcharts-7.0.1/modules/overlapping-datalabels.js"></script>
-<script src="libs/highcharts-7.0.1/modules/exporting.js"></script>
-<script src="libs/highcharts-7.0.1/modules/export-data.js"></script>
-<script src="libs/highcharts-7.0.1/modules/funnel.js"></script>
-<script src="libs/highcharts-7.0.1/modules/heatmap.js"></script>
-<script src="libs/highcharts-7.0.1/modules/treemap.js"></script>
-<script src="libs/highcharts-7.0.1/modules/sankey.js"></script>
-<script src="libs/highcharts-7.0.1/modules/solid-gauge.js"></script>
-<script src="libs/highcharts-7.0.1/modules/streamgraph.js"></script>
-<script src="libs/highcharts-7.0.1/modules/sunburst.js"></script>
-<script src="libs/highcharts-7.0.1/modules/vector.js"></script>
-<script src="libs/highcharts-7.0.1/modules/wordcloud.js"></script>
-<script src="libs/highcharts-7.0.1/modules/xrange.js"></script>
-<script src="libs/highcharts-7.0.1/modules/tilemap.js"></script>
-<script src="libs/highcharts-7.0.1/modules/venn.js"></script>
-<script src="libs/highcharts-7.0.1/modules/gantt.js"></script>
-<script src="libs/highcharts-7.0.1/modules/timeline.js"></script>
-<script src="libs/highcharts-7.0.1/modules/parallel-coordinates.js"></script>
-<script src="libs/highcharts-7.0.1/plugins/grouped-categories.js"></script>
-<script src="libs/highcharts-7.0.1/plugins/motion.js"></script>
-<script src="libs/highcharts-7.0.1/plugins/multicolor_series.js"></script>
-<script src="libs/highcharts-7.0.1/custom/reset.js"></script>
-<script src="libs/highcharts-7.0.1/custom/symbols-extra.js"></script>
-<script src="libs/highcharts-7.0.1/custom/text-symbols.js"></script>
-<script src="libs/highchart-binding-0.7.0/highchart.js"></script>
+<link href="libs/highcharts-8.1.2/css/motion.css" rel="stylesheet" />
+<script src="libs/highcharts-8.1.2/highcharts.js"></script>
+<script src="libs/highcharts-8.1.2/highcharts-3d.js"></script>
+<script src="libs/highcharts-8.1.2/highcharts-more.js"></script>
+<script src="libs/highcharts-8.1.2/modules/stock.js"></script>
+<script src="libs/highcharts-8.1.2/modules/map.js"></script>
+<script src="libs/highcharts-8.1.2/modules/annotations.js"></script>
+<script src="libs/highcharts-8.1.2/modules/data.js"></script>
+<script src="libs/highcharts-8.1.2/modules/drilldown.js"></script>
+<script src="libs/highcharts-8.1.2/modules/item-series.js"></script>
+<script src="libs/highcharts-8.1.2/modules/offline-exporting.js"></script>
+<script src="libs/highcharts-8.1.2/modules/overlapping-datalabels.js"></script>
+<script src="libs/highcharts-8.1.2/modules/exporting.js"></script>
+<script src="libs/highcharts-8.1.2/modules/export-data.js"></script>
+<script src="libs/highcharts-8.1.2/modules/funnel.js"></script>
+<script src="libs/highcharts-8.1.2/modules/heatmap.js"></script>
+<script src="libs/highcharts-8.1.2/modules/treemap.js"></script>
+<script src="libs/highcharts-8.1.2/modules/sankey.js"></script>
+<script src="libs/highcharts-8.1.2/modules/dependency-wheel.js"></script>
+<script src="libs/highcharts-8.1.2/modules/organization.js"></script>
+<script src="libs/highcharts-8.1.2/modules/solid-gauge.js"></script>
+<script src="libs/highcharts-8.1.2/modules/streamgraph.js"></script>
+<script src="libs/highcharts-8.1.2/modules/sunburst.js"></script>
+<script src="libs/highcharts-8.1.2/modules/vector.js"></script>
+<script src="libs/highcharts-8.1.2/modules/wordcloud.js"></script>
+<script src="libs/highcharts-8.1.2/modules/xrange.js"></script>
+<script src="libs/highcharts-8.1.2/modules/tilemap.js"></script>
+<script src="libs/highcharts-8.1.2/modules/venn.js"></script>
+<script src="libs/highcharts-8.1.2/modules/gantt.js"></script>
+<script src="libs/highcharts-8.1.2/modules/timeline.js"></script>
+<script src="libs/highcharts-8.1.2/modules/parallel-coordinates.js"></script>
+<script src="libs/highcharts-8.1.2/modules/bullet.js"></script>
+<script src="libs/highcharts-8.1.2/modules/coloraxis.js"></script>
+<script src="libs/highcharts-8.1.2/modules/dumbbell.js"></script>
+<script src="libs/highcharts-8.1.2/modules/lollipop.js"></script>
+<script src="libs/highcharts-8.1.2/modules/series-label.js"></script>
+<script src="libs/highcharts-8.1.2/plugins/motion.js"></script>
+<script src="libs/highcharts-8.1.2/custom/reset.js"></script>
+<script src="libs/highcharts-8.1.2/modules/boost.js"></script>
+<script src="libs/highchart-binding-0.8.2/highchart.js"></script>
 <script src="libs/sigma-1.2.1/sigma.min.js"></script>
 <script src="libs/sigma-1.2.1/plugins/sigma.layout.forceAtlas2.min.js"></script>
 <script src="libs/sigma-1.2.1/plugins/sigma.layout.noverlap.min.js"></script>
@@ -129,7 +130,7 @@
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.14/datatables.js"></script>
+<script src="libs/datatables-binding-0.15/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
@@ -214,10 +215,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class='before'><a href="./">Data Processing & Visualization</a></li>
+<li class='before'><a href="./">Practical Data Science</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i>Intro</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#intended-audience"><i class="fa fa-check"></i>Intended Audience</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#programming-language"><i class="fa fa-check"></i>Programming Language</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#additional-practice"><i class="fa fa-check"></i>Additional Practice</a></li>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#outline"><i class="fa fa-check"></i>Outline</a><ul>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-1-information-processing"><i class="fa fa-check"></i>Part 1: Information Processing</a></li>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-2-programming-basics"><i class="fa fa-check"></i>Part 2: Programming Basics</a></li>
@@ -225,10 +229,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-4-visualization"><i class="fa fa-check"></i>Part 4: Visualization</a></li>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-5-presentation"><i class="fa fa-check"></i>Part 5: Presentation</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#preparation"><i class="fa fa-check"></i>Preparation</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#workshops"><i class="fa fa-check"></i>Workshops</a></li>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#other"><i class="fa fa-check"></i>Other</a><ul>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#python"><i class="fa fa-check"></i>Python</a></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#r"><i class="fa fa-check"></i>R</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#python-notebooks"><i class="fa fa-check"></i>Python notebooks</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#other-r-packages"><i class="fa fa-check"></i>Other R packages</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#history"><i class="fa fa-check"></i>History</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#current-efforts"><i class="fa fa-check"></i>Current Efforts</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part I: Information Processing</b></span></li>
@@ -238,6 +244,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#factors"><i class="fa fa-check"></i>Factors</a></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#logicals"><i class="fa fa-check"></i>Logicals</a></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#numeric-and-integer"><i class="fa fa-check"></i>Numeric and integer</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#dates"><i class="fa fa-check"></i>Dates</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#matrices"><i class="fa fa-check"></i>Matrices</a><ul>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#creating-a-matrix"><i class="fa fa-check"></i>Creating a matrix</a></li>
@@ -247,67 +254,79 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#creating-a-data-frame"><i class="fa fa-check"></i>Creating a data frame</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#data-structure-exercises"><i class="fa fa-check"></i>Data Structure Exercises</a><ul>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#excercise-1"><i class="fa fa-check"></i>Excercise #1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise #2</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#excercise-1"><i class="fa fa-check"></i>Excercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#thinking-exercises"><i class="fa fa-check"></i>Thinking Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#python-data-structures-notebook"><i class="fa fa-check"></i>Python Data Structures Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html"><i class="fa fa-check"></i>Input/Output</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#other-approaches"><i class="fa fa-check"></i>Other approaches</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#faster-approaches"><i class="fa fa-check"></i>Faster approaches</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#other-data"><i class="fa fa-check"></i>Other Data</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#on-the-horizon"><i class="fa fa-check"></i>On the horizon</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#better-faster-approaches"><i class="fa fa-check"></i>Better &amp; Faster Approaches</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#r-specific-data"><i class="fa fa-check"></i>R-specific Data</a><ul>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#r-datasets"><i class="fa fa-check"></i>R Datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#other-types-of-data"><i class="fa fa-check"></i>Other Types of Data</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#on-the-horizon"><i class="fa fa-check"></i>On the Horizon</a></li>
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html#big-data"><i class="fa fa-check"></i>Big Data</a></li>
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html#io-exercises"><i class="fa fa-check"></i>I/O Exercises</a><ul>
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#thinking-exercises"><i class="fa fa-check"></i>Thinking Exercises</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#thinking-exercises-1"><i class="fa fa-check"></i>Thinking Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#python-io-notebook"><i class="fa fa-check"></i>Python I/O Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html"><i class="fa fa-check"></i>Indexing</a><ul>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#base-r-indexing-refresher"><i class="fa fa-check"></i>Base R Indexing Refresher</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/Data.frame extraction</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#slicing-vectors"><i class="fa fa-check"></i>Slicing Vectors</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#slicing-matricesdata.frames"><i class="fa fa-check"></i>Slicing Matrices/data.frames</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#label-based-indexing"><i class="fa fa-check"></i>Label-based Indexing</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#position-based-indexing"><i class="fa fa-check"></i>Position-based Indexing</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#mixed-indexing"><i class="fa fa-check"></i>Mixed Indexing</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#non-contiguous"><i class="fa fa-check"></i>Non-contiguous</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#boolean"><i class="fa fa-check"></i>Boolean</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/data.frame Extraction</a></li>
 <li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#indexing-exercises"><i class="fa fa-check"></i>Indexing Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-1-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-2-1"><i class="fa fa-check"></i>Exercise 2</a></li>
 <li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#python-indexing-notebook"><i class="fa fa-check"></i>Python Indexing Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html"><i class="fa fa-check"></i>Pipes</a><ul>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#using-variables-as-they-are-created"><i class="fa fa-check"></i>Using variables as they are created</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#using-variables-as-they-are-created"><i class="fa fa-check"></i>Using Variables as They are Created</a></li>
 <li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#pipes-for-visualization-more-later"><i class="fa fa-check"></i>Pipes for Visualization (more later)</a></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#the-dot"><i class="fa fa-check"></i>The dot</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#the-dot"><i class="fa fa-check"></i>The Dot</a></li>
 <li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#flexibility"><i class="fa fa-check"></i>Flexibility</a></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#pipes-summary"><i class="fa fa-check"></i>Pipes Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html"><i class="fa fa-check"></i>Tidyverse</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-the-tidyverse"><i class="fa fa-check"></i>What is the tidyverse?</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is tidy?</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-the-tidyverse"><i class="fa fa-check"></i>What is the Tidyverse?</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is Tidy?</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#dplyr"><i class="fa fa-check"></i>dplyr</a><ul>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#an-example"><i class="fa fa-check"></i>An example</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#running-example"><i class="fa fa-check"></i>Running example</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#running-example"><i class="fa fa-check"></i>Running Example</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#selecting-columns"><i class="fa fa-check"></i>Selecting Columns</a><ul>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#helper-functions"><i class="fa fa-check"></i>Helper functions</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#filtering-rows"><i class="fa fa-check"></i>Filtering Rows</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#generating-new-data"><i class="fa fa-check"></i>Generating New Data</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#grouping-and-summarizing-data"><i class="fa fa-check"></i>Grouping and Summarizing Data</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#renaming-columns"><i class="fa fa-check"></i>Renaming columns</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#renaming-columns"><i class="fa fa-check"></i>Renaming Columns</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#merging-data"><i class="fa fa-check"></i>Merging Data</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyr"><i class="fa fa-check"></i>tidyr</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#pivoting-axes"><i class="fa fa-check"></i>Pivoting axes</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#more-tidyverse"><i class="fa fa-check"></i>More Tidyverse</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyverse-exercises"><i class="fa fa-check"></i>tidyverse Exercises</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyverse-exercises"><i class="fa fa-check"></i>Tidyverse Exercises</a><ul>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-1-2"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-2-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-3-1"><i class="fa fa-check"></i>Exercise 3</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-4"><i class="fa fa-check"></i>Exercise 4</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#python-pandas-notebook"><i class="fa fa-check"></i>Python Pandas Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html"><i class="fa fa-check"></i>data.table</a><ul>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#basics"><i class="fa fa-check"></i>Basics</a></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#grouped-operations"><i class="fa fa-check"></i>Grouped operations</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-basics"><i class="fa fa-check"></i>data.table Basics</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#grouped-operations"><i class="fa fa-check"></i>Grouped Operations</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster"><i class="fa fa-check"></i>Faster!</a><ul>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#joins"><i class="fa fa-check"></i>Joins</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#group-by"><i class="fa fa-check"></i>Group by</a></li>
@@ -316,17 +335,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#more-speed"><i class="fa fa-check"></i>More speed</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster-dplyr-alternatives"><i class="fa fa-check"></i>Faster dplyr alternatives</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-summary"><i class="fa fa-check"></i>data.table Summary</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster-dplyr-alternatives"><i class="fa fa-check"></i>Faster dplyr Alternatives</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-exercises"><i class="fa fa-check"></i>data.table Exercises</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-0-1"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-1-3"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-2-3"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part II: Programming</b></span></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#basics"><i class="fa fa-check"></i>Basics</a><ul>
-<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html"><i class="fa fa-check"></i>R Objects</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html"><i class="fa fa-check"></i>Programming Basics</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#r-objects"><i class="fa fa-check"></i>R Objects</a><ul>
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#object-inspection-exploration"><i class="fa fa-check"></i>Object Inspection &amp; Exploration</a></li>
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#methods"><i class="fa fa-check"></i>Methods</a></li>
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#s4-classes"><i class="fa fa-check"></i>S4 classes</a></li>
@@ -337,7 +356,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#objects-exercises"><i class="fa fa-check"></i>Objects Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For Loops</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#a-slight-speed-gain"><i class="fa fa-check"></i>A slight speed gain</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#loops-summary"><i class="fa fa-check"></i>Loops summary</a></li>
@@ -347,58 +366,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#looping-with-lists"><i class="fa fa-check"></i>Looping with lists</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#looping-with-lists"><i class="fa fa-check"></i>Looping with Lists</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#iterative-programming-exercises"><i class="fa fa-check"></i>Iterative Programming Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-1-4"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-2-4"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-3-2"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i>Writing Functions</a><ul>
-<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#a-starting-point"><i class="fa fa-check"></i>A starting point</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#a-starting-point"><i class="fa fa-check"></i>A Starting Point</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#dry"><i class="fa fa-check"></i>DRY</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#conditionals"><i class="fa fa-check"></i>Conditionals</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#anonymous-functions"><i class="fa fa-check"></i>Anonymous functions</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#writing-functions-exercises"><i class="fa fa-check"></i>Writing Functions Exercises</a><ul>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#excercise-1"><i class="fa fa-check"></i>Excercise 1</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1-1"><i class="fa fa-check"></i>Excercise 1</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1b"><i class="fa fa-check"></i>Excercise 1b</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#exercise-2-5"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html"><i class="fa fa-check"></i>More</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html"><i class="fa fa-check"></i>More Programming</a><ul>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-style"><i class="fa fa-check"></i>Code Style</a><ul>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#why-does-your-code-exist"><i class="fa fa-check"></i>Why does your code exist?</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#assignment"><i class="fa fa-check"></i>Assignment</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-length"><i class="fa fa-check"></i>Code length</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#spacing"><i class="fa fa-check"></i>Spacing</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#naming-things"><i class="fa fa-check"></i>Naming things</a></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#other"><i class="fa fa-check"></i>Other</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#other-1"><i class="fa fa-check"></i>Other</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorization"><i class="fa fa-check"></i>Vectorization</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#boolean-indexing"><i class="fa fa-check"></i>Boolean Indexing</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#boolean-indexing"><i class="fa fa-check"></i>Boolean indexing</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorized-operations"><i class="fa fa-check"></i>Vectorized operations</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#regular-expressions"><i class="fa fa-check"></i>Regular Expressions</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#typical-uses"><i class="fa fa-check"></i>Typical Uses</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#typical-uses"><i class="fa fa-check"></i>Typical uses</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-style-exercises"><i class="fa fa-check"></i>Code Style Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-5"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-6"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorization-exercises"><i class="fa fa-check"></i>Vectorization Exercises</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-1"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-6"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-7"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#regex-exercises"><i class="fa fa-check"></i>Regex Exercises</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-2"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-7"><i class="fa fa-check"></i>Exercise 1</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part III: Modeling</b></span></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#model-exploration"><i class="fa fa-check"></i>Model Exploration</a><ul>
-<li class="chapter" data-level="" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i>Model Taxonomy</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i>Model Exploration</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-taxonomy"><i class="fa fa-check"></i>Model Taxonomy</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#linear-models"><i class="fa fa-check"></i>Linear models</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#estimation"><i class="fa fa-check"></i>Estimation</a><ul>
-<li class="chapter" data-level="" data-path="models.html"><a href="models.html#minimizing-and-maximizing"><i class="fa fa-check"></i>Minimizing and Maximizing</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#minimizing-and-maximizing"><i class="fa fa-check"></i>Minimizing and maximizing</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#optimization"><i class="fa fa-check"></i>Optimization</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#fitting-models"><i class="fa fa-check"></i>Fitting Models</a><ul>
@@ -423,13 +442,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-exploration-summary"><i class="fa fa-check"></i>Model Exploration Summary</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-exploration-exercises"><i class="fa fa-check"></i>Model Exploration Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-1-8"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-2-8"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-3-3"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#python-model-exploration-notebook"><i class="fa fa-check"></i>Python Model Exploration Notebook</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#model-criticism"><i class="fa fa-check"></i>Model Criticism</a><ul>
-<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html"><i class="fa fa-check"></i>Model Fit</a><ul>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html"><i class="fa fa-check"></i>Model Criticism</a><ul>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-fit"><i class="fa fa-check"></i>Model Fit</a><ul>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#standard-linear-model"><i class="fa fa-check"></i>Standard linear model</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#beyond-ols"><i class="fa fa-check"></i>Beyond OLS</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#classification"><i class="fa fa-check"></i>Classification</a></li>
@@ -439,40 +459,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-comparison"><i class="fa fa-check"></i>Model Comparison</a><ul>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-additional-covariates"><i class="fa fa-check"></i>Example: Additional covariates</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-interactions"><i class="fa fa-check"></i>Example: Interactions</a></li>
-<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-additive-models"><i class="fa fa-check"></i>Example: Additive Models</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-additive-models"><i class="fa fa-check"></i>Example: Additive models</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-averaging"><i class="fa fa-check"></i>Model Averaging</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-criticism-summary"><i class="fa fa-check"></i>Model Criticism Summary</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-criticism-exercises"><i class="fa fa-check"></i>Model Criticism Exercises</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-0-2"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-1-9"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-2-9"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#python-model-criticism-notebook"><i class="fa fa-check"></i>Python Model Criticism Notebook</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#machine-learning"><i class="fa fa-check"></i>Machine Learning</a><ul>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html"><i class="fa fa-check"></i>Concepts</a><ul>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html"><i class="fa fa-check"></i>Machine Learning</a><ul>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#concepts"><i class="fa fa-check"></i>Concepts</a><ul>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#loss"><i class="fa fa-check"></i>Loss</a></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#bias-variance-tradeoff"><i class="fa fa-check"></i>Bias-variance Tradeoff</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#bias-variance-tradeoff"><i class="fa fa-check"></i>Bias-variance tradeoff</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#regularization"><i class="fa fa-check"></i>Regularization</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
-<li class="chapter" data-level="" data-path="models.html"><a href="models.html#optimization"><i class="fa fa-check"></i>Optimization</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#optimization-1"><i class="fa fa-check"></i>Optimization</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#tuning-parameters"><i class="fa fa-check"></i>Tuning parameters</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#techniques"><i class="fa fa-check"></i>Techniques</a><ul>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#regularized-regression"><i class="fa fa-check"></i>Regularized regression</a></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#random-forests"><i class="fa fa-check"></i>Random Forests</a></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#neural-networks"><i class="fa fa-check"></i>Neural Networks</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#random-forests"><i class="fa fa-check"></i>Random forests</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#neural-networks"><i class="fa fa-check"></i>Neural networks</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#interpreting-the-black-box"><i class="fa fa-check"></i>Interpreting the Black Box</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-summary"><i class="fa fa-check"></i>Machine Learning Summary</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-exercises"><i class="fa fa-check"></i>Machine Learning Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercise-1-10"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercise-2-10"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#python-machine-learning-notebook"><i class="fa fa-check"></i>Python Machine Learning Notebook</a></li>
 </ul></li>
 <li class="part"><span><b>Part IV: Visualization</b></span></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#ggplot2"><i class="fa fa-check"></i>ggplot2</a><ul>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i>Layers</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#geoms"><i class="fa fa-check"></i>Geoms</a></li>
@@ -484,13 +506,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#themes"><i class="fa fa-check"></i>Themes</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#python"><i class="fa fa-check"></i>Python</a></li>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-summary"><i class="fa fa-check"></i>ggplot2 Summary</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-exercises"><i class="fa fa-check"></i>ggplot2 Exercises</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-0-3"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-1-11"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-2-11"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#python-plotnine-notebook"><i class="fa fa-check"></i>Python Plotnine Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#packages"><i class="fa fa-check"></i>Packages</a></li>
@@ -513,14 +535,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-visualization-exercises"><i class="fa fa-check"></i>Interactive Visualization Exercises</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-0-4"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-1-12"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-2-12"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-3-4"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#python-interactive-visualization-notebook"><i class="fa fa-check"></i>Python Interactive Visualization Notebook</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#thinking-visually"><i class="fa fa-check"></i>Thinking Visually</a><ul>
-<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html"><i class="fa fa-check"></i>Information</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html"><i class="fa fa-check"></i>Thinking Visually</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#information"><i class="fa fa-check"></i>Information</a><ul>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#your-audience-isnt-dumb"><i class="fa fa-check"></i>Your audience isn’t dumb</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#clarity-is-key"><i class="fa fa-check"></i>Clarity is key</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#avoid-clutter"><i class="fa fa-check"></i>Avoid clutter</a></li>
@@ -537,7 +560,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#accessibility"><i class="fa fa-check"></i>Accessibility</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#file-types"><i class="fa fa-check"></i>File Types</a></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#summary-of-thinking-visually"><i class="fa fa-check"></i>Summary of Thinking Visually</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#a-casual-list-of-things-to-avoid"><i class="fa fa-check"></i>A casual list of things to avoid</a><ul>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#pie"><i class="fa fa-check"></i>Pie</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#histograms"><i class="fa fa-check"></i>Histograms</a></li>
@@ -548,32 +571,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#biplots"><i class="fa fa-check"></i>Biplots</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#thinking-exercises"><i class="fa fa-check"></i>Thinking exercises</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-1-13"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-2-13"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-exercises-2"><i class="fa fa-check"></i>Thinking exercises</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part V: Presentation</b></span></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html"><i class="fa fa-check"></i>Reproducible Programming</a><ul>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#how-to-read-this-chapter"><i class="fa fa-check"></i>How to read this chapter</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#literate-programming"><i class="fa fa-check"></i>Literate Programming</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#r-markdown"><i class="fa fa-check"></i>R Markdown</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#replicability-reproducible-research"><i class="fa fa-check"></i>Replicability &amp; reproducible research</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#dynamic-data-analysis-report-generation"><i class="fa fa-check"></i>Dynamic data analysis &amp; report generation</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#using-modern-tools"><i class="fa fa-check"></i>Using Modern Tools</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i>Building Better Data-Driven Products</a><ul>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#rep-analysis"><i class="fa fa-check"></i>Rep* Analysis</a><ul>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#example"><i class="fa fa-check"></i>Example</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#repeatable"><i class="fa fa-check"></i>Repeatable</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#reproducible"><i class="fa fa-check"></i>Reproducible</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#replicable"><i class="fa fa-check"></i>Replicable</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#summary-of-rep-analysis"><i class="fa fa-check"></i>Summary of rep* analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#literate-programming"><i class="fa fa-check"></i>Literate Programming</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#r-markdown"><i class="fa fa-check"></i>R Markdown</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#how-to-read-this-chapter"><i class="fa fa-check"></i>How to read this chapter</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#dynamic-data-analysis-report-generation"><i class="fa fa-check"></i>Dynamic data analysis &amp; report generation</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#using-modern-tools"><i class="fa fa-check"></i>Using Modern Tools</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html"><i class="fa fa-check"></i>Getting Started</a><ul>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#what-is-markdown"><i class="fa fa-check"></i>What is Markdown?</a></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#documents"><i class="fa fa-check"></i>Documents</a><ul>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#standard-html"><i class="fa fa-check"></i>Standard HTML</a></li>
-<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#r-notebooks"><i class="fa fa-check"></i>R Notebooks</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#r-notebooks"><i class="fa fa-check"></i>R notebooks</a></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#distill"><i class="fa fa-check"></i>Distill</a></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#bookdown"><i class="fa fa-check"></i>Bookdown</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#presentations"><i class="fa fa-check"></i>Presentations</a></li>
-<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#shiny-apps"><i class="fa fa-check"></i>Shiny Apps</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#apps-sites-dashboards"><i class="fa fa-check"></i>Apps, Sites &amp; Dashboards</a></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#templates"><i class="fa fa-check"></i>Templates</a></li>
-<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#how-to-start"><i class="fa fa-check"></i>How to start</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#how-to-begin"><i class="fa fa-check"></i>How to Begin</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html"><i class="fa fa-check"></i>Standard Documents</a><ul>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#r-markdown-files"><i class="fa fa-check"></i>R Markdown files</a></li>
@@ -584,24 +613,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#labels"><i class="fa fa-check"></i>Labels</a></li>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#running-code"><i class="fa fa-check"></i>Running code</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#multiple-documents"><i class="fa fa-check"></i>Multiple documents</a></li>
-<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#sharing-code-collaboration"><i class="fa fa-check"></i>Sharing Code &amp; Collaboration</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#multiple-documents"><i class="fa fa-check"></i>Multiple Documents</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#collaboration"><i class="fa fa-check"></i>Collaboration</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#using-python-for-documents"><i class="fa fa-check"></i>Using Python for Documents</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html"><i class="fa fa-check"></i>Customization &amp; Configuration</a><ul>
-<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#output-options"><i class="fa fa-check"></i>Output options</a><ul>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#output-options"><i class="fa fa-check"></i>Output Options</a><ul>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#themes-etc."><i class="fa fa-check"></i>Themes etc.</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#yaml"><i class="fa fa-check"></i>YAML</a></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#html-css"><i class="fa fa-check"></i>HTML &amp; CSS</a><ul>
-<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#html"><i class="fa fa-check"></i>HTML</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#html-1"><i class="fa fa-check"></i>HTML</a></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#css"><i class="fa fa-check"></i>CSS</a></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#custom-classes"><i class="fa fa-check"></i>Custom classes</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#personal-templates"><i class="fa fa-check"></i>Personal Templates</a></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#the-rabbit-hole-goes-deep"><i class="fa fa-check"></i>The Rabbit Hole Goes Deep</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#r-markdown-exercises"><i class="fa fa-check"></i>R Markdown Exercises</a><ul>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-1-14"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-2-14"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-3-5"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-4-1"><i class="fa fa-check"></i>Exercise 4</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-5"><i class="fa fa-check"></i>Exercise 5</a></li>
+</ul></li>
 </ul></li>
 <li class="part"><span><b>Wrap-up</b></span></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i>Appendix</a><ul>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#r-markdown-1"><i class="fa fa-check"></i>R Markdown</a><ul>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#footnotes"><i class="fa fa-check"></i>Footnotes</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#citations-and-references"><i class="fa fa-check"></i>Citations and references</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#multiple-documents-1"><i class="fa fa-check"></i>Multiple documents</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#web-standards"><i class="fa fa-check"></i>Web standards</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li class='after'">
@@ -635,7 +680,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Data Processing &amp; Visualization</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Practical Data Science</a>
           </h1>
         </div>
 
@@ -651,24 +696,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><br></p>
 <p>Almost everything you do when dealing with data will need to be done again, and again, and again. If you are copy-pasting your way to repetitively do the same thing, you’re not only doing things inefficiently, you’re almost certainly setting yourself up for trouble if anything changes about the data or underlying process.</p>
 <p>In order to avoid this, you need to be familiar with basic programming, and a starting point is to use an iterative approach to repetitive problems. Let’s look at the following. Let’s say we want to get the means of some columns in our data set. Do you do something like this?</p>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="iterative.html#cb224-1"></a>means1 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>x)</span>
-<span id="cb224-2"><a href="iterative.html#cb224-2"></a>means2 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>y)</span>
-<span id="cb224-3"><a href="iterative.html#cb224-3"></a>means3 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>z)</span>
-<span id="cb224-4"><a href="iterative.html#cb224-4"></a>means4 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>q)</span></code></pre></div>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="iterative.html#cb257-1"></a>means1 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>x)</span>
+<span id="cb257-2"><a href="iterative.html#cb257-2"></a>means2 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>y)</span>
+<span id="cb257-3"><a href="iterative.html#cb257-3"></a>means3 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>z)</span>
+<span id="cb257-4"><a href="iterative.html#cb257-4"></a>means4 =<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>q)</span></code></pre></div>
 <p>Now consider what you have to change if you change a variable name, decide to do a median, or the data object name changes. Any minor change with the data will cause you to have to redo that code, and possibly every line of it.</p>
 <div id="for-loops" class="section level2">
-<h2>For loops</h2>
+<h2>For Loops</h2>
 <p>A <span class="emph">for loop</span> will help us get around the problem. The idea is that we want to perform a particular action <em>for</em> every iteration of some sequence. That sequence may be over columns, rows, lines in a text, whatever. Here is a loop.</p>
-<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="iterative.html#cb225-1"></a><span class="cf">for</span> (column <span class="cf">in</span> <span class="kw">c</span>(<span class="st">&#39;x&#39;</span>,<span class="st">&#39;y&#39;</span>,<span class="st">&#39;z&#39;</span>,<span class="st">&#39;q&#39;</span>)) {</span>
-<span id="cb225-2"><a href="iterative.html#cb225-2"></a>  <span class="kw">mean</span>(df[[column]])</span>
-<span id="cb225-3"><a href="iterative.html#cb225-3"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="iterative.html#cb258-1"></a><span class="cf">for</span> (column <span class="cf">in</span> <span class="kw">c</span>(<span class="st">&#39;x&#39;</span>,<span class="st">&#39;y&#39;</span>,<span class="st">&#39;z&#39;</span>,<span class="st">&#39;q&#39;</span>)) {</span>
+<span id="cb258-2"><a href="iterative.html#cb258-2"></a>  <span class="kw">mean</span>(df[[column]])</span>
+<span id="cb258-3"><a href="iterative.html#cb258-3"></a>}</span></code></pre></div>
 <p>What’s going on here? We’ve created an iterative process in which, <em>for</em> every <em>element</em> in <code>c('x','y','z','q')</code>, we are going to do something. We use the completely arbitrary word <code>column</code> as a placeholder to index which of the four columns we’re dealing with at a given point in the process. On the first iteration, <code>column</code> will equal <code>x</code>, on the second <code>y</code>, and so on. We then take the mean of <code>df[[column]]</code>, which will be <code>df[['x']]</code>, then <code>df[['y']]</code>, etc.</p>
 <p>Here is an example with the <span class="pack">nycflights</span> data, which regards flights that departed New York City in 2013. The <span class="objclass">weather</span> data set has columns for things like temperature, humidity, and so forth.</p>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="iterative.html#cb226-1"></a>weather =<span class="st"> </span>nycflights13<span class="op">::</span>weather</span>
-<span id="cb226-2"><a href="iterative.html#cb226-2"></a></span>
-<span id="cb226-3"><a href="iterative.html#cb226-3"></a><span class="cf">for</span> (column <span class="cf">in</span> <span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;precip&#39;</span>)) {</span>
-<span id="cb226-4"><a href="iterative.html#cb226-4"></a>  <span class="kw">print</span>(<span class="kw">mean</span>(weather[[column]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
-<span id="cb226-5"><a href="iterative.html#cb226-5"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="iterative.html#cb259-1"></a>weather =<span class="st"> </span>nycflights13<span class="op">::</span>weather</span>
+<span id="cb259-2"><a href="iterative.html#cb259-2"></a></span>
+<span id="cb259-3"><a href="iterative.html#cb259-3"></a><span class="cf">for</span> (column <span class="cf">in</span> <span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;precip&#39;</span>)) {</span>
+<span id="cb259-4"><a href="iterative.html#cb259-4"></a>  <span class="kw">print</span>(<span class="kw">mean</span>(weather[[column]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb259-5"><a href="iterative.html#cb259-5"></a>}</span></code></pre></div>
 <pre><code>[1] 55.26039
 [1] 62.53006
 [1] 10.51749
@@ -676,58 +721,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>You can check this for yourself by testing a column or two directly with just <code>mean(df$x)</code>.</p>
 <p>Now if the data name changes, the columns we want change, or we want to calculate something else, we usually end up only changing one thing, rather than at least changing one at a minimum, and probably many more things. In addition, the amount of code is the same whether the loop goes over 100 columns or 4.</p>
 <p>Let’s do things a little differently.</p>
-<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="iterative.html#cb228-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;precip&#39;</span>)</span>
-<span id="cb228-2"><a href="iterative.html#cb228-2"></a>nyc_means =<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(columns))</span>
-<span id="cb228-3"><a href="iterative.html#cb228-3"></a></span>
-<span id="cb228-4"><a href="iterative.html#cb228-4"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(columns)) {</span>
-<span id="cb228-5"><a href="iterative.html#cb228-5"></a>  column =<span class="st"> </span>columns[i]</span>
-<span id="cb228-6"><a href="iterative.html#cb228-6"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[column]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb228-7"><a href="iterative.html#cb228-7"></a>  </span>
-<span id="cb228-8"><a href="iterative.html#cb228-8"></a>  <span class="co"># alternative without the initial first step</span></span>
-<span id="cb228-9"><a href="iterative.html#cb228-9"></a>  <span class="co"># nyc_means[i] = mean(weather[[columns[i]]], na.rm = TRUE)  </span></span>
-<span id="cb228-10"><a href="iterative.html#cb228-10"></a>}</span>
-<span id="cb228-11"><a href="iterative.html#cb228-11"></a></span>
-<span id="cb228-12"><a href="iterative.html#cb228-12"></a>nyc_means</span></code></pre></div>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="iterative.html#cb261-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;precip&#39;</span>)</span>
+<span id="cb261-2"><a href="iterative.html#cb261-2"></a>nyc_means =<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(columns))</span>
+<span id="cb261-3"><a href="iterative.html#cb261-3"></a></span>
+<span id="cb261-4"><a href="iterative.html#cb261-4"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(columns)) {</span>
+<span id="cb261-5"><a href="iterative.html#cb261-5"></a>  column =<span class="st"> </span>columns[i]</span>
+<span id="cb261-6"><a href="iterative.html#cb261-6"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[column]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb261-7"><a href="iterative.html#cb261-7"></a>  </span>
+<span id="cb261-8"><a href="iterative.html#cb261-8"></a>  <span class="co"># alternative without the initial first step</span></span>
+<span id="cb261-9"><a href="iterative.html#cb261-9"></a>  <span class="co"># nyc_means[i] = mean(weather[[columns[i]]], na.rm = TRUE)  </span></span>
+<span id="cb261-10"><a href="iterative.html#cb261-10"></a>}</span>
+<span id="cb261-11"><a href="iterative.html#cb261-11"></a></span>
+<span id="cb261-12"><a href="iterative.html#cb261-12"></a>nyc_means</span></code></pre></div>
 <pre><code>[1] 55.260392127 62.530058972 10.517488384  0.004469079</code></pre>
 <p>By creating a <span class="objclass">columns</span> object, if anything changes about the columns we want, that’s the only line in the code that would need to be changed. The <code>i</code> is now a place holder for a number that goes from 1 to the length of <span class="objclass">columns</span> (i.e. 4). We make an empty <span class="objclass">nyc_means</span> object that’s the length of the columns, so that each element will eventually be the mean of the corresponding column.</p>
 <p>In the following I remove precipitation and add visibility and air pressure.</p>
-<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="iterative.html#cb230-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;visib&#39;</span>, <span class="st">&#39;pressure&#39;</span>)</span>
-<span id="cb230-2"><a href="iterative.html#cb230-2"></a>nyc_means =<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(columns))</span>
-<span id="cb230-3"><a href="iterative.html#cb230-3"></a></span>
-<span id="cb230-4"><a href="iterative.html#cb230-4"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(columns)) {</span>
-<span id="cb230-5"><a href="iterative.html#cb230-5"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[columns[i]]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb230-6"><a href="iterative.html#cb230-6"></a>}</span>
-<span id="cb230-7"><a href="iterative.html#cb230-7"></a></span>
-<span id="cb230-8"><a href="iterative.html#cb230-8"></a>nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="iterative.html#cb263-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;visib&#39;</span>, <span class="st">&#39;pressure&#39;</span>)</span>
+<span id="cb263-2"><a href="iterative.html#cb263-2"></a>nyc_means =<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(columns))</span>
+<span id="cb263-3"><a href="iterative.html#cb263-3"></a></span>
+<span id="cb263-4"><a href="iterative.html#cb263-4"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(columns)) {</span>
+<span id="cb263-5"><a href="iterative.html#cb263-5"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[columns[i]]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb263-6"><a href="iterative.html#cb263-6"></a>}</span>
+<span id="cb263-7"><a href="iterative.html#cb263-7"></a></span>
+<span id="cb263-8"><a href="iterative.html#cb263-8"></a>nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</span></code></pre></div>
 <pre><code>[1]   55.26   62.53   10.52    9.26 1017.90</code></pre>
 <p>Had we been copy-pasting, this would require deleting or commenting out a line in our code, pasting two more, and changing each one after pasting to represent the new columns. That’s tedious, and not a fun way to code.</p>
 <div id="a-slight-speed-gain" class="section level3">
 <h3>A slight speed gain</h3>
 <p>Note that you do not have to create an empty object like we did. The following works also.</p>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="iterative.html#cb232-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;visib&#39;</span>, <span class="st">&#39;pressure&#39;</span>)</span>
-<span id="cb232-2"><a href="iterative.html#cb232-2"></a>nyc_means =<span class="st"> </span><span class="kw">numeric</span>()</span>
-<span id="cb232-3"><a href="iterative.html#cb232-3"></a></span>
-<span id="cb232-4"><a href="iterative.html#cb232-4"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(columns)) {</span>
-<span id="cb232-5"><a href="iterative.html#cb232-5"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[columns[i]]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb232-6"><a href="iterative.html#cb232-6"></a>}</span>
-<span id="cb232-7"><a href="iterative.html#cb232-7"></a></span>
-<span id="cb232-8"><a href="iterative.html#cb232-8"></a>nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="iterative.html#cb265-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;humid&#39;</span>, <span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;visib&#39;</span>, <span class="st">&#39;pressure&#39;</span>)</span>
+<span id="cb265-2"><a href="iterative.html#cb265-2"></a>nyc_means =<span class="st"> </span><span class="kw">numeric</span>()</span>
+<span id="cb265-3"><a href="iterative.html#cb265-3"></a></span>
+<span id="cb265-4"><a href="iterative.html#cb265-4"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(columns)) {</span>
+<span id="cb265-5"><a href="iterative.html#cb265-5"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[columns[i]]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb265-6"><a href="iterative.html#cb265-6"></a>}</span>
+<span id="cb265-7"><a href="iterative.html#cb265-7"></a></span>
+<span id="cb265-8"><a href="iterative.html#cb265-8"></a>nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</span></code></pre></div>
 <pre><code>[1]   55.26   62.53   10.52    9.26 1017.90</code></pre>
 <p>However, the other approach is slightly faster, because memory is already allocated for all elements of <span class="objclass">nyc_means</span>, rather than updating it every iteration of the loop. This speed gain can become noticeable when dealing with thousands of columns and complex operations.</p>
 </div>
 <div id="while-alternative" class="section level3">
 <h3>While alternative</h3>
 <p>When you look at some people’s R code, you may see a loop of a different sort.</p>
-<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="iterative.html#cb234-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>,<span class="st">&#39;humid&#39;</span>,<span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;visib&#39;</span>, <span class="st">&#39;pressure&#39;</span>)</span>
-<span id="cb234-2"><a href="iterative.html#cb234-2"></a>nyc_means =<span class="st"> </span><span class="kw">c</span>()</span>
-<span id="cb234-3"><a href="iterative.html#cb234-3"></a></span>
-<span id="cb234-4"><a href="iterative.html#cb234-4"></a>i =<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb234-5"><a href="iterative.html#cb234-5"></a><span class="cf">while</span> (i <span class="op">&lt;=</span><span class="st"> </span><span class="kw">length</span>(columns)) {</span>
-<span id="cb234-6"><a href="iterative.html#cb234-6"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[columns[i]]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb234-7"><a href="iterative.html#cb234-7"></a>  i =<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb234-8"><a href="iterative.html#cb234-8"></a>}</span>
-<span id="cb234-9"><a href="iterative.html#cb234-9"></a></span>
-<span id="cb234-10"><a href="iterative.html#cb234-10"></a>nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="iterative.html#cb267-1"></a>columns =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;temp&#39;</span>,<span class="st">&#39;humid&#39;</span>,<span class="st">&#39;wind_speed&#39;</span>, <span class="st">&#39;visib&#39;</span>, <span class="st">&#39;pressure&#39;</span>)</span>
+<span id="cb267-2"><a href="iterative.html#cb267-2"></a>nyc_means =<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb267-3"><a href="iterative.html#cb267-3"></a></span>
+<span id="cb267-4"><a href="iterative.html#cb267-4"></a>i =<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb267-5"><a href="iterative.html#cb267-5"></a><span class="cf">while</span> (i <span class="op">&lt;=</span><span class="st"> </span><span class="kw">length</span>(columns)) {</span>
+<span id="cb267-6"><a href="iterative.html#cb267-6"></a>  nyc_means[i] =<span class="st"> </span><span class="kw">mean</span>(weather[[columns[i]]], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb267-7"><a href="iterative.html#cb267-7"></a>  i =<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb267-8"><a href="iterative.html#cb267-8"></a>}</span>
+<span id="cb267-9"><a href="iterative.html#cb267-9"></a></span>
+<span id="cb267-10"><a href="iterative.html#cb267-10"></a>nyc_means <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>)</span></code></pre></div>
 <pre><code>[1]   55.26   62.53   10.52    9.26 1017.90</code></pre>
 <p>This involves a <span class="emph">while</span> statement. It states, while <code>i</code> is less than or equal to the length (number) of <span class="objclass">columns</span>, compute the value of the i<sup>th</sup> element of <span class="objclass">nyc_means</span> as the mean of i<sup>th</sup> column of <span class="objclass">weather</span>. After that, increase the value of <code>i</code>. So, we start with <code>i = 1</code>, compute that subsequent mean, <code>i</code> now equals 2, do the process again, and so on. The process will stop as soon as the value of <code>i</code> is greater than the length of <span class="objclass">columns</span>.</p>
 <p><em>There is zero difference to using the while approach vs. the for loop</em>. While is often used when there is a check to be made, e.g. in modeling functions that have to stop the estimation process at some point, or else they’d go on indefinitely. In that case the while syntax is probably more natural. Either is fine.</p>
@@ -766,26 +811,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul>
 <p>As an example we’ll consider standardizing variables, i.e. taking a set of numbers, subtracting the mean, and dividing by the standard deviation. This results in a variable with mean of 0 and standard deviation of 1. Let’s start with a loop approach.</p>
-<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="iterative.html#cb236-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mydf)) {</span>
-<span id="cb236-2"><a href="iterative.html#cb236-2"></a>  x =<span class="st"> </span>mydf[, i]</span>
-<span id="cb236-3"><a href="iterative.html#cb236-3"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) {</span>
-<span id="cb236-4"><a href="iterative.html#cb236-4"></a>    x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</span>
-<span id="cb236-5"><a href="iterative.html#cb236-5"></a>  }</span>
-<span id="cb236-6"><a href="iterative.html#cb236-6"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="iterative.html#cb269-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mydf)) {</span>
+<span id="cb269-2"><a href="iterative.html#cb269-2"></a>  x =<span class="st"> </span>mydf[, i]</span>
+<span id="cb269-3"><a href="iterative.html#cb269-3"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(x)) {</span>
+<span id="cb269-4"><a href="iterative.html#cb269-4"></a>    x[j] =<span class="st"> </span>(x[j] <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</span>
+<span id="cb269-5"><a href="iterative.html#cb269-5"></a>  }</span>
+<span id="cb269-6"><a href="iterative.html#cb269-6"></a>}</span></code></pre></div>
 <p>The above would be a really bad way to use R. It goes over each column individually, then over each value of the column.</p>
-<p>Conversely, <span class="func">apply</span> will take a matrix or data frame, and apply a function over the margin, row or column, you want to loop over. The first argument is the data you’re considering, the margin is the second argument (1 for rows, 2 for columns<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a>), and the function you want to apply to those rows is the third argument. The following example is much cleaner compared to the loop, and now you’d have a function you can use elsewhere if needed.</p>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="iterative.html#cb237-1"></a>stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
-<span id="cb237-2"><a href="iterative.html#cb237-2"></a>  (x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</span>
-<span id="cb237-3"><a href="iterative.html#cb237-3"></a>}</span>
-<span id="cb237-4"><a href="iterative.html#cb237-4"></a></span>
-<span id="cb237-5"><a href="iterative.html#cb237-5"></a><span class="kw">apply</span>(mydf, <span class="dv">2</span>, stdize)   <span class="co"># 1 for rows, 2 for columnwise application</span></span></code></pre></div>
+<p>Conversely, <span class="func">apply</span> will take a matrix or data frame, and apply a function over the margin, row or column, you want to loop over. The first argument is the data you’re considering, the margin is the second argument (1 for rows, 2 for columns<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a>), and the function you want to apply to those rows is the third argument. The following example is much cleaner compared to the loop, and now you’d have a function you can use elsewhere if needed.</p>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="iterative.html#cb270-1"></a>stdize &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb270-2"><a href="iterative.html#cb270-2"></a>  (x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x)</span>
+<span id="cb270-3"><a href="iterative.html#cb270-3"></a>}</span>
+<span id="cb270-4"><a href="iterative.html#cb270-4"></a></span>
+<span id="cb270-5"><a href="iterative.html#cb270-5"></a><span class="kw">apply</span>(mydf, <span class="dv">2</span>, stdize)   <span class="co"># 1 for rows, 2 for columnwise application</span></span></code></pre></div>
 <p>Many of the other apply functions work similarly, taking an object and a function to do the work on the object (possibly implicit), possibly with other arguments specified if necessary.</p>
 <div id="lapply" class="section level4">
 <h4>lapply</h4>
 <p>Let’s say we have a list object, or even just a vector of values. There are no rows or columns to iterate over, so what do we do here?</p>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="iterative.html#cb238-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="st">&#39;aba&#39;</span>, <span class="st">&#39;abb&#39;</span>, <span class="st">&#39;abc&#39;</span>, <span class="st">&#39;abd&#39;</span>, <span class="st">&#39;abe&#39;</span>)</span>
-<span id="cb238-2"><a href="iterative.html#cb238-2"></a></span>
-<span id="cb238-3"><a href="iterative.html#cb238-3"></a><span class="kw">lapply</span>(x, str_remove, <span class="dt">pattern =</span> <span class="st">&#39;ab&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="iterative.html#cb271-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="st">&#39;aba&#39;</span>, <span class="st">&#39;abb&#39;</span>, <span class="st">&#39;abc&#39;</span>, <span class="st">&#39;abd&#39;</span>, <span class="st">&#39;abe&#39;</span>)</span>
+<span id="cb271-2"><a href="iterative.html#cb271-2"></a></span>
+<span id="cb271-3"><a href="iterative.html#cb271-3"></a><span class="kw">lapply</span>(x, str_remove, <span class="dt">pattern =</span> <span class="st">&#39;ab&#39;</span>)</span></code></pre></div>
 <pre><code>[[1]]
 [1] &quot;a&quot;
 
@@ -801,8 +846,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [[5]]
 [1] &quot;e&quot;</code></pre>
 <p>The <span class="func">lapply</span> operation iterates over each element of the list and applies a function to them. In this case, the function is <span class="func">str_remove</span>. It has an argument for the string pattern we want to take out of the character string that is fed to it (‘ab’). For example, for ‘aba’ we will be left with just the ‘a’.</p>
-<p>As can be seen, <span class="func">lapply</span> starts with a <span class="objclass">list</span> and returns a <span class="objclass">list</span>. The only difference with <span class="func">sapply</span> is that <span class="func">sapply</span> will return a simplified form if possible<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a>.</p>
-<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="iterative.html#cb240-1"></a><span class="kw">sapply</span>(x, str_remove, <span class="dt">pattern =</span> <span class="st">&#39;ab&#39;</span>)</span></code></pre></div>
+<p>As can be seen, <span class="func">lapply</span> starts with a <span class="objclass">list</span> and returns a <span class="objclass">list</span>. The only difference with <span class="func">sapply</span> is that <span class="func">sapply</span> will return a simplified form if possible<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a>.</p>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="iterative.html#cb273-1"></a><span class="kw">sapply</span>(x, str_remove, <span class="dt">pattern =</span> <span class="st">&#39;ab&#39;</span>)</span></code></pre></div>
 <pre><code>[1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot;</code></pre>
 <p>In this case we just get a vector back.</p>
 </div>
@@ -832,9 +877,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3>purrr</h3>
 <p>The <span class="pack">purrr</span> package allows you to take the <span class="func">apply</span> family approach to the tidyverse. And with packages <span class="pack" style="">future</span> + <span class="pack" style="">furrr</span>, they too are parallelizable.</p>
 <p>Consider the following. We’ll use the <span class="func">map</span> function to map the <span class="func">sum</span> function to each element in the list, the same way we would with <span class="func">lapply</span>.</p>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="iterative.html#cb242-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">7</span><span class="op">:</span><span class="dv">9</span>)</span>
-<span id="cb242-2"><a href="iterative.html#cb242-2"></a></span>
-<span id="cb242-3"><a href="iterative.html#cb242-3"></a><span class="kw">map</span>(x, sum)</span></code></pre></div>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="iterative.html#cb275-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">7</span><span class="op">:</span><span class="dv">9</span>)</span>
+<span id="cb275-2"><a href="iterative.html#cb275-2"></a></span>
+<span id="cb275-3"><a href="iterative.html#cb275-3"></a><span class="kw">map</span>(x, sum)</span></code></pre></div>
 <pre><code>[[1]]
 [1] 6
 
@@ -843,13 +888,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 [[3]]
 [1] 24</code></pre>
-<p>The map functions take some getting used to, and in my experience they are typically slower than the apply functions, sometimes notably so. However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a>, which is especially important in reproducibility, package development, producing production-level code, etc. The key idea is that the map functions will always return something the same length as the input given to it.</p>
+<p>The map functions take some getting used to, and in my experience they are typically slower than the apply functions, sometimes notably so. However they allow you stay within the tidy realm, which has its own benefits, and have more control over the nature of the output<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a>, which is especially important in reproducibility, package development, producing production-level code, etc. The key idea is that the map functions will always return something the same length as the input given to it.</p>
 <p>The <span class="pack">purrr</span> functions want a list or vector, i.e. they don’t work with data.frame objects in the same way we’ve done with mutate and summarize except in the sense that data.frames are lists.</p>
-<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="iterative.html#cb244-1"></a><span class="co">## mtcars %&gt;% </span></span>
-<span id="cb244-2"><a href="iterative.html#cb244-2"></a><span class="co">##   map(scale)    # returns a list, not shown</span></span>
-<span id="cb244-3"><a href="iterative.html#cb244-3"></a></span>
-<span id="cb244-4"><a href="iterative.html#cb244-4"></a>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb244-5"><a href="iterative.html#cb244-5"></a><span class="st">  </span><span class="kw">map_df</span>(scale) <span class="co"># returns a df</span></span></code></pre></div>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="iterative.html#cb277-1"></a><span class="co">## mtcars %&gt;% </span></span>
+<span id="cb277-2"><a href="iterative.html#cb277-2"></a><span class="co">##   map(scale)    # returns a list, not shown</span></span>
+<span id="cb277-3"><a href="iterative.html#cb277-3"></a></span>
+<span id="cb277-4"><a href="iterative.html#cb277-4"></a>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb277-5"><a href="iterative.html#cb277-5"></a><span class="st">  </span><span class="kw">map_df</span>(scale) <span class="co"># returns a df</span></span></code></pre></div>
 <pre><code># A tibble: 32 x 11
       mpg    cyl    disp     hp   drat       wt   qsec     vs     am   gear   carb
     &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -864,17 +909,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  9  0.450 -1.22  -0.726  -0.754  0.605 -0.0687   2.83   1.12  -0.814  0.424 -0.503
 10 -0.148 -0.105 -0.509  -0.345  0.605  0.228    0.253  1.12  -0.814  0.424  0.735
 # … with 22 more rows</code></pre>
-<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="iterative.html#cb246-1"></a>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb246-2"><a href="iterative.html#cb246-2"></a><span class="st">  </span><span class="kw">map_dbl</span>(sum)  <span class="co"># returns a numeric (double) vector of column sums</span></span></code></pre></div>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="iterative.html#cb279-1"></a>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb279-2"><a href="iterative.html#cb279-2"></a><span class="st">  </span><span class="kw">map_dbl</span>(sum)  <span class="co"># returns a numeric (double) vector of column sums</span></span></code></pre></div>
 <pre><code>     mpg      cyl     disp       hp     drat       wt     qsec       vs       am     gear     carb 
  642.900  198.000 7383.100 4694.000  115.090  102.952  571.160   14.000   13.000  118.000   90.000 </code></pre>
-<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="iterative.html#cb248-1"></a>diamonds <span class="op">%&gt;%</span></span>
-<span id="cb248-2"><a href="iterative.html#cb248-2"></a><span class="st">  </span><span class="kw">map_at</span>(</span>
-<span id="cb248-3"><a href="iterative.html#cb248-3"></a>    <span class="kw">vars</span>(carat, depth, price),</span>
-<span id="cb248-4"><a href="iterative.html#cb248-4"></a>    <span class="cf">function</span>(x)</span>
-<span id="cb248-5"><a href="iterative.html#cb248-5"></a>      <span class="kw">as.integer</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="kw">median</span>(x))</span>
-<span id="cb248-6"><a href="iterative.html#cb248-6"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb248-7"><a href="iterative.html#cb248-7"></a><span class="st">  </span><span class="kw">as_tibble</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="iterative.html#cb281-1"></a>diamonds <span class="op">%&gt;%</span></span>
+<span id="cb281-2"><a href="iterative.html#cb281-2"></a><span class="st">  </span><span class="kw">map_at</span>(</span>
+<span id="cb281-3"><a href="iterative.html#cb281-3"></a>    <span class="kw">vars</span>(carat, depth, price),</span>
+<span id="cb281-4"><a href="iterative.html#cb281-4"></a>    <span class="cf">function</span>(x)</span>
+<span id="cb281-5"><a href="iterative.html#cb281-5"></a>      <span class="kw">as.integer</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="kw">median</span>(x))</span>
+<span id="cb281-6"><a href="iterative.html#cb281-6"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb281-7"><a href="iterative.html#cb281-7"></a><span class="st">  </span><span class="kw">as_tibble</span>()</span></code></pre></div>
 <pre><code># A tibble: 53,940 x 10
    carat cut       color clarity depth table price     x     y     z
    &lt;int&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -893,106 +938,106 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div id="looping-with-lists" class="section level2">
-<h2>Looping with lists</h2>
+<h2>Looping with Lists</h2>
 <p>Aside from data frames, you may think you don’t have much need for list objects. However, list objects make it very easy to iterate some form of data processing.</p>
 <p>Let’s say you have models of increasing complexity, and you want to easily summarise and/or compare them. We create a list for which each element is a model object. We then apply a function, e.g. to get the AIC value for each, or adjusted R square (this requires a custom function).</p>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="iterative.html#cb250-1"></a><span class="kw">library</span>(mgcv) <span class="co"># for gam</span></span>
-<span id="cb250-2"><a href="iterative.html#cb250-2"></a></span>
-<span id="cb250-3"><a href="iterative.html#cb250-3"></a>mtcars<span class="op">$</span>cyl =<span class="st"> </span><span class="kw">factor</span>(mtcars<span class="op">$</span>cyl)</span>
-<span id="cb250-4"><a href="iterative.html#cb250-4"></a></span>
-<span id="cb250-5"><a href="iterative.html#cb250-5"></a>mod_lm =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars)</span>
-<span id="cb250-6"><a href="iterative.html#cb250-6"></a></span>
-<span id="cb250-7"><a href="iterative.html#cb250-7"></a>mod_poly =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(wt, <span class="dv">2</span>), <span class="dt">data =</span> mtcars)</span>
-<span id="cb250-8"><a href="iterative.html#cb250-8"></a></span>
-<span id="cb250-9"><a href="iterative.html#cb250-9"></a>mod_inter =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt <span class="op">*</span><span class="st"> </span>cyl, <span class="dt">data =</span> mtcars)</span>
-<span id="cb250-10"><a href="iterative.html#cb250-10"></a></span>
-<span id="cb250-11"><a href="iterative.html#cb250-11"></a>mod_gam =<span class="st"> </span><span class="kw">gam</span>(mpg <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(wt), <span class="dt">data =</span> mtcars)</span>
-<span id="cb250-12"><a href="iterative.html#cb250-12"></a></span>
-<span id="cb250-13"><a href="iterative.html#cb250-13"></a>mod_gam_inter =<span class="st"> </span><span class="kw">gam</span>(mpg <span class="op">~</span><span class="st"> </span>cyl <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(wt, <span class="dt">by =</span> cyl), <span class="dt">data =</span> mtcars)</span>
-<span id="cb250-14"><a href="iterative.html#cb250-14"></a></span>
-<span id="cb250-15"><a href="iterative.html#cb250-15"></a>model_list =<span class="st"> </span><span class="kw">list</span>(</span>
-<span id="cb250-16"><a href="iterative.html#cb250-16"></a>  <span class="dt">mod_lm        =</span> mod_lm,</span>
-<span id="cb250-17"><a href="iterative.html#cb250-17"></a>  <span class="dt">mod_poly      =</span> mod_poly,</span>
-<span id="cb250-18"><a href="iterative.html#cb250-18"></a>  <span class="dt">mod_inter     =</span> mod_inter,</span>
-<span id="cb250-19"><a href="iterative.html#cb250-19"></a>  <span class="dt">mod_gam       =</span> mod_gam,</span>
-<span id="cb250-20"><a href="iterative.html#cb250-20"></a>  <span class="dt">mod_gam_inter =</span> mod_gam_inter</span>
-<span id="cb250-21"><a href="iterative.html#cb250-21"></a>)</span>
-<span id="cb250-22"><a href="iterative.html#cb250-22"></a></span>
-<span id="cb250-23"><a href="iterative.html#cb250-23"></a><span class="co"># lowest wins</span></span>
-<span id="cb250-24"><a href="iterative.html#cb250-24"></a>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb250-25"><a href="iterative.html#cb250-25"></a><span class="st">  </span><span class="kw">map_dbl</span>(AIC) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb250-26"><a href="iterative.html#cb250-26"></a><span class="st">  </span><span class="kw">sort</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="iterative.html#cb283-1"></a><span class="kw">library</span>(mgcv) <span class="co"># for gam</span></span>
+<span id="cb283-2"><a href="iterative.html#cb283-2"></a></span>
+<span id="cb283-3"><a href="iterative.html#cb283-3"></a>mtcars<span class="op">$</span>cyl =<span class="st"> </span><span class="kw">factor</span>(mtcars<span class="op">$</span>cyl)</span>
+<span id="cb283-4"><a href="iterative.html#cb283-4"></a></span>
+<span id="cb283-5"><a href="iterative.html#cb283-5"></a>mod_lm =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt, <span class="dt">data =</span> mtcars)</span>
+<span id="cb283-6"><a href="iterative.html#cb283-6"></a></span>
+<span id="cb283-7"><a href="iterative.html#cb283-7"></a>mod_poly =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(wt, <span class="dv">2</span>), <span class="dt">data =</span> mtcars)</span>
+<span id="cb283-8"><a href="iterative.html#cb283-8"></a></span>
+<span id="cb283-9"><a href="iterative.html#cb283-9"></a>mod_inter =<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt <span class="op">*</span><span class="st"> </span>cyl, <span class="dt">data =</span> mtcars)</span>
+<span id="cb283-10"><a href="iterative.html#cb283-10"></a></span>
+<span id="cb283-11"><a href="iterative.html#cb283-11"></a>mod_gam =<span class="st"> </span><span class="kw">gam</span>(mpg <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(wt), <span class="dt">data =</span> mtcars)</span>
+<span id="cb283-12"><a href="iterative.html#cb283-12"></a></span>
+<span id="cb283-13"><a href="iterative.html#cb283-13"></a>mod_gam_inter =<span class="st"> </span><span class="kw">gam</span>(mpg <span class="op">~</span><span class="st"> </span>cyl <span class="op">+</span><span class="st"> </span><span class="kw">s</span>(wt, <span class="dt">by =</span> cyl), <span class="dt">data =</span> mtcars)</span>
+<span id="cb283-14"><a href="iterative.html#cb283-14"></a></span>
+<span id="cb283-15"><a href="iterative.html#cb283-15"></a>model_list =<span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb283-16"><a href="iterative.html#cb283-16"></a>  <span class="dt">mod_lm        =</span> mod_lm,</span>
+<span id="cb283-17"><a href="iterative.html#cb283-17"></a>  <span class="dt">mod_poly      =</span> mod_poly,</span>
+<span id="cb283-18"><a href="iterative.html#cb283-18"></a>  <span class="dt">mod_inter     =</span> mod_inter,</span>
+<span id="cb283-19"><a href="iterative.html#cb283-19"></a>  <span class="dt">mod_gam       =</span> mod_gam,</span>
+<span id="cb283-20"><a href="iterative.html#cb283-20"></a>  <span class="dt">mod_gam_inter =</span> mod_gam_inter</span>
+<span id="cb283-21"><a href="iterative.html#cb283-21"></a>)</span>
+<span id="cb283-22"><a href="iterative.html#cb283-22"></a></span>
+<span id="cb283-23"><a href="iterative.html#cb283-23"></a><span class="co"># lowest wins</span></span>
+<span id="cb283-24"><a href="iterative.html#cb283-24"></a>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb283-25"><a href="iterative.html#cb283-25"></a><span class="st">  </span><span class="kw">map_dbl</span>(AIC) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb283-26"><a href="iterative.html#cb283-26"></a><span class="st">  </span><span class="kw">sort</span>()</span></code></pre></div>
 <pre><code>mod_gam_inter     mod_inter      mod_poly       mod_gam        mod_lm 
      150.6324      155.4811      158.0484      158.5717      166.0294 </code></pre>
-<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="iterative.html#cb252-1"></a><span class="co"># highest wins</span></span>
-<span id="cb252-2"><a href="iterative.html#cb252-2"></a>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb252-3"><a href="iterative.html#cb252-3"></a><span class="st">  </span><span class="kw">map_dbl</span>(</span>
-<span id="cb252-4"><a href="iterative.html#cb252-4"></a>    <span class="cf">function</span>(x)</span>
-<span id="cb252-5"><a href="iterative.html#cb252-5"></a>    <span class="kw">if_else</span>(<span class="kw">inherits</span>(x, <span class="st">&#39;gam&#39;</span>),</span>
-<span id="cb252-6"><a href="iterative.html#cb252-6"></a>            <span class="kw">summary</span>(x)<span class="op">$</span>r.sq,</span>
-<span id="cb252-7"><a href="iterative.html#cb252-7"></a>            <span class="kw">summary</span>(x)<span class="op">$</span>adj)</span>
-<span id="cb252-8"><a href="iterative.html#cb252-8"></a>    ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb252-9"><a href="iterative.html#cb252-9"></a><span class="st">  </span><span class="kw">sort</span>(<span class="dt">decreasing =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="iterative.html#cb285-1"></a><span class="co"># highest wins</span></span>
+<span id="cb285-2"><a href="iterative.html#cb285-2"></a>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb285-3"><a href="iterative.html#cb285-3"></a><span class="st">  </span><span class="kw">map_dbl</span>(</span>
+<span id="cb285-4"><a href="iterative.html#cb285-4"></a>    <span class="cf">function</span>(x)</span>
+<span id="cb285-5"><a href="iterative.html#cb285-5"></a>    <span class="kw">if_else</span>(<span class="kw">inherits</span>(x, <span class="st">&#39;gam&#39;</span>),</span>
+<span id="cb285-6"><a href="iterative.html#cb285-6"></a>            <span class="kw">summary</span>(x)<span class="op">$</span>r.sq,</span>
+<span id="cb285-7"><a href="iterative.html#cb285-7"></a>            <span class="kw">summary</span>(x)<span class="op">$</span>adj)</span>
+<span id="cb285-8"><a href="iterative.html#cb285-8"></a>    ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb285-9"><a href="iterative.html#cb285-9"></a><span class="st">  </span><span class="kw">sort</span>(<span class="dt">decreasing =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>mod_gam_inter     mod_inter      mod_poly       mod_gam        mod_lm 
     0.8643020     0.8349382     0.8065828     0.8041651     0.7445939 </code></pre>
-<p>Let’s go further and create a plot of these results. We’ll map to a data frame, use <span class="func" style="">pivot_longer</span> to melt it to two columns of model and value, then use ggplot2 to plot the results<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a>.</p>
-<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="iterative.html#cb254-1"></a>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb254-2"><a href="iterative.html#cb254-2"></a><span class="st">  </span><span class="kw">map_df</span>(</span>
-<span id="cb254-3"><a href="iterative.html#cb254-3"></a>    <span class="cf">function</span>(x)</span>
-<span id="cb254-4"><a href="iterative.html#cb254-4"></a>      <span class="kw">if_else</span>(<span class="kw">inherits</span>(x, <span class="st">&#39;gam&#39;</span>),</span>
-<span id="cb254-5"><a href="iterative.html#cb254-5"></a>              <span class="kw">summary</span>(x)<span class="op">$</span>r.sq,</span>
-<span id="cb254-6"><a href="iterative.html#cb254-6"></a>              <span class="kw">summary</span>(x)<span class="op">$</span>adj)</span>
-<span id="cb254-7"><a href="iterative.html#cb254-7"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb254-8"><a href="iterative.html#cb254-8"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</span>
-<span id="cb254-9"><a href="iterative.html#cb254-9"></a>               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</span>
-<span id="cb254-10"><a href="iterative.html#cb254-10"></a>               <span class="dt">values_to =</span> <span class="st">&quot;Adj. Rsq&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb254-11"><a href="iterative.html#cb254-11"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(<span class="st">`</span><span class="dt">Adj. Rsq</span><span class="st">`</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb254-12"><a href="iterative.html#cb254-12"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="kw">factor</span>(model, <span class="dt">levels =</span> model)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># sigh</span></span>
-<span id="cb254-13"><a href="iterative.html#cb254-13"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> model, <span class="dt">y =</span> <span class="st">`</span><span class="dt">Adj. Rsq</span><span class="st">`</span>)) <span class="op">+</span></span>
-<span id="cb254-14"><a href="iterative.html#cb254-14"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> model), <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">show.legend =</span> F)</span></code></pre></div>
+<p>Let’s go further and create a plot of these results. We’ll map to a data frame, use <span class="func" style="">pivot_longer</span> to melt it to two columns of model and value, then use ggplot2 to plot the results<a href="#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a>.</p>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="iterative.html#cb287-1"></a>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb287-2"><a href="iterative.html#cb287-2"></a><span class="st">  </span><span class="kw">map_df</span>(</span>
+<span id="cb287-3"><a href="iterative.html#cb287-3"></a>    <span class="cf">function</span>(x)</span>
+<span id="cb287-4"><a href="iterative.html#cb287-4"></a>      <span class="kw">if_else</span>(<span class="kw">inherits</span>(x, <span class="st">&#39;gam&#39;</span>),</span>
+<span id="cb287-5"><a href="iterative.html#cb287-5"></a>              <span class="kw">summary</span>(x)<span class="op">$</span>r.sq,</span>
+<span id="cb287-6"><a href="iterative.html#cb287-6"></a>              <span class="kw">summary</span>(x)<span class="op">$</span>adj)</span>
+<span id="cb287-7"><a href="iterative.html#cb287-7"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb287-8"><a href="iterative.html#cb287-8"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</span>
+<span id="cb287-9"><a href="iterative.html#cb287-9"></a>               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</span>
+<span id="cb287-10"><a href="iterative.html#cb287-10"></a>               <span class="dt">values_to =</span> <span class="st">&quot;Adj. Rsq&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb287-11"><a href="iterative.html#cb287-11"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(<span class="st">`</span><span class="dt">Adj. Rsq</span><span class="st">`</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb287-12"><a href="iterative.html#cb287-12"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="kw">factor</span>(model, <span class="dt">levels =</span> model)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># sigh</span></span>
+<span id="cb287-13"><a href="iterative.html#cb287-13"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> model, <span class="dt">y =</span> <span class="st">`</span><span class="dt">Adj. Rsq</span><span class="st">`</span>)) <span class="op">+</span></span>
+<span id="cb287-14"><a href="iterative.html#cb287-14"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> model), <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">show.legend =</span> F)</span></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/purr_models2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Why not throw in AIC also?</p>
-<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="iterative.html#cb255-1"></a>mod_rsq =<span class="st"> </span></span>
-<span id="cb255-2"><a href="iterative.html#cb255-2"></a><span class="st">  </span>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb255-3"><a href="iterative.html#cb255-3"></a><span class="st">  </span><span class="kw">map_df</span>(</span>
-<span id="cb255-4"><a href="iterative.html#cb255-4"></a>    <span class="cf">function</span>(x)</span>
-<span id="cb255-5"><a href="iterative.html#cb255-5"></a>      <span class="kw">if_else</span>(</span>
-<span id="cb255-6"><a href="iterative.html#cb255-6"></a>        <span class="kw">inherits</span>(x, <span class="st">&#39;gam&#39;</span>),</span>
-<span id="cb255-7"><a href="iterative.html#cb255-7"></a>        <span class="kw">summary</span>(x)<span class="op">$</span>r.sq,</span>
-<span id="cb255-8"><a href="iterative.html#cb255-8"></a>        <span class="kw">summary</span>(x)<span class="op">$</span>adj</span>
-<span id="cb255-9"><a href="iterative.html#cb255-9"></a>      )</span>
-<span id="cb255-10"><a href="iterative.html#cb255-10"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb255-11"><a href="iterative.html#cb255-11"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</span>
-<span id="cb255-12"><a href="iterative.html#cb255-12"></a>               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</span>
-<span id="cb255-13"><a href="iterative.html#cb255-13"></a>               <span class="dt">values_to =</span> <span class="st">&#39;Rsq&#39;</span>)</span>
-<span id="cb255-14"><a href="iterative.html#cb255-14"></a></span>
-<span id="cb255-15"><a href="iterative.html#cb255-15"></a>mod_aic =</span>
-<span id="cb255-16"><a href="iterative.html#cb255-16"></a><span class="st">  </span>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb255-17"><a href="iterative.html#cb255-17"></a><span class="st">  </span><span class="kw">map_df</span>(AIC) <span class="op">%&gt;%</span></span>
-<span id="cb255-18"><a href="iterative.html#cb255-18"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</span>
-<span id="cb255-19"><a href="iterative.html#cb255-19"></a>               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</span>
-<span id="cb255-20"><a href="iterative.html#cb255-20"></a>               <span class="dt">values_to =</span> <span class="st">&#39;AIC&#39;</span>)</span>
-<span id="cb255-21"><a href="iterative.html#cb255-21"></a></span>
-<span id="cb255-22"><a href="iterative.html#cb255-22"></a><span class="kw">left_join</span>(mod_rsq, mod_aic) <span class="op">%&gt;%</span></span>
-<span id="cb255-23"><a href="iterative.html#cb255-23"></a><span class="st">  </span><span class="kw">arrange</span>(AIC) <span class="op">%&gt;%</span></span>
-<span id="cb255-24"><a href="iterative.html#cb255-24"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="kw">factor</span>(model, <span class="dt">levels =</span> model)) <span class="op">%&gt;%</span></span>
-<span id="cb255-25"><a href="iterative.html#cb255-25"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="op">-</span>model, <span class="dt">names_to =</span> <span class="st">&#39;measure&#39;</span>, <span class="dt">values_to =</span> <span class="st">&#39;value&#39;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb255-26"><a href="iterative.html#cb255-26"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> model, <span class="dt">y =</span> value)) <span class="op">+</span></span>
-<span id="cb255-27"><a href="iterative.html#cb255-27"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> model), <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">show.legend =</span> F) <span class="op">+</span></span>
-<span id="cb255-28"><a href="iterative.html#cb255-28"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>measure, <span class="dt">scales =</span> <span class="st">&#39;free&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="iterative.html#cb288-1"></a>mod_rsq =<span class="st"> </span></span>
+<span id="cb288-2"><a href="iterative.html#cb288-2"></a><span class="st">  </span>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb288-3"><a href="iterative.html#cb288-3"></a><span class="st">  </span><span class="kw">map_df</span>(</span>
+<span id="cb288-4"><a href="iterative.html#cb288-4"></a>    <span class="cf">function</span>(x)</span>
+<span id="cb288-5"><a href="iterative.html#cb288-5"></a>      <span class="kw">if_else</span>(</span>
+<span id="cb288-6"><a href="iterative.html#cb288-6"></a>        <span class="kw">inherits</span>(x, <span class="st">&#39;gam&#39;</span>),</span>
+<span id="cb288-7"><a href="iterative.html#cb288-7"></a>        <span class="kw">summary</span>(x)<span class="op">$</span>r.sq,</span>
+<span id="cb288-8"><a href="iterative.html#cb288-8"></a>        <span class="kw">summary</span>(x)<span class="op">$</span>adj</span>
+<span id="cb288-9"><a href="iterative.html#cb288-9"></a>      )</span>
+<span id="cb288-10"><a href="iterative.html#cb288-10"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb288-11"><a href="iterative.html#cb288-11"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</span>
+<span id="cb288-12"><a href="iterative.html#cb288-12"></a>               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</span>
+<span id="cb288-13"><a href="iterative.html#cb288-13"></a>               <span class="dt">values_to =</span> <span class="st">&#39;Rsq&#39;</span>)</span>
+<span id="cb288-14"><a href="iterative.html#cb288-14"></a></span>
+<span id="cb288-15"><a href="iterative.html#cb288-15"></a>mod_aic =</span>
+<span id="cb288-16"><a href="iterative.html#cb288-16"></a><span class="st">  </span>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb288-17"><a href="iterative.html#cb288-17"></a><span class="st">  </span><span class="kw">map_df</span>(AIC) <span class="op">%&gt;%</span></span>
+<span id="cb288-18"><a href="iterative.html#cb288-18"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&#39;mod&#39;</span>),</span>
+<span id="cb288-19"><a href="iterative.html#cb288-19"></a>               <span class="dt">names_to =</span> <span class="st">&#39;model&#39;</span>,</span>
+<span id="cb288-20"><a href="iterative.html#cb288-20"></a>               <span class="dt">values_to =</span> <span class="st">&#39;AIC&#39;</span>)</span>
+<span id="cb288-21"><a href="iterative.html#cb288-21"></a></span>
+<span id="cb288-22"><a href="iterative.html#cb288-22"></a><span class="kw">left_join</span>(mod_rsq, mod_aic) <span class="op">%&gt;%</span></span>
+<span id="cb288-23"><a href="iterative.html#cb288-23"></a><span class="st">  </span><span class="kw">arrange</span>(AIC) <span class="op">%&gt;%</span></span>
+<span id="cb288-24"><a href="iterative.html#cb288-24"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="kw">factor</span>(model, <span class="dt">levels =</span> model)) <span class="op">%&gt;%</span></span>
+<span id="cb288-25"><a href="iterative.html#cb288-25"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="op">-</span>model, <span class="dt">names_to =</span> <span class="st">&#39;measure&#39;</span>, <span class="dt">values_to =</span> <span class="st">&#39;value&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb288-26"><a href="iterative.html#cb288-26"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> model, <span class="dt">y =</span> value)) <span class="op">+</span></span>
+<span id="cb288-27"><a href="iterative.html#cb288-27"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> model), <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">show.legend =</span> F) <span class="op">+</span></span>
+<span id="cb288-28"><a href="iterative.html#cb288-28"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>measure, <span class="dt">scales =</span> <span class="st">&#39;free&#39;</span>)</span></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/purr_models3-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <div id="list-columns" class="section level4">
 <h4>List columns</h4>
 <p>As data.frames are lists, anything can be put into a column just as you would a list element. We’ll use <span class="func">pmap</span> here, as it can take more than one argument, and we’re feeding all columns of the data.frame. You don’t need to worry about the details here, we just want to create a column that is actually a list. In this case the column will contain a data frame in each entry.</p>
-<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="iterative.html#cb256-1"></a>mtcars2 =<span class="st"> </span><span class="kw">as.matrix</span>(mtcars)</span>
-<span id="cb256-2"><a href="iterative.html#cb256-2"></a></span>
-<span id="cb256-3"><a href="iterative.html#cb256-3"></a>mtcars2[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(mtcars2), <span class="dv">50</span>)] =<span class="st"> </span><span class="ot">NA</span>   <span class="co"># add some missing data</span></span>
-<span id="cb256-4"><a href="iterative.html#cb256-4"></a></span>
-<span id="cb256-5"><a href="iterative.html#cb256-5"></a>mtcars2 =<span class="st"> </span><span class="kw">data.frame</span>(mtcars2) <span class="op">%&gt;%</span></span>
-<span id="cb256-6"><a href="iterative.html#cb256-6"></a><span class="st">  </span><span class="kw">rownames_to_column</span>(<span class="dt">var =</span> <span class="st">&#39;observation&#39;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb256-7"><a href="iterative.html#cb256-7"></a><span class="st">  </span><span class="kw">as_tibble</span>()</span>
-<span id="cb256-8"><a href="iterative.html#cb256-8"></a></span>
-<span id="cb256-9"><a href="iterative.html#cb256-9"></a><span class="kw">head</span>(mtcars2)</span></code></pre></div>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="iterative.html#cb289-1"></a>mtcars2 =<span class="st"> </span><span class="kw">as.matrix</span>(mtcars)</span>
+<span id="cb289-2"><a href="iterative.html#cb289-2"></a></span>
+<span id="cb289-3"><a href="iterative.html#cb289-3"></a>mtcars2[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(mtcars2), <span class="dv">50</span>)] =<span class="st"> </span><span class="ot">NA</span>   <span class="co"># add some missing data</span></span>
+<span id="cb289-4"><a href="iterative.html#cb289-4"></a></span>
+<span id="cb289-5"><a href="iterative.html#cb289-5"></a>mtcars2 =<span class="st"> </span><span class="kw">data.frame</span>(mtcars2) <span class="op">%&gt;%</span></span>
+<span id="cb289-6"><a href="iterative.html#cb289-6"></a><span class="st">  </span><span class="kw">rownames_to_column</span>(<span class="dt">var =</span> <span class="st">&#39;observation&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb289-7"><a href="iterative.html#cb289-7"></a><span class="st">  </span><span class="kw">as_tibble</span>()</span>
+<span id="cb289-8"><a href="iterative.html#cb289-8"></a></span>
+<span id="cb289-9"><a href="iterative.html#cb289-9"></a><span class="kw">head</span>(mtcars2)</span></code></pre></div>
 <pre><code># A tibble: 6 x 12
   observation       mpg   cyl   disp  hp    drat  wt    qsec  vs    am    gear  carb 
   &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
@@ -1002,18 +1047,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; 3.08  &lt;NA&gt;  19.44 1     0     3     1    
 5 Hornet Sportabout 18.7  8     360.0  &lt;NA&gt; 3.15  3.440 17.02 0     0     3     2    
 6 Valiant           18.1  &lt;NA&gt;  &lt;NA&gt;  &quot;105&quot; 2.76  3.460 20.22 1     0     &lt;NA&gt;  1    </code></pre>
-<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="iterative.html#cb258-1"></a>mtcars2 =<span class="st"> </span></span>
-<span id="cb258-2"><a href="iterative.html#cb258-2"></a><span class="st">  </span>mtcars2 <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb258-3"><a href="iterative.html#cb258-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb258-4"><a href="iterative.html#cb258-4"></a>    <span class="dt">newvar =</span> </span>
-<span id="cb258-5"><a href="iterative.html#cb258-5"></a>      <span class="kw">pmap</span>(., <span class="op">~</span><span class="st"> </span><span class="kw">data.frame</span>(</span>
-<span id="cb258-6"><a href="iterative.html#cb258-6"></a>        <span class="dt">N =</span> <span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(<span class="kw">c</span>(...))), </span>
-<span id="cb258-7"><a href="iterative.html#cb258-7"></a>        <span class="dt">Missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(<span class="kw">c</span>(...)))</span>
-<span id="cb258-8"><a href="iterative.html#cb258-8"></a>        )</span>
-<span id="cb258-9"><a href="iterative.html#cb258-9"></a>      )</span>
-<span id="cb258-10"><a href="iterative.html#cb258-10"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="iterative.html#cb291-1"></a>mtcars2 =<span class="st"> </span></span>
+<span id="cb291-2"><a href="iterative.html#cb291-2"></a><span class="st">  </span>mtcars2 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb291-3"><a href="iterative.html#cb291-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb291-4"><a href="iterative.html#cb291-4"></a>    <span class="dt">newvar =</span> </span>
+<span id="cb291-5"><a href="iterative.html#cb291-5"></a>      <span class="kw">pmap</span>(., <span class="op">~</span><span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb291-6"><a href="iterative.html#cb291-6"></a>        <span class="dt">N =</span> <span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(<span class="kw">c</span>(...))), </span>
+<span id="cb291-7"><a href="iterative.html#cb291-7"></a>        <span class="dt">Missing =</span> <span class="kw">sum</span>(<span class="kw">is.na</span>(<span class="kw">c</span>(...)))</span>
+<span id="cb291-8"><a href="iterative.html#cb291-8"></a>        )</span>
+<span id="cb291-9"><a href="iterative.html#cb291-9"></a>      )</span>
+<span id="cb291-10"><a href="iterative.html#cb291-10"></a>  )</span></code></pre></div>
 <p>Now check out the list column.</p>
-<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="iterative.html#cb259-1"></a>mtcars2</span></code></pre></div>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="iterative.html#cb292-1"></a>mtcars2</span></code></pre></div>
 <pre><code># A tibble: 32 x 13
    observation       mpg   cyl   disp  hp    drat  wt    qsec  vs    am    gear  carb  newvar          
    &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;list&gt;          
@@ -1028,7 +1073,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  9 Merc 230          22.8  4     140.8 &quot; 95&quot; 3.92  &lt;NA&gt;  22.90 1     0     4     2     &lt;df[,2] [1 × 2]&gt;
 10 Merc 280          19.2  6     167.6  &lt;NA&gt; 3.92  &lt;NA&gt;  18.30 &lt;NA&gt;  0     4     4     &lt;df[,2] [1 × 2]&gt;
 # … with 22 more rows</code></pre>
-<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="iterative.html#cb261-1"></a>mtcars2<span class="op">$</span>newvar <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="iterative.html#cb294-1"></a>mtcars2<span class="op">$</span>newvar <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <pre><code>[[1]]
    N Missing
 1 12       0
@@ -1041,8 +1086,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    N Missing
 1 11       1</code></pre>
 <p>Unnest it with the <span class="pack">tidyr</span> function.</p>
-<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="iterative.html#cb263-1"></a>mtcars2 <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb263-2"><a href="iterative.html#cb263-2"></a><span class="st">  </span><span class="kw">unnest</span>(newvar)</span></code></pre></div>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="iterative.html#cb296-1"></a>mtcars2 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb296-2"><a href="iterative.html#cb296-2"></a><span class="st">  </span><span class="kw">unnest</span>(newvar)</span></code></pre></div>
 <pre><code># A tibble: 32 x 14
    observation       mpg   cyl   disp  hp    drat  wt    qsec  vs    am    gear  carb      N Missing
    &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;   &lt;int&gt;
@@ -1062,35 +1107,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="iterative-programming-exercises" class="section level2">
 <h2>Iterative Programming Exercises</h2>
-<div id="exercise-1" class="section level3">
+<div id="exercise-1-4" class="section level3">
 <h3>Exercise 1</h3>
 <p>With the following <span class="objclass">matrix</span>, use <span class="func">apply</span> and the <span class="func">sum</span> function to get row or column sums of the matrix <span class="objclass">x</span>.</p>
-<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="iterative.html#cb265-1"></a>x =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="iterative.html#cb298-1"></a>x =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span></code></pre></div>
 </div>
-<div id="exercise-2" class="section level3">
+<div id="exercise-2-4" class="section level3">
 <h3>Exercise 2</h3>
 <p>With the following list object <span class="objclass">x</span>, use <span class="func">lapply</span> and <span class="func">sapply</span> and the <span class="func">sum</span> function to get sums for the elements. There is no margin to specify for a list, so just supply the list and the sum function.</p>
-<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="iterative.html#cb266-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">11</span><span class="op">:</span><span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="iterative.html#cb299-1"></a>x =<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">11</span><span class="op">:</span><span class="dv">100</span>)</span></code></pre></div>
 </div>
-<div id="exercise-3" class="section level3">
+<div id="exercise-3-2" class="section level3">
 <h3>Exercise 3</h3>
 <p>As in the previous example, use a <span class="func" style="">map</span> function to create a data frame of the column means. See <code>?map</code> to see all your options.</p>
-<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="iterative.html#cb267-1"></a>d =<span class="st"> </span><span class="kw">tibble</span>(</span>
-<span id="cb267-2"><a href="iterative.html#cb267-2"></a>  <span class="dt">x =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>),</span>
-<span id="cb267-3"><a href="iterative.html#cb267-3"></a>  <span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">10</span>, <span class="dv">2</span>),</span>
-<span id="cb267-4"><a href="iterative.html#cb267-4"></a>  <span class="dt">z =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">50</span>, <span class="dv">10</span>),</span>
-<span id="cb267-5"><a href="iterative.html#cb267-5"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="iterative.html#cb300-1"></a>d =<span class="st"> </span><span class="kw">tibble</span>(</span>
+<span id="cb300-2"><a href="iterative.html#cb300-2"></a>  <span class="dt">x =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>),</span>
+<span id="cb300-3"><a href="iterative.html#cb300-3"></a>  <span class="dt">y =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">10</span>, <span class="dv">2</span>),</span>
+<span id="cb300-4"><a href="iterative.html#cb300-4"></a>  <span class="dt">z =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">50</span>, <span class="dv">10</span>),</span>
+<span id="cb300-5"><a href="iterative.html#cb300-5"></a>)</span></code></pre></div>
 
 </div>
 </div>
 </div>
 <div class="footnotes">
 <hr />
-<ol start="11">
-<li id="fn11"><p>You can have 3 or more dimensional arrays, and <span class="func">apply</span> will work over those dimensions (or any combination of them), but this doesn’t come up too often.<a href="iterative.html#fnref11" class="footnote-back">↩︎</a></p></li>
-<li id="fn12"><p><span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>. If you supply the argument <code>simplified=F</code>, it is identical. Otherwise, it attempts to return a vector or matrix.<a href="iterative.html#fnref12" class="footnote-back">↩︎</a></p></li>
-<li id="fn13"><p>Personally I find the help file description nebulous or completely lacking, and the examples unrealistic, and oftentimes I can come up with a group_by-summarise approach before I can sort out why the map approach didn’t work. The main thing to note is that both the benefit and difficulty of using the <code>map_*</code> functions is they are more strict with inputs, which typically should be lists or list-like objects like data frames, and outputs.<a href="iterative.html#fnref13" class="footnote-back">↩︎</a></p></li>
-<li id="fn14"><p>Note that ggplot2 will change the ordering of the variable unless you coerce it by creating a factor. This pretty much defeats the entire purpose of retaining characters over factors everywhere else in the tidyverse.<a href="iterative.html#fnref14" class="footnote-back">↩︎</a></p></li>
+<ol start="12">
+<li id="fn12"><p>You can have 3 or more dimensional arrays, and <span class="func">apply</span> will work over those dimensions (or any combination of them), but this doesn’t come up too often.<a href="iterative.html#fnref12" class="footnote-back">↩︎</a></p></li>
+<li id="fn13"><p><span class="func">sapply</span> is actually just a wrapper for <span class="func">lapply</span>. If you supply the argument <code>simplified=F</code>, it is identical. Otherwise, it attempts to return a vector or matrix.<a href="iterative.html#fnref13" class="footnote-back">↩︎</a></p></li>
+<li id="fn14"><p>Personally I find the help file description nebulous or completely lacking, and the examples unrealistic, and oftentimes I can come up with a group_by-summarise approach before I can sort out why the map approach didn’t work. The main thing to note is that both the benefit and difficulty of using the <code>map_*</code> functions is they are more strict with inputs, which typically should be lists or list-like objects like data frames, and outputs.<a href="iterative.html#fnref14" class="footnote-back">↩︎</a></p></li>
+<li id="fn15"><p>Note that ggplot2 will change the ordering of the variable unless you coerce it by creating a factor. This pretty much defeats the entire purpose of retaining characters over factors everywhere else in the tidyverse.<a href="iterative.html#fnref15" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
@@ -1122,9 +1167,8 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["twitter", "facebook", "weibo", "instapaper"],
-"google": false,
-"instapper": false
+"all": ["twitter", "facebook", "instapaper"],
+"google": false
 },
 "fontsettings": {
 "theme": "white",
@@ -1143,7 +1187,7 @@ gitbook.start({
 "download": null,
 "toc": {
 "collapse": "section",
-"depth": 2,
+"toc_depth": 2,
 "scroll_highlight": true
 },
 "search": true

@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Machine Learning | Data Processing &amp; Visualization</title>
-  <meta name="description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <title>Machine Learning | Practical Data Science</title>
+  <meta name="description" content="The focus of this document is on data science tools and techniques in R, including basic programming knowledge, visualization practices, modeling, and more, along with exercises to practice further. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta name="generator" content="bookdown 0.20.2 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Machine Learning | Data Processing &amp; Visualization" />
+  <meta property="og:title" content="Machine Learning | Practical Data Science" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://m-clark.github.io/data-processing-and-visualization/" />
   <meta property="og:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
-  <meta property="og:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta property="og:description" content="The focus of this document is on data science tools and techniques in R, including basic programming knowledge, visualization practices, modeling, and more, along with exercises to practice further. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
   <meta name="github-repo" content="m-clark/data-processing-and-visualization/" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Machine Learning | Data Processing &amp; Visualization" />
+  <meta name="twitter:title" content="Machine Learning | Practical Data Science" />
   
-  <meta name="twitter:description" content="The focus of this document is on common data processing and exploration techniques in R, especially as a prelude to visualization. The first part of the document will cover data structures, the dplyr and tidyverse packages, which enhance and facilitate the sorts of operations that typically arise when dealing with data, including faster I/O and grouped operations. For visualization, the focus will be on using ggplot2 and other packages that allow for interactivity. In addition, basic programming concepts and techniques are introduced. Exercises may be found in the document as well. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta name="twitter:description" content="The focus of this document is on data science tools and techniques in R, including basic programming knowledge, visualization practices, modeling, and more, along with exercises to practice further. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
   <meta name="twitter:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
 
 
 
-<meta name="date" content="2020-06-29" />
+<meta name="date" content="2020-08-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   <link rel="shortcut icon" href="img/R.ico" type="image/x-icon" />
 <link rel="prev" href="model_criticism.html"/>
 <link rel="next" href="ggplot2.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.5.0/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -66,45 +66,46 @@
 <script src="libs/vis-4.20.1/vis.min.js"></script>
 <script src="libs/visNetwork-binding-2.0.9/visNetwork.js"></script>
 <script src="libs/proj4js-2.3.15/proj4.js"></script>
-<link href="libs/highcharts-7.0.1/css/motion.css" rel="stylesheet" />
-<link href="libs/highcharts-7.0.1/css/htmlwdgtgrid.css" rel="stylesheet" />
-<script src="libs/highcharts-7.0.1/highcharts.js"></script>
-<script src="libs/highcharts-7.0.1/highcharts-3d.js"></script>
-<script src="libs/highcharts-7.0.1/highcharts-more.js"></script>
-<script src="libs/highcharts-7.0.1/modules/stock.js"></script>
-<script src="libs/highcharts-7.0.1/modules/map.js"></script>
-<script src="libs/highcharts-7.0.1/modules/annotations.js"></script>
-<script src="libs/highcharts-7.0.1/modules/boost.js"></script>
-<script src="libs/highcharts-7.0.1/modules/data.js"></script>
-<script src="libs/highcharts-7.0.1/modules/drag-panes.js"></script>
-<script src="libs/highcharts-7.0.1/modules/drilldown.js"></script>
-<script src="libs/highcharts-7.0.1/modules/item-series.js"></script>
-<script src="libs/highcharts-7.0.1/modules/offline-exporting.js"></script>
-<script src="libs/highcharts-7.0.1/modules/overlapping-datalabels.js"></script>
-<script src="libs/highcharts-7.0.1/modules/exporting.js"></script>
-<script src="libs/highcharts-7.0.1/modules/export-data.js"></script>
-<script src="libs/highcharts-7.0.1/modules/funnel.js"></script>
-<script src="libs/highcharts-7.0.1/modules/heatmap.js"></script>
-<script src="libs/highcharts-7.0.1/modules/treemap.js"></script>
-<script src="libs/highcharts-7.0.1/modules/sankey.js"></script>
-<script src="libs/highcharts-7.0.1/modules/solid-gauge.js"></script>
-<script src="libs/highcharts-7.0.1/modules/streamgraph.js"></script>
-<script src="libs/highcharts-7.0.1/modules/sunburst.js"></script>
-<script src="libs/highcharts-7.0.1/modules/vector.js"></script>
-<script src="libs/highcharts-7.0.1/modules/wordcloud.js"></script>
-<script src="libs/highcharts-7.0.1/modules/xrange.js"></script>
-<script src="libs/highcharts-7.0.1/modules/tilemap.js"></script>
-<script src="libs/highcharts-7.0.1/modules/venn.js"></script>
-<script src="libs/highcharts-7.0.1/modules/gantt.js"></script>
-<script src="libs/highcharts-7.0.1/modules/timeline.js"></script>
-<script src="libs/highcharts-7.0.1/modules/parallel-coordinates.js"></script>
-<script src="libs/highcharts-7.0.1/plugins/grouped-categories.js"></script>
-<script src="libs/highcharts-7.0.1/plugins/motion.js"></script>
-<script src="libs/highcharts-7.0.1/plugins/multicolor_series.js"></script>
-<script src="libs/highcharts-7.0.1/custom/reset.js"></script>
-<script src="libs/highcharts-7.0.1/custom/symbols-extra.js"></script>
-<script src="libs/highcharts-7.0.1/custom/text-symbols.js"></script>
-<script src="libs/highchart-binding-0.7.0/highchart.js"></script>
+<link href="libs/highcharts-8.1.2/css/motion.css" rel="stylesheet" />
+<script src="libs/highcharts-8.1.2/highcharts.js"></script>
+<script src="libs/highcharts-8.1.2/highcharts-3d.js"></script>
+<script src="libs/highcharts-8.1.2/highcharts-more.js"></script>
+<script src="libs/highcharts-8.1.2/modules/stock.js"></script>
+<script src="libs/highcharts-8.1.2/modules/map.js"></script>
+<script src="libs/highcharts-8.1.2/modules/annotations.js"></script>
+<script src="libs/highcharts-8.1.2/modules/data.js"></script>
+<script src="libs/highcharts-8.1.2/modules/drilldown.js"></script>
+<script src="libs/highcharts-8.1.2/modules/item-series.js"></script>
+<script src="libs/highcharts-8.1.2/modules/offline-exporting.js"></script>
+<script src="libs/highcharts-8.1.2/modules/overlapping-datalabels.js"></script>
+<script src="libs/highcharts-8.1.2/modules/exporting.js"></script>
+<script src="libs/highcharts-8.1.2/modules/export-data.js"></script>
+<script src="libs/highcharts-8.1.2/modules/funnel.js"></script>
+<script src="libs/highcharts-8.1.2/modules/heatmap.js"></script>
+<script src="libs/highcharts-8.1.2/modules/treemap.js"></script>
+<script src="libs/highcharts-8.1.2/modules/sankey.js"></script>
+<script src="libs/highcharts-8.1.2/modules/dependency-wheel.js"></script>
+<script src="libs/highcharts-8.1.2/modules/organization.js"></script>
+<script src="libs/highcharts-8.1.2/modules/solid-gauge.js"></script>
+<script src="libs/highcharts-8.1.2/modules/streamgraph.js"></script>
+<script src="libs/highcharts-8.1.2/modules/sunburst.js"></script>
+<script src="libs/highcharts-8.1.2/modules/vector.js"></script>
+<script src="libs/highcharts-8.1.2/modules/wordcloud.js"></script>
+<script src="libs/highcharts-8.1.2/modules/xrange.js"></script>
+<script src="libs/highcharts-8.1.2/modules/tilemap.js"></script>
+<script src="libs/highcharts-8.1.2/modules/venn.js"></script>
+<script src="libs/highcharts-8.1.2/modules/gantt.js"></script>
+<script src="libs/highcharts-8.1.2/modules/timeline.js"></script>
+<script src="libs/highcharts-8.1.2/modules/parallel-coordinates.js"></script>
+<script src="libs/highcharts-8.1.2/modules/bullet.js"></script>
+<script src="libs/highcharts-8.1.2/modules/coloraxis.js"></script>
+<script src="libs/highcharts-8.1.2/modules/dumbbell.js"></script>
+<script src="libs/highcharts-8.1.2/modules/lollipop.js"></script>
+<script src="libs/highcharts-8.1.2/modules/series-label.js"></script>
+<script src="libs/highcharts-8.1.2/plugins/motion.js"></script>
+<script src="libs/highcharts-8.1.2/custom/reset.js"></script>
+<script src="libs/highcharts-8.1.2/modules/boost.js"></script>
+<script src="libs/highchart-binding-0.8.2/highchart.js"></script>
 <script src="libs/sigma-1.2.1/sigma.min.js"></script>
 <script src="libs/sigma-1.2.1/plugins/sigma.layout.forceAtlas2.min.js"></script>
 <script src="libs/sigma-1.2.1/plugins/sigma.layout.noverlap.min.js"></script>
@@ -129,7 +130,7 @@
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.14/datatables.js"></script>
+<script src="libs/datatables-binding-0.15/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
@@ -214,10 +215,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class='before'><a href="./">Data Processing & Visualization</a></li>
+<li class='before'><a href="./">Practical Data Science</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i>Intro</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#intended-audience"><i class="fa fa-check"></i>Intended Audience</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#programming-language"><i class="fa fa-check"></i>Programming Language</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#additional-practice"><i class="fa fa-check"></i>Additional Practice</a></li>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#outline"><i class="fa fa-check"></i>Outline</a><ul>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-1-information-processing"><i class="fa fa-check"></i>Part 1: Information Processing</a></li>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-2-programming-basics"><i class="fa fa-check"></i>Part 2: Programming Basics</a></li>
@@ -225,10 +229,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-4-visualization"><i class="fa fa-check"></i>Part 4: Visualization</a></li>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-5-presentation"><i class="fa fa-check"></i>Part 5: Presentation</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#preparation"><i class="fa fa-check"></i>Preparation</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#workshops"><i class="fa fa-check"></i>Workshops</a></li>
 <li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#other"><i class="fa fa-check"></i>Other</a><ul>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#python"><i class="fa fa-check"></i>Python</a></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#r"><i class="fa fa-check"></i>R</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#python-notebooks"><i class="fa fa-check"></i>Python notebooks</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#other-r-packages"><i class="fa fa-check"></i>Other R packages</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#history"><i class="fa fa-check"></i>History</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#current-efforts"><i class="fa fa-check"></i>Current Efforts</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part I: Information Processing</b></span></li>
@@ -238,6 +244,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#factors"><i class="fa fa-check"></i>Factors</a></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#logicals"><i class="fa fa-check"></i>Logicals</a></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#numeric-and-integer"><i class="fa fa-check"></i>Numeric and integer</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#dates"><i class="fa fa-check"></i>Dates</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#matrices"><i class="fa fa-check"></i>Matrices</a><ul>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#creating-a-matrix"><i class="fa fa-check"></i>Creating a matrix</a></li>
@@ -247,67 +254,79 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#creating-a-data-frame"><i class="fa fa-check"></i>Creating a data frame</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#data-structure-exercises"><i class="fa fa-check"></i>Data Structure Exercises</a><ul>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#excercise-1"><i class="fa fa-check"></i>Excercise #1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise #2</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#excercise-1"><i class="fa fa-check"></i>Excercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
 <li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#thinking-exercises"><i class="fa fa-check"></i>Thinking Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#python-data-structures-notebook"><i class="fa fa-check"></i>Python Data Structures Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html"><i class="fa fa-check"></i>Input/Output</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#other-approaches"><i class="fa fa-check"></i>Other approaches</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#faster-approaches"><i class="fa fa-check"></i>Faster approaches</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#other-data"><i class="fa fa-check"></i>Other Data</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#on-the-horizon"><i class="fa fa-check"></i>On the horizon</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#better-faster-approaches"><i class="fa fa-check"></i>Better &amp; Faster Approaches</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#r-specific-data"><i class="fa fa-check"></i>R-specific Data</a><ul>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#r-datasets"><i class="fa fa-check"></i>R Datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#other-types-of-data"><i class="fa fa-check"></i>Other Types of Data</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#on-the-horizon"><i class="fa fa-check"></i>On the Horizon</a></li>
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html#big-data"><i class="fa fa-check"></i>Big Data</a></li>
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html#io-exercises"><i class="fa fa-check"></i>I/O Exercises</a><ul>
 <li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#thinking-exercises"><i class="fa fa-check"></i>Thinking Exercises</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#thinking-exercises-1"><i class="fa fa-check"></i>Thinking Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#python-io-notebook"><i class="fa fa-check"></i>Python I/O Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html"><i class="fa fa-check"></i>Indexing</a><ul>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#base-r-indexing-refresher"><i class="fa fa-check"></i>Base R Indexing Refresher</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/Data.frame extraction</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#slicing-vectors"><i class="fa fa-check"></i>Slicing Vectors</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#slicing-matricesdata.frames"><i class="fa fa-check"></i>Slicing Matrices/data.frames</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#label-based-indexing"><i class="fa fa-check"></i>Label-based Indexing</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#position-based-indexing"><i class="fa fa-check"></i>Position-based Indexing</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#mixed-indexing"><i class="fa fa-check"></i>Mixed Indexing</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#non-contiguous"><i class="fa fa-check"></i>Non-contiguous</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#boolean"><i class="fa fa-check"></i>Boolean</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/data.frame Extraction</a></li>
 <li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#indexing-exercises"><i class="fa fa-check"></i>Indexing Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-1-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-2-1"><i class="fa fa-check"></i>Exercise 2</a></li>
 <li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#python-indexing-notebook"><i class="fa fa-check"></i>Python Indexing Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html"><i class="fa fa-check"></i>Pipes</a><ul>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#using-variables-as-they-are-created"><i class="fa fa-check"></i>Using variables as they are created</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#using-variables-as-they-are-created"><i class="fa fa-check"></i>Using Variables as They are Created</a></li>
 <li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#pipes-for-visualization-more-later"><i class="fa fa-check"></i>Pipes for Visualization (more later)</a></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#the-dot"><i class="fa fa-check"></i>The dot</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#the-dot"><i class="fa fa-check"></i>The Dot</a></li>
 <li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#flexibility"><i class="fa fa-check"></i>Flexibility</a></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#pipes-summary"><i class="fa fa-check"></i>Pipes Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html"><i class="fa fa-check"></i>Tidyverse</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-the-tidyverse"><i class="fa fa-check"></i>What is the tidyverse?</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is tidy?</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-the-tidyverse"><i class="fa fa-check"></i>What is the Tidyverse?</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is Tidy?</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#dplyr"><i class="fa fa-check"></i>dplyr</a><ul>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#an-example"><i class="fa fa-check"></i>An example</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#running-example"><i class="fa fa-check"></i>Running example</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#running-example"><i class="fa fa-check"></i>Running Example</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#selecting-columns"><i class="fa fa-check"></i>Selecting Columns</a><ul>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#helper-functions"><i class="fa fa-check"></i>Helper functions</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#filtering-rows"><i class="fa fa-check"></i>Filtering Rows</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#generating-new-data"><i class="fa fa-check"></i>Generating New Data</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#grouping-and-summarizing-data"><i class="fa fa-check"></i>Grouping and Summarizing Data</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#renaming-columns"><i class="fa fa-check"></i>Renaming columns</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#renaming-columns"><i class="fa fa-check"></i>Renaming Columns</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#merging-data"><i class="fa fa-check"></i>Merging Data</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyr"><i class="fa fa-check"></i>tidyr</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#pivoting-axes"><i class="fa fa-check"></i>Pivoting axes</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#more-tidyverse"><i class="fa fa-check"></i>More Tidyverse</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyverse-exercises"><i class="fa fa-check"></i>tidyverse Exercises</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyverse-exercises"><i class="fa fa-check"></i>Tidyverse Exercises</a><ul>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-1-2"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-2-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-3-1"><i class="fa fa-check"></i>Exercise 3</a></li>
 <li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-4"><i class="fa fa-check"></i>Exercise 4</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#python-pandas-notebook"><i class="fa fa-check"></i>Python Pandas Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html"><i class="fa fa-check"></i>data.table</a><ul>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#basics"><i class="fa fa-check"></i>Basics</a></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#grouped-operations"><i class="fa fa-check"></i>Grouped operations</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-basics"><i class="fa fa-check"></i>data.table Basics</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#grouped-operations"><i class="fa fa-check"></i>Grouped Operations</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster"><i class="fa fa-check"></i>Faster!</a><ul>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#joins"><i class="fa fa-check"></i>Joins</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#group-by"><i class="fa fa-check"></i>Group by</a></li>
@@ -316,17 +335,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#more-speed"><i class="fa fa-check"></i>More speed</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster-dplyr-alternatives"><i class="fa fa-check"></i>Faster dplyr alternatives</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-summary"><i class="fa fa-check"></i>data.table Summary</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster-dplyr-alternatives"><i class="fa fa-check"></i>Faster dplyr Alternatives</a></li>
 <li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-exercises"><i class="fa fa-check"></i>data.table Exercises</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-0-1"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-1-3"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-2-3"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part II: Programming</b></span></li>
-<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#basics"><i class="fa fa-check"></i>Basics</a><ul>
-<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html"><i class="fa fa-check"></i>R Objects</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html"><i class="fa fa-check"></i>Programming Basics</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#r-objects"><i class="fa fa-check"></i>R Objects</a><ul>
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#object-inspection-exploration"><i class="fa fa-check"></i>Object Inspection &amp; Exploration</a></li>
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#methods"><i class="fa fa-check"></i>Methods</a></li>
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#s4-classes"><i class="fa fa-check"></i>S4 classes</a></li>
@@ -337,7 +356,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#objects-exercises"><i class="fa fa-check"></i>Objects Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For loops</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For Loops</a><ul>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#a-slight-speed-gain"><i class="fa fa-check"></i>A slight speed gain</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#loops-summary"><i class="fa fa-check"></i>Loops summary</a></li>
@@ -347,58 +366,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#looping-with-lists"><i class="fa fa-check"></i>Looping with lists</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#looping-with-lists"><i class="fa fa-check"></i>Looping with Lists</a></li>
 <li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#iterative-programming-exercises"><i class="fa fa-check"></i>Iterative Programming Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-1-4"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-2-4"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-3-2"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i>Writing Functions</a><ul>
-<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#a-starting-point"><i class="fa fa-check"></i>A starting point</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#a-starting-point"><i class="fa fa-check"></i>A Starting Point</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#dry"><i class="fa fa-check"></i>DRY</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#conditionals"><i class="fa fa-check"></i>Conditionals</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#anonymous-functions"><i class="fa fa-check"></i>Anonymous functions</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#writing-functions-exercises"><i class="fa fa-check"></i>Writing Functions Exercises</a><ul>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#excercise-1"><i class="fa fa-check"></i>Excercise 1</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1-1"><i class="fa fa-check"></i>Excercise 1</a></li>
 <li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1b"><i class="fa fa-check"></i>Excercise 1b</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#exercise-2-5"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html"><i class="fa fa-check"></i>More</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html"><i class="fa fa-check"></i>More Programming</a><ul>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-style"><i class="fa fa-check"></i>Code Style</a><ul>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#why-does-your-code-exist"><i class="fa fa-check"></i>Why does your code exist?</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#assignment"><i class="fa fa-check"></i>Assignment</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-length"><i class="fa fa-check"></i>Code length</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#spacing"><i class="fa fa-check"></i>Spacing</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#naming-things"><i class="fa fa-check"></i>Naming things</a></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#other"><i class="fa fa-check"></i>Other</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#other-1"><i class="fa fa-check"></i>Other</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorization"><i class="fa fa-check"></i>Vectorization</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#boolean-indexing"><i class="fa fa-check"></i>Boolean Indexing</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#boolean-indexing"><i class="fa fa-check"></i>Boolean indexing</a></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorized-operations"><i class="fa fa-check"></i>Vectorized operations</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#regular-expressions"><i class="fa fa-check"></i>Regular Expressions</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#typical-uses"><i class="fa fa-check"></i>Typical Uses</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#typical-uses"><i class="fa fa-check"></i>Typical uses</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-style-exercises"><i class="fa fa-check"></i>Code Style Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-5"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-6"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorization-exercises"><i class="fa fa-check"></i>Vectorization Exercises</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-1"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-6"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-7"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="more.html"><a href="more.html#regex-exercises"><i class="fa fa-check"></i>Regex Exercises</a><ul>
-<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-2"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-7"><i class="fa fa-check"></i>Exercise 1</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part III: Modeling</b></span></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#model-exploration"><i class="fa fa-check"></i>Model Exploration</a><ul>
-<li class="chapter" data-level="" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i>Model Taxonomy</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i>Model Exploration</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-taxonomy"><i class="fa fa-check"></i>Model Taxonomy</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#linear-models"><i class="fa fa-check"></i>Linear models</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#estimation"><i class="fa fa-check"></i>Estimation</a><ul>
-<li class="chapter" data-level="" data-path="models.html"><a href="models.html#minimizing-and-maximizing"><i class="fa fa-check"></i>Minimizing and Maximizing</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#minimizing-and-maximizing"><i class="fa fa-check"></i>Minimizing and maximizing</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#optimization"><i class="fa fa-check"></i>Optimization</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#fitting-models"><i class="fa fa-check"></i>Fitting Models</a><ul>
@@ -423,13 +442,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-exploration-summary"><i class="fa fa-check"></i>Model Exploration Summary</a></li>
 <li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-exploration-exercises"><i class="fa fa-check"></i>Model Exploration Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-1-8"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-2-8"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-3-3"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#python-model-exploration-notebook"><i class="fa fa-check"></i>Python Model Exploration Notebook</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#model-criticism"><i class="fa fa-check"></i>Model Criticism</a><ul>
-<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html"><i class="fa fa-check"></i>Model Fit</a><ul>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html"><i class="fa fa-check"></i>Model Criticism</a><ul>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-fit"><i class="fa fa-check"></i>Model Fit</a><ul>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#standard-linear-model"><i class="fa fa-check"></i>Standard linear model</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#beyond-ols"><i class="fa fa-check"></i>Beyond OLS</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#classification"><i class="fa fa-check"></i>Classification</a></li>
@@ -439,40 +459,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-comparison"><i class="fa fa-check"></i>Model Comparison</a><ul>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-additional-covariates"><i class="fa fa-check"></i>Example: Additional covariates</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-interactions"><i class="fa fa-check"></i>Example: Interactions</a></li>
-<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-additive-models"><i class="fa fa-check"></i>Example: Additive Models</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-additive-models"><i class="fa fa-check"></i>Example: Additive models</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-averaging"><i class="fa fa-check"></i>Model Averaging</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-criticism-summary"><i class="fa fa-check"></i>Model Criticism Summary</a></li>
 <li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-criticism-exercises"><i class="fa fa-check"></i>Model Criticism Exercises</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-0-2"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-1-9"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-2-9"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#python-model-criticism-notebook"><i class="fa fa-check"></i>Python Model Criticism Notebook</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#machine-learning"><i class="fa fa-check"></i>Machine Learning</a><ul>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html"><i class="fa fa-check"></i>Concepts</a><ul>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html"><i class="fa fa-check"></i>Machine Learning</a><ul>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#concepts"><i class="fa fa-check"></i>Concepts</a><ul>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#loss"><i class="fa fa-check"></i>Loss</a></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#bias-variance-tradeoff"><i class="fa fa-check"></i>Bias-variance Tradeoff</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#bias-variance-tradeoff"><i class="fa fa-check"></i>Bias-variance tradeoff</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#regularization"><i class="fa fa-check"></i>Regularization</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
-<li class="chapter" data-level="" data-path="models.html"><a href="models.html#optimization"><i class="fa fa-check"></i>Optimization</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#optimization-1"><i class="fa fa-check"></i>Optimization</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#tuning-parameters"><i class="fa fa-check"></i>Tuning parameters</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#techniques"><i class="fa fa-check"></i>Techniques</a><ul>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#regularized-regression"><i class="fa fa-check"></i>Regularized regression</a></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#random-forests"><i class="fa fa-check"></i>Random Forests</a></li>
-<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#neural-networks"><i class="fa fa-check"></i>Neural Networks</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#random-forests"><i class="fa fa-check"></i>Random forests</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#neural-networks"><i class="fa fa-check"></i>Neural networks</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#interpreting-the-black-box"><i class="fa fa-check"></i>Interpreting the Black Box</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-summary"><i class="fa fa-check"></i>Machine Learning Summary</a></li>
 <li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-exercises"><i class="fa fa-check"></i>Machine Learning Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercise-1-10"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercise-2-10"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#python-machine-learning-notebook"><i class="fa fa-check"></i>Python Machine Learning Notebook</a></li>
 </ul></li>
 <li class="part"><span><b>Part IV: Visualization</b></span></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#ggplot2"><i class="fa fa-check"></i>ggplot2</a><ul>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i>Layers</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#geoms"><i class="fa fa-check"></i>Geoms</a></li>
@@ -484,13 +506,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#themes"><i class="fa fa-check"></i>Themes</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#python"><i class="fa fa-check"></i>Python</a></li>
-<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#summary-ggplot2"><i class="fa fa-check"></i>Summary ggplot2</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-summary"><i class="fa fa-check"></i>ggplot2 Summary</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-exercises"><i class="fa fa-check"></i>ggplot2 Exercises</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-0-3"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-1-11"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-2-11"><i class="fa fa-check"></i>Exercise 2</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#python-plotnine-notebook"><i class="fa fa-check"></i>Python Plotnine Notebook</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#packages"><i class="fa fa-check"></i>Packages</a></li>
@@ -513,14 +535,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
 <li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-visualization-exercises"><i class="fa fa-check"></i>Interactive Visualization Exercises</a><ul>
-<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-0-4"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-1-12"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-2-12"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-3-4"><i class="fa fa-check"></i>Exercise 3</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#python-interactive-visualization-notebook"><i class="fa fa-check"></i>Python Interactive Visualization Notebook</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#thinking-visually"><i class="fa fa-check"></i>Thinking Visually</a><ul>
-<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html"><i class="fa fa-check"></i>Information</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html"><i class="fa fa-check"></i>Thinking Visually</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#information"><i class="fa fa-check"></i>Information</a><ul>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#your-audience-isnt-dumb"><i class="fa fa-check"></i>Your audience isn’t dumb</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#clarity-is-key"><i class="fa fa-check"></i>Clarity is key</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#avoid-clutter"><i class="fa fa-check"></i>Avoid clutter</a></li>
@@ -537,7 +560,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#accessibility"><i class="fa fa-check"></i>Accessibility</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#file-types"><i class="fa fa-check"></i>File Types</a></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#summary-of-thinking-visually"><i class="fa fa-check"></i>Summary of Thinking Visually</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#a-casual-list-of-things-to-avoid"><i class="fa fa-check"></i>A casual list of things to avoid</a><ul>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#pie"><i class="fa fa-check"></i>Pie</a></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#histograms"><i class="fa fa-check"></i>Histograms</a></li>
@@ -548,32 +571,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#biplots"><i class="fa fa-check"></i>Biplots</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a><ul>
-<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
-<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#thinking-exercises"><i class="fa fa-check"></i>Thinking exercises</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-1-13"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-2-13"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-exercises-2"><i class="fa fa-check"></i>Thinking exercises</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part V: Presentation</b></span></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html"><i class="fa fa-check"></i>Reproducible Programming</a><ul>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#how-to-read-this-chapter"><i class="fa fa-check"></i>How to read this chapter</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#literate-programming"><i class="fa fa-check"></i>Literate Programming</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#r-markdown"><i class="fa fa-check"></i>R Markdown</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#replicability-reproducible-research"><i class="fa fa-check"></i>Replicability &amp; reproducible research</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#dynamic-data-analysis-report-generation"><i class="fa fa-check"></i>Dynamic data analysis &amp; report generation</a></li>
-<li class="chapter" data-level="" data-path="concepts.html"><a href="concepts.html#using-modern-tools"><i class="fa fa-check"></i>Using Modern Tools</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i>Building Better Data-Driven Products</a><ul>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#rep-analysis"><i class="fa fa-check"></i>Rep* Analysis</a><ul>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#example"><i class="fa fa-check"></i>Example</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#repeatable"><i class="fa fa-check"></i>Repeatable</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#reproducible"><i class="fa fa-check"></i>Reproducible</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#replicable"><i class="fa fa-check"></i>Replicable</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#summary-of-rep-analysis"><i class="fa fa-check"></i>Summary of rep* analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#literate-programming"><i class="fa fa-check"></i>Literate Programming</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#r-markdown"><i class="fa fa-check"></i>R Markdown</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#how-to-read-this-chapter"><i class="fa fa-check"></i>How to read this chapter</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#dynamic-data-analysis-report-generation"><i class="fa fa-check"></i>Dynamic data analysis &amp; report generation</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#using-modern-tools"><i class="fa fa-check"></i>Using Modern Tools</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html"><i class="fa fa-check"></i>Getting Started</a><ul>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#what-is-markdown"><i class="fa fa-check"></i>What is Markdown?</a></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#documents"><i class="fa fa-check"></i>Documents</a><ul>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#standard-html"><i class="fa fa-check"></i>Standard HTML</a></li>
-<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#r-notebooks"><i class="fa fa-check"></i>R Notebooks</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#r-notebooks"><i class="fa fa-check"></i>R notebooks</a></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#distill"><i class="fa fa-check"></i>Distill</a></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#bookdown"><i class="fa fa-check"></i>Bookdown</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#presentations"><i class="fa fa-check"></i>Presentations</a></li>
-<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#shiny-apps"><i class="fa fa-check"></i>Shiny Apps</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#apps-sites-dashboards"><i class="fa fa-check"></i>Apps, Sites &amp; Dashboards</a></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#templates"><i class="fa fa-check"></i>Templates</a></li>
-<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#how-to-start"><i class="fa fa-check"></i>How to start</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#how-to-begin"><i class="fa fa-check"></i>How to Begin</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html"><i class="fa fa-check"></i>Standard Documents</a><ul>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#r-markdown-files"><i class="fa fa-check"></i>R Markdown files</a></li>
@@ -584,24 +613,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#labels"><i class="fa fa-check"></i>Labels</a></li>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#running-code"><i class="fa fa-check"></i>Running code</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#multiple-documents"><i class="fa fa-check"></i>Multiple documents</a></li>
-<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#sharing-code-collaboration"><i class="fa fa-check"></i>Sharing Code &amp; Collaboration</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#multiple-documents"><i class="fa fa-check"></i>Multiple Documents</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#collaboration"><i class="fa fa-check"></i>Collaboration</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#using-python-for-documents"><i class="fa fa-check"></i>Using Python for Documents</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html"><i class="fa fa-check"></i>Customization &amp; Configuration</a><ul>
-<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#output-options"><i class="fa fa-check"></i>Output options</a><ul>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#output-options"><i class="fa fa-check"></i>Output Options</a><ul>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#themes-etc."><i class="fa fa-check"></i>Themes etc.</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#yaml"><i class="fa fa-check"></i>YAML</a></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#html-css"><i class="fa fa-check"></i>HTML &amp; CSS</a><ul>
-<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#html"><i class="fa fa-check"></i>HTML</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#html-1"><i class="fa fa-check"></i>HTML</a></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#css"><i class="fa fa-check"></i>CSS</a></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#custom-classes"><i class="fa fa-check"></i>Custom classes</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#personal-templates"><i class="fa fa-check"></i>Personal Templates</a></li>
 <li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#the-rabbit-hole-goes-deep"><i class="fa fa-check"></i>The Rabbit Hole Goes Deep</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#r-markdown-exercises"><i class="fa fa-check"></i>R Markdown Exercises</a><ul>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-1-14"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-2-14"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-3-5"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-4-1"><i class="fa fa-check"></i>Exercise 4</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-5"><i class="fa fa-check"></i>Exercise 5</a></li>
+</ul></li>
 </ul></li>
 <li class="part"><span><b>Wrap-up</b></span></li>
-<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i>Appendix</a><ul>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#r-markdown-1"><i class="fa fa-check"></i>R Markdown</a><ul>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#footnotes"><i class="fa fa-check"></i>Footnotes</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#citations-and-references"><i class="fa fa-check"></i>Citations and references</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#multiple-documents-1"><i class="fa fa-check"></i>Multiple documents</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#web-standards"><i class="fa fa-check"></i>Web standards</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li class='after'">
@@ -635,7 +680,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Data Processing &amp; Visualization</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Practical Data Science</a>
           </h1>
         </div>
 
@@ -648,21 +693,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div style="text-align: center">
 <i class="fas  fa-magic fa-5x " style="color:#990024;"></i>
 </div>
-<p><em>Machine learning</em> (ML) encompasses a wide variety of techniques, from standard regression models to almost impenetrably complex modeling tools. While it may seem like magic to the uninitiated, the main thing that distinguishes it from standard statistical methods discussed thus far is an approach that heavily favors prediction over inference and explanatory power, and which takes the necessary steps to gain any predictive advantage<a href="#fn37" class="footnote-ref" id="fnref37"><sup>37</sup></a>.</p>
+<p><em>Machine learning</em> (ML) encompasses a wide variety of techniques, from standard regression models to almost impenetrably complex modeling tools. While it may seem like magic to the uninitiated, the main thing that distinguishes it from standard statistical methods discussed thus far is an approach that heavily favors prediction over inference and explanatory power, and which takes the necessary steps to gain any predictive advantage<a href="#fn38" class="footnote-ref" id="fnref38"><sup>38</sup></a>.</p>
 <p>ML could potentially be applied in any setting, but typically works best with data sets much larger than classical statistical methods are usually applied to. However, nowadays even complex regression models can be applied to extremely large data sets, and properly applied ML may even work in simpler data settings, so this distinction is muddier than it used to be. The main distinguishing factor is mostly one of focus.</p>
 <p>The following only very briefly provides a demonstration of concepts and approaches. I have more <a href="https://m-clark.github.io/introduction-to-machine-learning/">in-depth document available</a> for more details.</p>
 <div id="concepts" class="section level2">
 <h2>Concepts</h2>
 <div id="loss" class="section level3">
 <h3>Loss</h3>
-<p>We discussed loss functions [before][estimation], and there was a reason I went more in depth there, mainly because I feel, unlike with ML, loss is not explicitly focused on as much in applied research, leaving the results produced to come across as more magical than it should be. In ML however, we are explicitly concerned with loss functions and, more specifically, evaluating loss on test data. This loss is evaluated over successive iterations of a particular technique, or averaged over several test sets via cross-validation. Typical loss functions are <em>Root Mean Squared Error</em> for numeric targets (essentially the same as for a standard linear model), and <em>cross-entropy</em> for categorical outcomes. There are robust alternatives, such as mean absolute error and hinge loss functions respectively, and many other options besides. You will come across others that might be used for specific scenarios.</p>
+<p>We discussed loss functions <a href="models.html#estimation">before</a>, and there was a reason I went more in depth there, mainly because I feel, unlike with ML, loss is not explicitly focused on as much in applied research, leaving the results produced to come across as more magical than it should be. In ML however, we are explicitly concerned with loss functions and, more specifically, evaluating loss on test data. This loss is evaluated over successive iterations of a particular technique, or averaged over several test sets via cross-validation. Typical loss functions are <em>Root Mean Squared Error</em> for numeric targets (essentially the same as for a standard linear model), and <em>cross-entropy</em> for categorical outcomes. There are robust alternatives, such as mean absolute error and hinge loss functions respectively, and many other options besides. You will come across others that might be used for specific scenarios.</p>
 <p>The following image, typically called a <em>learning curve</em>, shows an example of loss on a test set as a function of model complexity. In this case, models with more complexity perform better, but only to a point, before test error begins to rise again.</p>
 <p><img src="img/learningcurve.svg" width="50%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="bias-variance-tradeoff" class="section level3">
-<h3>Bias-variance Tradeoff</h3>
+<h3>Bias-variance tradeoff</h3>
 <p>Prediction error, i.e. loss, is composed of several sources. One part is <em>measurement error</em>, which we can’t do anything about, and two components of specific interest: <em>bias</em>, the difference in the observed value and our average predicted value, and <em>variance</em> how much that prediction would change had we trained on different data. More generally we can think of this as a problem of <em>underfitting</em> vs. <em>overfitting</em>. With a model that is too simple, we underfit, and bias is high. If we overfit, the model is too close to the training data, and likely will do poorly with new observations. ML techniques trade some increased bias for even greater reduced variance, which often means less overfitting to the training data, leading to increased performance on new data.</p>
-<p>In the following<a href="#fn38" class="footnote-ref" id="fnref38"><sup>38</sup></a>, the blue line represents models applied to training data, while the red line regards performance on the test set. We can see that for the data we train the model to, error will always go down with increased complexity. However, we can see that at some point, the test error will increase as we have started to overfit to the training data.</p>
+<p>In the following<a href="#fn39" class="footnote-ref" id="fnref39"><sup>39</sup></a>, the blue line represents models applied to training data, while the red line regards performance on the test set. We can see that for the data we train the model to, error will always go down with increased complexity. However, we can see that at some point, the test error will increase as we have started to overfit to the training data.</p>
 <p><img src="img/biasvar2.svg" width="50%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="regularization" class="section level3">
@@ -671,35 +716,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="cross-validation" class="section level3">
 <h3>Cross-validation</h3>
-<p><em>Cross-validation</em> is widely used for validation and/or testing. With validation, we are usually concerned with picking parameter settings for the model, while the testing is used for ultimate assessment of model performance. Conceptually there is nothing new beyond what was [discussed previously][Predictive performance] regarding holding out data for assessing predictive performance, we just do more of it.</p>
+<p><em>Cross-validation</em> is widely used for validation and/or testing. With validation, we are usually concerned with picking parameter settings for the model, while the testing is used for ultimate assessment of model performance. Conceptually there is nothing new beyond what was <a href="model_criticism.html#predictive-performance">discussed previously</a> regarding holding out data for assessing predictive performance, we just do more of it.</p>
 <p>As an example, let’s say we split our data into three parts. We use two parts (combined) as our training data, then the third part as test. At this point this is identical to our demonstration before. But then, we switch which part is test and which two are training, and do the whole thing over again. And finally once more, so that each of our three parts has taken a turn as a test set. Our estimated error is the average loss across the three times.</p>
 <p><img src="img/kfold.svg" width="50%" style="display: block; margin: auto;" /></p>
-<p>Typically we do it more than three times, usually 10, and there are fancier methods of <em>k-fold cross-validation</em>, though they typically don’t serve to add much value. In any case, let’s try it with our previous example. The following uses the <span class="pack" style="">tidymodels</span> approach to be consistent with early chapters use of the <span class="pack" style="">tidyverse</span><a href="#fn39" class="footnote-ref" id="fnref39"><sup>39</sup></a>. With it we can employ k-fold cross validation to evaluate the loss.</p>
-<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb469-1"><a href="ml.html#cb469-1"></a><span class="co"># install.packages(tidymodels)  # if needed</span></span>
-<span id="cb469-2"><a href="ml.html#cb469-2"></a><span class="kw">library</span>(tidymodels)  </span>
-<span id="cb469-3"><a href="ml.html#cb469-3"></a></span>
-<span id="cb469-4"><a href="ml.html#cb469-4"></a><span class="kw">load</span>(<span class="st">&#39;data/world_happiness.RData&#39;</span>)</span>
-<span id="cb469-5"><a href="ml.html#cb469-5"></a></span>
-<span id="cb469-6"><a href="ml.html#cb469-6"></a><span class="kw">set.seed</span>(<span class="dv">1212</span>)</span>
-<span id="cb469-7"><a href="ml.html#cb469-7"></a></span>
-<span id="cb469-8"><a href="ml.html#cb469-8"></a><span class="co"># specify the model</span></span>
-<span id="cb469-9"><a href="ml.html#cb469-9"></a>happy_base_spec =<span class="st"> </span><span class="kw">linear_reg</span>() <span class="op">%&gt;%</span></span>
-<span id="cb469-10"><a href="ml.html#cb469-10"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;lm&quot;</span>)</span>
-<span id="cb469-11"><a href="ml.html#cb469-11"></a></span>
-<span id="cb469-12"><a href="ml.html#cb469-12"></a><span class="co"># by default 10-folds</span></span>
-<span id="cb469-13"><a href="ml.html#cb469-13"></a>happy_folds =<span class="st"> </span><span class="kw">vfold_cv</span>(happy)</span>
-<span id="cb469-14"><a href="ml.html#cb469-14"></a></span>
-<span id="cb469-15"><a href="ml.html#cb469-15"></a><span class="kw">library</span>(tune)</span>
-<span id="cb469-16"><a href="ml.html#cb469-16"></a></span>
-<span id="cb469-17"><a href="ml.html#cb469-17"></a>happy_base_results =<span class="st"> </span><span class="kw">fit_resamples</span>(</span>
-<span id="cb469-18"><a href="ml.html#cb469-18"></a>  happy_base_spec,</span>
-<span id="cb469-19"><a href="ml.html#cb469-19"></a>  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita,</span>
-<span id="cb469-20"><a href="ml.html#cb469-20"></a>  happy_folds,</span>
-<span id="cb469-21"><a href="ml.html#cb469-21"></a>  <span class="dt">control =</span> <span class="kw">control_resamples</span>(<span class="dt">save_pred =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb469-22"><a href="ml.html#cb469-22"></a>)</span>
-<span id="cb469-23"><a href="ml.html#cb469-23"></a></span>
-<span id="cb469-24"><a href="ml.html#cb469-24"></a>cv_res =<span class="st"> </span>happy_base_results <span class="op">%&gt;%</span></span>
-<span id="cb469-25"><a href="ml.html#cb469-25"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span></code></pre></div>
+<p>Typically we do it more than three times, usually 10, and there are fancier methods of <em>k-fold cross-validation</em>, though they typically don’t serve to add much value. In any case, let’s try it with our previous example. The following uses the <span class="pack" style="">tidymodels</span> approach to be consistent with early chapters use of the <span class="pack" style="">tidyverse</span><a href="#fn40" class="footnote-ref" id="fnref40"><sup>40</sup></a>. With it we can employ k-fold cross validation to evaluate the loss.</p>
+<div class="sourceCode" id="cb502"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb502-1"><a href="ml.html#cb502-1"></a><span class="co"># install.packages(tidymodels)  # if needed</span></span>
+<span id="cb502-2"><a href="ml.html#cb502-2"></a><span class="kw">library</span>(tidymodels)  </span>
+<span id="cb502-3"><a href="ml.html#cb502-3"></a></span>
+<span id="cb502-4"><a href="ml.html#cb502-4"></a><span class="kw">load</span>(<span class="st">&#39;data/world_happiness.RData&#39;</span>)</span>
+<span id="cb502-5"><a href="ml.html#cb502-5"></a></span>
+<span id="cb502-6"><a href="ml.html#cb502-6"></a><span class="kw">set.seed</span>(<span class="dv">1212</span>)</span>
+<span id="cb502-7"><a href="ml.html#cb502-7"></a></span>
+<span id="cb502-8"><a href="ml.html#cb502-8"></a><span class="co"># specify the model</span></span>
+<span id="cb502-9"><a href="ml.html#cb502-9"></a>happy_base_spec =<span class="st"> </span><span class="kw">linear_reg</span>() <span class="op">%&gt;%</span></span>
+<span id="cb502-10"><a href="ml.html#cb502-10"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;lm&quot;</span>)</span>
+<span id="cb502-11"><a href="ml.html#cb502-11"></a></span>
+<span id="cb502-12"><a href="ml.html#cb502-12"></a><span class="co"># by default 10-folds</span></span>
+<span id="cb502-13"><a href="ml.html#cb502-13"></a>happy_folds =<span class="st"> </span><span class="kw">vfold_cv</span>(happy)</span>
+<span id="cb502-14"><a href="ml.html#cb502-14"></a></span>
+<span id="cb502-15"><a href="ml.html#cb502-15"></a><span class="kw">library</span>(tune)</span>
+<span id="cb502-16"><a href="ml.html#cb502-16"></a></span>
+<span id="cb502-17"><a href="ml.html#cb502-17"></a>happy_base_results =<span class="st"> </span><span class="kw">fit_resamples</span>(</span>
+<span id="cb502-18"><a href="ml.html#cb502-18"></a>  happy_base_spec,</span>
+<span id="cb502-19"><a href="ml.html#cb502-19"></a>  happiness_score <span class="op">~</span><span class="st"> </span>democratic_quality <span class="op">+</span><span class="st"> </span>generosity <span class="op">+</span><span class="st"> </span>log_gdp_per_capita,</span>
+<span id="cb502-20"><a href="ml.html#cb502-20"></a>  happy_folds,</span>
+<span id="cb502-21"><a href="ml.html#cb502-21"></a>  <span class="dt">control =</span> <span class="kw">control_resamples</span>(<span class="dt">save_pred =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb502-22"><a href="ml.html#cb502-22"></a>)</span>
+<span id="cb502-23"><a href="ml.html#cb502-23"></a></span>
+<span id="cb502-24"><a href="ml.html#cb502-24"></a>cv_res =<span class="st"> </span>happy_base_results <span class="op">%&gt;%</span></span>
+<span id="cb502-25"><a href="ml.html#cb502-25"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -759,9 +804,9 @@ standard
 </table>
 <p>We now see that our average test error is 0.629. It also gives the average R2.</p>
 </div>
-<div id="optimization" class="section level3">
+<div id="optimization-1" class="section level3">
 <h3>Optimization</h3>
-<p>With ML, much more attention is paid to different optimizers, but the vast majority for deep learning and other many other methods are some flavor of <em>stochastic gradient descent</em>. Often due to the sheer volume of data/parameters, this optimization is done on chunks of the data and in parallel. In general, some optimization approaches may work better in some situations or for some models, where ‘better’ means quicker convergence, or perhaps a smoother ride toward convergence. It is not the case that you would come to incorrect conclusions using one method vs. another per se, just that you might reach those conclusions in a more efficient fashion. The following graphic displays SGD versus several variants<a href="#fn40" class="footnote-ref" id="fnref40"><sup>40</sup></a>. The x and y axes represent the potential values two parameters might take, with the best selection of those values based on a loss function somewhere toward the bottom right. We can see that they all would get there eventually, but some might do so more quickly. This may or may not be the case for some other data situation.</p>
+<p>With ML, much more attention is paid to different optimizers, but the vast majority for deep learning and other many other methods are some flavor of <em>stochastic gradient descent</em>. Often due to the sheer volume of data/parameters, this optimization is done on chunks of the data and in parallel. In general, some optimization approaches may work better in some situations or for some models, where ‘better’ means quicker convergence, or perhaps a smoother ride toward convergence. It is not the case that you would come to incorrect conclusions using one method vs. another per se, just that you might reach those conclusions in a more efficient fashion. The following graphic displays SGD versus several variants<a href="#fn41" class="footnote-ref" id="fnref41"><sup>41</sup></a>. The x and y axes represent the potential values two parameters might take, with the best selection of those values based on a loss function somewhere toward the bottom right. We can see that they all would get there eventually, but some might do so more quickly. This may or may not be the case for some other data situation.</p>
 <p><img src="img/opt_vis_rad.gif" width="50%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="tuning-parameters" class="section level3">
@@ -783,34 +828,34 @@ standard
 <p><span class="math display">\[\mathcal{Loss} = \Sigma(y - \hat{y})^2 + \lambda\cdot\Sigma\beta^2\]</span>
 In the above, this is the same squared error loss function as before, but we add a penalty that is based on the size of the coefficients. So, while initially our loss goes down with some set of estimates, the penalty based on their size might be such that the estimated loss actually increases. This has the effect of shrinking the estimates toward zero. Well, <a href="https://stats.stackexchange.com/questions/179864/why-does-shrinkage-work">why would we want that</a>? This introduces <a href="https://stats.stackexchange.com/questions/207760/when-is-a-biased-estimator-preferable-to-unbiased-one">bias in the coefficients</a>, but the end result is a model that will do better on test set prediction, which is the goal of the ML approach. The way this works regards the bias-variance tradeoff we discussed previously.</p>
 <p>The following demonstrates regularized regression using the <span class="pack" style="">glmnet</span> package. It actually uses <em>elastic net</em>, which has a mixture of two penalties, one of which is the squared sum of coefficients (typically called <em>ridge regression</em>) and the other is the sum of their absolute values (the so-called <em>lasso</em>).</p>
-<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="ml.html#cb470-1"></a><span class="kw">library</span>(tidymodels)</span>
-<span id="cb470-2"><a href="ml.html#cb470-2"></a></span>
-<span id="cb470-3"><a href="ml.html#cb470-3"></a>happy_prepped =<span class="st"> </span>happy <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb470-4"><a href="ml.html#cb470-4"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>country, <span class="op">-</span>gini_index_world_bank_estimate, <span class="op">-</span>dystopia_residual) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb470-5"><a href="ml.html#cb470-5"></a><span class="st">  </span><span class="kw">recipe</span>(happiness_score <span class="op">~</span><span class="st"> </span>.) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb470-6"><a href="ml.html#cb470-6"></a><span class="st">  </span><span class="kw">step_scale</span>(<span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb470-7"><a href="ml.html#cb470-7"></a><span class="st">  </span><span class="kw">step_naomit</span>(happiness_score) <span class="op">%&gt;%</span></span>
-<span id="cb470-8"><a href="ml.html#cb470-8"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb470-9"><a href="ml.html#cb470-9"></a><span class="st">  </span><span class="kw">bake</span>(happy) </span>
-<span id="cb470-10"><a href="ml.html#cb470-10"></a></span>
-<span id="cb470-11"><a href="ml.html#cb470-11"></a>happy_folds =<span class="st"> </span>happy_prepped <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb470-12"><a href="ml.html#cb470-12"></a><span class="st">  </span><span class="kw">drop_na</span>() <span class="op">%&gt;%</span></span>
-<span id="cb470-13"><a href="ml.html#cb470-13"></a><span class="st">  </span><span class="kw">vfold_cv</span>() </span>
-<span id="cb470-14"><a href="ml.html#cb470-14"></a></span>
-<span id="cb470-15"><a href="ml.html#cb470-15"></a><span class="kw">library</span>(tune)</span>
-<span id="cb470-16"><a href="ml.html#cb470-16"></a></span>
-<span id="cb470-17"><a href="ml.html#cb470-17"></a>happy_regLM_spec =<span class="st"> </span><span class="kw">linear_reg</span>(<span class="dt">penalty =</span> <span class="fl">1e-3</span>, <span class="dt">mixture =</span> <span class="fl">.5</span>) <span class="op">%&gt;%</span></span>
-<span id="cb470-18"><a href="ml.html#cb470-18"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;glmnet&quot;</span>)</span>
-<span id="cb470-19"><a href="ml.html#cb470-19"></a></span>
-<span id="cb470-20"><a href="ml.html#cb470-20"></a>happy_regLM_results =<span class="st"> </span><span class="kw">fit_resamples</span>(</span>
-<span id="cb470-21"><a href="ml.html#cb470-21"></a>  happy_regLM_spec,</span>
-<span id="cb470-22"><a href="ml.html#cb470-22"></a>  happiness_score <span class="op">~</span><span class="st"> </span>.,</span>
-<span id="cb470-23"><a href="ml.html#cb470-23"></a>  happy_folds,</span>
-<span id="cb470-24"><a href="ml.html#cb470-24"></a>  <span class="dt">control =</span> <span class="kw">control_resamples</span>(<span class="dt">save_pred =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb470-25"><a href="ml.html#cb470-25"></a>)</span>
-<span id="cb470-26"><a href="ml.html#cb470-26"></a></span>
-<span id="cb470-27"><a href="ml.html#cb470-27"></a>cv_regLM_res =<span class="st"> </span>happy_regLM_results <span class="op">%&gt;%</span></span>
-<span id="cb470-28"><a href="ml.html#cb470-28"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb503"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb503-1"><a href="ml.html#cb503-1"></a><span class="kw">library</span>(tidymodels)</span>
+<span id="cb503-2"><a href="ml.html#cb503-2"></a></span>
+<span id="cb503-3"><a href="ml.html#cb503-3"></a>happy_prepped =<span class="st"> </span>happy <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb503-4"><a href="ml.html#cb503-4"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>country, <span class="op">-</span>gini_index_world_bank_estimate, <span class="op">-</span>dystopia_residual) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb503-5"><a href="ml.html#cb503-5"></a><span class="st">  </span><span class="kw">recipe</span>(happiness_score <span class="op">~</span><span class="st"> </span>.) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb503-6"><a href="ml.html#cb503-6"></a><span class="st">  </span><span class="kw">step_scale</span>(<span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb503-7"><a href="ml.html#cb503-7"></a><span class="st">  </span><span class="kw">step_naomit</span>(happiness_score) <span class="op">%&gt;%</span></span>
+<span id="cb503-8"><a href="ml.html#cb503-8"></a><span class="st">  </span><span class="kw">prep</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb503-9"><a href="ml.html#cb503-9"></a><span class="st">  </span><span class="kw">bake</span>(happy) </span>
+<span id="cb503-10"><a href="ml.html#cb503-10"></a></span>
+<span id="cb503-11"><a href="ml.html#cb503-11"></a>happy_folds =<span class="st"> </span>happy_prepped <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb503-12"><a href="ml.html#cb503-12"></a><span class="st">  </span><span class="kw">drop_na</span>() <span class="op">%&gt;%</span></span>
+<span id="cb503-13"><a href="ml.html#cb503-13"></a><span class="st">  </span><span class="kw">vfold_cv</span>() </span>
+<span id="cb503-14"><a href="ml.html#cb503-14"></a></span>
+<span id="cb503-15"><a href="ml.html#cb503-15"></a><span class="kw">library</span>(tune)</span>
+<span id="cb503-16"><a href="ml.html#cb503-16"></a></span>
+<span id="cb503-17"><a href="ml.html#cb503-17"></a>happy_regLM_spec =<span class="st"> </span><span class="kw">linear_reg</span>(<span class="dt">penalty =</span> <span class="fl">1e-3</span>, <span class="dt">mixture =</span> <span class="fl">.5</span>) <span class="op">%&gt;%</span></span>
+<span id="cb503-18"><a href="ml.html#cb503-18"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;glmnet&quot;</span>)</span>
+<span id="cb503-19"><a href="ml.html#cb503-19"></a></span>
+<span id="cb503-20"><a href="ml.html#cb503-20"></a>happy_regLM_results =<span class="st"> </span><span class="kw">fit_resamples</span>(</span>
+<span id="cb503-21"><a href="ml.html#cb503-21"></a>  happy_regLM_spec,</span>
+<span id="cb503-22"><a href="ml.html#cb503-22"></a>  happiness_score <span class="op">~</span><span class="st"> </span>.,</span>
+<span id="cb503-23"><a href="ml.html#cb503-23"></a>  happy_folds,</span>
+<span id="cb503-24"><a href="ml.html#cb503-24"></a>  <span class="dt">control =</span> <span class="kw">control_resamples</span>(<span class="dt">save_pred =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb503-25"><a href="ml.html#cb503-25"></a>)</span>
+<span id="cb503-26"><a href="ml.html#cb503-26"></a></span>
+<span id="cb503-27"><a href="ml.html#cb503-27"></a>cv_regLM_res =<span class="st"> </span>happy_regLM_results <span class="op">%&gt;%</span></span>
+<span id="cb503-28"><a href="ml.html#cb503-28"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -868,76 +913,76 @@ standard
 </tr>
 </tbody>
 </table>
-<div id="tuning-parameters-1" class="section level4">
-<h4>Tuning parameters</h4>
+<div id="tuning-parameters-for-regularized-regression" class="section level4">
+<h4>Tuning parameters for regularized regression</h4>
 <p>For the previous model setting, we wouldn’t know what the penalty or the mixing parameter should be. This is where we can use cross validation to choose those. We’ll redo our model spec, create a set of values to search over, and pass that to the tuning function for cross-validation. Our ultimate model will then be applied to the test data.</p>
 <p>First we create our training-test split.</p>
-<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb471-1"><a href="ml.html#cb471-1"></a><span class="co"># removing some variables with lots of missing values</span></span>
-<span id="cb471-2"><a href="ml.html#cb471-2"></a>happy_split =<span class="st"> </span>happy <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb471-3"><a href="ml.html#cb471-3"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>country, <span class="op">-</span>gini_index_world_bank_estimate, <span class="op">-</span>dystopia_residual) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb471-4"><a href="ml.html#cb471-4"></a><span class="st">  </span><span class="kw">initial_split</span>(<span class="dt">prop =</span> <span class="fl">0.75</span>)</span>
-<span id="cb471-5"><a href="ml.html#cb471-5"></a></span>
-<span id="cb471-6"><a href="ml.html#cb471-6"></a>happy_train =<span class="st"> </span><span class="kw">training</span>(happy_split)</span>
-<span id="cb471-7"><a href="ml.html#cb471-7"></a>happy_test  =<span class="st"> </span><span class="kw">testing</span>(happy_split)</span></code></pre></div>
+<div class="sourceCode" id="cb504"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb504-1"><a href="ml.html#cb504-1"></a><span class="co"># removing some variables with lots of missing values</span></span>
+<span id="cb504-2"><a href="ml.html#cb504-2"></a>happy_split =<span class="st"> </span>happy <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb504-3"><a href="ml.html#cb504-3"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>country, <span class="op">-</span>gini_index_world_bank_estimate, <span class="op">-</span>dystopia_residual) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb504-4"><a href="ml.html#cb504-4"></a><span class="st">  </span><span class="kw">initial_split</span>(<span class="dt">prop =</span> <span class="fl">0.75</span>)</span>
+<span id="cb504-5"><a href="ml.html#cb504-5"></a></span>
+<span id="cb504-6"><a href="ml.html#cb504-6"></a>happy_train =<span class="st"> </span><span class="kw">training</span>(happy_split)</span>
+<span id="cb504-7"><a href="ml.html#cb504-7"></a>happy_test  =<span class="st"> </span><span class="kw">testing</span>(happy_split)</span></code></pre></div>
 <p>Next we process the data. This is all specific to the <span class="pack" style="">tidymodels</span> approach.</p>
-<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="ml.html#cb472-1"></a>happy_prepped =<span class="st"> </span>happy_train <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb472-2"><a href="ml.html#cb472-2"></a><span class="st">  </span><span class="kw">recipe</span>(happiness_score <span class="op">~</span><span class="st"> </span>.) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb472-3"><a href="ml.html#cb472-3"></a><span class="st">  </span><span class="kw">step_knnimpute</span>(<span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st">    </span><span class="co"># impute missing values</span></span>
-<span id="cb472-4"><a href="ml.html#cb472-4"></a><span class="st">  </span><span class="kw">step_center</span>(<span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># standardize</span></span>
-<span id="cb472-5"><a href="ml.html#cb472-5"></a><span class="st">  </span><span class="kw">step_scale</span>(<span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st">        </span><span class="co"># standardize</span></span>
-<span id="cb472-6"><a href="ml.html#cb472-6"></a><span class="st">  </span><span class="kw">prep</span>()                              <span class="co"># prepare for other uses</span></span>
-<span id="cb472-7"><a href="ml.html#cb472-7"></a></span>
-<span id="cb472-8"><a href="ml.html#cb472-8"></a>happy_test_normalized &lt;-<span class="st"> </span><span class="kw">bake</span>(happy_prepped, <span class="dt">new_data =</span> happy_test, <span class="kw">everything</span>())</span>
-<span id="cb472-9"><a href="ml.html#cb472-9"></a></span>
-<span id="cb472-10"><a href="ml.html#cb472-10"></a>happy_folds =<span class="st"> </span>happy_prepped <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb472-11"><a href="ml.html#cb472-11"></a><span class="st">  </span><span class="kw">bake</span>(happy) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb472-12"><a href="ml.html#cb472-12"></a><span class="st">  </span><span class="kw">vfold_cv</span>() </span>
-<span id="cb472-13"><a href="ml.html#cb472-13"></a></span>
-<span id="cb472-14"><a href="ml.html#cb472-14"></a><span class="co"># now we are indicating we don&#39;t know the value to place</span></span>
-<span id="cb472-15"><a href="ml.html#cb472-15"></a>happy_regLM_spec =<span class="st"> </span><span class="kw">linear_reg</span>(<span class="dt">penalty =</span> <span class="kw">tune</span>(), <span class="dt">mixture =</span> <span class="kw">tune</span>()) <span class="op">%&gt;%</span></span>
-<span id="cb472-16"><a href="ml.html#cb472-16"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;glmnet&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb505"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb505-1"><a href="ml.html#cb505-1"></a>happy_prepped =<span class="st"> </span>happy_train <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb505-2"><a href="ml.html#cb505-2"></a><span class="st">  </span><span class="kw">recipe</span>(happiness_score <span class="op">~</span><span class="st"> </span>.) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb505-3"><a href="ml.html#cb505-3"></a><span class="st">  </span><span class="kw">step_knnimpute</span>(<span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st">    </span><span class="co"># impute missing values</span></span>
+<span id="cb505-4"><a href="ml.html#cb505-4"></a><span class="st">  </span><span class="kw">step_center</span>(<span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># standardize</span></span>
+<span id="cb505-5"><a href="ml.html#cb505-5"></a><span class="st">  </span><span class="kw">step_scale</span>(<span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st">        </span><span class="co"># standardize</span></span>
+<span id="cb505-6"><a href="ml.html#cb505-6"></a><span class="st">  </span><span class="kw">prep</span>()                              <span class="co"># prepare for other uses</span></span>
+<span id="cb505-7"><a href="ml.html#cb505-7"></a></span>
+<span id="cb505-8"><a href="ml.html#cb505-8"></a>happy_test_normalized &lt;-<span class="st"> </span><span class="kw">bake</span>(happy_prepped, <span class="dt">new_data =</span> happy_test, <span class="kw">everything</span>())</span>
+<span id="cb505-9"><a href="ml.html#cb505-9"></a></span>
+<span id="cb505-10"><a href="ml.html#cb505-10"></a>happy_folds =<span class="st"> </span>happy_prepped <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb505-11"><a href="ml.html#cb505-11"></a><span class="st">  </span><span class="kw">bake</span>(happy) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb505-12"><a href="ml.html#cb505-12"></a><span class="st">  </span><span class="kw">vfold_cv</span>() </span>
+<span id="cb505-13"><a href="ml.html#cb505-13"></a></span>
+<span id="cb505-14"><a href="ml.html#cb505-14"></a><span class="co"># now we are indicating we don&#39;t know the value to place</span></span>
+<span id="cb505-15"><a href="ml.html#cb505-15"></a>happy_regLM_spec =<span class="st"> </span><span class="kw">linear_reg</span>(<span class="dt">penalty =</span> <span class="kw">tune</span>(), <span class="dt">mixture =</span> <span class="kw">tune</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb505-16"><a href="ml.html#cb505-16"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;glmnet&quot;</span>)</span></code></pre></div>
 <p>Now, we need to create a set of values (grid) to try an test. In this case we set the penalty parameter from near zero to near 1, and the mixture parameter a range of values from 0 (ridge regression) to 1 (lasso).</p>
-<div class="sourceCode" id="cb473"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb473-1"><a href="ml.html#cb473-1"></a>grid_search =<span class="st"> </span><span class="kw">expand_grid</span>(</span>
-<span id="cb473-2"><a href="ml.html#cb473-2"></a>  <span class="dt">penalty =</span> <span class="kw">exp</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">4</span>, <span class="fl">-.25</span>, <span class="dt">length.out =</span> <span class="dv">10</span>)),</span>
-<span id="cb473-3"><a href="ml.html#cb473-3"></a>  <span class="dt">mixture =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">length.out =</span> <span class="dv">10</span>)</span>
-<span id="cb473-4"><a href="ml.html#cb473-4"></a>)</span>
-<span id="cb473-5"><a href="ml.html#cb473-5"></a></span>
-<span id="cb473-6"><a href="ml.html#cb473-6"></a>regLM_tune =<span class="st"> </span><span class="kw">tune_grid</span>(</span>
-<span id="cb473-7"><a href="ml.html#cb473-7"></a>  happy_prepped,</span>
-<span id="cb473-8"><a href="ml.html#cb473-8"></a>  <span class="dt">model =</span> happy_regLM_spec,</span>
-<span id="cb473-9"><a href="ml.html#cb473-9"></a>  <span class="dt">resamples =</span> happy_folds,</span>
-<span id="cb473-10"><a href="ml.html#cb473-10"></a>  <span class="dt">grid =</span> grid_search</span>
-<span id="cb473-11"><a href="ml.html#cb473-11"></a>)</span>
-<span id="cb473-12"><a href="ml.html#cb473-12"></a></span>
-<span id="cb473-13"><a href="ml.html#cb473-13"></a><span class="kw">autoplot</span>(regLM_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">se =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb506"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb506-1"><a href="ml.html#cb506-1"></a>grid_search =<span class="st"> </span><span class="kw">expand_grid</span>(</span>
+<span id="cb506-2"><a href="ml.html#cb506-2"></a>  <span class="dt">penalty =</span> <span class="kw">exp</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">4</span>, <span class="fl">-.25</span>, <span class="dt">length.out =</span> <span class="dv">10</span>)),</span>
+<span id="cb506-3"><a href="ml.html#cb506-3"></a>  <span class="dt">mixture =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">length.out =</span> <span class="dv">10</span>)</span>
+<span id="cb506-4"><a href="ml.html#cb506-4"></a>)</span>
+<span id="cb506-5"><a href="ml.html#cb506-5"></a></span>
+<span id="cb506-6"><a href="ml.html#cb506-6"></a>regLM_tune =<span class="st"> </span><span class="kw">tune_grid</span>(</span>
+<span id="cb506-7"><a href="ml.html#cb506-7"></a>  happy_prepped,</span>
+<span id="cb506-8"><a href="ml.html#cb506-8"></a>  <span class="dt">model =</span> happy_regLM_spec,</span>
+<span id="cb506-9"><a href="ml.html#cb506-9"></a>  <span class="dt">resamples =</span> happy_folds,</span>
+<span id="cb506-10"><a href="ml.html#cb506-10"></a>  <span class="dt">grid =</span> grid_search</span>
+<span id="cb506-11"><a href="ml.html#cb506-11"></a>)</span>
+<span id="cb506-12"><a href="ml.html#cb506-12"></a></span>
+<span id="cb506-13"><a href="ml.html#cb506-13"></a><span class="kw">autoplot</span>(regLM_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">se =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/regLM-tune-model-1.svg" width="75%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="ml.html#cb474-1"></a>best =<span class="st"> </span><span class="kw">show_best</span>(regLM_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>, <span class="dt">maximize =</span> <span class="ot">FALSE</span>, <span class="dt">n =</span> <span class="dv">1</span>) <span class="co"># we want to minimize rmse</span></span>
-<span id="cb474-2"><a href="ml.html#cb474-2"></a></span>
-<span id="cb474-3"><a href="ml.html#cb474-3"></a>best</span></code></pre></div>
+<div class="sourceCode" id="cb507"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb507-1"><a href="ml.html#cb507-1"></a>best =<span class="st"> </span><span class="kw">show_best</span>(regLM_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>, <span class="dt">maximize =</span> <span class="ot">FALSE</span>, <span class="dt">n =</span> <span class="dv">1</span>) <span class="co"># we want to minimize rmse</span></span>
+<span id="cb507-2"><a href="ml.html#cb507-2"></a></span>
+<span id="cb507-3"><a href="ml.html#cb507-3"></a>best</span></code></pre></div>
 <pre><code># A tibble: 1 x 7
   penalty mixture .metric .estimator  mean     n std_err
     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
 1  0.0183   0.111 rmse    standard   0.288    10 0.00686</code></pre>
 <p>The results suggest a more ridge type mixture and smaller penalty tends to work better, and this is more or less in keeping with the ‘best’ model. Here is a plot where size indicates RMSE (smaller better) but only for RMSE &lt; .5 (slight jitter added).</p>
 <p>With the ‘best’ model selected, we can refit to the training data with the parameters in hand. We can then do our usual performance assessment with the test set.</p>
-<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="ml.html#cb476-1"></a><span class="co"># for technical reasons, only mixture is passed to the model; see https://github.com/tidymodels/parsnip/issues/215</span></span>
-<span id="cb476-2"><a href="ml.html#cb476-2"></a>tuned_model =<span class="st"> </span><span class="kw">linear_reg</span>(<span class="dt">penalty =</span> best<span class="op">$</span>penalty, <span class="dt">mixture =</span> best<span class="op">$</span>mixture) <span class="op">%&gt;%</span></span>
-<span id="cb476-3"><a href="ml.html#cb476-3"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;glmnet&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb476-4"><a href="ml.html#cb476-4"></a><span class="st">  </span><span class="kw">fit</span>(happiness_score <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> <span class="kw">juice</span>(happy_prepped))</span>
-<span id="cb476-5"><a href="ml.html#cb476-5"></a></span>
-<span id="cb476-6"><a href="ml.html#cb476-6"></a>test_predictions =<span class="st"> </span><span class="kw">predict</span>(tuned_model, <span class="dt">new_data =</span> happy_test_normalized)</span>
-<span id="cb476-7"><a href="ml.html#cb476-7"></a></span>
-<span id="cb476-8"><a href="ml.html#cb476-8"></a>rmse =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rmse</span>(</span>
-<span id="cb476-9"><a href="ml.html#cb476-9"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, happy_test_normalized),</span>
-<span id="cb476-10"><a href="ml.html#cb476-10"></a>  <span class="dt">truth =</span> happiness_score,</span>
-<span id="cb476-11"><a href="ml.html#cb476-11"></a>  <span class="dt">estimate =</span> .pred</span>
-<span id="cb476-12"><a href="ml.html#cb476-12"></a>)</span>
-<span id="cb476-13"><a href="ml.html#cb476-13"></a></span>
-<span id="cb476-14"><a href="ml.html#cb476-14"></a>rsq =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rsq</span>(</span>
-<span id="cb476-15"><a href="ml.html#cb476-15"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, happy_test_normalized),</span>
-<span id="cb476-16"><a href="ml.html#cb476-16"></a>  <span class="dt">truth =</span> happiness_score,</span>
-<span id="cb476-17"><a href="ml.html#cb476-17"></a>  <span class="dt">estimate =</span> .pred</span>
-<span id="cb476-18"><a href="ml.html#cb476-18"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb509"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb509-1"><a href="ml.html#cb509-1"></a><span class="co"># for technical reasons, only mixture is passed to the model; see https://github.com/tidymodels/parsnip/issues/215</span></span>
+<span id="cb509-2"><a href="ml.html#cb509-2"></a>tuned_model =<span class="st"> </span><span class="kw">linear_reg</span>(<span class="dt">penalty =</span> best<span class="op">$</span>penalty, <span class="dt">mixture =</span> best<span class="op">$</span>mixture) <span class="op">%&gt;%</span></span>
+<span id="cb509-3"><a href="ml.html#cb509-3"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;glmnet&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb509-4"><a href="ml.html#cb509-4"></a><span class="st">  </span><span class="kw">fit</span>(happiness_score <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> <span class="kw">juice</span>(happy_prepped))</span>
+<span id="cb509-5"><a href="ml.html#cb509-5"></a></span>
+<span id="cb509-6"><a href="ml.html#cb509-6"></a>test_predictions =<span class="st"> </span><span class="kw">predict</span>(tuned_model, <span class="dt">new_data =</span> happy_test_normalized)</span>
+<span id="cb509-7"><a href="ml.html#cb509-7"></a></span>
+<span id="cb509-8"><a href="ml.html#cb509-8"></a>rmse =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rmse</span>(</span>
+<span id="cb509-9"><a href="ml.html#cb509-9"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, happy_test_normalized),</span>
+<span id="cb509-10"><a href="ml.html#cb509-10"></a>  <span class="dt">truth =</span> happiness_score,</span>
+<span id="cb509-11"><a href="ml.html#cb509-11"></a>  <span class="dt">estimate =</span> .pred</span>
+<span id="cb509-12"><a href="ml.html#cb509-12"></a>)</span>
+<span id="cb509-13"><a href="ml.html#cb509-13"></a></span>
+<span id="cb509-14"><a href="ml.html#cb509-14"></a>rsq =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rsq</span>(</span>
+<span id="cb509-15"><a href="ml.html#cb509-15"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, happy_test_normalized),</span>
+<span id="cb509-16"><a href="ml.html#cb509-16"></a>  <span class="dt">truth =</span> happiness_score,</span>
+<span id="cb509-17"><a href="ml.html#cb509-17"></a>  <span class="dt">estimate =</span> .pred</span>
+<span id="cb509-18"><a href="ml.html#cb509-18"></a>)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -981,23 +1026,23 @@ standard
 </div>
 </div>
 <div id="random-forests" class="section level3">
-<h3>Random Forests</h3>
+<h3>Random forests</h3>
 <p>A limitation of standard linear models, especially with many input variables, is that there’s not a real automatic way to incorporate interactions and nonlinearities. So we often will want to use techniques that do so. To understand <em>random forests</em> and similar techniques (boosted trees, etc.), we can start with a simple decision tree. To begin, for a single input variable (<code>X1</code>) whose range might be 1 to 10, we find that a cut at 5.75 results in the best classification, such that if all observations greater than or equal to 5.75 are classified as positive, and the rest negative. This general approach is fairly straightforward and conceptually easy to grasp, and it is because of this that tree approaches are appealing.</p>
 <p>Now let’s add a second input (<code>X2</code>), also on a 1 to 10 range. We now might find that even better classification results if, upon looking at the portion of data regarding those greater than or equal to 5.75, that we only classify positive if they are also less than 3 on the second variable. The following is a hypothetical tree reflecting this.</p>
 <p><img src="img/tree1.png" width="25%" style="display: block; margin: auto;" /></p>
 <p>This tree structure allows for both interactions between variables, and nonlinear relationships between some input and the target variable (e.g. the second branch could just be the same <code>X1</code> but with some cut value greater than 5.75). Random forests randomly select a few from the available input variables, and create a tree that minimizes (maximizes) some loss (objective) function on a validation set. A given tree can potentially be very wide/deep, but instead of just one tree, we now do, say, 1000 trees. A final prediction is made based on the average across all trees.</p>
 <p>We demonstrate the random forest using the ranger package. We initially don’t do any tuning here, but do note that the number of variables to randomly select (<code>mtry</code> below), the number of total trees, the tree depth - all of these are potential tuning parameters to investigate in the model building process.</p>
-<div class="sourceCode" id="cb477"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb477-1"><a href="ml.html#cb477-1"></a>happy_rf_spec =<span class="st"> </span><span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>, <span class="dt">mtry =</span> <span class="dv">6</span>) <span class="op">%&gt;%</span></span>
-<span id="cb477-2"><a href="ml.html#cb477-2"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;ranger&quot;</span>)</span>
-<span id="cb477-3"><a href="ml.html#cb477-3"></a></span>
-<span id="cb477-4"><a href="ml.html#cb477-4"></a>happy_rf_results =<span class="st"> </span><span class="kw">fit_resamples</span>(</span>
-<span id="cb477-5"><a href="ml.html#cb477-5"></a>  happy_rf_spec,</span>
-<span id="cb477-6"><a href="ml.html#cb477-6"></a>  happiness_score <span class="op">~</span><span class="st"> </span>.,</span>
-<span id="cb477-7"><a href="ml.html#cb477-7"></a>  happy_folds</span>
-<span id="cb477-8"><a href="ml.html#cb477-8"></a>)</span>
-<span id="cb477-9"><a href="ml.html#cb477-9"></a></span>
-<span id="cb477-10"><a href="ml.html#cb477-10"></a>cv_rf_res =<span class="st"> </span>happy_rf_results <span class="op">%&gt;%</span></span>
-<span id="cb477-11"><a href="ml.html#cb477-11"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb510"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb510-1"><a href="ml.html#cb510-1"></a>happy_rf_spec =<span class="st"> </span><span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>, <span class="dt">mtry =</span> <span class="dv">6</span>) <span class="op">%&gt;%</span></span>
+<span id="cb510-2"><a href="ml.html#cb510-2"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;ranger&quot;</span>)</span>
+<span id="cb510-3"><a href="ml.html#cb510-3"></a></span>
+<span id="cb510-4"><a href="ml.html#cb510-4"></a>happy_rf_results =<span class="st"> </span><span class="kw">fit_resamples</span>(</span>
+<span id="cb510-5"><a href="ml.html#cb510-5"></a>  happy_rf_spec,</span>
+<span id="cb510-6"><a href="ml.html#cb510-6"></a>  happiness_score <span class="op">~</span><span class="st"> </span>.,</span>
+<span id="cb510-7"><a href="ml.html#cb510-7"></a>  happy_folds</span>
+<span id="cb510-8"><a href="ml.html#cb510-8"></a>)</span>
+<span id="cb510-9"><a href="ml.html#cb510-9"></a></span>
+<span id="cb510-10"><a href="ml.html#cb510-10"></a>cv_rf_res =<span class="st"> </span>happy_rf_results <span class="op">%&gt;%</span></span>
+<span id="cb510-11"><a href="ml.html#cb510-11"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -1056,54 +1101,54 @@ standard
 </tbody>
 </table>
 <p>It would appear we’re doing a bit better than the regularized regression.</p>
-<div id="tuning-parameters-2" class="section level4">
-<h4>Tuning parameters</h4>
+<div id="tuning-parameters-for-random-forests" class="section level4">
+<h4>Tuning parameters for random forests</h4>
 <p>As mentioned, we’d have a few tuning parameters to play around with. We’ll tune the number of predictors to randomly select per tree, as well as the minimum sample size for each leaf. The following takes the same appraoch as with the regularized regression model. Note that this will take a while (several minutes).</p>
-<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb478-1"><a href="ml.html#cb478-1"></a>grid_search =<span class="st"> </span><span class="kw">expand.grid</span>(</span>
-<span id="cb478-2"><a href="ml.html#cb478-2"></a>  <span class="dt">mtry =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="kw">ncol</span>(happy_train)<span class="op">-</span><span class="dv">1</span>),  <span class="co"># up to total number of predictors </span></span>
-<span id="cb478-3"><a href="ml.html#cb478-3"></a>  <span class="dt">min_n =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">10</span>)</span>
-<span id="cb478-4"><a href="ml.html#cb478-4"></a>)</span>
-<span id="cb478-5"><a href="ml.html#cb478-5"></a></span>
-<span id="cb478-6"><a href="ml.html#cb478-6"></a>happy_rf_spec =<span class="st"> </span><span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>,</span>
-<span id="cb478-7"><a href="ml.html#cb478-7"></a>                            <span class="dt">mtry =</span> <span class="kw">tune</span>(),</span>
-<span id="cb478-8"><a href="ml.html#cb478-8"></a>                            <span class="dt">min_n =</span> <span class="kw">tune</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb478-9"><a href="ml.html#cb478-9"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;ranger&quot;</span>)</span>
-<span id="cb478-10"><a href="ml.html#cb478-10"></a></span>
-<span id="cb478-11"><a href="ml.html#cb478-11"></a>rf_tune =<span class="st"> </span><span class="kw">tune_grid</span>(</span>
-<span id="cb478-12"><a href="ml.html#cb478-12"></a>  happy_prepped,</span>
-<span id="cb478-13"><a href="ml.html#cb478-13"></a>  <span class="dt">model =</span> happy_rf_spec,</span>
-<span id="cb478-14"><a href="ml.html#cb478-14"></a>  <span class="dt">resamples =</span> happy_folds,</span>
-<span id="cb478-15"><a href="ml.html#cb478-15"></a>  <span class="dt">grid =</span> grid_search</span>
-<span id="cb478-16"><a href="ml.html#cb478-16"></a>)</span>
-<span id="cb478-17"><a href="ml.html#cb478-17"></a></span>
-<span id="cb478-18"><a href="ml.html#cb478-18"></a><span class="kw">autoplot</span>(rf_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb511"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb511-1"><a href="ml.html#cb511-1"></a>grid_search =<span class="st"> </span><span class="kw">expand.grid</span>(</span>
+<span id="cb511-2"><a href="ml.html#cb511-2"></a>  <span class="dt">mtry =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="kw">ncol</span>(happy_train)<span class="op">-</span><span class="dv">1</span>),  <span class="co"># up to total number of predictors </span></span>
+<span id="cb511-3"><a href="ml.html#cb511-3"></a>  <span class="dt">min_n =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">10</span>)</span>
+<span id="cb511-4"><a href="ml.html#cb511-4"></a>)</span>
+<span id="cb511-5"><a href="ml.html#cb511-5"></a></span>
+<span id="cb511-6"><a href="ml.html#cb511-6"></a>happy_rf_spec =<span class="st"> </span><span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>,</span>
+<span id="cb511-7"><a href="ml.html#cb511-7"></a>                            <span class="dt">mtry =</span> <span class="kw">tune</span>(),</span>
+<span id="cb511-8"><a href="ml.html#cb511-8"></a>                            <span class="dt">min_n =</span> <span class="kw">tune</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb511-9"><a href="ml.html#cb511-9"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;ranger&quot;</span>)</span>
+<span id="cb511-10"><a href="ml.html#cb511-10"></a></span>
+<span id="cb511-11"><a href="ml.html#cb511-11"></a>rf_tune =<span class="st"> </span><span class="kw">tune_grid</span>(</span>
+<span id="cb511-12"><a href="ml.html#cb511-12"></a>  happy_prepped,</span>
+<span id="cb511-13"><a href="ml.html#cb511-13"></a>  <span class="dt">model =</span> happy_rf_spec,</span>
+<span id="cb511-14"><a href="ml.html#cb511-14"></a>  <span class="dt">resamples =</span> happy_folds,</span>
+<span id="cb511-15"><a href="ml.html#cb511-15"></a>  <span class="dt">grid =</span> grid_search</span>
+<span id="cb511-16"><a href="ml.html#cb511-16"></a>)</span>
+<span id="cb511-17"><a href="ml.html#cb511-17"></a></span>
+<span id="cb511-18"><a href="ml.html#cb511-18"></a><span class="kw">autoplot</span>(rf_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span></code></pre></div>
 <p><img src="data-processing-and-visualization_files/figure-html/rf-tune-1.svg" width="75%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb479"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb479-1"><a href="ml.html#cb479-1"></a>best =<span class="st"> </span><span class="kw">show_best</span>(rf_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>, <span class="dt">maximize =</span> <span class="ot">FALSE</span>, <span class="dt">n =</span> <span class="dv">1</span>) <span class="co"># we want to minimize rmse</span></span>
-<span id="cb479-2"><a href="ml.html#cb479-2"></a></span>
-<span id="cb479-3"><a href="ml.html#cb479-3"></a>best</span></code></pre></div>
+<div class="sourceCode" id="cb512"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb512-1"><a href="ml.html#cb512-1"></a>best =<span class="st"> </span><span class="kw">show_best</span>(rf_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>, <span class="dt">maximize =</span> <span class="ot">FALSE</span>, <span class="dt">n =</span> <span class="dv">1</span>) <span class="co"># we want to minimize rmse</span></span>
+<span id="cb512-2"><a href="ml.html#cb512-2"></a></span>
+<span id="cb512-3"><a href="ml.html#cb512-3"></a>best</span></code></pre></div>
 <pre><code># A tibble: 1 x 7
    mtry min_n .metric .estimator  mean     n std_err
   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
 1     3     1 rmse    standard   0.219    10 0.00422</code></pre>
 <p>Looks like in general using all the variables for selection is the best (this is in keeping with standard approaches for random forest with regression).</p>
 <p>Now we are ready to refit the model with the selected tuning parameters and make predictions on the test data.</p>
-<div class="sourceCode" id="cb481"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb481-1"><a href="ml.html#cb481-1"></a>tuned_model =<span class="st"> </span><span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>, <span class="dt">mtry =</span> best<span class="op">$</span>mtry, <span class="dt">min_n =</span> best<span class="op">$</span>min_n) <span class="op">%&gt;%</span></span>
-<span id="cb481-2"><a href="ml.html#cb481-2"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;ranger&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb481-3"><a href="ml.html#cb481-3"></a><span class="st">  </span><span class="kw">fit</span>(happiness_score <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> <span class="kw">juice</span>(happy_prepped))</span>
-<span id="cb481-4"><a href="ml.html#cb481-4"></a></span>
-<span id="cb481-5"><a href="ml.html#cb481-5"></a>test_predictions =<span class="st"> </span><span class="kw">predict</span>(tuned_model, <span class="dt">new_data =</span> happy_test_normalized)</span>
-<span id="cb481-6"><a href="ml.html#cb481-6"></a></span>
-<span id="cb481-7"><a href="ml.html#cb481-7"></a>rmse =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rmse</span>(</span>
-<span id="cb481-8"><a href="ml.html#cb481-8"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, happy_test_normalized),</span>
-<span id="cb481-9"><a href="ml.html#cb481-9"></a>  <span class="dt">truth =</span> happiness_score,</span>
-<span id="cb481-10"><a href="ml.html#cb481-10"></a>  <span class="dt">estimate =</span> .pred</span>
-<span id="cb481-11"><a href="ml.html#cb481-11"></a>)</span>
-<span id="cb481-12"><a href="ml.html#cb481-12"></a></span>
-<span id="cb481-13"><a href="ml.html#cb481-13"></a>rsq =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rsq</span>(</span>
-<span id="cb481-14"><a href="ml.html#cb481-14"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, happy_test_normalized),</span>
-<span id="cb481-15"><a href="ml.html#cb481-15"></a>  <span class="dt">truth =</span> happiness_score,</span>
-<span id="cb481-16"><a href="ml.html#cb481-16"></a>  <span class="dt">estimate =</span> .pred</span>
-<span id="cb481-17"><a href="ml.html#cb481-17"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb514"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb514-1"><a href="ml.html#cb514-1"></a>tuned_model =<span class="st"> </span><span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>, <span class="dt">mtry =</span> best<span class="op">$</span>mtry, <span class="dt">min_n =</span> best<span class="op">$</span>min_n) <span class="op">%&gt;%</span></span>
+<span id="cb514-2"><a href="ml.html#cb514-2"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;ranger&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb514-3"><a href="ml.html#cb514-3"></a><span class="st">  </span><span class="kw">fit</span>(happiness_score <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> <span class="kw">juice</span>(happy_prepped))</span>
+<span id="cb514-4"><a href="ml.html#cb514-4"></a></span>
+<span id="cb514-5"><a href="ml.html#cb514-5"></a>test_predictions =<span class="st"> </span><span class="kw">predict</span>(tuned_model, <span class="dt">new_data =</span> happy_test_normalized)</span>
+<span id="cb514-6"><a href="ml.html#cb514-6"></a></span>
+<span id="cb514-7"><a href="ml.html#cb514-7"></a>rmse =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rmse</span>(</span>
+<span id="cb514-8"><a href="ml.html#cb514-8"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, happy_test_normalized),</span>
+<span id="cb514-9"><a href="ml.html#cb514-9"></a>  <span class="dt">truth =</span> happiness_score,</span>
+<span id="cb514-10"><a href="ml.html#cb514-10"></a>  <span class="dt">estimate =</span> .pred</span>
+<span id="cb514-11"><a href="ml.html#cb514-11"></a>)</span>
+<span id="cb514-12"><a href="ml.html#cb514-12"></a></span>
+<span id="cb514-13"><a href="ml.html#cb514-13"></a>rsq =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rsq</span>(</span>
+<span id="cb514-14"><a href="ml.html#cb514-14"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, happy_test_normalized),</span>
+<span id="cb514-15"><a href="ml.html#cb514-15"></a>  <span class="dt">truth =</span> happiness_score,</span>
+<span id="cb514-16"><a href="ml.html#cb514-16"></a>  <span class="dt">estimate =</span> .pred</span>
+<span id="cb514-17"><a href="ml.html#cb514-17"></a>)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -1146,26 +1191,26 @@ standard
 </div>
 </div>
 <div id="neural-networks" class="section level3">
-<h3>Neural Networks</h3>
-<p><em>Neural networks</em> have been around for a long while as a general concept in artificial intelligence and even as a machine learning algorithm, and often work quite well. In some sense, neural networks can simply be thought of as nonlinear regression. Visually however, we can see them as a graphical model with layers of inputs and outputs. Weighted combinations of the inputs are created<a href="#fn41" class="footnote-ref" id="fnref41"><sup>41</sup></a> and put through some function (e.g. the sigmoid function) to produce the next layer of inputs. This next layer goes through the same process to produce either another layer, or to predict the output, or even multiple outputs, which serves as the final layer. All the layers between the input and output are usually referred to as hidden layers. If there were a single hidden layer with a single unit and no transformation, then it becomes the standard regression problem.</p>
+<h3>Neural networks</h3>
+<p><em>Neural networks</em> have been around for a long while as a general concept in artificial intelligence and even as a machine learning algorithm, and often work quite well. In some sense, neural networks can simply be thought of as nonlinear regression. Visually however, we can see them as a graphical model with layers of inputs and outputs. Weighted combinations of the inputs are created<a href="#fn42" class="footnote-ref" id="fnref42"><sup>42</sup></a> and put through some function (e.g. the sigmoid function) to produce the next layer of inputs. This next layer goes through the same process to produce either another layer, or to predict the output, or even multiple outputs, which serves as the final layer. All the layers between the input and output are usually referred to as hidden layers. If there were a single hidden layer with a single unit and no transformation, then it becomes the standard regression problem.</p>
 <p><img src="img/nnet.png" width="50%" style="display: block; margin: auto;" /></p>
-<p>As a simple example, we can run a simple neural network with a single hidden layer of 1000 units<a href="#fn42" class="footnote-ref" id="fnref42"><sup>42</sup></a>. Since this is a regression problem, no further transformation is required of the end result to map it onto the target variable. I set the number of epochs to 500, which you can think of as the number of iterations from our discussion of optimization. There are many tuning parameters I am not showing that could certainly be fiddled with as well. This is just an example that will run quickly with comparable performance to the previous. If you do not have <span class="pack" style="">keras</span> installed, you can change the engine to <code>nnet</code>, which was a part of the base R set of packages well before neural nets became cool again<a href="#fn43" class="footnote-ref" id="fnref43"><sup>43</sup></a>. This will likely take several minutes for typical machines.</p>
-<div class="sourceCode" id="cb482"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb482-1"><a href="ml.html#cb482-1"></a>happy_nn_spec =<span class="st"> </span><span class="kw">mlp</span>(</span>
-<span id="cb482-2"><a href="ml.html#cb482-2"></a>  <span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>,</span>
-<span id="cb482-3"><a href="ml.html#cb482-3"></a>  <span class="dt">hidden_units =</span> <span class="dv">1000</span>,</span>
-<span id="cb482-4"><a href="ml.html#cb482-4"></a>  <span class="dt">epochs =</span> <span class="dv">500</span>,</span>
-<span id="cb482-5"><a href="ml.html#cb482-5"></a>  <span class="dt">activation =</span> <span class="st">&#39;linear&#39;</span></span>
-<span id="cb482-6"><a href="ml.html#cb482-6"></a>) <span class="op">%&gt;%</span></span>
-<span id="cb482-7"><a href="ml.html#cb482-7"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;keras&quot;</span>)</span>
-<span id="cb482-8"><a href="ml.html#cb482-8"></a></span>
-<span id="cb482-9"><a href="ml.html#cb482-9"></a>happy_nn_results =<span class="st"> </span><span class="kw">fit_resamples</span>(</span>
-<span id="cb482-10"><a href="ml.html#cb482-10"></a>  happy_nn_spec,</span>
-<span id="cb482-11"><a href="ml.html#cb482-11"></a>  happiness_score <span class="op">~</span><span class="st"> </span>.,</span>
-<span id="cb482-12"><a href="ml.html#cb482-12"></a>  happy_folds,</span>
-<span id="cb482-13"><a href="ml.html#cb482-13"></a>  <span class="dt">control =</span> <span class="kw">control_resamples</span>(<span class="dt">save_pred =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb482-14"><a href="ml.html#cb482-14"></a>                              <span class="dt">verbose   =</span> <span class="ot">FALSE</span>,</span>
-<span id="cb482-15"><a href="ml.html#cb482-15"></a>                              <span class="dt">allow_par =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb482-16"><a href="ml.html#cb482-16"></a>)</span></code></pre></div>
+<p>As a simple example, we can run a simple neural network with a single hidden layer of 1000 units<a href="#fn43" class="footnote-ref" id="fnref43"><sup>43</sup></a>. Since this is a regression problem, no further transformation is required of the end result to map it onto the target variable. I set the number of epochs to 500, which you can think of as the number of iterations from our discussion of optimization. There are many tuning parameters I am not showing that could certainly be fiddled with as well. This is just an example that will run quickly with comparable performance to the previous. If you do not have <span class="pack" style="">keras</span> installed, you can change the engine to <code>nnet</code>, which was a part of the base R set of packages well before neural nets became cool again<a href="#fn44" class="footnote-ref" id="fnref44"><sup>44</sup></a>. This will likely take several minutes for typical machines.</p>
+<div class="sourceCode" id="cb515"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb515-1"><a href="ml.html#cb515-1"></a>happy_nn_spec =<span class="st"> </span><span class="kw">mlp</span>(</span>
+<span id="cb515-2"><a href="ml.html#cb515-2"></a>  <span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>,</span>
+<span id="cb515-3"><a href="ml.html#cb515-3"></a>  <span class="dt">hidden_units =</span> <span class="dv">1000</span>,</span>
+<span id="cb515-4"><a href="ml.html#cb515-4"></a>  <span class="dt">epochs =</span> <span class="dv">500</span>,</span>
+<span id="cb515-5"><a href="ml.html#cb515-5"></a>  <span class="dt">activation =</span> <span class="st">&#39;linear&#39;</span></span>
+<span id="cb515-6"><a href="ml.html#cb515-6"></a>) <span class="op">%&gt;%</span></span>
+<span id="cb515-7"><a href="ml.html#cb515-7"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;keras&quot;</span>)</span>
+<span id="cb515-8"><a href="ml.html#cb515-8"></a></span>
+<span id="cb515-9"><a href="ml.html#cb515-9"></a>happy_nn_results =<span class="st"> </span><span class="kw">fit_resamples</span>(</span>
+<span id="cb515-10"><a href="ml.html#cb515-10"></a>  happy_nn_spec,</span>
+<span id="cb515-11"><a href="ml.html#cb515-11"></a>  happiness_score <span class="op">~</span><span class="st"> </span>.,</span>
+<span id="cb515-12"><a href="ml.html#cb515-12"></a>  happy_folds,</span>
+<span id="cb515-13"><a href="ml.html#cb515-13"></a>  <span class="dt">control =</span> <span class="kw">control_resamples</span>(<span class="dt">save_pred =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb515-14"><a href="ml.html#cb515-14"></a>                              <span class="dt">verbose   =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb515-15"><a href="ml.html#cb515-15"></a>                              <span class="dt">allow_par =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb515-16"><a href="ml.html#cb515-16"></a>)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -1226,7 +1271,7 @@ standard
 <p>You will typically see neural nets applied to image and natural language processing, but as demonstrated above, they can be applied in any scenario. It will take longer to set up and train, but once that’s done, you’re good to go, and may have a much better predictive result.</p>
 <p>I leave tuning the model as an <a href="ml.html#machine-learning-exercises">exercise</a>, but definitely switch to using <code>nnet</code> if you do so, otherwise you’ll have to install keras (both for R and Python) and be waiting a long time besides. As mentioned, the <span style="">nnet</span> package is in base R, so you already have it.</p>
 <div id="deep-learning" class="section level4">
-<h4>Deep Learning</h4>
+<h4>Deep learning</h4>
 <p><em>Deep learning</em> can be summarized succinctly as ‘very complicated neural nets’. Really, that’s about it. The complexity can be quite tremendous however, and there is a wide variety from which to choose. For example, we just ran a basic neural net above, but for image processing we might use a convolutional neural network, and for natural language processing some LTSM model. Here is a small(!) version of the convolutional neural network known as ‘resnet’ which has many layers in between input and output.</p>
 <p><img src="img/resnet.png" width="50%" style="display: block; margin: auto;" /></p>
 <p>The nice thing is that a lot of the work has already been done for you, and you can use models where most of the layers in the neural net have already been trained by people at Google, Facebook, and others who have much more resources to do do so than you. In such cases, you may only have to worry about the last couple layers for your particular problem. Applying a pre-trained model to a different data scenario is called <em>transfer learning</em>, and regardless of what your intuition is, it will work, and very well.</p>
@@ -1245,72 +1290,76 @@ standard
 </div>
 <div id="machine-learning-exercises" class="section level2">
 <h2>Machine Learning Exercises</h2>
-<div id="exercise-1" class="section level3">
+<div id="exercise-1-10" class="section level3">
 <h3>Exercise 1</h3>
-<p>Use the <span class="pack" style="">ranger</span> package to predict the Google variable <code>rating</code> by several covariates. Feel free to just use the standard function approach rather than all the tidymodels stuff if you want, but do use a training and test approach. You can then try the model again with a different tuning. For the first go around,</p>
-<div class="sourceCode" id="cb483"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb483-1"><a href="ml.html#cb483-1"></a><span class="co"># run these if needed to load data and install the package</span></span>
-<span id="cb483-2"><a href="ml.html#cb483-2"></a><span class="co"># load(&#39;data/google_apps.RData&#39;)</span></span>
-<span id="cb483-3"><a href="ml.html#cb483-3"></a><span class="co"># install.packages(&#39;ranger&#39;)</span></span>
-<span id="cb483-4"><a href="ml.html#cb483-4"></a></span>
-<span id="cb483-5"><a href="ml.html#cb483-5"></a>google_for_mod =<span class="st"> </span>google_apps <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb483-6"><a href="ml.html#cb483-6"></a><span class="st">  </span><span class="kw">select</span>(avg_sentiment_polarity, rating, type,installs, reviews, size_in_MB, category) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb483-7"><a href="ml.html#cb483-7"></a><span class="st">  </span><span class="kw">drop_na</span>()</span>
-<span id="cb483-8"><a href="ml.html#cb483-8"></a></span>
-<span id="cb483-9"><a href="ml.html#cb483-9"></a>google_split =<span class="st"> </span>google_for_mod <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb483-10"><a href="ml.html#cb483-10"></a><span class="st">  </span><span class="kw">initial_split</span>(<span class="dt">prop =</span> <span class="fl">0.75</span>)</span>
-<span id="cb483-11"><a href="ml.html#cb483-11"></a></span>
-<span id="cb483-12"><a href="ml.html#cb483-12"></a>google_train =<span class="st"> </span><span class="kw">training</span>(google_split)</span>
-<span id="cb483-13"><a href="ml.html#cb483-13"></a>google_test  =<span class="st"> </span><span class="kw">testing</span>(google_split)</span>
-<span id="cb483-14"><a href="ml.html#cb483-14"></a></span>
-<span id="cb483-15"><a href="ml.html#cb483-15"></a>ga_rf_results =<span class="st"> </span><span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>, <span class="dt">mtry =</span> <span class="dv">2</span>, <span class="dt">trees =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span></span>
-<span id="cb483-16"><a href="ml.html#cb483-16"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;ranger&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb483-17"><a href="ml.html#cb483-17"></a><span class="st">  </span><span class="kw">fit</span>(</span>
-<span id="cb483-18"><a href="ml.html#cb483-18"></a>    rating <span class="op">~</span><span class="st"> </span>?,</span>
-<span id="cb483-19"><a href="ml.html#cb483-19"></a>    google_train</span>
-<span id="cb483-20"><a href="ml.html#cb483-20"></a>  )</span>
-<span id="cb483-21"><a href="ml.html#cb483-21"></a></span>
-<span id="cb483-22"><a href="ml.html#cb483-22"></a>test_predictions =<span class="st"> </span><span class="kw">predict</span>(ga_rf_results, <span class="dt">new_data =</span> google_test)</span>
-<span id="cb483-23"><a href="ml.html#cb483-23"></a></span>
-<span id="cb483-24"><a href="ml.html#cb483-24"></a>rmse =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rmse</span>(</span>
-<span id="cb483-25"><a href="ml.html#cb483-25"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, google_test),</span>
-<span id="cb483-26"><a href="ml.html#cb483-26"></a>  <span class="dt">truth =</span> rating,</span>
-<span id="cb483-27"><a href="ml.html#cb483-27"></a>  <span class="dt">estimate =</span> .pred</span>
-<span id="cb483-28"><a href="ml.html#cb483-28"></a>)</span>
-<span id="cb483-29"><a href="ml.html#cb483-29"></a></span>
-<span id="cb483-30"><a href="ml.html#cb483-30"></a>rsq =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rsq</span>(</span>
-<span id="cb483-31"><a href="ml.html#cb483-31"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, google_test),</span>
-<span id="cb483-32"><a href="ml.html#cb483-32"></a>  <span class="dt">truth =</span> rating,</span>
-<span id="cb483-33"><a href="ml.html#cb483-33"></a>  <span class="dt">estimate =</span> .pred</span>
-<span id="cb483-34"><a href="ml.html#cb483-34"></a>)</span>
-<span id="cb483-35"><a href="ml.html#cb483-35"></a></span>
-<span id="cb483-36"><a href="ml.html#cb483-36"></a><span class="kw">bind_rows</span>(</span>
-<span id="cb483-37"><a href="ml.html#cb483-37"></a>  rmse,</span>
-<span id="cb483-38"><a href="ml.html#cb483-38"></a>  rsq</span>
-<span id="cb483-39"><a href="ml.html#cb483-39"></a>)</span></code></pre></div>
+<p>Use the <span class="pack" style="">ranger</span> package to predict the Google variable <code>rating</code> by several covariates. Feel free to just use the standard function approach rather than all the tidymodels stuff if you want, but do use a training and test approach. You can then try the model again with a different tuning. For the first go around, starter code is provided.</p>
+<div class="sourceCode" id="cb516"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb516-1"><a href="ml.html#cb516-1"></a><span class="co"># run these if needed to load data and install the package</span></span>
+<span id="cb516-2"><a href="ml.html#cb516-2"></a><span class="co"># load(&#39;data/google_apps.RData&#39;)</span></span>
+<span id="cb516-3"><a href="ml.html#cb516-3"></a><span class="co"># install.packages(&#39;ranger&#39;)</span></span>
+<span id="cb516-4"><a href="ml.html#cb516-4"></a></span>
+<span id="cb516-5"><a href="ml.html#cb516-5"></a>google_for_mod =<span class="st"> </span>google_apps <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb516-6"><a href="ml.html#cb516-6"></a><span class="st">  </span><span class="kw">select</span>(avg_sentiment_polarity, rating, type,installs, reviews, size_in_MB, category) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb516-7"><a href="ml.html#cb516-7"></a><span class="st">  </span><span class="kw">drop_na</span>()</span>
+<span id="cb516-8"><a href="ml.html#cb516-8"></a></span>
+<span id="cb516-9"><a href="ml.html#cb516-9"></a>google_split =<span class="st"> </span>google_for_mod <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb516-10"><a href="ml.html#cb516-10"></a><span class="st">  </span><span class="kw">initial_split</span>(<span class="dt">prop =</span> <span class="fl">0.75</span>)</span>
+<span id="cb516-11"><a href="ml.html#cb516-11"></a></span>
+<span id="cb516-12"><a href="ml.html#cb516-12"></a>google_train =<span class="st"> </span><span class="kw">training</span>(google_split)</span>
+<span id="cb516-13"><a href="ml.html#cb516-13"></a>google_test  =<span class="st"> </span><span class="kw">testing</span>(google_split)</span>
+<span id="cb516-14"><a href="ml.html#cb516-14"></a></span>
+<span id="cb516-15"><a href="ml.html#cb516-15"></a>ga_rf_results =<span class="st"> </span><span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>, <span class="dt">mtry =</span> <span class="dv">2</span>, <span class="dt">trees =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span></span>
+<span id="cb516-16"><a href="ml.html#cb516-16"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;ranger&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb516-17"><a href="ml.html#cb516-17"></a><span class="st">  </span><span class="kw">fit</span>(</span>
+<span id="cb516-18"><a href="ml.html#cb516-18"></a>    rating <span class="op">~</span><span class="st"> </span>?,</span>
+<span id="cb516-19"><a href="ml.html#cb516-19"></a>    google_train</span>
+<span id="cb516-20"><a href="ml.html#cb516-20"></a>  )</span>
+<span id="cb516-21"><a href="ml.html#cb516-21"></a></span>
+<span id="cb516-22"><a href="ml.html#cb516-22"></a>test_predictions =<span class="st"> </span><span class="kw">predict</span>(ga_rf_results, <span class="dt">new_data =</span> google_test)</span>
+<span id="cb516-23"><a href="ml.html#cb516-23"></a></span>
+<span id="cb516-24"><a href="ml.html#cb516-24"></a>rmse =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rmse</span>(</span>
+<span id="cb516-25"><a href="ml.html#cb516-25"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, google_test),</span>
+<span id="cb516-26"><a href="ml.html#cb516-26"></a>  <span class="dt">truth =</span> rating,</span>
+<span id="cb516-27"><a href="ml.html#cb516-27"></a>  <span class="dt">estimate =</span> .pred</span>
+<span id="cb516-28"><a href="ml.html#cb516-28"></a>)</span>
+<span id="cb516-29"><a href="ml.html#cb516-29"></a></span>
+<span id="cb516-30"><a href="ml.html#cb516-30"></a>rsq =<span class="st"> </span>yardstick<span class="op">::</span><span class="kw">rsq</span>(</span>
+<span id="cb516-31"><a href="ml.html#cb516-31"></a>  <span class="dt">data =</span> <span class="kw">bind_cols</span>(test_predictions, google_test),</span>
+<span id="cb516-32"><a href="ml.html#cb516-32"></a>  <span class="dt">truth =</span> rating,</span>
+<span id="cb516-33"><a href="ml.html#cb516-33"></a>  <span class="dt">estimate =</span> .pred</span>
+<span id="cb516-34"><a href="ml.html#cb516-34"></a>)</span>
+<span id="cb516-35"><a href="ml.html#cb516-35"></a></span>
+<span id="cb516-36"><a href="ml.html#cb516-36"></a><span class="kw">bind_rows</span>(</span>
+<span id="cb516-37"><a href="ml.html#cb516-37"></a>  rmse,</span>
+<span id="cb516-38"><a href="ml.html#cb516-38"></a>  rsq</span>
+<span id="cb516-39"><a href="ml.html#cb516-39"></a>)</span></code></pre></div>
 </div>
-<div id="exercise-2" class="section level3">
+<div id="exercise-2-10" class="section level3">
 <h3>Exercise 2</h3>
 <p>Respecify the neural net model demonstrated above as follows, and tune over the number of hidden units to have. This will probably take several minutes depending on your machine.</p>
-<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb484-1"><a href="ml.html#cb484-1"></a>grid_search =<span class="st"> </span><span class="kw">expand.grid</span>(</span>
-<span id="cb484-2"><a href="ml.html#cb484-2"></a>  <span class="dt">hidden_units =</span> <span class="kw">c</span>(<span class="dv">25</span>, <span class="dv">50</span>),  </span>
-<span id="cb484-3"><a href="ml.html#cb484-3"></a>  <span class="dt">penalty =</span> <span class="kw">exp</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">4</span>, <span class="fl">-.25</span>, <span class="dt">length.out =</span> <span class="dv">5</span>))</span>
-<span id="cb484-4"><a href="ml.html#cb484-4"></a>)</span>
-<span id="cb484-5"><a href="ml.html#cb484-5"></a></span>
-<span id="cb484-6"><a href="ml.html#cb484-6"></a>happy_nn_spec =<span class="st"> </span><span class="kw">mlp</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>,</span>
-<span id="cb484-7"><a href="ml.html#cb484-7"></a>                    <span class="dt">penalty =</span> <span class="kw">tune</span>(),</span>
-<span id="cb484-8"><a href="ml.html#cb484-8"></a>                    <span class="dt">hidden_units =</span> <span class="kw">tune</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb484-9"><a href="ml.html#cb484-9"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;nnet&quot;</span>)</span>
-<span id="cb484-10"><a href="ml.html#cb484-10"></a></span>
-<span id="cb484-11"><a href="ml.html#cb484-11"></a>nn_tune =<span class="st"> </span><span class="kw">tune_grid</span>(</span>
-<span id="cb484-12"><a href="ml.html#cb484-12"></a>  happy_prepped,                  <span class="co"># from previous examples, see tuning for regularized regression</span></span>
-<span id="cb484-13"><a href="ml.html#cb484-13"></a>  <span class="dt">model =</span> happy_nn_spec,</span>
-<span id="cb484-14"><a href="ml.html#cb484-14"></a>  <span class="dt">resamples =</span> happy_folds,        <span class="co"># from previous examples, see tuning for regularized regression</span></span>
-<span id="cb484-15"><a href="ml.html#cb484-15"></a>  <span class="dt">grid =</span> grid_search</span>
-<span id="cb484-16"><a href="ml.html#cb484-16"></a>)</span>
-<span id="cb484-17"><a href="ml.html#cb484-17"></a></span>
-<span id="cb484-18"><a href="ml.html#cb484-18"></a><span class="kw">show_best</span>(nn_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>, <span class="dt">maximize =</span> <span class="ot">FALSE</span>, <span class="dt">n =</span> <span class="dv">1</span>) </span></code></pre></div>
-
+<div class="sourceCode" id="cb517"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb517-1"><a href="ml.html#cb517-1"></a>grid_search =<span class="st"> </span><span class="kw">expand.grid</span>(</span>
+<span id="cb517-2"><a href="ml.html#cb517-2"></a>  <span class="dt">hidden_units =</span> <span class="kw">c</span>(<span class="dv">25</span>, <span class="dv">50</span>),  </span>
+<span id="cb517-3"><a href="ml.html#cb517-3"></a>  <span class="dt">penalty =</span> <span class="kw">exp</span>(<span class="kw">seq</span>(<span class="op">-</span><span class="dv">4</span>, <span class="fl">-.25</span>, <span class="dt">length.out =</span> <span class="dv">5</span>))</span>
+<span id="cb517-4"><a href="ml.html#cb517-4"></a>)</span>
+<span id="cb517-5"><a href="ml.html#cb517-5"></a></span>
+<span id="cb517-6"><a href="ml.html#cb517-6"></a>happy_nn_spec =<span class="st"> </span><span class="kw">mlp</span>(<span class="dt">mode =</span> <span class="st">&#39;regression&#39;</span>,</span>
+<span id="cb517-7"><a href="ml.html#cb517-7"></a>                    <span class="dt">penalty =</span> <span class="kw">tune</span>(),</span>
+<span id="cb517-8"><a href="ml.html#cb517-8"></a>                    <span class="dt">hidden_units =</span> <span class="kw">tune</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb517-9"><a href="ml.html#cb517-9"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="dt">engine =</span> <span class="st">&quot;nnet&quot;</span>)</span>
+<span id="cb517-10"><a href="ml.html#cb517-10"></a></span>
+<span id="cb517-11"><a href="ml.html#cb517-11"></a>nn_tune =<span class="st"> </span><span class="kw">tune_grid</span>(</span>
+<span id="cb517-12"><a href="ml.html#cb517-12"></a>  happy_prepped,                  <span class="co"># from previous examples, see tuning for regularized regression</span></span>
+<span id="cb517-13"><a href="ml.html#cb517-13"></a>  <span class="dt">model =</span> happy_nn_spec,</span>
+<span id="cb517-14"><a href="ml.html#cb517-14"></a>  <span class="dt">resamples =</span> happy_folds,        <span class="co"># from previous examples, see tuning for regularized regression</span></span>
+<span id="cb517-15"><a href="ml.html#cb517-15"></a>  <span class="dt">grid =</span> grid_search</span>
+<span id="cb517-16"><a href="ml.html#cb517-16"></a>)</span>
+<span id="cb517-17"><a href="ml.html#cb517-17"></a></span>
+<span id="cb517-18"><a href="ml.html#cb517-18"></a><span class="kw">show_best</span>(nn_tune, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>, <span class="dt">maximize =</span> <span class="ot">FALSE</span>, <span class="dt">n =</span> <span class="dv">1</span>) </span></code></pre></div>
 </div>
+</div>
+<div id="python-machine-learning-notebook" class="section level2">
+<h2>Python Machine Learning Notebook</h2>
+<p><a href="https://github.com/m-clark/data-processing-and-visualization/blob/master/jupyter_notebooks/ml.ipynb">Available on GitHub</a></p>
+
 </div>
 </div>
 
@@ -1318,14 +1367,14 @@ standard
 
 <div class="footnotes">
 <hr />
-<ol start="37">
-<li id="fn37"><p>The ‘machine’ part of the term has historical context, but otherwise has lost meaning for most modern applications, or, at least I really don’t think we need to be referring to computers doing their usual thing as something notable. ‘Learning’ is a poor term that seems to lead many to believe ML is some ‘algorithm’ automatically/magically learning from data without any human input. Nothing could be further from the truth. ML models ‘learn’ from the data as much as a linear regression does.<a href="ml.html#fnref37" class="footnote-back">↩︎</a></p></li>
-<li id="fn38"><p>This image comes from <a href="https://web.stanford.edu/~hastie/ElemStatLearn/">Elements of Statistical Learning</a>.<a href="ml.html#fnref38" class="footnote-back">↩︎</a></p></li>
-<li id="fn39"><p>Unfortunately, unlike the tidyverse, tidymodels doesn’t really help me do things more easily. As an alternative, consider the <a href="https://mlr3.mlr-org.com/">mlr3</a> approach, which has its own ‘verse’ of packages. I’m not suggesting it’s easier, and it uses [R6][others] which will take getting used to, but it’s a viable alternative if you want to try an different framework for machine learning.<a href="ml.html#fnref39" class="footnote-back">↩︎</a></p></li>
-<li id="fn40"><p>This is <a href="https://imgur.com/a/Hqolp">Alec Radford’s visualization</a>.<a href="ml.html#fnref40" class="footnote-back">↩︎</a></p></li>
-<li id="fn41"><p>In at least conceptually, and most of the time, literally, in the exact same manner as happens with linear regression.<a href="ml.html#fnref41" class="footnote-back">↩︎</a></p></li>
-<li id="fn42"><p>For some reason the <span class="pack" style="">parsnip</span> package calls this function <span class="func" style="">mlp</span>, which means ‘multilayer’ perceptron, even though only one hidden layer is possible. Something was clearly lost in translation.<a href="ml.html#fnref42" class="footnote-back">↩︎</a></p></li>
-<li id="fn43"><p><a href="https://en.wikipedia.org/wiki/Brian_D._Ripley">Brian Ripley</a>, one of the early R developers, wrote a <a href="http://www.stats.ox.ac.uk/~ripley/PRbook/">seminal text on neural networks in the mid 90s</a>. However, google scholar seems to have <a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=1%2C14&amp;q=ripley+%22Pattern+Recognition+and+Neural+Networks%22&amp;btnG=">forgotten it</a> despite its thousands of citations, I guess because they think it’s written by <a href="https://scholar.google.com/citations?user=pGvWCH4AAAAJ&amp;hl=en&amp;oi=sra">this guy</a>.<a href="ml.html#fnref43" class="footnote-back">↩︎</a></p></li>
+<ol start="38">
+<li id="fn38"><p>The ‘machine’ part of the term has historical context, but otherwise has lost meaning for most modern applications, or, at least I really don’t think we need to be referring to computers doing their usual thing as something notable. ‘Learning’ is a poor term that seems to lead many to believe ML is some ‘algorithm’ automatically/magically learning from data without any human input. Nothing could be further from the truth. ML models ‘learn’ from the data as much as a linear regression does.<a href="ml.html#fnref38" class="footnote-back">↩︎</a></p></li>
+<li id="fn39"><p>This image comes from <a href="https://web.stanford.edu/~hastie/ElemStatLearn/">Elements of Statistical Learning</a>.<a href="ml.html#fnref39" class="footnote-back">↩︎</a></p></li>
+<li id="fn40"><p>Unfortunately, unlike the tidyverse, tidymodels doesn’t really help me do things more easily. As an alternative, consider the <a href="https://mlr3.mlr-org.com/">mlr3</a> approach, which has its own ‘verse’ of packages. I’m not suggesting it’s easier, and it uses <a href="programming.html#others">R6</a> which will take getting used to, but it’s a viable alternative if you want to try an different framework for machine learning.<a href="ml.html#fnref40" class="footnote-back">↩︎</a></p></li>
+<li id="fn41"><p>This is <a href="https://imgur.com/a/Hqolp">Alec Radford’s visualization</a>.<a href="ml.html#fnref41" class="footnote-back">↩︎</a></p></li>
+<li id="fn42"><p>In at least conceptually, and most of the time, literally, in the exact same manner as happens with linear regression.<a href="ml.html#fnref42" class="footnote-back">↩︎</a></p></li>
+<li id="fn43"><p>For some reason the <span class="pack" style="">parsnip</span> package calls this function <span class="func" style="">mlp</span>, which means ‘multilayer’ perceptron, even though only one hidden layer is possible. Something was clearly lost in translation.<a href="ml.html#fnref43" class="footnote-back">↩︎</a></p></li>
+<li id="fn44"><p><a href="https://en.wikipedia.org/wiki/Brian_D._Ripley">Brian Ripley</a>, one of the early R developers, wrote a <a href="http://www.stats.ox.ac.uk/~ripley/PRbook/">seminal text on neural networks in the mid 90s</a>. However, google scholar seems to have <a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=1%2C14&amp;q=ripley+%22Pattern+Recognition+and+Neural+Networks%22&amp;btnG=">forgotten it</a> despite its thousands of citations, I guess because they think it’s written by <a href="https://scholar.google.com/citations?user=pGvWCH4AAAAJ&amp;hl=en&amp;oi=sra">this guy</a>.<a href="ml.html#fnref44" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
@@ -1357,9 +1406,8 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["twitter", "facebook", "weibo", "instapaper"],
-"google": false,
-"instapper": false
+"all": ["twitter", "facebook", "instapaper"],
+"google": false
 },
 "fontsettings": {
 "theme": "white",
@@ -1378,7 +1426,7 @@ gitbook.start({
 "download": null,
 "toc": {
 "collapse": "section",
-"depth": 2,
+"toc_depth": 2,
 "scroll_highlight": true
 },
 "search": true

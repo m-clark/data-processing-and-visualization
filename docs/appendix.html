@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Appendix | Practical Data Science</title>
+  <meta name="description" content="The focus of this document is on data science tools and techniques in R, including basic programming knowledge, visualization practices, modeling, and more, along with exercises to practice further. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta name="generator" content="bookdown 0.20.2 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Appendix | Practical Data Science" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://m-clark.github.io/data-processing-and-visualization/" />
+  <meta property="og:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
+  <meta property="og:description" content="The focus of this document is on data science tools and techniques in R, including basic programming knowledge, visualization practices, modeling, and more, along with exercises to practice further. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta name="github-repo" content="m-clark/data-processing-and-visualization/" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Appendix | Practical Data Science" />
+  
+  <meta name="twitter:description" content="The focus of this document is on data science tools and techniques in R, including basic programming knowledge, visualization practices, modeling, and more, along with exercises to practice further. In addition, the demonstrations of most content in Python is available via Jupyter notebooks." />
+  <meta name="twitter:image" content="https://m-clark.github.io/data-processing-and-visualization/img/nineteeneightyR.png" />
+
+
+
+<meta name="date" content="2020-08-14" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="img/R.ico" type="image/x-icon" />
+<link rel="prev" href="summary.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-3.5.0/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="libs/viz-1.8.2/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-1.0.5/grViz.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<link href="libs/vis-4.20.1/vis.css" rel="stylesheet" />
+<script src="libs/vis-4.20.1/vis.min.js"></script>
+<script src="libs/visNetwork-binding-2.0.9/visNetwork.js"></script>
+<script src="libs/proj4js-2.3.15/proj4.js"></script>
+<link href="libs/highcharts-8.1.2/css/motion.css" rel="stylesheet" />
+<script src="libs/highcharts-8.1.2/highcharts.js"></script>
+<script src="libs/highcharts-8.1.2/highcharts-3d.js"></script>
+<script src="libs/highcharts-8.1.2/highcharts-more.js"></script>
+<script src="libs/highcharts-8.1.2/modules/stock.js"></script>
+<script src="libs/highcharts-8.1.2/modules/map.js"></script>
+<script src="libs/highcharts-8.1.2/modules/annotations.js"></script>
+<script src="libs/highcharts-8.1.2/modules/data.js"></script>
+<script src="libs/highcharts-8.1.2/modules/drilldown.js"></script>
+<script src="libs/highcharts-8.1.2/modules/item-series.js"></script>
+<script src="libs/highcharts-8.1.2/modules/offline-exporting.js"></script>
+<script src="libs/highcharts-8.1.2/modules/overlapping-datalabels.js"></script>
+<script src="libs/highcharts-8.1.2/modules/exporting.js"></script>
+<script src="libs/highcharts-8.1.2/modules/export-data.js"></script>
+<script src="libs/highcharts-8.1.2/modules/funnel.js"></script>
+<script src="libs/highcharts-8.1.2/modules/heatmap.js"></script>
+<script src="libs/highcharts-8.1.2/modules/treemap.js"></script>
+<script src="libs/highcharts-8.1.2/modules/sankey.js"></script>
+<script src="libs/highcharts-8.1.2/modules/dependency-wheel.js"></script>
+<script src="libs/highcharts-8.1.2/modules/organization.js"></script>
+<script src="libs/highcharts-8.1.2/modules/solid-gauge.js"></script>
+<script src="libs/highcharts-8.1.2/modules/streamgraph.js"></script>
+<script src="libs/highcharts-8.1.2/modules/sunburst.js"></script>
+<script src="libs/highcharts-8.1.2/modules/vector.js"></script>
+<script src="libs/highcharts-8.1.2/modules/wordcloud.js"></script>
+<script src="libs/highcharts-8.1.2/modules/xrange.js"></script>
+<script src="libs/highcharts-8.1.2/modules/tilemap.js"></script>
+<script src="libs/highcharts-8.1.2/modules/venn.js"></script>
+<script src="libs/highcharts-8.1.2/modules/gantt.js"></script>
+<script src="libs/highcharts-8.1.2/modules/timeline.js"></script>
+<script src="libs/highcharts-8.1.2/modules/parallel-coordinates.js"></script>
+<script src="libs/highcharts-8.1.2/modules/bullet.js"></script>
+<script src="libs/highcharts-8.1.2/modules/coloraxis.js"></script>
+<script src="libs/highcharts-8.1.2/modules/dumbbell.js"></script>
+<script src="libs/highcharts-8.1.2/modules/lollipop.js"></script>
+<script src="libs/highcharts-8.1.2/modules/series-label.js"></script>
+<script src="libs/highcharts-8.1.2/plugins/motion.js"></script>
+<script src="libs/highcharts-8.1.2/custom/reset.js"></script>
+<script src="libs/highcharts-8.1.2/modules/boost.js"></script>
+<script src="libs/highchart-binding-0.8.2/highchart.js"></script>
+<script src="libs/sigma-1.2.1/sigma.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.layout.forceAtlas2.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.layout.noverlap.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.parallelEdges.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.animate.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.customShapes.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.dragNodes.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.customEdgeShapes.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.relativeSize.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.edgeLabels.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.parsers.gexf.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.exporters.svg.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.neighborhoods.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.plugins.filter.min.js"></script>
+<script src="libs/sigma-1.2.1/plugins/sigma.renderers.snapshot.min.js"></script>
+<script src="libs/sigmajs-binding-0.1.5/sigmajs.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.15/datatables.js"></script>
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="css/book.css" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class='before'><a href="./">Practical Data Science</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#intended-audience"><i class="fa fa-check"></i>Intended Audience</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#programming-language"><i class="fa fa-check"></i>Programming Language</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#additional-practice"><i class="fa fa-check"></i>Additional Practice</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#outline"><i class="fa fa-check"></i>Outline</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-1-information-processing"><i class="fa fa-check"></i>Part 1: Information Processing</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-2-programming-basics"><i class="fa fa-check"></i>Part 2: Programming Basics</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-3-modeling"><i class="fa fa-check"></i>Part 3: Modeling</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-4-visualization"><i class="fa fa-check"></i>Part 4: Visualization</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#part-5-presentation"><i class="fa fa-check"></i>Part 5: Presentation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#workshops"><i class="fa fa-check"></i>Workshops</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#other"><i class="fa fa-check"></i>Other</a><ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#python-notebooks"><i class="fa fa-check"></i>Python notebooks</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#other-r-packages"><i class="fa fa-check"></i>Other R packages</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#history"><i class="fa fa-check"></i>History</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#current-efforts"><i class="fa fa-check"></i>Current Efforts</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Part I: Information Processing</b></span></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html"><i class="fa fa-check"></i>Data Structures</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#vectors"><i class="fa fa-check"></i>Vectors</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#character-strings"><i class="fa fa-check"></i>Character strings</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#factors"><i class="fa fa-check"></i>Factors</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#logicals"><i class="fa fa-check"></i>Logicals</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#numeric-and-integer"><i class="fa fa-check"></i>Numeric and integer</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#dates"><i class="fa fa-check"></i>Dates</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#matrices"><i class="fa fa-check"></i>Matrices</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#creating-a-matrix"><i class="fa fa-check"></i>Creating a matrix</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#lists"><i class="fa fa-check"></i>Lists</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#data-frames"><i class="fa fa-check"></i>Data Frames</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#creating-a-data-frame"><i class="fa fa-check"></i>Creating a data frame</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#data-structure-exercises"><i class="fa fa-check"></i>Data Structure Exercises</a><ul>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#excercise-1"><i class="fa fa-check"></i>Excercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#exercise-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#thinking-exercises"><i class="fa fa-check"></i>Thinking Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data_structures.html"><a href="data_structures.html#python-data-structures-notebook"><i class="fa fa-check"></i>Python Data Structures Notebook</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html"><i class="fa fa-check"></i>Input/Output</a><ul>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#better-faster-approaches"><i class="fa fa-check"></i>Better &amp; Faster Approaches</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#r-specific-data"><i class="fa fa-check"></i>R-specific Data</a><ul>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#r-datasets"><i class="fa fa-check"></i>R Datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#other-types-of-data"><i class="fa fa-check"></i>Other Types of Data</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#on-the-horizon"><i class="fa fa-check"></i>On the Horizon</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#big-data"><i class="fa fa-check"></i>Big Data</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#io-exercises"><i class="fa fa-check"></i>I/O Exercises</a><ul>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#exercise-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#thinking-exercises-1"><i class="fa fa-check"></i>Thinking Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="io.html"><a href="io.html#python-io-notebook"><i class="fa fa-check"></i>Python I/O Notebook</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html"><i class="fa fa-check"></i>Indexing</a><ul>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#slicing-vectors"><i class="fa fa-check"></i>Slicing Vectors</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#slicing-matricesdata.frames"><i class="fa fa-check"></i>Slicing Matrices/data.frames</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#label-based-indexing"><i class="fa fa-check"></i>Label-based Indexing</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#position-based-indexing"><i class="fa fa-check"></i>Position-based Indexing</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#mixed-indexing"><i class="fa fa-check"></i>Mixed Indexing</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#non-contiguous"><i class="fa fa-check"></i>Non-contiguous</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#boolean"><i class="fa fa-check"></i>Boolean</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#listdata.frame-extraction"><i class="fa fa-check"></i>List/data.frame Extraction</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#indexing-exercises"><i class="fa fa-check"></i>Indexing Exercises</a><ul>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-1-1"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-2-1"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#exercise-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="indexing.html"><a href="indexing.html#python-indexing-notebook"><i class="fa fa-check"></i>Python Indexing Notebook</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html"><i class="fa fa-check"></i>Pipes</a><ul>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#using-variables-as-they-are-created"><i class="fa fa-check"></i>Using Variables as They are Created</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#pipes-for-visualization-more-later"><i class="fa fa-check"></i>Pipes for Visualization (more later)</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#the-dot"><i class="fa fa-check"></i>The Dot</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#flexibility"><i class="fa fa-check"></i>Flexibility</a></li>
+<li class="chapter" data-level="" data-path="pipes.html"><a href="pipes.html#pipes-summary"><i class="fa fa-check"></i>Pipes Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html"><i class="fa fa-check"></i>Tidyverse</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-the-tidyverse"><i class="fa fa-check"></i>What is the Tidyverse?</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#what-is-tidy"><i class="fa fa-check"></i>What is Tidy?</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#dplyr"><i class="fa fa-check"></i>dplyr</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#an-example"><i class="fa fa-check"></i>An example</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#running-example"><i class="fa fa-check"></i>Running Example</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#selecting-columns"><i class="fa fa-check"></i>Selecting Columns</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#helper-functions"><i class="fa fa-check"></i>Helper functions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#filtering-rows"><i class="fa fa-check"></i>Filtering Rows</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#generating-new-data"><i class="fa fa-check"></i>Generating New Data</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#grouping-and-summarizing-data"><i class="fa fa-check"></i>Grouping and Summarizing Data</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#renaming-columns"><i class="fa fa-check"></i>Renaming Columns</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#merging-data"><i class="fa fa-check"></i>Merging Data</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#pivoting-axes"><i class="fa fa-check"></i>Pivoting axes</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#more-tidyverse"><i class="fa fa-check"></i>More Tidyverse</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#personal-opinion"><i class="fa fa-check"></i>Personal Opinion</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#tidyverse-exercises"><i class="fa fa-check"></i>Tidyverse Exercises</a><ul>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-0"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-1-2"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-2-2"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-3-1"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#exercise-4"><i class="fa fa-check"></i>Exercise 4</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tidyverse.html"><a href="tidyverse.html#python-pandas-notebook"><i class="fa fa-check"></i>Python Pandas Notebook</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html"><i class="fa fa-check"></i>data.table</a><ul>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-basics"><i class="fa fa-check"></i>data.table Basics</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#grouped-operations"><i class="fa fa-check"></i>Grouped Operations</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster"><i class="fa fa-check"></i>Faster!</a><ul>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#joins"><i class="fa fa-check"></i>Joins</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#group-by"><i class="fa fa-check"></i>Group by</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#string-matching"><i class="fa fa-check"></i>String matching</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#reading-files"><i class="fa fa-check"></i>Reading files</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#more-speed"><i class="fa fa-check"></i>More speed</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#pipe-with-data.table"><i class="fa fa-check"></i>Pipe with data.table</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-summary"><i class="fa fa-check"></i>data.table Summary</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#faster-dplyr-alternatives"><i class="fa fa-check"></i>Faster dplyr Alternatives</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#data.table-exercises"><i class="fa fa-check"></i>data.table Exercises</a><ul>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-0-1"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-1-3"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="data_table.html"><a href="data_table.html#exercise-2-3"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Part II: Programming</b></span></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html"><i class="fa fa-check"></i>Programming Basics</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#r-objects"><i class="fa fa-check"></i>R Objects</a><ul>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#object-inspection-exploration"><i class="fa fa-check"></i>Object Inspection &amp; Exploration</a></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#methods"><i class="fa fa-check"></i>Methods</a></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#s4-classes"><i class="fa fa-check"></i>S4 classes</a></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#others"><i class="fa fa-check"></i>Others</a></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#inspecting-functions"><i class="fa fa-check"></i>Inspecting Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#help-files"><i class="fa fa-check"></i>Help Files</a></li>
+<li class="chapter" data-level="" data-path="programming.html"><a href="programming.html#objects-exercises"><i class="fa fa-check"></i>Objects Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html"><i class="fa fa-check"></i>Iterative Programming</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#for-loops"><i class="fa fa-check"></i>For Loops</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#a-slight-speed-gain"><i class="fa fa-check"></i>A slight speed gain</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#while-alternative"><i class="fa fa-check"></i>While alternative</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#loops-summary"><i class="fa fa-check"></i>Loops summary</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#implicit-loops"><i class="fa fa-check"></i>Implicit Loops</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-family"><i class="fa fa-check"></i>apply family</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#apply-functions"><i class="fa fa-check"></i>Apply functions</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#purrr"><i class="fa fa-check"></i>purrr</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#looping-with-lists"><i class="fa fa-check"></i>Looping with Lists</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#iterative-programming-exercises"><i class="fa fa-check"></i>Iterative Programming Exercises</a><ul>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-1-4"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-2-4"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="iterative.html"><a href="iterative.html#exercise-3-2"><i class="fa fa-check"></i>Exercise 3</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i>Writing Functions</a><ul>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#a-starting-point"><i class="fa fa-check"></i>A Starting Point</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#dry"><i class="fa fa-check"></i>DRY</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#conditionals"><i class="fa fa-check"></i>Conditionals</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#anonymous-functions"><i class="fa fa-check"></i>Anonymous functions</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#writing-functions-exercises"><i class="fa fa-check"></i>Writing Functions Exercises</a><ul>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1-1"><i class="fa fa-check"></i>Excercise 1</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#excercise-1b"><i class="fa fa-check"></i>Excercise 1b</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#exercise-2-5"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html"><i class="fa fa-check"></i>More Programming</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-style"><i class="fa fa-check"></i>Code Style</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#why-does-your-code-exist"><i class="fa fa-check"></i>Why does your code exist?</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#assignment"><i class="fa fa-check"></i>Assignment</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-length"><i class="fa fa-check"></i>Code length</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#spacing"><i class="fa fa-check"></i>Spacing</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#naming-things"><i class="fa fa-check"></i>Naming things</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#other-1"><i class="fa fa-check"></i>Other</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorization"><i class="fa fa-check"></i>Vectorization</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#boolean-indexing"><i class="fa fa-check"></i>Boolean indexing</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorized-operations"><i class="fa fa-check"></i>Vectorized operations</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#regular-expressions"><i class="fa fa-check"></i>Regular Expressions</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#typical-uses"><i class="fa fa-check"></i>Typical uses</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#code-style-exercises"><i class="fa fa-check"></i>Code Style Exercises</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-5"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-6"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#vectorization-exercises"><i class="fa fa-check"></i>Vectorization Exercises</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-6"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-2-7"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#regex-exercises"><i class="fa fa-check"></i>Regex Exercises</a><ul>
+<li class="chapter" data-level="" data-path="more.html"><a href="more.html#exercise-1-7"><i class="fa fa-check"></i>Exercise 1</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Part III: Modeling</b></span></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i>Model Exploration</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-taxonomy"><i class="fa fa-check"></i>Model Taxonomy</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#linear-models"><i class="fa fa-check"></i>Linear models</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#estimation"><i class="fa fa-check"></i>Estimation</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#minimizing-and-maximizing"><i class="fa fa-check"></i>Minimizing and maximizing</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#optimization"><i class="fa fa-check"></i>Optimization</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#fitting-models"><i class="fa fa-check"></i>Fitting Models</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#using-matrices"><i class="fa fa-check"></i>Using matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#summarizing-models"><i class="fa fa-check"></i>Summarizing Models</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#variable-transformations"><i class="fa fa-check"></i>Variable Transformations</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#numeric-variables"><i class="fa fa-check"></i>Numeric variables</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#categorical-variables"><i class="fa fa-check"></i>Categorical variables</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#scales-indices-and-dimension-reduction"><i class="fa fa-check"></i>Scales, indices, and dimension reduction</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#dont-discretize"><i class="fa fa-check"></i>Don’t discretize</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#variable-importance"><i class="fa fa-check"></i>Variable Importance</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#extracting-output"><i class="fa fa-check"></i>Extracting Output</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#package-support"><i class="fa fa-check"></i>Package support</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#visualization"><i class="fa fa-check"></i>Visualization</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#extensions-to-the-standard-linear-model"><i class="fa fa-check"></i>Extensions to the Standard Linear Model</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#different-types-of-targets"><i class="fa fa-check"></i>Different types of targets</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#correlated-data"><i class="fa fa-check"></i>Correlated data</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#other-extensions"><i class="fa fa-check"></i>Other extensions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-exploration-summary"><i class="fa fa-check"></i>Model Exploration Summary</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#model-exploration-exercises"><i class="fa fa-check"></i>Model Exploration Exercises</a><ul>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-1-8"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-2-8"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#exercise-3-3"><i class="fa fa-check"></i>Exercise 3</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="models.html"><a href="models.html#python-model-exploration-notebook"><i class="fa fa-check"></i>Python Model Exploration Notebook</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html"><i class="fa fa-check"></i>Model Criticism</a><ul>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-fit"><i class="fa fa-check"></i>Model Fit</a><ul>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#standard-linear-model"><i class="fa fa-check"></i>Standard linear model</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#beyond-ols"><i class="fa fa-check"></i>Beyond OLS</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#classification"><i class="fa fa-check"></i>Classification</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-assumptions"><i class="fa fa-check"></i>Model Assumptions</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#predictive-performance"><i class="fa fa-check"></i>Predictive Performance</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-comparison"><i class="fa fa-check"></i>Model Comparison</a><ul>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-additional-covariates"><i class="fa fa-check"></i>Example: Additional covariates</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-interactions"><i class="fa fa-check"></i>Example: Interactions</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#example-additive-models"><i class="fa fa-check"></i>Example: Additive models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-averaging"><i class="fa fa-check"></i>Model Averaging</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-criticism-summary"><i class="fa fa-check"></i>Model Criticism Summary</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#model-criticism-exercises"><i class="fa fa-check"></i>Model Criticism Exercises</a><ul>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-0-2"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-1-9"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#exercise-2-9"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="model_criticism.html"><a href="model_criticism.html#python-model-criticism-notebook"><i class="fa fa-check"></i>Python Model Criticism Notebook</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html"><i class="fa fa-check"></i>Machine Learning</a><ul>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#concepts"><i class="fa fa-check"></i>Concepts</a><ul>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#loss"><i class="fa fa-check"></i>Loss</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#bias-variance-tradeoff"><i class="fa fa-check"></i>Bias-variance tradeoff</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#regularization"><i class="fa fa-check"></i>Regularization</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#cross-validation"><i class="fa fa-check"></i>Cross-validation</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#optimization-1"><i class="fa fa-check"></i>Optimization</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#tuning-parameters"><i class="fa fa-check"></i>Tuning parameters</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#techniques"><i class="fa fa-check"></i>Techniques</a><ul>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#regularized-regression"><i class="fa fa-check"></i>Regularized regression</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#random-forests"><i class="fa fa-check"></i>Random forests</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#neural-networks"><i class="fa fa-check"></i>Neural networks</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#interpreting-the-black-box"><i class="fa fa-check"></i>Interpreting the Black Box</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-summary"><i class="fa fa-check"></i>Machine Learning Summary</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#machine-learning-exercises"><i class="fa fa-check"></i>Machine Learning Exercises</a><ul>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercise-1-10"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#exercise-2-10"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="ml.html"><a href="ml.html#python-machine-learning-notebook"><i class="fa fa-check"></i>Python Machine Learning Notebook</a></li>
+</ul></li>
+<li class="part"><span><b>Part IV: Visualization</b></span></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i>ggplot2</a><ul>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#layers"><i class="fa fa-check"></i>Layers</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#piping"><i class="fa fa-check"></i>Piping</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#aesthetics"><i class="fa fa-check"></i>Aesthetics</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#geoms"><i class="fa fa-check"></i>Geoms</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#examples"><i class="fa fa-check"></i>Examples</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#stats"><i class="fa fa-check"></i>Stats</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#scales"><i class="fa fa-check"></i>Scales</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i>Facets</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#multiple-plots"><i class="fa fa-check"></i>Multiple plots</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#fine-control"><i class="fa fa-check"></i>Fine control</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#themes"><i class="fa fa-check"></i>Themes</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#extensions"><i class="fa fa-check"></i>Extensions</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-summary"><i class="fa fa-check"></i>ggplot2 Summary</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-exercises"><i class="fa fa-check"></i>ggplot2 Exercises</a><ul>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-0-3"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-1-11"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#exercise-2-11"><i class="fa fa-check"></i>Exercise 2</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#python-plotnine-notebook"><i class="fa fa-check"></i>Python Plotnine Notebook</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i>Interactive Visualization</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#packages"><i class="fa fa-check"></i>Packages</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#piping-for-visualization"><i class="fa fa-check"></i>Piping for Visualization</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#htmlwidgets"><i class="fa fa-check"></i>htmlwidgets</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#plotly"><i class="fa fa-check"></i>Plotly</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#modes"><i class="fa fa-check"></i>Modes</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#ggplotly"><i class="fa fa-check"></i>ggplotly</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#highcharter"><i class="fa fa-check"></i>Highcharter</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#graph-networks"><i class="fa fa-check"></i>Graph networks</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#visnetwork"><i class="fa fa-check"></i>visNetwork</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#sigmajs"><i class="fa fa-check"></i>sigmajs</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#plotly-1"><i class="fa fa-check"></i>Plotly</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#leaflet"><i class="fa fa-check"></i>leaflet</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#dt"><i class="fa fa-check"></i>DT</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#shiny"><i class="fa fa-check"></i>Shiny</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#dash"><i class="fa fa-check"></i>Dash</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-and-visual-data-exploration"><i class="fa fa-check"></i>Interactive and Visual Data Exploration</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#interactive-visualization-exercises"><i class="fa fa-check"></i>Interactive Visualization Exercises</a><ul>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-0-4"><i class="fa fa-check"></i>Exercise 0</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-1-12"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-2-12"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#exercise-3-4"><i class="fa fa-check"></i>Exercise 3</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="interactive.html"><a href="interactive.html#python-interactive-visualization-notebook"><i class="fa fa-check"></i>Python Interactive Visualization Notebook</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html"><i class="fa fa-check"></i>Thinking Visually</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#information"><i class="fa fa-check"></i>Information</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#your-audience-isnt-dumb"><i class="fa fa-check"></i>Your audience isn’t dumb</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#clarity-is-key"><i class="fa fa-check"></i>Clarity is key</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#avoid-clutter"><i class="fa fa-check"></i>Avoid clutter</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#color-isnt-optional"><i class="fa fa-check"></i>Color isn’t optional</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#think-interactively"><i class="fa fa-check"></i>Think interactively</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#color"><i class="fa fa-check"></i>Color</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#viridis"><i class="fa fa-check"></i>Viridis</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#scientific-colors"><i class="fa fa-check"></i>Scientific colors</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#rcolorbrewer"><i class="fa fa-check"></i>RColorBrewer</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#contrast"><i class="fa fa-check"></i>Contrast</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#scaling-size"><i class="fa fa-check"></i>Scaling Size</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#transparency"><i class="fa fa-check"></i>Transparency</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#accessibility"><i class="fa fa-check"></i>Accessibility</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#file-types"><i class="fa fa-check"></i>File Types</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#summary-of-thinking-visually"><i class="fa fa-check"></i>Summary of Thinking Visually</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#a-casual-list-of-things-to-avoid"><i class="fa fa-check"></i>A casual list of things to avoid</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#pie"><i class="fa fa-check"></i>Pie</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#histograms"><i class="fa fa-check"></i>Histograms</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#using-3d-without-adding-any-communicative-value"><i class="fa fa-check"></i>Using 3D without adding any communicative value</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#using-too-many-colors"><i class="fa fa-check"></i>Using too many colors</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#using-valenced-colors-when-data-isnt-applicable"><i class="fa fa-check"></i>Using valenced colors when data isn’t applicable</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#showing-maps-that-just-display-population"><i class="fa fa-check"></i>Showing maps that just display population</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#biplots"><i class="fa fa-check"></i>Biplots</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-visually-exercises"><i class="fa fa-check"></i>Thinking Visually Exercises</a><ul>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-1-13"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#exercise-2-13"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="thinking_vis.html"><a href="thinking_vis.html#thinking-exercises-2"><i class="fa fa-check"></i>Thinking exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Part V: Presentation</b></span></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html"><i class="fa fa-check"></i>Building Better Data-Driven Products</a><ul>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#rep-analysis"><i class="fa fa-check"></i>Rep* Analysis</a><ul>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#example"><i class="fa fa-check"></i>Example</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#repeatable"><i class="fa fa-check"></i>Repeatable</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#reproducible"><i class="fa fa-check"></i>Reproducible</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#replicable"><i class="fa fa-check"></i>Replicable</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#summary-of-rep-analysis"><i class="fa fa-check"></i>Summary of rep* analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#literate-programming"><i class="fa fa-check"></i>Literate Programming</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#r-markdown"><i class="fa fa-check"></i>R Markdown</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#how-to-read-this-chapter"><i class="fa fa-check"></i>How to read this chapter</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#dynamic-data-analysis-report-generation"><i class="fa fa-check"></i>Dynamic data analysis &amp; report generation</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#using-modern-tools"><i class="fa fa-check"></i>Using Modern Tools</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html"><i class="fa fa-check"></i>Getting Started</a><ul>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#what-is-markdown"><i class="fa fa-check"></i>What is Markdown?</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#documents"><i class="fa fa-check"></i>Documents</a><ul>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#standard-html"><i class="fa fa-check"></i>Standard HTML</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#r-notebooks"><i class="fa fa-check"></i>R notebooks</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#distill"><i class="fa fa-check"></i>Distill</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#bookdown"><i class="fa fa-check"></i>Bookdown</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#presentations"><i class="fa fa-check"></i>Presentations</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#apps-sites-dashboards"><i class="fa fa-check"></i>Apps, Sites &amp; Dashboards</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#templates"><i class="fa fa-check"></i>Templates</a></li>
+<li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html#how-to-begin"><i class="fa fa-check"></i>How to Begin</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html"><i class="fa fa-check"></i>Standard Documents</a><ul>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#r-markdown-files"><i class="fa fa-check"></i>R Markdown files</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#text"><i class="fa fa-check"></i>Text</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#code"><i class="fa fa-check"></i>Code</a><ul>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#chunks"><i class="fa fa-check"></i>Chunks</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#in-line"><i class="fa fa-check"></i>In-line</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#labels"><i class="fa fa-check"></i>Labels</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#running-code"><i class="fa fa-check"></i>Running code</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#multiple-documents"><i class="fa fa-check"></i>Multiple Documents</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#collaboration"><i class="fa fa-check"></i>Collaboration</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#using-python-for-documents"><i class="fa fa-check"></i>Using Python for Documents</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html"><i class="fa fa-check"></i>Customization &amp; Configuration</a><ul>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#output-options"><i class="fa fa-check"></i>Output Options</a><ul>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#themes-etc."><i class="fa fa-check"></i>Themes etc.</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#yaml"><i class="fa fa-check"></i>YAML</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#html-css"><i class="fa fa-check"></i>HTML &amp; CSS</a><ul>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#html-1"><i class="fa fa-check"></i>HTML</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#css"><i class="fa fa-check"></i>CSS</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#custom-classes"><i class="fa fa-check"></i>Custom classes</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#personal-templates"><i class="fa fa-check"></i>Personal Templates</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#the-rabbit-hole-goes-deep"><i class="fa fa-check"></i>The Rabbit Hole Goes Deep</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#r-markdown-exercises"><i class="fa fa-check"></i>R Markdown Exercises</a><ul>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-1-14"><i class="fa fa-check"></i>Exercise 1</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-2-14"><i class="fa fa-check"></i>Exercise 2</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-3-5"><i class="fa fa-check"></i>Exercise 3</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-4-1"><i class="fa fa-check"></i>Exercise 4</a></li>
+<li class="chapter" data-level="" data-path="customization.html"><a href="customization.html#exercise-5"><i class="fa fa-check"></i>Exercise 5</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Wrap-up</b></span></li>
+<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i>Appendix</a><ul>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#r-markdown-1"><i class="fa fa-check"></i>R Markdown</a><ul>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#footnotes"><i class="fa fa-check"></i>Footnotes</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#citations-and-references"><i class="fa fa-check"></i>Citations and references</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#multiple-documents-1"><i class="fa fa-check"></i>Multiple documents</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#web-standards"><i class="fa fa-check"></i>Web standards</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li class='after'">
+   <a href="https://m-clark.github.io/" aria-label='Author Website Link'>
+      <img src="img/mc_logo.png" style="width:25%; padding:0px 0; display:block; margin: 0 auto;" alt="MC logo">
+   </a>
+</li>
+<li class='after'">
+   <div style='text-align:center'>
+      <a href="https://github.com/m-clark/" aria-label='GitHub Link'>
+         <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+      </a>
+   </div>
+</li>
+<li class='after'">
+   <div style='text-align:center'>
+      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" aria-label="Creative commons CCBYSA link">
+         <i class="fab fa-creative-commons fa-lg"></i> 
+         <i class="fab fa-creative-commons-by fa-lg"></i> 
+         <i class="fab fa-creative-commons-sa fa-lg"></i>
+      </a>
+   </div>
+</li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Practical Data Science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="appendix" class="section level1">
+<h1>Appendix</h1>
+<div id="r-markdown-1" class="section level2">
+<h2>R Markdown</h2>
+<div id="footnotes" class="section level3">
+<h3>Footnotes</h3>
+<p>Footnotes are very straightforward. To add one just put <code>[^myfootnote]</code> where needed (the name is arbitrary). Then, somewhere in your document add the following.</p>
+<div class="sourceCode" id="cb588"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb588-1"><a href="appendix.html#cb588-1"></a><span class="ot">[^myfootnote]</span>:  Yadda blah yadda.</span></code></pre></div>
+<p>The usual practice is to put them at the end of the document. It doesn’t matter what order you put them in, they will be displayed/numbered as they appear in the actual text.</p>
+</div>
+<div id="citations-and-references" class="section level3">
+<h3>Citations and references</h3>
+<div id="references-bibliography" class="section level4">
+<h4>References &amp; bibliography</h4>
+<p>Assuming you have a reference file somewhere adding them to the text of the document is very easy. Many formats of the file are acceptable, such as BibTeX, EndNote, and more. For example if using BibTeX and the file is <code>refs.bib</code>, then just note the file in the YAML section.</p>
+<div class="sourceCode" id="cb589"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb589-1"><a href="appendix.html#cb589-1"></a><span class="fu">bibliography</span><span class="kw">:</span><span class="at"> refs.bib</span></span>
+<span id="cb589-2"><a href="appendix.html#cb589-2"></a><span class="fu">biblio-style</span><span class="kw">:</span><span class="at"> apalike</span></span>
+<span id="cb589-3"><a href="appendix.html#cb589-3"></a><span class="fu">link-citations</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span></code></pre></div>
+<p>The style can be anything you want, but will take some extra steps to use. Consult the R Markdown page for how to use custom styles.</p>
+<p>Now, somewhere in your document, put an empty References header like so:</p>
+<div class="sourceCode" id="cb590"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb590-1"><a href="appendix.html#cb590-1"></a><span class="fu"># References</span></span></code></pre></div>
+<p>The references you cite will magically appear in the references section when you knit the document. Note that <span class="emph">bookdown</span> documents, of which this is one, also put them at the bottom of the page where the citation occurs.</p>
+</div>
+<div id="citations" class="section level4">
+<h4>Citations</h4>
+<p>Now that your document has some references, you’ll want to cite them! In the refs.bib file for example, we have the following entry:</p>
+<div class="sourceCode" id="cb591"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><span id="cb591-1"><a href="appendix.html#cb591-1"></a><span class="va">@book</span>{<span class="ot">clark2018rmd</span>,</span>
+<span id="cb591-2"><a href="appendix.html#cb591-2"></a>  <span class="dt">title</span>={Introduction to R Markdown},</span>
+<span id="cb591-3"><a href="appendix.html#cb591-3"></a>  <span class="dt">author</span>={Clark, Michael},</span>
+<span id="cb591-4"><a href="appendix.html#cb591-4"></a>  <span class="dt">year</span>={2018}</span>
+<span id="cb591-5"><a href="appendix.html#cb591-5"></a>}</span></code></pre></div>
+<p>For example, if we type the following:</p>
+<p><code>Blah blah [see @clark2018rmd, pp. 33-35; also @barthelme1981balloon].</code></p>
+<p>It will produce:</p>
+<p>Blah blah <span class="citation">(see Clark <a href="#ref-clark2018rmd" role="doc-biblioref">2018</a>, 33–35; also Barthelme <a href="#ref-barthelme1981balloon" role="doc-biblioref">1981</a>)</span>.</p>
+<p>Use a minus sign (-) before the @ to suppress mention of the author in the citation. T</p>
+<p><code>Clark says blah [-@clark2018rmd].</code></p>
+<p>Clark says blah <span class="citation">(<a href="#ref-clark2018rmd" role="doc-biblioref">2018</a>)</span>.</p>
+<p>You can also write an in-text citation, as follows:</p>
+<p><code>@barthelme1981balloon says blah.</code></p>
+<p><span class="citation">Barthelme (<a href="#ref-barthelme1981balloon" role="doc-biblioref">1981</a>)</span> says blah.</p>
+<p><code>@barthelme1981balloon [p. 33] says blah.</code></p>
+<p><span class="citation">Barthelme (<a href="#ref-barthelme1981balloon" role="doc-biblioref">1981</a>, 33)</span> says blah.</p>
+</div>
+</div>
+<div id="multiple-documents-1" class="section level3">
+<h3>Multiple documents</h3>
+<p>If you’re writing a lengthy document, for example, an academic article, you’ll not want to have a single <code>*.Rmd</code> file for the whole thing, no more than you want a single R script to do all the data preparation and analysis for it. For one thing, probably only one section is data heavy, and you wouldn’t want to have to do a lot of processing every time you make a change to the document (though caching would help there). In addition, if there is a problem with one section, you can still put the document together by just ignoring the problematic part. A more compelling reason regards collaboration. Your colleague can write the introduction while you work on the results, and the final paper can then be put together without conflict.</p>
+<p>The best way to accomplish this is to think of your document like you would a website. The <code>index.Rmd</code> file has the YAML and other settings, and it will also be where the other files come together. For example a paper with an introduction, results, and discussion section might have this in the index file.</p>
+<pre><code>```{r, child=&#39;introduction.Rmd&#39;}
+```
+
+```{r, child=&#39;results.Rmd&#39;}
+```
+
+```{r, child=&#39;discussion.Rmd&#39;}
+```</code></pre>
+<p>You work on the individual sections separately, and when you knit the index file, all will come together. What’s more, if you’re creating an HTML document, you now can put this index file, which is the complete document, on the web for easy access. For example, if the document is placed in a folder like <code>mydoc</code>, then one could go to <code>www.someplace.net/mydoc/</code> and view the document.</p>
+</div>
+<div id="web-standards" class="section level3">
+<h3>Web standards</h3>
+<p>When creating an HTML document or site and customizing things as you like, you should consider accessibility issues at some point. Not everyone interacts with the web the same way. For example, roughly 10% of people see <a href="https://en.wikipedia.org/wiki/Color_blindness">color differently</a> from ‘normal’. Also, if your font is too light to read, or your visualizations don’t distinguish points of interest for a certain group of people, your document is less effective at communicating your ideas.</p>
+<p>As a simple example, when we changed the link color to dodgerblue, it might not have seemed like much, but the color was no longer sufficient contrast at the lowest web standards. Nor was my original color when the gray background was added. The default link color for my documents is just fine though.</p>
+<p>You can get a <a href="https://www.deque.com/axe/">browser extension</a> to see what problems your page has once it’s on the web. This is where your <code>*.css</code> file will come in handy, fixing 100 problems with one line of code. Then you have a template you can use from there on out. As you’ll be using HTML more and more the more you use R Markdown, things like this become more important. You won’t likely be able to deal with every issue that arises, but you’ll want to consider them.</p>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-barthelme1981balloon">
+<p>Barthelme, Donald. 1981. “The Balloon.” <em>Sixty Stories</em>, 46–51.</p>
+</div>
+<div id="ref-clark2018rmd">
+<p>Clark, Michael. 2018. <em>Introduction to R Markdown</em>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="summary.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["twitter", "facebook", "instapaper"],
+"google": false
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"toc_depth": 2,
+"scroll_highlight": true
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
