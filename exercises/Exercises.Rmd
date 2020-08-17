@@ -811,3 +811,62 @@ movies %>%
 
 Create a ggplot of your design and then use <span class="func">ggplotly</span> to make it interactive.
 
+
+
+# Presentation
+
+
+## R Markdown Exercises
+
+
+### Exercise 1
+
+
+- Create an `*.Rmd` for HTML.
+- Now change some configuration options: choose a theme and add a table of contents.  For the latter, create some headings/sections and sub-sections so that you can see your configuration in action.
+
+```{markdown header-ex1}
+# Header 1
+## Header 2
+```
+
+
+### Exercise 2
+
+- Add a chunk that does the following: `summary(mtcars)`. You can use the keyboard shortcut to create a chunk Ctrl-Alt-I (or Mac version).
+
+- Add a chunk that produces a visualization.  If you need an example, create a density plot of the population total variable from the <span class="objclass">midwest</span> data set in the <span class="pack">ggplot2</span> package.  Now align it with the `fig.align` chunk option.
+
+- Add a chunk similar to the previous but have the resulting document hide the code, just showing the visualization.  (`echo`)
+
+- Now add a chunk that *only* shows the code, but doesn't actually run it. (`eval`)
+
+- Add a chunk that creates an R object such as a set of numbers or text. Then use that object in the text via inline R code. For example, show only the first element of the object in a sentence. \`r \`
+
+- **Bonus**: Set a chunk option that will be applied to the whole document.  For example, make the default figure alignment be centered, or have the default be to hide the code.
+
+
+### Exercise 3
+
+- Italicize or bold some words.
+- Add a hyperlink.
+- Add a line break via HTML. Bonus: use <span class="pack">htmltools</span> and the `br()` function to add a line break within an R chunk.  See what happens when you simply put several line returns.
+- Change your output to PDF.
+
+
+### Exercise 4
+
+For these, you'll have to look it up, as we haven't explicitly discussed it.
+
+- Add a title and subtitle to your document (YAML)
+- Remove the # from the R chunk outputs (Chunk option)
+- Create a quoted block. (Basic Markdown)
+
+
+### Exercise 5
+
+For this more advanced exercise, you'd have to know a little CSS, but just doing it once will go quite a ways to helping you feel comfortable being creative with your own CSS files.
+
+- Create a `*.css` file to set an option for your link color. Don't forget to refer to it in your YAML configuration section of the Rmd file.  Just add something like `css: file/location/file.css`.
+
+- Create a special class of links and add a link of that class.
