@@ -55,7 +55,7 @@
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/viz-1.8.2/viz.js"></script>
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-<script src="libs/grViz-binding-1.0.5/grViz.js"></script>
+<script src="libs/grViz-binding-1.0.6.1/grViz.js"></script>
 <script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
@@ -884,7 +884,7 @@ Right hand side (RHS)
 <p>Most of the time we don’t have such luxury, or even if we did, the computations might be too great for the size of our data.</p>
 <p>Many statistical modeling techniques use <em>maximum likelihood</em> in some form or fashion, including Bayesian approaches, so you would do well to understand the basics. In this case, instead of minimizing the loss, we use an approach to maximize the probability of the observations of the target variable given the estimates of the parameters of the model (e.g. the coefficients in a regression)<a href="#fn20" class="footnote-ref" id="fnref20"><sup>20</sup></a>.</p>
 <p>The following shows how this would look for estimating a single value like a mean for a set of observations from a specific distribution<a href="#fn21" class="footnote-ref" id="fnref21"><sup>21</sup></a>. In this case, the true underlying value that maximizes the likelihood is 5, but we typically don’t know this. We see that as our guesses for the mean would get closer to 5, the likelihood of the observed values increases. Our final guess based on the observed data won’t be exactly 5, but with enough data and an appropriate model for that data, we should get close.</p>
-<p><img src="data-processing-and-visualization_files/figure-html/maximum-likelihood-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/maximum-likelihood-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Again, some simple conceptual code can help us. The next bit of code follows a similar approach to what we had with least squares regression, but the goal is instead to maximize the likelihood of the observed data. In this example, I fix the estimated variance, but in practice we’d need to estimate that parameter as well. As probabilities are typically very small, we work with them on the log scale.</p>
 <div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="models.html#cb390-1"></a>max_like &lt;-<span class="st"> </span><span class="cf">function</span>(X, y, beta, <span class="dt">sigma =</span> <span class="dv">1</span>) {</span>
 <span id="cb390-2"><a href="models.html#cb390-2"></a>  </span>
@@ -1073,7 +1073,7 @@ Q3
 Max
 </th>
 <th style="text-align:right;">
-Missing
+% Missing
 </th>
 </tr>
 </thead>
@@ -1171,7 +1171,7 @@ log_gdp_per_capita
 11.77
 </td>
 <td style="text-align:right;">
-28
+2
 </td>
 </tr>
 <tr>
@@ -1203,7 +1203,7 @@ social_support
 0.99
 </td>
 <td style="text-align:right;">
-13
+1
 </td>
 </tr>
 <tr>
@@ -1235,7 +1235,7 @@ healthy_life_expectancy_at_birth
 76.80
 </td>
 <td style="text-align:right;">
-28
+2
 </td>
 </tr>
 <tr>
@@ -1267,7 +1267,7 @@ freedom_to_make_life_choices
 0.99
 </td>
 <td style="text-align:right;">
-29
+2
 </td>
 </tr>
 <tr>
@@ -1299,7 +1299,7 @@ generosity
 0.68
 </td>
 <td style="text-align:right;">
-82
+5
 </td>
 </tr>
 <tr>
@@ -1331,7 +1331,7 @@ perceptions_of_corruption
 0.98
 </td>
 <td style="text-align:right;">
-96
+6
 </td>
 </tr>
 <tr>
@@ -1363,7 +1363,7 @@ positive_affect
 0.94
 </td>
 <td style="text-align:right;">
-19
+1
 </td>
 </tr>
 <tr>
@@ -1395,7 +1395,7 @@ negative_affect
 0.70
 </td>
 <td style="text-align:right;">
-13
+1
 </td>
 </tr>
 <tr>
@@ -1427,7 +1427,7 @@ confidence_in_national_government
 0.99
 </td>
 <td style="text-align:right;">
-174
+10
 </td>
 </tr>
 <tr>
@@ -1459,7 +1459,7 @@ democratic_quality
 1.58
 </td>
 <td style="text-align:right;">
-146
+9
 </td>
 </tr>
 <tr>
@@ -1491,7 +1491,7 @@ delivery_quality
 2.18
 </td>
 <td style="text-align:right;">
-145
+9
 </td>
 </tr>
 <tr>
@@ -1523,7 +1523,7 @@ gini_index_world_bank_estimate
 0.63
 </td>
 <td style="text-align:right;">
-1061
+62
 </td>
 </tr>
 <tr>
@@ -1555,7 +1555,7 @@ happiness_score
 7.63
 </td>
 <td style="text-align:right;">
-1150
+67
 </td>
 </tr>
 <tr>
@@ -1587,7 +1587,7 @@ dystopia_residual
 3.84
 </td>
 <td style="text-align:right;">
-1150
+67
 </td>
 </tr>
 </tbody>
@@ -2075,7 +2075,7 @@ F-statistic: 10.11 on 2 and 9 DF,  p-value: 0.004994</code></pre>
 
 Confidence level used: 0.95 </code></pre>
 <div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="models.html#cb439-1"></a><span class="kw">plot</span>(country_means)</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/emmeans-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/emmeans-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>We can also test for pairwise differences between the countries, and there’s no reason not to visualize that also. In the following, after adjustment Mexico and U.S. might not differ on mean happiness, but the other comparisons are statistically notable<a href="#fn32" class="footnote-ref" id="fnref32"><sup>32</sup></a>.</p>
 <div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="models.html#cb440-1"></a>pw_comparisons =<span class="st"> </span><span class="kw">contrast</span>(country_means, <span class="dt">method =</span> <span class="st">&#39;pairwise&#39;</span>, <span class="dt">adjust =</span> <span class="st">&#39;bonferroni&#39;</span>)</span>
 <span id="cb440-2"><a href="models.html#cb440-2"></a>pw_comparisons</span></code></pre></div>
@@ -2086,7 +2086,7 @@ Confidence level used: 0.95 </code></pre>
 
 P value adjustment: bonferroni method for 3 tests </code></pre>
 <div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb442-1"><a href="models.html#cb442-1"></a><span class="kw">plot</span>(pw_comparisons)</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/emmeans-pairwise-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/emmeans-pairwise-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>The following example uses <span class="pack" style="">ggeffects</span>. First, we run a model with an interaction of country and year (we’ll talk more about interactions later). Then we get predictions for the year by country, and subsequently visualize. We can see that the trend, while negative for all countries, is more pronounced as we move south.</p>
 <div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="models.html#cb443-1"></a>happy_model_nafta =<span class="st"> </span><span class="kw">lm</span>(happiness_score <span class="op">~</span><span class="st"> </span>year<span class="op">*</span>country, <span class="dt">data =</span> nafta)</span>
 <span id="cb443-2"><a href="models.html#cb443-2"></a></span>
@@ -2094,7 +2094,7 @@ P value adjustment: bonferroni method for 3 tests </code></pre>
 <span id="cb443-4"><a href="models.html#cb443-4"></a>preds =<span class="st"> </span><span class="kw">ggpredict</span>(happy_model_nafta, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&#39;year&#39;</span>, <span class="st">&#39;country&#39;</span>))</span>
 <span id="cb443-5"><a href="models.html#cb443-5"></a></span>
 <span id="cb443-6"><a href="models.html#cb443-6"></a><span class="kw">plot</span>(preds)</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/ggeffects-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/ggeffects-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Whenever you move to generalized linear models or other more complicated settings, visualization is even more important, so it’s best to have some tools at your disposal.</p>
 </div>
 <div id="extensions-to-the-standard-linear-model" class="section level2">

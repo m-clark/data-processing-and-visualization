@@ -5,24 +5,15 @@
 install.packages(
   c(
     'tidyverse',
-    'tidymodels',
-    'emmeans',
-    'ggeffects',
-    'tune'
+    'rmarkdown'
   )
 )
-
-
-# to run interactive exercises (not required!):
-
-install.packages('learnr')
-
 
 
 # Load libraries ----------------------------------------------------------
 
 
 library(tidyverse)      # loads dplyr, ggplot2, purrr, etc.
-library(tidymodels)     # loads parsnip, etc.
+library(rmarkdown)      # not really required as automatic 
 
 # load others as needed

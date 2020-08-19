@@ -55,7 +55,7 @@
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/viz-1.8.2/viz.js"></script>
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-<script src="libs/grViz-binding-1.0.5/grViz.js"></script>
+<script src="libs/grViz-binding-1.0.6.1/grViz.js"></script>
 <script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
@@ -1217,13 +1217,13 @@ $ GS     &lt;dbl&gt; 2, 0, 1, 80, 28, 3, 0, 81, 1, 2, 80, 1, 81, 4, 40, 8, 8, 0,
 <span id="cb167-8"><a href="tidyverse.html#cb167-8"></a>)</span>
 <span id="cb167-9"><a href="tidyverse.html#cb167-9"></a></span>
 <span id="cb167-10"><a href="tidyverse.html#cb167-10"></a>stocks <span class="op">%&gt;%</span><span class="st"> </span>head</span></code></pre></div>
-<pre><code>        time          X          Y         Z
-1 2009-01-01  0.7175566 -0.2991485  1.032988
-2 2009-01-02 -1.2419940  0.7770969  5.390897
-3 2009-01-03  0.5220088  0.6288678 -5.136477
-4 2009-01-04 -0.8580070  1.3109946  6.902047
-5 2009-01-05  2.1723762  2.0070621 -1.951933
-6 2009-01-06  0.4320193 -2.1617030 -7.348878</code></pre>
+<pre><code>        time           X          Y          Z
+1 2009-01-01 -1.23994442 -4.8515935  3.7985281
+2 2009-01-02  0.65851483  0.9552487 -2.7255786
+3 2009-01-03 -0.91146059 -0.0321312  0.6175274
+4 2009-01-04  1.85598621  1.1919978 -2.4837558
+5 2009-01-05  0.37266866  0.6297287 -1.1330732
+6 2009-01-06 -0.06072664 -2.8673242  1.7155168</code></pre>
 <div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="tidyverse.html#cb169-1"></a>stocks <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb169-2"><a href="tidyverse.html#cb169-2"></a><span class="st">  </span><span class="kw">pivot_longer</span>(</span>
 <span id="cb169-3"><a href="tidyverse.html#cb169-3"></a>    <span class="dt">cols      =</span> <span class="op">-</span>time,   <span class="co"># works similar to using select()</span></span>
@@ -1234,12 +1234,12 @@ $ GS     &lt;dbl&gt; 2, 0, 1, 80, 28, 3, 0, 81, 1, 2, 80, 1, 81, 4, 40, 8, 8, 0,
 <pre><code># A tibble: 6 x 3
   time       stock  price
   &lt;date&gt;     &lt;chr&gt;  &lt;dbl&gt;
-1 2009-01-01 X      0.718
-2 2009-01-01 Y     -0.299
-3 2009-01-01 Z      1.03 
-4 2009-01-02 X     -1.24 
-5 2009-01-02 Y      0.777
-6 2009-01-02 Z      5.39 </code></pre>
+1 2009-01-01 X     -1.24 
+2 2009-01-01 Y     -4.85 
+3 2009-01-01 Z      3.80 
+4 2009-01-02 X      0.659
+5 2009-01-02 Y      0.955
+6 2009-01-02 Z     -2.73 </code></pre>
 <p>Here is a more complex example where we can handle multiple repeated entries. We additionally add another column for labeling, and posit the separator for the column names.</p>
 <div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="tidyverse.html#cb171-1"></a><span class="kw">library</span>(tidyr)</span>
 <span id="cb171-2"><a href="tidyverse.html#cb171-2"></a></span>
@@ -1254,13 +1254,13 @@ $ GS     &lt;dbl&gt; 2, 0, 1, 80, 28, 3, 0, 81, 1, 2, 80, 1, 81, 4, 40, 8, 8, 0,
 <span id="cb171-11"><a href="tidyverse.html#cb171-11"></a>)</span>
 <span id="cb171-12"><a href="tidyverse.html#cb171-12"></a></span>
 <span id="cb171-13"><a href="tidyverse.html#cb171-13"></a><span class="kw">head</span>(stocks)</span></code></pre></div>
-<pre><code>        time        X_1        X_2         Y_1        Y_2       Z_1       Z_2
-1 2009-01-01 -0.2641620  0.3324894 -1.28260079  0.6485971 3.1140839  2.222888
-2 2009-01-02 -0.9558847 -0.2512451  0.56337414 -2.8272202 1.2597687 -3.447661
-3 2009-01-03 -0.3252029 -0.4531551 -1.52820756  1.3648205 0.1074207 -3.148614
-4 2009-01-04 -0.1882798  1.7256369 -2.49258788  1.1522622 3.1093054 -8.835787
-5 2009-01-05  0.5716932  0.6618466 -1.30694913 -0.8256239 0.8411574 -2.749538
-6 2009-01-06 -0.1464944  1.5312680  0.02399582 -2.4967329 0.8335537  5.744123</code></pre>
+<pre><code>        time        X_1         X_2        Y_1         Y_2        Z_1        Z_2
+1 2009-01-01 -0.9675529 -0.72793192  0.7516393  0.03321408  3.7485540  0.3945022
+2 2009-01-02 -0.1780449  0.08926355 -0.1976137  1.53569057 -0.0315400  7.6285628
+3 2009-01-03  0.2958189  0.38118235  1.6730362 -1.13635638  0.1543268 -5.9254785
+4 2009-01-04 -0.7805814 -0.67370673 -0.5696378 -3.62905335 -2.4256959  6.6867209
+5 2009-01-05  1.7910958 -0.32353046 -1.6786235 -1.55989831 -4.4294289 -8.1844866
+6 2009-01-06  1.1623828 -0.27362716 -0.3116307  2.73462718  0.6675895  1.9884072</code></pre>
 <div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="tidyverse.html#cb173-1"></a>stocks <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb173-2"><a href="tidyverse.html#cb173-2"></a><span class="st">  </span><span class="kw">pivot_longer</span>(</span>
 <span id="cb173-3"><a href="tidyverse.html#cb173-3"></a>    <span class="dt">cols =</span> <span class="op">-</span>time,</span>
@@ -1270,14 +1270,14 @@ $ GS     &lt;dbl&gt; 2, 0, 1, 80, 28, 3, 0, 81, 1, 2, 80, 1, 81, 4, 40, 8, 8, 0,
 <span id="cb173-7"><a href="tidyverse.html#cb173-7"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb173-8"><a href="tidyverse.html#cb173-8"></a><span class="st">  </span><span class="kw">head</span>()</span></code></pre></div>
 <pre><code># A tibble: 6 x 4
-  time       stock entry  price
-  &lt;date&gt;     &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;
-1 2009-01-01 X     1     -0.264
-2 2009-01-01 X     2      0.332
-3 2009-01-01 Y     1     -1.28 
-4 2009-01-01 Y     2      0.649
-5 2009-01-01 Z     1      3.11 
-6 2009-01-01 Z     2      2.22 </code></pre>
+  time       stock entry   price
+  &lt;date&gt;     &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;
+1 2009-01-01 X     1     -0.968 
+2 2009-01-01 X     2     -0.728 
+3 2009-01-01 Y     1      0.752 
+4 2009-01-01 Y     2      0.0332
+5 2009-01-01 Z     1      3.75  
+6 2009-01-01 Z     2      0.395 </code></pre>
 <p>Note that the latter is an example of <em>tidy data</em> while the former is not. Why do we generally prefer such data? Precisely because the most common data operations, grouping, filtering, etc., would work notably more efficiently with such data. This is especially the case for visualization.</p>
 <p>The following demonstrates the <span class="func" style="">separate</span> function utilized for a very common data processing task- dealing with names. Here’ we’ll separate <span class="objclass">player</span> into first and last names based on the space.</p>
 <div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="tidyverse.html#cb175-1"></a>bball <span class="op">%&gt;%</span><span class="st"> </span></span>

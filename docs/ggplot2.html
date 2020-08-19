@@ -55,7 +55,7 @@
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/viz-1.8.2/viz.js"></script>
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-<script src="libs/grViz-binding-1.0.5/grViz.js"></script>
+<script src="libs/grViz-binding-1.0.6.1/grViz.js"></script>
 <script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
@@ -725,13 +725,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The code above would just produce a plot background, but nothing else. However, with the foundation in place, we’re now ready to add something to it. Let’s add some points (the outlier is Jabba the Hut).</p>
 <div class="sourceCode" id="cb519"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb519-1"><a href="ggplot2.html#cb519-1"></a><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> height, <span class="dt">y =</span> mass), <span class="dt">data =</span> starwars) <span class="op">+</span></span>
 <span id="cb519-2"><a href="ggplot2.html#cb519-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/layer2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/layer2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Perhaps we want to change labels or theme. These would be additional layers to the plot.</p>
 <div class="sourceCode" id="cb520"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb520-1"><a href="ggplot2.html#cb520-1"></a><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> height, <span class="dt">y =</span> mass), <span class="dt">data =</span> starwars) <span class="op">+</span></span>
 <span id="cb520-2"><a href="ggplot2.html#cb520-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">color =</span> <span class="st">&#39;white&#39;</span>) <span class="op">+</span></span>
 <span id="cb520-3"><a href="ggplot2.html#cb520-3"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&#39;Height in cm&#39;</span>, <span class="dt">y =</span> <span class="st">&#39;Weight in kg&#39;</span>) <span class="op">+</span></span>
 <span id="cb520-4"><a href="ggplot2.html#cb520-4"></a><span class="st">  </span><span class="kw">theme_dark</span>()</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/layer3-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/layer3-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Each layer is consecutively added by means of a pipe operator, and layers may regard geoms, scales, labels, facets etc. You may have many different layers to produce one plot, and there really is no limit. However some efficiencies may be possible for a given situation. For example, it’s more straightforward to use <span class="func">geom_smooth</span> than calculate fits, standard errors etc. and then add multiple geoms to produce the same thing. This is the sort of thing you’ll get used to as you use ggplot more.</p>
 </div>
 <div id="piping" class="section level2">
@@ -833,7 +833,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb525-6"><a href="ggplot2.html#cb525-6"></a></span>
 <span id="cb525-7"><a href="ggplot2.html#cb525-7"></a><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price), <span class="dt">data =</span> diamonds) <span class="op">+</span></span>
 <span id="cb525-8"><a href="ggplot2.html#cb525-8"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="fl">.5</span>, <span class="dt">color =</span> <span class="st">&#39;peru&#39;</span>)</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/ggscatter-1.png" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/ggscatter-1.png" width="75%" style="display: block; margin: auto;" /></p>
 <p>Next we use two different geoms, and one is even using a different data source. Note that geoms have arguments both common and specific to them. In the following, <code>label</code> is used for <span class="func">geom_text</span>, but it would be ignored by <span class="func">geom_line</span>.</p>
 <div class="sourceCode" id="cb526"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb526-1"><a href="ggplot2.html#cb526-1"></a><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> date, <span class="dt">y =</span> unemploy), <span class="dt">data =</span> economics) <span class="op">+</span></span>
 <span id="cb526-2"><a href="ggplot2.html#cb526-2"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
@@ -842,15 +842,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb526-5"><a href="ggplot2.html#cb526-5"></a>    <span class="dt">vjust =</span> <span class="fl">-.5</span>,</span>
 <span id="cb526-6"><a href="ggplot2.html#cb526-6"></a>    <span class="dt">data =</span> <span class="kw">filter</span>(economics, date <span class="op">==</span><span class="st"> &#39;2009-10-01&#39;</span>)</span>
 <span id="cb526-7"><a href="ggplot2.html#cb526-7"></a>  )</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/ggline-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/ggline-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>In the following, one setting, alpha (transparency), is not mapped to the data, while size and color are<a href="#fn45" class="footnote-ref" id="fnref45"><sup>45</sup></a>.</p>
 <div class="sourceCode" id="cb527"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb527-1"><a href="ggplot2.html#cb527-1"></a><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price), <span class="dt">data =</span> diamonds) <span class="op">+</span></span>
 <span id="cb527-2"><a href="ggplot2.html#cb527-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size =</span> carat, <span class="dt">color =</span> clarity), <span class="dt">alpha =</span> <span class="fl">.05</span>) </span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/ggalpha-1.png" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/ggalpha-1.png" width="75%" style="display: block; margin: auto;" /></p>
 <p>There are some other options to play with as well.</p>
 <div class="sourceCode" id="cb528"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb528-1"><a href="ggplot2.html#cb528-1"></a><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price), <span class="dt">data =</span> diamonds <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_frac</span>(.<span class="dv">01</span>)) <span class="op">+</span></span>
 <span id="cb528-2"><a href="ggplot2.html#cb528-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size =</span> carat, <span class="dt">color =</span> clarity), <span class="dt">key_glyph =</span> <span class="st">&quot;vpath&quot;</span>)</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/key_glyphs-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/key_glyphs-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="stats" class="section level2">
 <h2>Stats</h2>
@@ -859,14 +859,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb529"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb529-1"><a href="ggplot2.html#cb529-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span></span>
 <span id="cb529-2"><a href="ggplot2.html#cb529-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb529-3"><a href="ggplot2.html#cb529-3"></a><span class="st">  </span><span class="kw">geom_quantile</span>()</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/ggquant-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/ggquant-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>The following shows loess (or additive model) smooths. We can do some fine-tuning and use model-based approaches for visualization.</p>
 <div class="sourceCode" id="cb530"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb530-1"><a href="ggplot2.html#cb530-1"></a><span class="kw">data</span>(mcycle, <span class="dt">package =</span> <span class="st">&#39;MASS&#39;</span>)</span>
 <span id="cb530-2"><a href="ggplot2.html#cb530-2"></a></span>
 <span id="cb530-3"><a href="ggplot2.html#cb530-3"></a><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> times, <span class="dt">y =</span> accel), <span class="dt">data =</span> mcycle) <span class="op">+</span></span>
 <span id="cb530-4"><a href="ggplot2.html#cb530-4"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb530-5"><a href="ggplot2.html#cb530-5"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">formula =</span> y <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(x, <span class="dt">bs =</span> <span class="st">&#39;ad&#39;</span>), <span class="dt">method =</span> <span class="st">&#39;gam&#39;</span>)</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/ggsmooth-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/ggsmooth-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Bootstrapped confidence intervals:</p>
 <div class="sourceCode" id="cb531"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb531-1"><a href="ggplot2.html#cb531-1"></a><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(cyl, mpg)) <span class="op">+</span></span>
 <span id="cb531-2"><a href="ggplot2.html#cb531-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
@@ -876,7 +876,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb531-6"><a href="ggplot2.html#cb531-6"></a>    <span class="dt">alpha =</span> <span class="fl">.75</span>,</span>
 <span id="cb531-7"><a href="ggplot2.html#cb531-7"></a>    <span class="dt">size =</span> <span class="dv">1</span></span>
 <span id="cb531-8"><a href="ggplot2.html#cb531-8"></a>  )</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/ggstatsum-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/ggstatsum-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>The take-home message here is to always let ggplot do the work for you if at all possible. However, I will say that I find it easier to create the summary data I want to visualize with tidyverse tools, rather than use <span class="func">stat_summary</span>, and you may have a similar experience.</p>
 </div>
 <div id="scales" class="section level2">
@@ -890,12 +890,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb532-5"><a href="ggplot2.html#cb532-5"></a>    <span class="dt">y     =</span> <span class="st">&#39;head acceleration&#39;</span>, </span>
 <span id="cb532-6"><a href="ggplot2.html#cb532-6"></a>    <span class="dt">title =</span> <span class="st">&#39;Motorcycle Accident&#39;</span></span>
 <span id="cb532-7"><a href="ggplot2.html#cb532-7"></a>  )</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/scale_labs-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/scale_labs-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>A frequent operation is changing the x and y look in the form of limits and tick marks. Like <span class="func">labs</span>, there is a general <span class="func">lims</span> function and specific functions for just the specific parts. In addition, we may want to get really detailed using <span class="func">scale_x_*</span> or <span class="func">scale_y_*</span>.</p>
 <div class="sourceCode" id="cb533"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb533-1"><a href="ggplot2.html#cb533-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy, <span class="dt">size =</span> cyl)) <span class="op">+</span></span>
 <span id="cb533-2"><a href="ggplot2.html#cb533-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb533-3"><a href="ggplot2.html#cb533-3"></a><span class="st">  </span><span class="kw">ylim</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">60</span>))</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/scale_lims-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/scale_lims-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb534"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb534-1"><a href="ggplot2.html#cb534-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy, <span class="dt">size =</span> cyl)) <span class="op">+</span></span>
 <span id="cb534-2"><a href="ggplot2.html#cb534-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb534-3"><a href="ggplot2.html#cb534-3"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(</span>
@@ -903,26 +903,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb534-5"><a href="ggplot2.html#cb534-5"></a>    <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">60</span>, <span class="dt">by =</span> <span class="dv">12</span>),</span>
 <span id="cb534-6"><a href="ggplot2.html#cb534-6"></a>    <span class="dt">minor_breaks =</span> <span class="kw">seq</span>(<span class="dv">6</span>, <span class="dv">60</span>, <span class="dt">by =</span> <span class="dv">6</span>)</span>
 <span id="cb534-7"><a href="ggplot2.html#cb534-7"></a>  )</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/scale_lims-2.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/scale_lims-2.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Another common option is to change the size of points in some way. While we assign the aesthetic as before, it comes with defaults that might not work for a given situation. Play around with the range values.</p>
 <div class="sourceCode" id="cb535"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb535-1"><a href="ggplot2.html#cb535-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy, <span class="dt">size =</span> cyl)) <span class="op">+</span></span>
 <span id="cb535-2"><a href="ggplot2.html#cb535-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb535-3"><a href="ggplot2.html#cb535-3"></a><span class="st">  </span><span class="kw">scale_size</span>(<span class="dt">range =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/scale_size2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/scale_size2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>We will talk about color issues later, but for now, you may want to apply something besides the default options. The following shows a built-in color scale for a color aesthetic that is treated as continuous, and one that is discrete and which we want to supply our own colors (these actually come from plotly’s default color scheme).</p>
 <div class="sourceCode" id="cb536"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb536-1"><a href="ggplot2.html#cb536-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy, <span class="dt">color =</span> cyl)) <span class="op">+</span></span>
 <span id="cb536-2"><a href="ggplot2.html#cb536-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb536-3"><a href="ggplot2.html#cb536-3"></a><span class="st">  </span><span class="kw">scale_color_gradient2</span>()</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/scale_color-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/scale_color-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb537"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb537-1"><a href="ggplot2.html#cb537-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy, <span class="dt">color =</span> <span class="kw">factor</span>(cyl))) <span class="op">+</span></span>
 <span id="cb537-2"><a href="ggplot2.html#cb537-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb537-3"><a href="ggplot2.html#cb537-3"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;#1f77b4&quot;</span>, <span class="st">&quot;#ff7f0e&quot;</span>, <span class="st">&quot;#2ca02c&quot;</span>, <span class="st">&quot;#d62728&quot;</span>))</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/scale_color-2.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/scale_color-2.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>We can even change the scale of the data itself.</p>
 <div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb538-1"><a href="ggplot2.html#cb538-1"></a><span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(<span class="dt">x =</span> displ, <span class="dt">y =</span> hwy)) <span class="op">+</span></span>
 <span id="cb538-2"><a href="ggplot2.html#cb538-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb538-3"><a href="ggplot2.html#cb538-3"></a><span class="st">  </span><span class="kw">scale_x_log10</span>()</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/scale_scale-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/scale_scale-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>In short, scale alterations are really useful for getting just the plot you want, and there is a lot of flexibility for you to work with. There are a lot of scales too, so know what you have available.</p>
 <div style="font-size:75%">
 <ul>
@@ -948,12 +948,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb539"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb539-1"><a href="ggplot2.html#cb539-1"></a><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(<span class="dt">x =</span> wt, <span class="dt">y =</span> mpg)) <span class="op">+</span><span class="st"> </span></span>
 <span id="cb539-2"><a href="ggplot2.html#cb539-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb539-3"><a href="ggplot2.html#cb539-3"></a><span class="st">  </span><span class="kw">facet_grid</span>(<span class="op">~</span><span class="st"> </span>cyl)</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/facetgrid-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/facetgrid-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Facet by vs and cylinder.</p>
 <div class="sourceCode" id="cb540"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb540-1"><a href="ggplot2.html#cb540-1"></a><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(<span class="dt">x =</span> wt, <span class="dt">y =</span> mpg)) <span class="op">+</span><span class="st"> </span></span>
 <span id="cb540-2"><a href="ggplot2.html#cb540-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb540-3"><a href="ggplot2.html#cb540-3"></a><span class="st">  </span><span class="kw">facet_grid</span>(vs <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">labeller =</span> label_both)</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/facetgrid2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/facetgrid2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="facet_wrap" class="section level4">
 <h4>facet_wrap</h4>
@@ -961,7 +961,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb541"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb541-1"><a href="ggplot2.html#cb541-1"></a><span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(<span class="dt">x =</span> wt, <span class="dt">y =</span> mpg)) <span class="op">+</span><span class="st"> </span></span>
 <span id="cb541-2"><a href="ggplot2.html#cb541-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb541-3"><a href="ggplot2.html#cb541-3"></a><span class="st">  </span><span class="kw">facet_wrap</span>(vs <span class="op">~</span><span class="st"> </span>cyl, <span class="dt">labeller =</span> label_both, <span class="dt">ncol=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/facetwrap-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/facetwrap-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="multiple-plots" class="section level2">
@@ -980,7 +980,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb542-11"><a href="ggplot2.html#cb542-11"></a></span>
 <span id="cb542-12"><a href="ggplot2.html#cb542-12"></a>g1 <span class="op">/</span><span class="st">                       </span><span class="co"># initial plot, place next part underneath</span></span>
 <span id="cb542-13"><a href="ggplot2.html#cb542-13"></a><span class="st">  </span>(g2 <span class="op">|</span><span class="st"> </span>g3)                <span class="co"># groups g2 and g3 side by side</span></span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/patchwork-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/patchwork-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Not that you want this, but just to demonstrate the flexibility.</p>
 <div class="sourceCode" id="cb543"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb543-1"><a href="ggplot2.html#cb543-1"></a>p1 =<span class="st"> </span><span class="kw">ggplot</span>(mtcars) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(mpg, disp))</span>
 <span id="cb543-2"><a href="ggplot2.html#cb543-2"></a>p2 =<span class="st"> </span><span class="kw">ggplot</span>(mtcars) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(gear, disp, <span class="dt">group =</span> gear))</span>
@@ -993,7 +993,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb543-9"><a href="ggplot2.html#cb543-9"></a><span class="st">  </span>(p3 <span class="op">/</span><span class="st"> </span>p4) <span class="op">*</span><span class="st"> </span><span class="kw">theme_void</span>() <span class="op">+</span></span>
 <span id="cb543-10"><a href="ggplot2.html#cb543-10"></a><span class="st">  </span>p5 <span class="op">+</span></span>
 <span id="cb543-11"><a href="ggplot2.html#cb543-11"></a><span class="st">  </span><span class="kw">plot_layout</span>(<span class="dt">widths =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/patchwork2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/patchwork2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>You’ll typically want to use facets to show subsets of the same data, and tools like <span class="pack" style="">patchwork</span> to show different kinds of plots together.</p>
 </div>
 <div id="fine-control" class="section level2">
@@ -1027,7 +1027,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb544-26"><a href="ggplot2.html#cb544-26"></a>    <span class="dt">legend.key =</span> <span class="kw">element_rect</span>(<span class="dt">linetype =</span> <span class="dv">4</span>),</span>
 <span id="cb544-27"><a href="ggplot2.html#cb544-27"></a>    <span class="dt">legend.position =</span> <span class="st">&#39;bottom&#39;</span></span>
 <span id="cb544-28"><a href="ggplot2.html#cb544-28"></a>  )</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/finecontrol-1.png" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/finecontrol-1.png" width="75%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="themes" class="section level2">
 <h2>Themes</h2>
@@ -1129,7 +1129,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><span class="func">theme_minimal</span></li>
 <li><span class="func">theme_clean</span> (requires the visibly package and an appreciation of the Lamborghini background from the previous visualization)</li>
 </ul>
-<p><img src="data-processing-and-visualization_files/figure-html/ggplot_ex1-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/ggplot_ex1-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="exercise-2-11" class="section level3">
 <h3>Exercise 2</h3>
@@ -1155,7 +1155,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb547-14"><a href="ggplot2.html#cb547-14"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">x=</span><span class="op">-</span><span class="fl">83.748333</span>, <span class="dt">y=</span><span class="fl">42.281389</span>, <span class="dt">color=</span><span class="st">&#39;#1e90ff&#39;</span>, <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span></span>
 <span id="cb547-15"><a href="ggplot2.html#cb547-15"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
 <span id="cb547-16"><a href="ggplot2.html#cb547-16"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid=</span><span class="kw">element_blank</span>())</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/ggplot_ex2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/ggplot_ex2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="python-plotnine-notebook" class="section level2">

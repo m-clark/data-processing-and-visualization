@@ -55,7 +55,7 @@
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/viz-1.8.2/viz.js"></script>
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-<script src="libs/grViz-binding-1.0.5/grViz.js"></script>
+<script src="libs/grViz-binding-1.0.6.1/grViz.js"></script>
 <script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
@@ -1141,31 +1141,31 @@ cov.unscaled  121    -none- numeric</code></pre>
 [16] summary.corIdent*                    summary.corLin*                      summary.corNatural*                  summary.corRatio*                    summary.corSpher*                   
 [21] summary.corStruct*                   summary.corSymm*                     summary.data.frame                   summary.Date                         summary.default                     
 [26] summary.Duration*                    summary.ecdf*                        summary.factor                       summary.gam                          summary.ggplot*                     
-[31] summary.glm                          summary.gls*                         summary.hcl_palettes*                summary.infl*                        summary.Interval*                   
-[36] summary.lm                           summary.lme*                         summary.lmList*                      summary.loess*                       summary.manova                      
-[41] summary.matrix                       summary.microbenchmark*              summary.mlm*                         summary.modelStruct*                 summary.nls*                        
-[46] summary.nlsList*                     summary.packageStatus*               summary.pandas.core.frame.DataFrame* summary.pandas.core.series.Series*   summary.pdBlocked*                  
-[51] summary.pdCompSymm*                  summary.pdDiag*                      summary.pdIdent*                     summary.pdIdnot*                     summary.pdLogChol*                  
-[56] summary.pdMat*                       summary.pdNatural*                   summary.pdSymm*                      summary.pdTens*                      summary.Period*                     
-[61] summary.POSIXct                      summary.POSIXlt                      summary.ppr*                         summary.prcomp*                      summary.princomp*                   
-[66] summary.proc_time                    summary.python.builtin.object*       summary.reStruct*                    summary.rlang_error*                 summary.rlang_trace*                
-[71] summary.shingle*                     summary.srcfile                      summary.srcref                       summary.stepfun                      summary.stl*                        
-[76] summary.table                        summary.trellis*                     summary.tukeysmooth*                 summary.varComb*                     summary.varConstPower*              
-[81] summary.varExp*                      summary.varFixed*                    summary.varFunc*                     summary.varIdent*                    summary.varPower*                   
-[86] summary.vctrs_sclr*                  summary.vctrs_vctr*                  summary.warnings                    
+[31] summary.glm                          summary.gls*                         summary.haven_labelled*              summary.hcl_palettes*                summary.infl*                       
+[36] summary.Interval*                    summary.lm                           summary.lme*                         summary.lmList*                      summary.loess*                      
+[41] summary.manova                       summary.matrix                       summary.microbenchmark*              summary.mlm*                         summary.modelStruct*                
+[46] summary.nls*                         summary.nlsList*                     summary.packageStatus*               summary.pandas.core.frame.DataFrame* summary.pandas.core.series.Series*  
+[51] summary.pdBlocked*                   summary.pdCompSymm*                  summary.pdDiag*                      summary.pdIdent*                     summary.pdIdnot*                    
+[56] summary.pdLogChol*                   summary.pdMat*                       summary.pdNatural*                   summary.pdSymm*                      summary.pdTens*                     
+[61] summary.Period*                      summary.POSIXct                      summary.POSIXlt                      summary.ppr*                         summary.prcomp*                     
+[66] summary.princomp*                    summary.proc_time                    summary.python.builtin.object*       summary.reStruct*                    summary.rlang_error*                
+[71] summary.rlang_trace*                 summary.shingle*                     summary.srcfile                      summary.srcref                       summary.stepfun                     
+[76] summary.stl*                         summary.table                        summary.trellis*                     summary.tukeysmooth*                 summary.varComb*                    
+[81] summary.varConstPower*               summary.varExp*                      summary.varFixed*                    summary.varFunc*                     summary.varIdent*                   
+[86] summary.varPower*                    summary.vctrs_sclr*                  summary.vctrs_vctr*                  summary.warnings                    
 see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>Say you are new to a modeling package, and as such, you might want to see what all you can do with the resulting object. Once you’ve discerned the class of the model object, you can then list all the functions that can be used on that object.</p>
 <div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="programming.html#cb243-1"></a><span class="kw">library</span>(brms)</span>
 <span id="cb243-2"><a href="programming.html#cb243-2"></a><span class="kw">methods</span>(<span class="dt">class =</span> <span class="st">&#39;brmsfit&#39;</span>)</span></code></pre></div>
 <pre><code> [1] add_criterion           add_ic                  as.array                as.data.frame           as.matrix               as.mcmc                 autocor                 bayes_factor            bayes_R2               
-[10] bridge_sampler          coef                    conditional_effects     conditional_smooths     control_params          expose_functions        extract_draws           family                  fitted                 
-[19] fixef                   formula                 getCall                 hypothesis              kfold                   launch_shinystan        log_lik                 log_posterior           logLik                 
-[28] loo_compare             loo_linpred             loo_model_weights       loo_predict             loo_predictive_interval loo_R2                  loo_subsample           loo                     LOO                    
+[10] bridge_sampler          coef                    conditional_effects     conditional_smooths     control_params          expose_functions        family                  fitted                  fixef                  
+[19] formula                 getCall                 hypothesis              kfold                   launch_shinystan        log_lik                 log_posterior           logLik                  loo_compare            
+[28] loo_linpred             loo_model_weights       loo_moment_match        loo_predict             loo_predictive_interval loo_R2                  loo_subsample           loo                     LOO                    
 [37] marginal_effects        marginal_smooths        mcmc_plot               model_weights           model.frame             neff_ratio              ngrps                   nobs                    nsamples               
-[46] nuts_params             pairs                   parnames                plot_coefficients       plot                    post_prob               posterior_average       posterior_interval      posterior_linpred      
-[55] posterior_predict       posterior_samples       posterior_summary       pp_average              pp_check                pp_expect               pp_mixture              predict                 predictive_error       
-[64] predictive_interval     print                   prior_samples           prior_summary           ranef                   reloo                   residuals               rhat                    stancode               
-[73] standata                stanplot                summary                 update                  VarCorr                 vcov                    waic                    WAIC                   
+[46] nuts_params             pairs                   parnames                plot_coefficients       plot                    post_prob               posterior_average       posterior_epred         posterior_interval     
+[55] posterior_linpred       posterior_predict       posterior_samples       posterior_summary       pp_average              pp_check                pp_mixture              predict                 predictive_error       
+[64] predictive_interval     prepare_predictions     print                   prior_samples           prior_summary           ranef                   reloo                   residuals               rhat                   
+[73] stancode                standata                stanplot                summary                 update                  VarCorr                 vcov                    waic                    WAIC                   
 see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>This allows you to more quickly get familiar with a package and the objects it produces, and provides utility you might not have even known to look for in the first place!</p>
 </div>

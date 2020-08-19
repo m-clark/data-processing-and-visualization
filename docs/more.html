@@ -55,7 +55,7 @@
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/viz-1.8.2/viz.js"></script>
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-<script src="libs/grViz-binding-1.0.5/grViz.js"></script>
+<script src="libs/grViz-binding-1.0.6.1/grViz.js"></script>
 <script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
@@ -801,9 +801,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="more.html#cb361-1"></a><span class="kw">library</span>(microbenchmark)</span>
 <span id="cb361-2"><a href="more.html#cb361-2"></a><span class="kw">microbenchmark</span>(<span class="kw">apply</span>(mymatrix, <span class="dv">2</span>, log), <span class="kw">log</span>(mymatrix))</span></code></pre></div>
 <pre><code>Unit: nanoseconds
-                    expr   min    lq     mean  median      uq    max neval
- apply(mymatrix, 2, log) 23124 23810 29324.58 24410.5 25843.5 150815   100
-           log(mymatrix)   685   726  1087.89   804.0   900.5  13853   100</code></pre>
+                    expr   min    lq     mean  median      uq   max neval
+ apply(mymatrix, 2, log) 22717 22963 23811.44 23096.5 23318.5 77510   100
+           log(mymatrix)   644   714   775.20   772.5   806.5  1239   100</code></pre>
 <p>Many vectorized functions already exist in R. They are often written in C, Fortran etc., and so even faster. Not all programming languages lean toward vectorized operations, and may not see much speed gain from it. In R however, you’ll want to prefer it. Even without, it’s cleaner/clearer code, another reason to use the approach.</p>
 <div id="timings" class="section level4">
 <h4>Timings</h4>
@@ -851,7 +851,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb363-41"><a href="more.html#cb363-41"></a><span class="kw">stopCluster</span>(cl)</span>
 <span id="cb363-42"><a href="more.html#cb363-42"></a></span>
 <span id="cb363-43"><a href="more.html#cb363-43"></a>test</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/vectorization_timings-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/vectorization_timings-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>

@@ -55,7 +55,7 @@
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/viz-1.8.2/viz.js"></script>
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-<script src="libs/grViz-binding-1.0.5/grViz.js"></script>
+<script src="libs/grViz-binding-1.0.6.1/grViz.js"></script>
 <script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
@@ -899,18 +899,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb277-4"><a href="iterative.html#cb277-4"></a>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb277-5"><a href="iterative.html#cb277-5"></a><span class="st">  </span><span class="kw">map_df</span>(scale) <span class="co"># returns a df</span></span></code></pre></div>
 <pre><code># A tibble: 32 x 11
-      mpg    cyl    disp     hp   drat       wt   qsec     vs     am   gear   carb
-    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
- 1  0.151 -0.105 -0.571  -0.535  0.568 -0.610   -0.777 -0.868  1.19   0.424  0.735
- 2  0.151 -0.105 -0.571  -0.535  0.568 -0.350   -0.464 -0.868  1.19   0.424  0.735
- 3  0.450 -1.22  -0.990  -0.783  0.474 -0.917    0.426  1.12   1.19   0.424 -1.12 
- 4  0.217 -0.105  0.220  -0.535 -0.966 -0.00230  0.890  1.12  -0.814 -0.932 -1.12 
- 5 -0.231  1.01   1.04    0.413 -0.835  0.228   -0.464 -0.868 -0.814 -0.932 -0.503
- 6 -0.330 -0.105 -0.0462 -0.608 -1.56   0.248    1.33   1.12  -0.814 -0.932 -1.12 
- 7 -0.961  1.01   1.04    1.43  -0.723  0.361   -1.12  -0.868 -0.814 -0.932  0.735
- 8  0.715 -1.22  -0.678  -1.24   0.175 -0.0278   1.20   1.12  -0.814  0.424 -0.503
- 9  0.450 -1.22  -0.726  -0.754  0.605 -0.0687   2.83   1.12  -0.814  0.424 -0.503
-10 -0.148 -0.105 -0.509  -0.345  0.605  0.228    0.253  1.12  -0.814  0.424  0.735
+   mpg[,1] cyl[,1] disp[,1] hp[,1] drat[,1]   wt[,1] qsec[,1] vs[,1] am[,1] gear[,1] carb[,1]
+     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+ 1   0.151  -0.105  -0.571  -0.535    0.568 -0.610     -0.777 -0.868  1.19     0.424    0.735
+ 2   0.151  -0.105  -0.571  -0.535    0.568 -0.350     -0.464 -0.868  1.19     0.424    0.735
+ 3   0.450  -1.22   -0.990  -0.783    0.474 -0.917      0.426  1.12   1.19     0.424   -1.12 
+ 4   0.217  -0.105   0.220  -0.535   -0.966 -0.00230    0.890  1.12  -0.814   -0.932   -1.12 
+ 5  -0.231   1.01    1.04    0.413   -0.835  0.228     -0.464 -0.868 -0.814   -0.932   -0.503
+ 6  -0.330  -0.105  -0.0462 -0.608   -1.56   0.248      1.33   1.12  -0.814   -0.932   -1.12 
+ 7  -0.961   1.01    1.04    1.43    -0.723  0.361     -1.12  -0.868 -0.814   -0.932    0.735
+ 8   0.715  -1.22   -0.678  -1.24     0.175 -0.0278     1.20   1.12  -0.814    0.424   -0.503
+ 9   0.450  -1.22   -0.726  -0.754    0.605 -0.0687     2.83   1.12  -0.814    0.424   -0.503
+10  -0.148  -0.105  -0.509  -0.345    0.605  0.228      0.253  1.12  -0.814    0.424    0.735
 # … with 22 more rows</code></pre>
 <div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="iterative.html#cb279-1"></a>mtcars <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb279-2"><a href="iterative.html#cb279-2"></a><span class="st">  </span><span class="kw">map_dbl</span>(sum)  <span class="co"># returns a numeric (double) vector of column sums</span></span></code></pre></div>
@@ -998,7 +998,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb287-12"><a href="iterative.html#cb287-12"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="kw">factor</span>(model, <span class="dt">levels =</span> model)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># sigh</span></span>
 <span id="cb287-13"><a href="iterative.html#cb287-13"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> model, <span class="dt">y =</span> <span class="st">`</span><span class="dt">Adj. Rsq</span><span class="st">`</span>)) <span class="op">+</span></span>
 <span id="cb287-14"><a href="iterative.html#cb287-14"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> model), <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">show.legend =</span> F)</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/purr_models2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/purr_models2-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Why not throw in AIC also?</p>
 <div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="iterative.html#cb288-1"></a>mod_rsq =<span class="st"> </span></span>
 <span id="cb288-2"><a href="iterative.html#cb288-2"></a><span class="st">  </span>model_list <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -1028,7 +1028,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb288-26"><a href="iterative.html#cb288-26"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> model, <span class="dt">y =</span> value)) <span class="op">+</span></span>
 <span id="cb288-27"><a href="iterative.html#cb288-27"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> model), <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">show.legend =</span> F) <span class="op">+</span></span>
 <span id="cb288-28"><a href="iterative.html#cb288-28"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>measure, <span class="dt">scales =</span> <span class="st">&#39;free&#39;</span>)</span></code></pre></div>
-<p><img src="data-processing-and-visualization_files/figure-html/purr_models3-1.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><img src="practical-data-science_files/figure-html/purr_models3-1.svg" width="75%" style="display: block; margin: auto;" /></p>
 <div id="list-columns" class="section level4">
 <h4>List columns</h4>
 <p>As data.frames are lists, anything can be put into a column just as you would a list element. We’ll use <span class="func">pmap</span> here, as it can take more than one argument, and we’re feeding all columns of the data.frame. You don’t need to worry about the details here, we just want to create a column that is actually a list. In this case the column will contain a data frame in each entry.</p>
@@ -1044,12 +1044,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code># A tibble: 6 x 12
   observation       mpg   cyl   disp  hp    drat  wt    qsec  vs    am    gear  carb 
   &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
-1 Mazda RX4         21.0  6     160.0 &quot;110&quot; 3.90  2.620 16.46 0     1     4     4    
+1 Mazda RX4         21.0  6     160.0 &quot;110&quot; 3.90  2.620 &lt;NA&gt;  0     1     4     4    
 2 Mazda RX4 Wag     21.0  6     160.0 &quot;110&quot; 3.90  2.875 17.02 0     1     4     4    
-3 Datsun 710        22.8  4     108.0 &quot; 93&quot; 3.85  &lt;NA&gt;  18.61 1     1     4     1    
-4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; 3.08  &lt;NA&gt;  19.44 1     0     3     1    
-5 Hornet Sportabout 18.7  8     360.0  &lt;NA&gt; 3.15  3.440 17.02 0     0     3     2    
-6 Valiant           18.1  &lt;NA&gt;  &lt;NA&gt;  &quot;105&quot; 2.76  3.460 20.22 1     0     &lt;NA&gt;  1    </code></pre>
+3 Datsun 710        22.8  4     108.0 &quot; 93&quot; 3.85  2.320 18.61 1     1     4     1    
+4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; 3.08  3.215 19.44 1     &lt;NA&gt;  3     1    
+5 Hornet Sportabout 18.7  &lt;NA&gt;  360.0 &quot;175&quot; 3.15  3.440 17.02 0     0     3     2    
+6 Valiant           &lt;NA&gt;  6     225.0 &quot;105&quot; &lt;NA&gt;  3.460 20.22 &lt;NA&gt;  0     3     1    </code></pre>
 <div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="iterative.html#cb291-1"></a>mtcars2 =<span class="st"> </span></span>
 <span id="cb291-2"><a href="iterative.html#cb291-2"></a><span class="st">  </span>mtcars2 <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb291-3"><a href="iterative.html#cb291-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
@@ -1065,21 +1065,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code># A tibble: 32 x 13
    observation       mpg   cyl   disp  hp    drat  wt    qsec  vs    am    gear  carb  newvar          
    &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;list&gt;          
- 1 Mazda RX4         21.0  6     160.0 &quot;110&quot; 3.90  2.620 16.46 0     1     4     4     &lt;df[,2] [1 × 2]&gt;
+ 1 Mazda RX4         21.0  6     160.0 &quot;110&quot; 3.90  2.620 &lt;NA&gt;  0     1     4     4     &lt;df[,2] [1 × 2]&gt;
  2 Mazda RX4 Wag     21.0  6     160.0 &quot;110&quot; 3.90  2.875 17.02 0     1     4     4     &lt;df[,2] [1 × 2]&gt;
- 3 Datsun 710        22.8  4     108.0 &quot; 93&quot; 3.85  &lt;NA&gt;  18.61 1     1     4     1     &lt;df[,2] [1 × 2]&gt;
- 4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; 3.08  &lt;NA&gt;  19.44 1     0     3     1     &lt;df[,2] [1 × 2]&gt;
- 5 Hornet Sportabout 18.7  8     360.0  &lt;NA&gt; 3.15  3.440 17.02 0     0     3     2     &lt;df[,2] [1 × 2]&gt;
- 6 Valiant           18.1  &lt;NA&gt;  &lt;NA&gt;  &quot;105&quot; 2.76  3.460 20.22 1     0     &lt;NA&gt;  1     &lt;df[,2] [1 × 2]&gt;
- 7 Duster 360        14.3  8     360.0 &quot;245&quot; 3.21  3.570 15.84 0     0     3     4     &lt;df[,2] [1 × 2]&gt;
- 8 Merc 240D         24.4  4     146.7 &quot; 62&quot; &lt;NA&gt;  3.190 20.00 1     0     4     2     &lt;df[,2] [1 × 2]&gt;
- 9 Merc 230          22.8  4     140.8 &quot; 95&quot; 3.92  &lt;NA&gt;  22.90 1     0     4     2     &lt;df[,2] [1 × 2]&gt;
-10 Merc 280          19.2  6     167.6  &lt;NA&gt; 3.92  &lt;NA&gt;  18.30 &lt;NA&gt;  0     4     4     &lt;df[,2] [1 × 2]&gt;
+ 3 Datsun 710        22.8  4     108.0 &quot; 93&quot; 3.85  2.320 18.61 1     1     4     1     &lt;df[,2] [1 × 2]&gt;
+ 4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; 3.08  3.215 19.44 1     &lt;NA&gt;  3     1     &lt;df[,2] [1 × 2]&gt;
+ 5 Hornet Sportabout 18.7  &lt;NA&gt;  360.0 &quot;175&quot; 3.15  3.440 17.02 0     0     3     2     &lt;df[,2] [1 × 2]&gt;
+ 6 Valiant           &lt;NA&gt;  6     225.0 &quot;105&quot; &lt;NA&gt;  3.460 20.22 &lt;NA&gt;  0     3     1     &lt;df[,2] [1 × 2]&gt;
+ 7 Duster 360        &lt;NA&gt;  8     360.0 &quot;245&quot; 3.21  3.570 15.84 0     0     3     4     &lt;df[,2] [1 × 2]&gt;
+ 8 Merc 240D         24.4  4     &lt;NA&gt;  &quot; 62&quot; 3.69  3.190 20.00 1     0     4     2     &lt;df[,2] [1 × 2]&gt;
+ 9 Merc 230          22.8  4     140.8  &lt;NA&gt; 3.92  3.150 22.90 1     0     4     &lt;NA&gt;  &lt;df[,2] [1 × 2]&gt;
+10 Merc 280          19.2  6     &lt;NA&gt;  &quot;123&quot; 3.92  &lt;NA&gt;  18.30 1     &lt;NA&gt;  4     4     &lt;df[,2] [1 × 2]&gt;
 # … with 22 more rows</code></pre>
 <div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="iterative.html#cb294-1"></a>mtcars2<span class="op">$</span>newvar <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">3</span>)</span></code></pre></div>
 <pre><code>[[1]]
    N Missing
-1 12       0
+1 11       1
 
 [[2]]
    N Missing
@@ -1087,23 +1087,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 [[3]]
    N Missing
-1 11       1</code></pre>
+1 12       0</code></pre>
 <p>Unnest it with the <span class="pack">tidyr</span> function.</p>
 <div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="iterative.html#cb296-1"></a>mtcars2 <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb296-2"><a href="iterative.html#cb296-2"></a><span class="st">  </span><span class="kw">unnest</span>(newvar)</span></code></pre></div>
 <pre><code># A tibble: 32 x 14
    observation       mpg   cyl   disp  hp    drat  wt    qsec  vs    am    gear  carb      N Missing
    &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;   &lt;int&gt;
- 1 Mazda RX4         21.0  6     160.0 &quot;110&quot; 3.90  2.620 16.46 0     1     4     4        12       0
+ 1 Mazda RX4         21.0  6     160.0 &quot;110&quot; 3.90  2.620 &lt;NA&gt;  0     1     4     4        11       1
  2 Mazda RX4 Wag     21.0  6     160.0 &quot;110&quot; 3.90  2.875 17.02 0     1     4     4        12       0
- 3 Datsun 710        22.8  4     108.0 &quot; 93&quot; 3.85  &lt;NA&gt;  18.61 1     1     4     1        11       1
- 4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; 3.08  &lt;NA&gt;  19.44 1     0     3     1        11       1
- 5 Hornet Sportabout 18.7  8     360.0  &lt;NA&gt; 3.15  3.440 17.02 0     0     3     2        11       1
- 6 Valiant           18.1  &lt;NA&gt;  &lt;NA&gt;  &quot;105&quot; 2.76  3.460 20.22 1     0     &lt;NA&gt;  1         9       3
- 7 Duster 360        14.3  8     360.0 &quot;245&quot; 3.21  3.570 15.84 0     0     3     4        12       0
- 8 Merc 240D         24.4  4     146.7 &quot; 62&quot; &lt;NA&gt;  3.190 20.00 1     0     4     2        11       1
- 9 Merc 230          22.8  4     140.8 &quot; 95&quot; 3.92  &lt;NA&gt;  22.90 1     0     4     2        11       1
-10 Merc 280          19.2  6     167.6  &lt;NA&gt; 3.92  &lt;NA&gt;  18.30 &lt;NA&gt;  0     4     4         9       3
+ 3 Datsun 710        22.8  4     108.0 &quot; 93&quot; 3.85  2.320 18.61 1     1     4     1        12       0
+ 4 Hornet 4 Drive    21.4  6     258.0 &quot;110&quot; 3.08  3.215 19.44 1     &lt;NA&gt;  3     1        11       1
+ 5 Hornet Sportabout 18.7  &lt;NA&gt;  360.0 &quot;175&quot; 3.15  3.440 17.02 0     0     3     2        11       1
+ 6 Valiant           &lt;NA&gt;  6     225.0 &quot;105&quot; &lt;NA&gt;  3.460 20.22 &lt;NA&gt;  0     3     1         9       3
+ 7 Duster 360        &lt;NA&gt;  8     360.0 &quot;245&quot; 3.21  3.570 15.84 0     0     3     4        11       1
+ 8 Merc 240D         24.4  4     &lt;NA&gt;  &quot; 62&quot; 3.69  3.190 20.00 1     0     4     2        11       1
+ 9 Merc 230          22.8  4     140.8  &lt;NA&gt; 3.92  3.150 22.90 1     0     4     &lt;NA&gt;     10       2
+10 Merc 280          19.2  6     &lt;NA&gt;  &quot;123&quot; 3.92  &lt;NA&gt;  18.30 1     &lt;NA&gt;  4     4         9       3
 # … with 22 more rows</code></pre>
 <p>This is a pretty esoteric demonstration, and not something you’d normally want to do, as <span class="func">mutate</span> or other approaches would be far more efficient and sensical. However, the idea is that you might want to retain the information you might otherwise store in a list with the data that was used to create it. As an example, you could potentially attach models as a list column to a dataframe that contains meta-information about each model. Once you have a list column, you can use that column as you would any list for iterative programming.</p>
 </div>
