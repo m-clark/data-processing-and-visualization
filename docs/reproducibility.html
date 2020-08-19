@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-08-14" />
+<meta name="date" content="2020-08-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -587,8 +587,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#literate-programming"><i class="fa fa-check"></i>Literate Programming</a></li>
 <li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#r-markdown"><i class="fa fa-check"></i>R Markdown</a></li>
-<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#how-to-read-this-chapter"><i class="fa fa-check"></i>How to read this chapter</a></li>
-<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#dynamic-data-analysis-report-generation"><i class="fa fa-check"></i>Dynamic data analysis &amp; report generation</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#version-control"><i class="fa fa-check"></i>Version Control</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#dynamic-data-analysis-report-generation"><i class="fa fa-check"></i>Dynamic Data Analysis &amp; Report Generation</a></li>
 <li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#using-modern-tools"><i class="fa fa-check"></i>Using Modern Tools</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html"><i class="fa fa-check"></i>Getting Started</a><ul>
@@ -613,7 +613,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#labels"><i class="fa fa-check"></i>Labels</a></li>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#running-code"><i class="fa fa-check"></i>Running code</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#multiple-documents"><i class="fa fa-check"></i>Multiple Documents</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#multiple-documents"><i class="fa fa-check"></i>Multiple Documents</a><ul>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#knitting-multiple-documents-into-one"><i class="fa fa-check"></i>Knitting multiple documents into one</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#parameterized-reports"><i class="fa fa-check"></i>Parameterized reports</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#collaboration"><i class="fa fa-check"></i>Collaboration</a></li>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#using-python-for-documents"><i class="fa fa-check"></i>Using Python for Documents</a></li>
 </ul></li>
@@ -877,13 +880,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>R Markdown</h2>
 <p>Now let’s shift our focus from concepts to implementation. <em>R Markdown</em> provides a means for literate programming. It is a flavor of Markdown, a markup language used pervasively throughout the web. Markdown can be converted to other formats like HTML, but is as easy to use as normal text. R Markdown allows one to combine normal R code with text to produce a wide variety of document formats. This allows for a continuous transition from initial data import and processing to a finished product, whether journal article, software application, slide presentation, or even a website.</p>
 <p>To use R Markdown effectively, it helps to know why you’d even want to. So, in addition to literate programming, let’s talk about some ideas, all of which are related, and which will give you some sense of the goals of effective document generation, and why this approach is superior to others you might try.</p>
+<br>
+<div class="note">
+<p><a href="https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/reproducibility.Rmd">This chapter</a> (and the rest of the document) is <a href="https://github.com/m-clark/data-processing-and-visualization">available on GitHub</a>. Looking at the raw content (i.e. the R Markdown files *.Rmd) versus the finished product will get you well on your way to understanding how to use various tools at your disposal to produce a better data driven product.</p>
+<p><img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"></p>
 </div>
-<div id="how-to-read-this-chapter" class="section level2">
-<h2>How to read this chapter</h2>
-<p>This chapter (and the rest of the document) is <a href="https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/concepts.Rmd">available on GitHub</a>. Looking at the raw content (i.e. the R Markdown files *.Rmd) versus the finished product will get you well on your way to understanding how to use various tools at your disposal to produce a better data driven product.</p>
+</div>
+<div id="version-control" class="section level2">
+<h2>Version Control</h2>
+<p>A major step toward Rep* analysis of any kind is having a way to document the process of analysis, find where mistakes were made, revert back to previous states, and more. <em>Version control</em> is a means of creating checkpoints in document production. While it was primarily geared toward code, it can be useful for any files created whether they are code, figures, data, or a manuscript of some kind.</p>
+<p>Some of you may have experience with version control already and not even know it. For example, if you use Box to collaborate on documents, in the web version you will often see something like <code>V10</code> next to the file name, meaning you are looking at the tenth version of the document. If you open the document you could go back to any prior version to see what it looked like at a previous state.</p>
+<p>Version control is a necessity for modern coding practice, but it should be extended well beyond that. One of the most popular tools in this domain is called <a href="https://git-scm.com/">Git</a>, and the website of choice for most developers is <a href="https://github.com/">GitHub</a>. I would say that most of the R package developers develop their code there in the form of <em>repositories</em> (usually called repos), but also host websites, and house other projects. While Git provides a syntax for the process, you can actually implement it very easily within RStudio after it’s installed. As most are not software developers, there is little need beyond the bare basics of understanding Git to gain the benefits of version control. Creating an account on GitHub is very easy, and you can even create your first repository via the website. However, a good place to start for our purposes is with <a href="https://happygitwithr.com/">Happy Git and GitHub for the useR</a>. It will take a bit to get used to, but you’ll be so much better off once you start using it.</p>
 </div>
 <div id="dynamic-data-analysis-report-generation" class="section level2">
-<h2>Dynamic data analysis &amp; report generation</h2>
+<h2>Dynamic Data Analysis &amp; Report Generation</h2>
 <p>Sometimes the goal is to create an expression of the analysis that is not only to be disseminated to a particular audience, but one which possibly will change over time, as the data itself evolves temporally. In this dynamic setting, the document must be able to handle changes with minimal effort.</p>
 <p>I can tell you from firsthand experience that R Markdown can allow one to automatically create custom presentation products for different audiences on a regular basis without even touching the data for explicit processing, nor the reports after the templates are created, even as the data continues to come in over time. Furthermore, any academic effort that would fall under the heading of science is applicable here.</p>
 <p>The notion of <em>science as software development</em> is something you should get used to. Print has had its day, but is not the best choice for scientific advancement as it should take place. Waiting months for feedback, or a year to get a paper published after it’s first sent for review, and then hoping people have access to a possibly pay-walled outlet, is simply unacceptable. Furthermore, what if more data comes in? A data or modeling bug is found? Other studies shed additional light on the conclusions? In this day and age, are we supposed to just continue to cite a work that may no longer be applicable while waiting another year or so for updates?</p>
@@ -904,7 +914,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>No interactivity</li>
 </ul>
 <p>The case for using a markdown approach is now years old and well established. Unfortunately many, but not all, journals are still print-oriented<a href="#fn62" class="footnote-ref" id="fnref62"><sup>62</sup></a>, because their income depends on the assumption of print, not to mention a closed-source, broken, and anti-scientific system of review and publication that dates <a href="https://www.npr.org/sections/health-shots/2018/02/24/586184355/scientists-aim-to-pull-peer-review-out-of-the-17th-century">back to the 17th century</a>. Consider the fact that you could blog about your research while conducting it, present preliminary results in your blog via R Markdown (because your blog itself is done via R Markdown), get regular feedback from peers along the way via your site’s comment system, and all this before you’d ever send it off to a journal. Now ask yourself what a print-oriented journal actually offers you? When was the last time you actually opened a print version of a journal? How often do you go to a journal site to look for something as opposed to a simple web search or using something like Google Scholar? How many journals do adequate retractions when problems are found<a href="#fn63" class="footnote-ref" id="fnref63"><sup>63</sup></a>? Is it possible you may actually get more eyeballs and clicks on your work just having it on your own website<a href="#fn64" class="footnote-ref" id="fnref64"><sup>64</sup></a> or <a href="https://www.altmetric.com/about-altmetrics/what-are-altmetrics/">tweeting about it</a>?</p>
-<p>The current paradigm is going to change because it has to, and there is practically no justification for the traditional approach to academic publication. Indeed, the change has already been well underway, with some outlets requiring pre-registration, code, and other changes to the usual send-a-pdf-and-we’ll-get-back-to-you approach<a href="#fn65" class="footnote-ref" id="fnref65"><sup>65</sup></a>. In non-academic settings, while there is the same sort of pushback there, even those used to print and powerpoints must admit they’d prefer an interactive document that works on their phone if needed. As such, you might as well be using tools and an approach that accommodate the things we’ve talked about in order to produce a better data-driven product.</p>
+<p>The old paradigm is changing because it has to, and there is practically no justification for the traditional approach to academic publication, and even less for other outlets. In the academic world, outlets are starting to require pre-registration of study design, code, data archiving measures, and other changes to the usual send-a-pdf-and-we’ll-get-back-to-you approach<a href="#fn65" class="footnote-ref" id="fnref65"><sup>65</sup></a>. In non-academic settings, while there is the same sort of pushback there, even those used to print and powerpoints must admit they’d prefer an interactive document that works on their phone if needed. As such, you might as well be using tools and an approach that accommodate the things we’ve talked about in order to produce a better data-driven product.</p>
 <p>For more on tools for reproducible research in R, see the <a href="https://cran.r-project.org/web/views/ReproducibleResearch.html">task view</a>.</p>
 
 </div>

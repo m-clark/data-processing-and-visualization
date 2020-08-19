@@ -191,12 +191,26 @@ Now let's shift our focus from concepts to implementation.  *R Markdown* provide
 
 To use R Markdown effectively, it helps to know why you'd even want to. So, in addition to literate programming, let's talk about some ideas, all of which are related, and which will give you some sense of the goals of effective document generation, and why this approach is superior to others you might try.
 
-## How to read this chapter
 
-This chapter (and the rest of the document) is [available on GitHub](https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/concepts.Rmd). Looking at the raw content (i.e. the R Markdown files *.Rmd) versus the finished product will get you well on your way to understanding how to use various tools at your disposal to produce a better data driven product.
+<br>
+<div class='note'>
+[This chapter](https://raw.githubusercontent.com/m-clark/data-processing-and-visualization/master/reproducibility.Rmd) (and the rest of the document) is [available on GitHub](https://github.com/m-clark/data-processing-and-visualization). Looking at the raw content (i.e. the R Markdown files *.Rmd) versus the finished product will get you well on your way to understanding how to use various tools at your disposal to produce a better data driven product.
 
 
-## Dynamic data analysis & report generation
+<img class='img-note' src="img/R.ico" style="display:block; margin: 0 auto;"> 
+</div>
+
+
+## Version Control
+
+A major step toward Rep* analysis of any kind is having a way to document the process of analysis, find where mistakes were made, revert back to previous states, and more.  *Version control* is a means of creating checkpoints in document production.  While it was primarily geared toward code, it can be useful for any files created whether they are code, figures, data, or a manuscript of some kind.
+
+Some of you may have experience with version control already and not even know it. For example, if you use Box to collaborate on documents, in the web version you will often see something like `V10` next to the file name, meaning you are looking at the tenth version of the document. If you open the document you could go back to any prior version to see what it looked like at a previous state.
+
+Version control is a necessity for modern coding practice, but it should be extended well beyond that. One of the most popular tools in this domain is called [Git](https://git-scm.com/), and the website of choice for most developers is [GitHub](https://github.com/).  I would say that most of the R package developers develop their code there in the form of *repositories* (usually called repos), but also host websites, and house other projects.  While Git provides a syntax for the process, you can actually implement it very easily within RStudio after it's installed.  As most are not software developers, there is little need beyond the bare basics of understanding Git to gain the benefits of version control.  Creating an account on GitHub is very easy, and you can even create your first repository via the website.  However, a good place to start for our purposes is with [Happy Git and GitHub for the useR](https://happygitwithr.com/).  It will take a bit to get used to, but you'll be so much better off once you start using it.
+
+
+## Dynamic Data Analysis & Report Generation
 
 Sometimes the goal is to create an expression of the analysis that is not only to be disseminated to a particular audience, but one which possibly will change over time, as the data itself evolves temporally.  In this dynamic setting, the document must be able to handle changes with minimal effort.  
 
@@ -243,7 +257,7 @@ Let's recap the issues with traditional approaches:
 
 The case for using a markdown approach is now years old and well established. Unfortunately many, but not all, journals are still print-oriented[^badparadigm], because their income depends on the assumption of print, not to mention a closed-source, broken, and anti-scientific system of review and publication that dates [back to the 17th century](https://www.npr.org/sections/health-shots/2018/02/24/586184355/scientists-aim-to-pull-peer-review-out-of-the-17th-century).  Consider the fact that you could blog about your research while conducting it, present preliminary results in your blog via R Markdown (because your blog itself is done via R Markdown), get regular feedback from peers along the way via your site's comment system, and all this before you'd ever send it off to a journal.  Now ask yourself what a print-oriented journal actually offers you? When was the last time you actually opened a print version of a journal? How often do you go to a journal site to look for something as opposed to a simple web search or using something like Google Scholar?  How many journals do adequate retractions when problems are found[^retract]? Is it possible you may actually get more eyeballs and clicks on your work just having it on your own website[^noaccess] or [tweeting about it](https://www.altmetric.com/about-altmetrics/what-are-altmetrics/)?
 
-The current paradigm is going to change because it has to, and there is practically no justification for the traditional approach to academic publication. Indeed, the change has already been well underway, with some outlets requiring pre-registration, code, and other changes to the usual send-a-pdf-and-we'll-get-back-to-you approach[^nobel]. In non-academic settings, while there is the same sort of pushback there, even those used to print and powerpoints must admit they'd prefer an interactive document that works on their phone if needed.  As such, you might as well be using tools and an approach that accommodate the things we've talked about in order to produce a better data-driven product. 
+The old paradigm is changing because it has to, and there is practically no justification for the traditional approach to academic publication, and even less for other outlets. In the academic world, outlets are starting to require pre-registration of study design, code, data archiving measures, and other changes to the usual send-a-pdf-and-we'll-get-back-to-you approach[^nobel]. In non-academic settings, while there is the same sort of pushback there, even those used to print and powerpoints must admit they'd prefer an interactive document that works on their phone if needed.  As such, you might as well be using tools and an approach that accommodate the things we've talked about in order to produce a better data-driven product. 
 
 For more on tools for reproducible research in R, see the [task view](https://cran.r-project.org/web/views/ReproducibleResearch.html).
 

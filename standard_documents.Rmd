@@ -129,7 +129,32 @@ By default, when you knit the document, all code will be run.  Depending on a va
 
 ## Multiple Documents
 
+### Knitting multiple documents into one
+
 A single `.Rmd` file can call others, referred to as *child documents*, and when you knit that document you'll have one single document with the content from all of them.  You may want to consider other formats, such as *bookdown*, rather than doing this.  Scrolling a lot is sometimes problematic, and not actually required for the presentation of material.  It also makes the content take longer to load, because everything has to load[^preload].  See the [appendix](#appendix) for details.
+
+### Parameterized reports
+
+In many cases one may wish to create multiple separate reports that more or less have the same structure. The standard scenario is creating tailored reports, possibly customized for different audiences. In this case you may have a single template which all follow.  We can use the YAML configuration to set or load R data objects as follows.
+
+```
+title: institution_name
+
+params: 
+  institution_name: 'U of M'
+  data_folder: 'results/data'
+---
+
+
+``{r}
+load(paste0(data_folder, 'myfile.RData'))
+``
+
+```
+
+The result of the above would create a document with the title of 'U of M' and load data from the designated data folder. The `institution_name` and `data_folder` are processed as R objects before anything else about the document is created.
+
+Parameterized reports combined with child documents mean you can essentially have one document template for all reports as a child template and merely change the YAML configuration for the rest.
 
 
 ## Collaboration

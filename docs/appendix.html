@@ -23,7 +23,7 @@
 
 
 
-<meta name="date" content="2020-08-14" />
+<meta name="date" content="2020-08-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -587,8 +587,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#literate-programming"><i class="fa fa-check"></i>Literate Programming</a></li>
 <li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#r-markdown"><i class="fa fa-check"></i>R Markdown</a></li>
-<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#how-to-read-this-chapter"><i class="fa fa-check"></i>How to read this chapter</a></li>
-<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#dynamic-data-analysis-report-generation"><i class="fa fa-check"></i>Dynamic data analysis &amp; report generation</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#version-control"><i class="fa fa-check"></i>Version Control</a></li>
+<li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#dynamic-data-analysis-report-generation"><i class="fa fa-check"></i>Dynamic Data Analysis &amp; Report Generation</a></li>
 <li class="chapter" data-level="" data-path="reproducibility.html"><a href="reproducibility.html#using-modern-tools"><i class="fa fa-check"></i>Using Modern Tools</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="getting_started.html"><a href="getting_started.html"><i class="fa fa-check"></i>Getting Started</a><ul>
@@ -613,7 +613,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#labels"><i class="fa fa-check"></i>Labels</a></li>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#running-code"><i class="fa fa-check"></i>Running code</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#multiple-documents"><i class="fa fa-check"></i>Multiple Documents</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#multiple-documents"><i class="fa fa-check"></i>Multiple Documents</a><ul>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#knitting-multiple-documents-into-one"><i class="fa fa-check"></i>Knitting multiple documents into one</a></li>
+<li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#parameterized-reports"><i class="fa fa-check"></i>Parameterized reports</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#collaboration"><i class="fa fa-check"></i>Collaboration</a></li>
 <li class="chapter" data-level="" data-path="standard_documents.html"><a href="standard_documents.html#using-python-for-documents"><i class="fa fa-check"></i>Using Python for Documents</a></li>
 </ul></li>
@@ -695,7 +698,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="footnotes" class="section level3">
 <h3>Footnotes</h3>
 <p>Footnotes are very straightforward. To add one just put <code>[^myfootnote]</code> where needed (the name is arbitrary). Then, somewhere in your document add the following.</p>
-<div class="sourceCode" id="cb588"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb588-1"><a href="appendix.html#cb588-1"></a><span class="ot">[^myfootnote]</span>:  Yadda blah yadda.</span></code></pre></div>
+<div class="sourceCode" id="cb591"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb591-1"><a href="appendix.html#cb591-1"></a><span class="ot">[^myfootnote]</span>:  Yadda blah yadda.</span></code></pre></div>
 <p>The usual practice is to put them at the end of the document. It doesn’t matter what order you put them in, they will be displayed/numbered as they appear in the actual text.</p>
 </div>
 <div id="citations-and-references" class="section level3">
@@ -703,22 +706,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="references-bibliography" class="section level4">
 <h4>References &amp; bibliography</h4>
 <p>Assuming you have a reference file somewhere adding them to the text of the document is very easy. Many formats of the file are acceptable, such as BibTeX, EndNote, and more. For example if using BibTeX and the file is <code>refs.bib</code>, then just note the file in the YAML section.</p>
-<div class="sourceCode" id="cb589"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb589-1"><a href="appendix.html#cb589-1"></a><span class="fu">bibliography</span><span class="kw">:</span><span class="at"> refs.bib</span></span>
-<span id="cb589-2"><a href="appendix.html#cb589-2"></a><span class="fu">biblio-style</span><span class="kw">:</span><span class="at"> apalike</span></span>
-<span id="cb589-3"><a href="appendix.html#cb589-3"></a><span class="fu">link-citations</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span></code></pre></div>
+<div class="sourceCode" id="cb592"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb592-1"><a href="appendix.html#cb592-1"></a><span class="fu">bibliography</span><span class="kw">:</span><span class="at"> refs.bib</span></span>
+<span id="cb592-2"><a href="appendix.html#cb592-2"></a><span class="fu">biblio-style</span><span class="kw">:</span><span class="at"> apalike</span></span>
+<span id="cb592-3"><a href="appendix.html#cb592-3"></a><span class="fu">link-citations</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span></code></pre></div>
 <p>The style can be anything you want, but will take some extra steps to use. Consult the R Markdown page for how to use custom styles.</p>
 <p>Now, somewhere in your document, put an empty References header like so:</p>
-<div class="sourceCode" id="cb590"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb590-1"><a href="appendix.html#cb590-1"></a><span class="fu"># References</span></span></code></pre></div>
+<div class="sourceCode" id="cb593"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb593-1"><a href="appendix.html#cb593-1"></a><span class="fu"># References</span></span></code></pre></div>
 <p>The references you cite will magically appear in the references section when you knit the document. Note that <span class="emph">bookdown</span> documents, of which this is one, also put them at the bottom of the page where the citation occurs.</p>
 </div>
 <div id="citations" class="section level4">
 <h4>Citations</h4>
 <p>Now that your document has some references, you’ll want to cite them! In the refs.bib file for example, we have the following entry:</p>
-<div class="sourceCode" id="cb591"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><span id="cb591-1"><a href="appendix.html#cb591-1"></a><span class="va">@book</span>{<span class="ot">clark2018rmd</span>,</span>
-<span id="cb591-2"><a href="appendix.html#cb591-2"></a>  <span class="dt">title</span>={Introduction to R Markdown},</span>
-<span id="cb591-3"><a href="appendix.html#cb591-3"></a>  <span class="dt">author</span>={Clark, Michael},</span>
-<span id="cb591-4"><a href="appendix.html#cb591-4"></a>  <span class="dt">year</span>={2018}</span>
-<span id="cb591-5"><a href="appendix.html#cb591-5"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb594"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><span id="cb594-1"><a href="appendix.html#cb594-1"></a><span class="va">@book</span>{<span class="ot">clark2018rmd</span>,</span>
+<span id="cb594-2"><a href="appendix.html#cb594-2"></a>  <span class="dt">title</span>={Introduction to R Markdown},</span>
+<span id="cb594-3"><a href="appendix.html#cb594-3"></a>  <span class="dt">author</span>={Clark, Michael},</span>
+<span id="cb594-4"><a href="appendix.html#cb594-4"></a>  <span class="dt">year</span>={2018}</span>
+<span id="cb594-5"><a href="appendix.html#cb594-5"></a>}</span></code></pre></div>
 <p>For example, if we type the following:</p>
 <p><code>Blah blah [see @clark2018rmd, pp. 33-35; also @barthelme1981balloon].</code></p>
 <p>It will produce:</p>

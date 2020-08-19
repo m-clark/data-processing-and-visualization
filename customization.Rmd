@@ -51,7 +51,7 @@ For the purposes of starting out, all you really need to know is that YAML is li
 
 <img src="img/yaml.png" style="display:block; margin: 0 auto;" width='100%' height='150%'>
 
-Clearly, there is a lot to play with, but it will depend on the type of document you're doing.  For example, the `always_allow_html: yes` is pointless for an HTML document, but would allow certain things to be (very likely poorly) attempted in a PDF or Word document.  Other options *only* make sense for bookdown documents.
+Clearly, there is a lot to play with, but it will depend on the type of document you're doing.  For example, the `always_allow_html: yes` is pointless for an HTML document, but would allow certain things to be (very likely poorly) attempted in a PDF or Word document.  Other options only make sense for bookdown documents.
 
 There is a lot more available too, as YAML is a programming syntax all its own, so how deep you want to get into it is up to you.  The best way, just like learning R Markdown generally, is to simply see what others do and apply it to your own document.  It may take a bit of trial and error, but you'll eventually get the hang of it.
 
@@ -270,10 +270,15 @@ For some of you, if you aren't careful, you'll spend an afternoon on an already 
 - Create an `*.Rmd` for HTML.
 - Now change some configuration options: choose a theme and add a table of contents.  For the latter, create some headings/sections and sub-sections so that you can see your configuration in action.
 
+```{markdown header-ex1, eval=F}
+# Header 1
+## Header 2
+```
+
 
 ### Exercise 2
 
-- Add a chunk that does the following: `summary(mtcars)`
+- Add a chunk that does the following (or something similar): `summary(mtcars)`
 
 - Add a chunk that produces a visualization.  If you need an example, create a density plot of the population total variable from the <span class="objclass">midwest</span> data set in the <span class="pack">ggplot2</span> package.  Now align it with the `fig.align` chunk option.
 
@@ -282,6 +287,11 @@ For some of you, if you aren't careful, you'll spend an afternoon on an already 
 - Now add a chunk that *only* shows the code, but doesn't actually run it.
 
 - Add a chunk that creates an R object such as a set of numbers or text. Then use that object in the text via inline R code. For example, show only the first element of the object in a sentence.
+
+```{markdown ex-inline}
+Yadda yadda `r object[1]` hey that's neat!
+```
+
 
 - **Bonus**: Set a chunk option that will be applied to the whole document.  For example, make the default figure alignment be centered, or have the default be to hide the code.
 
