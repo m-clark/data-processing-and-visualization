@@ -164,7 +164,7 @@ Even if it hadn't been explained before, you might have been able to guess a lit
 
 ## Running Example
 
-The following data was scraped initially scraped from the web as follows.  It is data from the NBA basketball league for the 2017-2018 season with things like player names, position, team name, points per game, field goal percentage, and various other statistics.  We'll use it as an example to demonstrate various functionality found within <span class="pack">dplyr</span>.
+The following data was scraped initially scraped from the web as follows.  It is data from the NBA basketball league for the last season with things like player names, position, team name, points per game, field goal percentage, and various other statistics.  We'll use it as an example to demonstrate various functionality found within <span class="pack">dplyr</span>.
 
 ```{r basketballDataScrape, eval=FALSE}
 library(rvest)
@@ -281,7 +281,7 @@ To demonstrate, we'll use <span class='func'>mutate_at</span> to make appropriat
 
 ```{r mutateAt}
 bball = bball %>% 
-  mutate_at(vars(-Player, -Pos, -Tm), as.numeric)   
+  mutate(across(c(-Player, -Pos, -Tm), as.numeric))
 
 glimpse(bball[,1:7])
 ```
@@ -406,7 +406,7 @@ You can use <span class="func">group_by</span> on more than one variable, e.g. `
 
 ## Renaming Columns
 
-Tibbles in the tidyverse don't really have a problem with variable names starting with numbers or incorporating symbols and spaces.  I would still suggest it is poor practice, because even if your data set looks fine, you'll encounter problems with modeling and visualization package using that data.  However, as a demonstration, we can 'fix' some of the variable names.
+Tibbles in the tidyverse don't really have a problem with variable names starting with numbers or incorporating symbols and spaces.  I would still suggest it is poor practice, because even if your data set looks fine, you'll possibly encounter problems with modeling and visualization packages using that data.  However, as a demonstration, we can 'fix' some of the variable names.
 
 One issue is that when we scraped the data and converted it to a <span class="objclass">data.frame</span>, the names that started with a number, like `3P` for 'three point baskets made', were made into `X3P`, because that's the way R works by default. In addition, `3P%`, i.e. three point percentage made, was made into `3P.` with a dot for the percent sign.  Same goes for the 2P (two-pointers) and FT (free-throw) variables.
 
@@ -422,10 +422,16 @@ Very straightforward.  However, oftentimes we'll need to change *patterns*, as w
 
 
 ```{r rename_ex2}
-bball %>% 
-  rename_at(vars(contains('.')), str_replace, pattern='\\.', replacement='%') %>% 
-  rename_at(vars(starts_with('X')), str_remove, pattern='X') %>% 
-  colnames()
+bball = bball %>%
+  rename_with(
+    str_replace,      # function
+    contains('.'),    # columns
+    pattern = '\\.',  # function arguments
+    replacement = '%'
+  ) %>% 
+  rename_with(str_remove, starts_with('X'), pattern = 'X')
+
+colnames(bball)
 ```
 
 
@@ -456,8 +462,8 @@ band_members = tibble(
   Band = c('Com Truise', 'Pixies', 'The New Year')
 )
 band_instruments = tibble(
-  Name = c('Seth', 'Francis', 'Bubba'),
-  Instrument = c('Synthesizer', 'Guitar', 'Guitar')
+  Name = c('Francis', 'Bubba', 'Seth'),
+  Instrument = c('Guitar', 'Guitar', 'Synthesizer')
 )
 
 band_members

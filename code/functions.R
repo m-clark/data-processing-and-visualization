@@ -1,10 +1,10 @@
-## ----func_ex, eval=FALSE----------------------------------------------------------------------
+## ----func_ex, eval=FALSE-------------------------------------------------------
 ## mean(myvar)
 ## sd(myvar)
 ## sum(is.na(myvar))
 
 
-## ----func_ex2---------------------------------------------------------------------------------
+## ----func_ex2------------------------------------------------------------------
 my_summary <- function(x) {
   data.frame(
     mean = mean(x),
@@ -14,17 +14,17 @@ my_summary <- function(x) {
 }
 
 
-## ----func_ex3, echo=-1------------------------------------------------------------------------
+## ----func_ex3, echo=-1---------------------------------------------------------
 mtcars = datasets::mtcars  # to undo previous factors
 my_summary(mtcars$mpg)
 
 
-## ----func_ex_missing--------------------------------------------------------------------------
+## ----func_ex_missing-----------------------------------------------------------
 load('data/gapminder.RData')
 my_summary(gapminder_2019$lifeExp)
 
 
-## ----func_ex3ext------------------------------------------------------------------------------
+## ----func_ex3ext---------------------------------------------------------------
 my_summary <- function(x) {
   data.frame(
     mean = mean(x, na.rm = TRUE),
@@ -48,7 +48,7 @@ my_summary(gapminder_2019$lifeExp)
 my_summary_na(gapminder_2019$lifeExp, remove_na = FALSE)
 
 
-## ----func_ex4---------------------------------------------------------------------------------
+## ----func_ex4------------------------------------------------------------------
 my_summary <- function(x) {
   # create an arbitrarily named object with the summary information
   summary_data = data.frame(
@@ -63,23 +63,23 @@ my_summary <- function(x) {
 }
 
 
-## ----func_ex5---------------------------------------------------------------------------------
+## ----func_ex5------------------------------------------------------------------
 my_summary(gapminder_2019$lifeExp)
 
 
-## ----func_ex6---------------------------------------------------------------------------------
+## ----func_ex6------------------------------------------------------------------
 gapminder_2019 %>% 
   select_if(is.numeric) %>% 
   map_dfr(my_summary, .id = 'variable')
 
 
-## ----func_ex_redux, eval=FALSE----------------------------------------------------------------
+## ----func_ex_redux, eval=FALSE-------------------------------------------------
 ## mean(myvar)
 ## sd(myvar)
 ## sum(is.na(myvar))
 
 
-## ----func_ex_redux_redux, eval=FALSE----------------------------------------------------------
+## ----func_ex_redux_redux, eval=FALSE-------------------------------------------
 ## test_fun <- function(myvar) {
 ##   mean(myvar)
 ##   sd(myvar)
@@ -87,7 +87,7 @@ gapminder_2019 %>%
 ## }
 
 
-## ----nothing_function-------------------------------------------------------------------------
+## ----nothing_function----------------------------------------------------------
 two <- function() {
   2
 }
@@ -95,7 +95,7 @@ two <- function() {
 two()
 
 
-## ----function_function------------------------------------------------------------------------
+## ----function_function---------------------------------------------------------
 center <- function(type) {
   if (type == 'mean') {
     mean
@@ -116,7 +116,7 @@ myfun = center(type = 'median')
 myfun(1:4)
 
 
-## ----default_arg------------------------------------------------------------------------------
+## ----default_arg---------------------------------------------------------------
 hi <- function(name = 'Beyoncé') {
   paste0('Hi ', name, '!')
 }
@@ -125,11 +125,11 @@ hi()
 hi(name = 'Jay-Z')
 
 
-## ----source_func, eval=FALSE------------------------------------------------------------------
+## ----source_func, eval=FALSE---------------------------------------------------
 ## source('my_functions/awesome_func.R')
 
 
-## ----dry, eval=FALSE--------------------------------------------------------------------------
+## ----dry, eval=FALSE-----------------------------------------------------------
 ## good_mileage_displ_low_cyl_4  = if_else(cyl == 4 & displ < mean(displ) & hwy > 30, 'yes', 'no')
 ## good_mileage_displ_low_cyl_6  = if_else(cyl == 6 & displ < mean(displ) & hwy > 30, 'yes', 'no')
 ## good_mileage_displ_low_cyl_8  = if_else(cyl == 8 & displ < mean(displ) & hwy > 30, 'yes', 'no')
@@ -138,7 +138,7 @@ hi(name = 'Jay-Z')
 ## good_mileage_displ_high_cyl_8 = if_else(cyl == 8 & displ > mean(displ) & hwy > 30, 'yes', 'no')
 
 
-## ----mpgfunc----------------------------------------------------------------------------------
+## ----mpgfunc-------------------------------------------------------------------
 
 good_mileage <- function(
   cylinder = 4,
@@ -189,7 +189,7 @@ good_mileage <- function(
 ##   print(x*x)
 
 
-## ----mpgfunc_demo-----------------------------------------------------------------------------
+## ----mpgfunc_demo--------------------------------------------------------------
 good_mileage(mpg_cutoff = 40)
 
 good_mileage(
@@ -200,7 +200,7 @@ good_mileage(
 )
 
 
-## ----mpgfunc_extend, echo=1:6-----------------------------------------------------------------
+## ----mpgfunc_extend, echo=1:6--------------------------------------------------
 good_mileage <- function(
   cylinder = 4,
   mpg_cutoff = 30,
@@ -231,7 +231,7 @@ good_mileage <- function(
 }
 
 
-## ----mpgfunc_extend_demo----------------------------------------------------------------------
+## ----mpgfunc_extend_demo-------------------------------------------------------
 good_mileage(
   cylinder = 8,
   mpg_cutoff = 19,
@@ -241,12 +241,12 @@ good_mileage(
 )
 
 
-## ----lambda, eval=FALSE-----------------------------------------------------------------------
+## ----lambda, eval=FALSE--------------------------------------------------------
 ## apply(mtcars, 2, sd)
 ## apply(mtcars, 2, function(x) x / 2 )
 
 
-## ----lambda_ex--------------------------------------------------------------------------------
+## ----lambda_ex-----------------------------------------------------------------
 # some variables have a mad = 0, and so return Inf (x/0) or NaN (0/0)
 # apply(mtcars, 2, function(x) (x - median(x))/mad(x)) %>% 
 #   head()
@@ -255,13 +255,13 @@ mtcars %>%
   map_df(function(x) (x - median(x))/mad(x))
 
 
-## ----wf_ex1, eval=FALSE-----------------------------------------------------------------------
+## ----wf_ex1, eval=FALSE--------------------------------------------------------
 ## log_sum <- function(a, b) {
 ##   ?
 ## }
 
 
-## ----wf_ex1b, eval=FALSE----------------------------------------------------------------------
+## ----wf_ex1b, eval=FALSE-------------------------------------------------------
 ## log_sum <- function(a, b) {
 ## 
 ##   ?
@@ -275,13 +275,13 @@ mtcars %>%
 ## }
 
 
-## ----wf_ex2, eval=FALSE-----------------------------------------------------------------------
+## ----wf_ex2, eval=FALSE--------------------------------------------------------
 ## set.seed(123)  # so you get the exact same 'random' result
 ## x <- rnorm(10)
 ## if_else(x < 0, "negative", "positive")
 
 
-## ----wf_ex2b, eval=FALSE----------------------------------------------------------------------
+## ----wf_ex2b, eval=FALSE-------------------------------------------------------
 ## pos_neg <- function(?) {
 ##   ?
 ## }

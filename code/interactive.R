@@ -1,32 +1,43 @@
-## ----interactivesetup, include=FALSE, eval=TRUE, cache=FALSE----------------------------------
+## ----interactivesetup, include=FALSE, eval=TRUE, cache=FALSE-------------------
 knitr::opts_chunk$set(cache.rebuild=T)
+library(ggplot2)
 
 
-## ----title, echo=F----------------------------------------------------------------------------
+## ----title, echo=F, eval=T-----------------------------------------------------
 # saveWidget(vn, file='vntitle.html')
 library(visNetwork)
-nodes = data.frame(id=1:2, label=c('Interactive', 'Visualization'))
-edges = data.frame(from=1, to=2, color='transparent')
-# visNetwork(nodes, edges, height=400, width='100%') %>% 
-#   visNodes(shape='text', font=list(color=palettes$tyrian_purple2$tyrian_purple, size=64)) %>% 
-#   visOptions(highlightNearest=F) 
-visNetwork(nodes, edges, height=400, width='100%') %>% 
-  visNodes(shape='circle', 
-           color = list(background='#fffff8', 
-                        # highlight=col2rgb(palettes$tyrian_purple$tetradic[2], .25)[,1],
-                        highlight='rgba(2,102,44,.5)',
-                        border=palettes$tyrian_purple2$tyrian_purple),
-           borderWidth = 3,
-           size=50, 
-           label='text', 
-           font=list(color=palettes$tyrian_purple2$tyrian_purple,
-                     size=24,
-                     highlight='#ffffff8'),
-           shadow = T) %>% 
-  visOptions(highlightNearest=F) 
+nodes = data.frame(id = 1:2,
+                   label = c('Interactive', 'Visualization'))
+
+edges = data.frame(from = 1, to = 2, color = 'transparent')
+
+# visNetwork(nodes, edges, height=400, width='100%') %>%
+#   visNodes(shape='text', font=list(color=palettes$tyrian_purple2$tyrian_purple, size=64)) %>%
+#   visOptions(highlightNearest=F)
+
+visNetwork(nodes, edges, height = 400, width = '100%') %>%
+  visNodes(
+    shape = 'circle',
+    color = list(
+      background = '#fffff8',
+      # highlight=col2rgb(palettes$tyrian_purple$tetradic[2], .25)[,1],
+      highlight = 'rgba(2,102,44,.5)',
+      border = palettes$tyrian_purple2$tyrian_purple
+    ),
+    borderWidth = 3,
+    size = 50,
+    label = 'text',
+    font = list(
+      color = palettes$tyrian_purple2$tyrian_purple,
+      size = 24,
+      highlight = '#ffffff8'
+    ),
+    shadow = T
+  ) %>%
+  visOptions(highlightNearest = F) 
 
 
-## ----plotly1----------------------------------------------------------------------------------
+## ----plotly1-------------------------------------------------------------------
 library(plotly)
 
 midwest %>%
@@ -50,11 +61,11 @@ midwest %>%
 ## plt.show() # opens in browser
 
 
-## ----basic-plotly-show,  echo=FALSE-----------------------------------------------------------
+## ----basic-plotly-show,  echo=FALSE--------------------------------------------
 knitr::include_graphics('img/plotly-basic-python.png')
 
 
-## ----plotly2----------------------------------------------------------------------------------
+## ----plotly2-------------------------------------------------------------------
 library(mgcv)
 library(modelr)
 library(glue)
@@ -83,8 +94,8 @@ mtcars %>%
   )
 
 
-## ----plotly_1line-----------------------------------------------------------------------------
-plot_ly(midwest, x = ~percollege, color = ~state, type = "box")
+## ----plotly_1line, eval = T----------------------------------------------------
+plot_ly(ggplot2::midwest, x = ~percollege, color = ~state, type = "box")
 
 
 ## plt = px.box(midwest, x = 'state', y = 'percollege', color = 'state', notched=True)
@@ -115,12 +126,12 @@ plot_ly(midwest, x = ~percollege, color = ~state, type = "box")
 ## ).show()
 
 
-## ----express-show, out.width='75%', echo=FALSE------------------------------------------------
+## ----express-show, out.width='75%', echo=FALSE---------------------------------
 knitr::include_graphics('img/plotly-box-python.png')
 knitr::include_graphics('img/plotly-violin-python.png')
 
 
-## ----ggplotly---------------------------------------------------------------------------------
+## ----ggplotly------------------------------------------------------------------
 gp = mtcars %>%
   mutate(amFactor = factor(am, labels = c('auto', 'manual')),
          hovertext = paste(wt, mpg, amFactor)) %>%
@@ -132,7 +143,7 @@ gp = mtcars %>%
 ggplotly()
 
 
-## ----highcharts-------------------------------------------------------------------------------
+## ----highcharts----------------------------------------------------------------
 library(highcharter)
 library(quantmod)
 
@@ -140,26 +151,40 @@ google_price = getSymbols("GOOG", auto.assign = FALSE)
 hchart(google_price)
 
 
-## ----visNetworkinitial, cache=FALSE-----------------------------------------------------------
+## ----visNetworkinitial, cache=FALSE--------------------------------------------
 set.seed(1352)
-nodes = data.frame(id = 0:5,
-                   label = c('Bobby', 'Janie','Timmie', 'Mary', 'Johnny', 'Billy'),
-                   group = c('friend', 'frenemy','frenemy', rep('friend', 3)),
-                   value = sample(10:50, 6))
-edges = data.frame(from = c(0,0,0,1,1,2,2,3,3,3,4,5,5),
-                   to = sample(0:5, 13, replace = T),
-                   value = sample(1:10, 13, replace = T)) %>% 
-  filter(from!=to)
+
+nodes = data.frame(
+  id = 0:5,
+  label = c('Bobby', 'Janie', 'Timmie', 'Mary', 'Johnny', 'Billy'),
+  group = c('friend', 'frenemy', 'frenemy', rep('friend', 3)),
+  value = sample(10:50, 6)
+)
+
+edges = data.frame(
+  from = c(0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 4, 5, 5),
+  to = sample(0:5, 13, replace = T),
+  value = sample(1:10, 13, replace = T)
+) %>%
+  filter(from != to)
 
 library(visNetwork)
-visNetwork(nodes, edges, height=300, width=800) %>%
-  visNodes(shape='circle', 
-           font=list(), 
-           scaling=list(min=10, max=50, label=list(enable=T))) %>% 
+
+
+visNetwork(nodes, edges, height = 300, width = 800) %>%
+  visNodes(
+    shape = 'circle',
+    font = list(),
+    scaling = list(
+      min = 10,
+      max = 50,
+      label = list(enable = T)
+    )
+  ) %>%
   visLegend()
 
 
-## ----sigmajs, cache=FALSE---------------------------------------------------------------------
+## ----sigmajs, cache=FALSE------------------------------------------------------
 library(sigmajs)
 
 nodes <- sg_make_nodes(30)
@@ -332,11 +357,11 @@ sigmajs() %>%
 ## fig.show()
 
 
-## ----network-show, echo=FALSE-----------------------------------------------------------------
+## ----network-show, echo=FALSE--------------------------------------------------
 knitr::include_graphics('img/plotly-network-python.png')
 
 
-## ----leaflet----------------------------------------------------------------------------------
+## ----leaflet-------------------------------------------------------------------
 hovertext <- paste(sep = "<br/>",
   "<b><a href='http://umich.edu/'>University of Michigan</a></b>",
   "Ann Arbor, MI"
@@ -346,12 +371,14 @@ library(leaflet)
 
 leaflet() %>%
   addTiles() %>%
-  addPopups(lng = -83.738222,
-            lat = 42.277030,
-            popup = hovertext)
+  addPopups(
+    lng   = -83.738222,
+    lat   = 42.277030,
+    popup = hovertext
+  )
 
 
-## ----datatable--------------------------------------------------------------------------------
+## ----datatable-----------------------------------------------------------------
 library(DT)
 
 ggplot2movies::movies %>%
@@ -360,7 +387,7 @@ ggplot2movies::movies %>%
   datatable()
 
 
-## ----datatable_options------------------------------------------------------------------------
+## ----datatable_options---------------------------------------------------------
 iris %>%
   # arrange(desc(Petal.Length)) %>%
   datatable(rownames = F,
@@ -387,7 +414,7 @@ iris %>%
   )
 
 
-## ----shiny, eval=FALSE------------------------------------------------------------------------
+## ----shiny, eval=FALSE---------------------------------------------------------
 ## library(shiny)
 ## 
 ## # Running a Shiny app object
@@ -409,7 +436,7 @@ iris %>%
 ## runApp(app)
 
 
-## ----dash-example, eval=FALSE-----------------------------------------------------------------
+## ----dash-example, eval=FALSE--------------------------------------------------
 ## library(dash)
 ## library(dashCoreComponents)
 ## library(dashHtmlComponents)
@@ -547,11 +574,11 @@ iris %>%
 
 ## 
 
-## ----dash-python-show, echo=FALSE-------------------------------------------------------------
+## ----dash-python-show, echo=FALSE----------------------------------------------
 knitr::include_graphics('img/plotly-dash-python.png')
 
 
-## ----interactive_ex1, eval=FALSE--------------------------------------------------------------
+## ----interactive_ex1, eval=FALSE-----------------------------------------------
 ## library(ggplot2movies)
 ## 
 ## movies %>%
@@ -561,7 +588,7 @@ knitr::include_graphics('img/plotly-dash-python.png')
 ##   add_markers()
 
 
-## ----interactive_ex1-hint, echo=FALSE---------------------------------------------------------
+## ----interactive_ex1-hint, echo=FALSE------------------------------------------
 movies %>%
   group_by(year) %>%
   summarise(Avg_Rating = mean(rating)) %>%
@@ -569,7 +596,7 @@ movies %>%
   add_markers(x =  ~ year, y =  ~ Avg_Rating)
 
 
-## ----interactive_ex2, echo=FALSE--------------------------------------------------------------
+## ----interactive_ex2, echo=FALSE-----------------------------------------------
 movies %>%
   group_by(year, Drama) %>%
   summarise(Avg_Rating = mean(rating),

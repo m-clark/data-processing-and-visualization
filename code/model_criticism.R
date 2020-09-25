@@ -1,21 +1,21 @@
-## ----model-criticism-setup, include=FALSE, eval=TRUE, cache=FALSE-----------------------------
+## ----model-criticism-setup, include=FALSE, eval=TRUE, cache=FALSE--------------
 
 
 
-## ----model-summary-rev------------------------------------------------------------------------
+## ----model-summary-rev---------------------------------------------------------
 happy_model_base_sum
 
 
-## ----happy-anova------------------------------------------------------------------------------
+## ----happy-anova---------------------------------------------------------------
 anova(happy_model_base)
 
 
-## ----f-stat-----------------------------------------------------------------------------------
+## ----f-stat--------------------------------------------------------------------
 happy_model_base_sum$fstatistic
 pf(309.6, 3, 407, lower.tail = FALSE)
 
 
-## ----f-stat-redux-----------------------------------------------------------------------------
+## ----f-stat-redux--------------------------------------------------------------
 f_test = lm(happiness_score ~ generosity, happy)
 
 summary(f_test)
@@ -23,24 +23,24 @@ summary(f_test)
 pf(8.78, 1, 533, lower.tail = FALSE)
 
 
-## ----null-vs-realistic------------------------------------------------------------------------
+## ----null-vs-realistic---------------------------------------------------------
 happy_model_null = lm(happiness_score ~ 1, data = model.frame(happy_model_base)) 
 anova(happy_model_null, happy_model_base)
 
 
-## ----happy-anova-rev--------------------------------------------------------------------------
+## ----happy-anova-rev-----------------------------------------------------------
 ((527.27 - 160.65)/3) / (160.65/407)
 
 
-## ----happy-r2---------------------------------------------------------------------------------
+## ----happy-r2------------------------------------------------------------------
 happy_model_base_sum
 
 
-## ----r2-calc----------------------------------------------------------------------------------
+## ----r2-calc-------------------------------------------------------------------
 366.62 / 527.27
 
 
-## ----r2-as-cor--------------------------------------------------------------------------------
+## ----r2-as-cor-----------------------------------------------------------------
 predictions = predict(happy_model_base)
 target = happy_model_base$model$happiness_score
 rho = cor(predictions, target)
@@ -48,7 +48,7 @@ rho
 rho^2
 
 
-## ----confusionMatrix, echo=FALSE--------------------------------------------------------------
+## ----confusionMatrix, echo=FALSE-----------------------------------------------
 t1 = tibble(
   ` ` = c('Predicted = 1', 'Predicted = 0'),
   `Observed = 1` = c(41, 16),
@@ -65,7 +65,7 @@ kable_df(list(t1, t2), align='cc') %>%
   kable_styling(full_width = T, bootstrap_options = 'basic')
 
 
-## ----confmat_values, echo=FALSE---------------------------------------------------------------
+## ----confmat_values, echo=FALSE------------------------------------------------
 A = 41
 B = 21
 C = 16
@@ -77,13 +77,13 @@ D = 13
 Total = A + B + C + D
 
 
-## ----diag-plot-code, eval=F-------------------------------------------------------------------
+## ----diag-plot-code, eval=F----------------------------------------------------
 ## library(ggfortify)
 ## 
 ## autoplot(happy_model_base)
 
 
-## ----diag-plot-show, echo=FALSE, fig.height=4-------------------------------------------------
+## ----diag-plot-show, echo=FALSE, fig.height=4----------------------------------
 library(ggfortify)
 
 autoplot(
@@ -96,7 +96,7 @@ autoplot(
   theme_clean()
 
 
-## ----bad_fit, echo=FALSE----------------------------------------------------------------------
+## ----bad_fit, echo=FALSE-------------------------------------------------------
 set.seed(1234)
 N = 500
 x = rnorm(N)
@@ -115,7 +115,7 @@ autoplot(
   theme_clean()
 
 
-## ----pp_check_base, echo=F, fig.width=8-------------------------------------------------------
+## ----pp_check_base, echo=F, fig.width=8----------------------------------------
 init = data.frame(
   predictions = predict(happy_model_base),
   target = happy_model_base$model$happiness_score
@@ -146,7 +146,7 @@ p_scatter +
 # gridExtra::grid.arrange(p_scatter, p_dense, layout_matrix = matrix(c(1,1,1,2,2), nrow = 1 ))
 
 
-## ----train-test-------------------------------------------------------------------------------
+## ----train-test----------------------------------------------------------------
 library(tidymodels)
 
 set.seed(12)
@@ -164,7 +164,7 @@ happy_model_train = lm(
 predictions = predict(happy_model_train, newdata = happy_test)
 
 
-## ----train-test-loss, echo=FALSE, cache.rebuild=TRUE------------------------------------------
+## ----train-test-loss, echo=FALSE-----------------------------------------------
 pita = data.frame(
   observed_train = happy_model_train$model$happiness_score,
   predict_train  = happy_model_train$fitted.values
@@ -184,7 +184,7 @@ tibble(
   kable_df()
 
 
-## ----happy-data-proc--------------------------------------------------------------------------
+## ----happy-data-proc-----------------------------------------------------------
 happy_recipe = happy %>% 
   select(
     year,
@@ -205,7 +205,7 @@ happy_recipe = happy %>%
 happy_processed = happy_recipe %>% bake(happy)
 
 
-## ----happy-model-base-------------------------------------------------------------------------
+## ----happy-model-base----------------------------------------------------------
 happy_model_base = lm(
   happiness_score ~ democratic_quality + generosity + log_gdp_per_capita, 
   data = happy_processed
@@ -214,7 +214,7 @@ happy_model_base = lm(
 summary(happy_model_base)
 
 
-## ----happy_model_more-------------------------------------------------------------------------
+## ----happy_model_more----------------------------------------------------------
 happy_model_more = lm(
   happiness_score ~ democratic_quality + generosity + log_gdp_per_capita + healthy_life_expectancy_at_birth + year,
   data = happy_processed
@@ -223,19 +223,19 @@ happy_model_more = lm(
 summary(happy_model_more)
 
 
-## ----anova-comparison-------------------------------------------------------------------------
+## ----anova-comparison----------------------------------------------------------
 anova(happy_model_base, happy_model_more, test = 'Chi')
 
 
-## ----AIC--------------------------------------------------------------------------------------
+## ----AIC-----------------------------------------------------------------------
 AIC(happy_model_base)
 
 
-## ----AIC-compare------------------------------------------------------------------------------
+## ----AIC-compare---------------------------------------------------------------
 AIC(happy_model_base, happy_model_more)
 
 
-## ----boot-$R^2$, echo=FALSE-------------------------------------------------------------------
+## ----boot-$R^2$, echo=FALSE----------------------------------------------------
 library(boot)
 
 f_base = happiness_score ~ democratic_quality + generosity + log_gdp_per_capita
@@ -270,7 +270,7 @@ tibble(
   kable_df()
 
 
-## ----boot-$R^2$-diff, echo=FALSE--------------------------------------------------------------
+## ----boot-$R^2$-diff, echo=FALSE-----------------------------------------------
 diff_in_r2 = data.matrix(quantile(r2_more$t0 - r2_base$t, c(0.025,0.975)))
 
 colnames(diff_in_r2) = 'Difference in $R^2$'
@@ -281,7 +281,7 @@ diff_in_r2 %>%
   kable_df()
 
 
-## ----boot-$AIC$, echo=FALSE-------------------------------------------------------------------
+## ----boot-$AIC$, echo=FALSE----------------------------------------------------
 aic_base <- boot(
   happy_processed,
   function(data, indices)
@@ -311,7 +311,7 @@ tibble(
   kable_df()
 
 
-## ----boot-$ARIC$-diff, echo=FALSE-------------------------------------------------------------
+## ----boot-$ARIC$-diff, echo=FALSE----------------------------------------------
 diff_in_aic = data.matrix(quantile(aic_more$t0 - aic_base$t, c(0.025,0.975)))
 
 colnames(diff_in_aic) = 'Difference in AIC'
@@ -322,7 +322,7 @@ diff_in_aic %>%
   kable_df()
 
 
-## ----happy-interact---------------------------------------------------------------------------
+## ----happy-interact------------------------------------------------------------
 happy_model_interact = lm(
   happiness_score ~ democratic_quality + generosity + log_gdp_per_capita + 
     healthy_life_expectancy_at_birth +
@@ -333,7 +333,7 @@ happy_model_interact = lm(
 summary(happy_model_interact)
 
 
-## ----vis-interact-----------------------------------------------------------------------------
+## ----vis-interact--------------------------------------------------------------
 library(ggeffects)
 
 plot(
@@ -344,7 +344,7 @@ plot(
 )
 
 
-## ----contour-plot, echo=FALSE, fig.retina=5---------------------------------------------------
+## ----contour-plot, echo=FALSE, fig.retina=5------------------------------------
 # library(mgcv)
 # 
 # happy_model_interact_ = gam(
@@ -375,11 +375,11 @@ plot(
 knitr::include_graphics('img/interaction_2d.png')
 
 
-## ----anova-3----------------------------------------------------------------------------------
+## ----anova-3-------------------------------------------------------------------
 AIC(happy_model_base, happy_model_more, happy_model_interact)
 
 
-## ----happy-gam--------------------------------------------------------------------------------
+## ----happy-gam-----------------------------------------------------------------
 library(mgcv)
 
 happy_model_gam = gam(
@@ -391,17 +391,17 @@ happy_model_gam = gam(
 summary(happy_model_gam)
 
 
-## ----happy-gam-vis, eval=FALSE----------------------------------------------------------------
+## ----happy-gam-vis, eval=FALSE-------------------------------------------------
 ## library(mgcViz)
 ## 
 ## plot.gamViz(happy_model_gam, allTerms = T)
 
 
-## ----happy-gam-vis-show, echo=FALSE-----------------------------------------------------------
+## ----happy-gam-vis-show, echo=FALSE--------------------------------------------
 visibly::plot_gam(happy_model_gam)
 
 
-## ----gam-interact, echo=FALSE-----------------------------------------------------------------
+## ----gam-interact, echo=FALSE--------------------------------------------------
 gam(
   happiness_score ~ s(democratic_quality, healthy_life_expectancy_at_birth, k = 10) + s(generosity) + s(log_gdp_per_capita),
   data = happy_processed
@@ -410,7 +410,7 @@ gam(
   plotly::hide_colorbar()
 
 
-## ----AIC-all, cache=FALSE---------------------------------------------------------------------
+## ----AIC-all, cache=FALSE------------------------------------------------------
 AIC(
   happy_model_null,
   happy_model_base,
@@ -420,7 +420,7 @@ AIC(
 )
 
 
-## ----aic-average, echo=FALSE------------------------------------------------------------------
+## ----aic-average, echo=FALSE---------------------------------------------------
 model_list = list(
   happy_model_base,
   happy_model_more,
@@ -459,20 +459,20 @@ aic_weights %>%
 #   kable_df()
 
 
-## ----avgr2, echo=FALSE------------------------------------------------------------------------
+## ----avgr2, echo=FALSE---------------------------------------------------------
 # avg_r2 = cor(model_avg$avg, happy_model_base$model$happiness_score)^2
 
 
-## ----ex0-goog, eval=FALSE---------------------------------------------------------------------
+## ----ex0-goog, eval=FALSE------------------------------------------------------
 ## load('data/google_apps.RData')
 
 
-## ----ex1-model-assess, eval=FALSE-------------------------------------------------------------
+## ----ex1-model-assess, eval=FALSE----------------------------------------------
 ## summary(model)
 ## plot(model)
 
 
-## ----ex2-model-compare, eval=FALSE------------------------------------------------------------
+## ----ex2-model-compare, eval=FALSE---------------------------------------------
 ## anova(model1, model2)
 ## AIC(model1, model2)
 

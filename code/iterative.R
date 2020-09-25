@@ -1,17 +1,17 @@
-## ----iter_1, eval=FALSE-----------------------------------------------------------------------
+## ----iter_1, eval=FALSE--------------------------------------------------------
 ## means1 = mean(df$x)
 ## means2 = mean(df$y)
 ## means3 = mean(df$z)
 ## means4 = mean(df$q)
 
 
-## ----iter_loop_demo, eval=FALSE---------------------------------------------------------------
+## ----iter_loop_demo, eval=FALSE------------------------------------------------
 ## for (column in c('x','y','z','q')) {
 ##   mean(df[[column]])
 ## }
 
 
-## ----nyc_flights------------------------------------------------------------------------------
+## ----nyc_flights---------------------------------------------------------------
 weather = nycflights13::weather
 
 for (column in c('temp', 'humid', 'wind_speed', 'precip')) {
@@ -19,7 +19,7 @@ for (column in c('temp', 'humid', 'wind_speed', 'precip')) {
 }
 
 
-## ----nyc_flights2-----------------------------------------------------------------------------
+## ----nyc_flights2--------------------------------------------------------------
 columns = c('temp', 'humid', 'wind_speed', 'precip')
 nyc_means = rep(NA, length(columns))
 
@@ -34,7 +34,7 @@ for (i in seq_along(columns)) {
 nyc_means
 
 
-## ----nyc_flights3-----------------------------------------------------------------------------
+## ----nyc_flights3--------------------------------------------------------------
 columns = c('temp', 'humid', 'wind_speed', 'visib', 'pressure')
 nyc_means = rep(NA, length(columns))
 
@@ -45,7 +45,7 @@ for (i in seq_along(columns)) {
 nyc_means %>% round(2)
 
 
-## ----nyc_flights4-----------------------------------------------------------------------------
+## ----nyc_flights4--------------------------------------------------------------
 columns = c('temp', 'humid', 'wind_speed', 'visib', 'pressure')
 nyc_means = numeric()
 
@@ -56,7 +56,7 @@ for (i in seq_along(columns)) {
 nyc_means %>% round(2)
 
 
-## ----loop_timing, eval=FALSE, echo=FALSE------------------------------------------------------
+## ----loop_timing, eval=FALSE, echo=FALSE---------------------------------------
 ## X = matrix(rnorm(1000000), ncol=10000)
 ## means1 = rep(NA, ncol(X))
 ## means2 = c()
@@ -76,7 +76,7 @@ nyc_means %>% round(2)
 ## microbenchmark::microbenchmark(loop1(X), loop2(X))
 
 
-## ----nyc_flights_while------------------------------------------------------------------------
+## ----nyc_flights_while---------------------------------------------------------
 columns = c('temp','humid','wind_speed', 'visib', 'pressure')
 nyc_means = c()
 
@@ -89,7 +89,7 @@ while (i <= length(columns)) {
 nyc_means %>% round(2)
 
 
-## ----loopvsapply1, eval=FALSE-----------------------------------------------------------------
+## ----loopvsapply1, eval=FALSE--------------------------------------------------
 ## for (i in 1:ncol(mydf)) {
 ##   x = mydf[, i]
 ##   for (j in 1:length(x)) {
@@ -98,7 +98,7 @@ nyc_means %>% round(2)
 ## }
 
 
-## ----loopvsapply2, eval=F---------------------------------------------------------------------
+## ----loopvsapply2, eval=F------------------------------------------------------
 ## stdize <- function(x) {
 ##   (x - mean(x)) / sd(x)
 ## }
@@ -106,17 +106,17 @@ nyc_means %>% round(2)
 ## apply(mydf, 2, stdize)   # 1 for rows, 2 for columnwise application
 
 
-## ----lapply_example---------------------------------------------------------------------------
+## ----lapply_example------------------------------------------------------------
 x = list('aba', 'abb', 'abc', 'abd', 'abe')
 
 lapply(x, str_remove, pattern = 'ab')
 
 
-## ----sapply_example---------------------------------------------------------------------------
+## ----sapply_example------------------------------------------------------------
 sapply(x, str_remove, pattern = 'ab')
 
 
-## ----purr_example, eval=TRUE, echo=-(1:3)-----------------------------------------------------
+## ----purr_example, eval=TRUE, echo=-(1:3)--------------------------------------
 # detach(package:maps)
 
 map = purrr::map  # could not remove conflict with something, nor able to debug
@@ -126,7 +126,7 @@ x = list(1:3, 4:6, 7:9)
 map(x, sum)
 
 
-## ----purr_example2, eval=-1-------------------------------------------------------------------
+## ----purr_example2, eval=-1----------------------------------------------------
 mtcars %>% 
   map(scale)    # returns a list, not shown
 
@@ -145,7 +145,7 @@ diamonds %>%
   as_tibble()
 
 
-## ----purr_models------------------------------------------------------------------------------
+## ----purr_models---------------------------------------------------------------
 library(mgcv) # for gam
 
 mtcars$cyl = factor(mtcars$cyl)
@@ -184,7 +184,7 @@ model_list %>%
   sort(decreasing = TRUE)
 
 
-## ----purr_models2-----------------------------------------------------------------------------
+## ----purr_models2--------------------------------------------------------------
 model_list %>% 
   map_df(
     function(x)
@@ -201,7 +201,7 @@ model_list %>%
   geom_point(aes(color = model), size = 10, show.legend = F)
 
 
-## ----purr_models3-----------------------------------------------------------------------------
+## ----purr_models3--------------------------------------------------------------
 mod_rsq = 
   model_list %>% 
   map_df(
@@ -232,7 +232,7 @@ left_join(mod_rsq, mod_aic) %>%
   facet_wrap(~ measure, scales = 'free')
 
 
-## ----list_tibble------------------------------------------------------------------------------
+## ----list_tibble---------------------------------------------------------------
 mtcars2 = as.matrix(mtcars)
 
 mtcars2[sample(1:length(mtcars2), 50)] = NA   # add some missing data
@@ -255,29 +255,29 @@ mtcars2 =
   )
 
 
-## ----list_tibble2-----------------------------------------------------------------------------
+## ----list_tibble2--------------------------------------------------------------
 mtcars2
 
 mtcars2$newvar %>% head(3)
 
 
-## ----list_tibble3-----------------------------------------------------------------------------
+## ----list_tibble3--------------------------------------------------------------
 mtcars2 %>% 
   unnest(newvar)
 
 
-## ----app_ex1, echo=1, eval=FALSE--------------------------------------------------------------
+## ----app_ex1, echo=1, eval=FALSE-----------------------------------------------
 ## x = matrix(1:9, 3, 3)
 ## apply()
 
 
-## ----app_ex2, echo=1, eval=FALSE--------------------------------------------------------------
+## ----app_ex2, echo=1, eval=FALSE-----------------------------------------------
 ## x = list(1:3, 4:10, 11:100)
 ## lapply()
 ## sapply()
 
 
-## ----purrr_ex3, echo=1:5, eval=FALSE----------------------------------------------------------
+## ----purrr_ex3, echo=1:5, eval=FALSE-------------------------------------------
 ## d = tibble(
 ##   x = rnorm(100),
 ##   y = rnorm(100, 10, 2),
