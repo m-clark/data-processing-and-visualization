@@ -1,8 +1,8 @@
-## ----model-setup, include=FALSE, eval=TRUE, cache=FALSE------------------------
+## ----model-setup, include=FALSE, eval=TRUE, cache=FALSE--------------------------------------------
 knitr::opts_chunk$set(eval=T, echo=T)
 
 
-## ----model-names, echo=FALSE---------------------------------------------------
+## ----model-names, echo=FALSE-----------------------------------------------------------------------
 y = c('Dependent variable', 'Endogenous', 'Response', 'Outcome', 'Output', 'Y', 'Regressand','Left hand side (LHS)')
 
 x = c('Independent variable', 'Exogenous', 'Explanatory Variable' , 'Covariate', 'Input', 'X', 'Regressor', 'Right hand side (RHS)')
@@ -15,16 +15,16 @@ tibble(
   collapse_rows()
 
 
-## ----linear-model, eval=FALSE--------------------------------------------------
+## ----linear-model, eval=FALSE----------------------------------------------------------------------
 ## lm(y ~ x + z)
 
 
-## ----linear-quad-inter, eval=FALSE---------------------------------------------
+## ----linear-quad-inter, eval=FALSE-----------------------------------------------------------------
 ## lm(y ~ x + z + x:z)
 ## lm(y ~ x + x_squared)     # a better way: lm(y ~ poly(x, degree = 2))
 
 
-## ----ls-loss-------------------------------------------------------------------
+## ----ls-loss---------------------------------------------------------------------------------------
 ls_loss <- function(X, y, beta) {
   
   # initialize the objects
@@ -41,7 +41,7 @@ ls_loss <- function(X, y, beta) {
 }
 
 
-## ----ls-loss-data-gen----------------------------------------------------------
+## ----ls-loss-data-gen------------------------------------------------------------------------------
 set.seed(123)           # for reproducibility
 N = 100
 X = cbind(1, rnorm(N))  # a model matrix; first column represents the intercept
@@ -50,25 +50,25 @@ y = 5 * X[, 1] + .5 * X[, 2] + rnorm(N)  # a target with some noise; truth is y 
 df = data.frame(y = y, x = X[, 2])
 
 
-## ----ls-loss-guess-------------------------------------------------------------
+## ----ls-loss-guess---------------------------------------------------------------------------------
 ls_loss(X, y, beta = c(0, 1))    # guess 1
 ls_loss(X, y, beta = c(1, 2))    # guess 2
 ls_loss(X, y, beta = c(4, .25))  # guess 3
 
 
-## ----ls-loss-lm----------------------------------------------------------------
+## ----ls-loss-lm------------------------------------------------------------------------------------
 model = lm(y ~ x, df)            # fit the model and obtain parameter estimates using OLS
 coef(model)                      # best guess given the data 
 sum(residuals(model)^2)          # least squares loss
 
 
-## ----normal-eq-----------------------------------------------------------------
+## ----normal-eq-------------------------------------------------------------------------------------
 solve(crossprod(X)) %*% crossprod(X, y)  # 'normal equations'
 
 coef(model)
 
 
-## ----maximum-likelihood, echo=FALSE--------------------------------------------
+## ----maximum-likelihood, echo=FALSE----------------------------------------------------------------
 set.seed(1234)
 y = rpois(100000, lambda = 5)
 mus = seq(3, 8, l = 100)
@@ -109,7 +109,7 @@ ggplot(plot_dat) +
   )
 
 
-## ----max-like------------------------------------------------------------------
+## ----max-like--------------------------------------------------------------------------------------
 max_like <- function(X, y, beta, sigma = 1) {
   
   likelihood = rep(0, nrow(X))
@@ -124,7 +124,7 @@ max_like <- function(X, y, beta, sigma = 1) {
 }
 
 
-## ----maximum-likelihood-estimate-----------------------------------------------
+## ----maximum-likelihood-estimate-------------------------------------------------------------------
 max_like(X, y, beta = c(0, 1))    # guess 1
 max_like(X, y, beta = c(1, 2))    # guess 2
 max_like(X, y, beta = c(4, .25))  # guess 3
@@ -132,7 +132,7 @@ max_like(X, y, beta = c(4, .25))  # guess 3
 logLik(model)
 
 
-## ----models-graph, caption = 'Models', eval=TRUE, echo=FALSE-------------------
+## ----models-graph, caption = 'Models', eval=TRUE, echo=FALSE---------------------------------------
 htmltools::tags$div(
   style = "width:500px; margin:0 auto; font-family:Roboto; ",
   DiagrammeR::DiagrammeR(
@@ -144,7 +144,7 @@ htmltools::tags$div(
 )
 
 
-## ----estimation-graph, caption = 'Estimation Procedures', eval=TRUE, echo=FALSE----
+## ----estimation-graph, caption = 'Estimation Procedures', eval=TRUE, echo=FALSE--------------------
 htmltools::tags$div(
   style = "width:500px; margin:0 auto; font-family:Roboto; ",
   DiagrammeR::DiagrammeR(
@@ -156,7 +156,7 @@ htmltools::tags$div(
 )
 
 
-## ----abb, echo=FALSE-----------------------------------------------------------
+## ----abb, echo=FALSE-------------------------------------------------------------------------------
 data.frame(
   Label = c('LM', 'GLM', 'GLMM', 'GAMM', 'OLS', 'WLS', 'GLS', 'GEE', 'GMM'),
   Name = c(
@@ -175,7 +175,7 @@ data.frame(
   kable_styling(font_size = 10)
 
 
-## ----model-syntax, eval=FALSE--------------------------------------------------
+## ----model-syntax, eval=FALSE----------------------------------------------------------------------
 ## lm(y ~ x + z)                                          # standard linear model/OLS
 ## glm(y ~ x + z, family = 'binomial')                    # logistic regression with binary response
 ## glm(y ~ x + z + offset(log(q)), family = 'poisson')    # count/rate model
@@ -193,7 +193,7 @@ data.frame(
 ## )
 
 
-## ----model-prep, echo=1:5------------------------------------------------------
+## ----model-prep, echo=1:5--------------------------------------------------------------------------
 library(tidyverse)  # load if you haven't already
 
 load('data/world_happiness.RData')
@@ -206,14 +206,14 @@ tidyext::describe_all_num(happy) %>%
 happy_score = tidyext::num_summary(happy$happiness_score)
 
 
-## ----model-fit-----------------------------------------------------------------
+## ----model-fit-------------------------------------------------------------------------------------
 happy_model_base = lm(
   happiness_score ~ democratic_quality + generosity + log_gdp_per_capita,
   data = happy
 )
 
 
-## ----model-matrix--------------------------------------------------------------
+## ----model-matrix----------------------------------------------------------------------------------
 X = model.matrix(
   happiness_score ~ democratic_quality + generosity + log_gdp_per_capita, 
   data = happy
@@ -222,12 +222,12 @@ X = model.matrix(
 head(X)
 
 
-## ----na-omit-------------------------------------------------------------------
+## ----na-omit---------------------------------------------------------------------------------------
 nrow(happy)
 nrow(X)
 
 
-## ----model-response------------------------------------------------------------
+## ----model-response--------------------------------------------------------------------------------
 X_df = model.frame(
     happiness_score ~ democratic_quality + generosity + log_gdp_per_capita,
     data = happy
@@ -236,27 +236,27 @@ X_df = model.frame(
 y = model.response(X_df)
 
 
-## ----model-fit-model-matrix----------------------------------------------------
+## ----model-fit-model-matrix------------------------------------------------------------------------
 happy_model_matrix = lm.fit(X, y)
 
 summary(happy_model_matrix)  # only a standard list is returned
 
 
-## ----coef-model-matrix---------------------------------------------------------
+## ----coef-model-matrix-----------------------------------------------------------------------------
 coef(happy_model_matrix)
 
 
-## ----model-summarize, echo=1---------------------------------------------------
+## ----model-summarize, echo=1-----------------------------------------------------------------------
 happy_model_base_sum = summary(happy_model_base)
 
 happy_model_base_sum
 
 
-## ----model-confint-------------------------------------------------------------
+## ----model-confint---------------------------------------------------------------------------------
 confint(happy_model_base)
 
 
-## ----coefficient-interpretation, echo=FALSE------------------------------------
+## ----coefficient-interpretation, echo=FALSE--------------------------------------------------------
 tibble(
   target = c('y', 'y', 'log(y)', 'log(y)', 'y', 'scale(y)', 'scale(y)'),
   predictor = c('x', 'log(x)', 'x', 'log(x)', 'scale(x)', 'x', 'scale(x)'), 
@@ -273,7 +273,7 @@ tibble(
   kable_df(booktabs = T, escape = FALSE)
 
 
-## ----dummy-coding--------------------------------------------------------------
+## ----dummy-coding----------------------------------------------------------------------------------
 library(recipes)
 
 nafta = happy %>% 
@@ -290,13 +290,13 @@ prep(dummy) %>%      # estimates the necessary data to apply to this or other da
   print(n = 20)
 
 
-## ----dummy-reg-----------------------------------------------------------------
+## ----dummy-reg-------------------------------------------------------------------------------------
 model_dummy = lm(happiness_score ~ country, data = nafta)
 
 summary(model_dummy)
 
 
-## ----contrast-coding, echo=FALSE-----------------------------------------------
+## ----contrast-coding, echo=FALSE-------------------------------------------------------------------
 tibble(
   group = c('Canada', 'Mexico', 'United States'),
   canada_vs_other = c(-2/3,1/3,1/3),
@@ -306,7 +306,7 @@ tibble(
   kableExtra::add_footnote(notation = 'none', 'weights sum to zero, but are arbitrary')
 
 
-## ----contrast-coding-lm--------------------------------------------------------
+## ----contrast-coding-lm----------------------------------------------------------------------------
 nafta = nafta %>% 
   mutate(country_fac = factor(country))
 
@@ -320,26 +320,26 @@ nafta %>%
   summarise(happy = mean(happiness_score, na.rm = TRUE))
 
 
-## ----model-methods-------------------------------------------------------------
+## ----model-methods---------------------------------------------------------------------------------
 predict(happy_model_base, newdata = happy %>% slice(1:5))
 coef(happy_model_base)
 
 
-## ----model-summary-------------------------------------------------------------
+## ----model-summary---------------------------------------------------------------------------------
 str(happy_model_base_sum, 1)
 
 
-## ----extract-from-model--------------------------------------------------------
+## ----extract-from-model----------------------------------------------------------------------------
 happy_model_base_sum$adj.r.squared
 happy_model_base_sum[['sigma']]
 
 
-## ----broom-demo----------------------------------------------------------------
+## ----broom-demo------------------------------------------------------------------------------------
 library(broom)
 tidy(happy_model_base)
 
 
-## ----emmeans-------------------------------------------------------------------
+## ----emmeans---------------------------------------------------------------------------------------
 happy_model_nafta = lm(happiness_score ~ country + year, data = nafta)
 
 library(emmeans)
@@ -349,13 +349,13 @@ country_means
 plot(country_means)
 
 
-## ----emmeans-pairwise----------------------------------------------------------
+## ----emmeans-pairwise------------------------------------------------------------------------------
 pw_comparisons = contrast(country_means, method = 'pairwise', adjust = 'bonferroni')
 pw_comparisons
 plot(pw_comparisons)
 
 
-## ----ggeffects-----------------------------------------------------------------
+## ----ggeffects-------------------------------------------------------------------------------------
 happy_model_nafta = lm(happiness_score ~ year*country, data = nafta)
 
 library(ggeffects)
@@ -364,7 +364,7 @@ preds = ggpredict(happy_model_nafta, terms = c('year', 'country'))
 plot(preds)
 
 
-## ----poisson-------------------------------------------------------------------
+## ----poisson---------------------------------------------------------------------------------------
 set.seed(123)                     # for reproducibility
 N = 1000                          # sample size
 beta = c(2, 1)                    # the true coefficient values
@@ -375,7 +375,7 @@ y = rpois(N, lambda = mu)         # the target variable lambda = mean
 glm(y ~ x, family = poisson)
 
 
-## ----binom---------------------------------------------------------------------
+## ----binom-----------------------------------------------------------------------------------------
 mu = plogis(beta[1] + beta[2]*x)
 y = rbinom(N, size = 1, mu)
 
@@ -390,7 +390,7 @@ glm(y ~ x, family = binomial)
 # glm(cbind(events, nonevents) ~ x, family = binomial)
 
 
-## ----ex1-goog, eval=FALSE------------------------------------------------------
+## ----ex1-goog, eval=FALSE--------------------------------------------------------------------------
 ## load('data/google_apps.RData')
 ## 
 ## model = lm(? ~ reviews + type + size_in_MB, data = google_apps)
@@ -398,13 +398,13 @@ glm(y ~ x, family = binomial)
 ## plot(emmeans::emmeans(model, ~type))
 
 
-## ----ex2-goog, eval=FALSE------------------------------------------------------
+## ----ex2-goog, eval=FALSE--------------------------------------------------------------------------
 ## model = lm(? ~ reviews + type*?, data = google_apps)
 ## 
 ## plot(ggeffects::ggpredict(model, terms = c('size_in_MB', 'type')))
 
 
-## ----ex3-fish, eval=FALSE------------------------------------------------------
+## ----ex3-fish, eval=FALSE--------------------------------------------------------------------------
 ## load('data/fish.RData')
 ## 
 ## model = glm(?, data = fish)

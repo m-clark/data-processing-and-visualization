@@ -1,4 +1,4 @@
-## ----plotly_text, echo=FALSE, out.width='50%'----------------------------------
+## ----plotly_text, echo=FALSE, out.width='50%'------------------------------------------------------
 mgcv::gamSim(verbose = F) %>%
   modelr::add_predictions(., model = mgcv::gam(y ~ s(x2), data = .)) %>%
   plot_ly(x =  ~ x2, y =  ~ y) %>%
@@ -15,7 +15,7 @@ mgcv::gamSim(verbose = F) %>%
   theme_plotly()
 
 
-## ----plotly_text2, echo=FALSE, out.width='50%'---------------------------------
+## ----plotly_text2, echo=FALSE, out.width='50%'-----------------------------------------------------
 mgcv::gamSim(verbose = F) %>%
   modelr::add_predictions(., model = mgcv::gam(y ~ s(x2), data = .)) %>%
   plot_ly(x =  ~ x2, y =  ~ y) %>%
@@ -32,7 +32,7 @@ mgcv::gamSim(verbose = F) %>%
   theme_plotly()
 
 
-## ----include_graphics----------------------------------------------------------
+## ----include_graphics------------------------------------------------------------------------------
 knitr::include_graphics('img/R.ico')
 
 

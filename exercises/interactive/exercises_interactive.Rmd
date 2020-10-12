@@ -475,7 +475,8 @@ log_sum <- function(a, b) {
   
   if (? < 0) {
     stop('Your message here.')
-  } else {
+  } 
+  else {
     ?
     return(your_log_sum_results)    # this is an arbitrary name, change accordingly
   }
@@ -552,12 +553,16 @@ Of the following <span class="objclass">matrix</span>, which do you think is fas
 
 ```{r vector_ex2, exercise = TRUE}
 x = matrix(rpois(100000, lambda = 5), ncol = 100)
-colSums(x)
-apply(x, 2, sum)
 
-microbenchmark::microbenchmark(
+vec = colSums(x)
+loop = apply(x, 2, sum)
+
+identical(vec, loop)
+
+bench::mark(
   cs = colSums(x),
-  app = apply(x, 2, sum)
+  app = apply(x, 2, sum),
+  time_unit = 'ms'
 )
 ```
 
@@ -569,6 +574,7 @@ Using stringr and str_replace, replace all the states a's with nothing.
 
 ```{r regex_ex, exercise = TRUE}
 library(stringr)
+
 str_replace(state.name, pattern = ?, replacement = ?)
 ```
 

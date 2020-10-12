@@ -1,12 +1,12 @@
-## ----dtsetup, include=FALSE, eval=TRUE, cache=FALSE----------------------------
+## ----dtsetup, include=FALSE, eval=TRUE, cache=FALSE------------------------------------------------
 knitr::opts_chunk$set(eval=T, echo=T, cache = T)
 
 
-## ----dthex, out.width='10%', echo=FALSE----------------------------------------
+## ----dthex, out.width='10%', echo=FALSE------------------------------------------------------------
 knitr::include_graphics('img/hex_datatable.png')
 
 
-## ----dterror, eval=TRUE--------------------------------------------------------
+## ----dterror, eval=TRUE----------------------------------------------------------------------------
 library(data.table)
 dt = data.table(x = sample(1:10, 6),
                 g = 1:3,
@@ -14,16 +14,16 @@ dt = data.table(x = sample(1:10, 6),
 class(dt)
 
 
-## ----dtgeneric, eval=FALSE-----------------------------------------------------
+## ----dtgeneric, eval=FALSE-------------------------------------------------------------------------
 ## x[i, j, by, keyby, with = TRUE, ...]
 
 
-## ----dtrows, results='hold'----------------------------------------------------
+## ----dtrows, results='hold'------------------------------------------------------------------------
 dt[2]    # rows! not columns as with standard data.frame
 dt[2,]
 
 
-## ----dtcols, results='hold'----------------------------------------------------
+## ----dtcols, results='hold'------------------------------------------------------------------------
 dt[,x]
 dt[,z := x+y]  # dt now has a new column
 dt[,z]
@@ -31,43 +31,43 @@ dt[g > 1, mean(z), by = g]
 dt
 
 
-## ----dtdropcol, eval=1:2, results='hold'---------------------------------------
+## ----dtdropcol, eval=1:2, results='hold'-----------------------------------------------------------
 dt[, -y]             # creates negative values of y
 dt[, -'y', with = F] # drops y, but now needs quotes
 dt[, y := NULL]      # drops y, but this is just a base R approach
 dt$y = NULL
 
 
-## ----dtmemory------------------------------------------------------------------
+## ----dtmemory--------------------------------------------------------------------------------------
 DT = data.table(A = 5:1, B = letters[5:1])
 DT2 = DT
 DT3 = copy(DT)  
 
 
-## ----dtnocopy------------------------------------------------------------------
+## ----dtnocopy--------------------------------------------------------------------------------------
 DT2[,q:=1]
 DT
 
 
-## ----dtcopy--------------------------------------------------------------------
+## ----dtcopy----------------------------------------------------------------------------------------
 DT3 
 
 
-## ----dtgroup-------------------------------------------------------------------
+## ----dtgroup---------------------------------------------------------------------------------------
 dt1 = dt2 = dt
 dt[, sum(x, y), by = g]                # sum of all x and y values
 dt1[, mysum := sum(x), by = g]         # add new variable to the original data
 dt1
 
 
-## ----dtgroup2, eval=1----------------------------------------------------------
+## ----dtgroup2, eval=1------------------------------------------------------------------------------
 dt2[, list(mean_x = mean(x), sum_x = sum(x)), by = g == 1]
 dt2 %>% 
   group_by(g == 1) %>% 
   summarise(mean_x = mean(x), sum_x = sum(x))
 
 
-## ----dtjoin, eval=FALSE--------------------------------------------------------
+## ----dtjoin, eval=FALSE----------------------------------------------------------------------------
 ## dt1 = setkey(dt1, x)
 ## dt1[dt2]
 ## 
@@ -75,7 +75,7 @@ dt2 %>%
 ## left_join(dt1_df, dt2_df, by = 'x')
 
 
-## ----dtjoin_timing, echo=FALSE-------------------------------------------------
+## ----dtjoin_timing, echo=FALSE---------------------------------------------------------------------
 # load('data/timing.RData')
 # timing_join %>% 
 #   kable_df(justify='lr')
@@ -92,7 +92,7 @@ dt1_df = dt2_df = as.data.frame(dt1)
   kable_df(justify = 'lr')
 
 
-## ----dtsetkey, echo=1:10-------------------------------------------------------
+## ----dtsetkey, echo=1:10---------------------------------------------------------------------------
 test_dt0 = data.table(x = rnorm(10000000),
                       g = sample(letters, 10000000, replace = T))
 test_dt1 = copy(test_dt0)
@@ -123,7 +123,7 @@ timing_group_by_1 %>%
   kable_df(justify = 'lr')
 
 
-## ----dtcharacters, echo=2:6, eval=2:8------------------------------------------
+## ----dtcharacters, echo=2:6, eval=2:8--------------------------------------------------------------
 set.seed(1234)
 lets_1 = sample(letters[1:14], 1000, replace=T)
 
@@ -150,11 +150,11 @@ lets_1 %chin% letters[13:26] %>% head(10)
 
 
 
-## ----dtfread, eval=FALSE-------------------------------------------------------
+## ----dtfread, eval=FALSE---------------------------------------------------------------------------
 ## fread('data/cars.csv')
 
 
-## ----dtfread_timing, echo=FALSE------------------------------------------------
+## ----dtfread_timing, echo=FALSE--------------------------------------------------------------------
 library(readr)
 timing_read =
   microbenchmark::microbenchmark(
@@ -169,7 +169,7 @@ timing_read =
 timing_read %>% kable_df(justify='lr')
 
 
-## ----dttimings_big, eval=FALSE, echo=FALSE-------------------------------------
+## ----dttimings_big, eval=FALSE, echo=FALSE---------------------------------------------------------
 ## library(dplyr)
 ## library(data.table)
 ## set.seed(123)
@@ -222,26 +222,26 @@ timing_read %>% kable_df(justify='lr')
 ## save(timing_group_by_big, file = 'data/timing_group_by_big.RData')
 
 
-## ----dttimings, eval=TRUE, echo=FALSE------------------------------------------
+## ----dttimings, eval=TRUE, echo=FALSE--------------------------------------------------------------
 load('data/timing_group_by_big.RData')
 as.data.table(sapply(timing_group_by_big, `[[`, "elapsed"), keep.rownames = TRUE)[, .(fun = V1, elapsed = V2)][order(-elapsed)] %>% 
   kable_df()
 
 
-## ----dtpipebad, eval=F---------------------------------------------------------
+## ----dtpipebad, eval=F-----------------------------------------------------------------------------
 ## mydt[, newvar := mean(x), ][, newvar2 := sum(newvar), by = group][, -'y', with = FALSE]
 ## mydt[, newvar := mean(x),
 ##      ][, newvar2 := sum(newvar), by = group
 ##        ][,-'y', with=FALSE]
 
 
-## ----dtpipebad2, eval=F--------------------------------------------------------
+## ----dtpipebad2, eval=F----------------------------------------------------------------------------
 ## mydt[, newvar := mean(x), ] %>%
 ##   .[, newvar2 := sum(newvar), by = group] %>%
 ##   .[, -'y', with = FALSE]
 
 
-## ----dtplyr, echo=FALSE, eval=TRUE---------------------------------------------
+## ----dtplyr, echo=FALSE, eval=TRUE-----------------------------------------------------------------
 # something weird with n() function in chunk; saved out
 # detach(package:data.table); library(dplyr); library(dtplyr)
 # set.seed(123)
@@ -332,7 +332,7 @@ ggplot(test, aes(expr, time, color = expr, fill = expr)) +
 ## test_result/100*1000  # in milliseconds
 
 
-## ----dt-ex0, eval=FALSE--------------------------------------------------------
+## ----dt-ex0, eval=FALSE----------------------------------------------------------------------------
 ## mydt = data.table(
 ##   expand.grid(x = 1:3,
 ##               y = c('a', 'b', 'c')),
@@ -340,11 +340,11 @@ ggplot(test, aes(expr, time, color = expr, fill = expr)) +
 ## )
 
 
-## ---- echo=FALSE, eval=FALSE---------------------------------------------------
+## ---- echo=FALSE, eval=FALSE-----------------------------------------------------------------------
 ## mydt_a = mydt[y == 'a', ]
 
 
-## ---- echo=FALSE, eval=FALSE---------------------------------------------------
+## ---- echo=FALSE, eval=FALSE-----------------------------------------------------------------------
 ## mydt_grpsum = mydt[, sum(z), by = x]
 ## mydt_grpsum = mydt[, list(sumz = sum(z)), by = x]
 

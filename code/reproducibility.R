@@ -1,20 +1,20 @@
-## ----rmdsetup, include=FALSE, eval=TRUE, cache=FALSE---------------------------
+## ----rmdsetup, include=FALSE, eval=TRUE, cache=FALSE-----------------------------------------------
 knitr::opts_chunk$set(eval=T, echo=T)
 
 
-## ----lm_demo, echo=FALSE-------------------------------------------------------
+## ----lm_demo, echo=FALSE---------------------------------------------------------------------------
 lm(mpg ~ wt, mtcars) %>% 
   summary() %>% 
   pander::pander(round = 2)
 
 
-## ----lm_demo_show, eval=FALSE--------------------------------------------------
+## ----lm_demo_show, eval=FALSE----------------------------------------------------------------------
 ## lm(mpg ~ wt, mtcars) %>%
 ##   summary() %>%
 ##   pander(round = 2)
 
 
-## ----arxiv, echo=FALSE---------------------------------------------------------
+## ----arxiv, echo=FALSE-----------------------------------------------------------------------------
 library(rvest)
 
 test0 = read_html('https://arxiv.org/abs/1507.02646')

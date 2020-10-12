@@ -2,7 +2,7 @@
 
 
 <div class="" style="text-align: center;">
-<i class="fas fa-code fa-5x" ></i>
+<i class="fas fa-terminal fa-5x" ></i>
 </div>
 
 
@@ -248,10 +248,12 @@ good_mileage <- function(
   
   if (displ_low == TRUE) {              # condition to check, if it holds,
     result <- mpg %>%                   # filter data given the arguments
-      filter(cyl == cylinder,
-             displ <= displ_fun(displ),
-             hwy >= mpg_cutoff,
-             class == cls)
+      filter(
+        cyl == cylinder,
+        displ <= displ_fun(displ),
+        hwy >= mpg_cutoff,
+        class == cls
+      )
   } 
   else {                                # if the condition doesn't hold, filter 
     result <- mpg %>%                   # the data this way instead

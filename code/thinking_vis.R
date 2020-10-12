@@ -1,4 +1,4 @@
-## ----vissetup, include=FALSE, eval=TRUE, cache=FALSE---------------------------
+## ----vissetup, include=FALSE, eval=TRUE, cache=FALSE-----------------------------------------------
 knitr::opts_chunk$set(eval=T, echo=F)
 library(viridisLite)
 library(scico)
@@ -6,7 +6,7 @@ library(patchwork)
 library(visibly)
 
 
-## ----problems------------------------------------------------------------------
+## ----problems--------------------------------------------------------------------------------------
 library(plotly)
 
 sw_height = starwars %>%
@@ -29,7 +29,7 @@ sw_height %>%
   theme_bw()
 
 
-## ----problems2-----------------------------------------------------------------
+## ----problems2-------------------------------------------------------------------------------------
 sw_height %>% 
   ggplot(aes(x=sex, y=Height)) +
   geom_errorbar(aes(ymin=Height-2*se, ymax=Height+2*se),
@@ -42,7 +42,7 @@ sw_height %>%
   theme_bw()
 
 
-## ----ugly----------------------------------------------------------------------
+## ----ugly------------------------------------------------------------------------------------------
 starwars %>% 
   filter(sex %in% c('male', 'female')) %>% 
   ggplot(aes(x=mass, y=height)) +
@@ -57,7 +57,7 @@ starwars %>%
         )
 
 
-## ----badbw---------------------------------------------------------------------
+## ----badbw-----------------------------------------------------------------------------------------
 starwars %>% 
   filter(sex %in% c('male', 'female')) %>% 
   ggplot(aes(x=mass, y=height)) +
@@ -72,7 +72,7 @@ starwars %>%
         )
 
 
-## ----better, height = '110%', width = '125%'-----------------------------------
+## ----better, height = '110%', width = '125%'-------------------------------------------------------
 sw2 = starwars %>% 
   filter(sex %in% c('male', 'female')) %>% 
   mutate(homeworld2 = ifelse(homeworld=='Tatooine', 'Tatooine', 'Naboo'),
@@ -136,7 +136,7 @@ ggplotly(width = 600, height = 400) %>%
   theme_plotly()
 
 
-## ----contrast, echo=-(1:2)-----------------------------------------------------
+## ----contrast, echo=-(1:2)-------------------------------------------------------------------------
 data.frame(x=letters[1:2], y = 1) %>% 
   ggplot() +
   geom_col(aes(x, y, fill = x), width = .1, show.legend = F) +
@@ -149,7 +149,7 @@ visibly::color_contrast_checker(foreground = '#F8766D', background = 'gray92')
 visibly::color_contrast_checker(foreground = '#440154', background = 'gray92')
 
 
-## ----scale_size, out.width='100%'----------------------------------------------
+## ----scale_size, out.width='100%'------------------------------------------------------------------
 ss1 <- sw2 %>% 
   mutate(bmi = mass/((height/100)^2)) %>% 
   ggplot(aes(x=mass, y=height)) +
@@ -169,7 +169,7 @@ ss2 <- sw2 %>%
 ss1 + ss2
 
 
-## ----transp, out.width='75%', fig.asp=.5---------------------------------------
+## ----transp, out.width='75%', fig.asp=.5-----------------------------------------------------------
 ########################################################################################
 ### 'Noisy' gaussian process demo.  The matrix labeling is in keeping with Murphy    ###
 ### 2012 and Rasmussen and Williams 2006.  See those sources for more detail.        ###
@@ -372,7 +372,7 @@ g2 = ggplot(aes(x = x, y = value), data = gdat2) +
 g1 + g2
 
 
-## ----transp2, out.width='75%', fig.asp=.5--------------------------------------
+## ----transp2, out.width='75%', fig.asp=.5----------------------------------------------------------
 g1 = ggplot(aes(x = x, y = value), data = gdat1) +
   geom_line(aes(group = variable), color = pal[2], alpha = 1) +
   labs(title = 'Prior') +
@@ -404,7 +404,7 @@ g2 = ggplot(aes(x = x, y = value), data = gdat2) +
 g1 + g2
 
 
-## ----transp_tornado, eval=T, cache=FALSE---------------------------------------
+## ----transp_tornado, eval=T, cache=FALSE-----------------------------------------------------------
 # depending on the plot, plotly may confuse opacity with some other quality of the color
 # data(flights, package='threejs') 
 # flights %>% 
@@ -451,7 +451,7 @@ gdat %>%
   theme_clean()
 
 
-## ----transp_density------------------------------------------------------------
+## ----transp_density--------------------------------------------------------------------------------
 set.seed(123)
 
 gdat = 1:4 %>%
@@ -479,7 +479,7 @@ gdat %>%
   )
 
 
-## ----transp_density2-----------------------------------------------------------
+## ----transp_density2-------------------------------------------------------------------------------
 gdat %>%
   ggplot(aes(x = value, group = g)) +
   geom_density(aes(color = g, fill = g), show.legend = F) +
@@ -495,7 +495,7 @@ gdat %>%
   )
 
 
-## ----hist-dens-dot, echo=FALSE, out.width='100%', fig.asp=.5-------------------
+## ----hist-dens-dot, echo=FALSE, out.width='100%', fig.asp=.5---------------------------------------
 N = 150
 n = N/2
 random_normal_deviates_a = rnorm(n)
@@ -536,7 +536,7 @@ p_hist + p_dens + p_dot
 
 
 
-## ----valenced-plot, eval = TRUE------------------------------------------------
+## ----valenced-plot, eval = TRUE--------------------------------------------------------------------
 wr = noiris::water_risk %>% 
   mutate(name_0 = ifelse(name_0 == 'United States', 'USA', name_0)) %>% 
   drop_na()
@@ -564,11 +564,11 @@ p2 =  ggplot(wr, aes(map_id = name_0)) +
 p1 / p2
 
 
-## ----valenced-plot-show, fig.asp=.5--------------------------------------------
+## ----valenced-plot-show, fig.asp=.5----------------------------------------------------------------
 # knitr::include_graphics('img/water_risk.svg')
 
 
-## ----thinkingvis_ex1, echo=T, eval=FALSE, cache=FALSE--------------------------
+## ----thinkingvis_ex1, echo=T, eval=FALSE, cache=FALSE----------------------------------------------
 ## # devtools::install_github("thomasp85/scico") # to use scientific colors
 ## library(ggplot2)
 ## 
@@ -577,7 +577,7 @@ p1 / p2
 ##   ????
 
 
-## ----thinkingvis_ex1b, eval=F, out.width='50%'---------------------------------
+## ----thinkingvis_ex1b, eval=F, out.width='50%'-----------------------------------------------------
 ## library(ggplot2)
 ## 
 ## ggplot(aes(x = carat, y = price), data = diamonds) +
@@ -585,7 +585,7 @@ p1 / p2
 ##   scale_color_scico(palette = 'acton')
 
 
-## ----thinkingvis_ex2, eval=FALSE, out.width='50%'------------------------------
+## ----thinkingvis_ex2, eval=FALSE, out.width='50%'--------------------------------------------------
 ## ggplot(aes(x = carat, y = price), data = diamonds) +
 ##   geom_point(aes(color = cut)) +
 ##   scale_color_scico_d(palette = 'batlow')

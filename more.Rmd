@@ -146,11 +146,12 @@ mymatrix = matrix(runif(100), 10, 10)
 identical(apply(mymatrix, 2, log), log(mymatrix))
 
 library(microbenchmark)
+
 microbenchmark(apply(mymatrix, 2, log), log(mymatrix))
 ```
 
 
-Many vectorized functions already exist in R.  They are often written in C, Fortran etc., and so even faster.  Not all programming languages lean toward vectorized operations, and may not see much speed gain from it.  In R however, you'll want to prefer it.  Even without, it's cleaner/clearer code, another reason to use the approach.
+Many vectorized functions already exist in R.  They are often written in C, Fortran etc., and so even faster.  Not all programming languages lean toward vectorized operations, and may not see much speed gain from it.  In R however, you'll want to prefer it.  Even without the speed gain, it's cleaner/clearer code, another reason to use the approach.
   
 
 
@@ -223,7 +224,8 @@ What is *that* you may ask?  Well here is an example of strings it would and wou
 
 ```{r regex_intro_ex, eval=TRUE}
 string = c('r is the shiny', 'r is the shiny1', 'r shines brightly')
-grepl(string, pattern='^r.*shiny[0-9]$')
+
+grepl(string, pattern = '^r.*shiny[0-9]$')
 ```
 
 What the regex is esoterically attempting to match is any string that starts with 'r' and ends with 'shiny_' where _ is some single digit.  Specifically it breaks down as follows:
@@ -315,16 +317,17 @@ Show a non-vectorized (e.g. a loop) and a vectorized way to add a two to the num
 
 ### Exercise 2
 
-Of the following, which do you think is faster?  Test it with the <span class="pack">microbenchmark</span> package.
+Of the following, which do you think is faster?  Test it with the <span class="pack">bench</span> package.
 
 ```{r vector_ex2, eval=FALSE}
 x = matrix(rpois(100000, lambda = 5), ncol = 100)
 colSums(x)
 apply(x, 2, sum)
 
-microbenchmark::microbenchmark(
+bench::mark(
   cs  = colSums(x),
-  app = apply(x, 2, sum)
+  app = apply(x, 2, sum),
+  time_unit = 'ms'   # microseconds
 )
 ```
 
@@ -337,6 +340,7 @@ Using <span class="pack">stringr</span> and <span class="func">str_replace</span
 
 ```{r regex_ex, eval=FALSE}
 library(stringr)
+
 str_replace(state.name, pattern = ?, replacement = ?)
 ```
 
